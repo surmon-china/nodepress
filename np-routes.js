@@ -70,6 +70,6 @@ userRouteModule.use(express.static('./np-rescources'))
 });
 
 // 监听端口
-userRouteModule.listen(80, function (argument) {
+userRouteModule.listen(process.env.VCAP_APP_PORT || 80, function (argument) {
   console.log('请求执行成功！');
 });
