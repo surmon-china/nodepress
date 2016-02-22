@@ -1,3 +1,6 @@
-## NodePress V1.1
+## NodePress V0.0.1
 
 Author By Surmon Surmon@foxmail.com
+
+# NodePress
+Bolg By MEAN.JS
