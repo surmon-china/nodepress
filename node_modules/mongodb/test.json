@@ -1,0 +1,28 @@
+{
+	"military_base": {
+		"type": "military",
+		"level": 0,
+		"maxLevel": 25,
+		"upgrade": true,
+		"targetEnvironment": [],
+		"timeUntilBuilt": 0,
+		"costCoef": 0.4,
+		"requiredResearches": ["foo#4", "bar#1"],
+		"requiredResources" : ["cash", "metal", "palladium"],
+		"inProgress": 0,
+		"queue": []
+	},
+	"aqua_center": {
+		"type": "industrial",
+		"level": 0,
+		"maxLevel": 25,
+		"upgrade": true,
+		"targetEnvironment": ["ocean", "snowy"],
+		"timeUntilBuilt": 0,
+		"costCoef": 0.7,
+		"requiredResearches": ["lorem#10", "ipsum#3"],
+		"requiredResources" : ["cash", "cristal"],
+		"inProgress": 0,
+		"queue": []
+	}
+}

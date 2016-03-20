@@ -1,0 +1,50 @@
+<div class="header">
+  <div class="module">
+    <div class="logo">
+    	<a href="/about"></a>
+    </div>
+    <div class="player" ng-controller="Music">
+      <button type="button" ng-click="musicPlayer.pause()">暂停</button>
+      <button type="button" ng-click="musicPlayer.play()">播放</button>
+      <button type="button" ng-click="musicPlayer.prev()">上一首</button>
+      <button type="button" ng-click="musicPlayer.next()">下一首</button>
+      <span>{{ musicPlayer.song.song_title }}</span>
+      <small >{{ musicPlayer.song.song_author }}</small>
+      <!-- 进度条 -->
+      <div class="progress">
+          <span class="current" ng-bind="musicPlayer.song.song_current_time | formattime">当前时间</span>
+          <div class="progress-bar" progress-bar>
+              <div class="played"></div>
+          </div>
+          <span class="duration" ng-bind="musicPlayer.song.song_duration | formattime">总时间</span>
+      </div>
+    </div>
+  </div>
+  <div class="navbar">
+  	<nav>
+  		<ul id="nav-menu">
+  			<li class="menu-item"><a href="/"><i class="icon icon-home"></i>Home</a></li>
+				<li class="menu-item  menu-item-has-children"><a href="/category/code"><i class="icon icon-laptop"></i>Code</a>
+				<ul class="sub-menu">
+					<li class="menu-item"><a href="/tag/http"><i class="icon icon-cog"></i>Http</a></li>
+					<li class="menu-item"><a href="/tag/seo"><i class="icon icon-cog"></i>Seo</a></li>
+					<li class="menu-item"><a href="/tag/css"><i class="icon icon-cog"></i>Css</a></li>
+					<li class="menu-item"><a href="/tag/jquery"><i class="icon icon-cog"></i>Jquery</a></li>
+					<li class="menu-item"><a href="/tag/javascript"><i class="icon icon-cog"></i>Javascript</a></li>
+				</ul>
+				</li>
+				<li class="menu-item  menu-item-has-children menu-item-881"><a href="/category/life"><i class="icon icon-coffee"></i>Life</a>
+				<ul class="sub-menu">
+					<li class="menu-item"><a href="/music"><i class="icon icon-music"></i>Music</a></li>
+					<li class="menu-item"><a href="/movie"><i class="icon icon-film"></i>Movie</a></li>
+					<li class="menu-item"><a href="/category/life/poetry"><i class="icon icon-book"></i>Poetry</a></li>
+				</ul>
+				</li>
+				<li class="menu-item"><a href="/category/theme"><i class="icon icon-dashboard"></i>Theme</a></li>
+				<li class="menu-item"><a href="/category/think"><i class="icon icon-group"></i>Think</a></li>
+				<li class="menu-item"><a href="/guestbook"><i class="icon icon-comment"></i>Guestbook</a></li>
+				<li class="menu-item"><a href="/about"><i class="icon icon-user"></i>About</a></li>
+			</ul>
+  	</nav>
+  </div>
+</div>
