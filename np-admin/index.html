@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="NodePress" ng-controller="MainController">
+  <meta charset="UTF-8">
+  <meta name="Author" Content="司马萌, surmon@qq.com">
+  <meta name="Copyright" Content="Site with Surmon.me By Surmon, All Rights Reserved">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" itemprop="description" content="Nodepress - Admin - Panel" />
+  <title>NodePress管理后台</title>
+  <link rel='stylesheet' href='/np-admin/style.css' type='text/css'/>
+  <base href="/">
+</head>
+<body>
+  <header></header>
+  <section>
+    <aside></aside>
+    <article ui-view></article>
+  </section>
+  <footer></footer>
+</body>
+<!-- Angular-Libs -->
+<script src="/np-admin/angular/angular.min.js" ></script>
+<script src="/np-admin/angular/angular-ui-router.min.js" ></script>
+<script src="/np-admin/angular/angular-sanitize.min.js" ></script>
+<script src="/np-admin/angular/angular-animate.min.js" ></script>
+<script src="/np-admin/angular/angular-resource.min.js" ></script>
+<script src="/np-admin/angular/angular-storage.min.js" ></script>
+<!-- App -->
+<script src="/np-admin/index.js" ></script>
+</html>

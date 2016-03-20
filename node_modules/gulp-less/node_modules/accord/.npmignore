@@ -1,0 +1,6 @@
+test
+src
+.travis.yml
+Makefile
+docs
+coverage
