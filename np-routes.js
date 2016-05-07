@@ -5,18 +5,18 @@ var routeModule = express();
 // 使用中间件创建静态文件访问
 routeModule.use(express.static(__dirname + '/np-client/'))
 
-// 前端用户访问
+// 前台
 .get('/', function(req, res) {
   res.sendfile('./np-client/np-user/Surmon/index.html');
 })
 
-// 前端后台访问
+// 后台
 .get('/admin', function(req, res) {
   console.log('访问admin首页');
   res.sendfile('./np-client/np-admin/index.html');
 })
 
-// 前端后台统配
+// 后台
 .all('/admin/*', function (req, res) {
   res.sendfile('./np-client/np-admin/index.html');
 })
@@ -85,6 +85,6 @@ routeModule.use(express.static(__dirname + '/np-client/'))
 });
 
 // 监听端口
-routeModule.listen(process.env.VCAP_APP_PORT || 8000, function (argument) {
+routeModule.listen(process.env.VCAP_APP_PORT || 80, function (argument) {
   console.log('NodePress启动成功！');
 });
