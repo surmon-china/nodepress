@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="Surmon" ng-controller="Main">
+  <meta charset="UTF-8">
+  <meta name="Author" Content="司马萌, surmon@qq.com">
+  <meta name="Copyright" Content="Site with Surmon.me By Surmon, All Rights Reserved">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" >
+  <title>司马萌</title>
+  <meta name="keywords" itemprop="keywords" content="{{ keywords }}" />
+  <meta name="description" itemprop="description" content="{{ description | stripTags }}" />
+  <link rel='stylesheet' href='/np-user/Surmon/style.css' type='text/css'/>
+  <base href="/">
+</head>
+<body>
+  <header></header>
+  <section>
+    <article ng-view></article>
+    <aside></aside>
+  </section>
+  <footer></footer>
+</body>
+<!-- 库与插件 -->
+<script src="/np-user/Surmon/scripts/moment.min.js" ></script>
+<script src="/np-user/Surmon/scripts/duoshuo_embed.js" ></script>
+<!-- Angular-Libs -->
+<script src="/np-user/Surmon/angular/angular.js" ></script>
+<script src="/np-user/Surmon/angular/angular-route.js" ></script>
+<script src="/np-user/Surmon/angular/angular-sanitize.js" ></script>
+<script src="/np-user/Surmon/angular/angular-loader.js" ></script>
+<script src="/np-user/Surmon/angular/angular-touch.js" ></script>
+<script src="/np-user/Surmon/angular/angular-duoshuo.js" ></script>
+<script src="/np-user/Surmon/angular/angular-carousel.js" ></script>
+<script src="/np-user/Surmon/angular/angular-music-player.js" ></script>
+<!-- App -->
+<script src="/np-user/Surmon/app.js" ></script>
+</html>
