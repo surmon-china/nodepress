@@ -9,7 +9,7 @@ const blogInfo = {
 	path: location.host,
 	url: 'http://' + location.host,
 	api: 'http://' + location.host + '/api',
-	templateUrl: 'http://' + location.host + '/np-themes/Surmon/layouts/',
+	templateUrl: 'http://' + location.host + '/np-user/Surmon/layouts/',
 	duoshuoShortName: 'surmon',
   musicPlayerAutoLoad: true,
   musicPlayerAutoPlay: true

@@ -1,40 +1,35 @@
 // 路由模块
 var express = require('express');
-var userRouteModule = express();
+var routeModule = express();
 
 // 使用中间件创建静态文件访问
-userRouteModule.use(express.static(__dirname + '/'))
+routeModule.use(express.static(__dirname + '/np-client/'))
 
 // 前端用户访问
 .get('/', function(req, res) {
-  res.sendfile('./np-themes/Surmon/index.html');
+  res.sendfile('./np-client/np-user/Surmon/index.html');
 })
 
-// 前端管理员访问
+// 前端后台访问
 .get('/admin', function(req, res) {
-  res.sendfile('./np-admin/index.html');
+  console.log('访问admin首页');
+  res.sendfile('./np-client/np-admin/index.html');
 })
 
-// 前端管理员访问
-// .get('/admin/:admin', function(req, res) {
-//   res.sendfile('./np-admin/index.html');
-// })
-
-// 前端管理员访问
-// .get('/admin/:admin/:admin_page', function(req, res) {
-//   res.sendfile('./np-admin/index.html');
-// })
+// 前端后台统配
+.all('/admin/*', function (req, res) {
+  res.sendfile('./np-client/np-admin/index.html');
+})
 
 // 服务端API
-
-// 首页信息
 .get( global.config.api_path + '/', function(req, res) {
-  res.end('Hello,World!, I \'m Index API');
+  res.jsonp(global.config);
 })
 
 // 全站配置
 .get( global.config.api_path + '/config', function(req, res) {
-  res.end('Hello,World!, I \'m config Page API');
+  console.log('输出全栈配置');
+  res.jsonp({name: 'Surmon - Blog'});
 })
 
 // 文章搜索
@@ -86,11 +81,10 @@ userRouteModule.use(express.static(__dirname + '/'))
 
 // 404页面交给前端处理
 .get('*', function(req, res){
-  console.log('遇到了未知界面');
-  res.sendfile('./np-themes/Surmon/index.html');
+  res.sendfile('./np-client/np-user/Surmon/index.html');
 });
 
 // 监听端口
-userRouteModule.listen(process.env.VCAP_APP_PORT || 8000, function (argument) {
+routeModule.listen(process.env.VCAP_APP_PORT || 8000, function (argument) {
   console.log('NodePress启动成功！');
 });
