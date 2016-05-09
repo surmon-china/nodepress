@@ -22,59 +22,60 @@ routeModule.use(express.static(__dirname + '/np-client/'))
 })
 
 // 服务端API
-.get( global.config.api_path + '/', function(req, res) {
-  res.jsonp(global.config);
+.get( global.NP_CONFIG.api + '/', function(req, res) {
+  console.log('程序及API概览信息');
+  res.jsonp(global.NP_CONFIG.info);
 })
 
 // 全站配置
-.get( global.config.api_path + '/config', function(req, res) {
-  console.log('输出全栈配置');
-  res.jsonp({name: 'Surmon - Blog'});
+.get( global.NP_CONFIG.api + '/config', function(req, res) {
+  // console.log('输出全局自定义配置');
+  res.jsonp({name: 'Surmon - 自定义配置部分'});
 })
 
 // 文章搜索
-.get( global.config.api_path + '/search/:keyword', function(req, res) {
+.get( global.NP_CONFIG.api + '/search/:keyword', function(req, res) {
   res.end('Hello,World!, I \'m Search Page API');
 })
 
 // 全部文章列表
-.get( global.config.api_path + '/article', function(req, res) {
+.get( global.NP_CONFIG.api + '/article', function(req, res) {
   // console.log(req);
   res.end('Hello,World!, I \'m article_lists API');
 })
 
 // Tag标签列表
-.get( global.config.api_path + '/tag', function(req, res) {
+.get( global.NP_CONFIG.api + '/tag', function(req, res) {
   // console.log(req);
   res.end('Hello,World!, I \'m tag_list API');
 })
 
 // 分类文章列表
-.get( global.config.api_path + '/category/:category_id', function(req, res) {
+.get( global.NP_CONFIG.api + '/category/:category_id', function(req, res) {
   // console.log(req);
   res.end('Hello,World!, I \'m category' + req.params.category_id);
 })
 
 // 标签文章列表
-.get( global.config.api_path + '/tag/:tag_id', function(req, res) {
+.get( global.NP_CONFIG.api + '/tag/:tag_id', function(req, res) {
   // console.log(req);
   res.end('Hello,World!, I \'m tag post list'  + req.params.tag_id + ' page:' +  req.query.page);
 })
 
 // 日期文章列表
-.get( global.config.api_path + '/date/:date_ymd', function(req, res) {
+.get( global.NP_CONFIG.api + '/date/:date_ymd', function(req, res) {
   // console.log(req);
   res.end('Hello,World!, I \'m date API');
 })
 
 // 文章内容页
-.get( global.config.api_path + '/article/:article_id', function(req, res) {
+.get( global.NP_CONFIG.api + '/article/:article_id', function(req, res) {
   // console.log(req);
   res.end('Hello,World!, I \'m article page API');
 })
 
 // 单独页面
-.get( global.config.api_path + '/:page_id', function(req, res) {
+.get( global.NP_CONFIG.api + '/:page_id', function(req, res) {
   // console.log(req);
   res.end('Hello,World!, I \'m page page API');
 })
@@ -85,6 +86,6 @@ routeModule.use(express.static(__dirname + '/np-client/'))
 });
 
 // 监听端口
-routeModule.listen(process.env.VCAP_APP_PORT || 80, function (argument) {
+routeModule.listen(80, function (argument) {
   console.log('NodePress启动成功！');
 });
