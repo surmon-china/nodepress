@@ -43,6 +43,8 @@
 
 @f: #fff;
 
+@2: #222;
+
 @3: #333;
 
 @4: #444;
@@ -399,7 +401,7 @@ section {
         width: 100%;
       }
 
-      > .logo {
+      > .gravatar {
         height: 150px;
         padding: 30px 0;
 
@@ -407,6 +409,77 @@ section {
           .block-center();
           border-radius: 100%;
           border: 5px solid @6;
+        }
+      }
+
+      > .user {
+
+        .info {
+          overflow: hidden;
+          padding: 0;
+
+          > .item {
+            float: left;
+            width: 33.333%;
+            text-align: center;
+            list-style: none;
+
+            > .title {
+              display: block;
+              width: 100%;
+              height: 30px;
+              line-height: 30px;
+
+            }
+          }
+        }
+      }
+
+      > .nav {
+
+        > .nav-lists {
+          padding: 0;
+          margin: 0;
+
+          > .item {
+            overflow: hidden;
+
+            > .title {
+
+              > a {
+                display: block;
+                cursor: pointer;
+                height: 40px;
+                line-height: 40px;
+                padding-left: 20px;
+                background-color: @3;
+
+                &:hover {
+                  background-color: @2;
+                }
+              }
+            }
+
+            > .nav-childs {
+              padding: 0;
+              margin: 0;
+
+              > li {
+
+                > a {
+                  display: block;
+                  height: 40px;
+                  line-height: 40px;
+                  padding-left: 50px;
+                  background-color: #3C3C3C;
+
+                  &:hover {
+                    background-color: @3;
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
