@@ -1,22 +1,36 @@
 <div class="aside" ng-controller="AsideController">
-  <div class="logo">
+  <div class="gravatar">
     <img src="http://surmon.me/wp-content/uploads/2015/07/surmon.png">
   </div>
   <div class="user">
-    <div class="gravatar"></div>
-    <ul class="gravatar"></ul>
+    <p class="name">
+      <a href="/user">Surmon</a>
+    </p>
+    <ul class="info">
+      <li class="item">
+        <span class="title">文章</span>
+        <span class="count">90</span>
+      </li>
+      <li class="item">
+        <span class="title">评论</span>
+        <span class="count">17</span>
+      </li>
+      <li class="item">
+        <span class="title">运行</span>
+        <span class="count">38</span>
+      </li>
+    </ul>
   </div>
   <div class="nav">
     <ul class="nav-lists">
-      <li class="item">
+      <li class="item" ng-repeat="menu in adide.menus">
         <div class="title">
-          <a href="">一级菜单</a>
+          <a ng-href="{{ menu.url || '' }}" ng-click="children_show = !children_show">{{ menu.name }}</a>
         </div>
-        <ul class="nav-childs">
-          <li class="item">子菜单</li>
-          <li class="item">子菜单</li>
-          <li class="item">子菜单</li>
-          <li class="item">子菜单</li>
+        <ul class="nav-childs" ng-if="!!menu.childrens" ng-show="children_show">
+          <li class="item" ng-repeat="children in menu.childrens">
+            <a ng-href="{{ children.url }}">{{ children.name }}</a>
+          </li>
         </ul>
       </li>
     </ul>
