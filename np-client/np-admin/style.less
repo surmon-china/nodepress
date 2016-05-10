@@ -367,9 +367,10 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 45px;
+  height: 0px;
   background-color: @6;
   border-top: 5px solid @e;
+  padding-left: 200px;
 
   > .header {
 
@@ -380,8 +381,8 @@ header {
 section {
   position: fixed;
   height: 100%;
-  padding-top: 45px;
-  padding-bottom: 40px;
+  padding-top: 5px;
+  // padding-bottom: 40px;
 
   // 侧边栏
   > aside {
@@ -399,22 +400,36 @@ section {
 
       > div {
         width: 100%;
+        border-bottom: 1px solid @5;
+
+        &:last-child {
+          border-bottom: 0;
+        }
       }
 
       > .gravatar {
         height: 150px;
         padding: 30px 0;
 
-        > img {
-          .block-center();
-          border-radius: 100%;
-          border: 5px solid @6;
+        > a {
+
+          > img {
+            .block-center();
+            border-radius: 100%;
+            border: 5px solid @6;
+          }
         }
+
+        
       }
 
       > .user {
 
-        .info {
+        > .name {
+          text-align: center;
+        }
+
+        > .info {
           overflow: hidden;
           padding: 0;
 
@@ -424,12 +439,15 @@ section {
             text-align: center;
             list-style: none;
 
-            > .title {
+            > a {
               display: block;
-              width: 100%;
-              height: 30px;
-              line-height: 30px;
 
+              > .title {
+                display: block;
+                width: 100%;
+                height: 30px;
+                line-height: 30px;
+              }
             }
           }
         }
@@ -452,10 +470,12 @@ section {
                 height: 40px;
                 line-height: 40px;
                 padding-left: 20px;
-                background-color: @3;
+                // background-color: @3;
 
-                &:hover {
-                  background-color: @2;
+                &:hover,
+                &.active {
+                  background-color: @5;
+                  color: @f;
                 }
               }
             }
@@ -471,10 +491,12 @@ section {
                   height: 40px;
                   line-height: 40px;
                   padding-left: 50px;
-                  background-color: #3C3C3C;
+                  background-color: @3;
 
-                  &:hover {
-                    background-color: @3;
+                  &:hover,
+                  &.active {
+                    background-color: @5;
+                    color: @f;
                   }
                 }
               }
@@ -491,7 +513,7 @@ section {
     height: 100%;
     padding-left: 200px;
     overflow-y: scroll;
-    background-color: #4B3921;
+    background-color: @6;
   }
 
   
@@ -501,21 +523,20 @@ section {
 footer {
   position: fixed;
   bottom: 0;
-  height: 40px;
-  padding: 10px;
-  background-color: @bg;
+  // height: 10px;
+  // padding: 10px;
+  // background-color: @bg;
 
   // 内容
   > .footer {
     
     // 版权
+    /*
     > .footer-copyright {
-      line-height: 40px;
+      line-height: 10px;
       text-align: right;
       text-transform: uppercase;
-      & > a {
-          color: @3;
-      }
     }
+    */
   }
 }
