@@ -5,13 +5,13 @@ const AdminConfig = {
 	site_path: location.host,
 	url_path: 'http://' + location.host +　'/admin',
 	api_path: 'http://' + location.host + '/api/admin',
-	tmp_path: 'http://' + location.host + '/np-admin/layouts/',
+	tmp_path: 'http://' + location.host + '/np-admin/layouts',
 };
 
 // 构建程序
 angular.module('NodePress', [
   'ui.router',
-  'ngStorage'
+  'ngStorage',
 ])
 
 // 过滤器模块------------------------------------------------------------------------------------------
@@ -20,21 +20,42 @@ angular.module('NodePress', [
 
 .config(['$stateProvider', '$urlRouterProvider','$httpProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider){
 
-  // 404路径，跳转至后台首页
-  $urlRouterProvider.otherwise('/admin');
-
   $stateProvider
 
+  // 总路由抽象
+  .state('admin', {
+    abstract: true,
+    url: '/admin',
+    controller: 'IndexController'
+  })
+
 	// 首页
-  .state('index', {
-    url: AdminConfig.url_path + '/',
-    templateUrl: AdminConfig.tmp_path + '/layouts/index.html',
+  .state('admin.index', {
+    url: '/index',
+    templateUrl: AdminConfig.tmp_path + '/index.html',
     controller: 'IndexController',
     data: {
       title: '控制台首页',
       url: '/index'
     }
   })
+
+  // 文章管理
+  .state('admin.article', {
+    abstract: true,
+    url: '/article',
+    controller: 'ArticleController'
+  })
+
+  // 发布文章
+  .state('admin.article.new', {
+    url: '/new',
+    templateUrl: AdminConfig.tmp_path + '/article/edit.html',
+    controller: 'ArticleController'
+  })
+
+  // 404路径，跳转至后台首页
+  $urlRouterProvider.otherwise('/admin/index');
 
   // 启用H5模式
   $locationProvider.html5Mode(true);
@@ -54,6 +75,9 @@ angular.module('NodePress', [
   $scope.adide = {};
 
   $scope.adide.menus = [{
+    name: '管理首页',
+    url: '/index'
+  }, {
     name: '文章管理',
     childrens: [{
       name: '发布文章',
@@ -68,7 +92,7 @@ angular.module('NodePress', [
       name: '文章标签',
       url: '/article/tag'
     }]
-  },{
+  }, {
     name: '页面管理',
     childrens: [{
       name: '新建页面',
@@ -77,30 +101,33 @@ angular.module('NodePress', [
       name: '所有页面',
       url: '/page/all'
     }]
-  },{
+  }, {
     name: '菜单管理',
     url: '/menus'
-  },{
+  }, {
     name: '评论管理',
     url: '/comments'
-  },{
+  }, {
     name: '个人资料',
     url: '/user'
-  },{
+  }, {
     name: '主题管理',
     url: '/themes'
-  },{
+  }, {
     name: '文件管理',
     url: '/files'
-  },{
+  }, {
     name: '扩展管理',
     url: '/plugins'
-  },{
+  }, {
     name: '代码管理',
     url: '/ide'
-  },{
+  }, {
     name: '全局设置',
     childrens: [{
+      name: '程序信息',
+      url: '/options/system'
+    },{
       name: '基本设置',
       url: '/options/base'
     },{
@@ -110,7 +137,7 @@ angular.module('NodePress', [
       name: '其他设置',
       url: '/options/others'
     }]
-  },{
+  }, {
     name: '自定义配置',
     url: '/custom'
   }];
@@ -120,11 +147,13 @@ angular.module('NodePress', [
 // 首页控制器
 .controller('IndexController', ['$scope','$http','$rootScope','$location',function($scope,$http,$rootScope,$location) {
 
+  console.log('首页逻辑');
 }])
 
 // 文章页控制器
-.controller('SingleController', ['$scope','$http','$rootScope',function($scope,$http,$rootScope) {
+.controller('ArticleController', ['$scope','$http','$rootScope',function($scope,$http,$rootScope) {
 
+  console.log('文章页控制器');
 }])
 
 // 独立页面路由
