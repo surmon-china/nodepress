@@ -86,6 +86,6 @@ routeModule.use(express.static(__dirname + '/np-client/'))
 });
 
 // 监听端口
-routeModule.listen(80, function (argument) {
+routeModule.listen(8000, function (argument) {
   console.log('NodePress启动成功！');
 });
