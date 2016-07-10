@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "author": "Surmon",
   "scripts": {
-    "start": "node index.js"
+    "start": "node --harmony index.js"
   },
   "dependencies": {
     "express": "4.x"
@@ -12,6 +12,7 @@
     "node": ">=0.10"
   },
   "devDependencies": {
+    "body-parser": "^1.15.2",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.6.0",
