@@ -1,0 +1,48 @@
+<div class="aside" ng-controller="AsideController">
+  <div class="gravatar">
+    <a href="/admin/user">
+      <img src="http://surmon.me/wp-content/uploads/2015/07/surmon.png">
+    </a>
+  </div>
+  <div class="user">
+    <p class="name">
+      <a href="/admin/user">Surmon</a>
+    </p>
+    <ul class="info">
+      <li class="item">
+        <a href="/admin/article/all">
+          <span class="title">文章</span>
+          <span class="count">90</span>
+        </a>
+      </li>
+      <li class="item">
+        <a href="/admin/comments">
+          <span class="title">评论</span>
+          <span class="count">17</span>
+        </a>
+      </li>
+      <li class="item">
+        <a href="/admin/options/system">
+          <span class="title">运行</span>
+          <span class="count">38</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="nav">
+    <ul class="nav-lists">
+      <li class="item" ng-repeat="menu in adide.menus">
+        <div class="title">
+          <a ng-href="{{ '/admin' + menu.url || '' }}" 
+             ng-class="{ true: 'active' }[children_show]" 
+             ng-click="children_show = !children_show">{{ menu.name }}</a>
+        </div>
+        <ul class="nav-childs" ng-if="!!menu.childrens" ng-show="children_show">
+          <li class="item" ng-repeat="children in menu.childrens">
+            <a ng-href="{{ '/admin' + children.url }}">{{ children.name }}</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
