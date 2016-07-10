@@ -1,0 +1,17 @@
+<div class="year-month">
+    <i class="icon icon-angle-left" ng-click="previous()"></i>
+    <span>{{month.format("MMMM , YYYY")}}</span>
+    <i class="icon icon-angle-right" ng-click="next()"></i>
+</div>
+<div class="week-names">
+    <span class="day">Sun</span>
+    <span class="day">Mon</span>
+    <span class="day">Tue</span>
+    <span class="day">Wed</span>
+    <span class="day">Thu</span>
+    <span class="day">Fri</span>
+    <span class="day">Sat</span>
+</div>
+<div class="days" ng-repeat="week in weeks">
+    <span class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }" ng-click="select(day)" ng-repeat="day in week.days">{{day.number}}</span>
+</div>
