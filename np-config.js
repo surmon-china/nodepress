@@ -1,6 +1,5 @@
 // 全局变量
-global.NP_CONFIG = {
-  api: '/api',
+exports.config = {
   mongodb: {
     host: '10.9.58.169',
     name: 'cba84ab5-f3b1-4191-935b-e720db9a1218',
@@ -11,9 +10,9 @@ global.NP_CONFIG = {
   },
   info: {
     name: 'NodePress',
-    version: '0.0.1',
-    api: '/api',
+    version: '1.0.1',
     author: 'Surmon',
     site: 'http://surmon.me',
+    installed: true
   }
 };
