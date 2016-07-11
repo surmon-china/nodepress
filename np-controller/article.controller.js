@@ -1,12 +1,87 @@
-var data = {
-  articles: [
-    {
-      "title": "Lorem ipsum",
-      "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+/*
+*
+* 文章控制器模块
+*
+*/
+
+// 模拟数据
+var articles = [{
+      title: '文章一',
+      description: '文章一描述',
+      content: '我是文章一的内容',
+      author: 'Surmon',
+      date: '2016-09-02 16:03:27',
+      comment: [],
+      slug: 'hello-world',
+      tags: ['css', 'js']
+    }, {
+      title: '文章二',
+      description: '文章二描述',
+      content: '我是文章二的内容',
+      author: 'Surmon',
+      date: '2016-09-02 16:03:27',
+      comment: [],
+      slug: 'hello-world',
+      tags: ['css', 'angular']
+    }, {
+      title: '文章三',
+      description: '文章三描述',
+      content: '我是文章三的内容',
+      author: 'Surmon',
+      date: '2016-09-02 16:03:27',
+      comment: [],
+      slug: 'hello-world',
+      tags: ['html', 'js']
+    }];
+
+// 获取文章列表
+exports.getList = function(params) {
+  let data = {
+    pagination: {
+      total: articles.length,
+      current_page: 1,
+      total_page: 1,
+      per_page: 10,
+      query: params.query
     },
-    {
-      "title": "Sed egestas",
-      "text": "Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing, commodo quis, gravida id, est. Sed lectus."
-    }
-  ]
+    data: articles
+  };
+  if (params.success) params.success(data);
+  // if (params.error) params.success(data);
+};
+
+// 批量修改文章
+exports.putList = function(params) {
+  // console.log(params);
+  console.log('Hello,World!, 删除单篇文章');
+};
+
+// 批量删除文章
+exports.delList = function(params) {
+  // console.log(params);
+  console.log('Hello,World!, 删除单篇文章');
+};
+
+// 获取单篇文章
+exports.getItem = function(params) {
+  // console.log(params);
+  console.log('Hello,World!, 获取单篇文章');
+};
+
+// 发布文章
+exports.postItem = function(params) {
+  // console.log(params);
+  console.log('Hello,World!, 添加单篇文章');
+};
+
+// 修改单篇文章
+exports.putItem = function(params) {
+  // console.log(params);
+  console.log('Hello,World!, 修改单篇文章');
+};
+
+// 删除单篇文章
+exports.delItem = function(params) {
+  // console.log(params);
+  console.log('Hello,World!, 删除单篇文章');
 };

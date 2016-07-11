@@ -1,6 +1,6 @@
 var PluginError = require('gulp-util').PluginError;
 var stream = require('../stream');
-var _ = require('lodash');
+var defaults = require('lodash/defaults');
 
 exports.failReporter = require('./fail');
 
@@ -43,7 +43,7 @@ exports.reporter = function (reporter, reporterCfg) {
   return stream(function (file, cb) {
     if (file.jshint && !file.jshint.success && !file.jshint.ignored) {
       // merge the reporter config into this files config
-      var opt = _.defaults({}, reporterCfg, file.jshint.opt);
+      var opt = defaults({}, reporterCfg, file.jshint.opt);
 
       rpt(file.jshint.results, file.jshint.data, opt);
     }

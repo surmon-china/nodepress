@@ -1,10 +1,34 @@
-gulp-less
-=========
+# gulp-less
 
-A LESS plugin for Gulp
+
+> A [LESS](http://lesscss.org/) plugin for Gulp
 
 [![NPM Version](https://img.shields.io/npm/v/gulp-less.svg)](https://www.npmjs.com/package/gulp-less)
 [![Build Status](https://img.shields.io/travis/plus3network/gulp-less.svg)](https://travis-ci.org/plus3network/gulp-less)
+
+## Information
+
+<table>
+<tr>
+<td>Package</td><td>gulp-less</td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Less plugin for gulp</td>
+</tr>
+<tr>
+<td>Node Version</td>
+<td>>= 0.10</td>
+</tr>
+<tr>
+<td>Less Version</td>
+<td>>= 2.x</td>
+</tr>
+<tr>
+<td>Gulp Version</td>
+<td>3.x</td>
+</tr>
+</table>
 
 ## Installation
 
@@ -34,47 +58,19 @@ The options you can use [can be found here](http://lesscss.org/#using-less-confi
 - `paths`: Array of paths to be used for `@import` directives
 - `plugins`: Array of less plugins ([details](#using-plugins))
 
-The `filename` option is not necessary, it's handled automatically by this plugin. The `compress` option is not supported -- if you are trying to minify your css, use [gulp-minify-css](https://github.com/jonathanepollack/gulp-minify-css). No `sourceMap` options are supported -- if you are trying to generate sourcemaps, use [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps).
-
-## Minifying CSS
-
-If you want to minify/compress your css, you can use either the [gulp-minify-css](https://github.com/jonathanepollack/gulp-minify-css) plugin for gulp, or the [less-clean-css](https://github.com/less/less-plugin-clean-css) plugin for less. Examples of both are shown below:
-
-```js
-// Using a less plugin to minify css
-var LessPluginCleanCSS = require('less-plugin-clean-css'),
-    cleancss = new LessPluginCleanCSS({ advanced: true });
-
-gulp.src('./less/**/*.less')
-  .pipe(less({
-    plugins: [cleancss]
-  }))
-  .pipe(gulp.dest('./public/css'));
-```
-
-```js
-// Using a gulp plugin to minify css
-var minifyCSS = require('gulp-minify-css');
-
-gulp.src('./less/**/*.less')
-  .pipe(less())
-  .pipe(minifyCSS())
-  .pipe(gulp.dest('./public/css'));
-```
+The `filename` option is not necessary, it's handled automatically by this plugin. The `compress` option is not supported -- if you are trying to minify your css, use a css minifier. No `sourceMap` options are supported -- if you are trying to generate sourcemaps, use [gulp-sourcemaps](https://github.com/floridoo/gulp-sourcemaps).
 
 ## Using Plugins
 
-Less now supports plugins, which can add additional functionality like minifying css as shown above. Here's an example of how to use plugins with `gulp-less` using both the [clean-css plugin](https://github.com/less/less-plugin-clean-css) and the [autoprefix plugin](https://github.com/less/less-plugin-autoprefix).
+Less now supports plugins, which can add additional functionality. Here's an example of how to use a plugin with `gulp-less`.
 
 ```js
-var LessPluginCleanCSS = require('less-plugin-clean-css'),
-    LessPluginAutoPrefix = require('less-plugin-autoprefix'),
-    cleancss = new LessPluginCleanCSS({ advanced: true }),
-    autoprefix= new LessPluginAutoPrefix({ browsers: ["last 2 versions"] });
+var LessAutoprefix = require('less-plugin-autoprefix');
+var autoprefix = new LessAutoprefix({ browsers: ['last 2 versions'] });
 
-gulp.src('./less/**/*.less')
+return gulp.src('./less/**/*.less')
   .pipe(less({
-    plugins: [autoprefix, cleancss]
+    plugins: [autoprefix]
   }))
   .pipe(gulp.dest('./public/css'));
 ```

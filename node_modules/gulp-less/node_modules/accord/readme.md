@@ -1,10 +1,10 @@
 accord
 ======
 
-[![npm](http://img.shields.io/npm/v/accord.svg?style=flat)](http://badge.fury.io/js/accord)
-[![tests](http://img.shields.io/travis/jenius/accord/master.svg?style=flat)](https://travis-ci.org/jenius/accord)
-[![coverage](http://img.shields.io/coveralls/jenius/accord/master.svg?style=flat)](https://coveralls.io/r/jenius/accord?branch=master)
-[![dependencies](http://img.shields.io/gemnasium/jenius/accord.svg?style=flat)](https://gemnasium.com/jenius/accord)
+[![npm](https://img.shields.io/npm/v/accord.svg?style=flat)](http://badge.fury.io/js/accord)
+[![tests](https://img.shields.io/travis/jenius/accord/master.svg?style=flat)](https://travis-ci.org/jenius/accord)
+[![coverage](https://img.shields.io/coveralls/jenius/accord/master.svg?style=flat)](https://coveralls.io/r/jenius/accord?branch=master)
+[![dependencies](https://img.shields.io/gemnasium/jenius/accord.svg?style=flat)](https://gemnasium.com/jenius/accord)
 
 A unified interface for compiled languages and templates in JavaScript.
 
@@ -12,7 +12,7 @@ A unified interface for compiled languages and templates in JavaScript.
 
 ### Why should you care?
 
-There are two other libraries that already attempt to provide a common compiler interface: [consolidate.js](https://github.com/visionmedia/consolidate.js) and [transformers](https://github.com/ForbesLindesay/transformers). After reviewing & using both of them, we designed accord to provide a more maintainable code base and way of writing adapters.
+There are two other libraries that already attempt to provide a common compiler interface: [consolidate.js](https://github.com/tj/consolidate.js) and [transformers](https://github.com/ForbesLindesay/transformers). After reviewing & using both of them, we designed accord to provide a more maintainable code base and way of writing adapters.
 
 Accord adapters are different because they use standard JavaScript inheritance (aka: classes in CoffeeScript), and they avoid the issues with the mixture of sync and async compilers by using promises for everything.
 
@@ -86,11 +86,11 @@ It's also important to note that accord returns an object rather than a string f
 
 - [jade](http://jade-lang.com/)
 - [eco](https://github.com/sstephenson/eco)
-- [ejs](https://github.com/visionmedia/ejs)
+- [ejs](https://github.com/tj/ejs)
 - [markdown](https://github.com/chjj/marked)
 - [mustache/hogan](https://github.com/twitter/hogan.js)
 - [handlebars](https://github.com/wycats/handlebars.js)
-- [haml](https://github.com/visionmedia/haml.js)
+- [haml](https://github.com/tj/haml.js)
 - [swig](http://paularmstrong.github.io/swig)
 - [marc](https://github.com/bredele/marc)
 - [toffee](https://github.com/malgorithms/toffee)
@@ -99,7 +99,7 @@ It's also important to note that accord returns an object rather than a string f
 #### CSS
 
 - [stylus](http://learnboost.github.io/stylus/)
-- [scss](https://github.com/andrew/node-sass)
+- [scss](https://github.com/sass/node-sass)
 - [less](https://github.com/less/less.js/)
 - [myth](https://github.com/segmentio/myth)
 - [postcss](https://github.com/postcss/postcss)
@@ -107,17 +107,18 @@ It's also important to note that accord returns an object rather than a string f
 #### JavaScript
 
 - [coffeescript](http://coffeescript.org/)
-- [dogescript](https://github.com/remixz/dogescript)
+- [dogescript](https://github.com/dogescript/dogescript)
 - [coco](https://github.com/satyr/coco)
 - [livescript](https://github.com/gkz/LiveScript)
 - [babel](https://github.com/babel/babel)
 - [jsx](https://github.com/facebook/react)
 - [cjsx](https://github.com/jsdf/coffee-react-transform)
+- [typescript](http://www.typescriptlang.org/)
 
 #### Minifiers
 
 - [minify-js](https://github.com/mishoo/UglifyJS2)
-- [minify-css](https://github.com/GoalSmashers/clean-css)
+- [minify-css](https://github.com/jakubpawlowicz/clean-css)
 - [minify-html](https://github.com/kangax/html-minifier)
 - [csso](https://github.com/css/csso)
 
