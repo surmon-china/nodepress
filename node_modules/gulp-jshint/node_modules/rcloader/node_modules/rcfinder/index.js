@@ -5,7 +5,7 @@
 module.exports = RcFinder;
 
 var path = require('path');
-var cloneDeep = require('lodash').cloneDeep;
+var cloneDeep = require('lodash.clonedeep');
 var fs = require('fs');
 
 function RcFinder(rcName, opts) {

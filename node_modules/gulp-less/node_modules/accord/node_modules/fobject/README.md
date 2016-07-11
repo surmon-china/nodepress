@@ -1,5 +1,5 @@
 # fobject
-[![Build Status](https://travis-ci.org/slang800/fobject.svg?branch=master)](https://travis-ci.org/slang800/fobject)
+[![Build Status](http://img.shields.io/travis/slang800/fobject.svg?style=flat-square)](https://travis-ci.org/slang800/fobject) [![NPM version](http://img.shields.io/npm/v/fobject.svg?style=flat-square)](https://www.npmjs.org/package/fobject) [![NPM license](http://img.shields.io/npm/l/fobject.svg?style=flat-square)](https://www.npmjs.org/package/fobject)
 
 A simple promise-based wrapper for file operations that treats files as objects.
 

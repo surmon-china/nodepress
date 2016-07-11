@@ -1,6 +1,6 @@
 # rcfinder
 
-[![Travis CI](https://travis-ci.org/spenceralger/rcfinder.svg)](https://travis-ci.org/spenceralger/rcfinder)
+[![Travis CI](https://travis-ci.org/spalger/rcfinder.svg)](https://travis-ci.org/spalger/rcfinder)
 
 **This module provides the file lookup logic for the generally more useful [rcloader](https://www.npmjs.org/package/rcloader) package**.
 

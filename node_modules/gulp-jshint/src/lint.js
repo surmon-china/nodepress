@@ -3,7 +3,11 @@ var PluginError = require('gulp-util').PluginError;
 var RcLoader = require('rcloader');
 var jshintcli = require('jshint/src/cli');
 var minimatch = require('minimatch');
-var _ = require('lodash');
+
+var assign = require('lodash/assign');
+var forEach = require('lodash/forEach');
+var isString = require('lodash/isString');
+var isFunction = require('lodash/isFunction');
 
 module.exports = function createLintFunction(userOpts) {
   userOpts = userOpts || {};
@@ -15,15 +19,15 @@ module.exports = function createLintFunction(userOpts) {
   var jshint = require('jshint').JSHINT;
 
   if (userOpts.linter) {
-    if (_.isString(userOpts.linter)) {
+    if (isString(userOpts.linter)) {
       // require throws an error if the component can't be found,
       // so we're guaranteed that `require(jshint)` will not be undefined
       jshint = require(userOpts.linter).JSHINT;
     } else { // should be a function
-      jshint = userOpts.linter; 
-    }    
+      jshint = userOpts.linter;
+    }
 
-    if (!_.isFunction(jshint)) {
+    if (!isFunction(jshint)) {
       throw new PluginError('gulp-jshint',
         'Invalid linter "'+ userOpts.linter + '". Must be a function or requirable package.'
       );
@@ -68,15 +72,15 @@ module.exports = function createLintFunction(userOpts) {
       }
 
       if (cfg.overrides) {
-        _.forEach(cfg.overrides, function (options, pattern) {
+        forEach(cfg.overrides, function (options, pattern) {
           if (!minimatch(file.path, pattern, { nocase: true, matchBase: true })) return;
 
           if (options.globals) {
-            globals = _.assign(globals, options.globals);
+            globals = assign(globals, options.globals);
             delete options.globals;
           }
 
-          _.assign(cfg, options);
+          assign(cfg, options);
         });
 
         delete cfg.overrides;
@@ -84,7 +88,7 @@ module.exports = function createLintFunction(userOpts) {
 
       // get or create file.jshint, we will write all output here
       var out = file.jshint || (file.jshint = {});
-      var str = _.isString(out.extracted) ? out.extracted : file.contents.toString('utf8');
+      var str = isString(out.extracted) ? out.extracted : file.contents.toString('utf8');
 
       out.success = jshint(str, cfg, globals);
       if (!out.success) reportErrors(file, out, cfg);

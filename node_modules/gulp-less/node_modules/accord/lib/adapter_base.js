@@ -246,7 +246,9 @@
       }
     }
     try {
-      engine.version = require(engine.__accord_path + '/package.json').version;
+      if (!engine.version) {
+        engine.version = require(engine.__accord_path + '/package.json').version;
+      }
     } catch (error1) {
       err = error1;
     }
