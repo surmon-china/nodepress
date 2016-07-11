@@ -39,7 +39,19 @@ articleApi.all.GET = function(req, res){
 
 // 发布文章
 articleApi.all.POST = function(req, res){
-  res.jsonp({ code: 1, message: '文章发布成功' });
+  articleCtrl.postItem({
+    body: req.body,
+    success: data => {
+      res.jsonp({ 
+        code: 1, 
+        message: data.message || '文章发布成功',
+        result: data
+      });
+    },
+    error: err => { 
+      res.jsonp({ code: 0, message: err.message || '文章发布失败' }) 
+    }
+  });
 };
 
 // 批量更新文章
