@@ -13,7 +13,8 @@ var articles = [{
       date: '2016-09-02 16:03:27',
       comment: [],
       slug: 'hello-world',
-      tags: ['css', 'js']
+      tags: ['css', 'js'],
+      category: [1, 2]
     }, {
       title: '文章二',
       description: '文章二描述',
@@ -22,7 +23,8 @@ var articles = [{
       date: '2016-09-02 16:03:27',
       comment: [],
       slug: 'hello-world',
-      tags: ['css', 'angular']
+      tags: ['css', 'angular'],
+      category: [1, 2]
     }, {
       title: '文章三',
       description: '文章三描述',
@@ -31,7 +33,8 @@ var articles = [{
       date: '2016-09-02 16:03:27',
       comment: [],
       slug: 'hello-world',
-      tags: ['html', 'js']
+      tags: ['html', 'js'],
+      category: [1, 2]
     }];
 
 // 获取文章列表
@@ -48,6 +51,17 @@ exports.getList = function(params) {
   };
   if (params.success) params.success(data);
   // if (params.error) params.success(data);
+};
+
+// 发布文章
+exports.postItem = function(params) {
+  let newArticle = params.body;
+  if (!newArticle.title || !newArticle.content || !newArticle.author || !newArticle.date || !newArticle.category || !newArticle.category.length ) {
+    if (params.error) params.error({ message: '缺少必要字段' });
+    return false;
+  } else {
+    if (params.success) params.success(newArticle);
+  }
 };
 
 // 批量修改文章
@@ -68,11 +82,6 @@ exports.getItem = function(params) {
   console.log('Hello,World!, 获取单篇文章');
 };
 
-// 发布文章
-exports.postItem = function(params) {
-  // console.log(params);
-  console.log('Hello,World!, 添加单篇文章');
-};
 
 // 修改单篇文章
 exports.putItem = function(params) {

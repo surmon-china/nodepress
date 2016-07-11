@@ -1,14 +1,16 @@
 
+const CONFIG   = require('../np-config');
+
 // 视图模板路由
 
 exports.index = function(req, res){
   // res.render('index');
-  res.sendfile('./np-public/np-theme/Surmon/index.html');
+  res.sendfile(CONFIG.APP.ROOT_PATH + '/np-public/np-theme/Surmon/index.html');
 };
 
 exports.admin = function(req, res){
   // res.render('index');
-  res.sendfile('./np-public/np-admin/index.html');
+  res.sendfile(CONFIG.APP.ROOT_PATH + '/np-public/np-admin/index.html');
 };
 
 /*
