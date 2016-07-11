@@ -6,6 +6,7 @@
 .project
 .metadata
 bin/
+node_modules/
 tmp/
 *.tmp
 *.bak
