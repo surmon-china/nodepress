@@ -117,5 +117,13 @@ Returns the regex used to find source map comments.
 
 Returns the regex used to find source map comments pointing to map files.
 
+### generateMapFileComment(file, [options])
+
+Returns a comment that links to an external source map via `file`.
+
+By default, the comment is formatted like: `//# sourceMappingURL=...`, which you would normally see in a JS source file.
+
+When `options.multiline == true`, the comment is formatted like: `/*# sourceMappingURL=... */`, which you would find in a CSS source file.
+
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/thlorenz/convert-source-map/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

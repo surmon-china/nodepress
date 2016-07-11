@@ -1,8 +1,10 @@
 # signal-exit
 
-[![Build Status](https://travis-ci.org/bcoe/signal-exit.png)](https://travis-ci.org/bcoe/signal-exit)
-[![Coverage Status](https://coveralls.io/repos/bcoe/signal-exit/badge.svg?branch=)](https://coveralls.io/r/bcoe/signal-exit?branch=)
+[![Build Status](https://travis-ci.org/tapjs/signal-exit.png)](https://travis-ci.org/tapjs/signal-exit)
+[![Coverage](https://coveralls.io/repos/tapjs/signal-exit/badge.svg?branch=master)](https://coveralls.io/r/tapjs/signal-exit?branch=master)
 [![NPM version](https://img.shields.io/npm/v/signal-exit.svg)](https://www.npmjs.com/package/signal-exit)
+[![Windows Tests](https://img.shields.io/appveyor/ci/bcoe/signal-exit/master.svg?label=Windows%20Tests)](https://ci.appveyor.com/project/bcoe/signal-exit)
+[![Standard Version](https://img.shields.io/badge/release-standard%20version-brightgreen.svg)](https://github.com/conventional-changelog/standard-version)
 
 When you want to fire an event no matter how a process exits:
 

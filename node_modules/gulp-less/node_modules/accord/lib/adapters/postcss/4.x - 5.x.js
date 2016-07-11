@@ -25,7 +25,7 @@
 
     PostCSS.prototype.name = 'postcss';
 
-    PostCSS.prototype.extensions = ['css'];
+    PostCSS.prototype.extensions = ['css', 'pcss', 'sss'];
 
     PostCSS.prototype.output = 'css';
 

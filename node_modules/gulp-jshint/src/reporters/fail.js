@@ -1,7 +1,7 @@
 var path = require('path');
 var stream = require('../stream');
 var PluginError = require('gulp-util').PluginError;
-var _ = require('lodash');
+var reduce = require('lodash/reduce');
 
 module.exports = function (opts) {
   opts = opts || {};
@@ -19,7 +19,7 @@ module.exports = function (opts) {
     function through(file) {
       // count error, warning and info messages
       if (file.jshint && file.jshint.results) {
-        messages = _.reduce(file.jshint.results, function(result, err) {
+        messages = reduce(file.jshint.results, function(result, err) {
           return {
             error: result.error + Number(err.error.code[0] === 'E'),
             warning: result.warning + Number(err.error.code[0] === 'W'),

@@ -30,14 +30,14 @@
       deferred = W.defer();
       if (options.sourcemap === true) {
         options.sourceMap = true;
-        options.outFile = path.basename(options.filename).replace('.scss', '.css');
+        options.outFile = options.filename.replace('.scss', '.css');
         options.omitSourceMapUrl = true;
         options.sourceMapContents = true;
       }
       options.file = options.filename;
       options.data = str;
       this.engine.render(options, function(err, res) {
-        var data;
+        var basePath, data;
         if (err) {
           return deferred.reject(err);
         }
@@ -53,8 +53,10 @@
         };
         if (res.map) {
           data.sourcemap = JSON.parse(res.map.toString('utf8'));
-          data.sourcemap.sources.pop();
-          data.sourcemap.sources.push(options.file);
+          basePath = path.dirname(options.filename);
+          data.sourcemap.sources = data.sourcemap.sources.map(function(relativePath) {
+            return path.join(basePath, relativePath);
+          });
         }
         return deferred.resolve(data);
       });

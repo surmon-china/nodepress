@@ -153,7 +153,7 @@ describe('RcFinder', function () {
 
     rcFinder.find(fixtures.root, function(err, config) {
       expect(err).to.be.an(Error);
-      expect(err.message).to.be('Unexpected token n');
+      expect(err.message).to.contain('Unexpected token n');
       expect(config).to.be(undefined);
       done();
     });
@@ -177,7 +177,7 @@ describe('RcFinder', function () {
 
     rcFinder.find(fixtures.root, function(err, config) {
       expect(err).to.be.an(Error);
-      expect(err.message).to.be('Unexpected token n');
+      expect(err.message).to.contain('Unexpected token n');
       expect(config).to.be(undefined);
       done();
     });

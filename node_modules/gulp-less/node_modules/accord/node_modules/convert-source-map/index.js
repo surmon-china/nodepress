@@ -141,6 +141,11 @@ exports.removeMapFileComments = function (src) {
   return src.replace(mapFileCommentRx, '');
 };
 
+exports.generateMapFileComment = function (file, options) {
+  var data = 'sourceMappingURL=' + file;
+  return options && options.multiline ? '/*# ' + data + ' */' : '//# ' + data;
+};
+
 Object.defineProperty(exports, 'commentRegex', {
   get: function getCommentRegex () {
     commentRx.lastIndex = 0;

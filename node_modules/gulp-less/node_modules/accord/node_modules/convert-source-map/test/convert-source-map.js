@@ -48,6 +48,12 @@ test('to multi-line map', function (t) {
   t.end();
 })
 
+test('to map file comment', function (t) {
+  t.equal(convert.generateMapFileComment('index.js.map'), '//# sourceMappingURL=index.js.map');
+  t.equal(convert.generateMapFileComment('index.css.map', { multiline: true }), '/*# sourceMappingURL=index.css.map */');
+  t.end();
+})
+
 test('from source', function (t) {
   var foo = [
       'function foo() {'
