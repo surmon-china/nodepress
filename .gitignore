@@ -2,9 +2,7 @@
 *.pydevproject
 .project
 .metadata
-bin/
-/node_modules/
-tmp/
+/node_modules、
 *.tmp
 *.bak
 *.swp
