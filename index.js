@@ -33,6 +33,9 @@ app.all('/admin/*', view.admin);
 // API
 app.get('/api/', (req, res) => {res.jsonp(CONFIG.INFO)});
 
+// 全局设置
+app.all('/api/config', api.config.all);
+
 // Article
 app.all('/api/article', api.article.all);
 app.all('/api/article/:article_id', api.article.item);
@@ -47,10 +50,6 @@ app.all('/api/tag/:tag_id', api.tag);
 // Search
 app.all('/api/search', api.search);
 app.all('/api/search/:tag_id', api.search);
-
-// Config
-app.all('/api/config', api.config);
-app.all('/api/config/:tag_id', api.config);
 
 // Category
 app.all('/api/category', api.category);
