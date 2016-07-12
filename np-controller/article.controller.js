@@ -4,53 +4,30 @@
 *
 */
 
-// 模拟数据
-var articles = [{
-      title: '文章一',
-      description: '文章一描述',
-      content: '我是文章一的内容',
-      author: 'Surmon',
-      date: '2016-09-02 16:03:27',
-      comment: [],
-      slug: 'hello-world',
-      tags: ['css', 'js'],
-      category: [1, 2]
-    }, {
-      title: '文章二',
-      description: '文章二描述',
-      content: '我是文章二的内容',
-      author: 'Surmon',
-      date: '2016-09-02 16:03:27',
-      comment: [],
-      slug: 'hello-world',
-      tags: ['css', 'angular'],
-      category: [1, 2]
-    }, {
-      title: '文章三',
-      description: '文章三描述',
-      content: '我是文章三的内容',
-      author: 'Surmon',
-      date: '2016-09-02 16:03:27',
-      comment: [],
-      slug: 'hello-world',
-      tags: ['html', 'js'],
-      category: [1, 2]
-    }];
+var Article = require('../np-model/article.model').article;
+require('express-mongoose');
 
 // 获取文章列表
 exports.getList = function(params) {
+
+  Article.find((err) => {
+    console.log('asasd');
+  })
+
   let data = {
     pagination: {
-      total: articles.length,
+      total: 10,
       current_page: 1,
       total_page: 1,
       per_page: 10,
       query: params.query
     },
-    data: articles
+    // data: Article.find()
   };
-  if (params.success) params.success(data);
-  // if (params.error) params.success(data);
+  let cb = params.success;
+  let er = params.error;
+  cb && cb(data);
+  // er && er(data);
 };
 
 // 发布文章
