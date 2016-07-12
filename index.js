@@ -4,14 +4,28 @@
 // 启动命令：node --harmony index.js
 
 // 主程序模块
-const express    = require('express');
-const bodyParser = require('body-parser');
 const http       = require('http');
+const express    = require('express');
+const mongoose   = require('mongoose');
+const bodyParser = require('body-parser');
 const exphbs     = require('express-handlebars');
-const app        = module.exports = express();
 const view       = require('./np-route/view');
 const api        = require('./np-route/api');
 const CONFIG     = require('./np-config');
+const app        = express();
+
+// 连数据库
+var mongodb = mongoose.createConnection('mongodb://localhost:27017/test');
+
+// 连接错误
+mongodb.on('error', error => {
+  console.log('数据库连接失败！');
+});
+
+// 连接成功
+mongodb.once('open', () => {
+  console.log('数据库连接成功！');
+});
 
 // 服务配置
 app.engine('.html', exphbs({extname: '.html', defaultLayout: 'main'}));
