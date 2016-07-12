@@ -10,9 +10,12 @@ mongodb.on('error', function(error) {
   console.log(error);
 });
 
+// 连接成功
 mongodb.once('open', function() {
 
   console.log('mongoose 连接成功!');
+
+  // console.log(mongodb.collection('article'));
 
   // 定义一个集合/表
   var articleSchema = new Schema({
@@ -29,7 +32,7 @@ mongodb.once('open', function() {
     }
   });
 
-  // console.log(configSchema);
+  // console.log(articleSchema);
 
   var Article = mongoose.model('article', articleSchema);
 
@@ -42,14 +45,22 @@ mongodb.once('open', function() {
   // console.log(Article);
   // console.log(Article.findOne);
 
-  Article.find({}, function (err, data) {
-    console.log(data);
-  });
+  // Article.find({}, function (err, data) {
+  //   console.log(data);
+  // });
 
-  // console.log(article);
+  // console.log(Article);
+  // console.log('保存数据');
 
-  // article.save();
+  var find = function () {
+    console.log('执行了');
+    Article.find({}).exec(function (err, todos){
+      err && console.log('find failed');
+      err || console.log('find success');
+    });
+  };
 
+  find();
 
   // Article.find(function (err, configs) {
   //   if (err) return console.error(err);
@@ -66,7 +77,6 @@ mongodb.once('open', function() {
   //   if(err)console.log(err);
   //   else console.log(doc.name + ' saved');
   // });
-
 });
 
 exports.mongodb = mongodb;
