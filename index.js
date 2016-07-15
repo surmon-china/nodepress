@@ -6,32 +6,22 @@
 // 主程序模块
 const http       = require('http');
 const express    = require('express');
-const mongoose   = require('mongoose');
 const bodyParser = require('body-parser');
 const exphbs     = require('express-handlebars');
 const view       = require('./np-route/view');
 const api        = require('./np-route/api');
 const CONFIG     = require('./np-config');
+const mongodb    = require('./np-mongo');
 const app        = express();
 
-// 连数据库
-var mongodb = mongoose.createConnection('mongodb://localhost:27017/test');
-
-// 连接错误
-mongodb.on('error', error => {
-  console.log('数据库连接失败！');
-});
-
-// 连接成功
-mongodb.once('open', () => {
-  console.log('数据库连接成功！');
-});
+// 连接数据库
+mongodb();
 
 // 服务配置
 app.engine('.html', exphbs({extname: '.html', defaultLayout: 'main'}));
 app.set('view engine', '.html');
 app.set('views', 'np-public/np-spider/');
-app.set('port', process.env.PORT || 8000);
+app.set('port', 8000);
 app.use(bodyParser());
 
 // 使用中间件创建静态文件访问
@@ -45,10 +35,10 @@ app.get('/admin', view.admin);
 app.all('/admin/*', view.admin);
 
 // API
-app.get('/api/', (req, res) => {res.jsonp(CONFIG.INFO)});
+app.get('/api/', (req, res) => {res.jsonp(CONFIG.APP)});
 
 // 全局设置
-app.all('/api/config', api.config.all);
+app.all('/api/option', api.option.all);
 
 // Article
 app.all('/api/article', api.article.all);

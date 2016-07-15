@@ -4,13 +4,13 @@
 *
 */
 
-// 依赖文章控制器
-const CONFIG     = require('../../np-config');
-var articleCtrl = require(CONFIG.APP.ROOT_PATH + '/np-controller/article.controller');
+// 引用文章控制器处理
+var articleCtrl = require('../../np-controller/article.controller');
 
-var articleApi = {};
-articleApi.all = {};
-articleApi.item = {};
+var articleApi = {
+  all: {},
+  item: {}
+};
 
 // 类型识别
 articleApi.method = (req, res, type) => {
@@ -32,7 +32,7 @@ articleApi.all.GET = function(req, res){
       });
     },
     error: err => { 
-      res.jsonp({ code: 0, message: '文章列表获取失败' }) 
+      res.jsonp({ code: 0, message: err.message || '文章列表获取失败' }) 
     }
   });
 };
@@ -49,7 +49,7 @@ articleApi.all.POST = function(req, res){
       });
     },
     error: err => { 
-      res.jsonp({ code: 0, message: err.message || '文章发布失败' }) 
+      res.jsonp({ code: 0, message: err.message || '文章发布失败', debug: err.debug || false }) 
     }
   });
 };
