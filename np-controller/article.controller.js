@@ -4,41 +4,51 @@
 *
 */
 
-var Article = require('../np-model/article.model').article;
-require('express-mongoose');
+var Article = require('../np-model/article.model');
 
 // 获取文章列表
-exports.getList = function(params) {
+exports.getList = params => {
 
-  Article.find((err) => {
-    console.log('asasd');
+  let success = params.success;
+  let error   = params.error;
+
+  Article.find((err, articles) => {
+    err && error({ message: '数据库错误' });
+    if (!err) {
+      let data = {
+        pagination: {
+          total: 10,
+          current_page: 1,
+          total_page: 1,
+          per_page: 10,
+          query: params.query
+        },
+        data: articles
+      };
+      success(data);
+    }
   })
-
-  let data = {
-    pagination: {
-      total: 10,
-      current_page: 1,
-      total_page: 1,
-      per_page: 10,
-      query: params.query
-    },
-    // data: Article.find()
-  };
-  let cb = params.success;
-  let er = params.error;
-  cb && cb(data);
-  // er && er(data);
 };
 
 // 发布文章
 exports.postItem = function(params) {
-  let newArticle = params.body;
-  if (!newArticle.title || !newArticle.content || !newArticle.author || !newArticle.date || !newArticle.category || !newArticle.category.length ) {
-    if (params.error) params.error({ message: '缺少必要字段' });
-    return false;
-  } else {
-    if (params.success) params.success(newArticle);
-  }
+
+  let article = params.body;
+  // let is_valid = article.title && article.content;
+  let is_valid = article.title && article.content && article.author && article.date && article.category && article.category.length;
+
+  let error = params.error;
+  let success = params.success;
+
+  if (!is_valid) return error({ message: '缺少必要字段' });
+  if (is_valid) {
+
+    let _article = new Article(article);
+    _article.save((err, art) => {
+      err && error({ message: '文章发布失败', debug: err });
+      err || success(art);
+    });
+  };  
 };
 
 // 批量修改文章

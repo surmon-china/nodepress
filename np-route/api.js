@@ -1,8 +1,8 @@
 
 // API分发
-var configApi  = require('./apis/config.api');
+var optionApi  = require('./apis/option.api');
 var articleApi = require('./apis/article.api');
 
 // 接口暴露
-exports.config  = configApi;
+exports.option  = optionApi;
 exports.article = articleApi;
