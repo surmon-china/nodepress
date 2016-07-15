@@ -5,13 +5,12 @@
 */
 
 // 依赖配置控制器
-const CONFIG   = require('../../np-config');
-var configCtrl = require(CONFIG.APP.ROOT_PATH + '/np-controller/config.controller');
-var configApi  = {};
+var optionCtrl = require('../../np-controller/option.controller');
+var optionApi  = {};
 
 // 获取配置数据
-configApi.GET = (req, res) => {
-  configCtrl.get({
+optionApi.GET = (req, res) => {
+  optionCtrl.get({
     query: req.query,
     success: data => {
       res.jsonp({ 
@@ -27,17 +26,17 @@ configApi.GET = (req, res) => {
 };
 
 // 修改配置数据
-configApi.PUT = (req, res) => {
+optionApi.PUT = (req, res) => {
   res.jsonp({ code: 1, message: '全局配置更新成功' });
 };
 
 // 类型识别
-configApi.method = (req, res) => {
+optionApi.method = (req, res) => {
   let method = req.method;
-  let support = !!configApi[method];
-  if (support) configApi[method](req, res);
+  let support = !!optionApi[method];
+  if (support) optionApi[method](req, res);
   if (!support) res.jsonp({ code: 0, message: '请求不支持！' });
 };
 
 // 模块暴露
-exports.all = configApi.method;
+exports.all = optionApi.method;
