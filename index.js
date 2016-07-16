@@ -32,17 +32,19 @@ app.get('/', view.index);
 
 // 后台
 app.get('/admin', view.admin);
-app.all('/admin/*', view.admin);
-
-// API
-app.get('/api/', (req, res) => {res.jsonp(CONFIG.APP)});
+app.all('/admin/*', view.admin);      
+app.get('/api/', (req, res) => {res.jsonp(CONFIG.INFO)});
 
 // 全局设置
-app.all('/api/option', api.option.all);
+app.all('/api/option', api.option);
 
 // Article
-app.all('/api/article', api.article.all);
+app.all('/api/article', api.article.list);
 app.all('/api/article/:article_id', api.article.item);
+
+// Category
+app.all('/api/category', api.category.list);
+app.all('/api/category/:category_id', api.category.item);
 
 /*
 
@@ -54,10 +56,6 @@ app.all('/api/tag/:tag_id', api.tag);
 // Search
 app.all('/api/search', api.search);
 app.all('/api/search/:tag_id', api.search);
-
-// Category
-app.all('/api/category', api.category);
-app.all('/api/category/:category_id', api.category);
 
 // Page
 app.all('/api/page', api.page);

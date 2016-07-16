@@ -28,7 +28,7 @@ var articleSchema = new mongoose.Schema({
   tags: [{ name: String, slug: String }],
 
   // 文章分类
-  category: [{ name: String, slug: String }],
+  category: [{ name: String, slug: String, description: String }],
 
   // 评论
   comments: [{ 

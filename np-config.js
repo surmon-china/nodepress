@@ -5,11 +5,15 @@ exports.MONGODB = {
   password: 'DB_password'
 };
 
-// 全局信息
-exports.APP = {
+exports.INFO = {
   name: 'NodePress',
   version: '1.0.1',
   author: 'Surmon',
   site: 'http://surmon.me',
   installed: true
+};
+
+// 全局信息
+exports.APP = {
+  ROOT_PATH: __dirname
 };

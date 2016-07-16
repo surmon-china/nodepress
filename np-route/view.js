@@ -1,21 +1,13 @@
 
+// 引入配置
 const CONFIG   = require('../np-config');
 
-// 视图模板路由
-
-exports.index = function(req, res){
-  // res.render('index');
+// 视图路由
+exports.index = (req, res) => {
   res.sendfile(CONFIG.APP.ROOT_PATH + '/np-public/np-theme/Surmon/index.html');
 };
 
-exports.admin = function(req, res){
-  // res.render('index');
+// API路由
+exports.admin = (req, res) => {
   res.sendfile(CONFIG.APP.ROOT_PATH + '/np-public/np-admin/index.html');
 };
-
-/*
-exports.partials = function (req, res) {
-  var name = req.params.name;
-  res.render('partials/' + name);
-};
-*/

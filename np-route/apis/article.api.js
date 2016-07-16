@@ -1,16 +1,15 @@
 /*
 *
-* 文章API模块
+* 文章API
 *
 */
 
 // 引用文章控制器处理
 var articleCtrl = require('../../np-controller/article.controller');
-
-var articleApi = {
-  all: {},
-  item: {}
-};
+var articleApi;
+articleApi = {};
+articleApi.list = {};
+articleApi.item = {};
 
 // 类型识别
 articleApi.method = (req, res, type) => {
@@ -21,7 +20,7 @@ articleApi.method = (req, res, type) => {
 };
 
 // 获取文章列表
-articleApi.all.GET = function(req, res){
+articleApi.list.GET = function(req, res){
   articleCtrl.getList({
     query: req.query,
     success: data => {
@@ -38,7 +37,7 @@ articleApi.all.GET = function(req, res){
 };
 
 // 发布文章
-articleApi.all.POST = function(req, res){
+articleApi.list.POST = function(req, res){
   articleCtrl.postItem({
     body: req.body,
     success: data => {
@@ -49,18 +48,18 @@ articleApi.all.POST = function(req, res){
       });
     },
     error: err => { 
-      res.jsonp({ code: 0, message: err.message || '文章发布失败', debug: err.debug || false }) 
+      res.jsonp({ code: 0, message: err.message || '文章发布失败', debug: err.debug || null }) 
     }
   });
 };
 
 // 批量更新文章
-articleApi.all.PUT = function(req, res){
+articleApi.list.PUT = function(req, res){
   res.jsonp({ code: 1, message: '文章批量更新成功' });
 };
 
 // 批量删除文章
-articleApi.all.DELETE = function(req, res){
+articleApi.list.DELETE = function(req, res){
   res.jsonp({ code: 1, message: '文章批量删除成功' });
 };
 
@@ -80,5 +79,5 @@ articleApi.item.DELETE = function(req, res){
 };
 
 // 模块暴露
-exports.all = (req, res) => { articleApi.method(req, res, 'all') };
+exports.list = (req, res) => { articleApi.method(req, res, 'list') };
 exports.item = (req, res) => { articleApi.method(req, res, 'item') };

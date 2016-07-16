@@ -34,8 +34,11 @@ exports.getList = params => {
 exports.postItem = function(params) {
 
   let article = params.body;
-  // let is_valid = article.title && article.content;
-  let is_valid = article.title && article.content && article.author && article.date && article.category && article.category.length;
+  let is_valid = article.title && article.content;
+  // let is_valid = article.title && article.content && article.author && article.date && article.category && article.category.length;
+  // article.category = [new DBRef('categories', ObjectId('5789e08c8eba78f41f851890'))];
+  let category = new DBRef('categories', ObjectId('5789e08c8eba78f41f851890'));
+  console.log(category);
 
   let error = params.error;
   let success = params.success;
