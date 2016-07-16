@@ -1,6 +1,6 @@
 /*
 *
-* 全局设置API模块
+* 全局设置API
 *
 */
 
@@ -39,4 +39,4 @@ optionApi.method = (req, res) => {
 };
 
 // 模块暴露
-exports.all = optionApi.method;
+module.exports = optionApi.method;
