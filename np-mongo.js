@@ -4,18 +4,18 @@ var config   = require('./np-config');
 var mongodb  = mongoose.connection;
 
 // 数据库
-var db = function () {
+var db = () => {
 
   // 连接数据库
   mongoose.connect(config.MONGODB.uri);
 
   // 连接错误
-  mongodb.on('error', function(error) {
+  mongodb.on('error', error => {
     console.log(error);
   });
 
   // 连接成功
-  mongodb.once('open', function() {
+  mongodb.once('open', () => {
     console.log('mongoose 连接成功!');
   });
 

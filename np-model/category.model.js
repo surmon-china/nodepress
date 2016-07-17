@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose.connection);
 
 // 分类集合模型
 var categorySchema = new mongoose.Schema({
@@ -18,6 +20,19 @@ var categorySchema = new mongoose.Schema({
   // 自定义扩展
   extend: [{ name: String, value: String }]
 
+});
+
+//自增ID配置
+categorySchema.plugin(autoIncrement.plugin, {
+  model: 'Category',
+  field: 'id',
+  startAt: 1,
+  incrementBy: 1
+});
+categorySchema.pre('save', next => {
+  if (this.isNew) this.create_time = this.update_time = Date.now();
+  if (!this.isNew) this.update_time = Date.now();
+  next();
 });
 
 // 分类模型

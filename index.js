@@ -46,20 +46,19 @@ app.all('/api/article/:article_id', api.article.item);
 app.all('/api/category', api.category.list);
 app.all('/api/category/:category_id', api.category.item);
 
-/*
-
 // Tag
-app.all('/api/tag', api.tag);
-app.all('/api/tag/batch', api.tag);
-app.all('/api/tag/:tag_id', api.tag);
+app.all('/api/tag', api.tag.list);
+app.all('/api/tag/:tag_id', api.tag.item);
+
+// Page
+app.all('/api/page', api.page.list);
+app.all('/api/page/:page_id', api.page.item);
+
+/*
 
 // Search
 app.all('/api/search', api.search);
 app.all('/api/search/:tag_id', api.search);
-
-// Page
-app.all('/api/page', api.page);
-app.all('/api/page/:page_id', api.page);
 
 */
 

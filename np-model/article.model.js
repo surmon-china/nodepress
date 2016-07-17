@@ -1,10 +1,12 @@
 var mongoose = require('mongoose');
+var autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose.connection);
 
 // 文章集合模型
 var articleSchema = new mongoose.Schema({
 
   // 文章标题
-  title:  String,
+  title:  { type: String, require: true },
 
   // author: String,
   content: String,
@@ -25,10 +27,10 @@ var articleSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
 
   // 文章标签
-  tags: [{ name: String, slug: String }],
+  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
 
   // 文章分类
-  category: [{ name: String, slug: String, description: String }],
+  category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
 
   // 评论
   comments: [{ 
@@ -53,6 +55,19 @@ var articleSchema = new mongoose.Schema({
 
   // 自定义扩展
   extend: {}
+});
+
+//自增ID配置
+articleSchema.plugin(autoIncrement.plugin, {
+  model: 'Article',
+  field: 'id',
+  startAt: 1,
+  incrementBy: 1
+});
+articleSchema.pre('save', next => {
+  if (this.isNew) this.create_time = this.update_time = Date.now();
+  if (!this.isNew) this.update_time = Date.now();
+  next();
 });
 
 // 文章模型
