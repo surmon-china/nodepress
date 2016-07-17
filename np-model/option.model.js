@@ -3,23 +3,47 @@ var mongoose = require('mongoose');
 // 设置集合模型
 var optionSchema = new mongoose.Schema({
 
+  // 设置名称
+  title:  { type: String, require: true },
+
+  // 设置描述
+  description: String,
+
+  // 设置值
+  status: { type: mongoose.Schema.Types.Mixed, require: true }
+
+  /*
   title: {
     name: '网站标题',
     description: '网站的标题',
     content: 'Nodepress'
   },
+
   description: {
     name: '网站描述',
     description: '网站的描述',
     content: '基于MEAN结构的博客程序'
   },
+
   static: {
     name: '统计代码',
     description: '网站的统计代码',
     content: '<script>console.log("static");</script>'
   },
 
-  /*
+  网站菜单：
+
+    菜单是一个数组，可以自定义所应用的位置
+
+  user: {
+    name: 
+    password:
+    nicename
+    email:
+    url:
+    registered:
+  }
+
   password: '用户密码',
   siteurl: 'http://surmon.me/app',
   home: 'http://surmon.me/app',
