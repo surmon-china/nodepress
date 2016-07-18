@@ -1,12 +1,12 @@
 /*
 *
-* 分类分类控制器
+* 标签控制器
 *
 */
 
 var Tag = require('../np-model/tag.model');
 
-// 获取分类列表
+// 获取标签列表
 exports.getList = params => {
 
   let success = params.success;
@@ -30,7 +30,7 @@ exports.getList = params => {
   })
 };
 
-// 发布分类
+// 发布标签
 exports.postItem = params => {
 
   let tag = params.body;
@@ -44,39 +44,39 @@ exports.postItem = params => {
 
     let _tag = new Tag(tag);
     _tag.save((err, art) => {
-      err && error({ message: '分类发布失败', debug: err });
+      err && error({ message: '标签发布失败', debug: err });
       err || success(art);
     });
   };  
 };
 
-// 批量修改分类
+// 批量修改标签
 exports.putList = params => {
   // console.log(params);
-  console.log('Hello,World!, 删除单个分类');
+  console.log('Hello,World!, 删除单个标签');
 };
 
-// 批量删除分类
+// 批量删除标签
 exports.delList = params => {
   // console.log(params);
-  console.log('Hello,World!, 删除单个分类');
+  console.log('Hello,World!, 删除单个标签');
 };
 
-// 获取单个分类
+// 获取单个标签
 exports.getItem = params => {
   // console.log(params);
-  console.log('Hello,World!, 获取单个分类');
+  console.log('Hello,World!, 获取单个标签');
 };
 
 
-// 修改单个分类
+// 修改单个标签
 exports.putItem = params => {
   // console.log(params);
-  console.log('Hello,World!, 修改单个分类');
+  console.log('Hello,World!, 修改单个标签');
 };
 
-// 删除单个分类
+// 删除单个标签
 exports.delItem = params => {
   // console.log(params);
-  console.log('Hello,World!, 删除单个分类');
+  console.log('Hello,World!, 删除单个标签');
 };

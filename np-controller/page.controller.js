@@ -37,7 +37,6 @@ exports.postItem = function(params) {
   let page = params.body;
   // let is_valid = page.title && page.content;
   // let is_valid = page.title && page.content && page.author && page.date && page.category && page.category.length;
-  page.category = ['5789e08c8eba78f41f851890'];
   console.log(page);
 
   let error = params.error;

@@ -15,7 +15,7 @@ var tagSchema = new mongoose.Schema({
   description: String,
 
   // 包含文章数量
-  count: Number
+  count: Number,
 
   // 自定义扩展
   extend: [{ name: String, value: String }]
@@ -23,13 +23,13 @@ var tagSchema = new mongoose.Schema({
 });
 
 //自增ID配置
-articleSchema.plugin(autoIncrement.plugin, {
+tagSchema.plugin(autoIncrement.plugin, {
   model: 'Tag',
   field: 'id',
   startAt: 1,
   incrementBy: 1
 });
-articleSchema.pre('save', next => {
+tagSchema.pre('save', next => {
   if (this.isNew) this.create_time = this.update_time = Date.now();
   if (!this.isNew) this.update_time = Date.now();
   next();
