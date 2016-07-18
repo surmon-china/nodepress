@@ -4,13 +4,13 @@ var mongoose = require('mongoose');
 var optionSchema = new mongoose.Schema({
 
   // 设置名称
-  title:  { type: String, require: true },
+  title:  { type: String, required: true },
 
   // 设置描述
   description: String,
 
   // 设置值
-  status: { type: mongoose.Schema.Types.Mixed, require: true }
+  status: { type: mongoose.Schema.Types.Mixed, required: true }
 
   /*
   title: {

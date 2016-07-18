@@ -9,57 +9,99 @@ var Category = require('../np-model/category.model');
 // 获取分类列表
 exports.getList = params => {
 
-  let success = params.success;
+  // 回调
   let error   = params.error;
+  let success = params.success;
 
-  Category.find((err, categorys) => {
+  // 翻页参数
+  let pagination  = {
+    page: Number(params.query.page || 1),
+    per_page: Number(params.query.per_page || 10),
+  };
+
+  // 请求条件
+  let query = {};
+
+  // 过滤条件
+  let option = {
+    sort: { _id: 1 },
+    page: pagination.page, 
+    limit: pagination.per_page,
+    // select:   'title date author',
+    // populate: 'children',
+    // lean:     true,
+    // offset:   20,
+  };
+
+  // 请求
+  Category.paginate(query, option, (err, categories) => {
+    if(err) return error({ message: '数据库错误' });
+    let data = {
+      pagination: {
+        total: categories.total,
+        current_page: pagination.page,
+        total_page: categories.pages,
+        per_page: pagination.per_page
+      },
+      data: categories.docs
+    };
+    success(data);
+  })
+
+  /*
+  Category.find({})
+  .sort({ '_id': 1 })
+  .skip((pagination.page - 1) * pagination.per_page)
+  .limit(pagination.per_page)
+  .exec((err, categorys) => {
     err && error({ message: '数据库错误' });
     if (!err) {
       let data = {
         pagination: {
           total: 10,
-          current_page: 1,
+          current_page: pagination.page,
           total_page: 1,
-          per_page: 10,
-          query: params.query
+          per_page: pagination.per_page
         },
         data: categorys
       };
       success(data);
     }
   })
+  */
+  
 };
 
 // 发布分类
 exports.postItem = params => {
-
+  let error    = params.error;
+  let success  = params.success;
   let category = params.body;
-  // let is_valid = !!category.name && !!category.slug;
-
-  let error   = params.error;
-  let success = params.success;
-
-  // if (!is_valid) return error({ message: '缺少必要字段' });
-  // if (is_valid) {
-
-    let _category = new Category(category);
-    _category.save((err, art) => {
-      err && error({ message: '分类发布失败', debug: err });
-      err || success(art);
-    });
-  // };
-};
-
-// 批量修改分类
-exports.putList = params => {
-  // console.log(params);
-  console.log('Hello,World!, 删除单个分类');
+  let _category = new Category(category);
+  _category.save((err, data) => {
+    err && error({ message: '分类发布失败', debug: err });
+    err || success(data);
+  });
 };
 
 // 批量删除分类
 exports.delList = params => {
-  // console.log(params);
+  let error    = params.error;
+  let success  = params.success;
+  let categories = params.body.categories;
+
+  console.log(categories);
+
+  return false;
+
+  let _category = new Category(category);
+
   console.log('Hello,World!, 删除单个分类');
+
+  _category.save((err, data) => {
+    err && error({ message: '分类发布失败', debug: err });
+    err || success(data);
+  });
 };
 
 // 获取单个分类

@@ -47,20 +47,27 @@ categoryApi.list.POST = (req, res) => {
         result: data
       });
     },
-    error: err => { 
+    error: err => {
       res.jsonp({ code: 0, message: err.message || '分类发布失败', debug: err.debug || null }) 
     }
   });
 };
 
-// 批量更新分类
-categoryApi.list.PUT = (req, res) => {
-  res.jsonp({ code: 1, message: '分类批量更新成功' });
-};
-
 // 批量删除分类
 categoryApi.list.DELETE = (req, res) => {
-  res.jsonp({ code: 1, message: '分类批量删除成功' });
+  categoryCtrl.delList({
+    body: req.body,
+    success: data => {
+      res.jsonp({ 
+        code: 1, 
+        message: data.message || '分类批量删除成功',
+        result: data
+      });
+    },
+    error: err => {
+      res.jsonp({ code: 0, message: err.message || '分类批量删除失败', debug: err.debug || null }) 
+    }
+  });
 };
 
 // 获取单个分类
