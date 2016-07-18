@@ -8,6 +8,7 @@ const http       = require('http');
 const express    = require('express');
 const bodyParser = require('body-parser');
 const exphbs     = require('express-handlebars');
+const mongoosePaginate = require('mongoose-paginate');
 const view       = require('./np-route/view');
 const api        = require('./np-route/api');
 const CONFIG     = require('./np-config');
@@ -16,6 +17,11 @@ const app        = express();
 
 // 连接数据库
 mongodb();
+
+// 翻页全局配置
+mongoosePaginate.paginate.options = {
+  limit: 10
+};
 
 // 服务配置
 app.engine('.html', exphbs({extname: '.html', defaultLayout: 'main'}));

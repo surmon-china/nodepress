@@ -6,10 +6,10 @@ autoIncrement.initialize(mongoose.connection);
 var articleSchema = new mongoose.Schema({
 
   // 文章标题
-  title:  { type: String, require: true },
+  title:  { type: String, required: true },
 
   // author: String,
-  content: String,
+  content: { type: String, required: true },
 
   // 文章描述
   description: String,

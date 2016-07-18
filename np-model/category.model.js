@@ -1,28 +1,33 @@
 var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
+var mongoosePaginate = require('mongoose-paginate');
 autoIncrement.initialize(mongoose.connection);
 
 // 分类集合模型
 var categorySchema = new mongoose.Schema({
 
   // 分类名称
-  name: { type: String, require: true },
+  name: { type: String, required: true },
 
   // 别名
-  slug: { type: String, require: true },
+  slug: { type: String, required: true },
 
   // 分类描述
   description: String,
 
   // 父分类ID
-  pid: { type: Number, default: 0, require: true },
+  pid: { type: Number, default: 0, required: true },
+
+  // 创建时间
+  created_at: { type: Date, default: Date.now },
 
   // 自定义扩展
   extend: [{ name: String, value: String }]
 
 });
 
-//自增ID配置
+// 翻页 + 自增ID
+categorySchema.plugin(mongoosePaginate);
 categorySchema.plugin(autoIncrement.plugin, {
   model: 'Category',
   field: 'id',

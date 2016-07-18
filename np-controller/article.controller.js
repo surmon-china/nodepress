@@ -35,23 +35,14 @@ exports.getList = params => {
 exports.postItem = function(params) {
 
   let article = params.body;
-  // let is_valid = article.title && article.content;
-  // let is_valid = article.title && article.content && article.author && article.date && article.category && article.category.length;
   article.category = ['5789e08c8eba78f41f851890'];
-  console.log(article);
-
   let error = params.error;
   let success = params.success;
-
-  // if (!is_valid) return error({ message: '缺少必要字段' });
-  // if (is_valid) {
-
-    let _article = new Article(article);
-    _article.save((err, data) => {
-      err && error({ message: '文章发布失败', debug: err });
-      err || success(data);
-    });
-  // };
+  let _article = new Article(article);
+  _article.save((err, data) => {
+    err && error({ message: '文章发布失败', debug: err });
+    err || success(data);
+  });
 };
 
 // 批量修改文章

@@ -14,7 +14,7 @@ var pageSchema = new mongoose.Schema({
   // 页面描述
   description: String,
 
-  content: { type: String, require: true },
+  content: { type: String, required: true },
 
   // 自定义扩展
   extend: [{ name: String, value: String }]

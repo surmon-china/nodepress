@@ -1,4 +1,4 @@
-## NodePress V0.0.1
+## NodePress V1.0.1
 
 Author By Surmon Surmon@foxmail.com
 
