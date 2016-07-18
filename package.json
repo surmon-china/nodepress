@@ -26,6 +26,7 @@
     "gulp-uglify": "^1.5.2",
     "gulp-util": "^3.0.7",
     "mongoose": "^4.5.4",
-    "mongoose-auto-increment": "^5.0.1"
+    "mongoose-auto-increment": "^5.0.1",
+    "mongoose-paginate": "^5.0.0"
   }
 }

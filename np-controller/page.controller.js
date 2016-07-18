@@ -35,22 +35,13 @@ exports.getList = params => {
 exports.postItem = function(params) {
 
   let page = params.body;
-  // let is_valid = page.title && page.content;
-  // let is_valid = page.title && page.content && page.author && page.date && page.category && page.category.length;
-  console.log(page);
-
   let error = params.error;
   let success = params.success;
-
-  // if (!is_valid) return error({ message: '缺少必要字段' });
-  // if (is_valid) {
-
-    let _page = new Page(page);
-    _page.save((err, data) => {
-      err && error({ message: '页面发布失败', debug: err });
-      err || success(data);
-    });
-  // };
+  let _page = new Page(page);
+  _page.save((err, data) => {
+    err && error({ message: '页面发布失败', debug: err });
+    err || success(data);
+  });
 };
 
 // 批量修改页面

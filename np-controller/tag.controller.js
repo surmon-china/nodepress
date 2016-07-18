@@ -34,20 +34,13 @@ exports.getList = params => {
 exports.postItem = params => {
 
   let tag = params.body;
-  let is_valid = !!tag.name && !!tag.slug;
-
   let error   = params.error;
   let success = params.success;
-
-  if (!is_valid) return error({ message: '缺少必要字段' });
-  if (is_valid) {
-
-    let _tag = new Tag(tag);
-    _tag.save((err, art) => {
-      err && error({ message: '标签发布失败', debug: err });
-      err || success(art);
-    });
-  };  
+  let _tag = new Tag(tag);
+  _tag.save((err, art) => {
+    err && error({ message: '标签发布失败', debug: err });
+    err || success(art);
+  });
 };
 
 // 批量修改标签
