@@ -6,16 +6,16 @@ autoIncrement.initialize(mongoose.connection);
 var categorySchema = new mongoose.Schema({
 
   // 分类名称
-  name:  String,
+  name: { type: String, require: true },
 
   // 别名
-  slug: String,
+  slug: { type: String, require: true },
 
   // 分类描述
   description: String,
 
-  // 子分类
-  children: [{ name: String, slug: String, description: String }],
+  // 父分类ID
+  pid: { type: Number, default: 0, require: true },
 
   // 自定义扩展
   extend: [{ name: String, value: String }]
