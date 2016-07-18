@@ -34,20 +34,20 @@ exports.getList = params => {
 exports.postItem = params => {
 
   let category = params.body;
-  let is_valid = !!category.name && !!category.slug;
+  // let is_valid = !!category.name && !!category.slug;
 
   let error   = params.error;
   let success = params.success;
 
-  if (!is_valid) return error({ message: '缺少必要字段' });
-  if (is_valid) {
+  // if (!is_valid) return error({ message: '缺少必要字段' });
+  // if (is_valid) {
 
     let _category = new Category(category);
     _category.save((err, art) => {
       err && error({ message: '分类发布失败', debug: err });
       err || success(art);
     });
-  };  
+  // };
 };
 
 // 批量修改分类

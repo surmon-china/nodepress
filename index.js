@@ -32,7 +32,9 @@ app.get('/', view.index);
 
 // 后台
 app.get('/admin', view.admin);
-app.all('/admin/*', view.admin);      
+app.all('/admin/*', view.admin);
+
+// Api
 app.get('/api/', (req, res) => {res.jsonp(CONFIG.INFO)});
 
 // 全局设置
