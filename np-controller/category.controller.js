@@ -26,16 +26,12 @@ exports.getList = params => {
   let option = {
     sort: { _id: 1 },
     page: pagination.page, 
-    limit: pagination.per_page,
-    // select:   'title date author',
-    // populate: 'children',
-    // lean:     true,
-    // offset:   20,
+    limit: pagination.per_page
   };
 
   // 请求
   Category.paginate(query, option, (err, categories) => {
-    if(err) return error({ message: '数据库错误' });
+    if(err) return error({ debug: err });
     let data = {
       pagination: {
         total: categories.total,
@@ -46,30 +42,7 @@ exports.getList = params => {
       data: categories.docs
     };
     success(data);
-  })
-
-  /*
-  Category.find({})
-  .sort({ '_id': 1 })
-  .skip((pagination.page - 1) * pagination.per_page)
-  .limit(pagination.per_page)
-  .exec((err, categorys) => {
-    err && error({ message: '数据库错误' });
-    if (!err) {
-      let data = {
-        pagination: {
-          total: 10,
-          current_page: pagination.page,
-          total_page: 1,
-          per_page: pagination.per_page
-        },
-        data: categorys
-      };
-      success(data);
-    }
-  })
-  */
-  
+  });
 };
 
 // 发布分类
@@ -79,7 +52,7 @@ exports.postItem = params => {
   let category = params.body;
   let _category = new Category(category);
   _category.save((err, data) => {
-    err && error({ message: '分类发布失败', debug: err });
+    err && error({ debug: err });
     err || success(data);
   });
 };
@@ -88,37 +61,52 @@ exports.postItem = params => {
 exports.delList = params => {
   let error    = params.error;
   let success  = params.success;
-  let categories = params.body.categories;
-
-  console.log(categories);
-
-  return false;
-
-  let _category = new Category(category);
-
-  console.log('Hello,World!, 删除单个分类');
-
-  _category.save((err, data) => {
-    err && error({ message: '分类发布失败', debug: err });
+  let categories = params.body.categories.replace(/\s/g,'').split(',');
+  Category.remove({ '_id': { $in: categories } }, (err, data) => {
+    err && error({ debug: err });
     err || success(data);
-  });
+  }); 
 };
 
-// 获取单个分类
+// 获取单个分类(以及父子分类)
 exports.getItem = params => {
-  // console.log(params);
-  console.log('Hello,World!, 获取单个分类');
+  let error   = params.error;
+  let success = params.success;
+  let cate_id = params.params.category_id;
+  let categories = [];
+  var findCateItem = (id) => {
+    Category.findOne({ id: id }, (err, category) => {
+      if(err) return error({ debug: err });
+      categories.unshift(category);
+      let pid = category.pid;
+      let ok = !!pid && pid != category.id;
+      ok && findCateItem(pid);
+      ok || success(categories);
+    });
+  };
+  findCateItem(cate_id);
 };
-
 
 // 修改单个分类
 exports.putItem = params => {
-  // console.log(params);
-  console.log('Hello,World!, 修改单个分类');
+  let error   = params.error;
+  let success = params.success;
+  let content = params.body;
+  let cate_id = params.params.category_id;
+  content.pid = content.pid || 0;
+  Category.findByIdAndUpdate(cate_id, content, function(err, category) {
+    err && error({ debug: err });
+    err || success(category);
+  });
 };
 
 // 删除单个分类
 exports.delItem = params => {
-  // console.log(params);
-  console.log('Hello,World!, 删除单个分类');
+  let error   = params.error;
+  let success = params.success;
+  let cate_id = params.params.category_id;
+  Category.findByIdAndRemove(cate_id, (err, category) => {
+    err && error({ debug: err });
+    err || success(category);
+  });
 };
