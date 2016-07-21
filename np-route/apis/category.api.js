@@ -58,7 +58,7 @@ categoryApi.list.DELETE = (req, res) => {
   categoryCtrl.delList({
     body: req.body,
     success: data => {
-      res.jsonp({ 
+      res.jsonp({
         code: 1, 
         message: data.message || '分类批量删除成功',
         result: data
@@ -70,19 +70,56 @@ categoryApi.list.DELETE = (req, res) => {
   });
 };
 
-// 获取单个分类
+// 获取单个分类以及所有有关的分类
 categoryApi.item.GET = (req, res) => {
-  res.jsonp({ code: 1, message: '单篇分类获取成功' });
+  categoryCtrl.getItem({
+    params: req.params,
+    success: data => {
+      res.jsonp({
+        code: 1,
+        message: data.message || '单个分类获取成功',
+        result: data
+      });
+    },
+    error: err => {
+      res.jsonp({ code: 0, message: err.message || '单个分类获取失败', debug: err.debug || null }) 
+    }
+  });
 };
 
 // 修改单个分类
 categoryApi.item.PUT = (req, res) => {
-  res.jsonp({ code: 1, message: '单篇分类修改成功' });
+  categoryCtrl.putItem({
+    body: req.body,
+    params: req.params,
+    success: data => {
+      res.jsonp({
+        code: 1,
+        message: data.message || '单个分类修改成功',
+        result: data
+      });
+    },
+    error: err => {
+      res.jsonp({ code: 0, message: err.message || '单个分类修改失败', debug: err.debug || null }) 
+    }
+  });
 };
 
 // 删除单个分类
 categoryApi.item.DELETE = (req, res) => {
-  res.jsonp({ code: 1, message: '单篇分类删除成功' });
+  categoryCtrl.delItem({
+    params: req.params,
+    success: data => {
+      res.jsonp({
+        code: 1,
+        message: data.message || '单个分类删除成功',
+        result: data
+      });
+    },
+    error: err => {
+      res.jsonp({ code: 0, message: err.message || '单个分类删除失败', debug: err.debug || null }) 
+    }
+  });
 };
 
 // 模块暴露
