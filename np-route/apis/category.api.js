@@ -43,7 +43,7 @@ categoryApi.list.POST = (req, res) => {
     success: data => {
       res.jsonp({ 
         code: 1, 
-        message: data.message || '分类发布成功',
+        message: '分类发布成功',
         result: data
       });
     },
@@ -60,7 +60,7 @@ categoryApi.list.DELETE = (req, res) => {
     success: data => {
       res.jsonp({
         code: 1, 
-        message: data.message || '分类批量删除成功',
+        message: '分类批量删除成功',
         result: data
       });
     },
@@ -77,7 +77,7 @@ categoryApi.item.GET = (req, res) => {
     success: data => {
       res.jsonp({
         code: 1,
-        message: data.message || '单个分类获取成功',
+        message: '单个分类获取成功',
         result: data
       });
     },
@@ -95,7 +95,7 @@ categoryApi.item.PUT = (req, res) => {
     success: data => {
       res.jsonp({
         code: 1,
-        message: data.message || '单个分类修改成功',
+        message: '单个分类修改成功',
         result: data
       });
     },
@@ -112,7 +112,7 @@ categoryApi.item.DELETE = (req, res) => {
     success: data => {
       res.jsonp({
         code: 1,
-        message: data.message || '单个分类删除成功',
+        message: '单个分类删除成功',
         result: data
       });
     },
