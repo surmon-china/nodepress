@@ -74,9 +74,10 @@ exports.getItem = params => {
   let success = params.success;
   let cate_id = params.params.category_id;
   let categories = [];
-  var findCateItem = (id) => {
-    Category.findOne({ id: id }, (err, category) => {
+  var findCateItem = (_id) => {
+    Category.findById(_id, (err, category) => {
       if(err) return error({ debug: err });
+      if (!category) return error({ message: '分类不存在' });
       categories.unshift(category);
       let pid = category.pid;
       let ok = !!pid && pid != category.id;
@@ -91,12 +92,17 @@ exports.getItem = params => {
 exports.putItem = params => {
   let error   = params.error;
   let success = params.success;
-  let content = params.body;
+  let content = params.body || {};
   let cate_id = params.params.category_id;
-  content.pid = content.pid || 0;
+  let cate_pid = content.pid;
+  if (cate_pid == '0' || cate_pid == 'null' || cate_pid == 'false' || !cate_pid || cate_pid == cate_id) cate_pid = null;
+  content.pid = cate_pid;
   Category.findByIdAndUpdate(cate_id, content, function(err, category) {
     err && error({ debug: err });
-    err || success(category);
+    if (!err) {
+      category.pid = content.pid;
+      success(category);
+    };
   });
 };
 
@@ -105,8 +111,25 @@ exports.delItem = params => {
   let error   = params.error;
   let success = params.success;
   let cate_id = params.params.category_id;
-  Category.findByIdAndRemove(cate_id, (err, category) => {
-    err && error({ debug: err });
-    err || success(category);
+
+  // 删除分类
+  Category.findByIdAndRemove(cate_id, (err, _category) => {
+    if (err) return error({ debug: err });
+
+    // 删除此分类的所有子分类的pid
+    Category.find({ pid: cate_id }, (err, data) => {
+      let cate_ids = [];
+      data.forEach(cate => { cate_ids.push(cate._id) });
+      if (!!cate_ids.length) {
+        let category = Category.collection.initializeOrderedBulkOp();
+        category.find({ '_id': { $in: cate_ids } }).update({ $set: { pid: _category.pid || null }});
+        category.execute(function (err, data) {
+          // console.log(err, data);
+          if (!err) success(_category);
+        });
+      } else {
+        success(_category);
+      }
+    });
   });
 };
