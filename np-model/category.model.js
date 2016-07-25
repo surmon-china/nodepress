@@ -16,7 +16,7 @@ var categorySchema = new mongoose.Schema({
   description: String,
 
   // 父分类ID
-  pid: { type: Number, default: 0, required: true },
+  pid: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', default: null },
 
   // 创建时间
   created_at: { type: Date, default: Date.now },
