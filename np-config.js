@@ -9,11 +9,11 @@ exports.INFO = {
   name: 'NodePress',
   version: '1.0.1',
   author: 'Surmon',
-  site: 'http://surmon.me',
-  installed: true
+  site: 'http://surmon.me'
 };
 
 // 全局信息
 exports.APP = {
-  ROOT_PATH: __dirname
+  ROOT_PATH: __dirname,
+  installed: true
 };

@@ -1,127 +1,45 @@
 /*
 *
-* 分类分类API
+* 分类API
 *
 */
 
-// 引用分类控制器处理
-var categoryCtrl = require('../../np-controller/category.controller');
-var categoryApi;
-categoryApi = {};
-categoryApi.list = {};
-categoryApi.item = {};
-
-// 类型识别
-categoryApi.method = (req, res, type) => {
-  let method = req.method;
-  let support = !!categoryApi[type] && !!categoryApi[type][method];
-  if (support) categoryApi[type][method](req, res);
-  if (!support) res.jsonp({ code: 0, message: '请求不支持！' });
-};
+// 分类控制器、控制器请求器、请求类型识别器
+var categoryApi       = { list: {}, item: {} };
+var commonApiMethod   = require('../../np-common').commonApiMethod;
+var commonCtrlPromise = require('../../np-common').commonCtrlPromise;
+var categoryCtrl      = require('../../np-controller/category.controller');
 
 // 获取分类列表
 categoryApi.list.GET = (req, res) => {
-  categoryCtrl.getList({
-    query: req.query,
-    success: data => {
-      res.jsonp({ 
-        code: 1, 
-        message: '分类列表获取成功',
-        result: data
-      });
-    },
-    error: err => { 
-      res.jsonp({ code: 0, message: err.message || '分类列表获取失败' }) 
-    }
-  });
+  commonCtrlPromise({ req: req, res: res, controller: categoryCtrl, method: 'getList', success_msg: '分类列表获取成功', error_msg: '分类列表获取失败' });
 };
 
 // 发布分类
 categoryApi.list.POST = (req, res) => {
-  categoryCtrl.postItem({
-    body: req.body,
-    success: data => {
-      res.jsonp({ 
-        code: 1, 
-        message: '分类发布成功',
-        result: data
-      });
-    },
-    error: err => {
-      res.jsonp({ code: 0, message: err.message || '分类发布失败', debug: err.debug || null }) 
-    }
-  });
+  commonCtrlPromise({ req: req, res: res, controller: categoryCtrl, method: 'postItem', success_msg: '分类发布成功', error_msg: '分类发布失败' });
 };
 
 // 批量删除分类
 categoryApi.list.DELETE = (req, res) => {
-  categoryCtrl.delList({
-    body: req.body,
-    success: data => {
-      res.jsonp({
-        code: 1, 
-        message: '分类批量删除成功',
-        result: data
-      });
-    },
-    error: err => {
-      res.jsonp({ code: 0, message: err.message || '分类批量删除失败', debug: err.debug || null }) 
-    }
-  });
+  commonCtrlPromise({ req: req, res: res, controller: categoryCtrl, method: 'delList', success_msg: '分类批量删除成功', error_msg: '分类批量删除失败' });
 };
 
 // 获取单个分类以及所有有关的分类
 categoryApi.item.GET = (req, res) => {
-  categoryCtrl.getItem({
-    params: req.params,
-    success: data => {
-      res.jsonp({
-        code: 1,
-        message: '单个分类获取成功',
-        result: data
-      });
-    },
-    error: err => {
-      res.jsonp({ code: 0, message: err.message || '单个分类获取失败', debug: err.debug || null }) 
-    }
-  });
+  commonCtrlPromise({ req: req, res: res, controller: categoryCtrl, method: 'getItem', success_msg: '单个分类获取成功', error_msg: '单个分类获取失败' });
 };
 
 // 修改单个分类
 categoryApi.item.PUT = (req, res) => {
-  categoryCtrl.putItem({
-    body: req.body,
-    params: req.params,
-    success: data => {
-      res.jsonp({
-        code: 1,
-        message: '单个分类修改成功',
-        result: data
-      });
-    },
-    error: err => {
-      res.jsonp({ code: 0, message: err.message || '单个分类修改失败', debug: err.debug || null }) 
-    }
-  });
+  commonCtrlPromise({ req: req, res: res, controller: categoryCtrl, method: 'putItem', success_msg: '单个分类修改成功', error_msg: '单个分类修改失败' });
 };
 
 // 删除单个分类
 categoryApi.item.DELETE = (req, res) => {
-  categoryCtrl.delItem({
-    params: req.params,
-    success: data => {
-      res.jsonp({
-        code: 1,
-        message: '单个分类删除成功',
-        result: data
-      });
-    },
-    error: err => {
-      res.jsonp({ code: 0, message: err.message || '单个分类删除失败', debug: err.debug || null }) 
-    }
-  });
+  commonCtrlPromise({ req: req, res: res, controller: categoryCtrl, method: 'delItem', success_msg: '单个分类删除成功', error_msg: '单个分类删除失败' });
 };
 
 // 模块暴露
-exports.list = (req, res) => { categoryApi.method(req, res, 'list') };
-exports.item = (req, res) => { categoryApi.method(req, res, 'item') };
+exports.list = (req, res) => { commonApiMethod({ req: req, res: res, type: 'list', api: categoryApi })};
+exports.item = (req, res) => { commonApiMethod({ req: req, res: res, type: 'item', api: categoryApi })};
