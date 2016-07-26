@@ -1,6 +1,14 @@
+/*
+*
+* 分类数据模型
+*
+*/
+
 var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
 var mongoosePaginate = require('mongoose-paginate');
+
+// 自增ID初始化
 autoIncrement.initialize(mongoose.connection);
 
 // 分类集合模型
@@ -34,6 +42,8 @@ categorySchema.plugin(autoIncrement.plugin, {
   startAt: 1,
   incrementBy: 1
 });
+
+// 自增ID配置
 categorySchema.pre('save', next => {
   if (this.isNew) this.create_time = this.update_time = Date.now();
   if (!this.isNew) this.update_time = Date.now();
