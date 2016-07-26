@@ -16,7 +16,7 @@ exports.getList = params => {
   // 翻页参数
   let pagination  = {
     page: Number(params.query.page || 1),
-    per_page: Number(params.query.per_page || 10),
+    per_page: Number(params.query.per_page || 30),
   };
 
   // 请求条件
@@ -50,10 +50,16 @@ exports.postItem = params => {
   let error    = params.error;
   let success  = params.success;
   let category = params.body;
-  let _category = new Category(category);
-  _category.save((err, data) => {
-    err && error({ debug: err });
-    err || success(data);
+  Category.find({ slug: category.slug }, (err, data) => {
+    if (err) return error({ debug: err });
+    if (!!data.length) return error({ message: 'slug已被使用' });
+    if (!data.length) {
+      let _category = new Category(category);
+      _category.save((err, data) => {
+        err && error({ debug: err });
+        err || success(data);
+      });
+    };
   });
 };
 
@@ -94,14 +100,31 @@ exports.putItem = params => {
   let success = params.success;
   let content = params.body || {};
   let cate_id = params.params.category_id;
-  let cate_pid = content.pid;
-  if (cate_pid == '0' || cate_pid == 'null' || cate_pid == 'false' || !cate_pid || cate_pid == cate_id) cate_pid = null;
-  content.pid = cate_pid;
-  Category.findByIdAndUpdate(cate_id, content, function(err, category) {
-    err && error({ debug: err });
-    if (!err) {
-      category.pid = content.pid;
-      success(category);
+
+  // 修改前判断slug的唯一性，是否被占用
+  Category.find({ slug: content.slug }, (err, data) => {
+    if (err) return error({ debug: err });
+
+    // 判断查找到的数据是否为自身
+    let is_self = (!!data.length && data.length == 1 && data[0]._id == cate_id);
+
+    // 存在数据且不是自身
+    if (!!data.length && !is_self) return error({ message: 'slug已被使用' });
+
+    // 不存在数据或数据是自身
+    if (!data.length || is_self) {
+
+      // 未占用，则修改
+      let cate_pid = content.pid;
+      if (cate_pid == '0' || cate_pid == 'null' || cate_pid == 'false' || !cate_pid || cate_pid == cate_id) cate_pid = null;
+      content.pid = cate_pid;
+      Category.findByIdAndUpdate(cate_id, content, function(err, category) {
+        if (err) return error({ debug: err });
+        if (!err) {
+          category.pid = content.pid;
+          success(category);
+        };
+      });
     };
   });
 };
