@@ -1,10 +1,113 @@
-## NodePress V1.0.1
+## NodePress V1.1.0 开发者文档
 
 Author By Surmon Surmon@foxmail.com
 
-# 开发者文档
+Site: http://surmon.me
 
-## 接口基础
+## 接口及流程
+
+  - 公共资源目录
+  
+    ```
+    REQUEST:    /[*resources]
+    DIR:        /np-public/
+    ROUTE:    
+                /np-route/view.js
+            -> /np-public/np-theme/Surmon
+    ```
+
+  - 前台目录
+    
+    ```
+    REQUEST:    /
+    OR:         /!*admin/***
+    DIR:        /np-public/np-theme/[theme-dir]
+    ROUTE:    
+                /np-route/view.js
+            -> /np-public/np-theme/Surmon
+    ```
+    
+  - 后台目录
+    
+    ```
+    REQUEST:    /admin
+    OR:     /admin/***/***/***
+    DIR:    /np-public/np-admin
+    ROUTE:    
+            /np-route/view.js
+        -> /np-public/np-admin
+    ```
+
+  - API
+        
+    ```
+    BASE:    /api
+    ALL:        /api/***
+    ROUTE:    
+            /np-route/api.js
+        -> /np-route/apis/***.api.js
+        -> /np-controller/***.controller.js
+        -> /np-model/***.model.js
+    ```
+## 文件目录
+
+  - 入口文件
+    
+    ```
+    index.js -> 主程序入口
+    
+    启动Express程序，启动并连接数据库，路由分发，引入配置
+    
+    TODO: 配置检测，程序安装检测，数据库检测，待完善
+    ```
+    
+  - 配置文件
+    
+    ```
+    np-config.js -> 主程序配置
+    
+    数据库配置（程序内部），全局使用（程序内部），基本信息
+    
+    TODO: 配置检测，程序安装检测，待完善
+    ```
+    
+  - 数据库
+    
+    ```
+    np-mongo.js -> 数据库连接启动
+    
+    连接并启动数据库
+    
+    TODO: 连接失败时前台应该可以得到提示
+    ```
+    
+  - 公共封装函数
+    
+    ```
+    np-common.js -> api/ctrl/model公共函数
+    
+    commonApiMethod -> API类型识别器
+    
+    commonCtrlPromise -> 控制器请求器
+    
+    commonModelPromise -> 数据层请求器
+    
+    TODO: 数据层请求器会导致控制器方法语义不清晰
+    ```
+    
+  - 路由
+    
+    ```
+    np-route -> 路由文件夹
+    
+    api.js -> API路由
+    
+    view.js -> 视图路由
+    
+    apis/***.api.js -> 各功能API
+    
+    ```
+
 
 ## 全站接口
 
@@ -73,9 +176,6 @@ Author By Surmon Surmon@foxmail.com
     }
     REMARK: 删除一个分类后，如果此分类包含子分类，则会将自己的子分类的pid自动更正为自己之前的pid或者NULL
     ```
-
-
-## 文件架构
 
 ### 目录结构
 
