@@ -4,80 +4,47 @@
 *
 */
 
-// 引用文章控制器处理
-var articleCtrl = require('../../np-controller/article.controller');
-var articleApi;
-articleApi = {};
-articleApi.list = {};
-articleApi.item = {};
-
-// 类型识别
-articleApi.method = (req, res, type) => {
-  let method = req.method;
-  let support = !!articleApi[type] && !!articleApi[type][method];
-  if (support) articleApi[type][method](req, res);
-  if (!support) res.jsonp({ code: 0, message: '请求不支持！' });
-};
+// 文章控制器、控制器请求器、请求类型识别器
+var articleApi        = { list: {}, item: {} };
+var commonApiMethod   = require('../../np-common').commonApiMethod;
+var commonCtrlPromise = require('../../np-common').commonCtrlPromise;
+var articleCtrl       = require('../../np-controller/article.controller');
 
 // 获取文章列表
-articleApi.list.GET = function(req, res){
-  articleCtrl.getList({
-    query: req.query,
-    success: data => {
-      res.jsonp({ 
-        code: 1, 
-        message: '文章列表获取成功',
-        result: data
-      });
-    },
-    error: err => { 
-      res.jsonp({ code: 0, message: err.message || '文章列表获取失败' }) 
-    }
-  });
+articleApi.list.GET = (req, res) => {
+  commonCtrlPromise({ req: req, res: res, controller: articleCtrl, method: 'getList', success_msg: '文章列表获取成功', error_msg: '文章列表获取失败' });
 };
 
 // 发布文章
-articleApi.list.POST = function(req, res){
-  articleCtrl.postItem({
-    body: req.body,
-    success: data => {
-      res.jsonp({ 
-        code: 1, 
-        message: data.message || '文章发布成功',
-        result: data
-      });
-    },
-    error: err => { 
-      res.jsonp({ code: 0, message: err.message || '文章发布失败', debug: err.debug || null }) 
-    }
-  });
+articleApi.list.POST = (req, res) => {
+  commonCtrlPromise({ req: req, res: res, controller: articleCtrl, method: 'postItem', success_msg: '文章发布成功', error_msg: '文章发布失败' });
 };
 
 // 批量更新文章
 articleApi.list.PUT = function(req, res){
-  res.jsonp({ code: 1, message: '文章批量更新成功' });
+  commonCtrlPromise({ req: req, res: res, controller: articleCtrl, method: 'putList', success_msg: '文章发布成功', error_msg: '文章发布失败' });
 };
 
 // 批量删除文章
-articleApi.list.DELETE = function(req, res){
-  res.jsonp({ code: 1, message: '文章批量删除成功' });
+articleApi.list.DELETE = (req, res) => {
+  commonCtrlPromise({ req: req, res: res, controller: articleCtrl, method: 'delList', success_msg: '文章批量删除成功', error_msg: '文章批量删除失败' });
 };
 
-// 获取单篇文章
-articleApi.item.GET = function(req, res){
-  res.jsonp({ code: 1, message: '单篇文章获取成功' });
+// 获取单篇文章 + 所有有关的文章 + 文章相关信息
+articleApi.item.GET = (req, res) => {
+  commonCtrlPromise({ req: req, res: res, controller: articleCtrl, method: 'getItem', success_msg: '单篇文章获取成功', error_msg: '单篇文章获取失败' });
 };
 
 // 修改单篇文章
-articleApi.item.PUT = function(req, res){
-  res.jsonp({ code: 1, message: '单篇文章修改成功' });
+articleApi.item.PUT = (req, res) => {
+  commonCtrlPromise({ req: req, res: res, controller: articleCtrl, method: 'putItem', success_msg: '单篇文章修改成功', error_msg: '单篇文章修改失败' });
 };
 
 // 删除单篇文章
-articleApi.item.DELETE = function(req, res){
-  res.jsonp({ code: 1, message: '单篇文章删除成功' });
+articleApi.item.DELETE = (req, res) => {
+  commonCtrlPromise({ req: req, res: res, controller: articleCtrl, method: 'delItem', success_msg: '单篇文章删除成功', error_msg: '单篇文章删除失败' });
 };
 
 // 模块暴露
-exports.list = (req, res) => { articleApi.method(req, res, 'list') };
-exports.item = (req, res) => { articleApi.method(req, res, 'item') };
+exports.list = (req, res) => { commonApiMethod({ req: req, res: res, type: 'list', api: articleApi })};
+exports.item = (req, res) => { commonApiMethod({ req: req, res: res, type: 'item', api: articleApi })};
