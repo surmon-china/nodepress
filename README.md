@@ -178,37 +178,47 @@ Site: http://surmon.me
     ```
 ## 程序架构
 
-  - API
-        
-        [Express](http://www.expressjs.com.cn/)
+  - 服务端
+  
+    * [Express](http://www.expressjs.com.cn/)
+
+    * [Express Generator](https://www.npmjs.com/package/express-generator) 中间件
+    
+    * [node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) Auth Token
 
   - 后台
   
-        [ng2-admin](https://akveo.github.io/ng2-admin/)
+    * [ng2-admin](https://akveo.github.io/ng2-admin/)
 
-        Bootstrap 4 CSS
+    * [Bootstrap 4](http://v4.bootcss.com/)
         
-        Angular 2
+    * [Angular 2](https://angular.cn/)
         
-        jQuery
+    * JQuery
         
   - 前台PC端
   
-        [Vue.js](http://cn.vuejs.org/)
+    * [Vue.js](http://cn.vuejs.org/) MVVM
 
-        [VueStrap](http://yuche.github.io/vue-strap/)
+    * [VueStrap](http://yuche.github.io/vue-strap/) UI
+    
+    * [SOCKET.IO](http://socket.io/) 实时通讯
+    
+    * [HOWLER.JS](https://howlerjs.com/) 音频库
+    
+    * [Video.js](http://videojs.com/) 播放器
         
   - 前台WAP端
   
-        [Vue.js](http://cn.vuejs.org/)
+    * [Vue.js](http://cn.vuejs.org/) MVVM
 
-        [Vux](https://github.com/airyland/vux)
+    * [Vux](https://github.com/airyland/vux) UI
         
   - Android/IOS客户端
   
-        [NativeScript 2.0](https://www.nativescript.org/)
+    * [NativeScript 2.0](https://www.nativescript.org/)
 
-        [React Native](http://reactnative.cn/)
+    * [React Native](http://reactnative.cn/)
 
 ## 插件机制
 
