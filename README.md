@@ -1,8 +1,12 @@
 ## NodePress V1.1.0 开发者文档
 
-Author By Surmon Surmon@foxmail.com
+----------
 
-Site: http://surmon.me
+> Author By Surmon Surmon@foxmail.com
+> 
+> Site: http://surmon.me
+
+----------
 
 ## 接口及流程
 
@@ -49,6 +53,9 @@ Site: http://surmon.me
         -> /np-controller/***.controller.js
         -> /np-model/***.model.js
     ```
+
+----------
+
 ## 文件目录
 
   - 入口文件
@@ -108,6 +115,43 @@ Site: http://surmon.me
     
     ```
 
+  - 控制器
+    
+    ```
+    np-controller -> 控制器文件夹
+    
+    ***.controller.js -> 各功能控制器
+    
+    ```
+    
+  - 数据模型
+    
+    ```
+    np-model -> 数据模型文件夹
+    
+    ***.model.js -> 各功能数据模型，映射Mongoose对应的模型方法
+    
+    ```
+    
+  - 静态文件
+    
+    ```
+    np-public -> 静态内容文件夹
+    
+    np-spider -> 蜘蛛访问渲染模板
+    
+    np-theme ->  PC端前台输出目录
+    
+    np-admin ->  PC端后台输出目录
+    
+    np-update -> 站内上传文件目录
+    
+    np-plugin -> 程序插件目录
+    
+    ```
+
+
+----------
 
 ## 全站接口
 
@@ -131,7 +175,7 @@ Site: http://surmon.me
         description: '分类描述'
     }
     REMARK: pid和描述非必填项
-    TODU: ~~slug需具备唯一性，缺乏验证限制~~
+    TODU: slug需具备唯一性，缺乏验证限制
     ```
 
     * 批量删除分类：
@@ -164,7 +208,7 @@ Site: http://surmon.me
         description: '分类描述'
     }
     REMARK: 修改后返回最新数据，pid非必填，pid值应为objID || 0 || false || null
-    TODU: ~~slug需具备唯一性，缺乏验证限制~~
+    TODU: slug需具备唯一性，缺乏验证限制
     ```
     
     * 删除单个分类：
@@ -176,11 +220,14 @@ Site: http://surmon.me
     }
     REMARK: 删除一个分类后，如果此分类包含子分类，则会将自己的子分类的pid自动更正为自己之前的pid或者NULL
     ```
+    
+----------
+
 ## 程序架构
 
   - 服务端
   
-    * [Express](http://www.expressjs.com.cn/ ){:target="_blank"}
+    * [Express](http://www.expressjs.com.cn/ )
 
     * [Express Generator](https://www.npmjs.com/package/express-generator) 中间件
     
@@ -220,10 +267,17 @@ Site: http://surmon.me
 
     * [React Native](http://reactnative.cn/)
 
+
+----------
+
 ## 插件机制
+
+----------
+
 
 ## 主题机制
 
-    np-public/np-theme/[theme-dir] 应用主题
-    
-    np-public/np-spider/ 蜘蛛渲染输出
+>  np-public/np-theme/[theme-dir] 应用主题
+>  
+>  np-public/np-spider/ 蜘蛛渲染输出
+
