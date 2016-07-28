@@ -176,9 +176,44 @@ Site: http://surmon.me
     }
     REMARK: 删除一个分类后，如果此分类包含子分类，则会将自己的子分类的pid自动更正为自己之前的pid或者NULL
     ```
+## 程序架构
 
-### 目录结构
+  - API
+        
+        [Express](http://www.expressjs.com.cn/)
+
+  - 后台
+  
+        [ng2-admin](https://akveo.github.io/ng2-admin/)
+
+        Bootstrap 4 CSS
+        
+        Angular 2
+        
+        jQuery
+        
+  - 前台PC端
+  
+        [Vue.js](http://cn.vuejs.org/)
+
+        [VueStrap](http://yuche.github.io/vue-strap/)
+        
+  - 前台WAP端
+  
+        [Vue.js](http://cn.vuejs.org/)
+
+        [Vux](https://github.com/airyland/vux)
+        
+  - Android/IOS客户端
+  
+        [NativeScript 2.0](https://www.nativescript.org/)
+
+        [React Native](http://reactnative.cn/)
 
 ## 插件机制
 
 ## 主题机制
+
+    np-public/np-theme/[theme-dir] 应用主题
+    
+    np-public/np-spider/ 蜘蛛渲染输出
