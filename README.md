@@ -180,7 +180,7 @@ Site: http://surmon.me
 
   - 服务端
   
-    * [Express](http://www.expressjs.com.cn/)
+    * [Express](http://www.expressjs.com.cn/ ){:target="_blank"}
 
     * [Express Generator](https://www.npmjs.com/package/express-generator) 中间件
     
