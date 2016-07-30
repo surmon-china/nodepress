@@ -235,13 +235,17 @@
 
   - 后台
   
-    * [ng2-admin](https://akveo.github.io/ng2-admin/)
+    * [ng2-admin](https://akveo.github.io/ng2-admin/) [Angular 2](https://angular.cn/) MVVM
 
-    * [Bootstrap 4](http://v4.bootcss.com/)
-        
-    * [Angular 2](https://angular.cn/)
+    * [Bootstrap 4](http://v4.bootcss.com/) UI
         
     * JQuery
+    
+  - 搜索引擎
+  
+    * [Prerender.io](https://prerender.io/) SEO
+
+    * [Handlebars](http://handlebarsjs.com/) HTML 渲染
         
   - 前台PC端
   
@@ -267,7 +271,36 @@
 
     * [React Native](http://reactnative.cn/)
 
+----------
 
+## 数据结构
+
+  - 通用
+    * extend 通用扩展
+    ···
+
+  - 分类 CRUD
+    * name         - 分类名称 required
+    * slug         - 分类名称 required onlyone 唯一!
+    * description  - 分类名称
+    * pid          - 父分类ID false || null || 0 || ObjectID
+    ···
+
+  - 文章 CRUD
+    * title        - 文章标题
+    * content      - 文章内容
+    * description  - 文章描述
+    * status       - 文章发布状态 => -1已删除，0草稿，1发布
+    * public       - 文章公开状态 =>  0非公开，1公开
+    * password     - 文章密码 => 非公开状态生效
+    * date         - 发布日期
+    * tag          - 文章标签 数组 ObjID
+    * category     - 文章分类 数组 ObjID
+    * comment      - 数组（对象）
+    * sidebar      - 边栏展示 -> 0不显示，1left，2right
+    * meta         - 元数据 views: Number, favs:  Number
+    ···
+     
 ----------
 
 ## 插件机制
