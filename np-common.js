@@ -32,6 +32,8 @@ exports.commonCtrlPromise = options => {
   });
 };
 
+/*
+
 // 数据层请求器
 exports.commonModelPromise = options => {
 
@@ -53,3 +55,4 @@ exports.commonModelPromise = options => {
   if (!!params && params.length > 1) model[method](params[0], params[1], callback_all);
   
 };
+*/

@@ -10,11 +10,6 @@ var Article            = require('../np-model/article.model');
 // Controllers
 var categoryCtrl       = require('./category.controller');
 
-// Common-Modules
-var commonPromise      = require('../np-common');
-var commonCtrlPromise  = commonPromise.commonCtrlPromise;
-var commonModelPromise = commonPromise.commonModelPromise;
-
 // 获取文章列表
 exports.getList = params => {
 
@@ -35,10 +30,9 @@ exports.getList = params => {
   let option = {
     sort: { _id: 1 },
     page: pagination.page, 
-    limit: pagination.per_page
+    limit: pagination.per_page,
+    populate: ['category', 'tag']
   };
-
-  // .populate('category')
 
   // 请求
   Article.paginate(query, option, (err, articles) => {
@@ -54,25 +48,34 @@ exports.getList = params => {
     };
     success(data);
   });
-
 };
 
 // 发布文章
 exports.postItem = function(params) {
-
-  let article = params.body;
-
-  // 分类标签数据格式化
-  !!article.tag && (article.tag = article.tag.replace(/\s/g,'').split(','));
-  article.category = article.category.replace(/\s/g,'').split(',');
-
   let error = params.error;
   let success = params.success;
+  let article = params.body;
 
-  let _article = new Article(article);
-  _article.save((err, data) => {
-    err && error({ message: '文章发布失败', debug: err });
-    err || success(data);
+  // 保存文章
+  let saveArticle = () => {
+
+    // 分类、标签、关键词、数据格式化
+    !!article.tag && (article.tag =  Array.from(new Set(article.tag.replace(/\s/g,'').split(','))));
+    !!article.keyword && (article.keyword = Array.from(new Set(article.keyword.replace(/\s/g,'').split(','))));
+    !!article.category && (article.category = Array.from(new Set(article.category.replace(/\s/g,'').split(','))));
+
+    let _article = new Article(article);
+    _article.save((err, data) => {
+      err && error({ message: '文章发布失败', debug: err });
+      err || success(data);
+    });
+  };
+
+  // 检测Slug合法性
+  Article.find({ slug: article.slug }, (err, data) => {
+    if (err) return error({ debug: err });
+    data.length && error({ message: 'slug已被使用' });
+    data.length || saveArticle();
   });
 };
 
@@ -90,40 +93,44 @@ exports.delList = function(params) {
 
 // 获取单篇文章
 exports.getItem = params => {
-
   let error   = params.error;
   let success = params.success;
-  let article_slug = params.params.article_slug;
-  let categories = [];
+  let slug = params.params.article_slug;
+
+  // 根据文章ID获取评论
+  let getCommentsByArticle = article_id => {
+    console.log('获取评论信息');
+  };
 
   // 根据唯一别名获取文章
-  Article.findOne({ slug: article_slug }, (err, article) => {
-    if (err) return error({ debug: err });
-    if (!err) {
-      if (!article) return error({ message: '文章不存在！' });
+  let getArticleBySlug = slug => {
+    Article
+    .findOne({ slug: slug })
+    .populate(['category', 'tag'])
+    .exec((err, article) => {
+      if (err) return error({ debug: err });
+      if (!article) error({ message: '文章不存在' });
       if (!!article) {
-        if (!!article.category.length) {
-          commonCtrlPromise({
-            req: { params: { category_id: article.category[0] }},
-            controller: categoryCtrl,
-            method: 'getItem',
-            success: category => {
-              article.category = category;
-              success(article);
-            },
-            error: err => { success(article) }
-          });
-        }
+        article.password = undefined;
+        delete article.password;
+        getCommentsByArticle();
+        success(article);
       };
-    }
-  });
+    });
+  };
 
-  // Category.findById(_id, (err, article) => {
-  //   if (err) return error({ debug: err });
-  //   if (!err) {
-  //     success(article);
-  //   }
-  // });
+  // 根据自增ID获取文章
+  let getArticleById = id => {
+    return new Promise((resolve, reject) => {
+      Category.findOne({ id: id }, (err, article) => {
+        err && reject(err);
+        err || resolve(article);
+      });
+    });
+  };
+
+  // 获取文章
+  getArticleBySlug(slug);
 };
 
 // 修改单篇文章
