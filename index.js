@@ -48,7 +48,7 @@ app.all('/api/option', api.option);
 
 // Article
 app.all('/api/article', api.article.list);
-app.all('/api/article/:article_id', api.article.item);
+app.all('/api/article/:article_slug', api.article.item);
 
 // Category
 app.all('/api/category', api.category.list);
