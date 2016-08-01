@@ -51,16 +51,21 @@ exports.postItem = params => {
   let error    = params.error;
   let success  = params.success;
   let category = params.body;
+
+  // 保存分类
+  let saveCategory = () => {
+    let _category = new Category(category);
+    _category.save((err, data) => {
+      err && error({ debug: err });
+      err || success(data);
+    });
+  };
+
+  // 验证Slug合法性
   Category.find({ slug: category.slug }, (err, data) => {
     if (err) return error({ debug: err });
-    if (!!data.length) return error({ message: 'slug已被使用' });
-    if (!data.length) {
-      let _category = new Category(category);
-      _category.save((err, data) => {
-        err && error({ debug: err });
-        err || success(data);
-      });
-    };
+    data.length && error({ message: 'slug已被使用' });
+    data.length || saveCategory();
   });
 };
 

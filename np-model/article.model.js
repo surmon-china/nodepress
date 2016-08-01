@@ -23,6 +23,9 @@ var articleSchema = new mongoose.Schema({
   // 文章描述
   description: String,
 
+  // 文章关键字（SEO）
+  keyword: Array,
+
   // 文章别名（具有唯一性）
   slug: { type: String, required: true },
 
