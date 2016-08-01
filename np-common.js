@@ -14,8 +14,8 @@ exports.commonApiMethod = options => {
 // 控制器请求器
 exports.commonCtrlPromise = options => {
 
-  let req = options.req;
-  let res = options.res;
+  let req = options.req || {};
+  let res = options.res || {};
   let method = options.method;
   let error_msg = options.error_msg;
   let success_msg = options.success_msg;
@@ -24,9 +24,9 @@ exports.commonCtrlPromise = options => {
   let error_callback = options.success || (err => { res.jsonp({ code: 0, message: err.message || error_msg, debug: err.debug || null })});
 
   controller[method]({
-    body: req.body,
-    query: req.query,
-    params: req.params,
+    body: req.body || {},
+    query: req.query || {},
+    params: req.params || {},
     error: error_callback,
     success: success_callback
   });

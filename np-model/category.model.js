@@ -34,7 +34,7 @@ var categorySchema = new mongoose.Schema({
 
 });
 
-// 翻页 + 自增ID
+// 翻页 + 自增ID插件配置
 categorySchema.plugin(mongoosePaginate);
 categorySchema.plugin(autoIncrement.plugin, {
   model: 'Category',
