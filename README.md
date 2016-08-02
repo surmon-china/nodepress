@@ -231,7 +231,7 @@
 
     * [Express Generator](https://www.npmjs.com/package/express-generator) 中间件
     
-    * [node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) Auth Token
+    * [node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) JWT Json Web Token
 
   - 后台
   
@@ -240,7 +240,55 @@
     * [Bootstrap 4](http://v4.bootcss.com/) UI
         
     * JQuery
+
+    * 富文本编辑器 --- 
+
+    * [Simditor](http://simditor.tower.im/) Simditor
+
+    * [Quill](http://quilljs.com/) Quill
+
+    * [Draft.js](http://facebook.github.io/draft-js/) Draft for React
+
+    * [bootstrap-wysiwyg](http://www.bootcss.com/p/bootstrap-wysiwyg/) bootstrap-wysiwyg
+
+    * [wangEditor](http://www.wangeditor.com/) wangEditor
+
+    * MarkDown --- 
+
+    * [Editor.md](http://pandao.github.io/editor.md/) MarkDown编辑器 - Editor
+
+    * [MarkdownEditor](https://github.com/alecgorge/MarkdownEditor) 简单的MarkDown编辑器 - MarkdownEditor
+
+    * WebIDE --- 
+
+    * [Codiad](https://github.com/Codiad/Codiad) WebIDE
+
+    * [CodeMirror](http://codemirror.net/) CodeMirror WebIDE
+
+    * Other --- 
+
+    * [谷歌云输入法]() 云输入法
+
+    * [Web Audio Editor](http://audiee.io/) 音频处理（剪切处理）
+
+    * [webgl-filter](https://github.com/evanw/webgl-filter) WebGL 图片处理 - webgl-filter
+
+    * [h5slides](https://github.com/Jinjiang/h5slides) h5slides 幻灯放映
+
+    * [H5lock](https://github.com/lvming6816077/H5lock) H5手势解锁
+
+    * [favico.js](http://lab.ejci.net/favico.js/) 网站通知徽标
+
+    * [OS.js](https://github.com/os-js/OS.js) OS.js Web OS
+
+    * [Antiscroll](https://github.com/Automattic/antiscroll) Dom代替原生滚动条
+
+    * [APlayer](https://github.com/DIYgod/APlayer) APlayer音频播放器
+
+    * [CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary) JS栈弹幕解决方案
     
+    * [CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary) JS栈弹幕解决方案
+
   - 搜索引擎
   
     * [Prerender.io](https://prerender.io/) SEO
