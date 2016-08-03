@@ -1,48 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
   <meta charset="UTF-8">
-  <meta name="Author" Content="司马萌, surmon@qq.com">
+  <title>Surmon - Vue.js</title>
+  <meta name="Author" Content="司马萌, surmon@foxmail.com">
   <meta name="Copyright" Content="Site with Surmon.me By Surmon, All Rights Reserved">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" >
-  <title>司马萌- 前台</title>
-  <link rel='stylesheet' href='/np-theme/Surmon/style.css' type='text/css'/>
-  <base href="/">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <link rel="icon" href="static/logo.png" type="image/x-icon">
 </head>
 <body>
   <header></header>
-  <div id="app">
-    <div>{{ message || 'hhh' }}</div>
-    <input type="text" v-model="message">
-    <span>{{ objc }}</span>
-    <span>{{ objc.a }}</span>
-    <span>{{ objc.aaa }}</span>
-    <span>{{ objc.b }}</span>
-    <span v-for="arr in arrc">{{ arr.name }}</span>
-    <button v-on:click="clicktest">Test1</button>
-    <button @click="clicktest('嘿嘿嘿')">Test1</button>
-    <button @click="clicktest2('嘿嘿嘿', $event)">Test2</button>
-
-    <!-- 阻止单击事件冒泡 -->
-    <a v-on:click.stop="clicktest">阻止单击事件冒泡</a>
-
-    <!-- 提交事件不再重载页面 -->
-    <form v-on:submit.prevent="onSubmit">提交表单</form>
-
-    <!-- 修饰符可以串联 -->
-    <a v-on:click.stop.prevent="clicktest">修饰符可以串联</a>
-
-    <!-- 只有修饰符 -->
-    <form v-on:submit.prevent></form>
-
-  </div>
+  <div id="app"></div>
   <footer></footer>
 </body>
-
-<!-- Vue -->
-<script src="/np-theme/Surmon/vue.js" ></script>
-
-<!-- Vue-Libs -->
-
-<!-- App -->
-<script src="/np-theme/Surmon/app.js" ></script>
+<script src="static/build.js"></script>
 </html>
