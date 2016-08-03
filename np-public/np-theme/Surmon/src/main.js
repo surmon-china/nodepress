@@ -7,8 +7,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 // filters
-import { fromNow, toYMD, toHMS } from './filters/TimeFilter'
-import { domain, textOverflow, numberFormat } from './filters/HtmlFilter'
+import { fromNow, toYMD, toHMS } from './filters/TimeFilter.js'
+import { domain, textOverflow, numberFormat } from './filters/HtmlFilter.js'
+
+// 主程序
+import App from './components/App.vue'
 
 // articles
 import NewsView from './components/NewsView.vue'
@@ -18,9 +21,6 @@ import ItemView from './components/ItemView.vue'
 
 // user
 import UserView from './components/UserView.vue'
-
-// 主程序
-import App from './components/App.vue'
 
 // 启用路由
 Vue.use(Router)
