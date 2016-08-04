@@ -1,11 +1,12 @@
 var webpack = require('webpack')
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './app.js',
   output: {
     path: './static',
     publicPath: '/static/',
-    filename: 'build.js'
+    filename: 'app.js'
   },
   module: {
     // avoid webpack trying to shim process
@@ -21,9 +22,33 @@ module.exports = {
         // for normal use cases only node_modules is needed.
         exclude: /node_modules|vue\/dist|vue-router\/|vue-loader\/|vue-hot-reload-api\//,
         loader: 'babel'
-      }
+      },
+      // {
+      //   test: /\.css$/,
+      //   loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+      // },
+      // Optionally extract less files
+      // or any other compile-to-css language
+      // {
+      //   test: /\.scss$/,
+      //   loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+      // },
+      // {
+      //   test: /.scss$/,
+      //   loader: ExtractTextPlugin.extract('style', 'css!sass')
+      // }
     ]
   },
+  // vue: {
+  //   loaders: {
+  //     css: ExtractTextPlugin.extract('vue-style-loader', 'css-loader', 'sass-loader')
+  //   }
+  // },
+  // plugins: [
+  //   new ExtractTextPlugin('./static/app.css', {
+  //     allChunks: true,
+  //   }),
+  // ],
   babel: {
     presets: ['es2015'],
     plugins: ['transform-runtime']

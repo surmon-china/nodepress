@@ -24,11 +24,23 @@
     "babel-runtime": "^6.0.0",
     "cross-env": "^1.0.5",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "gulp": "^3.9.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-shell": "^0.5.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "node-sass": "^3.8.0",
+    "sass-loader": "^4.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^2.1.1",
+    "vue-async-data": "^1.0.2",
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.0.0",
     "vue-loader": "^8.0.0",
+    "vue-strap": "^1.0.11",
     "vue-style-loader": "^1.0.0",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.12.0"
@@ -37,6 +49,7 @@
     "es6-promise": "^3.0.2",
     "firebase": "^2.3.1",
     "vue": "^1.0.26",
+    "vue-resource": "^0.9.3",
     "vue-router": "^0.7.13"
   }
 }
