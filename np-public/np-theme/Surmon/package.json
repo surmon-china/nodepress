@@ -40,6 +40,7 @@
     "vue-hot-reload-api": "^1.2.0",
     "vue-html-loader": "^1.0.0",
     "vue-loader": "^8.0.0",
+    "vue-resource": "^0.9.3",
     "vue-strap": "^1.0.11",
     "vue-style-loader": "^1.0.0",
     "webpack": "^1.12.2",
