@@ -7,11 +7,9 @@
 // Vue主程序
 import Vue from 'vue'
 import Router from 'vue-router'
+import RouterMap from './appRouter'
 import Resource from 'vue-resource'
 import VueAsyncData from 'vue-async-data'
-
-// router
-import routerMap from './appRouter.js'
 
 // filters
 import { fromNow, toYMD, toHMS } from './filters/TimeFilter.js'
@@ -53,8 +51,7 @@ const router = new Router({
 })
 
 // 全局路由 -> http://router.vuejs.org/zh-cn/api/map.html
-routerMap(router)
-// console.log(RouterMap);
+RouterMap(router);
 
 // 启动App
 router.start(App, 'app')
