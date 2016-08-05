@@ -1,0 +1,97 @@
+<div class="page">
+
+  <div class="page-content music">
+
+    <div class="music-player">
+      <!-- <div class="player-bg" style="background-image:url({{ musicPlayer.song.song_cover }})"></div> -->
+
+      <div class="player-list" ng-if="false">
+        
+        <!-- 左侧边栏 -->
+        <div class="sidebar">
+          我是左侧的快捷栏
+          <i class="iconfont icon-resize-full"></i>
+        </div>
+
+        <!-- 专辑列表区 -->
+        <div class="album-list">
+          <!-- 专辑列表 -->
+          <ul>
+            <li class="favorite">我喜欢的</li>
+            <li ng-repeat="song in musicPlayer.songs | limitTo:20">{{ song.song_title }}</li>
+          </ul>
+        </div>
+
+        <!-- 播放列表区 -->
+        <div class="songs-list">
+          <ul>
+            <li ng-dblclick="musicPlayer.load($index, song.song_id)" ng-repeat="song in musicPlayer.songs | limitTo:20">{{ song.song_title }}</li>
+            </ul>
+        </div>
+      </div>
+
+      <!-- 歌曲信息区 -->
+      <div class="song-info">
+        <div class="cover">
+          <img alt="{{ musicPlayer.song.song_title }}" ng-src="{{ musicPlayer.song.song_cover }}" ng-if="false">
+        </div>
+        <div class="title">
+          <h3 class="name">{{ musicPlayer.song.song_title }}</h3>
+          <p class="source">歌手：{{ musicPlayer.song.song_author }} 专辑：{{ musicPlayer.album.collect_title }}</p>
+        </div>
+        <div class="lrc">
+          <div class="content">{{ musicPlayer.song.song_lrc || '暂无歌词' }}</div>
+        </div>
+      </div>
+
+      <!-- 操作区 -->
+      <div class="song-toolbar">
+        <div class="content">
+          <!-- 控件操作 -->
+          <div class="action">
+            <a href="" class="prev">
+              <i class="iconfont icon-music-prev" ng-click="musicPlayer.prev()"></i>
+            </a>
+            <a href="" class="toggle">
+              <i class="iconfont " ng-click="musicPlayer.toggle()" ng-class="{ true:'icon-music-pause', false: 'icon-music-play' }[ musicPlayer.playing]"></i>
+            </a>
+            <a href="" class="next">
+              <i class="iconfont icon-music-next" ng-click="musicPlayer.next()"></i>
+            </a>
+          </div>
+          
+          <!-- 进度条 -->
+          <div class="progress">
+            <span class="current" ng-bind="musicPlayer.song.song_current_time | formattime"></span>
+            <span class="progress-bar">
+              <input id="range" type="range" min="0" max="1000000" value="0" ng-model="musicPlayer.progress" ng-mouseup="musicPlayer.seekTo()" ng-mousedown="musicPlayer.progress_pause = true">
+            </span>
+            <span class="duration" ng-bind="musicPlayer.song.song_duration | formattime"></span>
+          </div>
+
+          <!-- 音量控制 -->
+          <div class="volume">
+            <a href="" class="muted">
+              <i class="iconfont" ng-class="{ true:'icon-music-muted', false: 'icon-music-volume' }[musicPlayer.audio.muted]" ng-click="musicPlayer.audio.muted = !musicPlayer.audio.muted"></i>
+            </a>
+            <span class="volume-bar">
+              <input id="range" type="range" min="0" max="100" value="60" ng-model="musicPlayer.volume">
+            </span>
+          </div>
+          
+          <!-- 其他 -->
+          <div class="other">
+            <a href="" class="loop">
+              <i class="iconfont" ng-class="{ true:'icon-music-list-loop', false: 'icon-music-single-loop' }[musicPlayer.list_loop]" ng-click="musicPlayer.list_loop = !musicPlayer.list_loop"></i>
+            </a>
+            <a href="" class="open">
+              <i class="iconfont icon-music-list"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="single-comment" duoshuo="duoshuo_id">
+  </div>
+</div>
