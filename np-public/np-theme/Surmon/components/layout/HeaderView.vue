@@ -12,4 +12,9 @@
 </template>
 
 <style lang="sass" scoped>
+  @import '../../sass/variables';
+
+  .header {
+    background-color: $brand-primary;
+  }
 </style>

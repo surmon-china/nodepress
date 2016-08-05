@@ -1,8 +1,6 @@
 <!-- 主程序模块 -->
 <style lang="sass">
-  body {
-    color: #000;
-  }
+  @import './sass/variables';
 </style>
 
 <template>
