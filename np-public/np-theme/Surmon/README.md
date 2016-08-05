@@ -39,3 +39,11 @@ npm run build
   - http://music.163.com/api/song/media?id= + songid;
 
   - http://music.163.com/api/song/detail/?id= + music_id + &ids=[ + music_id + ];
+
+### 组件细分
+
+  - <template src="./template.html"></template>
+
+  - <style src="./style.scss" lang="sass" scoped></style>
+
+  - <script src="./snippet/script.js"></script>

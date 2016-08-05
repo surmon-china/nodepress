@@ -10,7 +10,7 @@ import IndexView from './components/index/IndexView.vue'
 // Articles
 // import ArticleView from './components/article/ListView.vue'
 
-export const RouterMap = router => {
+export default router => {
   router.map({
     '/': {
       name: 'index',
