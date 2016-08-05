@@ -29,8 +29,9 @@
 $gray-dark:                 #373a3c !default;
 $gray:                      #55595c !default;
 $gray-light:                #818a91 !default;
-$gray-lighter:              #eceeef !default;
-$gray-lightest:             #f7f7f9 !default;
+$gray-lighter:              #f1f1f1 !default;
+$gray-lightest:             #f4f5f5 !default;
+$gray-lightsuper:           #f7f7f9 !default;
 
 $brand-primary:             #0275d8 !default;
 $brand-success:             #5cb85c !default;
@@ -66,7 +67,7 @@ $border-width:               .0625rem !default;
 //
 // Settings for the `<body>` element.
 
-$body-bg:                    $gray-lighter;
+$body-bg:                    $gray-lightest;
 $body-color:                 $gray-dark !default;
 
 
@@ -122,7 +123,7 @@ $grid-gutter-width:          1.875rem !default; // 30px
 //
 // Font, line-height, and color for body text, headings, and more.
 
-$font-family-sans-serif:     "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif:     -apple-system, PingFang SC, Hiragino Sans GB, Arial,Microsoft YaHei, Helvetica Neue, sans-serif !default;
 $font-family-serif:          Georgia, "Times New Roman", Times, serif !default;
 $font-family-monospace:      Menlo, Monaco, Consolas, "Courier New", monospace !default;
 $font-family-base:           $font-family-sans-serif !default;

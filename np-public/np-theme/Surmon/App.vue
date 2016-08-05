@@ -1,6 +1,10 @@
-<!-- 主程序模块 -->
-<style lang="sass">
-  @import './sass/variables';
+<style lang="stylus">
+
+  @import './stylus/variables'
+
+  body
+    padding-top 4em
+    
 </style>
 
 <template>

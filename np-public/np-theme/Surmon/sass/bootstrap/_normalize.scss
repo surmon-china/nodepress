@@ -10,6 +10,9 @@ html {
   font-family: sans-serif; // 1
   -ms-text-size-adjust: 100%; // 2
   -webkit-text-size-adjust: 100%; // 2
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
 
 //
@@ -20,6 +23,9 @@ body {
   margin: 0;
 }
 
+* {
+  outline: none;
+}
 // HTML5 display definitions
 // ==========================================================================
 
@@ -425,4 +431,14 @@ table {
 td,
 th {
   padding: 0;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
 }
