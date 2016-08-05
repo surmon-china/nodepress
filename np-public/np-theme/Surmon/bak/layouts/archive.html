@@ -1,0 +1,108 @@
+<div class="archive">
+  <div class="archive-info" ng-if="route != 'index'">
+    <div class="archive-title" ng-if="route == 'indexList'">
+     本站共存在 {{allPostsTotal}} 篇文章, 共 {{pageNavi.total}} 页，当前为第 {{pageNavi.active}} 页
+    </div>
+    <div class="archive-title" ng-if="route == 'author'">
+      作者【{{data.author.name}}】存在约 {{data.count * data.pages}} 篇相关文章, 共 {{pageNavi.total}} 页，当前为第 {{pageNavi.active}} 页
+    </div>
+    <div class="archive-title" ng-if="route == 'category'">
+      分类【 {{data.category.title}} 】存在 {{data.category.post_count == 0 ? data.count : data.category.post_count}} 篇相关文章，共 {{pageNavi.total}} 页，当前为第 {{pageNavi.active}} 页
+    </div>
+    <div class="archive-title" ng-if="route == 'tag'">
+      标签【 {{data.tag.title}} 】存在 {{data.tag.post_count}} 篇相关文章，共 {{pageNavi.total}} 页，当前为第 {{pageNavi.active}} 页
+    </div>
+    <div class="archive-title" ng-if="route == 'search'">
+      关于关键词【 {{data.key}} 】的搜索结果一共包含 {{ data.count_total }} 篇相关文章，共 {{pageNavi.total}} 页，当前为第 {{pageNavi.active}} 页
+    </div>
+    <div class="archive-title" ng-if="route == 'date'">
+      在 {{data.date}} 时本站发布了以下 {{data.count_total}} 篇文章，共 {{pageNavi.total}} 页，当前为第 {{pageNavi.active}} 页
+    </div>
+  </div>
+
+  <ul class="archive-list">
+    <li class="item" ng-repeat="post in posts" >
+      <div class="thumb-info">
+        <div class="thumb">
+          <a href="/post/{{post.id}}" title="{{post.title}}" tooltip toolpos="left" >
+            <img ng-src="{{ getThumbnail(post.thumbnail_images.full.url, 300, 180) }}" alt="{{post.title}}" />
+          </a>
+        </div>
+        <div class="info">
+          <span class="author">
+            <i class="icon icon-user"></i>
+            <a ng-href="/author/{{post.author.slug}}" title="由{{post.author.name}}发布" tooltip>
+              {{post.author.name}}
+            </a>
+          </span>
+          <span class="time">
+            <i class="icon icon-time"></i>
+            <a ng-href="/date/{{post.date | toSec | date:'yyyy-MM-dd'}}" title="发布于{{post.date}}" tooltip>
+              {{post.date | toSec | date:'MM-dd'}}
+            </a>
+          </span>
+          <span class="views">
+            <i class="icon icon-eye-open"></i>
+            <a ng-href="/post/{{post.id}}" title="{{post.custom_fields.views == undefined ? '0' : post.custom_fields.views[0]}}人围观" tooltip>
+              {{post.custom_fields.views == undefined ? '0' : post.custom_fields.views[0]}}
+            </a>
+          </span>
+          <span class="comment">
+            <i class="icon icon-comments"></i>
+            <a ng-href="/post/{{post.id}}" title="{{post.comment_count}}人评论" tooltip>
+              <span ng-show="post.comment_count == 0">沙发</span>
+              <span ng-show="post.comment_count > 0">{{post.comment_count}}评论</span>
+            </a>
+          </span>
+          <span class="category">
+            <i class="icon icon-list"></i>
+            <a ng-href="/category/{{category.slug}}" title="发布在{{category.title}}分类下" 
+            ng-repeat="category in post.categories | limitTo: 1" tooltip>
+              {{category.title}}
+            </a>
+          </span>
+          <span class="tag">
+            <i class="icon icon-tags"></i>
+            <a ng-href="/tag/{{tag.slug}}" title="包含标签：{{tag.title}}" ng-repeat="tag in post.tags | limitTo: 1" tooltip>
+              {{tag.title}}
+            </a>
+            <a ng-href="/post/{{post.id}}" title="暂无标签" ng-show="post.tags.length == 0" tooltip>
+              暂无
+            </a>
+          </span>
+        </div>
+      </div>
+      <div class="title">
+        <a href="/post/{{post.id}}" title="{{post.title}}" tooltip>
+          {{post.title}}
+        </a>
+      </div>
+      <div class="description" ng-bind-html="post.excerpt | stripTags | trustAsHtml"></div>
+    </li>
+  </ul>
+
+  <!-- 分页导航模块 -->
+  <div class="pagenavi"> 
+
+    <!-- 当前位置显示 -->
+    <span class="total">{{pageNavi.active}}/{{pageNavi.total}}</span>
+
+    <!-- 首页，当前为第一页时不显示 -->
+    <a href="" class="first" ng-click="pageNavi.active == 1 ? false : pageNaviTo(1)">« 首页</a>
+
+    <!-- 回到上一页，在当前页为第一页时不显示 -->
+    <a href="" ng-click="pageNavi.active == 1 ? false : pageNaviTo(pageNavi.active - 1)">«</a>
+    
+    <!-- 遍历翻页按钮，最多输出8个，如果是当前页则赋予高亮css -->
+
+    <a href="" ng-repeat="nav in pageNavi.navs" 
+       ng-class="{'active': pageNavi.active == $index + 1}" ng-click="pageNaviTo(nav)" 
+       ng-if="( pageNavi.active <= nav && nav < pageNavi.active + 5 || pageNavi.active >= nav && nav > pageNavi.active - 4 ) ? true : ( ( pageNavi.active <= 4 || pageNavi.active > pageNavi.total - 5 ? ( ( pageNavi.active <= 4 ? pageNavi.active <= nav && nav <= 8 : nav > pageNavi.total - 8 ) ) : false ) )" title="第{{ nav }}页" tooltip >{{nav}}</a>
+
+    <!-- 到下一页，当前为最后一页时失效 -->
+    <a href="" ng-click="pageNavi.active < pageNavi.total ? pageNaviTo(pageNavi.active + 1) : false">»</a>
+
+    <!-- 到尾页，当前为最后一页时失效 -->
+    <a href="" ng-click="pageNavi.active == pageNavi.total ? false : pageNaviTo(pageNavi.total)" class="last">尾页 »</a>
+  </div>
+</div>
