@@ -1,9 +1,32 @@
+<style lang="stylus" scoped>
+</style>
+
 <template>
   <div class="index">
-    我是首页
+
+    <!-- 幻灯 -->
+    <carrousel-view></carrousel-view>
+
+    <!-- 最新文章列表 -->
+    <article-list-view></article-list-view>
+    
   </div>
 </template>
 
+<script>
 
-<style lang="stylus" scoped>
-</style>
+  // 依赖组件
+  import CarrouselView from './CarrouselView.vue'
+  import ArticleListView from '../article/ListView.vue'
+
+  // 模块配置
+  export default {
+
+    // 依赖组件
+    components: {
+      CarrouselView,
+      ArticleListView
+    }
+  }
+
+</script>
