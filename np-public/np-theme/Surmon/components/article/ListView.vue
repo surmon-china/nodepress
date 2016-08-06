@@ -1,41 +1,58 @@
-<template>
-  <!-- <div class="article-lists" :class="{ loading: !items.length }">
-    <item
-      v-for="item in items"
-      :item="item"
-      :index="$index | formatItemIndex"
-      track-by="id">
-    </item>
+<style lang="stylus">
+  .articles
+    .article-lists
+      margin-bottom 1em
+      background-color white
+      min-height 1em
+      overflow hidden
+      
+    .article-load
+      background-color white
+</style>
 
-    <div class="nav" v-show="items.length > 0">
-      <a v-if="page > 1" :href="'#/news/' + (page - 1)">上一篇</a>
-      <a v-if="page < 4" :href="'#/news/' + (page + 1)">更多...</a>
+<template>
+  <div class="articles">
+
+    <!-- 列表 -->
+    <div class="article-lists">
+      <list-item-view
+        v-for="item in items"
+        :item="item"
+        :index="$index | formatItemIndex"
+        track-by="id">
+      </list-item-view>
     </div>
-  </div> -->
-  <div>文章列表页</div>
+
+    <!-- 加载更多 -->
+    <div class="article-load">
+      <span class="loading">加载中...</span>
+      <span class="no-more">没有更多</span>
+    </div>
+
+  </div>
 </template>
 
 <script>
 
 // 引入其他模块
-import Item from './Item.vue'
+import ListItemView from './ListItemView.vue'
 
 // 定义模块
 export default {
 
   // 组件（模块）名称
-  name: 'ArticleView',
+  name: 'ArticleListsView',
 
   // 依赖组件
   components: {
-    Item
+    ListItemView
   },
 
   // 绑定的数据
   data () {
     return {
       page: 1,
-      items: []
+      items: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
     }
   },
 
@@ -73,12 +90,9 @@ export default {
 
   // view私有过滤器
   filters: {
-    formatItemIndex (index) {
-      return (this.page - 1) * store.storiesPerPage + index + 1
-    }
+    // formatItemIndex (index) {
+    //   return (this.page - 1) * store.storiesPerPage + index + 1
+    // }
   }
 }
 </script>
-
-<style lang="stylus">
-</style>

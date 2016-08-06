@@ -19,21 +19,25 @@
 
       > li
         float left
-        padding 1.25em .75em
         vertical-align top
 
         &.header-logo-image
-          padding 1em .75em
+          
+          .logo-link
+            display block
+            height 4em
+            line-height 4em
 
           .logo-image
             height 2em
           
-        
-
         &.header-logo-slogan
-          margin-left 2em
+          margin-left 3em
 
-          >.header-logo-slogan-text
+          > .header-logo-slogan-text
+            display block
+            height 4em
+            line-height 4em
             letter-spacing .2em
             
     .header-action
@@ -41,24 +45,27 @@
 
       > li
         float left
-        padding 1.25em .75em
-        vertical-align top
-
         &.header-action-input
-          padding 1em .75em
 
-          >.action-input-block
-            border 1px solid $gray-lighter
-            border-radius $border-radius
-            padding 0 .5em
-            width 15em
-
-            >.search-input
-              width 100%
-              border none
-              padding .5em
-              font-size .8em
-              color $gray-light
+          > .action-input-block
+              padding: 1em 0.75em
+              
+              .search-input
+                border 1px solid #ddd
+                border-radius $border-radius-sm
+                width 16em
+                height 2.4em
+                padding .5em
+                font-size .8em
+                color $gray-light
+                letter-spacing .05em
+              
+        &.header-action-btn
+          
+          > .btn 
+            font-size: 0.9em
+            padding: 1.7em 0.75em
+            line-height: 4.4em
 </style>
 
 <template>
@@ -66,7 +73,7 @@
     <div class="container">
       <ul class="header-logo">
         <li class="header-logo-image">
-          <a href="/">
+          <a href="/" class="logo-link">
             <img src="/images/logo-header.svg" class="logo-image">
           </a>
         </li>
@@ -83,8 +90,8 @@
           </div>
         </li>
         <li class="header-action-btn">
-          <a href="" class="follow-button">关注</a>
-          <a href="" class="favorite-button">收藏</a>
+          <a href="" class="btn follow-button">关注</a>
+          <a href="" class="btn favorite-button">收藏</a>
         </li>
       </ul>
     </div>
