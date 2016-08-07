@@ -1,5 +1,6 @@
 // Core variables and mixins
 @import "variables.scss";
+@import "iconfont.scss";
 @import "bootstrap/mixins";
 
 // // Reset and dependencies
@@ -32,7 +33,7 @@
 @import "bootstrap/jumbotron";
 @import "bootstrap/alert";
 @import "bootstrap/progress";
-@import "bootstrap/media";
+// @import "bootstrap/media";
 @import "bootstrap/list-group";
 @import "bootstrap/responsive-embed";
 @import "bootstrap/close";
