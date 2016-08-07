@@ -16,10 +16,10 @@
     <!-- 列表 -->
     <div class="article-lists">
       <list-item-view
-        v-for="item in items"
+        v-for="item in articles"
         :item="item"
-        :index="$index | formatItemIndex"
-        track-by="id">
+        :index="$index"
+        track-by="$index">
       </list-item-view>
     </div>
 
@@ -49,11 +49,15 @@ export default {
   },
 
   // 绑定的数据
-  data () {
-    return {
-      page: 1,
-      items: [{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
-    }
+  // data () {
+  //   return {
+  //     page: 1,
+  //     items: datas
+  //   }
+  // },
+
+  props: {
+    articles: Array
   },
 
   // 本View下的子路由
@@ -68,12 +72,13 @@ export default {
     }
   },
 
-  // 被创建时func
+  // 创建时
   created () {
+    console.log('文章列表组件被创建')
     // store.on('topstories-updated', this.update)
   },
 
-  // 被销毁时func
+  // 销毁时
   destroyed () {
     // store.removeListener('topstories-updated', this.update)
   },
@@ -88,7 +93,7 @@ export default {
     }
   },
 
-  // view私有过滤器
+  // 私有过滤器
   filters: {
     // formatItemIndex (index) {
     //   return (this.page - 1) * store.storiesPerPage + index + 1

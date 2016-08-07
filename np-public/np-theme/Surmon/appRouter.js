@@ -8,13 +8,17 @@
 import IndexView from './components/index/IndexView.vue'
 
 // Articles
-// import ArticleView from './components/article/ListView.vue'
+import ArticleView from './components/article/detail/DetailView.vue'
 
 export default router => {
   router.map({
     '/': {
       name: 'index',
       component: IndexView
+    },
+    '/article/:article_slug': {
+      name: 'article',
+      component: ArticleView
     },
     /*
     '/article': {

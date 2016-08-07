@@ -36,49 +36,49 @@
   <div class="aside-nav">
     <ul class="nav-list">
       <li class="item">
-        <a href="" class="nav-list-item active">
+        <a v-link="'/'" class="nav-list-item active">
           <i class="icon icon-ass"></i>
           <span>首页</span>
         </a>
       </li>
       <li class="item">
-        <a href="" class="nav-list-item">
+        <a v-link="'/'" class="nav-list-item">
           <i class="icon icon-ass"></i>
           <span>Code</span>
         </a>
       </li>
       <li class="item">
-        <a href="" class="nav-list-item">
+        <a v-link="'/'" class="nav-list-item">
           <i class="icon icon-ass"></i>
           <span>Project</span>
         </a>
       </li>
       <li class="item">
-        <a href="" class="nav-list-item">
+        <a v-link="'/'" class="nav-list-item">
           <i class="icon icon-ass"></i>
           <span>Think</span>
         </a>
       </li>
       <li class="item">
-        <a href="" class="nav-list-item">
+        <a v-link="'/'" class="nav-list-item">
           <i class="icon icon-ass"></i>
           <span>Music</span>
         </a>
       </li>
       <li class="item">
-        <a href="" class="nav-list-item">
+        <a v-link="'/'" class="nav-list-item">
           <i class="icon icon-ass"></i>
           <span>Video</span>
         </a>
       </li>
       <li class="item">
-        <a href="" class="nav-list-item">
+        <a v-link="'/'" class="nav-list-item">
           <i class="icon icon-ass"></i>
           <span>Guestbook</span>
         </a>
       </li>
       <li class="item">
-        <a href="" class="nav-list-item">
+        <a v-link="'/'" class="nav-list-item">
           <i class="icon icon-ass"></i>
           <span>About</span>
         </a>
