@@ -73,7 +73,7 @@
     <div class="container">
       <ul class="header-logo">
         <li class="header-logo-image">
-          <a href="/" class="logo-link">
+          <a v-link="'/'" class="logo-link">
             <img src="/images/logo-header.svg" class="logo-image">
           </a>
         </li>

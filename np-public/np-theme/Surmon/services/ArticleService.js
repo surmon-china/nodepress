@@ -1,10 +1,10 @@
-export const ArticleService = {
+export default {
 
-  getList: function(ctx, params) {
-    return ctx.$http.get('/api/article', params);
+  getList: (instance, params) => {
+    return instance.$http.get('http://localhost:8000/api/article', params);
   },
 
-  getItem: function(ctx, params) {
-    return ctx.$http.post('/api/article/:article_slug', params);
+  getItem: (instance, params) => {
+    return instance.$http.get('http://localhost:8000/api/article/' + params.slug, params);
   }
 }
