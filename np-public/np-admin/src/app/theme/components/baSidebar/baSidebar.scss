@@ -1,6 +1,6 @@
 @import '../../sass/conf/conf';
 
-$sidebar-width: 180px;
+$sidebar-width: 190px;
 $angle-left: "\f100";
 $angle-right: "\f101";
 
@@ -8,7 +8,7 @@ $angle-right: "\f101";
   width: $sidebar-width;
   top: $top-height;
   left: 0;
-  z-index: 1001;
+  z-index: 1000;
   display: block;
   min-height: 100%;
   background-color: $sidebar;
@@ -39,6 +39,7 @@ $angle-right: "\f101";
   position: relative;
   float: none;
   padding: 0;
+
   &.selected:not(.with-sub-menu) {
     background-color: $primary;
     a.al-sidebar-list-link {
@@ -47,6 +48,10 @@ $angle-right: "\f101";
         color: $sidebar-text;
       }
     }
+  }
+
+  &.footer {
+    position: absolute;
   }
 }
 
@@ -115,31 +120,41 @@ a.al-sidebar-list-link {
 
 a.al-sidebar-user {
   display: block;
-  // height: 160px;
-  padding: 10px 15px;
+  padding: 15px;
   border-bottom: 3px solid $sidebar-border;
   overflow: hidden;
 
   > .al-sidebar-user-gravatar {
     display: block;
-    float: left;
-    width: 45px;
-    border-radius: 5px;
-    // border: 3px solid $sidebar-border;
+    width: 85px;
+    border-radius: 100%;
+    margin: 0 auto;
+    border: 3px solid $sidebar-border;
+    transform: rotate(0deg);
+    transition: all 1s;
   }
 
   > .al-sidebar-user-profile {
     display: block;
-    float: right;
-    width: 90px;
-    padding: 2px 0;
+    width: 100%;
+    margin-top: 10px;
 
     > .al-sidebar-user-name {
+      margin-bottom: 5px;
+      text-align: center;
       color: $default;
     }
 
     > .al-sidebar-user-slogan {
-      
+      @include text-truncate();
+      display: block;
+    }
+  }
+
+  &:hover {
+    .al-sidebar-user-gravatar {
+      transform: rotate(360deg);
+      transition: all 1s;
     }
   }
 }
@@ -147,7 +162,7 @@ a.al-sidebar-user {
 .slimScrollBar, .slimScrollRail {
   border-radius: 0px !important;
   width: 4px !important;
-  left: 176px;
+  left: 186px;
 }
 
 @mixin layout-collapsed() {
@@ -182,7 +197,7 @@ a.al-sidebar-user {
       color: $sidebar-text;
       padding-left: 52px;
       height: auto;
-      line-height: 35px;
+      line-height: 40px;
       &:hover {
         color: $primary;
       }
@@ -203,11 +218,11 @@ a.al-sidebar-user {
 }
 
 .sidebar-hover-elem{
-  width: 4px;
+  width: 3px;
   background: $primary;
   position: absolute;
   top: -150px;
-  left: 176px;
+  left: $sidebar-width - 3;
   transition: all 0.5s ease;
   transition-property: top, height;
   height: 42px;
