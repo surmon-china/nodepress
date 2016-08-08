@@ -15,8 +15,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
  * Webpack Constants
  */
 const METADATA = {
-  title: 'ng2-admin - Angular 2 Admin Template',
-  description: 'Free Angular 2 and Bootstrap 4 Admin Template',
+  title: 'NodePress-admin - 基于Angular2的网站后台管理系统',
+  description: 'NodePress-admin - Free Angular 2 and Bootstrap 4 Admin Template',
   baseUrl: '/'
 };
 

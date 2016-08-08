@@ -34,7 +34,7 @@ export const PagesRoutes:RouterConfig = [
         component: Dashboard,
         data: {
           menu: {
-            title: 'Dashboard',
+            title: '仪表盘',
             icon: 'ion-android-home',
             selected: false,
             expanded: false,
@@ -47,7 +47,58 @@ export const PagesRoutes:RouterConfig = [
         component: Editors,
         data: {
           menu: {
-            title: 'Editors',
+            title: '文章',
+            icon: 'ion-edit',
+            selected: false,
+            expanded: false,
+            order: 100,
+          }
+        },
+        children: [
+          {
+            path: 'ckeditor',
+            component: Ckeditor,
+            data: {
+              menu: {
+                title: '分类目录',
+              }
+            }
+          },
+          {
+            path: 'ckeditor',
+            component: Ckeditor,
+            data: {
+              menu: {
+                title: '所有文章',
+              }
+            }
+          },
+          {
+            path: 'ckeditor',
+            component: Ckeditor,
+            data: {
+              menu: {
+                title: '发布文章',
+              }
+            }
+          },
+          {
+            path: 'ckeditor',
+            component: Ckeditor,
+            data: {
+              menu: {
+                title: '文章标签',
+              }
+            }
+          },
+        ]
+      },
+      {
+        path: 'editors',
+        component: Editors,
+        data: {
+          menu: {
+            title: '编辑器',
             icon: 'ion-edit',
             selected: false,
             expanded: false,
@@ -71,7 +122,7 @@ export const PagesRoutes:RouterConfig = [
         component: Components,
         data: {
           menu: {
-            title: 'Components',
+            title: '组件',
             icon: 'ion-gear-a',
             selected: false,
             expanded: false,
@@ -95,7 +146,7 @@ export const PagesRoutes:RouterConfig = [
         component: Charts,
         data: {
           menu: {
-            title: 'Charts',
+            title: '图表',
             icon: 'ion-stats-bars',
             selected: false,
             expanded: false,
@@ -119,7 +170,7 @@ export const PagesRoutes:RouterConfig = [
         component: Ui,
         data: {
           menu: {
-            title: 'UI Features',
+            title: 'UI 元素',
             icon: 'ion-android-laptop',
             selected: false,
             expanded: false,
@@ -132,7 +183,7 @@ export const PagesRoutes:RouterConfig = [
             component: Typography,
             data: {
               menu: {
-                title: 'Typography',
+                title: '排版',
               }
             }
           },
@@ -141,7 +192,7 @@ export const PagesRoutes:RouterConfig = [
             component: Buttons,
             data: {
               menu: {
-                title: 'Buttons',
+                title: '按钮',
               }
             }
           },
@@ -150,7 +201,7 @@ export const PagesRoutes:RouterConfig = [
             component: Icons,
             data: {
               menu: {
-                title: 'Icons',
+                title: '图表',
               }
             }
           },
@@ -159,7 +210,7 @@ export const PagesRoutes:RouterConfig = [
             component: Grid,
             data: {
               menu: {
-                title: 'Grid',
+                title: '格栅',
               }
             }
           },
@@ -170,7 +221,7 @@ export const PagesRoutes:RouterConfig = [
         component: Forms,
         data: {
           menu: {
-            title: 'Form Elements',
+            title: '表单元素',
             icon: 'ion-compose',
             selected: false,
             expanded: false,
@@ -203,7 +254,7 @@ export const PagesRoutes:RouterConfig = [
         component: Tables,
         data: {
           menu: {
-            title: 'Tables',
+            title: '表格',
             icon: 'ion-grid',
             selected: false,
             expanded: false,
@@ -227,7 +278,7 @@ export const PagesRoutes:RouterConfig = [
         component: Maps,
         data: {
           menu: {
-            title: 'Maps',
+            title: '地图',
             icon: 'ion-ios-location-outline',
             selected: false,
             expanded: false,
@@ -277,7 +328,7 @@ export const PagesRoutes:RouterConfig = [
         path: '',
         data: {
           menu: {
-            title: 'Pages',
+            title: '页面',
             icon: 'ion-document',
             selected: false,
             expanded: false,
@@ -289,7 +340,7 @@ export const PagesRoutes:RouterConfig = [
             path: '',
             data: {
               menu: {
-                title: 'Login',
+                title: '登录',
                 url: '#/login'
               }
             }
@@ -298,7 +349,7 @@ export const PagesRoutes:RouterConfig = [
             path: '',
             data: {
               menu: {
-                title: 'Register',
+                title: '注册',
                 url: '#/register'
               }
             }
@@ -309,7 +360,7 @@ export const PagesRoutes:RouterConfig = [
         path: '',
         data: {
           menu: {
-            title: 'Menu Level 1',
+            title: '一级菜单',
             icon: 'ion-ios-more',
             selected: false,
             expanded: false,
@@ -321,7 +372,7 @@ export const PagesRoutes:RouterConfig = [
             path: '',
             data: {
               menu: {
-                title: 'Menu Level 1.1',
+                title: '一级菜单1.1',
                 url: '#'
               }
             }
@@ -330,7 +381,7 @@ export const PagesRoutes:RouterConfig = [
             path: '',
             data: {
               menu: {
-                title: 'Menu Level 1.2',
+                title: '一级菜单1.2',
                 url: '#'
               }
             },
@@ -339,7 +390,7 @@ export const PagesRoutes:RouterConfig = [
                 path: '',
                 data: {
                   menu: {
-                    title: 'Menu Level 1.2.1',
+                    title: '二级菜单1.2.1',
                     url: '#'
                   }
                 }
@@ -352,8 +403,8 @@ export const PagesRoutes:RouterConfig = [
         path: '',
         data: {
           menu: {
-            title: 'External Link',
-            url: 'http://akveo.com',
+            title: '官方文档',
+            url: 'https://akveo.github.io/ng2-admin/',
             icon: 'ion-android-exit',
             order: 800,
             target: '_blank'
