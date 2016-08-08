@@ -15,8 +15,14 @@ $input-background: rgba(255, 255, 255, 0.1); // input border color for hover
 $dropdown-text: #7d7d7d; // dropdown text color
 
 // sidebar colors
-$sidebar: #282828;
+$sidebar: #23282d;
 $sidebar-text: #ffffff;
+$sidebar-sublist: #32373c;
+$sidebar-border: #101920;
+
+$topbar: #23282d;
+$topbar-text: #ffffff;
+$topbar-border: #101920;
 
 // specific components colors
 $mail-box: whitesmoke;
@@ -33,11 +39,11 @@ $bootstrap-panel-header-border: 1px solid $border-light;
 $bootstrap-panel-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 
 // color scheme
-$primary: #00abff !default;
-$info: #40daf1 !default;
-$success: #8bd22f !default;
-$warning: #e7ba08 !default;
-$danger: #f95372 !default;
+$primary: #209e91 !default;
+$info: #2dacd1 !default;
+$success: #90b900 !default;
+$warning: #dfb81c !default;
+$danger: #e85656 !default;
 
 $primary-light: tint($primary, 30%);
 $info-light: tint($info, 30%);
@@ -65,7 +71,7 @@ $hoverlink: darken($activelink, 20%);
 @mixin body-bg() {
   background-color: $body-bg;
 
-  $mainBgUrl: $images-root + 'sky-bg.jpg';
+  $mainBgUrl: $images-root + 'blur-bg-blurred.jpg';
 
   &::before {
     content: '';

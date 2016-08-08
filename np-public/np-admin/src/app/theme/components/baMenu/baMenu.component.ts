@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs/Rx';
 import {BaSlimScroll} from '../../../theme/directives';
 import {BaMenuService} from './baMenu.service';
 import {BaMenuItem} from './components/baMenuItem';
+import {BaMenuUser} from './components/baMenuUser';
 import {AppState} from '../../../app.state';
 
 @Component({
@@ -13,7 +14,7 @@ import {AppState} from '../../../app.state';
   styles: [require('./baMenu.scss')],
   template: require('./baMenu.html'),
   providers: [BaMenuService],
-  directives: [BaMenuItem, BaSlimScroll]
+  directives: [BaMenuItem, BaMenuUser, BaSlimScroll]
 })
 export class BaMenu {
 

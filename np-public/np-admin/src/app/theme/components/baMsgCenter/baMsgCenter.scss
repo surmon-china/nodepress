@@ -19,7 +19,9 @@
   float: right;
   padding: 0;
   list-style: none;
-  margin: 13px 47px 0 0;
+  height: 45px;
+  line-height: 45px;
+  margin: 0 30px 0 0;
 
   li {
     list-style: none;
@@ -33,6 +35,8 @@
       text-decoration: none;
       font-size: 13px;
       position: relative;
+      display: block;
+
       span {
         display: inline-block;
         min-width: 10px;
@@ -46,7 +50,7 @@
         line-height: 11px;
         background-color: $danger;
         position: absolute;
-        top: -5px;
+        top: 8px;
         right: -14px;
         font-size: 11px;
       }
@@ -56,7 +60,7 @@
         height: 40px;
         width: 40px;
         position: absolute;
-        top: -18px;
+        top: -6px;
         right: -27px;
         animation: pulsate 8s ease-out;
         animation-iteration-count: infinite;
@@ -112,7 +116,7 @@
   width: 316px;
   left: auto;
   right: -47px;
-  top: 26px;
+  top: 45px;
   @include scrollbars(.4em, rgba(0,0,0,0.5), #fff);
   .header {
     padding: 10px 12px;
@@ -207,24 +211,29 @@
 
   &.profile-dropdown {
     width: 145px;
-    top: 55px;
-    right: -25px;
-    a {
-      text-align: left;
-      border: none;
-      text-decoration: none;
-      color: $dropdown-text;
-      padding: 4px 16px 4px 20px;
-      &.signout {
-        border-top: 1px solid $default;
-      }
-      i {
-        margin-right: 10px;
-      }
-      &:hover {
-        background: #f4fcff;
+    top: 50px;
+    right: -23px;
+
+    >.dropdown-item {
+
+      a {
+        text-align: left;
+        border: none;
+        text-decoration: none;
+        color: $dropdown-text;
+        padding: 4px 16px 4px 20px;
+        &.signout {
+          border-top: 1px solid $default;
+        }
+        i {
+          margin-right: 10px;
+        }
+        &:hover {
+          background: #f4fcff;
+        }
       }
     }
+
     i.dropdown-arr {
       right: 25px;
     }

@@ -14,12 +14,13 @@ $angle-right: "\f101";
   background-color: $sidebar;
   height: 100%;
   position: fixed;
+  border-right: 3px solid $sidebar-border;
 }
 
 .al-sidebar-list {
   margin: 0;
   overflow: hidden;
-  padding: 18px 0 0 0;
+  padding: 0 0 10px 0;
   list-style: none;
 }
 
@@ -52,6 +53,7 @@ $angle-right: "\f101";
 .ba-sidebar-item-expanded {
   > ul.al-sidebar-sublist {
     display: block!important;
+    background-color: $sidebar-sublist;
   }
 
 }
@@ -111,6 +113,37 @@ a.al-sidebar-list-link {
   }
 }
 
+a.al-sidebar-user {
+  display: block;
+  // height: 160px;
+  padding: 10px 15px;
+  border-bottom: 3px solid $sidebar-border;
+  overflow: hidden;
+
+  > .al-sidebar-user-gravatar {
+    display: block;
+    float: left;
+    width: 45px;
+    border-radius: 5px;
+    // border: 3px solid $sidebar-border;
+  }
+
+  > .al-sidebar-user-profile {
+    display: block;
+    float: right;
+    width: 90px;
+    padding: 2px 0;
+
+    > .al-sidebar-user-name {
+      color: $default;
+    }
+
+    > .al-sidebar-user-slogan {
+      
+    }
+  }
+}
+
 .slimScrollBar, .slimScrollRail {
   border-radius: 0px !important;
   width: 4px !important;
@@ -149,7 +182,7 @@ a.al-sidebar-list-link {
       color: $sidebar-text;
       padding-left: 52px;
       height: auto;
-      line-height: 29px;
+      line-height: 35px;
       &:hover {
         color: $primary;
       }
