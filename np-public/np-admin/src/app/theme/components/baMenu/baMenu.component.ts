@@ -6,6 +6,7 @@ import {BaSlimScroll} from '../../../theme/directives';
 import {BaMenuService} from './baMenu.service';
 import {BaMenuItem} from './components/baMenuItem';
 import {BaMenuUser} from './components/baMenuUser';
+
 import {AppState} from '../../../app.state';
 
 @Component({
@@ -64,7 +65,7 @@ export class BaMenu {
     this.showHoverElem = true;
     this.hoverElemHeight = $event.currentTarget.clientHeight;
     // TODO: get rid of magic 66 constant
-    this.hoverElemTop = $event.currentTarget.getBoundingClientRect().top - 66;
+    this.hoverElemTop = $event.currentTarget.getBoundingClientRect().top - 45;
   }
 
   public toggleSubMenu($event):boolean {

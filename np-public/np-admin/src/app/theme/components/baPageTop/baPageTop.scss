@@ -32,8 +32,8 @@ a.al-logo {
   float: left;
   outline: none !important;
   line-height: 45px;
-  padding: 0 30px;
-  // width: $sidebar-width;
+  width: 190px;
+  text-align: center;
 
   .socicon {
     margin-right: 5px;
@@ -41,8 +41,8 @@ a.al-logo {
   }
 
   .logo-text {
-    font-family: initial;
-    font-size: 18px;
+    // font-family: initial;
+    // font-size: 18px;
   }
 }
 
@@ -96,11 +96,13 @@ a.collapse-menu-link {
   cursor: pointer;
   display: block;
   text-decoration: none;
-  line-height: 45px;
+  line-height: 43px;
   color: $topbar-text;
   padding: 0;
   float: left;
-  margin: 0px 0 0 10px;
+  // margin: 0px 0 0 10px;
+  width: 40px;
+  text-align: center;
 
   &:hover {
     text-decoration: none;
