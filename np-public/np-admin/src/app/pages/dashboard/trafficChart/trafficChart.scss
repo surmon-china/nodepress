@@ -31,7 +31,7 @@
   display: inline-block;
   width: calc(100% - 370px);
   margin-left: 70px;
-  margin-top: -20px;
+  margin-top: -30px;
 }
 
 .small-container {
@@ -55,7 +55,8 @@
 .traffic-chart {
   width: 300px;
   position: relative;
-  min-height: 300px;
+  height: 300px;
+  margin-top: 10px;
   float: left;
 }
 
@@ -136,7 +137,7 @@
   height: 30px;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
   position: relative;
-  top: 27px;
+  top: 37px;
   border-radius: 15px;
   left: -45px;
 }

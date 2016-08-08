@@ -23,6 +23,11 @@ import {Ckeditor} from './editors/components/ckeditor/ckeditor.component';
 import {Components} from './components/components.component';
 import {TreeView} from './components/components/treeView/treeView.component';
 
+// 文章
+import {Articles} from './articles/Articles.component';
+import {Category} from './articles/components/category/category.component';
+
+
 //noinspection TypeScriptValidateTypes
 export const PagesRoutes:RouterConfig = [
   {
@@ -43,21 +48,29 @@ export const PagesRoutes:RouterConfig = [
         }
       },
       {
-        path: 'editors',
-        component: Editors,
+        // 路径
+        path: 'article',
+        // 组件
+        component: Articles,
+        // 数据
         data: {
+          // 菜单
           menu: {
+            // 菜单名称
             title: '文章',
             icon: 'ion-edit',
+            // 是否选中?
             selected: false,
+            // 是否可伸展
             expanded: false,
-            order: 100,
+            //排序值
+            order: 1,
           }
         },
         children: [
           {
-            path: 'ckeditor',
-            component: Ckeditor,
+            path: 'category',
+            component: Category,
             data: {
               menu: {
                 title: '分类目录',

@@ -34,8 +34,8 @@ $progress-default: rgba($default-text, 0.95);
 $bootstrap-panel-radius: 7px;
 $bootstrap-panel-text: #ffffff;
 $bootstrap-panel-bg: rgba(255, 255, 255, 0.1);
-$bootstrap-panel-header-bg: transparent;
-$bootstrap-panel-header-border: 1px solid $border-light;
+$bootstrap-panel-header-bg: $topbar;
+$bootstrap-panel-header-border: 1px solid $topbar-border;
 $bootstrap-panel-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 
 // color scheme
@@ -64,14 +64,14 @@ $warning-bg: tint($warning, 20%);
 $danger-bg: tint($danger, 20%);
 
 // link colors
-$activelink: #285eb8;
-$hoverlink: darken($activelink, 20%);
+$activelink: $default;
+$hoverlink: $primary;
 
 // main background
 @mixin body-bg() {
   background-color: $body-bg;
 
-  $mainBgUrl: $images-root + 'blur-bg-blurred.jpg';
+  // $mainBgUrl: $images-root + 'blur-bg-blurred.jpg';
 
   &::before {
     content: '';
@@ -80,8 +80,9 @@ $hoverlink: darken($activelink, 20%);
     height: 100%;
     top: 0;
     left: 0;
-    background: url($mainBgUrl) no-repeat center center;
-    background-size: cover;
+    // background: url($mainBgUrl) no-repeat center center;
+    // background-size: cover;
+    background-color: $sidebar-sublist;
     will-change: transform;
     z-index: 0;
   }
