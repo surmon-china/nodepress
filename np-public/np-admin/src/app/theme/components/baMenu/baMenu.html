@@ -1,5 +1,6 @@
 <aside class="al-sidebar" (mouseleave)="hoverElemTop=outOfArea" sidebarResize>
   <ul id="al-sidebar-list" class="al-sidebar-list" baSlimScroll [baSlimScrollOptions]="{height: menuHeight}">
+    <ba-menu-user></ba-menu-user>
     <ba-menu-item
       [menuItem]="item"
       (itemHover)="hoverItem($event)"

@@ -2,14 +2,15 @@
 @import '../../components/baMsgCenter/baMsgCenter';
 
 .page-top {
-  background-color: $sidebar;
+  background-color: $topbar;
   position: fixed;
   z-index: 904;
-  box-shadow: 2px 0 3px rgba(0, 0, 0, 0.5);
-  height: 66px;
+  // box-shadow: 2px 0 3px rgba(0, 0, 0, 0.5);
+  height: 45px;
   width: 100%;
   min-width: $resMin;
-  padding: 0 32px 0 40px;
+  padding: 0 20px 0 0px;
+  border-bottom: 3px solid $topbar-border;
 
   .dropdown-toggle::after {
     display: none;
@@ -23,24 +24,32 @@
 }
 
 a.al-logo {
-  color: $sidebar-text;
+  color: $topbar-text;
   display: block;
-  font-size: 24px;
+  font-size: 20px;
   font-family: $font-family;
   white-space: nowrap;
   float: left;
   outline: none !important;
-  line-height: 60px;
+  line-height: 45px;
+  padding: 0 30px;
+  // width: $sidebar-width;
 
-  span {
+  .socicon {
+    margin-right: 5px;
     color: $primary;
+  }
+
+  .logo-text {
+    font-family: initial;
+    font-size: 18px;
   }
 }
 
 .user-profile {
   float: right;
   min-width: 230px;
-  margin-top: 10px;
+  // margin-top: 10px;
 }
 
 .al-user-profile {
@@ -48,23 +57,28 @@ a.al-logo {
   margin-right: 12px;
   transition: all .15s ease-in-out;
   padding: 0;
-  width: 36px;
-  height: 36px;
+  height: 45px;
   border: 0;
   opacity: 1;
   position: relative;
   a {
     display: block;
+    // height: 45px;
+
+    &.profile-toggle-link {
+      height: 45px;
+    }
   }
   img {
-    width: 45px;
-    height: 45px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    margin-top: 6px;
   }
 }
 
 a.refresh-data {
-  color: $sidebar-text;
+  color: $topbar-text;
   font-size: 13px;
   text-decoration: none;
   font-weight: $font-normal;
@@ -82,11 +96,11 @@ a.collapse-menu-link {
   cursor: pointer;
   display: block;
   text-decoration: none;
-  line-height: 42px;
-  color: $sidebar-text;
+  line-height: 45px;
+  color: $topbar-text;
   padding: 0;
   float: left;
-  margin: 11px 0 0 25px;
+  margin: 0px 0 0 10px;
 
   &:hover {
     text-decoration: none;
@@ -116,7 +130,7 @@ a.collapse-menu-link {
 
 .search {
   text-shadow: none;
-  color: $sidebar-text;
+  color: $topbar-text;
   font-size: 13px;
   line-height: 25px;
   transition: all 0.5s ease;

@@ -1,12 +1,15 @@
 <div class="page-top clearfix" baScrollPosition maxHeight="50" (scrollChange)="scrolledChanged($event)"
      [ngClass]="{scrolled: isScrolled}">
-  <a href="#/pages/dashboard" class="al-logo clearfix"><span>ng2-</span>admin</a>
+  <a href="#/pages/dashboard" class="al-logo clearfix">
+    <i class="socicon">]</i>
+    <span class="logo-text">NodePress</span>
+  </a>
   <a (click)="toggleMenu()" class="collapse-menu-link ion-navicon"></a>
 
-  <div class="search">
+  <!-- <div class="search">
     <i class="ion-ios-search-strong" ng-click="startSearch()"></i>
-    <input id="searchInput" type="text" placeholder="Search for...">
-  </div>
+    <input id="searchInput" type="text" placeholder="关键字搜索功能">
+  </div> -->
 
   <div class="user-profile clearfix">
     <div class="dropdown al-user-profile">

@@ -1,30 +1,17 @@
-[![Build Status](https://travis-ci.org/akveo/ng2-admin.svg?branch=master)](https://travis-ci.org/akveo/ng2-admin)
-[![Dependency Status](https://david-dm.org/akveo/ng2-admin.svg)](https://david-dm.org/akveo/ng2-admin)
-
-# Admin panel framework based on Angular 2, Bootstrap 4 and Webpack
-
-Admin template made with :heart:  by [Akveo team](http://akveo.com/). Follow us on [Twitter](https://twitter.com/akveo_inc) to get latest news about this template first!
-
 ### Demo
-
-<a target="_blank" href="http://akveo.com/ng2-admin/"><img src="http://i.imgur.com/QK9AzHj.jpg" width="600" alt="Sky Blue"/></a>
 
 <a target="_blank" href="http://akveo.com/ng2-admin/">Live Demo</a>
 
-## Angular 1.x version
-Here you can find Angular 1.x based version: [Blur Admin](http://akveo.github.io/blur-admin/)
- 
-## Documentation
-Installation, customization and other useful articles: https://akveo.github.io/ng2-admin/
+## Angular 1.x 版本 
+
+[Blur Admin](http://akveo.github.io/blur-admin/)
+
+## Angular 2 版本（当前使用）&& Documentation
+
+[ng2-Admin](https://akveo.github.io/ng2-admin/)
 
 ## Based on
 Angular 2, Bootstrap 4, Webpack and lots of awesome modules and plugins
-
-## How can I support developers?
-- Star our GitHub repo :star:
-- Create pull requests, submit bugs, suggest new features or documentation updates :wrench:
-- Follow us on [Twitter](https://twitter.com/akveo_inc) :feet:
-- Like our page on [Facebook](https://www.facebook.com/akveo/) :thumbsup:
 
 ## Can I hire you guys?
 Yes!  Visit [our homepage](http://akveo.com/) or simply leave us a note to [contact@akveo.com](mailto:contact@akveo.com). We will be happy to work with you!
@@ -42,10 +29,58 @@ Yes!  Visit [our homepage](http://akveo.com/) or simply leave us a note to [cont
 * Maps (Google, Leaflet, amMap)
 * and many more!
 
-##License
-[MIT](LICENSE.txt) license.
+### 文件架构
 
-### From akveo
+config 开发配置
 
-Enjoy :metal:
-We're always happy to hear your feedback!
+docs 文档
+
+src 工程
+
+  - index.html 入口文件
+
+  - main.browser.ts 主程序入口
+
+  - polyfills.browser.ts 兼容包
+
+  - vendor.browser.ts 程序框架
+
+  - custom.browser.ts 其他扩展
+
+  - assets 资源文件夹
+
+  - platform 平台文件夹
+
+  - app 程序文件夹
+
+    * index.ts 程序入口
+
+    * app.scss
+
+    * app.state.ts 好像是状态中转
+
+    * app.routes.ts 路由文件，引入page组件里面定义的路由
+
+    * app.loader.ts 加载器Scss 可能是用来做初始化或者监听的
+
+    * app.component.ts app入口组件啊就像Vue.App
+
+    * page （页面文件夹 => 对应一个组件）
+
+      - ui  （公用UI组件）
+
+        * components 组件
+
+      - pages.routes.ts 总路由和左侧菜单配置
+
+    * theme（一些公用的东西）
+
+      - components 公用组件
+
+      - directives 公用指令
+
+      - pipes      管道 - 貌似是代替过滤器的东西
+
+      - services   公用服务（一些异步类的数据处理，包括HTTP）
+
+      - validators 验证器
