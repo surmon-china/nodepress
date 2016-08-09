@@ -1,7 +1,79 @@
 <div class="row">
-  <div class="col-md-12">
-    <ba-card title="文章列表哦" baCardClass="with-scroll">
-      我是列表
+  <div class="col-md-4 col-xs-4">
+    <ba-card title="添加分类" baCardClass="with-scroll">
+      <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">名称</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="分类名称">
+          <span class="help-block sub-little-text">这将是它在站点上显示的名字</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">别名</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="分类别名">
+          <span class="help-block sub-little-text">“别名”是在URL中使用的别称，建议小写，字母、数字、连字符（-）</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleSelect1">父分类</label>
+          <select class="form-control" id="exampleSelect1">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          <span class="help-block sub-little-text">可以选择父级分类</span>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">描述</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="分类描述">
+          <span class="help-block sub-little-text">某些地方可能用到</span>
+        </div>
+        <button type="submit" class="btn btn-success">添加分类目录</button>
+      </form>
+    </ba-card>
+  </div>
+  <div class="col-md-8 col-xs-8">
+    <ba-card title="分类管理" baCardClass="with-scroll">
+      <table class="table tablehover table-striped table-no-borders black-muted-bg table-enrich">
+        <thead class="thead-inverse">
+          <tr>
+            <th>
+              <input type="checkbox">
+            </th>
+            <th>ID</th>
+            <th>名称</th>
+            <th>描述</th>
+            <th>别名</th>
+            <th>文章</th>
+            <th width="30%" class="text-center">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="#num of [1,2,3,4,5,6,7,8,9,10]">
+            <td>
+              <input type="checkbox">
+            </td>
+            <td>
+              <span>{{ num }}</span>
+            </td>
+            <td>
+              <a href="">
+                <h4 class="strong">- Code</h4>
+              </a>
+            </td>
+            <td>代码分类</td>
+            <td>code</td>
+            <td>34</td>
+            <td>
+              <div class="button-wrapper">
+                <button class="btn btn-primary btn-sm" type="button">编辑分类</button>
+                <button class="btn btn-danger btn-sm" type="button">删除分类</button>
+                <button class="btn btn-success btn-sm" type="button">查看分类</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </ba-card>
   </div>
 </div>
