@@ -1,11 +1,32 @@
 <div class="row">
   <div class="col-lg-12 col-md-12">
-    <ba-card title="所有文章" baCardClass="with-scroll table-panel">
+    <ba-card title="" baCardClass="with-scroll table-panel">
+      <div class="contnet-top-tools">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-xm btn-default active">全部</button>
+          <button type="button" class="btn btn-xm btn-default">已发布</button>
+          <button type="button" class="btn btn-xm btn-default">草稿</button>
+          <button type="button" class="btn btn-xm btn-default">回收站</button>
+        </div>
+        <div class="pull-right col-xs-2">
+          <div class="input-group">
+            <input type="text" class="form-control with-default-addon" placeholder="文章标题、描述">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">搜索</button>
+            </span>
+          </div>
+        </div>
+      </div>
       <div class="table-responsive">
         <table class="table tablehover table-striped table-no-borders black-muted-bg table-enrich">
           <thead class="thead-inverse">
             <tr>
-              <th>ID</th>
+              <th>
+                <input type="checkbox">
+              </th>
+              <th>
+                <span>ID</span>
+              </th>
               <th width="40%">标题</th>
               <th>作者</th>
               <th>分类目录</th>
@@ -17,8 +38,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="#num of [1,2,3,4,5,6]">
-              <td>{{ num }}</td>
+            <tr *ngFor="#num of [1,2,3,4,5,6,7,8,9,10]">
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>
+                <span>{{ num }}</span>
+              </td>
               <td>
                 <a href="">
                   <h4 class="strong">一群各怀鬼胎的人心照不宣的骗局</h4>
