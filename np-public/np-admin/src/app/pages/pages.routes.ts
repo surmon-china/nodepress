@@ -24,8 +24,11 @@ import {Components} from './components/components.component';
 import {TreeView} from './components/components/treeView/treeView.component';
 
 // 文章
-import {Articles} from './articles/Articles.component';
-import {Category} from './articles/components/category/category.component';
+import {ArticleTag} from './article/components/tag/tag.component';
+import {ArticleNew} from './article/components/new/new.component';
+import {ArticleList} from './article/components/list/list.component';
+import {ArticleCategory} from './article/components/category/category.component';
+
 
 
 //noinspection TypeScriptValidateTypes
@@ -50,8 +53,6 @@ export const PagesRoutes:RouterConfig = [
       {
         // 路径
         path: 'article',
-        // 组件
-        component: Articles,
         // 数据
         data: {
           // 菜单
@@ -69,17 +70,8 @@ export const PagesRoutes:RouterConfig = [
         },
         children: [
           {
-            path: 'category',
-            component: Category,
-            data: {
-              menu: {
-                title: '分类目录',
-              }
-            }
-          },
-          {
-            path: 'ckeditor',
-            component: Ckeditor,
+            path: 'all',
+            component: ArticleList,
             data: {
               menu: {
                 title: '所有文章',
@@ -87,8 +79,17 @@ export const PagesRoutes:RouterConfig = [
             }
           },
           {
-            path: 'ckeditor',
-            component: Ckeditor,
+            path: 'category',
+            component: ArticleCategory,
+            data: {
+              menu: {
+                title: '分类目录',
+              }
+            }
+          },
+          {
+            path: 'post',
+            component: ArticleNew,
             data: {
               menu: {
                 title: '发布文章',
@@ -96,8 +97,8 @@ export const PagesRoutes:RouterConfig = [
             }
           },
           {
-            path: 'ckeditor',
-            component: Ckeditor,
+            path: 'tag',
+            component: ArticleTag,
             data: {
               menu: {
                 title: '文章标签',
