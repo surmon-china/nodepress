@@ -12,7 +12,7 @@ $hover: 24;
 }
 
 .btn:hover {
-  transform: scale(1.2);
+  transform: scale(1.07);
 }
 
 @mixin styleButton($color, $borderColor) {
@@ -73,7 +73,7 @@ button.btn.btn-primary {
 button.btn.btn-default {
   border-width: 1px;
   color: $content-text;
-  @include buttonColor(transparent, $border);
+  @include buttonColor($topbar, $topbar);
   &:active, &:target {
     background-color: rgba(0, 0, 0, 0.2);
     color: $default-text;
@@ -222,7 +222,7 @@ button.progress-button {
   }
 
   &.btn.btn-default {
-    @include progressButtonColor($default);
+    @include progressButtonColor($topbar);
   }
 
   &.btn.btn-success {
@@ -278,17 +278,17 @@ button.progress-button {
 
 .dropdown button.btn.btn-default.dropdown-toggle {
   color: $default-text;
-  border: 1px solid $border;
-  background-color: transparent;
+  border: 1px solid $topbar;
+  background-color: $topbar;
   &:focus, &:active {
-    background-color: $default;
+    background-color: $topbar;
   }
 }
 
 .ng2, .blur {
   .dropdown button.btn.btn-default.dropdown-toggle {
     &:focus, &:active {
-      background-color: transparent;
+      background-color: $topbar;
     }
   }
 }

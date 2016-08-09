@@ -39,11 +39,12 @@ $bootstrap-panel-header-border: 1px solid $topbar-border;
 $bootstrap-panel-shadow: 1px 1px 4px rgba(0, 0, 0, 0.15);
 
 // color scheme
-$primary: #209e91 !default;
-$info: #2dacd1 !default;
-$success: #90b900 !default;
-$warning: #dfb81c !default;
-$danger: #e85656 !default;
+// $primary: #209e91 !default;
+$primary: #017170 !default;
+$info: #3498db !default;
+$success: #287562 !default;
+$warning: #f39c12 !default;
+$danger: #e74c3c !default;
 
 $primary-light: tint($primary, 30%);
 $info-light: tint($info, 30%);

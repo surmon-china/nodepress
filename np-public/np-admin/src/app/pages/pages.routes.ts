@@ -74,7 +74,7 @@ export const PagesRoutes:RouterConfig = [
             component: ArticleList,
             data: {
               menu: {
-                title: '所有文章',
+                title: '文章管理',
               }
             }
           },
