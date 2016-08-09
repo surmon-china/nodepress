@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12">
+    <ba-card title="所有文章" baCardClass="with-scroll table-panel">
+      <div class="table-responsive">
+        <table class="table tablehover table-striped table-no-borders black-muted-bg table-enrich">
+          <thead class="thead-inverse">
+            <tr>
+              <th>ID</th>
+              <th width="40%">标题</th>
+              <th>作者</th>
+              <th>分类目录</th>
+              <th width="150">标签</th>
+              <th>评论</th>
+              <th>日期</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="#num of [1,2,3,4,5,6]">
+              <td>{{ num }}</td>
+              <td>
+                <a href="">
+                  <h4 class="strong">一群各怀鬼胎的人心照不宣的骗局</h4>
+                </a>
+                <small>国内创业潮从前年到今年年中，近乎到了疯狂的程度。从政府政策上的刺激，到整个金融界的参与，助推着是不是创业者的人都以自称创业者为傲。背后的原因自然是政府无奈的经济结构调整。中国正面临着近20年来最大的经济危机威胁，传统行业的产能过剩，制造业的成本的上升，都对中国整体依赖的经济体系产生了极大极大的影响。于是，科技业的发展是政府急切期待的。</small>
+              </td>
+              <td>
+                <a href="">Surmon</a>
+              </td>
+              <td>
+                <ul class="list-unstyled">
+                  <li><a href="">Think</a></li>
+                  <li><a href="">Code</a></li>
+                </ul>
+              </td>
+              <td>
+                <ul class="list-unstyled">
+                  <li><a href="">JavaScript</a></li>
+                  <li><a href="">Angular.js</a></li>
+                </ul>
+              </td>
+              <td>
+                <a href="">8条评论</a>
+              </td>
+              <td>2016/08/09 12:57:21</td>
+              <td>已发布</td>
+              <td>
+                <div class="button-wrapper">
+                  <button class="btn btn-primary btn-sm" type="button">编辑文章</button>
+                </div>
+                <div class="button-wrapper">
+                  <button class="btn btn-info btn-sm" type="button">快速编辑</button>
+                </div>
+                <div class="button-wrapper">
+                  <button class="btn btn-danger btn-sm" type="button">删除文章</button>
+                </div>
+                <div class="button-wrapper">
+                  <button class="btn btn-success btn-sm" type="button">查看文章</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ba-card>
+  </div>
+</div>

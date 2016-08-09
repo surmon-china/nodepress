@@ -14,13 +14,13 @@ $angle-right: "\f101";
   background-color: $sidebar;
   height: 100%;
   position: fixed;
-  border-right: 3px solid $sidebar-border;
+  // border-right: 3px solid $sidebar-border;
 }
 
 .al-sidebar-list {
   margin: 0;
   overflow: hidden;
-  padding: 0 0 10px 0;
+  padding: 0;
   list-style: none;
 }
 
@@ -58,7 +58,7 @@ $angle-right: "\f101";
 .ba-sidebar-item-expanded {
   > ul.al-sidebar-sublist {
     display: block!important;
-    background-color: $sidebar-sublist;
+    // background-color: $sidebar-sublist;
   }
 
 }
@@ -313,6 +313,11 @@ a.al-sidebar-user {
 }
 
 .menu-collapsed {
+  
+  ba-menu-user {
+    display: none;
+  }
+
   .slimScrollBar, .slimScrollRail {
     display: none!important;
   }

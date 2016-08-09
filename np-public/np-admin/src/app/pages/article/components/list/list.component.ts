@@ -2,12 +2,12 @@ import {Component} from '@angular/core';
 import {BaCard} from '../../../../theme/components/baCard';
 
 @Component({
-  selector: 'category',
+  selector: 'list',
   directives: [BaCard],
-  template: require('./category.html')
+  template: require('./list.html')
 })
 
-export class Category {
+export class ArticleList {
   constructor() {
   }
 }
