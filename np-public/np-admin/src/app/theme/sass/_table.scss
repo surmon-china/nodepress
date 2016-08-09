@@ -51,6 +51,19 @@
   }
 }
 
+.table-enrich {
+
+  > tbody {
+
+    > tr {
+
+      > td {
+        padding: 10px;
+      }
+    }
+  }
+}
+
 .editable-wrap .btn-group.form-control {
   background-color: transparent;
 }
