@@ -34,7 +34,7 @@ import {ArticleCategory} from './article/components/category/category.component'
 //noinspection TypeScriptValidateTypes
 export const PagesRoutes:RouterConfig = [
   {
-    path: 'pages',
+    path: 'admin',
     component: Pages,
     children: [
       {
@@ -52,13 +52,32 @@ export const PagesRoutes:RouterConfig = [
       },
       {
         // 路径
+        path: 'announcement',
+        // 数据
+        data: {
+          // 菜单
+          menu: {
+            // 菜单名称
+            title: '公告管理',
+            icon: 'ion-edit',
+            // 是否选中?
+            selected: false,
+            // 是否可伸展
+            expanded: false,
+            //排序值
+            order: 2,
+          }
+        }
+      },
+      {
+        // 路径
         path: 'article',
         // 数据
         data: {
           // 菜单
           menu: {
             // 菜单名称
-            title: '文章',
+            title: '文章管理',
             icon: 'ion-edit',
             // 是否选中?
             selected: false,
@@ -74,7 +93,7 @@ export const PagesRoutes:RouterConfig = [
             component: ArticleList,
             data: {
               menu: {
-                title: '文章管理',
+                title: '所有文章',
               }
             }
           },
@@ -108,273 +127,184 @@ export const PagesRoutes:RouterConfig = [
         ]
       },
       {
-        path: 'editors',
-        component: Editors,
+        // 路径
+        path: 'page',
+        // 数据
         data: {
+          // 菜单
           menu: {
-            title: '编辑器',
+            // 菜单名称
+            title: '页面管理',
             icon: 'ion-edit',
+            // 是否选中?
             selected: false,
+            // 是否可伸展
             expanded: false,
-            order: 100,
+            //排序值
+            order: 1,
           }
         },
         children: [
           {
-            path: 'ckeditor',
-            component: Ckeditor,
+            path: 'all',
+            component: ArticleList,
             data: {
               menu: {
-                title: 'CKEditor',
+                title: '所有页面',
+              }
+            }
+          },
+          {
+            path: 'post',
+            component: ArticleNew,
+            data: {
+              menu: {
+                title: '新建页面',
               }
             }
           }
         ]
       },
       {
-        path: 'components',
-        component: Components,
+        path: 'comment',
+        component: Dashboard,
         data: {
           menu: {
-            title: '组件',
+            title: '评论管理',
+            icon: 'ion-android-home',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
+      {
+        path: 'menu',
+        component: Dashboard,
+        data: {
+          menu: {
+            title: '菜单管理',
+            icon: 'ion-android-home',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
+      {
+        path: 'theme',
+        component: Dashboard,
+        data: {
+          menu: {
+            title: '主题管理',
+            icon: 'ion-android-home',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
+      {
+        path: 'file',
+        component: Dashboard,
+        data: {
+          menu: {
+            title: '文件管理',
+            icon: 'ion-android-home',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
+      {
+        path: 'plugin',
+        component: Dashboard,
+        data: {
+          menu: {
+            title: '扩展管理',
+            icon: 'ion-android-home',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
+      {
+        path: 'code',
+        component: Dashboard,
+        data: {
+          menu: {
+            title: '代码管理',
+            icon: 'ion-android-home',
+            selected: false,
+            expanded: false,
+            order: 0
+          }
+        }
+      },
+      {
+        // 路径
+        path: 'option',
+        // 数据
+        data: {
+          // 菜单
+          menu: {
+            // 菜单名称
+            title: '全局设置',
             icon: 'ion-gear-a',
+            // 是否选中?
             selected: false,
+            // 是否可伸展
             expanded: false,
-            order: 250,
+            //排序值
+            order: 1,
           }
         },
         children: [
           {
-            path: 'treeview',
-            component: TreeView,
+            path: 'system',
+            component: ArticleList,
             data: {
               menu: {
-                title: 'Tree View',
-              }
-            }
-          }
-        ]
-      },
-      {
-        path: 'charts',
-        component: Charts,
-        data: {
-          menu: {
-            title: '图表',
-            icon: 'ion-stats-bars',
-            selected: false,
-            expanded: false,
-            order: 200,
-          }
-        },
-        children: [
-          {
-            path: 'chartist-js',
-            component: ChartistJs,
-            data: {
-              menu: {
-                title: 'Chartist.Js',
-              }
-            }
-          }
-        ]
-      },
-      {
-        path: 'ui',
-        component: Ui,
-        data: {
-          menu: {
-            title: 'UI 元素',
-            icon: 'ion-android-laptop',
-            selected: false,
-            expanded: false,
-            order: 300,
-          }
-        },
-        children: [
-          {
-            path: 'typography',
-            component: Typography,
-            data: {
-              menu: {
-                title: '排版',
+                title: '程序设置',
               }
             }
           },
           {
-            path: 'buttons',
-            component: Buttons,
+            path: 'base',
+            component: ArticleCategory,
             data: {
               menu: {
-                title: '按钮',
+                title: '基本设置',
               }
             }
           },
           {
-            path: 'icons',
-            component: Icons,
+            path: 'senior',
+            component: ArticleNew,
             data: {
               menu: {
-                title: '图表',
+                title: '高级设置',
               }
             }
           },
           {
-            path: 'grid',
-            component: Grid,
+            path: 'other',
+            component: ArticleTag,
             data: {
               menu: {
-                title: '格栅',
+                title: '其他设置',
               }
             }
           },
         ]
       },
       {
-        path: 'forms',
-        component: Forms,
+        path: 'demo',
         data: {
           menu: {
-            title: '表单元素',
-            icon: 'ion-compose',
-            selected: false,
-            expanded: false,
-            order: 400,
-          }
-        },
-        children: [
-          {
-            path: 'inputs',
-            component: Inputs,
-            data: {
-              menu: {
-                title: 'Form Inputs',
-              }
-            }
-          },
-          {
-            path: 'layouts',
-            component: Layouts,
-            data: {
-              menu: {
-                title: 'Form Layouts',
-              }
-            }
-          }
-        ]
-      },
-      {
-        path: 'tables',
-        component: Tables,
-        data: {
-          menu: {
-            title: '表格',
-            icon: 'ion-grid',
-            selected: false,
-            expanded: false,
-            order: 500,
-          }
-        },
-        children: [
-          {
-            path: 'basictables',
-            component: BasicTables,
-            data: {
-              menu: {
-                title: 'Basic Tables',
-              }
-            }
-          }
-        ]
-      },
-      {
-        path: 'maps',
-        component: Maps,
-        data: {
-          menu: {
-            title: '地图',
-            icon: 'ion-ios-location-outline',
-            selected: false,
-            expanded: false,
-            order: 600,
-          }
-        },
-        children: [
-          {
-            path: 'googlemaps',
-            component: GoogleMaps,
-            data: {
-              menu: {
-                title: 'Google Maps',
-              }
-            }
-          },
-          {
-            path: 'leafletmaps',
-            component: LeafletMaps,
-            data: {
-              menu: {
-                title: 'Leaflet Maps',
-              }
-            }
-          },
-          {
-            path: 'bubblemaps',
-            component: BubbleMaps,
-            data: {
-              menu: {
-                title: 'Bubble Maps',
-              }
-            }
-          },
-          {
-            path: 'linemaps',
-            component: LineMaps,
-            data: {
-              menu: {
-                title: 'Line Maps',
-              }
-            }
-          }
-        ]
-      },
-      {
-        path: '',
-        data: {
-          menu: {
-            title: '页面',
-            icon: 'ion-document',
-            selected: false,
-            expanded: false,
-            order: 650,
-          }
-        },
-        children: [
-          {
-            path: '',
-            data: {
-              menu: {
-                title: '登录',
-                url: '#/login'
-              }
-            }
-          },
-          {
-            path: '',
-            data: {
-              menu: {
-                title: '注册',
-                url: '#/register'
-              }
-            }
-          }
-        ]
-      },
-      {
-        path: '',
-        data: {
-          menu: {
-            title: '一级菜单',
+            title: 'Demo演示',
             icon: 'ion-ios-more',
             selected: false,
             expanded: false,
@@ -386,17 +316,254 @@ export const PagesRoutes:RouterConfig = [
             path: '',
             data: {
               menu: {
-                title: '一级菜单1.1',
-                url: '#'
+                title: '官方文档',
+                url: 'https://akveo.github.io/ng2-admin/',
+                icon: 'ion-android-exit',
+                order: 800,
+                target: '_blank'
               }
             }
+          },
+          {
+            path: 'editors',
+            component: Editors,
+            data: {
+              menu: {
+                title: '编辑器',
+                icon: 'ion-edit',
+                selected: false,
+                expanded: false,
+                order: 100,
+              }
+            },
+            children: [
+              {
+                path: 'ckeditor',
+                component: Ckeditor,
+                data: {
+                  menu: {
+                    title: 'CKEditor',
+                  }
+                }
+              }
+            ]
+          },
+          {
+            path: 'components',
+            component: Components,
+            data: {
+              menu: {
+                title: '组件',
+                icon: 'ion-gear-a',
+                selected: false,
+                expanded: false,
+                order: 250,
+              }
+            },
+            children: [
+              {
+                path: 'treeview',
+                component: TreeView,
+                data: {
+                  menu: {
+                    title: 'Tree View',
+                  }
+                }
+              }
+            ]
+          },
+          {
+            path: 'charts',
+            component: Charts,
+            data: {
+              menu: {
+                title: '图表',
+                icon: 'ion-stats-bars',
+                selected: false,
+                expanded: false,
+                order: 200,
+              }
+            },
+            children: [
+              {
+                path: 'chartist-js',
+                component: ChartistJs,
+                data: {
+                  menu: {
+                    title: 'Chartist.Js',
+                  }
+                }
+              }
+            ]
+          },
+          {
+            path: 'ui',
+            component: Ui,
+            data: {
+              menu: {
+                title: 'UI 元素',
+                icon: 'ion-android-laptop',
+                selected: false,
+                expanded: false,
+                order: 300,
+              }
+            },
+            children: [
+              {
+                path: 'typography',
+                component: Typography,
+                data: {
+                  menu: {
+                    title: '排版',
+                  }
+                }
+              },
+              {
+                path: 'buttons',
+                component: Buttons,
+                data: {
+                  menu: {
+                    title: '按钮',
+                  }
+                }
+              },
+              {
+                path: 'icons',
+                component: Icons,
+                data: {
+                  menu: {
+                    title: '图表',
+                  }
+                }
+              },
+              {
+                path: 'grid',
+                component: Grid,
+                data: {
+                  menu: {
+                    title: '格栅',
+                  }
+                }
+              },
+            ]
+          },
+          {
+            path: 'forms',
+            component: Forms,
+            data: {
+              menu: {
+                title: '表单元素',
+                icon: 'ion-compose',
+                selected: false,
+                expanded: false,
+                order: 400,
+              }
+            },
+            children: [
+              {
+                path: 'inputs',
+                component: Inputs,
+                data: {
+                  menu: {
+                    title: 'Form Inputs',
+                  }
+                }
+              },
+              {
+                path: 'layouts',
+                component: Layouts,
+                data: {
+                  menu: {
+                    title: 'Form Layouts',
+                  }
+                }
+              }
+            ]
+          },
+          {
+            path: 'tables',
+            component: Tables,
+            data: {
+              menu: {
+                title: '表格',
+                icon: 'ion-grid',
+                selected: false,
+                expanded: false,
+                order: 500,
+              }
+            },
+            children: [
+              {
+                path: 'basictables',
+                component: BasicTables,
+                data: {
+                  menu: {
+                    title: 'Basic Tables',
+                  }
+                }
+              }
+            ]
+          },
+          {
+            path: 'maps',
+            component: Maps,
+            data: {
+              menu: {
+                title: '地图',
+                icon: 'ion-ios-location-outline',
+                selected: false,
+                expanded: false,
+                order: 600,
+              }
+            },
+            children: [
+              {
+                path: 'googlemaps',
+                component: GoogleMaps,
+                data: {
+                  menu: {
+                    title: 'Google Maps',
+                  }
+                }
+              },
+              {
+                path: 'leafletmaps',
+                component: LeafletMaps,
+                data: {
+                  menu: {
+                    title: 'Leaflet Maps',
+                  }
+                }
+              },
+              {
+                path: 'bubblemaps',
+                component: BubbleMaps,
+                data: {
+                  menu: {
+                    title: 'Bubble Maps',
+                  }
+                }
+              },
+              {
+                path: 'linemaps',
+                component: LineMaps,
+                data: {
+                  menu: {
+                    title: 'Line Maps',
+                  }
+                }
+              }
+            ]
           },
           {
             path: '',
             data: {
               menu: {
-                title: '一级菜单1.2',
-                url: '#'
+                title: '页面',
+                icon: 'ion-document',
+                selected: false,
+                expanded: false,
+                order: 650,
               }
             },
             children: [
@@ -404,26 +571,23 @@ export const PagesRoutes:RouterConfig = [
                 path: '',
                 data: {
                   menu: {
-                    title: '二级菜单1.2.1',
-                    url: '#'
+                    title: '登录',
+                    url: '#/login'
+                  }
+                }
+              },
+              {
+                path: '',
+                data: {
+                  menu: {
+                    title: '注册',
+                    url: '#/register'
                   }
                 }
               }
             ]
-          }
+          },
         ]
-      },
-      {
-        path: '',
-        data: {
-          menu: {
-            title: '官方文档',
-            url: 'https://akveo.github.io/ng2-admin/',
-            icon: 'ion-android-exit',
-            order: 800,
-            target: '_blank'
-          }
-        }
       }
     ]
   }
