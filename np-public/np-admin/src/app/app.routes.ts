@@ -9,7 +9,7 @@ export const routes:RouterConfig = [
   ...PagesRoutes,
   {
     path: '**',
-    redirectTo: '/pages/dashboard'
+    redirectTo: '/admin/dashboard'
   },
 ];
 
