@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-md-4 col-xs-4">
+    <ba-card title="添加公告" baCardClass="with-scroll">
+      <form>
+        <div class="form-group">
+          <label for="announcementType">
+            <h5>公告状态</h5>
+          </label>
+          <select class="form-control" id="announcementType">
+            <option>已发布</option>
+            <option>未发布</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="announcementContent">
+            <h5>公告内容</h5>
+          </label>
+          <textarea name="announcementContent" 
+                    id="announcementContent" 
+                    class="form-control"
+                    cols="30" 
+                    rows="20" 
+                    placeholder="公告内容 支持html">
+          </textarea>
+        </div>
+        <button type="submit" class="btn btn-success">添加公告</button>
+      </form>
+    </ba-card>
+  </div>
+  <div class="col-md-8 col-xs-8">
+    <ba-card title="公告管理" baCardClass="with-scroll">
+      <table class="table tablehover table-striped table-no-borders black-muted-bg table-enrich">
+        <thead class="thead-inverse">
+          <tr>
+            <th>
+              <input type="checkbox">
+            </th>
+            <th>ID</th>
+            <th width="50%">内容</th>
+            <th class="text-center">状态</th>
+            <th width="20%" class="text-center">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="#num of [1,2,3,4,5,6,7,8,9,10]">
+            <td>
+              <input type="checkbox">
+            </td>
+            <td>
+              <span>{{ num }}</span>
+            </td>
+            <td>
+              <div>
+                <a href="" target="_blank">NodePress发布啦！点击此处前往GitHub Star哦</a>
+                发布了发布了发布了
+                发布了发布了发布了
+                发布了发布了发布了
+                发布了发布了发布了
+                发布了发布了发布了
+              </div>
+            </td>
+            <td align="center">已发布</td>
+            <td>
+              <ul class="btn-list clearfix text-center">
+                <li>
+                  <button class="btn btn-success btn-sm" type="button">编辑公告</button>
+                </li>
+                <li>
+                  <button class="btn btn-danger btn-sm" type="button">删除公告</button>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ba-card>
+  </div>
+</div>

@@ -1,5 +1,4 @@
 import {RouterConfig} from '@angular/router';
-import {Dashboard} from './dashboard/dashboard.component';
 import {Charts} from './charts/charts.component';
 import {ChartistJs} from './charts/components/chartistJs/chartistJs.component';
 import {Pages} from './pages.component';
@@ -23,11 +22,17 @@ import {Ckeditor} from './editors/components/ckeditor/ckeditor.component';
 import {Components} from './components/components.component';
 import {TreeView} from './components/components/treeView/treeView.component';
 
-// 文章
-import {ArticleTag} from './article/components/tag/tag.component';
-import {ArticleNew} from './article/components/new/new.component';
-import {ArticleList} from './article/components/list/list.component';
-import {ArticleCategory} from './article/components/category/category.component';
+// 仪表盘
+import {Dashboard} from './dashboard/dashboard.component';
+
+// 公告管理
+import {Announcement} from './announcement/announcement.component';
+
+// 文章管理
+import {ArticleTag} from './article/tag/tag.component';
+import {ArticleNew} from './article/new/new.component';
+import {ArticleList} from './article/list/list.component';
+import {ArticleCategory} from './article/category/category.component';
 
 
 
@@ -51,21 +56,15 @@ export const PagesRoutes:RouterConfig = [
         }
       },
       {
-        // 路径
         path: 'announcement',
-        // 数据
+        component: Announcement,
         data: {
-          // 菜单
           menu: {
-            // 菜单名称
             title: '公告管理',
-            icon: 'ion-edit',
-            // 是否选中?
+            icon: 'ion-radio-waves',
             selected: false,
-            // 是否可伸展
             expanded: false,
-            //排序值
-            order: 2,
+            order: 1,
           }
         }
       },
@@ -78,13 +77,13 @@ export const PagesRoutes:RouterConfig = [
           menu: {
             // 菜单名称
             title: '文章管理',
-            icon: 'ion-edit',
-            // 是否选中?
+            icon: 'ion-pin',
+            // 是否选中
             selected: false,
             // 是否可伸展
             expanded: false,
             //排序值
-            order: 1,
+            order: 2,
           }
         },
         children: [
@@ -135,13 +134,13 @@ export const PagesRoutes:RouterConfig = [
           menu: {
             // 菜单名称
             title: '页面管理',
-            icon: 'ion-edit',
+            icon: 'ion-document-text',
             // 是否选中?
             selected: false,
             // 是否可伸展
             expanded: false,
             //排序值
-            order: 1,
+            order: 3,
           }
         },
         children: [
@@ -171,10 +170,10 @@ export const PagesRoutes:RouterConfig = [
         data: {
           menu: {
             title: '评论管理',
-            icon: 'ion-android-home',
+            icon: 'ion-chatbox-working',
             selected: false,
             expanded: false,
-            order: 0
+            order: 4
           }
         }
       },
@@ -184,10 +183,10 @@ export const PagesRoutes:RouterConfig = [
         data: {
           menu: {
             title: '菜单管理',
-            icon: 'ion-android-home',
+            icon: 'ion-android-menu',
             selected: false,
             expanded: false,
-            order: 0
+            order: 5
           }
         }
       },
@@ -197,10 +196,10 @@ export const PagesRoutes:RouterConfig = [
         data: {
           menu: {
             title: '主题管理',
-            icon: 'ion-android-home',
+            icon: 'ion-android-color-palette',
             selected: false,
             expanded: false,
-            order: 0
+            order: 6
           }
         }
       },
@@ -210,10 +209,10 @@ export const PagesRoutes:RouterConfig = [
         data: {
           menu: {
             title: '文件管理',
-            icon: 'ion-android-home',
+            icon: 'ion-document',
             selected: false,
             expanded: false,
-            order: 0
+            order: 7
           }
         }
       },
@@ -223,10 +222,10 @@ export const PagesRoutes:RouterConfig = [
         data: {
           menu: {
             title: '扩展管理',
-            icon: 'ion-android-home',
+            icon: 'ion-android-apps',
             selected: false,
             expanded: false,
-            order: 0
+            order: 8
           }
         }
       },
@@ -236,10 +235,10 @@ export const PagesRoutes:RouterConfig = [
         data: {
           menu: {
             title: '代码管理',
-            icon: 'ion-android-home',
+            icon: 'ion-code-working',
             selected: false,
             expanded: false,
-            order: 0
+            order: 9
           }
         }
       },
@@ -258,7 +257,7 @@ export const PagesRoutes:RouterConfig = [
             // 是否可伸展
             expanded: false,
             //排序值
-            order: 1,
+            order: 10,
           }
         },
         children: [
@@ -308,7 +307,7 @@ export const PagesRoutes:RouterConfig = [
             icon: 'ion-ios-more',
             selected: false,
             expanded: false,
-            order: 700,
+            order: 11,
           }
         },
         children: [
@@ -432,7 +431,7 @@ export const PagesRoutes:RouterConfig = [
                 component: Icons,
                 data: {
                   menu: {
-                    title: '图表',
+                    title: '图标',
                   }
                 }
               },

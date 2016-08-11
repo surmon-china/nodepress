@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {BaCard} from '../../../../theme/components/baCard';
+import {BaCard} from '../../../theme/components/baCard';
 
 @Component({
   selector: 'category',
