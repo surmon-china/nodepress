@@ -33,7 +33,13 @@
           <label for="exampleInputPassword1">
             <h5>描述</h5>
           </label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="分类描述">
+          <textarea name="announcementContent" 
+                    id="announcementContent" 
+                    class="form-control"
+                    cols="30" 
+                    rows="20" 
+                    placeholder="分类描述">
+          </textarea>
           <span class="help-block sub-little-text">该分类的描述</span>
         </div>
         <button type="submit" class="btn btn-success">添加分类目录</button>
@@ -42,6 +48,30 @@
   </div>
   <div class="col-md-8 col-xs-8">
     <ba-card title="分类管理" baCardClass="with-scroll">
+      <div class="contnet-top-tools">
+        <div class="pull-left">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-default btn-with-icon">
+              <i class="ion-refresh"></i>
+              <span>刷新</span>
+            </button>
+            <div class="btn-group" role="group">
+              <button id="batchBtnGroup" 
+                      type="button" 
+                      class="btn btn-default btn-with-icon dropdown-toggle" 
+                      data-toggle="dropdown" 
+                      aria-haspopup="true" 
+                      aria-expanded="false">
+                <i class="ion-ios-list"></i>
+                <span>批量操作</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="batchBtnGroup">
+                <a class="dropdown-item" href="#">彻底删除</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <table class="table tablehover table-striped table-no-borders black-muted-bg table-enrich">
         <thead class="thead-inverse">
           <tr>

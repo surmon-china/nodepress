@@ -29,6 +29,38 @@
   </div>
   <div class="col-md-8 col-xs-12">
     <ba-card title="全部公告" baCardClass="with-scroll">
+       <div class="contnet-top-tools">
+        <div class="pull-left">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-default active">全部（14）</button>
+            <button type="button" class="btn btn-default">已发布（10）</button>
+            <button type="button" class="btn btn-default">未发布（3）</button>
+          </div>
+          <span>&nbsp;</span>
+          <div class="btn-group" role="group">
+            <button id="batchBtnGroup" 
+                    type="button" 
+                    class="btn btn-default btn-with-icon dropdown-toggle" 
+                    data-toggle="dropdown" 
+                    aria-haspopup="true" 
+                    aria-expanded="false">
+              <i class="ion-ios-list"></i>
+              <span>批量操作</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="batchBtnGroup">
+              <a class="dropdown-item" href="#">批量删除</a>
+            </div>
+          </div>
+        </div>
+        <form class="pull-right form-inline navbar-form">
+          <div class="input-group">
+            <input type="text" class="form-control with-default-addon" placeholder="公告标题、内容">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">搜索</button>
+            </span>
+          </div>
+        </form>
+      </div>
       <table class="table table-striped table-no-borders black-muted-bg table-enrich">
         <thead class="thead-inverse">
           <tr>
