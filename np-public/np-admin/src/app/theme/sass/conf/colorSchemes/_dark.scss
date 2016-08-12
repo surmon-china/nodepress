@@ -1,6 +1,16 @@
 $default: #ffffff; // default colors for layout
 $body-bg: #F0F3F4; // default bg color
 
+// sidebar colors
+$sidebar: #23282d;
+$sidebar-text: #ffffff;
+$sidebar-sublist: #32373c;
+$sidebar-border: #101920;
+
+$topbar: #23282d;
+$topbar-text: #ffffff;
+$topbar-border: $sidebar-border;
+
 $default-text: $default; // default text color layout (usually is the same as $default)
 $content-text: $default-text; // content text color on card, panels, form, etc
 $help-text: $default-text; // additional text color for hits
@@ -10,19 +20,9 @@ $disabled: rgba(255, 255, 255, 0.4); // color for disabled state
 $disabled-bg: tint($disabled, 15%); // background color for disable state
 $border: rgba(255, 255, 255, 0.5); // border color
 $border-light: rgba(255, 255, 255, 0.3); // lighter version of border color (for hovers)
-$input-border: rgba(255, 255, 255, 0.6); // input border color
-$input-background: rgba(255, 255, 255, 0.1); // input border color for hover
+$input-border: rgba($sidebar-border, 0.2); // input border color
+$input-background: rgba($sidebar-sublist, 0.5);; // input border color for hover
 $dropdown-text: #7d7d7d; // dropdown text color
-
-// sidebar colors
-$sidebar: #23282d;
-$sidebar-text: #ffffff;
-$sidebar-sublist: #32373c;
-$sidebar-border: #101920;
-
-$topbar: #23282d;
-$topbar-text: #ffffff;
-$topbar-border: #101920;
 
 // specific components colors
 $mail-box: whitesmoke;

@@ -34,8 +34,6 @@ import {ArticleNew} from './article/new/new.component';
 import {ArticleList} from './article/list/list.component';
 import {ArticleCategory} from './article/category/category.component';
 
-
-
 //noinspection TypeScriptValidateTypes
 export const PagesRoutes:RouterConfig = [
   {

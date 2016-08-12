@@ -41,16 +41,18 @@
 
 .form-control {
   color: $content-text;
-  @include placeholderStyle($content-text, 0.7);
+  @include placeholderStyle($content-text, 0.5);
+  padding: 0.344rem 0.75rem;
   border: 1px solid $input-border;
   border-radius: 5px;
   background-color: $input-background;
   box-shadow: none;
   font-size: 14px;
+
   &:focus {
     box-shadow: none;
-    border-color: $primary-bg;
-    background: $input-background;
+    border-color: darken($input-border, 5);
+    background: darken($input-background, 5);
   }
 }
 
@@ -175,7 +177,6 @@ textarea.form-control {
     border-radius: 0;
   }
 }
-
 
 .nowrap {
   white-space: nowrap;

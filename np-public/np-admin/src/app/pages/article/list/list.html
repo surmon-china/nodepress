@@ -2,20 +2,67 @@
   <div class="col-lg-12 col-md-12">
     <ba-card title="" baCardClass="with-scroll table-panel">
       <div class="contnet-top-tools">
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-xm btn-default active">全部</button>
-          <button type="button" class="btn btn-xm btn-default">已发布</button>
-          <button type="button" class="btn btn-xm btn-default">草稿</button>
-          <button type="button" class="btn btn-xm btn-default">回收站</button>
+        <div class="pull-left">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-default active">全部（14）</button>
+            <button type="button" class="btn btn-default">已发布（10）</button>
+            <button type="button" class="btn btn-default">草稿（3）</button>
+            <button type="button" class="btn btn-default">回收站（1）</button>
+          </div>
+          <span>&nbsp;</span>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-default btn-with-icon">
+              <i class="ion-refresh"></i>
+              <span>刷新</span>
+            </button>
+            <div class="btn-group" role="group">
+              <button id="batchBtnGroup" 
+                      type="button" 
+                      class="btn btn-default btn-with-icon dropdown-toggle" 
+                      data-toggle="dropdown" 
+                      aria-haspopup="true" 
+                      aria-expanded="false">
+                <i class="ion-ios-list"></i>
+                <span>批量操作</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="batchBtnGroup">
+                <a class="dropdown-item" href="#">移至回收站</a>
+                <a class="dropdown-item" href="#">彻底删除</a>
+                <a class="dropdown-item" href="#">批量还原</a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="pull-right col-xs-2">
+        <form class="pull-right form-inline navbar-form">
           <div class="input-group">
             <input type="text" class="form-control with-default-addon" placeholder="文章标题、描述">
             <span class="input-group-btn">
               <button class="btn btn-default" type="button">搜索</button>
             </span>
           </div>
-        </div>
+        </form>
+        <span class="pull-right">&nbsp;</span>
+        <form class="pull-right form-inline navbar-form">
+          <select class="form-control c-select" id="sort">
+            <option default>综合排序</option>
+            <option>创建时间</option>
+            <option>浏览次数</option>
+            <option>评论条数</option>
+          </select>
+          <select class="form-control c-select" id="category">
+            <option default>所有状态</option>
+            <option>已发布</option>
+            <option>草稿</option>
+            <option>已删除</option>
+          </select>
+          <select class="form-control c-select" id="category" style="min-width:95px">
+            <option default>所有分类</option>
+            <option>- Code</option>
+            <option>- Think</option>
+            <option>-- Nothing</option>
+            <option>- Other</option>
+          </select>
+        </form>
       </div>
       <div class="table-responsive">
         <table class="table tablehover table-striped table-no-borders black-muted-bg table-enrich">
