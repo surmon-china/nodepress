@@ -3,18 +3,24 @@
     <ba-card title="添加分类" baCardClass="with-scroll">
       <form>
         <div class="form-group">
-          <label for="exampleInputEmail1">名称</label>
+          <label for="exampleInputEmail1">
+            <h5>名称</h5>
+          </label>
           <input type="email" class="form-control" id="exampleInputEmail1" placeholder="分类名称">
           <span class="help-block sub-little-text">这将是它在站点上显示的名字</span>
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">别名</label>
+          <label for="exampleInputPassword1">
+            <h5>别名</h5>
+          </label>
           <input type="password" class="form-control" id="exampleInputPassword1" placeholder="分类别名">
           <span class="help-block sub-little-text">“别名”是在URL中使用的别称，建议小写，字母、数字、连字符（-）</span>
         </div>
         <div class="form-group">
-          <label for="exampleSelect1">父分类</label>
-          <select class="form-control" id="exampleSelect1">
+          <label for="exampleSelect1">
+            <h5>父分类</h5>
+          </label>
+          <select class="form-control c-select" id="exampleSelect1">
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -24,9 +30,11 @@
           <span class="help-block sub-little-text">可以选择父级分类</span>
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">描述</label>
+          <label for="exampleInputPassword1">
+            <h5>描述</h5>
+          </label>
           <input type="password" class="form-control" id="exampleInputPassword1" placeholder="分类描述">
-          <span class="help-block sub-little-text">某些地方可能用到</span>
+          <span class="help-block sub-little-text">该分类的描述</span>
         </div>
         <button type="submit" class="btn btn-success">添加分类目录</button>
       </form>

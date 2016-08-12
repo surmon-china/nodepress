@@ -10,6 +10,32 @@
         <group-inputs></group-inputs>
       </ba-card>
 
+      <ba-card title="添加公告" baCardClass="with-scroll">
+        <form>
+          <div class="form-group">
+            <label for="announcementType">
+              <h5>公告状态</h5>
+            </label>
+            <select class="form-control c-select" id="announcementType">
+              <option>已发布</option>
+              <option>未发布</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="textareaContent">
+              <h5>公告内容</h5>
+            </label>
+            <textarea id="textareaContent" 
+                      class="form-control"
+                      cols="30" 
+                      rows="20" 
+                      placeholder="内容">
+            </textarea>
+          </div>
+          <button type="submit" class="btn btn-success">添加公告</button>
+        </form>
+      </ba-card>
+
     </div>
     <div class="col-md-6">
       <ba-card title="Validation States" baCardClass="with-scroll">
