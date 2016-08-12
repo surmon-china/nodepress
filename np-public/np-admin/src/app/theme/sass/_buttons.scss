@@ -6,7 +6,7 @@ $btn-icon-size: 34px;
 }
 
 .btn {
-  border-radius: 5px;
+  border-radius: 3px;
   transition: all 0.1s ease;
   padding: 0.344rem 1rem;
   font-size: 0.9rem;
@@ -75,7 +75,7 @@ button.btn.btn-default {
   border-width: 1px;
   color: $content-text;
   @include buttonColor($topbar, $topbar);
-  &:active, &:target {
+  &.active, &:active, &:target {
     background-color: rgba(0, 0, 0, 0.2);
     color: $default-text;
   }

@@ -1,14 +1,17 @@
 /*
  * Providers provided by Angular
  */
+import { provide } from '@angular/core';
+// import { APP_BASE_HREF } from '@angular/router';
 import { bootstrap } from '@angular/platform-browser-dynamic';
+// import { LocationStrategy, HashLocationStrategy } from 'angular2/platform/common';
+
 /*
  * Platform and Environment
  * our providers/directives/pipes
  */
 import { PLATFORM_PROVIDERS } from './platform/browser';
 import { ENV_PROVIDERS, decorateComponentRef } from './platform/environment';
-
 
 /*
  * App Component
@@ -27,10 +30,11 @@ export function main(initialHmrState?: any): Promise<any> {
     ...PLATFORM_PROVIDERS,
     ...ENV_PROVIDERS,
     ...APP_PROVIDERS,
+    // provide(APP_BASE_HREF, { useValue: '/' }),
+    // provide(LocationStrategy, { useClass: HashLocationStrategy }),
   ])
     .then(decorateComponentRef)
     .catch(err => console.error(err));
-
 }
 
 
