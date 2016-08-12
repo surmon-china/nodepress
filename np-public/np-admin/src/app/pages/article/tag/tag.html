@@ -1,47 +1,75 @@
 <div class="row">
   <div class="col-md-4 col-xs-4">
-    <ba-card title="添加分类" baCardClass="with-scroll">
+    <ba-card title="热门标签" baCardClass="with-scroll">
+      乱七八糟一大堆
+    </ba-card>
+    <ba-card title="添加标签" baCardClass="with-scroll">
       <form>
         <div class="form-group">
           <label for="exampleInputEmail1">
             <h5>名称</h5>
           </label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="分类名称">
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="标签名称">
           <span class="help-block sub-little-text">这将是它在站点上显示的名字</span>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">
             <h5>别名</h5>
           </label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="分类别名">
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="标签别名">
           <span class="help-block sub-little-text">“别名”是在URL中使用的别称，建议小写，字母、数字、连字符（-）</span>
-        </div>
-        <div class="form-group">
-          <label for="exampleSelect1">
-            <h5>父分类</h5>
-          </label>
-          <select class="form-control c-select" id="exampleSelect1">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
-          <span class="help-block sub-little-text">可以选择父级分类</span>
         </div>
         <div class="form-group">
           <label for="exampleInputPassword1">
             <h5>描述</h5>
           </label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="分类描述">
-          <span class="help-block sub-little-text">该分类的描述</span>
+          <textarea name="announcementContent" 
+                    id="announcementContent" 
+                    class="form-control"
+                    cols="30" 
+                    rows="20" 
+                    placeholder="标签描述">
+          </textarea>
+          <span class="help-block sub-little-text">该标签的描述</span>
         </div>
-        <button type="submit" class="btn btn-success">添加分类目录</button>
+        <button type="submit" class="btn btn-success">添加标签目录</button>
       </form>
     </ba-card>
   </div>
   <div class="col-md-8 col-xs-8">
-    <ba-card title="分类管理" baCardClass="with-scroll">
+    <ba-card title="标签管理" baCardClass="with-scroll">
+      <div class="contnet-top-tools">
+        <div class="pull-left">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-default btn-with-icon">
+              <i class="ion-refresh"></i>
+              <span>刷新</span>
+            </button>
+            <div class="btn-group" role="group">
+              <button id="batchBtnGroup" 
+                      type="button" 
+                      class="btn btn-default btn-with-icon dropdown-toggle" 
+                      data-toggle="dropdown" 
+                      aria-haspopup="true" 
+                      aria-expanded="false">
+                <i class="ion-ios-list"></i>
+                <span>批量操作</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="batchBtnGroup">
+                <a class="dropdown-item" href="#">彻底删除</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="pull-right form-inline navbar-form">
+          <div class="input-group">
+            <input type="text" class="form-control with-default-addon" placeholder="搜索相关标签">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">搜索</button>
+            </span>
+          </div>
+        </form>
+      </div>
       <table class="table tablehover table-striped table-no-borders black-muted-bg table-enrich">
         <thead class="thead-inverse">
           <tr>
@@ -52,7 +80,7 @@
             <th>名称</th>
             <th>描述</th>
             <th>别名</th>
-            <th>文章</th>
+            <th>包含文章</th>
             <th width="30%" class="text-center">操作</th>
           </tr>
         </thead>
@@ -69,19 +97,19 @@
                 <h4 class="strong">- Code</h4>
               </a>
             </td>
-            <td>代码分类</td>
+            <td>代码标签</td>
             <td>code</td>
             <td>34</td>
             <td>
                <ul class="btn-list clearfix text-center">
                 <li>
-                  <button class="btn btn-primary btn-sm" type="button">编辑分类</button>
+                  <button class="btn btn-primary btn-sm" type="button">编辑标签</button>
                 </li>
                 <li>
-                  <button class="btn btn-danger btn-sm" type="button">删除分类</button>
+                  <button class="btn btn-danger btn-sm" type="button">删除标签</button>
                 </li>
                 <li>
-                  <button class="btn btn-success btn-sm" type="button">查看分类</button>
+                  <button class="btn btn-success btn-sm" type="button">查看标签</button>
                 </li>
               </ul>
             </td>
