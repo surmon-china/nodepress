@@ -1,7 +1,40 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8">
     <ba-card title="发布新文章" baCardClass="with-scroll">
-      编辑器
+      <form class="forminline">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-xs-10">
+              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="文章标题">
+            </div>
+            <div class="col-xs-2">
+              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="文章别名">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <textarea class="form-control"
+                    cols="30" 
+                    rows="20" 
+                    placeholder="文章内容">
+          </textarea>
+        </div>
+        <div class="form-group">
+          <textarea class="form-control"
+                    cols="30" 
+                    rows="20" 
+                    placeholder="文章描述">
+          </textarea>
+        </div>
+        <div class="form-group">
+        </div>
+        <button type="submit" class="btn btn-success">发布文章</button>
+      </form>
+    </ba-card>
+  </div>
+  <div class="col-md-4">
+    <ba-card title="同时发布到" baCardClass="with-scroll">
+      多说的一些选项
     </ba-card>
   </div>
 </div>

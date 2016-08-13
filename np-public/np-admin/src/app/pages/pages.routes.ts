@@ -1,38 +1,42 @@
-import {RouterConfig} from '@angular/router';
-import {Charts} from './charts/charts.component';
-import {ChartistJs} from './charts/components/chartistJs/chartistJs.component';
-import {Pages} from './pages.component';
-import {Ui} from './ui/ui.component';
-import {Typography} from './ui/components/typography/typography.component';
-import {Buttons} from './ui/components/buttons/buttons.component';
-import {Icons} from './ui/components/incons/icons.component';
-import {Grid} from './ui/components/grid/grid.component';
-import {Forms} from './forms/forms.component';
-import {Inputs} from './forms/components/inputs/inputs.component';
-import {Layouts} from './forms/components/layouts/layouts.component';
-import {BasicTables} from './tables/components/basicTables/basicTables.component';
-import {Tables} from './tables/tables.component';
-import {Maps} from './maps/maps.component';
-import {GoogleMaps} from './maps/components/googleMaps/googleMaps.component';
-import {LeafletMaps} from './maps/components/leafletMaps/leafletMaps.component';
-import {BubbleMaps} from './maps/components/bubbleMaps/bubbleMaps.component';
-import {LineMaps} from './maps/components/lineMaps/lineMaps.component';
-import {Editors} from './editors/editors.component';
-import {Ckeditor} from './editors/components/ckeditor/ckeditor.component';
-import {Components} from './components/components.component';
-import {TreeView} from './components/components/treeView/treeView.component';
+import { RouterConfig } from '@angular/router';
+import { Charts } from './charts/charts.component';
+import { ChartistJs } from './charts/components/chartistJs/chartistJs.component';
+import { Pages } from './pages.component';
+import { Ui } from './ui/ui.component';
+import { Typography } from './ui/components/typography/typography.component';
+import { Buttons } from './ui/components/buttons/buttons.component';
+import { Icons } from './ui/components/incons/icons.component';
+import { Grid } from './ui/components/grid/grid.component';
+import { Forms } from './forms/forms.component';
+import { Inputs } from './forms/components/inputs/inputs.component';
+import { Layouts } from './forms/components/layouts/layouts.component';
+import { BasicTables } from './tables/components/basicTables/basicTables.component';
+import { Tables } from './tables/tables.component';
+import { Maps } from './maps/maps.component';
+import { GoogleMaps } from './maps/components/googleMaps/googleMaps.component';
+import { LeafletMaps } from './maps/components/leafletMaps/leafletMaps.component';
+import { BubbleMaps } from './maps/components/bubbleMaps/bubbleMaps.component';
+import { LineMaps } from './maps/components/lineMaps/lineMaps.component';
+import { Editors } from './editors/editors.component';
+import { Ckeditor } from './editors/components/ckeditor/ckeditor.component';
+import { Components } from './components/components.component';
+import { TreeView } from './components/components/treeView/treeView.component';
 
 // 仪表盘
-import {Dashboard} from './dashboard/dashboard.component';
+import { Dashboard } from './dashboard/dashboard.component';
 
 // 公告管理
-import {Announcement} from './announcement/announcement.component';
+import { Announcement } from './announcement/announcement.component';
 
 // 文章管理
-import {ArticleTag} from './article/tag/tag.component';
-import {ArticleNew} from './article/new/new.component';
-import {ArticleList} from './article/list/list.component';
-import {ArticleCategory} from './article/category/category.component';
+import { ArticleTag } from './article/tag/tag.component';
+import { ArticleNew } from './article/new/new.component';
+import { ArticleList } from './article/list/list.component';
+import { ArticleCategory } from './article/category/category.component';
+
+// 页面管理
+import { PageNew } from './page/new/new.component';
+import { PageList } from './page/list/list.component';
 
 //noinspection TypeScriptValidateTypes
 export const PagesRoutes:RouterConfig = [
@@ -144,7 +148,7 @@ export const PagesRoutes:RouterConfig = [
         children: [
           {
             path: 'all',
-            component: ArticleList,
+            component: PageList,
             data: {
               menu: {
                 title: '所有页面',
@@ -153,7 +157,7 @@ export const PagesRoutes:RouterConfig = [
           },
           {
             path: 'post',
-            component: ArticleNew,
+            component: PageNew,
             data: {
               menu: {
                 title: '新建页面',
