@@ -38,6 +38,18 @@ import { ArticleCategory } from './article/category/category.component';
 import { PageNew } from './page/new/new.component';
 import { PageList } from './page/list/list.component';
 
+// 评论管理
+import { Comment } from './comment/comment.component';
+
+// 菜单管理
+import { Menu } from './menu/menu.component';
+
+// 主题管理
+import { Theme } from './theme/theme.component';
+
+// 文件管理
+import { File } from './file/file.component';
+
 //noinspection TypeScriptValidateTypes
 export const PagesRoutes:RouterConfig = [
   {
@@ -168,7 +180,7 @@ export const PagesRoutes:RouterConfig = [
       },
       {
         path: 'comment',
-        component: Dashboard,
+        component: Comment,
         data: {
           menu: {
             title: '评论管理',
@@ -181,7 +193,7 @@ export const PagesRoutes:RouterConfig = [
       },
       {
         path: 'menu',
-        component: Dashboard,
+        component: Menu,
         data: {
           menu: {
             title: '菜单管理',
@@ -194,7 +206,7 @@ export const PagesRoutes:RouterConfig = [
       },
       {
         path: 'theme',
-        component: Dashboard,
+        component: Theme,
         data: {
           menu: {
             title: '主题管理',
@@ -207,7 +219,7 @@ export const PagesRoutes:RouterConfig = [
       },
       {
         path: 'file',
-        component: Dashboard,
+        component: File,
         data: {
           menu: {
             title: '文件管理',
