@@ -1,0 +1,127 @@
+<div class="row">
+  <div class="col-lg-12 col-md-12">
+    <ba-card title="所有评论" baCardClass="with-scroll table-panel">
+      <div class="contnet-top-tools">
+        <div class="pull-left">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-default active">全部（14）</button>
+            <button type="button" class="btn btn-default">待审（10）</button>
+            <button type="button" class="btn btn-default">已批准（3）</button>
+            <button type="button" class="btn btn-default">垃圾（1）</button>
+            <button type="button" class="btn btn-default">回收站（1）</button>
+          </div>
+          <span>&nbsp;</span>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-default btn-with-icon">
+              <i class="ion-refresh"></i>
+              <span>刷新</span>
+            </button>
+            <div class="btn-group" role="group">
+              <button id="batchBtnGroup" 
+                      type="button" 
+                      class="btn btn-default btn-with-icon dropdown-toggle" 
+                      data-toggle="dropdown" 
+                      aria-haspopup="true" 
+                      aria-expanded="false">
+                <i class="ion-ios-list"></i>
+                <span>批量操作</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="batchBtnGroup">
+                <a class="dropdown-item" href="#">批准评论</a>
+                <a class="dropdown-item" href="#">设为垃圾评论</a>
+                <a class="dropdown-item" href="#">移至回收站</a>
+                <a class="dropdown-item" href="#">彻底删除</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="pull-right form-inline navbar-form">
+          <div class="input-group">
+            <input type="text" class="form-control with-default-addon" placeholder="评论内容">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">搜索</button>
+            </span>
+          </div>
+        </form>
+        <span class="pull-right">&nbsp;</span>
+        <form class="pull-right form-inline navbar-form">
+          <select class="form-control c-select" id="sort">
+            <option default>最新评论</option>
+            <option>最早评论</option>
+          </select>
+          <select class="form-control c-select" id="category" style="min-width:95px">
+            <option default>所有状态</option>
+            <option>已通过</option>
+            <option>待审核</option>
+            <option>垃圾评论</option>
+            <option>回收站</option>
+          </select>
+        </form>
+      </div>
+      <div class="table-responsive">
+        <table class="table tablehover table-striped table-no-borders black-muted-bg table-enrich">
+          <thead class="thead-inverse">
+            <tr>
+              <th>
+                <input type="checkbox">
+              </th>
+              <th>
+                <span>ID</span>
+              </th>
+              <th width="40%">内容</th>
+              <th>作者</th>
+              <th>所在位置</th>
+              <th>日期</th>
+              <th>状态</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="#num of [1,2,3,4,5,6,7,8,9,10]">
+              <td>
+                <input type="checkbox">
+              </td>
+              <td>
+                <span>{{ num }}</span>
+              </td>
+              <td>
+                <p class="text-muted">
+                  <span>回复给</span>
+                  <a href="">某某某</a>
+                </p>
+                <p>谢谢，很快会有更棒的一版</p>
+              </td>
+              <td>
+                <p><a href="">Surmon</a></p>
+                <p><a href="">司马萌</a></p>
+                <p><a href="">794939078@qq.com</a></p>
+                <p><a href="">49.221.62.212</a></p>
+              </td>
+              <td>
+                <p><a href="">Guestbook</a></p>
+                <p><a href="">查看页面</a></p>
+                <p><a href="">20条评论</a></p>
+              </td>
+              <td>2016/08/09 12:57:21</td>
+              <td>已批准</td>
+              <td>
+                <div class="button-wrapper">
+                  <button class="btn btn-primary btn-sm" type="button">编辑评论</button>
+                </div>
+                <div class="button-wrapper">
+                  <button class="btn btn-info btn-sm" type="button">驳回评论</button>
+                </div>
+                <div class="button-wrapper">
+                  <button class="btn btn-danger btn-sm" type="button">删除评论</button>
+                </div>
+                <div class="button-wrapper">
+                  <button class="btn btn-success btn-sm" type="button">回复评论</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ba-card>
+  </div>
+</div>
