@@ -4,19 +4,20 @@ import { Headers, Http } from '@angular/http';
 @Injectable()
 export class ArticleService {
 
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = 'http://localhost:8000/api/article';
 
-  constructor(private http: Http) { }
+  constructor() {
+    this.http = Http;
+  }
 
-  /*
   public getLists(params):Promise<any> {
     return new Promise((resolve, reject) => {
       resolve(params);
       // reject();
     });
   }
-  */
 
+  /*
   getLists() {
     console.log(this)
     // return this.http.get(this.apiUrl)
@@ -24,6 +25,8 @@ export class ArticleService {
                // .then(response => response.json().data as Hero[])
                // .catch(this.handleError);
   }
+
+  */
 
   /*
   getItem(id: number) {
