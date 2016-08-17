@@ -5,25 +5,30 @@ import {ArticleService} from '../../../theme/services/article';
 @Component({
   selector: 'list',
   directives: [BaCard],
+  bindings: [ArticleService],
   template: require('./list.html')
 })
 
 export class ArticleList {
 
   constructor() {
+    this.articleService = new ArticleService;
     this.articles = {};
   }
 
   public getArticles = params => {
-    console.log('hello');
-    let service = new ArticleService().getLists({ page: 1 });
+    console.log('hello', this);
+    let articles = this.articleService;
+    console.log(articles.getLists());
+    // let service = new ArticleService();
+    // console.log(new ArticleService());
     // service.then(articles => {
     //   this.articles = articles;
     //   console.log(this);
     // }).catch(error => {
     //   console.log(error);
     // });
-  };
+  }
 
   ngOnInit() {
     console.log('init');
