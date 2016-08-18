@@ -1,21 +1,44 @@
 import { Injectable }    from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+import 'rxjs/add/operator/map'; 
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class ArticleService {
 
-  private apiUrl = 'http://localhost:8000/api/article';
+  // private apiUrl = 'http://localhost:8000/api/article';
+  articles: Array<any>;
 
-  constructor() {
-    this.http = Http;
+  constructor(private http: Http) {
+    this.articles = [
+      { name: 'Christoph Burgdorf' },
+      { name: 'Pascal Precht' },
+      { name: 'thoughtram' }
+    ];
   }
 
-  public getLists(params):Promise<any> {
-    return new Promise((resolve, reject) => {
-      resolve(params);
-      // reject();
-    });
+  getLists() {
+    return this.articles;
   }
+
+  /*
+  getLists():Observable<any> {
+    return this.http.get(this.apiUrl)
+      .map((res: Response) => {
+        this.articles = res.json();
+        return this.articles;
+      })
+      .catch(this.handleError);
+  }
+
+
+  private handleError(error: any) {
+    console.error(error);
+    return Observable.throw(error.json().error || 'Server error');
+  }
+  */
 
   /*
   getLists() {
