@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {BaCard} from '../../../theme/components/baCard';
-import {ArticleService} from '../../../theme/services/article';
+import { Component } from '@angular/core';
+import { BaCard } from '../../../theme/components/baCard';
+import { ArticleService } from '../../../theme/services/article';
 
 @Component({
   selector: 'list',
