@@ -5,34 +5,43 @@ import {ArticleService} from '../../../theme/services/article';
 @Component({
   selector: 'list',
   directives: [BaCard],
-  bindings: [ArticleService],
+  providers: [ArticleService],
   template: require('./list.html')
 })
 
 export class ArticleList {
 
-  constructor() {
-    this.articleService = new ArticleService;
-    this.articles = {};
+  constructor(private articleService: ArticleService) {
+    this.articles = {
+      result: {
+        data: []
+      }
+    };
   }
 
-  public getArticles = params => {
-    console.log('hello', this);
-    let articles = this.articleService;
-    console.log(articles.getLists());
-    // let service = new ArticleService();
-    // console.log(new ArticleService());
-    // service.then(articles => {
+  public getArticles(params) {
+    this.articleService.getLists().subscribe(res => {
+      console.log(res);
+      this.articles = res;
+    }, err => {
+      console.log(err);
+    }));
+
+    // Promise解决方案
+    // articles.then(articles => {
     //   this.articles = articles;
-    //   console.log(this);
+    //   console.log(this.articles);
     // }).catch(error => {
     //   console.log(error);
     // });
   }
 
+  // 组件初始化
   ngOnInit() {
+
     console.log('init');
-    // 初始化列表
+
+    // 获取文章列表
     this.getArticles()
   }
 

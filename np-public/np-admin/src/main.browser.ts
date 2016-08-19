@@ -6,6 +6,8 @@ import { provide } from '@angular/core';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 // import { LocationStrategy, HashLocationStrategy } from 'angular2/platform/common';
 
+import 'rxjs/Rx';
+
 /*
  * Platform and Environment
  * our providers/directives/pipes
