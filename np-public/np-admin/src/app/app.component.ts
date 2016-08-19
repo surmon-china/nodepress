@@ -1,15 +1,23 @@
 import './app.loader.ts';
-import {Component, ViewEncapsulation} from "@angular/core";
-import {AppState} from "./app.state";
-import {BaThemeConfigProvider, BaThemeConfig} from "./theme";
-import {BaThemeRun} from "./theme/directives";
-import {BaImageLoaderService, BaThemePreloader, BaThemeSpinner} from "./theme/services";
-import {layoutPaths} from "./theme/theme.constants";
+import { NgModule } from '@angular/core';
+import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { Component, ViewEncapsulation } from "@angular/core";
+import { AppState } from "./app.state";
+import { BaThemeConfigProvider, BaThemeConfig } from "./theme";
+import { BaThemeRun } from "./theme/directives";
+import { BaImageLoaderService, BaThemePreloader, BaThemeSpinner } from "./theme/services";
+import { layoutPaths } from "./theme/theme.constants";
 
 /*
  * App Component
  * Top Level Component
  */
+
+@NgModule({
+  imports: [BrowserModule, HttpModule]
+})
+
 @Component({
   selector: 'app',
   pipes: [],
