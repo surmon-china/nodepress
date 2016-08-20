@@ -1,7 +1,4 @@
 import './app.loader.ts';
-import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
-import { BrowserModule } from '@angular/platform-browser';
 import { Component, ViewEncapsulation } from "@angular/core";
 import { AppState } from "./app.state";
 import { BaThemeConfigProvider, BaThemeConfig } from "./theme";
@@ -13,10 +10,6 @@ import { layoutPaths } from "./theme/theme.constants";
  * App Component
  * Top Level Component
  */
-
-@NgModule({
-  imports: [BrowserModule, HttpModule]
-})
 
 @Component({
   selector: 'app',

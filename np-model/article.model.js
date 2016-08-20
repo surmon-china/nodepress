@@ -18,6 +18,7 @@ var articleSchema = new mongoose.Schema({
   title:  { type: String, required: true },
 
   // author: String,
+  // 文章内容
   content: { type: String, required: true },
 
   // 文章描述
