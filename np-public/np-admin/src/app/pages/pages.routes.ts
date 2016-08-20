@@ -23,32 +23,32 @@ import { Components } from './components/components.component';
 import { TreeView } from './components/components/treeView/treeView.component';
 
 // 仪表盘
-import { Dashboard } from './dashboard/dashboard.component';
+import { Dashboard } from './dashboard';
 
 // 公告管理
-import { Announcement } from './announcement/announcement.component';
+import { Announcement } from './announcement';
 
 // 文章管理
-import { ArticleTag } from './article/tag/tag.component';
-import { ArticleNew } from './article/new/new.component';
-import { ArticleList } from './article/list/list.component';
-import { ArticleCategory } from './article/category/category.component';
+import { ArticleTag } from './article/tag';
+import { ArticleEdit } from './article/edit';
+import { ArticleList } from './article/list';
+import { ArticleCategory } from './article/category';
 
 // 页面管理
-import { PageNew } from './page/new/new.component';
-import { PageList } from './page/list/list.component';
+import { PageNew } from './page/new';
+import { PageList } from './page/list';
 
 // 评论管理
-import { Comment } from './comment/comment.component';
+import { Comment } from './comment';
 
 // 菜单管理
-import { Menu } from './menu/menu.component';
+import { Menu } from './menu';
 
 // 主题管理
-import { Theme } from './theme/theme.component';
+import { Theme } from './theme';
 
 // 文件管理
-import { File } from './file/file.component';
+import { File } from './file';
 
 //noinspection TypeScriptValidateTypes
 export const PagesRoutes:RouterConfig = [
@@ -121,7 +121,7 @@ export const PagesRoutes:RouterConfig = [
           },
           {
             path: 'post',
-            component: ArticleNew,
+            component: ArticleEdit,
             data: {
               menu: {
                 title: '发布文章',
@@ -295,7 +295,7 @@ export const PagesRoutes:RouterConfig = [
           },
           {
             path: 'senior',
-            component: ArticleNew,
+            component: ArticleEdit,
             data: {
               menu: {
                 title: '高级设置',

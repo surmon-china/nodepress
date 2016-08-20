@@ -1,0 +1,41 @@
+<form class="forminline" name="articleForm">
+  <div class="form-group">
+    <div class="row">
+      <div class="col-xs-9">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon input-group-addon-success addon-left">文章标题</span>
+          <input type="text"
+                 class="form-control with-primary-addon" 
+                 placeholder="文章标题" 
+                 name="artilceTitle"
+                 [(ngModel)]="artilceTitle" >
+        </div>
+      </div>
+      <div class="col-xs-3">
+        <div class="input-group input-group-lg">
+          <span class="input-group-addon input-group-addon-success addon-left">别名</span>
+          <input type="text"
+                 class="form-control with-primary-addon" 
+                 placeholder="文章别名" 
+                 name="artilceSlug"
+                 [(ngModel)]="artilceSlug" >
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <textarea class="form-control"
+              cols="30" 
+              rows="20" 
+              name="artilceDescription" 
+              [(ngModel)]="artilceDescription" 
+              placeholder="文章描述">
+        </textarea>
+      </div>
+    </div>
+  </div>
+  <div>
+    <ckeditor name="artilceContent" 
+              [(ngModel)]="articleContent" 
+              [config]="config">
+    </ckeditor>
+  </div>
+</form>
