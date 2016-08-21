@@ -2,11 +2,26 @@
   <div [ngClass]="{ 'small': last, 'form-group': !last }"
        *ngFor="let category of categories; let i = index; let last = last">
     <ba-checkbox [(ngModel)]="category.checked" [label]="category.name"></ba-checkbox>
+    <p *ngIf="!last"></p>
+    <ul class="list-unstyled col-xs-offset-1" *ngIf="category.childrens && !!category.childrens.length">
+      <li [ngClass]="{ 'small': last, 'form-group': !last }"
+           *ngFor="let children of category.childrens; let i = index; let last = last">
+        <ba-checkbox [(ngModel)]="children.checked" [label]="children.name"></ba-checkbox>
+        <p></p>
+        <ul class="list-unstyled col-xs-offset-1" *ngIf="children.childrens && !!children.childrens.length">
+          <li [ngClass]="{ 'small': last, 'form-group': !last }"
+               *ngFor="let children of children.childrens; let i = index; let last = last">
+            <ba-checkbox [(ngModel)]="children.checked" [label]="children.name"></ba-checkbox>
+            <p *ngIf="!last"></p>
+            <ul class="list-unstyled col-xs-offset-1" *ngIf="children.childrens && !!children.childrens.length">
+              <li [ngClass]="{ 'small': last, 'form-group': !last }"
+                   *ngFor="let children of children.childrens; let i = index; let last = last">
+                <ba-checkbox [(ngModel)]="children.checked" [label]="children.name"></ba-checkbox>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </div>
-  <!-- <div class="category-lists children" *ngIf="category.children && !!category.children.length">
-    <div [ngClass]="{ 'small': last, 'form-group': !last }"
-         *ngFor="let catechild of category.children; let i = index; let last = last">
-      <ba-checkbox [(ngModel)]="catechild.checked" [label]="catechild.name"></ba-checkbox>
-    </div>
-  </div> -->
 </div>

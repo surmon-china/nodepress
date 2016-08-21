@@ -38,7 +38,7 @@ export class ArticleCategory {
       "__v": 0,
       "extend": [],
       "created_at": "2016-07-25T14:04:00.113Z",
-      "pid": "579610183b6d2f7c19ed3e46"
+      "pid": "57961c4a0975a2dc0de4b626"
     },
     {
       "_id": "57977b1a8333ccc88b763355",
@@ -57,37 +57,29 @@ export class ArticleCategory {
 
   // 处理分类级别
   handleCategory () {
-
     let _categories = this.categories; 
-
-    let _cates = _categories.filter(cate => !cate.pid);
-    let _childs = _categories.filter(cate => !!cate.pid);
-
-    console.log(_cates, _childs);
-
-    const recursionCategory = cates => {
-      cates.forEach(cate => {
-        // console.log(cate);
-        // console.log(_cates);
-        let parent = _cates.find(_cate => _cate._id === cate.pid);
-
-        console.log(parent);
-
-        if(parent) {
-          parent.childrens = parent.childrens || [];
-          parent.childrens.push(cate);
-          // _childs.remove(cate);
-        } else {
-          if(parent.childrens && !!parent.childrens.length) {
-            recursionCategory();
+    let _cates = _categories.filter(category => !category.pid);
+    let _childs = _categories.filter(category => !!category.pid);
+    _childs.forEach(category => {
+      // 找到符合条件的分类
+      let _findParent = parents => {
+        parents.forEach(cate => {
+          let is_parent = cate._id === category.pid;
+          let par_child = cate.childrens;
+          // 如果拥有符合条件的分类
+          if(is_parent) {
+            cate.childrens = cate.childrens || [];
+            cate.childrens.push(category);
+            return;
           }
-        }
-        // _cates
-      });
-    };
-
-    recursionCategory(_childs);
+          // 如果不拥有，则判断是否有子集
+          if(par_child && !!par_child.length) _findParent(par_child);
+        });
+      };
+      _findParent(_cates);
+    });
     console.log(_cates);
+    this.categories = _cates;
   }
 
   ngOnInit() {
