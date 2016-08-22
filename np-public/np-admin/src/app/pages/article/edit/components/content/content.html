@@ -1,41 +1,74 @@
-<form class="forminline" name="articleForm">
-  <div class="form-group">
-    <div class="row">
-      <div class="col-xs-9">
-        <div class="input-group input-group-lg">
-          <span class="input-group-addon input-group-addon-success addon-left">文章标题</span>
-          <input type="text"
-                 class="form-control with-primary-addon" 
-                 placeholder="文章标题" 
-                 name="artilceTitle"
-                 [(ngModel)]="artilceTitle" >
-        </div>
-      </div>
-      <div class="col-xs-3">
-        <div class="input-group input-group-lg">
-          <span class="input-group-addon input-group-addon-success addon-left">别名</span>
-          <input type="text"
-                 class="form-control with-primary-addon" 
-                 placeholder="文章别名" 
-                 name="artilceSlug"
-                 [(ngModel)]="artilceSlug" >
-        </div>
-      </div>
-      <div class="col-xs-12">
-        <textarea class="form-control"
-              cols="30" 
-              rows="20" 
-              name="artilceDescription" 
-              [(ngModel)]="artilceDescription" 
-              placeholder="文章描述">
-        </textarea>
-      </div>
+<form class="" name="articleForm">
+  <div class="form-group row">
+    <label for="artilceTitle" class="col-sm-1 form-control-label text-right">文章标题</label>
+    <div class="col-sm-5">
+      <input type="text"
+             class="form-control form-control-lg" 
+             placeholder="文章标题" 
+             name="artilceTitle"
+             id="artilceTitle"
+             [(ngModel)]="artilceTitle">
     </div>
   </div>
-  <div>
-    <ckeditor name="artilceContent" 
-              [(ngModel)]="articleContent" 
-              [config]="config">
-    </ckeditor>
+  <div class="form-group row">
+    <label for="artilceSlug" class="col-sm-1 form-control-label text-right">文章别名</label>
+    <div class="col-sm-5">
+      <input type="text"
+             class="form-control" 
+             placeholder="文章别名" 
+             name="artilceSlug"
+             id="artilceSlug"
+             [(ngModel)]="artilceSlug">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="artilceDescription" class="col-sm-1 form-control-label text-right">文章描述</label>
+    <div class="col-sm-10">
+      <textarea class="form-control"
+                cols="30" 
+                rows="20" 
+                name="artilceDescription" 
+                id="artilceDescription" 
+                [(ngModel)]="artilceDescription" 
+                placeholder="文章描述">
+      </textarea>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="artilceDescription" class="col-sm-1 form-control-label text-right">文章内容</label>
+    <div class="col-sm-10">
+      <ckeditor name="artilceContent" 
+                [(ngModel)]="articleContent" 
+                [config]="config">
+      </ckeditor>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="artilceExtend" class="col-sm-1 form-control-label text-right">自定义字段</label>
+    <div class="col-xs-12">
+      <ul class="list-unstyled">
+        <li>
+          <div class="col-sm-5">
+            <input type="text"
+                   class="form-control" 
+                   placeholder="key" 
+                   name="artilceTitle"
+                   id="artilceTitle"
+                   [(ngModel)]="artilceTitle">
+          </div>
+          <div class="col-sm-5">
+            <input type="text"
+                   class="form-control" 
+                   placeholder="value" 
+                   name="artilceTitle"
+                   id="artilceTitle"
+                   [(ngModel)]="artilceTitle">
+          </div>
+        </li>
+        <li></li>
+        <li></li>
+      </ul>
+      <button class="btn btn-default">添加字段</button>
+    </div>
   </div>
 </form>
