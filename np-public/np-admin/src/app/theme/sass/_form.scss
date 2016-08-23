@@ -376,7 +376,8 @@ label.custom-input-danger {
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
   background-color: $input-background;
   color: $disabled;
-  border-color: $disabled-bg;
+  // border-color: $disabled-bg;
+  opacity: .6;
   @include placeholderStyle($default-text, 0.5);
 }
 
