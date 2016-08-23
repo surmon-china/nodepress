@@ -33,7 +33,7 @@ var articleSchema = new mongoose.Schema({
   // 文章发布状态 => -1已删除，0草稿，1已发布
   status: { type: Number, default: 1 },
 
-  // 文章公开状态 = // 0非公开，1公开
+  // 文章公开状态 = // -1私密，0需要密码，1私密
   public: { type: Number, default: 1 },
 
   // 文章密码 => 加密状态生效

@@ -8,6 +8,11 @@ import { Component } from '@angular/core';
 
 export class ArticleSubmit {
 
+  // 初始化
+  public articleStatus = 1;
+  public articlePublic = 1;
+  public articlePublish = 1;
+
   constructor() {
   }
 
