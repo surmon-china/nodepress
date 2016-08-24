@@ -13,6 +13,10 @@ export class ArticleSubmit {
   public articlePublic = 1;
   public articlePublish = 1;
 
+  submitArticle() {
+    console.log('Submit Article', this);
+  }
+
   constructor() {
   }
 
