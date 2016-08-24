@@ -15,6 +15,10 @@ import { ArticleThumb } from './components/thumb';
 
 export class ArticleEdit {
 
+  submitArticle() {
+    console.log('Submit Article', this);
+  }
+
   constructor() {
   }
 
