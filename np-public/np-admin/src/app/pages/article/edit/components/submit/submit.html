@@ -7,7 +7,7 @@
         <select class="form-control c-select" 
                 id="articleStatus" 
                 name="articleStatus" 
-                [(ngModel)]="articleStatus">
+                [(ngModel)]="article.status">
           <option value="1" default>直接发布</option>
           <option value="0">存为草稿</option>
           <option value="-1">已删除</option>
@@ -20,7 +20,7 @@
         <select class="form-control c-select" 
                 id="articlePublic" 
                 name="articlePublic" 
-                [(ngModel)]="articlePublic">
+                [(ngModel)]="article.public">
           <option value="1" default>公开</option>
           <option value="0">密码访问</option>
           <option value="-1">私密</option>
@@ -33,8 +33,10 @@
          <input type="password" 
                 class="form-control" 
                 id="articlePassword" 
+                name="articlePassword" 
                 placeholder="文章密码" 
-                [disabled]="articlePublic != 0">
+                [(ngModel)]="article.password"
+                [disabled]="article.public != 0">
       </div>
     </div>
     <div class="form-group row">
@@ -43,7 +45,7 @@
         <select class="form-control c-select" 
                 id="articlePublish" 
                 name="articlePublish" 
-                [(ngModel)]="articlePublish">
+                [(ngModel)]="article.publish">
           <option value="1" default>立即发布</option>
           <option value="2">定时发布</option>
         </select>
@@ -57,15 +59,14 @@
                 id="articleTimestamp" 
                 placeholder="文章发布时间" 
                 name="articleTimestamp" 
-                [(ngModel)]="articleTimestamp"
-                [disabled]="articlePublish != 2">
+                [(ngModel)]="article.timestamp"
+                [disabled]="article.publish != 2">
       </div>
     </div>
     <hr>
     <div class="row">
       <div class="col-sm-12">
-         <button class="btn btn-block btn-default"
-                 (click)="submitArticle()">发布文章</button>
+         <button class="btn btn-block btn-default" (click)="submit()">发布文章</button>
       </div>
     </div>
   </form>

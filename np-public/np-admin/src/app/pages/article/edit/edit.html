@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-9">
     <ba-card title="撰写新文章" baCardClass="with-scroll">
-      <article-content></article-content>
+      <article-main (article)="main"></article-main>
     </ba-card>
   </div>
   <div class="col-md-3">
@@ -15,7 +15,7 @@
       <article-thumb></article-thumb>
     </ba-card>
     <ba-card title="发布文章" baCardClass="with-scroll">
-      <article-submit (submitArticle)="submitArticle()"></article-submit>
+      <article-submit (submitArticle)="submitArticle($event)"></article-submit>
     </ba-card>
   </div>
 </div>
