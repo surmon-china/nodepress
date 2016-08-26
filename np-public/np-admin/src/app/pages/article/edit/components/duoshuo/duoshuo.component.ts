@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BaCheckbox } from '../../../../../theme/components';
 
 @Component({
@@ -8,13 +8,7 @@ import { BaCheckbox } from '../../../../../theme/components';
 })
 
 export class ArticleDuoshuo {
-
-  public duoshuo = {
-    weibo: true,
-    qzone: true,
-    renren: false,
-    douban: true
-  };
+  @Input() duoshuo;
 
   constructor() {
   }

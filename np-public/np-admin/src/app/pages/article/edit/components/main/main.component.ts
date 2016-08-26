@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CKEditor } from 'ng2-ckeditor';
 window['CKEDITOR_BASEPATH'] = '//cdn.bootcss.com/ckeditor/4.5.9/';
 
@@ -7,18 +7,12 @@ window['CKEDITOR_BASEPATH'] = '//cdn.bootcss.com/ckeditor/4.5.9/';
   directives: [CKEditor],
   template: require('./main.html')
 })
-
 export class ArticleMain {
 
-  // Init
-  public article = {
-    title: '',
-    content: '<p>在这里输入文章内容</p>'
-    // extend: [{}]
-  }
+  @Input() article;
 
   // 编辑器配置
-  public config = {
+  public ckeditorConfig = {
     uiColor: '#F0F3F4',
     height: '600'
   }
