@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'article-submit',
@@ -8,17 +8,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 
 export class ArticleSubmit {
 
-  // 状态
-  public article = {
-    status: 1,
-    public: 1,
-    publish: 1
-  }
-
+  @Input() article;
   @Output() submitArticle = new EventEmitter();
 
   submit() {
-    this.submitArticle.emit(this.article);
+    this.submitArticle.emit();
   }
 
   constructor() {

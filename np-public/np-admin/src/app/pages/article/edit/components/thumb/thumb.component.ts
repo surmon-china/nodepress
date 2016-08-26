@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BaPictureUploader } from '../../../../../theme/components';
 
 @Component({
@@ -9,9 +9,9 @@ import { BaPictureUploader } from '../../../../../theme/components';
 
 export class ArticleThumb {
 
+  @Input() articleThumb;
+  
   public defaultThumb = 'assets/img/theme/no-photo.png';
-  public articleThumb = 'assets/img/app/profile/Nasta.png';
-
   public uploaderOptions:any = {
     // url: 'http://website.com/upload'
   };
