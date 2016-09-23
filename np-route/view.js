@@ -9,5 +9,5 @@ exports.index = (req, res) => {
 
 // API路由
 exports.admin = (req, res) => {
-  res.sendfile(CONFIG.APP.ROOT_PATH + '/np-public/np-admin/index.html');
+  res.sendfile(CONFIG.APP.ROOT_PATH + '/np-public/np-admin/dist/index.html');
 };
