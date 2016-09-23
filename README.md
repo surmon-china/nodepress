@@ -5,6 +5,11 @@
 > Author By Surmon Surmon@foxmail.com
 > 
 > Site: http://surmon.me
+>
+> 前端前台PC端：[vue-blog](https://github.com/surmon-china/vue-blog) By Vue2
+>
+> 前端后台：[angular-admin](https://github.com/surmon-china/angular-admin) By Angular2
+>
 
 ----------
 
