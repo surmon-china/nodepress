@@ -1,25 +1,26 @@
 // 数据库模块
-var mongoose = require('mongoose');
-var config   = require('./np-config');
-var mongodb  = mongoose.connection;
+const mongoose = require('mongoose')
+const config   = require('./np-config')
+const mongodb  = mongoose.connection
 
 // 数据库
-var db = () => {
+const db = () => {
 
   // 连接数据库
-  mongoose.connect(config.MONGODB.uri);
+  mongoose.connect(config.MONGODB.uri)
 
   // 连接错误
   mongodb.on('error', error => {
-    console.log(error);
-  });
+    console.log(error)
+  })
 
   // 连接成功
   mongodb.once('open', () => {
-    console.log('mongoose 连接成功!');
-  });
+    console.log('mongoose 连接成功!')
+    // 进一步处理，判断是否已初始化，执行初始化操作
+  })
 
-  return mongodb;
-};
+  return mongodb
+}
 
-module.exports = db;
+module.exports = db
