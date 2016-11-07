@@ -130,7 +130,7 @@ exports.putItem = ({ params, body, error, success }) => {
 
 // 删除单篇文章
 exports.delItem = ({ params, error, success }) => {
-  Article.remove({ _id: params.article_id }, (err, article) => {
+  Article.findByIdAndRemove(params.article_id, (err, article) => {
     err && error(err)
     err || success(article)
   })

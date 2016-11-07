@@ -32,22 +32,19 @@ exports.getList = ({ error, success, query }) => {
 }
 
 // 发布分类
-exports.postItem = params => {
-  let error    = params.error
-  let success  = params.success
-  let category = params.body
+exports.postItem = ({ body, error, success }) => {
 
   // 保存分类
-  let saveCategory = () => {
-    let _category = new Category(category)
-    _category.save((err, data) => {
+  const saveCategory = () => {
+    const category = new Category(body)
+    category.save((err, data) => {
       err && error({ debug: err })
       err || success(data)
     })
   }
 
   // 验证Slug合法性
-  Category.find({ slug: category.slug }, (err, data) => {
+  Category.find({ slug: body.slug }, (err, data) => {
     if (err) return error({ debug: err })
     data.length && error({ message: 'slug已被使用' })
     data.length || saveCategory()
@@ -55,10 +52,8 @@ exports.postItem = params => {
 }
 
 // 批量删除分类
-exports.delList = params => {
-  let error    = params.error
-  let success  = params.success
-  let categories = params.body.categories.replace(/\s/g,'').split(',')
+exports.delList = ({ body, error, success }) => {
+  const categories = body.categories.replace(/\s/g,'').split(',')
   Category.remove({ '_id': { $in: categories } }, (err, data) => {
     err && error({ debug: err })
     err || success(data)
@@ -66,38 +61,35 @@ exports.delList = params => {
 }
 
 // 获取单个分类(以及父子分类)
-exports.getItem = params => {
-  let error   = params.error
-  let success = params.success
-  let cate_id = params.params.category_id
-  let categories = []
-  var findCateItem = _id => {
+exports.getItem = ({ params, error, success }) => {
+  const category_id = params.category_id
+  const categories = []
+  const findCateItem = _id => {
     Category.findById(_id, (err, category) => {
       if(err) return error({ debug: err })
       if (!category) return error({ message: '分类不存在' })
       categories.unshift(category)
-      let pid = category.pid
-      let ok = !!pid && pid != category.id
+      const pid = category.pid
+      const ok = !!pid && pid != category.id
       ok && findCateItem(pid)
       ok || success(categories)
     })
   }
-  findCateItem(cate_id)
+  findCateItem(category_id)
 }
 
 // 修改单个分类
-exports.putItem = params => {
-  let error   = params.error
-  let success = params.success
-  let content = params.body || {}
-  let cate_id = params.params.category_id
+exports.putItem = ({ params, body, error, success }) => {
+
+  const category_id = params.category_id
+  const pid = body.pid
 
   // 修改前判断slug的唯一性，是否被占用
-  Category.find({ slug: content.slug }, (err, data) => {
+  Category.find({ slug: body.slug }, (err, data) => {
     if (err) return error({ debug: err })
 
     // 判断查找到的数据是否为自身
-    let is_self = (!!data.length && data.length == 1 && data[0]._id == cate_id)
+    const is_self = (!!data.length && data.length == 1 && data[0]._id == category_id)
 
     // 存在数据且不是自身
     if (!!data.length && !is_self) return error({ message: 'slug已被使用' })
@@ -105,40 +97,32 @@ exports.putItem = params => {
     // 不存在数据或数据是自身
     if (!data.length || is_self) {
 
-      // 未占用，则修改
-      let cate_pid = content.pid
-      if (cate_pid == '0' || cate_pid == 'null' || cate_pid == 'false' || !cate_pid || cate_pid == cate_id) cate_pid = null
-      content.pid = cate_pid
-      Category.findByIdAndUpdate(cate_id, content, function(err, category) {
+      if (['0', 'null', 'false'].includes(pid) || !pid || Object.is(pid, category_id)) body.pid = null
+      Category.findByIdAndUpdate(category_id, body, function(err, category) {
         if (err) return error({ debug: err })
-        if (!err) {
-          category.pid = content.pid
-          success(category)
-        }
+        category.pid = body.pid
+        success(category)
       })
     }
   })
 }
 
 // 删除单个分类
-exports.delItem = params => {
-  let error   = params.error
-  let success = params.success
-  let cate_id = params.params.category_id
+exports.delItem = ({ params, body, error, success }) => {
+  const category_id = params.category_id
 
   // 删除分类
-  Category.findByIdAndRemove(cate_id, (err, _category) => {
+  Category.findByIdAndRemove(category_id, (err, _category) => {
     if (err) return error({ debug: err })
 
     // 删除此分类的所有子分类的pid
-    Category.find({ pid: cate_id }, (err, data) => {
+    Category.find({ pid: category_id }, (err, data) => {
       let cate_ids = []
       data.forEach(cate => { cate_ids.push(cate._id) })
       if (!!cate_ids.length) {
-        let category = Category.collection.initializeOrderedBulkOp()
+        const category = Category.collection.initializeOrderedBulkOp()
         category.find({ '_id': { $in: cate_ids } }).update({ $set: { pid: _category.pid || null }})
-        category.execute(function (err, data) {
-          // console.log(err, data)
+        category.execute((err, data) => {
           if (!err) success(_category)
         })
       } else {
