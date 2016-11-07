@@ -1,75 +1,102 @@
 /*
 *
-* 标签控制器
+* 标签控制器模块
 *
 */
 
-var Tag = require('../np-model/tag.model');
+const Tag = require('../np-model/tag.model')
 
 // 获取标签列表
-exports.getList = params => {
+exports.getList = ({ query, error, success }) => {
 
-  let success = params.success;
-  let error   = params.error;
+  // 过滤条件
+  const options = {
+    sort: { _id: 1 },
+    page: Number(query.page || 1),
+    limit: Number(query.per_page || 12)
+  }
 
-  Tag.find((err, tags) => {
-    err && error({ message: '数据库错误' });
-    if (!err) {
-      let data = {
-        pagination: {
-          total: 10,
-          current_page: 1,
-          total_page: 1,
-          per_page: 10,
-          query: params.query
-        },
-        data: tags
-      };
-      success(data);
-    }
+  // 请求
+  Tag.paginate(query, options, (err, tags) => {
+    if(err) return error({ debug: err })
+    success({
+      pagination: {
+        total: tags.total,
+        current_page: options.page,
+        total_page: tags.pages,
+        per_page: options.limit
+      },
+      data: tags.docs
+    })
   })
-};
+}
 
 // 发布标签
-exports.postItem = params => {
+exports.postItem = ({ body, error, success }) => {
 
-  let tag = params.body;
-  let error   = params.error;
-  let success = params.success;
-  let _tag = new Tag(tag);
-  _tag.save((err, art) => {
-    err && error({ message: '标签发布失败', debug: err });
-    err || success(art);
-  });
-};
+  // 保存标签
+  const saveTag = () => {
+    const tag = new Tag(body)
+    tag.save((err, data) => {
+      err && error({ debug: err })
+      err || success(data)
+    })
+  }
 
-// 批量修改标签
-exports.putList = params => {
-  // console.log(params);
-  console.log('Hello,World!, 删除单个标签');
-};
+  // 验证Slug合法性
+  Tag.find({ slug: body.slug }, (err, data) => {
+    if (err) return error({ debug: err })
+    data.length && error({ message: 'slug已被使用' })
+    data.length || saveTag()
+  })
+}
 
 // 批量删除标签
-exports.delList = params => {
-  // console.log(params);
-  console.log('Hello,World!, 删除单个标签');
-};
+exports.delList = ({ body, error, success }) => {
+  const tags = body.tags.replace(/\s/g,'').split(',')
+  Tag.remove({ '_id': { $in: tags } }, (err, data) => {
+    err && error({ debug: err })
+    err || success(data)
+  })
+}
 
 // 获取单个标签
-exports.getItem = params => {
-  // console.log(params);
-  console.log('Hello,World!, 获取单个标签');
-};
-
+exports.getItem = ({ params, error, success }) => {
+  Tag.findById(params.tag_id, (err, tag) => {
+    err && error({ debug: err })
+    err || success({ message: '标签不存在' })
+  })
+}
 
 // 修改单个标签
-exports.putItem = params => {
-  // console.log(params);
-  console.log('Hello,World!, 修改单个标签');
-};
+exports.putItem = ({ params, body, error, success }) => {
+
+  const tag_id = params.tag_id
+
+  // 修改前判断slug的唯一性，是否被占用
+  Tag.find({ slug: body.slug }, (err, data) => {
+    if (err) return error({ debug: err })
+
+    // 判断查找到的数据是否为自身
+    const is_self = (!!data.length && data.length == 1 && data[0]._id == tag_id)
+
+    // 存在数据且不是自身
+    if (!!data.length && !is_self) return error({ message: 'slug已被使用' })
+
+    // 不存在数据或数据是自身
+    if (!data.length || is_self) {
+      Tag.findByIdAndUpdate(tag_id, body, function(err, tag) {
+        err && error({ debug: err })
+        err || success(tag)
+      })
+    }
+  })
+}
 
 // 删除单个标签
-exports.delItem = params => {
-  // console.log(params);
-  console.log('Hello,World!, 删除单个标签');
-};
+exports.delItem = ({ params, body, error, success }) => {
+  Tag.findByIdAndRemove(params.tag_id, (err, tag) => {
+    err && error({ debug: err })
+    err || success(tag)
+  })
+}
