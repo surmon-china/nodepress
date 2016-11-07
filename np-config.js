@@ -7,7 +7,7 @@ exports.MONGODB = {
 
 exports.INFO = {
   name: 'NodePress',
-  version: '1.0.1',
+  version: '1.0.0',
   author: 'Surmon',
   site: 'http://surmon.me'
 };
