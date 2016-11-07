@@ -4,20 +4,19 @@
 *
 */
 
-var mongoose = require('mongoose');
-var autoIncrement = require('mongoose-auto-increment');
-var mongoosePaginate = require('mongoose-paginate');
+const mongoose = require('mongoose')
+const autoIncrement = require('mongoose-auto-increment')
+const mongoosePaginate = require('mongoose-paginate')
 
 // 自增ID初始化
-autoIncrement.initialize(mongoose.connection);
+autoIncrement.initialize(mongoose.connection)
 
 // 文章集合模型
-var articleSchema = new mongoose.Schema({
+let articleSchema = new mongoose.Schema({
 
   // 文章标题
   title:  { type: String, required: true },
 
-  // author: String,
   // 文章内容
   content: { type: String, required: true },
 
@@ -58,26 +57,26 @@ var articleSchema = new mongoose.Schema({
 
   // 自定义扩展
   extend: {}
-});
+})
 
 // 翻页 + 自增ID插件配置
-articleSchema.plugin(mongoosePaginate);
+articleSchema.plugin(mongoosePaginate)
 articleSchema.plugin(autoIncrement.plugin, {
   model: 'Article',
   field: 'id',
   startAt: 1,
   incrementBy: 1
-});
+})
 
 // 自增ID配置
 articleSchema.pre('save', next => {
-  if (this.isNew) this.create_time = this.update_time = Date.now();
-  if (!this.isNew) this.update_time = Date.now();
-  next();
-});
+  if (this.isNew) this.create_time = this.update_time = Date.now()
+  if (!this.isNew) this.update_time = Date.now()
+  next()
+})
 
 // 文章模型
-var Article = mongoose.model('Article', articleSchema);
+const Article = mongoose.model('Article', articleSchema)
 
 // 模块化
-module.exports = Article;
+module.exports = Article
