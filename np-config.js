@@ -15,5 +15,4 @@ exports.INFO = {
 // 全局信息
 exports.APP = {
   ROOT_PATH: __dirname,
-  installed: true
 };

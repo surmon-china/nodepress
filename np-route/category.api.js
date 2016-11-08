@@ -5,10 +5,10 @@
 */
 
 // 分类控制器、控制器请求器、请求类型识别器
-let categoryApi = { list: {}, item: {} }
-const ApiMethod = require('../np-common').ApiMethod
-const ControllerPromise = require('../np-common').ControllerPromise
+const { ApiMethod, ControllerPromise } = require('../np-common')
 const controller = require('../np-controller/category.controller')
+
+let categoryApi = { list: {}, item: {} }
 
 // 获取分类列表
 categoryApi.list.GET = (req, res) => {
@@ -71,5 +71,9 @@ categoryApi.item.DELETE = (req, res) => {
 }
 
 // 模块暴露
-exports.list = (req, res) => { ApiMethod({ req: req, res: res, type: 'list', api: categoryApi })}
-exports.item = (req, res) => { ApiMethod({ req: req, res: res, type: 'item', api: categoryApi })}
+exports.list = (req, res) => {
+  ApiMethod({ req, res, type: 'list', api: categoryApi })
+}
+exports.item = (req, res) => {
+  ApiMethod({ req, res, type: 'item', api: categoryApi })
+}
