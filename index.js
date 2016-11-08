@@ -49,7 +49,12 @@ app.get('/', (req, res) => {
 })
 
 // 全局option
-app.all('/option', route.option)
+app.all('/option', route.option.list)
+app.all('/option/:option_id', route.option.item)
+
+// menu菜单
+// app.all('/menu', route.menu.list)
+// app.all('/menu/:menu_id', route.menu.item)
 
 // Article
 app.all('/article', route.article.list)
