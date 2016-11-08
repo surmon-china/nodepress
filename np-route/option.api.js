@@ -20,7 +20,7 @@ optionApi.list.GET = (req, res) => {
   })
 }
 
-// 发布配置
+// 发布配置（初始化的时候使用）
 optionApi.list.POST = (req, res) => {
   ControllerPromise({
     req, res, controller,
