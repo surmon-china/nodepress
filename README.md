@@ -6,16 +6,18 @@
 >
 > Site: http://surmon.me
 >
-> 前端前台PC端：[vue-blog](https://github.com/surmon-china/vue-blog) By Vue2
+> 前端前台PC端：[vue-blog](https://github.com/surmon-china/vue-blog) By Vue2 + Vuex2
 >
 > 前端后台：[angular-admin](https://github.com/surmon-china/angular-admin) By Angular2
 >
 
+----------
+
 ```bash
 forever -p . -l ../logs/nodepress.log -e ../logs/nodepressError.log start -a -w -c "node --harmony" index.js
+forever list
+forever stop [id]
 ```
-
-----------
 
 ## 接口及流程
 
