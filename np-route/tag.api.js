@@ -20,7 +20,7 @@ tagApi.list.GET = (req, res) => {
   })
 }
 
-// 发布标签
+// 发布新标签
 tagApi.list.POST = (req, res) => {
   ControllerPromise({
     req, res, controller,
@@ -40,7 +40,7 @@ tagApi.list.DELETE = (req, res) => {
   })
 }
 
-// 获取单个标签以及所有有关的标签
+// 获取单个标签
 tagApi.item.GET = (req, res) => {
   ControllerPromise({
     req, res, controller,
