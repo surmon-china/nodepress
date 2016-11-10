@@ -10,7 +10,7 @@ exports.INFO = {
   version: '1.0.0',
   author: 'Surmon',
   site: 'http://surmon.me',
-  powered: ['Vue2', `Weex`, 'Angular2', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
+  powered: ['Vue2', `Weex`, 'React', 'Angular2', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
 }
 
 // 全局信息
