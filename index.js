@@ -88,5 +88,5 @@ app.all('*', (req, res) => {
 
 // Start server
 http.createServer(app).listen(app.get('port'), () => {
-  console.log('NodePress Run！port at' + app.get('port'))
+  console.log(`NodePress Run！port at ${app.get('port')}`)
 })
