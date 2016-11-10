@@ -18,6 +18,7 @@ forever -p . -l ../logs/nodepress.log -e ../logs/nodepressError.log start -a -w 
 forever list
 forever stop [id]
 forever stopall
+kill id
 ```
 
 ## 接口及流程
