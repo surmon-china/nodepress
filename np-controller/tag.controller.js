@@ -9,7 +9,7 @@ const Tag = require('../np-model/tag.model')
 // 获取标签列表
 exports.getList = ({ query, error, success }) => {
 
-  // 过滤条件
+  // 保留过滤条件，之后标签过多可能会有标签列表页
   const options = {
     sort: { _id: 1 },
     page: Number(query.page || 1),

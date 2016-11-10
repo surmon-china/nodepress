@@ -12,7 +12,7 @@ const mongoosePaginate = require('mongoose-paginate')
 autoIncrement.initialize(mongoose.connection)
 
 // 分类集合模型
-const categorySchema = new mongoose.Schema({
+let categorySchema = new mongoose.Schema({
 
   // 分类名称
   name: { type: String, required: true },

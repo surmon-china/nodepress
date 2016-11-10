@@ -67,14 +67,14 @@ exports.getItem = ({ params, error, success }) => {
 exports.postItem = ({ body, error, success }) => {
 
   // 保存文章
-  let saveArticle = () => {
+  const saveArticle = () => {
 
     // 分类、标签、关键词、数据格式化
     !!body.tag && (body.tag = Array.from(new Set(body.tag.replace(/\s/g,'').split(','))))
     !!body.keyword && (body.keyword = Array.from(new Set(body.keyword.replace(/\s/g,'').split(','))))
     !!body.category && (body.category = Array.from(new Set(body.category.replace(/\s/g,'').split(','))))
 
-    let article = new Article(body)
+    const article = new Article(body)
     article.save((err, data) => {
       err && error({ message: '文章发布失败', debug: err })
       err || success(data)
