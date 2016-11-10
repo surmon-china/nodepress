@@ -9,7 +9,8 @@ exports.INFO = {
   name: 'NodePress',
   version: '1.0.0',
   author: 'Surmon',
-  site: 'http://surmon.me'
+  site: 'http://surmon.me',
+  powered: ['vue2', 'angular2', 'node.js', 'mongodb', 'express', 'nginx']
 }
 
 // 全局信息
