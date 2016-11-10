@@ -17,6 +17,7 @@
 forever -p . -l ../logs/nodepress.log -e ../logs/nodepressError.log start -a -w -c "node --harmony" index.js
 forever list
 forever stop [id]
+forever stopall
 ```
 
 ## 接口及流程
