@@ -5,12 +5,13 @@ exports.MONGODB = {
   password: 'DB_password'
 }
 
+
 exports.INFO = {
   name: 'NodePress',
   version: '1.0.0',
   author: 'Surmon',
   site: 'http://surmon.me',
-  powered: ['Vue2', `Weex`, 'React', 'Angular2', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
+  powered: ['Vue2', `Weex`, 'React', 'Angular2', 'Bootstrap', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
 }
 
 // 全局信息
