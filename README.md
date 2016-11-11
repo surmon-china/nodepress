@@ -21,50 +21,17 @@ forever stopall
 kill id
 ```
 
-## 接口及流程
+## 接口
 
-  - 公共资源目录
+  - 处理流程
 
     ```
-    REQUEST:    /[*resources]
-    DIR:        /np-public/
+    BASE:    /
+    ALL:     /***
     ROUTE:
-                /np-route/view.js
-            -> /np-public/np-theme/Surmon
-    ```
-
-  - 前台目录
-
-    ```
-    REQUEST:    /
-    OR:         /!*admin/***
-    DIR:        /np-public/np-theme/[theme-dir]
-    ROUTE:
-                /np-route/view.js
-            -> /np-public/np-theme/Surmon
-    ```
-
-  - 后台目录
-
-    ```
-    REQUEST:    /admin
-    OR:     /admin/***/***/***
-    DIR:    /np-public/np-admin
-    ROUTE:
-            /np-route/view.js
-        -> /np-public/np-admin
-    ```
-
-  - API
-
-    ```
-    BASE:    /api
-    ALL:        /api/***
-    ROUTE:
-            /np-route/api.js
-        -> /np-route/apis/***.api.js
-        -> /np-controller/***.controller.js
-        -> /np-model/***.model.js
+            /np-route/*.api.js
+        -> /np-controller/*.controller.js
+        -> /np-model/*.model.js
     ```
 
 ----------
@@ -118,13 +85,7 @@ kill id
   - 路由
 
     ```
-    np-route -> 路由文件夹
-
-    api.js -> API路由
-
-    view.js -> 视图路由
-
-    apis/***.api.js -> 各功能API
+    np-route/***.api.js -> 各功能API
 
     ```
 
@@ -149,16 +110,6 @@ kill id
   - 静态文件
 
     ```
-    np-public -> 静态内容文件夹
-
-    np-spider -> 蜘蛛访问渲染模板
-
-    np-theme ->  PC端前台输出目录
-
-    np-admin ->  PC端后台输出目录
-
-    np-update -> 站内上传文件目录
-
     np-plugin -> 程序插件目录
 
     ```
@@ -308,11 +259,11 @@ kill id
 
     * [Handlebars](http://handlebarsjs.com/) HTML 渲染
 
+    * [Vue服务端渲染](https://vuefe.cn/guide/ssr.html)
+
   - 前台PC端
 
-    * [Vue.js](http://cn.vuejs.org/) MVVM
-
-    * [VueStrap](http://yuche.github.io/vue-strap/) UI
+    * [Vue2](http://cn.vuejs.org/) MVVM
 
     * [SOCKET.IO](http://socket.io/) 实时通讯
 
@@ -320,13 +271,17 @@ kill id
 
     * [Video.js](http://videojs.com/) 播放器
 
+    * [vue-awesome-swiper](https://github.com/surmon-china/vue-awesome-swiper) 跑马灯
+
   - 前台WAP端
 
-    * [Vue.js](http://cn.vuejs.org/) MVVM
+    * [Vue2](http://cn.vuejs.org/) MVVM
 
     * [Vux](https://github.com/airyland/vux) UI
 
   - Android/IOS客户端
+
+    * [Weex](https://alibaba.github.io/weex/)
 
     * [NativeScript 2.0](https://www.nativescript.org/)
 
@@ -367,11 +322,4 @@ kill id
 ## 插件机制
 
 ----------
-
-
-## 主题机制
-
->  np-public/np-theme/[theme-dir] 应用主题
->
->  np-public/np-spider/ 蜘蛛渲染输出
 
