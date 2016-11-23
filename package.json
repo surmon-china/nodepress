@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "body-parser": "^1.15.2",
-    "express-mongoose": "^0.1.0",
     "mongoose": "^4.5.4",
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-paginate": "^5.0.0"

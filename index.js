@@ -19,11 +19,11 @@ mongodb()
 
 // 翻页全局配置
 mongoosePaginate.paginate.options = {
-  limit: 12
+  limit: CONFIG.APP.LIMIT
 }
 
 // app config
-app.set('port', 8000)
+app.set('port', CONFIG.APP.PORT)
 app.use(bodyParser())
 
 // 拦截器
@@ -33,8 +33,8 @@ app.all('*', (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "X-Requested-With")
   res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
-  res.header("X-Powered-By", 'Nodepress 1.0.0')
   res.header("Content-Type", "application/json;charset=utf-8")
+  res.header("X-Powered-By", 'Nodepress 1.0.0')
 
   // OPTIONS
   if (req.method == 'OPTIONS') return res.send(200)

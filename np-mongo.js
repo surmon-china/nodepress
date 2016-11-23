@@ -5,7 +5,7 @@ const init   = require('./np-init')
 const mongodb  = mongoose.connection
 
 // 数据库
-const db = () => {
+module.exports = () => {
 
   // 连接数据库
   mongoose.connect(config.MONGODB.uri)
@@ -23,5 +23,3 @@ const db = () => {
 
   return mongodb
 }
-
-module.exports = db
