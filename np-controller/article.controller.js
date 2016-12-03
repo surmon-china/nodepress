@@ -21,6 +21,9 @@ exports.getList = ({ error, success, query }) => {
     populate: ['category', 'tag']
   }
 
+  delete query.page;
+  delete query.per_page;
+
   // 请求
   Article.paginate(query, options, (err, articles) => {
     if(err) return error({ debug: err })

@@ -24,7 +24,10 @@ mongoosePaginate.paginate.options = {
 
 // app config
 app.set('port', CONFIG.APP.PORT)
-app.use(bodyParser())
+app.use(bodyParser.json({ limit: '1mb' }))
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 
 // 拦截器
 app.all('*', (req, res, next) => {
@@ -80,9 +83,9 @@ app.all('/search/:tag_id', route.search)
 
 // 404
 app.all('*', (req, res) => {
-  res.jsonp({
+  res.status(404).jsonp({
     code: 0,
-    message: 'API不存在'
+    message: '无效API'
   })
 })
 
