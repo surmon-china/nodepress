@@ -16,6 +16,9 @@ exports.getList = ({ error, success, query }) => {
     limit: Number(query.per_page || 12)
   }
 
+  delete query.page;
+  delete query.per_page;
+
   // 请求
   Category.paginate(query, options, (err, categories) => {
     if(err) return error({ debug: err })
@@ -33,6 +36,8 @@ exports.getList = ({ error, success, query }) => {
 
 // 发布分类
 exports.postItem = ({ body, error, success }) => {
+
+  if (!body.pid) delete body.pid
 
   // 保存分类
   const saveCategory = () => {
@@ -53,10 +58,25 @@ exports.postItem = ({ body, error, success }) => {
 
 // 批量删除分类
 exports.delList = ({ body, error, success }) => {
-  const categories = body.categories.replace(/\s/g,'').split(',')
+  const categories = body.categories
   Category.remove({ '_id': { $in: categories } }, (err, data) => {
-    err && error({ debug: err })
-    err || success(data)
+    if(err) return error({ debug: err })
+    success(data)
+
+    // 此分类的所有子分类的pid向上移动一个级别
+    // Category.find({ pid: category_id }, (err, data) => {
+    //   let cate_ids = []
+    //   data.forEach(cate => { cate_ids.push(cate._id) })
+    //   if (!!cate_ids.length) {
+    //     const category = Category.collection.initializeOrderedBulkOp()
+    //     category.find({ '_id': { $in: cate_ids } }).update({ $set: { pid: _category.pid || null }})
+    //     category.execute((err, data) => {
+    //       if (!err) success(_category)
+    //     })
+    //   } else {
+    //     success(_category)
+    //   }
+    // })
   })
 }
 
@@ -67,7 +87,10 @@ exports.getItem = ({ params, error, success }) => {
   const findCateItem = _id => {
     Category.findById(_id, (err, category) => {
       if(err) return error({ debug: err })
-      if (!category) return error({ message: '分类不存在' })
+      if (!category) {
+        if (categories.length) return success(categories)
+        if (!categories.length) return error({ message: '分类不存在' })
+      }
       categories.unshift(category)
       const pid = category.pid
       const ok = !!pid && pid != category.id
@@ -115,7 +138,7 @@ exports.delItem = ({ params, body, error, success }) => {
   Category.findByIdAndRemove(category_id, (err, _category) => {
     if (err) return error({ debug: err })
 
-    // 删除此分类的所有子分类的pid
+    // 此分类的所有子分类的pid向上移动一个级别
     Category.find({ pid: category_id }, (err, data) => {
       let cate_ids = []
       data.forEach(cate => { cate_ids.push(cate._id) })
