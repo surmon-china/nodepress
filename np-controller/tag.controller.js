@@ -1,102 +1,80 @@
 /*
 *
-* 标签控制器模块
+* 标签 API
 *
 */
 
-const Tag = require('../np-model/tag.model')
+// 标签控制器、控制器请求器、请求类型识别器
+const { ApiMethod, ControllerPromise } = require('../np-common')
+const controller = require('../np-controller/tag.controller')
+
+const tagApi = { list: {}, item: {} }
 
 // 获取标签列表
-exports.getList = ({ query, error, success }) => {
-
-  // 保留过滤条件，之后标签过多可能会有标签列表页
-  const options = {
-    sort: { _id: 1 },
-    page: Number(query.page || 1),
-    limit: Number(query.per_page || 12)
-  }
-
-  // 请求
-  Tag.paginate(query, options, (err, tags) => {
-    if(err) return error({ debug: err })
-    success({
-      pagination: {
-        total: tags.total,
-        current_page: options.page,
-        total_page: tags.pages,
-        per_page: options.limit
-      },
-      data: tags.docs
-    })
+tagApi.list.GET = (req, res) => {
+  ControllerPromise({
+    req, res, controller,
+    method: 'getList',
+    success_msg: '标签列表获取成功',
+    error_msg: '标签列表获取失败'
   })
 }
 
-// 发布标签
-exports.postItem = ({ body, error, success }) => {
-
-  // 保存标签
-  const saveTag = () => {
-    const tag = new Tag(body)
-    tag.save((err, data) => {
-      err && error({ debug: err })
-      err || success(data)
-    })
-  }
-
-  // 验证Slug合法性
-  Tag.find({ slug: body.slug }, (err, data) => {
-    if (err) return error({ debug: err })
-    data.length && error({ message: 'slug已被使用' })
-    data.length || saveTag()
+// 发布新标签
+tagApi.list.POST = (req, res) => {
+  ControllerPromise({
+    req, res, controller,
+    method: 'postItem',
+    success_msg: '标签发布成功',
+    error_msg: '标签发布失败'
   })
 }
 
 // 批量删除标签
-exports.delList = ({ body, error, success }) => {
-  const tags = body.tags.replace(/\s/g,'').split(',')
-  Tag.remove({ '_id': { $in: tags } }, (err, data) => {
-    err && error({ debug: err })
-    err || success(data)
+tagApi.list.DELETE = (req, res) => {
+  ControllerPromise({
+    req, res, controller,
+    method: 'delList',
+    success_msg: '标签批量删除成功',
+    error_msg: '标签批量删除失败'
   })
 }
 
 // 获取单个标签
-exports.getItem = ({ params, error, success }) => {
-  Tag.findById(params.tag_id, (err, tag) => {
-    err && error({ debug: err })
-    err || success({ message: '标签不存在' })
+tagApi.item.GET = (req, res) => {
+  ControllerPromise({
+    req, res, controller,
+    method: 'getItem',
+    success_msg: '单个标签获取成功',
+    error_msg: '单个标签获取失败'
   })
 }
 
 // 修改单个标签
-exports.putItem = ({ params, body, error, success }) => {
-
-  const tag_id = params.tag_id
-
-  // 修改前判断slug的唯一性，是否被占用
-  Tag.find({ slug: body.slug }, (err, data) => {
-    if (err) return error({ debug: err })
-
-    // 判断查找到的数据是否为自身
-    const is_self = (!!data.length && data.length == 1 && data[0]._id == tag_id)
-
-    // 存在数据且不是自身
-    if (!!data.length && !is_self) return error({ message: 'slug已被使用' })
-
-    // 不存在数据或数据是自身
-    if (!data.length || is_self) {
-      Tag.findByIdAndUpdate(tag_id, body, function(err, tag) {
-        err && error({ debug: err })
-        err || success(tag)
-      })
-    }
+tagApi.item.PUT = (req, res) => {
+  ControllerPromise({
+    req, res, controller,
+    method: 'putItem',
+    success_msg: '单个标签修改成功',
+    error_msg: '单个标签修改失败'
   })
 }
 
 // 删除单个标签
-exports.delItem = ({ params, body, error, success }) => {
-  Tag.findByIdAndRemove(params.tag_id, (err, tag) => {
-    err && error({ debug: err })
-    err || success(tag)
+tagApi.item.DELETE = (req, res) => {
+  ControllerPromise({
+    req, res, controller,
+    method: 'delItem',
+    success_msg: '单个标签删除成功',
+    error_msg: '单个标签删除失败'
   })
 }
+
+// 模块暴露
+exports.list = (req, res) => {
+  ApiMethod({ req, res, type: 'list', api: tagApi })
+}
+exports.item = (req, res) => {
+  ApiMethod({ req, res, type: 'item', api: tagApi })
+}
+

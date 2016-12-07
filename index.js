@@ -10,9 +10,11 @@ const mongoosePaginate = require('mongoose-paginate')
 
 // app modules
 const CONFIG = require('./np-config')
-const route = require('./np-route')
 const mongodb = require('./np-mongo')
 const app = express()
+
+// controller
+const controller = require('./np-controller')
 
 // 连接数据库
 mongodb()
@@ -52,40 +54,40 @@ app.get('/', (req, res) => {
 })
 
 // 全局option
-app.all('/option', route.option.list)
-app.all('/option/:option_id', route.option.item)
+// app.all('/option', controller.option.list)
+// app.all('/option/:option_id', controller.option.item)
 
 // menu菜单
-// app.all('/menu', route.menu.list)
-// app.all('/menu/:menu_id', route.menu.item)
+// app.all('/menu', controller.menu.list)
+// app.all('/menu/:menu_id', controller.menu.item)
 
 // Article
-app.all('/article', route.article.list)
-app.all('/article/:article_id', route.article.item)
+// app.all('/article', controller.article.list)
+// app.all('/article/:article_id', controller.article.item)
 
 // Category
-app.all('/category', route.category.list)
-app.all('/category/:category_id', route.category.item)
+app.all('/category', controller.category.list)
+app.all('/category/:category_id', controller.category.item)
 
 // Tag
-app.all('/tag', route.tag.list)
-app.all('/tag/:tag_id', route.tag.item)
+// app.all('/tag', controller.tag.list)
+// app.all('/tag/:tag_id', controller.tag.item)
 
 // Page
-app.all('/page', route.page.list)
-app.all('/page/:page_id', route.page.item)
+// app.all('/page', controller.page.list)
+// app.all('/page/:page_id', controller.page.item)
 
 /*
 // Search
-app.all('/search', route.search)
-app.all('/search/:tag_id', route.search)
+app.all('/search', controller.search)
+app.all('/search/:tag_id', controller.search)
 */
 
 // 404
 app.all('*', (req, res) => {
   res.status(404).jsonp({
     code: 0,
-    message: '无效API'
+    message: '无效的API请求'
   })
 })
 
