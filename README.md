@@ -28,10 +28,7 @@ kill id
     ```
     BASE:    /
     ALL:     /***
-    ROUTE:
-            /np-route/*.api.js
-        -> /np-controller/*.controller.js
-        -> /np-model/*.model.js
+    ROUTE:   /np-route/*.api.js -> /np-controller/*.controller.js -> /np-model/*.model.js
     ```
 
 ----------
