@@ -24,7 +24,7 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 12 }}, res) => {
     handleSuccess({
       res,
       message: '分类列表获取成功',
-      data: {
+      result: {
         pagination: {
           total: categories.total,
           current_page: options.page,
@@ -46,9 +46,9 @@ categoryCtrl.list.POST = ({ body }, res) => {
 
   // 保存分类
   const saveCategory = () => {
-    new Category(body).save((err, data) => {
+    new Category(body).save((err, result) => {
       err && handleError({ res, err, message: '分类发布失败' })
-      err || handleSuccess({ res, data, message: '分类发布成功' })
+      err || handleSuccess({ res, result, message: '分类发布成功' })
     })
   }
 
@@ -67,9 +67,9 @@ categoryCtrl.list.DELETE = ({ body: { categories }}, res) => {
   if (!categories || !categories.length)
     return handleError({ res, message: '缺少有效参数' })
 
-  Category.remove({ '_id': { $in: categories } }, (err, data) => {
+  Category.remove({ '_id': { $in: categories } }, (err, result) => {
     err && handleError({ res, err, message: '分类批量删除失败' })
-    err || handleSuccess({ res, data, message: '分类批量删除成功' })
+    err || handleSuccess({ res, result, message: '分类批量删除成功' })
   })
 }
 
@@ -80,13 +80,14 @@ categoryCtrl.item.GET = ({ params: { category_id } }, res) => {
     Category.findById(_id, (err, category) => {
       if(err) return handleError({ res, err, message: '分类获取失败' })
       if (!category)
-        if (categories.length) return handleSuccess({ res, data: categories, message: '分类获取成功' })
-        if (!categories.length) return handleError({ res, err, message: '分类不存在' })
+        if (categories.length) handleSuccess({ res, result: categories, message: '分类获取成功' })
+        if (!categories.length) handleError({ res, err, message: '分类不存在' })
+        return
       categories.unshift(category)
       const pid = category.pid
       const ok = !!pid && pid !== category.id
       ok && findCateItem(pid)
-      ok || handleSuccess({ res, data: categories, message: '分类获取成功' })
+      ok || handleSuccess({ res, result: categories, message: '分类获取成功' })
     })
   }
   findCateItem(category_id)
@@ -100,7 +101,7 @@ categoryCtrl.item.PUT = ({ params: { category_id }, body, body: { pid, slug }}, 
     if (['', '0', 'null', 'false'].includes(pid) || !pid || Object.is(pid, category_id)) body.pid = null
     Category.findByIdAndUpdate(category_id, body, (err, category) => {
       err && handleError({ res, err, message: '分类修改失败' })
-      err || handleSuccess({ res, data: category, message: '分类修改成功' })
+      err || handleSuccess({ res, result: category, message: '分类修改成功' })
     })
   }
 
@@ -108,8 +109,8 @@ categoryCtrl.item.PUT = ({ params: { category_id }, body, body: { pid, slug }}, 
   Category.find({ slug: slug }, (err, categories) => {
     if (err) return handleError({ res, err, message: '分类修改失败' })
     const canPut = (!categories.length || (!!categories.length && Object.is(categories.length, 1) && Object.is(categories[0]._id, category_id)))
-    canPut || handleError({ res, err, message: '修改失败，slug已被使用' })
-    canPut && putCategory()
+    canPut && handleError({ res, err, message: '修改失败，slug已被使用' })
+    canPut || putCategory()
   })
 }
 
@@ -120,7 +121,7 @@ categoryCtrl.item.DELETE = ({ params: { category_id }}, res) => {
   const deleteCategory = () => {
     return new Promise((resolve, reject) => {
       Category.findByIdAndRemove(category_id, (err, category) => {
-        err ? reject({ err }) : resolve({ data: category })
+        err ? reject({ err }) : resolve({ result: category })
       })
     })
   }
@@ -129,20 +130,21 @@ categoryCtrl.item.DELETE = ({ params: { category_id }}, res) => {
   const deletePid = category => {
     return new Promise((resolve, reject) => {
       Category.find({ pid: category_id }, (err, categories) => {
-        if (!categories.length) return resolve({ data: category })
-        Category.collection.initializeOrderedBulkOp()
-        .find({ '_id': { $in: Array.from(categories, c => c._id) }})
-        .update({ $set: { pid: category.pid || null }})
-        .execute((err, data) => { err ? reject({ err }) : resolve({ data: category }) })
+        if (!categories.length) return resolve({ result: category })
+        let _category = Category.collection.initializeOrderedBulkOp()
+        _category.find({ '_id': { $in: Array.from(categories, c => c._id) } }).update({ $set: { pid: category.pid || null }})
+        _category.execute((err, data) => {
+          err ? reject({ err }) : resolve({ result: category })
+        })
       })
     })
   }
 
   (async () => {
     let category = await deleteCategory()
-    let pid = await deletePid(category)
+    return await deletePid(category)
   })()
-  .then(({ data }) => handleSuccess({ res, data, message: '分类删除成功' }))
+  .then(({ result }) => handleSuccess({ res, result, message: '分类删除成功' }))
   .catch(({ err }) => handleError({ res, err, message: '分类删除失败' }))
 }
 

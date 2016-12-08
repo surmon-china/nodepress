@@ -6,18 +6,18 @@ exports.handleRequest = ({ req, res, controller }) => {
   support || res.status(405).jsonp({ code: 0, message: '不支持该请求类型！' })
 }
 
-exports.handleError = ({ res, message, err }) => {
+exports.handleError = ({ res, message = '请求失败', err = null }) => {
   res.jsonp({
     code: 0,
-    message: message || '请求失败',
-    debug: err || null
+    message,
+    debug: err
   })
 }
 
-exports.handleSuccess = ({ res, message, data }) => {
+exports.handleSuccess = ({ res, message = '请求成功', result = null }) => {
   res.jsonp({
     code: 1,
-    message: message || '请求成功',
-    result: data || null
+    message,
+    result
   })
 }
