@@ -5,7 +5,7 @@
 */
 
 // 配置控制器、控制器请求器、请求类型识别器
-const { ApiMethod, ControllerPromise } = require('../np-common')
+const { ApiMethod, ControllerPromise } = require('../np-handle')
 const controller = require('../np-controller/option.controller')
 
 let optionApi = { list: {}, item: {} }

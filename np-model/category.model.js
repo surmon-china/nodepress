@@ -53,5 +53,5 @@ categorySchema.pre('save', next => {
 // 分类模型
 const Category = mongoose.model('Category', categorySchema)
 
-// 模块化
+// export
 module.exports = Category

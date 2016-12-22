@@ -65,6 +65,10 @@ app.get('/', (req, res) => {
 // app.all('/article', controller.article.list)
 // app.all('/article/:article_id', controller.article.item)
 
+// announcement
+app.all('/announcement', controller.announcement.list)
+app.all('/announcement/:announcement_id', controller.announcement.item)
+
 // Category
 app.all('/category', controller.category.list)
 app.all('/category/:category_id', controller.category.item)
