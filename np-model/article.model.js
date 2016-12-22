@@ -11,7 +11,7 @@ const mongoosePaginate = require('mongoose-paginate')
 // 自增ID初始化
 autoIncrement.initialize(mongoose.connection)
 
-// 文章集合模型
+// 文章模型
 let articleSchema = new mongoose.Schema({
 
   // 文章标题
@@ -78,5 +78,5 @@ articleSchema.pre('save', next => {
 // 文章模型
 const Article = mongoose.model('Article', articleSchema)
 
-// 模块化
+// export
 module.exports = Article

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "author": "Surmon",
   "scripts": {
-    "start": "node --harmony index.js"
+    "start": "node --harmony index.js",
+    "dev": "nodemon --exec \"npm start\""
   },
   "dependencies": {
     "express": "4.x"

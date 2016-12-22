@@ -14,7 +14,11 @@ let pageSchema = new mongoose.Schema({
   // 页面描述
   description: String,
 
+  // 页面内容
   content: { type: String, required: true },
+
+  // 文章发布状态 => -1已删除，0草稿，1已发布
+  status: { type: Number, default: 1 },
 
   // 自定义扩展
   extend: [{ name: String, value: String }]
@@ -37,5 +41,5 @@ pageSchema.pre('save', next => {
 // 页面模型
 const Page = mongoose.model('Page', pageSchema)
 
-// 模块化
+// export
 module.exports = Page
