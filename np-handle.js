@@ -7,17 +7,9 @@ exports.handleRequest = ({ req, res, controller }) => {
 }
 
 exports.handleError = ({ res, message = '请求失败', err = null }) => {
-  res.jsonp({
-    code: 0,
-    message,
-    debug: err
-  })
+  res.jsonp({ code: 0, message, debug: err })
 }
 
 exports.handleSuccess = ({ res, message = '请求成功', result = null }) => {
-  res.jsonp({
-    code: 1,
-    message,
-    result
-  })
+  res.jsonp({ code: 1, message, result })
 }

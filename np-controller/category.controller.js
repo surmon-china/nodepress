@@ -4,12 +4,18 @@
 *
 */
 
-const { handleRequest, handleError, handleSuccess } = require('../np-common')
+const { handleRequest, handleError, handleSuccess } = require('../np-handle')
 const Category = require('../np-model/category.model')
 let categoryCtrl = {list: {}, item: {}}
 
+// 分类优化
+const categoryOptimize = () => {
+  // 找到父分类Pid已失效的分类，将他们的pid改为null
+  console.log('优化分类');
+}
+
 // 获取分类列表
-categoryCtrl.list.GET = ({ query: { page = 1, per_page = 12 }}, res) => {
+categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
 
   // 过滤条件
   const options = {
@@ -41,8 +47,10 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 12 }}, res) => {
 categoryCtrl.list.POST = ({ body }, res) => {
 
   // 验证
-  if (!body.pid) delete body.pid
-  if (!body.slug) handleError({ res, message: '缺少slug' })
+  if (!body.pid)
+    delete body.pid
+  if (body.slug == undefined)
+    return handleError({ res, message: '缺少slug' })
 
   // 保存分类
   const saveCategory = () => {
@@ -68,6 +76,7 @@ categoryCtrl.list.DELETE = ({ body: { categories }}, res) => {
     return handleError({ res, message: '缺少有效参数' })
 
   Category.remove({ '_id': { $in: categories } }, (err, result) => {
+    // 把所有pid为categories中任何一个id的分类分别提升到自己分类本身的PID分类或者null
     err && handleError({ res, err, message: '分类批量删除失败' })
     err || handleSuccess({ res, result, message: '分类批量删除成功' })
   })
@@ -86,8 +95,7 @@ categoryCtrl.item.GET = ({ params: { category_id } }, res) => {
       categories.unshift(category)
       const pid = category.pid
       const ok = !!pid && pid !== category.id
-      ok && findCateItem(pid)
-      ok || handleSuccess({ res, result: categories, message: '分类获取成功' })
+      ok ? findCateItem(pid) : handleSuccess({ res, result: categories, message: '分类获取成功' })
     })
   }
   findCateItem(category_id)
@@ -95,6 +103,9 @@ categoryCtrl.item.GET = ({ params: { category_id } }, res) => {
 
 // 修改单个分类
 categoryCtrl.item.PUT = ({ params: { category_id }, body, body: { pid, slug }}, res) => {
+
+  if (slug == undefined)
+    return handleError({ res, message: 'slug不合法' })
 
   // 修改
   const putCategory = () => {
@@ -106,11 +117,10 @@ categoryCtrl.item.PUT = ({ params: { category_id }, body, body: { pid, slug }}, 
   }
 
   // 修改前判断slug的唯一性，是否被占用
-  Category.find({ slug: slug }, (err, categories) => {
+  Category.find({ slug }, (err, categories) => {
     if (err) return handleError({ res, err, message: '分类修改失败' })
-    const canPut = (!categories.length || (!!categories.length && Object.is(categories.length, 1) && Object.is(categories[0]._id, category_id)))
-    canPut && handleError({ res, err, message: '修改失败，slug已被使用' })
-    canPut || putCategory()
+    const canPut = (!categories.length || (!!categories.length && Object.is(categories.length, 1) && categories[0]._id == category_id))
+    canPut ? putCategory() : handleError({ res, err, message: '修改失败，slug已被使用' })
   })
 }
 
@@ -121,7 +131,7 @@ categoryCtrl.item.DELETE = ({ params: { category_id }}, res) => {
   const deleteCategory = () => {
     return new Promise((resolve, reject) => {
       Category.findByIdAndRemove(category_id, (err, category) => {
-        err ? reject({ err }) : resolve({ result: category })
+        err ? reject({ err }) : resolve(category)
       })
     })
   }

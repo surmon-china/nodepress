@@ -14,9 +14,6 @@ let tagSchema = new mongoose.Schema({
   // 标签描述
   description: String,
 
-  // 包含文章数量
-  count: Number,
-
   // 自定义扩展
   extend: [{ name: String, value: String }]
 
@@ -38,5 +35,5 @@ tagSchema.pre('save', next => {
 // 标签模型
 const Tag = mongoose.model('Tag', tagSchema)
 
-// 模块化
+// export
 module.exports = Tag
