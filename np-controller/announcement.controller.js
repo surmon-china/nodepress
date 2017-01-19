@@ -9,21 +9,25 @@ const Announcement = require('../np-model/announcement.model')
 let announcementCtrl = {list: {}, item: {}}
 
 // 获取公告列表
-announcementCtrl.list.GET = ({ query: { page = 1, per_page = 10, state = 'all', keyword = '' }}, res) => {
+announcementCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword = '' }}, res) => {
 
   // 过滤条件
   const options = {
-    sort: { _id: 1 },
+    sort: { _id: -1 },
     page: Number(page),
     limit: Number(per_page)
   }
 
-  // query
-  const query = {}
-  // if (!Object.is(state, 'all')) {}
+  // 查询参数
+  const query = { 'content': new RegExp(keyword) }
+  
+  // 按照type查询
+  if (['0', '1'].includes(state)) {
+    query.state = state
+  }
 
   // 请求
-  Announcement.paginate({ 'content': { $in: keyword }}, options, (err, announcements) => {
+  Announcement.paginate(query, options, (err, announcements) => {
     if(err) return handleError({ res, err, message: '公告列表获取失败' })
     handleSuccess({
       res,

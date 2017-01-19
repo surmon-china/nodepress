@@ -74,8 +74,8 @@ app.all('/category', controller.category.list)
 app.all('/category/:category_id', controller.category.item)
 
 // Tag
-// app.all('/tag', controller.tag.list)
-// app.all('/tag/:tag_id', controller.tag.item)
+app.all('/tag', controller.tag.list)
+app.all('/tag/:tag_id', controller.tag.item)
 
 // Page
 // app.all('/page', controller.page.list)
