@@ -24,7 +24,7 @@ let announcementSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
 
   // 自定义扩展
-  extend: {}
+  extend: [{ name: String, value: Object }]
 })
 
 // 翻页 + 自增ID插件配置
