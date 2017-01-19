@@ -9,17 +9,27 @@ const Tag = require('../np-model/tag.model')
 let tagCtrl = {list: {}, item: {}}
 
 // 获取标签列表
-tagCtrl.list.GET = ({ query: { tag = 1, per_tag = 12 }}, res) => {
+tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) => {
 
   // 过滤条件
   const options = {
-    sort: { _id: 1 },
-    tag: Number(tag),
-    limit: Number(per_tag)
+    sort: { _id: -1 },
+    page: Number(page),
+    limit: Number(per_page)
+  }
+
+  // 查询参数
+  const keywordReg = new RegExp(keyword)
+  const query = {
+    "$or": [
+      { 'name': keywordReg },
+      { 'slug': keywordReg },
+      { 'description': keywordReg }
+    ]
   }
 
   // 请求
-  Tag.paginate({}, options, (err, tags) => {
+  Tag.paginate(query, options, (err, tags) => {
     if(err) return handleError({ res, err, message: '标签列表获取失败' })
     handleSuccess({
       res,
@@ -27,9 +37,9 @@ tagCtrl.list.GET = ({ query: { tag = 1, per_tag = 12 }}, res) => {
       result: {
         pagination: {
           total: tags.total,
-          current_tag: options.tag,
-          total_tag: tags.tags,
-          per_tag: options.limit
+          current_page: options.page,
+          total_page: tags.pages,
+          per_page: options.limit
         },
         data: tags.docs
       }
