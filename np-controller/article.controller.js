@@ -9,7 +9,7 @@ const Article = require('../np-model/article.model')
 let articleCtrl = {list: {}, item: {}}
 
 // 获取文章列表
-articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword = '' }}, res) => {
+articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword, category, tag }}, res) => {
 
   // 过滤条件
   const options = {
@@ -20,16 +20,35 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword = '' 
   }
 
   // 查询参数
-  const query = { 'content': new RegExp(keyword) }
-  
-  // 按照type查询
-  if (['0', '1'].includes(state)) {
+  let query = {}
+
+  // 按照state查询
+  if (['0', '1', '-1'].includes(state)) {
     query.state = state
   }
 
+  // 关键词查询
+  if (keyword) {
+    const keywordReg = new RegExp(keyword)
+    query['$or'] = [
+      { 'title': keywordReg },
+      { 'content': keywordReg },
+      { 'description': keywordReg }
+    ]
+  }
+
+  // 分类查询
+  if (category) {
+
+  }
+
+  console.log(query)
+
   // 请求
   Article.paginate(query, options, (err, articles) => {
-    if(err) return handleError({ res, err, message: '文章列表获取失败' })
+    if (err) {
+      return handleError({ res, err, message: '文章列表获取失败' })
+    }
     handleSuccess({
       res,
       message: '文章列表获取成功',
@@ -47,14 +66,22 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword = '' 
 }
 
 // 发布文章
-articleCtrl.list.POST = ({ body }, res) => {
+articleCtrl.list.POST = ({ article: body }, res) => {
 
   // 验证
-  if (!body.content)
+  if (!article.content) {
     return handleError({ res, message: '内容不合法' })
+  }
+
+  // 分类、标签、关键词、数据格式化
+  if (article.tag) Array.from(new Set(article.tag.replace(/\s/g,'').split(',')))
+  if (article.keyword) article.keyword = Array.from(new Set(article.keyword.replace(/\s/g,'').split(',')))
+  if (article.category) article.category = Array.from(new Set(article.category.replace(/\s/g,'').split(',')))
+
+  // console.log(article)
 
   // 保存文章
-  new Article(body).save((err, result) => {
+  new Article(article).save((err, result) => {
     err && handleError({ res, err, message: '文章发布失败' })
     err || handleSuccess({ res, result, message: '文章发布成功' })
   })
@@ -110,7 +137,7 @@ exports.item = (req, res) => { handleRequest({ req, res, controller: articleCtrl
 
 // ----------------------------------------------------------------------
 
-
+/*
 
 // 批量修改文章
 exports.putList = function(params) {
@@ -127,16 +154,7 @@ exports.delList = function(params) {
 // 获取单篇文章
 exports.getItem = ({ params, error, success }) => {
 
-  Article
-    .findOne({ id: params.article_id })
-    .populate(['category', 'tag'])
-    .exec((err, article) => {
-      if (err) return error({ debug: err })
-      if (!article) return error({ message: '文章不存在' })
-      article.password = undefined
-      delete article.password
-      success(article)
-    })
+  
 }
 
 // 发布文章
@@ -179,7 +197,6 @@ exports.putItem = ({ params, body, error, success }) => {
     if (!err) success(article)
   })
 
-  /*
   // 修改前判断slug的唯一性，是否被占用
   Article.find({ id: params.article_id }, (err, data) => {
 
@@ -201,7 +218,6 @@ exports.putItem = ({ params, body, error, success }) => {
       })
     }
   })
-  */
 }
 
 // 删除单篇文章
@@ -211,3 +227,5 @@ exports.delItem = ({ params, error, success }) => {
     err || success(article)
   })
 }
+
+*/
