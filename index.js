@@ -57,13 +57,9 @@ app.get('/', (req, res) => {
 // app.all('/option', controller.option.list)
 // app.all('/option/:option_id', controller.option.item)
 
-// menu菜单
-// app.all('/menu', controller.menu.list)
-// app.all('/menu/:menu_id', controller.menu.item)
-
 // Article
-// app.all('/article', controller.article.list)
-// app.all('/article/:article_id', controller.article.item)
+app.all('/article', controller.article.list)
+app.all('/article/:article_id', controller.article.item)
 
 // announcement
 app.all('/announcement', controller.announcement.list)

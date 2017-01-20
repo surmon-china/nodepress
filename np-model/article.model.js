@@ -17,14 +17,17 @@ let articleSchema = new mongoose.Schema({
   // 文章标题
   title:  { type: String, required: true },
 
-  // 文章内容
-  content: { type: String, required: true },
+  // 文章关键字（SEO）
+  keyword: Array,
 
   // 文章描述
   description: String,
 
-  // 文章关键字（SEO）
-  keyword: Array,
+  // 文章内容
+  content: { type: String, required: true },
+
+  // 缩略图
+  thumb: { type: String, required: true },
 
   // 文章别名（具有唯一性）
   slug: { type: String, required: true },
@@ -36,7 +39,7 @@ let articleSchema = new mongoose.Schema({
   public: { type: Number, default: 1 },
 
   // 文章密码 => 加密状态生效
-  password: String,
+  password: { type: String, default: '' },
 
   // 发布日期
   date: { type: Date, default: Date.now },
@@ -47,16 +50,14 @@ let articleSchema = new mongoose.Schema({
   // 文章分类
   category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
 
-  // 边栏展示 => 0不显示，1left，2right
-  sidebar: { type: String, default: 2 },
-  meta: {
-    views: { type: Number, default: 0 },
-    favs:  { type: Number, default: 0 },
-    comments: { type: Number, default: 0 },
-  },
+  // meta: {
+  //   views: { type: Number, default: 0 },
+  //   favs:  { type: Number, default: 0 },
+  //   comments: { type: Number, default: 0 },
+  // },
 
   // 自定义扩展
-  extend: {}
+  extend: [{ name: String, value: Object }]
 })
 
 // 翻页 + 自增ID插件配置
