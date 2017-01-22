@@ -66,19 +66,12 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword, cate
 }
 
 // 发布文章
-articleCtrl.list.POST = ({ article: body }, res) => {
+articleCtrl.list.POST = ({ body: article }, res) => {
 
   // 验证
-  if (!article.content) {
+  if (!article.title || !article.content) {
     return handleError({ res, message: '内容不合法' })
   }
-
-  // 分类、标签、关键词、数据格式化
-  if (article.tag) Array.from(new Set(article.tag.replace(/\s/g,'').split(',')))
-  if (article.keyword) article.keyword = Array.from(new Set(article.keyword.replace(/\s/g,'').split(',')))
-  if (article.category) article.category = Array.from(new Set(article.category.replace(/\s/g,'').split(',')))
-
-  // console.log(article)
 
   // 保存文章
   new Article(article).save((err, result) => {
@@ -110,14 +103,17 @@ articleCtrl.item.GET = ({ params: { article_id }}, res) => {
 }
 
 // 修改单个文章
-articleCtrl.item.PUT = ({ params: { article_id }, body }, res) => {
+articleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
 
-  if (!body.content)
+  // 验证
+  if (!article.title || !article.content) {
     return handleError({ res, message: '内容不合法' })
+  }
 
-  Article.findByIdAndUpdate(article_id, body, (err, article) => {
+  // 修改文章
+  Article.findByIdAndUpdate(article_id, article, (err, _article) => {
     err && handleError({ res, err, message: '文章修改失败' })
-    err || handleSuccess({ res, result: Object.assign(article, { content: body.content }), message: '文章修改成功' })
+    err || handleSuccess({ res, result: Object.assign(_article, article), message: '文章修改成功' })
   })
 }
 
@@ -132,100 +128,3 @@ articleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
 // export
 exports.list = (req, res) => { handleRequest({ req, res, controller: articleCtrl.list })}
 exports.item = (req, res) => { handleRequest({ req, res, controller: articleCtrl.item })}
-
-
-
-// ----------------------------------------------------------------------
-
-/*
-
-// 批量修改文章
-exports.putList = function(params) {
-  // console.log(params)
-  console.log('Hello,World!, 批量修改文章')
-}
-
-// 批量删除文章
-exports.delList = function(params) {
-  // console.log(params)
-  console.log('Hello,World!, 批量删除文章')
-}
-
-// 获取单篇文章
-exports.getItem = ({ params, error, success }) => {
-
-  
-}
-
-// 发布文章
-exports.postItem = ({ body, error, success }) => {
-
-  // 保存文章
-  const saveArticle = () => {
-
-    // 分类、标签、关键词、数据格式化
-    !!body.tag && (body.tag = Array.from(new Set(body.tag.replace(/\s/g,'').split(','))))
-    !!body.keyword && (body.keyword = Array.from(new Set(body.keyword.replace(/\s/g,'').split(','))))
-    !!body.category && (body.category = Array.from(new Set(body.category.replace(/\s/g,'').split(','))))
-
-    const article = new Article(body)
-    article.save((err, data) => {
-      err && error({ message: '文章发布失败', debug: err })
-      err || success(data)
-    })
-  }
-
-  // 检测Slug合法性
-  if (!body.slug) return saveArticle()
-  Article.find({ slug: body.slug }, (err, data) => {
-    if (err) return error({ debug: err })
-    data.length && error({ message: '文章slug已被使用' })
-    data.length || saveArticle()
-  })
-}
-
-// 修改单篇文章
-exports.putItem = ({ params, body, error, success }) => {
-
-  const article_id = params.article_id
-
-  // 如果什么内容都没有
-  if (!body || !article_id) return error({ message: '啥都没修改' })
-
-  Article.findByIdAndUpdate(article_id, body, (err, article) => {
-    if (err) return error({ debug: err })
-    if (!err) success(article)
-  })
-
-  // 修改前判断slug的唯一性，是否被占用
-  Article.find({ id: params.article_id }, (err, data) => {
-
-    // 占用
-    if (err) return error({ debug: err })
-
-    // 判断查找到的数据是否为自身
-    let is_self = (!!data.length && data.length == 1 && data[0]._id == article_id)
-
-    // 存在数据且不是自身
-    if (!!data.length && !is_self) return error({ message: 'slug已被使用' })
-
-    // 不存在数据或数据是自身
-    if (!data.length || is_self) {
-
-      Article.findByIdAndUpdate(article_id, content, function(err, category) {
-        if (err) return error({ debug: err })
-        if (!err) success(category)
-      })
-    }
-  })
-}
-
-// 删除单篇文章
-exports.delItem = ({ params, error, success }) => {
-  Article.findByIdAndRemove(params.article_id, (err, article) => {
-    err && error(err)
-    err || success(article)
-  })
-}
-
-*/

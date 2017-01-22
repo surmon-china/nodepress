@@ -18,7 +18,7 @@ let articleSchema = new mongoose.Schema({
   title:  { type: String, required: true },
 
   // 文章关键字（SEO）
-  keyword: Array,
+  keywords: [{ type: String }],
 
   // 文章描述
   description: String,
@@ -27,10 +27,7 @@ let articleSchema = new mongoose.Schema({
   content: { type: String, required: true },
 
   // 缩略图
-  thumb: { type: String, required: true },
-
-  // 文章别名（具有唯一性）
-  slug: { type: String, required: true },
+  thumb: String,
 
   // 文章发布状态 => -1已删除，0草稿，1已发布
   status: { type: Number, default: 1 },
