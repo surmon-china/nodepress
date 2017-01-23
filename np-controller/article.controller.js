@@ -9,7 +9,7 @@ const Article = require('../np-model/article.model')
 let articleCtrl = {list: {}, item: {}}
 
 // 获取文章列表
-articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword, category, tag }}, res) => {
+articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keyword, category, tag }}, res) => {
 
   // 过滤条件
   const options = {
@@ -27,6 +27,11 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword, cate
     query.state = state
   }
 
+  // 按照公开程度查询
+  if (['0', '1', '-1'].includes(public)) {
+    query.public = public
+  }
+
   // 关键词查询
   if (keyword) {
     const keywordReg = new RegExp(keyword)
@@ -41,6 +46,8 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword, cate
   if (category) {
 
   }
+
+  // 标签查询
 
   console.log(query)
 
