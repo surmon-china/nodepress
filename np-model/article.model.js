@@ -73,6 +73,11 @@ articleSchema.pre('save', next => {
   next()
 })
 
+// 列表时用的文章内容虚拟属性
+articleSchema.virtual('t_content').get(function() {
+  return this.content.substring(0, 190)
+})
+
 // 文章模型
 const Article = mongoose.model('Article', articleSchema)
 
