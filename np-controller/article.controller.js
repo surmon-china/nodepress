@@ -42,14 +42,15 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keywo
     ]
   }
 
-  // 分类查询
-  if (category) {
-
+  // 标签查询
+  if (tag) {
+    query.tag = tag;
   }
 
-  // 标签查询
-
-  console.log(query)
+  // 分类查询
+  if (category) {
+    query.category = category;
+  }
 
   // 请求
   Article.paginate(query, options, (err, articles) => {
@@ -87,12 +88,47 @@ articleCtrl.list.POST = ({ body: article }, res) => {
   })
 }
 
+// 批量修改文章（移回收站、回收站恢复）
+articleCtrl.list.PUT = ({ body: { articles, params: { action }}}, res) => {
+
+  console.log(articles);
+
+  // 验证
+  if (!articles || !articles.length) {
+    return handleError({ res, message: '缺少有效参数' })
+  }
+
+  // 要改的数据
+  let updatePart = {}
+
+  // 移至回收站
+  if (Object.is(action, 1)) {
+    updatePart.state = -1;
+  }
+
+  // 移至草稿
+  if (Object.is(action, 2)) {
+    updatePart.state = 0;
+  }
+
+  // 移至已发布
+  if (Object.is(action, 3)) {
+    updatePart.state = 1;
+  }
+
+  Article.update({ '_id': { $in: articles }}, { $set: updatePart }, { multi: true }, (err, result) => {
+    err && handleError({ res, err, message: '文章批量删除失败' })
+    err || handleSuccess({ res, result, message: '文章批量删除成功' })
+  })
+}
+
 // 批量删除文章
 articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 
   // 验证
-  if (!articles || !articles.length)
+  if (!articles || !articles.length) {
     return handleError({ res, message: '缺少有效参数' })
+  }
 
   Article.remove({ '_id': { $in: articles }}, (err, result) => {
     err && handleError({ res, err, message: '文章批量删除失败' })
