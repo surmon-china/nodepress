@@ -6,6 +6,7 @@
 
 const { handleRequest, handleError, handleSuccess } = require('../np-handle')
 const Article = require('../np-model/article.model')
+const htmlToText = require('html-to-text')
 let articleCtrl = {list: {}, item: {}}
 
 // 获取文章列表
@@ -54,20 +55,22 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keywo
 
   // 请求
   Article.paginate(query, options, (err, articles) => {
-    if (err) {
-      return handleError({ res, err, message: '文章列表获取失败' })
-    }
+    if (err) return handleError({ res, err, message: '文章列表获取失败' })
     handleSuccess({
       res,
       message: '文章列表获取成功',
       result: {
         pagination: {
           total: articles.total,
-          current_page: options.page,
+          current_page: articles.page,
           total_page: articles.pages,
-          per_page: options.limit
+          per_page: articles.limit
         },
-        data: articles.docs
+        data: articles.docs.map(article => {
+          article.content = htmlToText.fromString(article.t_content)
+          article.password = ''
+          return article
+        })
       }
     })
   })
@@ -90,8 +93,6 @@ articleCtrl.list.POST = ({ body: article }, res) => {
 
 // 批量修改文章（移回收站、回收站恢复）
 articleCtrl.list.PUT = ({ body: { articles, params: { action }}}, res) => {
-
-  console.log(articles);
 
   // 验证
   if (!articles || !articles.length) {
