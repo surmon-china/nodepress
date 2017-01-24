@@ -7,7 +7,9 @@
     "dev": "nodemon --exec \"npm start\""
   },
   "dependencies": {
-    "express": "4.x"
+    "express": "4.x",
+    "html-to-text": "^3.0.0",
+    "jwt-simple": "^0.5.1"
   },
   "engines": {
     "node": ">=0.10"

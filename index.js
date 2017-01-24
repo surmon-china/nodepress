@@ -53,6 +53,9 @@ app.get('/', (req, res) => {
   res.jsonp(CONFIG.INFO)
 })
 
+// Auth
+app.all('/auth', controller.auth)
+
 // 全局option
 // app.all('/option', controller.option.list)
 // app.all('/option/:option_id', controller.option.item)
