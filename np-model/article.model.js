@@ -29,7 +29,7 @@ let articleSchema = new mongoose.Schema({
   // 缩略图
   thumb: String,
 
-  // 文章发布状态 => -1已删除，0草稿，1已发布
+  // 文章发布状态 => -1回收站，0草稿，1已发布
   state: { type: Number, default: 1 },
 
   // 文章公开状态 = // -1私密，0需要密码，1私密
