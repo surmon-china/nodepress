@@ -8,6 +8,7 @@ node_modules
 *.bak
 *.swp
 .DS_Store
+/np-config.js
 
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*

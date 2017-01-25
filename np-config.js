@@ -1,10 +1,16 @@
-// 数据库配置
 exports.MONGODB = {
   uri: 'mongodb://localhost:27017/NodePress',
   username: 'DB_username',
   password: 'DB_password'
 }
 
+exports.QINIU = {
+  accessKey: 'Me09Zx9_QyBJuViVxy_UP-KC9tUQu7t9RLBg207N',
+  secretKey: 'ZwFYrSsCB1mSXnIsH4VR9JpIy-Bc-YLlk3SMMNae',
+  bucket: 'nodepress',
+  origin: 'http://nodepress.u.qiniudn.com',
+  uploadURL: 'http://up.qiniu.com/'
+}
 
 exports.INFO = {
   name: 'NodePress',
@@ -14,9 +20,8 @@ exports.INFO = {
   powered: ['Vue2', `Weex`, 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
 }
 
-// 全局信息
 exports.APP = {
   ROOT_PATH: __dirname,
-  LIMIT: 12,
+  LIMIT: 10,
   PORT: 8000
 }
