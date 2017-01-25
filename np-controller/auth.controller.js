@@ -14,6 +14,7 @@ authCtrl.POST = ({ body }, res) => {
 
 // 修改权限和个人信息
 authCtrl.PUT = ({ body }, res) => {
+	console.log(body);
 }
 
 // export

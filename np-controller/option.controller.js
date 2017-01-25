@@ -5,13 +5,13 @@
 */
 
 // 配置控制器、控制器请求器、请求类型识别器
-const { ApiMethod, ControllerPromise } = require('../np-handle')
+const { handleRequest, handleError, handleSuccess } = require('../np-handle')
 const controller = require('../np-controller/option.controller')
 
-let optionApi = { list: {}, item: {} }
+let optionCtrl = { list: {}, item: {} }
 
 // 获取配置列表
-optionApi.list.GET = (req, res) => {
+optionCtrl.list.GET = (req, res) => {
   ControllerPromise({
     req, res, controller,
     method: 'getList',
@@ -21,7 +21,7 @@ optionApi.list.GET = (req, res) => {
 }
 
 // 发布配置（初始化的时候使用）
-optionApi.list.POST = (req, res) => {
+optionCtrl.list.POST = (req, res) => {
   ControllerPromise({
     req, res, controller,
     method: 'postItem',
@@ -31,7 +31,7 @@ optionApi.list.POST = (req, res) => {
 }
 
 // 批量删除配置
-optionApi.list.DELETE = (req, res) => {
+optionCtrl.list.DELETE = (req, res) => {
   ControllerPromise({
     req, res, controller,
     method: 'delList',
@@ -41,7 +41,7 @@ optionApi.list.DELETE = (req, res) => {
 }
 
 // 获取单个配置
-optionApi.item.GET = (req, res) => {
+optionCtrl.item.GET = (req, res) => {
   ControllerPromise({
     req, res, controller,
     method: 'getItem',
@@ -51,7 +51,7 @@ optionApi.item.GET = (req, res) => {
 }
 
 // 修改单个配置
-optionApi.item.PUT = (req, res) => {
+optionCtrl.item.PUT = (req, res) => {
   ControllerPromise({
     req, res, controller,
     method: 'putItem',
@@ -61,7 +61,7 @@ optionApi.item.PUT = (req, res) => {
 }
 
 // 删除单个配置
-optionApi.item.DELETE = (req, res) => {
+optionCtrl.item.DELETE = (req, res) => {
   ControllerPromise({
     req, res, controller,
     method: 'delItem',
@@ -72,9 +72,9 @@ optionApi.item.DELETE = (req, res) => {
 
 // 模块暴露
 exports.list = (req, res) => {
-  ApiMethod({ req, res, type: 'list', api: optionApi })
+  ApiMethod({ req, res, type: 'list', api: optionCtrl })
 }
 exports.item = (req, res) => {
-  ApiMethod({ req, res, type: 'item', api: optionApi })
+  ApiMethod({ req, res, type: 'item', api: optionCtrl })
 }
 
