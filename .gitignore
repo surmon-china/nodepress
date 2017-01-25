@@ -9,6 +9,7 @@ node_modules
 *.swp
 .DS_Store
 /np-config.js
+np-config.js
 
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
