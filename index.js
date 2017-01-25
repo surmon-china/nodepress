@@ -56,6 +56,9 @@ app.get('/', (req, res) => {
 // Auth
 app.all('/auth', controller.auth)
 
+// 七牛Token
+app.all('/qiniu', controller.qiniu)
+
 // 全局option
 // app.all('/option', controller.option.list)
 // app.all('/option/:option_id', controller.option.item)

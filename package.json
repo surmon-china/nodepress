@@ -9,7 +9,8 @@
   "dependencies": {
     "express": "4.x",
     "html-to-text": "^3.0.0",
-    "jwt-simple": "^0.5.1"
+    "jwt-simple": "^0.5.1",
+    "qn": "^1.3.0"
   },
   "engines": {
     "node": ">=0.10"
