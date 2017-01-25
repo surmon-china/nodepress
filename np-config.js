@@ -5,8 +5,8 @@ exports.MONGODB = {
 }
 
 exports.QINIU = {
-  accessKey: 'Me09Zx9_QyBJuViVxy_UP-KC9tUQu7t9RLBg207N',
-  secretKey: 'ZwFYrSsCB1mSXnIsH4VR9JpIy-Bc-YLlk3SMMNae',
+  accessKey: 'Me09Zqwex9_QyBJuViVxy_UP-KC9tUQu7t9RLBg207N',
+  secretKey: 'ZwFYrS123123sCB1mSXnIsH4VR9JpIy-Bc-YLlk3SMMNae',
   bucket: 'nodepress',
   origin: 'http://nodepress.u.qiniudn.com',
   uploadURL: 'http://up.qiniu.com/'
