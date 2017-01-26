@@ -1,4 +1,5 @@
-// comment
+/* comment */
+
 exports.handleRequest = ({ req, res, controller }) => {
   const method = req.method
   const support = !!controller[method]

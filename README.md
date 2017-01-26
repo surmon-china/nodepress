@@ -6,7 +6,7 @@
 >
 > Site: http://surmon.me
 >
-> 前端前台PC端：[vue-blog](https://github.com/surmon-china/vue-blog) By Vue2 + Vuex2
+> 前端前台PC端：[vue-blog](https://github.com/surmon-china/vue-blog) By Vue2 + Vuex
 >
 > 前端后台：[angular-admin](https://github.com/surmon-china/angular-admin) By Angular2
 >
@@ -14,11 +14,10 @@
 ----------
 
 ```bash
-forever -p . -l ../logs/nodepress/server.log -e ../logs/nodepress/error.log start -a -w -c "node --harmony" index.js
-forever list
-forever stop [id]
-forever stopall
-kill id
+# 启动开发模式
+nodemon --exec \"npm start\"
+# 生产模式
+pm2
 ```
 
 ## 接口
@@ -26,9 +25,7 @@ kill id
   - 处理流程
 
     ```
-    BASE:    /
-    ALL:     /***
-    ROUTE:   /np-route/*.api.js -> /np-controller/*.controller.js -> /np-model/*.model.js
+    首页路由 => 控制器 => 对应数据模型
     ```
 
 ----------
@@ -50,7 +47,7 @@ kill id
     ```
     np-config.js -> 主程序配置
 
-    数据库配置（程序内部），全局使用（程序内部），基本信息
+    数据库配置（程序内部），全局使用（程序内部），基本信息，其他配置
 
     TODO: 配置检测，程序安装检测，待完善
     ```
