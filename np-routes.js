@@ -47,7 +47,9 @@ const routes = app => {
     };
 
     // 拦截请求
-    if (!Object.is(req.method, 'GET') && !isVerified()) {
+    if (!Object.is(req.method, 'GET')  && 
+        !(Object.is(req.method, 'POST') && Object.is(req.url, '/auth')) &&
+        !isVerified()) {
       res.status(401).jsonp({ code: 0, message: '来者何人！' })
       return false;
     }
