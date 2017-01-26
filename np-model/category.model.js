@@ -4,15 +4,15 @@
 *
 */
 
-const mongoose = require('mongoose')
-const autoIncrement = require('mongoose-auto-increment')
-const mongoosePaginate = require('mongoose-paginate')
+const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+const mongoosePaginate = require('mongoose-paginate');
 
 // 自增ID初始化
-autoIncrement.initialize(mongoose.connection)
+autoIncrement.initialize(mongoose.connection);
 
 // 分类集合模型
-let categorySchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
 
   // 分类名称
   name: { type: String, required: true },
@@ -31,27 +31,26 @@ let categorySchema = new mongoose.Schema({
 
   // 自定义扩展
   extend: [{ name: String, value: String }]
-
-})
+});
 
 // 翻页 + 自增ID插件配置
-categorySchema.plugin(mongoosePaginate)
+categorySchema.plugin(mongoosePaginate);
 categorySchema.plugin(autoIncrement.plugin, {
   model: 'Category',
   field: 'id',
   startAt: 1,
   incrementBy: 1
-})
+});
 
 // 自增ID配置
 categorySchema.pre('save', next => {
-  if (this.isNew) this.create_time = this.update_time = Date.now()
-  if (!this.isNew) this.update_time = Date.now()
-  next()
-})
+  if (this.isNew) this.create_time = this.update_time = Date.now();
+  if (!this.isNew) this.update_time = Date.now();
+  next();
+});
 
 // 分类模型
-const Category = mongoose.model('Category', categorySchema)
+const Category = mongoose.model('Category', categorySchema);
 
 // export
-module.exports = Category
+module.exports = Category;

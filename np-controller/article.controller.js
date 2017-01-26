@@ -4,10 +4,10 @@
  *
  */
 
-const { handleRequest, handleError, handleSuccess } = require('../np-handle')
-const Article = require('../np-model/article.model')
-const htmlToText = require('html-to-text')
-let articleCtrl = {list: {}, item: {}}
+const { handleRequest, handleError, handleSuccess } = require('../np-handle');
+const Article = require('../np-model/article.model');
+const htmlToText = require('html-to-text');
+const articleCtrl = { list: {}, item: {} };
 
 // 获取文章列表
 articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keyword, category, tag }}, res) => {
@@ -55,7 +55,10 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keywo
 
   // 请求
   Article.paginate(query, options, (err, articles) => {
-    if (err) return handleError({ res, err, message: '文章列表获取失败' })
+    if (err) {
+      handleError({ res, err, message: '文章列表获取失败' });
+      return false;
+    }
     handleSuccess({
       res,
       message: '文章列表获取成功',
@@ -67,108 +70,112 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keywo
           per_page: articles.limit
         },
         data: articles.docs.map(article => {
-          article.content = htmlToText.fromString(article.t_content)
-          article.password = ''
-          return article
+          article.content = htmlToText.fromString(article.t_content);
+          article.password = '';
+          return article;
         })
       }
     })
   })
-}
+};
 
 // 发布文章
 articleCtrl.list.POST = ({ body: article }, res) => {
 
   // 验证
   if (!article.title || !article.content) {
-    return handleError({ res, message: '内容不合法' })
+    return handleError({ res, message: '内容不合法' });
   }
 
   // 保存文章
   new Article(article).save((err, result) => {
-    err && handleError({ res, err, message: '文章发布失败' })
-    err || handleSuccess({ res, result, message: '文章发布成功' })
+    err && handleError({ res, err, message: '文章发布失败' });
+    err || handleSuccess({ res, result, message: '文章发布成功' });
   })
-}
+};
 
 // 批量修改文章（移回收站、回收站恢复）
 articleCtrl.list.PUT = ({ body: { articles, params: { action }}}, res) => {
 
   // 验证
   if (!articles || !articles.length) {
-    return handleError({ res, message: '缺少有效参数' })
+    return handleError({ res, message: '缺少有效参数' });
   }
 
   // 要改的数据
-  let updatePart = {}
+  let updatePart = {};
 
-  // 移至回收站
-  if (Object.is(action, 1)) {
-    updatePart.state = -1;
-  }
-
-  // 移至草稿
-  if (Object.is(action, 2)) {
-    updatePart.state = 0;
-  }
-
-  // 移至已发布
-  if (Object.is(action, 3)) {
-    updatePart.state = 1;
+  switch (action) {
+    // 移至回收站
+    case 1:
+      updatePart.state = -1;
+      break;
+    // 移至草稿
+    case 2:
+      updatePart.state = 0;
+      break;
+    // 移至已发布
+    case 3:
+      updatePart.state = 1;
+      break;
+    default:
+      break;
   }
 
   Article.update({ '_id': { $in: articles }}, { $set: updatePart }, { multi: true }, (err, result) => {
-    err && handleError({ res, err, message: '文章批量删除失败' })
-    err || handleSuccess({ res, result, message: '文章批量删除成功' })
+    err && handleError({ res, err, message: '文章批量删除失败' });
+    err || handleSuccess({ res, result, message: '文章批量删除成功' });
   })
-}
+};
 
 // 批量删除文章
 articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 
   // 验证
   if (!articles || !articles.length) {
-    return handleError({ res, message: '缺少有效参数' })
+    return handleError({ res, message: '缺少有效参数' });
   }
 
   Article.remove({ '_id': { $in: articles }}, (err, result) => {
-    err && handleError({ res, err, message: '文章批量删除失败' })
-    err || handleSuccess({ res, result, message: '文章批量删除成功' })
+    err && handleError({ res, err, message: '文章批量删除失败' });
+    err || handleSuccess({ res, result, message: '文章批量删除成功' });
   })
-}
+};
 
 // 获取单个文章
 articleCtrl.item.GET = ({ params: { article_id }}, res) => {
   Article.findById(article_id, (err, result) => {
-    if (err || !result)
-      return handleError({ res, err, message: '文章获取失败' })
-    handleSuccess({ res, result, message: '文章获取成功' })
+    if (err || !result) {
+      handleError({ res, err, message: '文章获取失败' });
+      return false;
+    }
+    handleSuccess({ res, result, message: '文章获取成功' });
   })
-}
+};
 
 // 修改单个文章
 articleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
 
   // 验证
   if (!article.title || !article.content) {
-    return handleError({ res, message: '内容不合法' })
+    return handleError({ res, message: '内容不合法' });
   }
 
   // 修改文章
   Article.findByIdAndUpdate(article_id, article, (err, _article) => {
-    err && handleError({ res, err, message: '文章修改失败' })
-    err || handleSuccess({ res, result: Object.assign(_article, article), message: '文章修改成功' })
+    err && handleError({ res, err, message: '文章修改失败' });
+    err || handleSuccess({ res, result: Object.assign(_article, article), message: '文章修改成功' });
   })
-}
+};
 
 // 删除单个文章
 articleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
   Article.findByIdAndRemove(article_id, (err, article) => {
-    err && handleError({ res, err, message: '文章删除失败' })
-    err || handleSuccess({ res, result: article, message: '文章删除成功' })
+    err && handleError({ res, err, message: '文章删除失败' });
+    err || handleSuccess({ res, result: article, message: '文章删除成功' });
   })
-}
+};
 
 // export
-exports.list = (req, res) => { handleRequest({ req, res, controller: articleCtrl.list })}
-exports.item = (req, res) => { handleRequest({ req, res, controller: articleCtrl.item })}
+exports.list = (req, res) => { handleRequest({ req, res, controller: articleCtrl.list })};
+exports.item = (req, res) => { handleRequest({ req, res, controller: articleCtrl.item })};
