@@ -4,15 +4,15 @@
 *
 */
 
-const mongoose = require('mongoose')
-const autoIncrement = require('mongoose-auto-increment')
-const mongoosePaginate = require('mongoose-paginate')
+const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
+const mongoosePaginate = require('mongoose-paginate');
 
 // 自增ID初始化
-autoIncrement.initialize(mongoose.connection)
+autoIncrement.initialize(mongoose.connection);
 
 // 文章模型
-let articleSchema = new mongoose.Schema({
+const articleSchema = new mongoose.Schema({
 
   // 文章标题
   title:  { type: String, required: true },
@@ -55,7 +55,7 @@ let articleSchema = new mongoose.Schema({
 
   // 自定义扩展
   extend: [{ name: String, value: Object }]
-})
+});
 
 // 翻页 + 自增ID插件配置
 articleSchema.plugin(mongoosePaginate)
@@ -64,22 +64,22 @@ articleSchema.plugin(autoIncrement.plugin, {
   field: 'id',
   startAt: 1,
   incrementBy: 1
-})
+});
 
 // 自增ID配置
 articleSchema.pre('save', next => {
-  if (this.isNew) this.create_time = this.update_time = Date.now()
-  if (!this.isNew) this.update_time = Date.now()
-  next()
-})
+  if (this.isNew) this.create_time = this.update_time = Date.now();
+  if (!this.isNew) this.update_time = Date.now();
+  next();
+});
 
 // 列表时用的文章内容虚拟属性
 articleSchema.virtual('t_content').get(function() {
-  return this.content.substring(0, 190)
-})
+  return this.content.substring(0, 190);
+});
 
 // 文章模型
-const Article = mongoose.model('Article', articleSchema)
+const Article = mongoose.model('Article', articleSchema);
 
 // export
-module.exports = Article
+module.exports = Article;
