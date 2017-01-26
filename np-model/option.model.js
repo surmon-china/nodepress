@@ -1,4 +1,11 @@
-const mongoose = require('mongoose')
+/*
+*
+* 设置数据模型
+*
+*/
+
+const mongoose = require('mongoose');
+
 const optionSchema = new mongoose.Schema({
 
   // 设置名称
@@ -15,8 +22,7 @@ const optionSchema = new mongoose.Schema({
 
   // 设置数据
   data: { type: mongoose.Schema.Types.Mixed, required: true }
+});
 
-})
-
-const Option = mongoose.model('Option', optionSchema)
-module.exports = Option
+const Option = mongoose.model('Option', optionSchema);
+module.exports = Option;
