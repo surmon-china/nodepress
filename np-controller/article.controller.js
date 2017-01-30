@@ -18,47 +18,44 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keywo
     page: Number(page),
     limit: Number(per_page),
     populate: ['category', 'tag']
-  }
+  };
 
   // 查询参数
-  let query = {}
+  let query = {};
 
   // 按照state查询
   if (['0', '1', '-1'].includes(state)) {
-    query.state = state
-  }
+    query.state = state;
+  };
 
   // 按照公开程度查询
   if (['0', '1', '-1'].includes(public)) {
-    query.public = public
-  }
+    query.public = public;
+  };
 
   // 关键词查询
   if (keyword) {
-    const keywordReg = new RegExp(keyword)
+    const keywordReg = new RegExp(keyword);
     query['$or'] = [
       { 'title': keywordReg },
       { 'content': keywordReg },
       { 'description': keywordReg }
     ]
-  }
+  };
 
   // 标签查询
   if (tag) {
     query.tag = tag;
-  }
+  };
 
   // 分类查询
   if (category) {
     query.category = category;
-  }
+  };
 
   // 请求
-  Article.paginate(query, options, (err, articles) => {
-    if (err) {
-      handleError({ res, err, message: '文章列表获取失败' });
-      return false;
-    }
+  Article.paginate(query, options)
+  .then(articles => {
     handleSuccess({
       res,
       message: '文章列表获取成功',
@@ -77,6 +74,9 @@ articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keywo
       }
     })
   })
+  .catch(err => {
+    handleError({ res, err, message: '文章列表获取失败' });
+  })
 };
 
 // 发布文章
@@ -84,13 +84,17 @@ articleCtrl.list.POST = ({ body: article }, res) => {
 
   // 验证
   if (!article.title || !article.content) {
-    return handleError({ res, message: '内容不合法' });
-  }
+    handleError({ res, message: '内容不合法' });
+    return false;
+  };
 
   // 保存文章
-  new Article(article).save((err, result) => {
-    err && handleError({ res, err, message: '文章发布失败' });
-    err || handleSuccess({ res, result, message: '文章发布成功' });
+  new Article(article).save()
+  .then((result = article) => {
+    handleSuccess({ res, result, message: '文章发布成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '文章发布失败' });
   })
 };
 
@@ -99,8 +103,9 @@ articleCtrl.list.PUT = ({ body: { articles, params: { action }}}, res) => {
 
   // 验证
   if (!articles || !articles.length) {
-    return handleError({ res, message: '缺少有效参数' });
-  }
+    handleError({ res, message: '缺少有效参数' });
+    return false;
+  };
 
   // 要改的数据
   let updatePart = {};
@@ -120,11 +125,14 @@ articleCtrl.list.PUT = ({ body: { articles, params: { action }}}, res) => {
       break;
     default:
       break;
-  }
+  };
 
-  Article.update({ '_id': { $in: articles }}, { $set: updatePart }, { multi: true }, (err, result) => {
-    err && handleError({ res, err, message: '文章批量删除失败' });
-    err || handleSuccess({ res, result, message: '文章批量删除成功' });
+  Article.update({ '_id': { $in: articles }}, { $set: updatePart }, { multi: true })
+  .then(result => {
+    handleSuccess({ res, result, message: '文章批量删除成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '文章批量删除失败' });
   })
 };
 
@@ -133,23 +141,27 @@ articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 
   // 验证
   if (!articles || !articles.length) {
-    return handleError({ res, message: '缺少有效参数' });
+    handleError({ res, message: '缺少有效参数' });
+    return false;
   }
 
-  Article.remove({ '_id': { $in: articles }}, (err, result) => {
-    err && handleError({ res, err, message: '文章批量删除失败' });
-    err || handleSuccess({ res, result, message: '文章批量删除成功' });
+  Article.remove({ '_id': { $in: articles }})
+  .then(result => {
+    handleSuccess({ res, result, message: '文章批量删除成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '文章批量删除失败' });
   })
 };
 
 // 获取单个文章
 articleCtrl.item.GET = ({ params: { article_id }}, res) => {
-  Article.findById(article_id, (err, result) => {
-    if (err || !result) {
-      handleError({ res, err, message: '文章获取失败' });
-      return false;
-    }
+  Article.findById(article_id)
+  .then(result => {
     handleSuccess({ res, result, message: '文章获取成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '文章获取失败' });
   })
 };
 
@@ -158,21 +170,28 @@ articleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
 
   // 验证
   if (!article.title || !article.content) {
-    return handleError({ res, message: '内容不合法' });
-  }
+    handleError({ res, message: '内容不合法' });
+    return false;
+  };
 
   // 修改文章
-  Article.findByIdAndUpdate(article_id, article, (err, _article) => {
-    err && handleError({ res, err, message: '文章修改失败' });
-    err || handleSuccess({ res, result: Object.assign(_article, article), message: '文章修改成功' });
+  Article.findByIdAndUpdate(article_id, article, { new: true })
+  .then(result => {
+    handleSuccess({ res, result, message: '文章修改成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '文章修改失败' });
   })
 };
 
 // 删除单个文章
 articleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
-  Article.findByIdAndRemove(article_id, (err, article) => {
-    err && handleError({ res, err, message: '文章删除失败' });
-    err || handleSuccess({ res, result: article, message: '文章删除成功' });
+  Article.findByIdAndRemove(article_id)
+  .then(result => {
+    handleSuccess({ res, result, message: '文章删除成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '文章删除失败' });
   })
 };
 
