@@ -54,7 +54,7 @@ const articleSchema = new mongoose.Schema({
   // },
 
   // 自定义扩展
-  extend: [{ name: String, value: Object }]
+  // extend: [{ name: String, value: Object }]
 });
 
 // 翻页 + 自增ID插件配置

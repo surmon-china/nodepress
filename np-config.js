@@ -14,7 +14,8 @@ exports.QINIU = {
 
 exports.AUTH = {
   data: { user: 'root' },
-  jwtTokenSecret: 'nodepress'
+  jwtTokenSecret: 'nodepress',
+  DEFAULT_PASSWORD: 'root'
 }
 
 exports.INFO = {
@@ -28,6 +29,5 @@ exports.INFO = {
 exports.APP = {
   ROOT_PATH: __dirname,
   LIMIT: 10,
-  PORT: 8000,
-  DEFAULT_PASSWORD: 'root'
+  PORT: 8000
 }
