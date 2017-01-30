@@ -7,18 +7,16 @@
     "dev": "nodemon --exec \"npm start\""
   },
   "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "4.x",
     "html-to-text": "^3.0.0",
     "jsonwebtoken": "^7.2.1",
+    "mongoose": "^4.8.0",
+    "mongoose-auto-increment": "^5.0.1",
+    "mongoose-paginate": "^5.0.0",
     "qn": "^1.3.0"
   },
   "engines": {
     "node": ">=0.10"
-  },
-  "devDependencies": {
-    "body-parser": "^1.15.2",
-    "mongoose": "^4.5.4",
-    "mongoose-auto-increment": "^5.0.1",
-    "mongoose-paginate": "^5.0.0"
   }
 }

@@ -5,17 +5,30 @@
 */
 
 const { handleRequest, handleError, handleSuccess } = require('../np-handle');
-const Auth = require('../np-model/auth.model');
+const Option = require('../np-model/option.model');
 const optionCtrl = {};
 
 // 获取权限
 optionCtrl.GET = (req, res) => {
-  console.log('来获取权限了');
+  Option.find({})
+  .then(([result = {}]) => {
+		handleSuccess({ res, result, message: '配置项获取成功' });
+  })
+  .catch(err => {
+  	handleError({ res, err, message: '配置项获取失败' });
+  });
 };
 
 // 修改权限
-optionCtrl.PUT = ({ body }, res) => {
-  console.log(body);
+optionCtrl.PUT = ({ body: options, body: { _id } }, res) => {
+  if (!_id) delete options._id;
+  (!!_id ? Option.findByIdAndUpdate(_id, options, { new: true }) : new Option(options).save())
+  .then((result = options) => {
+		handleSuccess({ res, result, message: '配置项修改成功' });
+  })
+  .catch(err => {
+  	handleError({ res, err, message: '配置项修改失败' });
+  })
 };
 
 // export

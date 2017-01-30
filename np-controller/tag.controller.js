@@ -16,24 +16,21 @@ tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) =>
     sort: { _id: -1 },
     page: Number(page),
     limit: Number(per_page)
-  }
+  };
 
   // 查询参数
-  const keywordReg = new RegExp(keyword)
+  const keywordReg = new RegExp(keyword);
   const query = {
     "$or": [
       { 'name': keywordReg },
       { 'slug': keywordReg },
       { 'description': keywordReg }
     ]
-  }
+  };
 
   // 请求
-  Tag.paginate(query, options, (err, tags) => {
-    if (err) {
-      handleError({ res, err, message: '标签列表获取失败' });
-      return false;
-    }
+  Tag.paginate(query, options)
+  .then(tags => {
     handleSuccess({
       res,
       message: '标签列表获取成功',
@@ -46,35 +43,40 @@ tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) =>
         },
         data: tags.docs
       }
-    })
+    });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '标签列表获取失败' });
   })
 };
 
 // 发布标签
-tagCtrl.list.POST = ({ body }, res) => {
+tagCtrl.list.POST = ({ body: tag, body: { slug }}, res) => {
 
   // 验证
-  if (body.slug == undefined) {
+  if (slug == undefined || slug == null) {
     handleError({ res, message: '缺少slug' });
     return false;
-  }
+  };
 
   // 保存标签
   const saveTag = () => {
-    new Tag(body).save((err, result) => {
-      err && handleError({ res, err, message: '标签发布失败' });
-      err || handleSuccess({ res, result, message: '标签发布成功' });
+    new Tag(tag).save()
+    .then((result = tag) => {
+      handleSuccess({ res, result, message: '标签发布成功' });
     })
-  }
+    .catch(err => {
+      handleError({ res, err, message: '标签发布失败' });
+    })
+  };
 
   // 验证Slug合法性
-  Tag.find({ slug: body.slug }, (err, tags) => {
-    if (err) {
-      handleError({ res, err, message: '标签发布失败' });
-      return false;
-    }
-    tags.length && handleError({ res, message: 'slug已被占用' });
-    tags.length || saveTag();
+  Tag.find({ slug })
+  .then(({ length }) => {
+    length ? handleError({ res, message: 'slug已被占用' }) : saveTag();
+  })
+  .catch(err => {
+    handleError({ res, err, message: '标签发布失败' });
   })
 };
 
@@ -85,60 +87,55 @@ tagCtrl.list.DELETE = ({ body: { tags }}, res) => {
   if (!tags || !tags.length) {
     handleError({ res, message: '缺少有效参数' });
     return false;
-  }
+  };
 
-  Tag.remove({ '_id': { $in: tags } }, (err, result) => {
-    err && handleError({ res, err, message: '标签批量删除失败' });
-    err || handleSuccess({ res, result, message: '标签批量删除成功' });
+  Tag.remove({ '_id': { $in: tags }})
+  .then(result => {
+    handleSuccess({ res, result, message: '标签批量删除成功' });
   })
-};
-
-// 获取单个标签
-tagCtrl.item.GET = ({ params: { tag_id } }, res) => {
-  Tag.findById(tag_id, (err, tag) => {
-    if(err || !tag) {
-      handleError({ res, err, message: err ? '标签获取失败' : '标签不存在' });
-      return false;
-    }
-    handleSuccess({ res, result: tags, message: '标签获取成功' });
+  .catch(err => {
+    handleError({ res, err, message: '标签批量删除失败' });
   })
 };
 
 // 修改单个标签
-tagCtrl.item.PUT = ({ params: { tag_id }, body, body: { slug }}, res) => {
+tagCtrl.item.PUT = ({ params: { tag_id }, body: tag, body: { slug }}, res) => {
 
   if (!slug) {
     handleError({ res, message: 'slug不合法' });
     return false;
-  }
+  };
 
   // 修改
   const putTag = () => {
-    Tag.findByIdAndUpdate(tag_id, body, (err, tag) => {
-      err && handleError({ res, err, message: '标签修改失败' });
-      err || handleSuccess({ res, result: tag, message: '标签修改成功' });
+    Tag.findByIdAndUpdate(tag_id, tag, { new: true })
+    .then(result => {
+      handleSuccess({ res, result, message: '标签修改成功' });
     })
-  }
+    .catch(err => {
+      handleError({ res, err, message: '标签修改失败' });
+    })
+  };
 
   // 修改前判断slug的唯一性，是否被占用
-  Tag.find({ slug }, (err, tags) => {
-    if (err) {
-      handleError({ res, err, message: '标签修改失败' });
-      return false;
-    }
-    const canPut = (!tags.length || (!!tags.length && Object.is(tags.length, 1) && tags[0]._id == tag_id));
-    canPut ? putTag() : handleError({ res, err, message: '修改失败，slug已被使用' });
+  Tag.find({ slug })
+  .then(([_tag]) => {
+    const hasExisted = (_tag && (_tag._id != tag_id));
+    hasExisted ? handleError({ res, message: 'slug已存在' }) : putTag();
+  })
+  .catch(err => {
+    handleError({ res, err, message: '修改前查询失败' });
   })
 };
 
 // 删除单个标签
 tagCtrl.item.DELETE = ({ params: { tag_id }}, res) => {
-  Tag.findByIdAndRemove(tag_id, (err, result) => {
-    if (err) {
-      handleError({ res, err, message: '标签删除失败' });
-      return false;
-    }
+  Tag.findByIdAndRemove(tag_id)
+  .then(result => {
     handleSuccess({ res, result, message: '标签删除成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '标签删除失败' });
   })
 };
 

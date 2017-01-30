@@ -21,10 +21,7 @@ const announcementSchema = new mongoose.Schema({
   state: { type: Number, default: 1 },
 
   // 发布日期
-  date: { type: Date, default: Date.now },
-
-  // 自定义扩展
-  extend: [{ name: String, value: Object }]
+  date: { type: Date, default: Date.now }
 });
 
 // 翻页 + 自增ID插件配置

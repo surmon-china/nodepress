@@ -1,8 +1,8 @@
 // 数据库模块
 const mongoose = require('mongoose');
 const config   = require('./np-config');
-const init     = require('./np-init');
 const mongodb  = mongoose.connection;
+mongoose.Promise = Promise;
 
 // 数据库
 module.exports = () => {
@@ -18,7 +18,6 @@ module.exports = () => {
   // 连接成功
   mongodb.once('open', () => {
     console.log('数据库连接成功!');
-    init();
   })
 
   return mongodb;
