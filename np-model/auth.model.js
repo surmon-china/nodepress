@@ -18,7 +18,7 @@ const authSchema = new mongoose.Schema({
   gravatar: { type: String, default: '' },
 
   // 密码
-  password: { type: String, default: config.APP.DEFAULT_PASSWORD }
+  password: { type: String, default: config.AUTH.DEFAULT_PASSWORD }
 });
 
 const Auth = mongoose.model('Auth', authSchema);
