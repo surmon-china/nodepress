@@ -30,7 +30,7 @@ const categorySchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now },
 
   // 自定义扩展
-  // extend: [{ name: String, value: String }]
+  extends: [{ name: String, value: Object }]
 });
 
 // 翻页 + 自增ID插件配置
