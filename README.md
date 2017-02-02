@@ -1,4 +1,4 @@
-## NodePress V1.0.0 开发者文档
+## NodePress V1.0.0 开发文档
 
 ----------
 
@@ -12,6 +12,13 @@
 >
 
 ----------
+
+# Todos & Issues
+- 加入网站地图接口，同时驱动ping  https://github.com/ekalinin/sitemap.js
+- 文章发布后自动ping给搜索引擎xml
+- 对接百度统计开放平台api
+- 密码存储需要使用加密机制
+
 
 ```bash
 # 启动开发模式
