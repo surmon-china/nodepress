@@ -20,7 +20,7 @@ exports.AUTH = {
 
 exports.INFO = {
   name: 'NodePress',
-  version: '1.0.0',
+  version: '1.0.0.1',
   author: 'Surmon',
   site: 'http://api.surmon.me',
   powered: ['Vue2', 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
