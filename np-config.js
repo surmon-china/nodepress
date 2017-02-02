@@ -23,7 +23,7 @@ exports.INFO = {
   version: '1.0.0',
   author: 'Surmon',
   site: 'http://api.surmon.me',
-  powered: ['Vue2', `Weex`, 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
+  powered: ['Vue2', 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
 }
 
 exports.APP = {
