@@ -24,7 +24,7 @@ const tagSchema = new mongoose.Schema({
   description: String,
 
   // 自定义扩展
-  extend: [{ name: String, value: Object }]
+  extends: [{ name: String, value: Object }]
 });
 
 // 翻页 + 自增ID插件配置
