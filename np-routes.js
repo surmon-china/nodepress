@@ -10,8 +10,8 @@ const routes = app => {
 
     // Set Header
     const allowedOrigins = ['http://surmon.me', 'http://admin.surmon.me'];
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
+    const origin = req.headers.origin || '';
+    if (allowedOrigins.includes(origin) || origin.includes('localhost')) {
       res.setHeader('Access-Control-Allow-Origin', origin);
     }
     res.header("Access-Control-Allow-Headers", "Authorization, Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With");

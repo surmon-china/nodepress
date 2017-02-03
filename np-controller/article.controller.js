@@ -10,51 +10,53 @@ const htmlToText = require('html-to-text');
 const articleCtrl = { list: {}, item: {} };
 
 // 获取文章列表
-articleCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, public, keyword, category, tag }}, res) => {
+articleCtrl.list.GET = ({ query }, res) => {
+
+  let { page, per_page, state, public, keyword, category, category_slug, tag, tag_slug } = query;
 
   // 过滤条件
   const options = {
     sort: { _id: -1 },
-    page: Number(page),
-    limit: Number(per_page),
+    page: Number(page || 1),
+    limit: Number(per_page || 10),
     populate: ['category', 'tag']
   };
 
   // 查询参数
-  let query = {};
+  let querys = {};
 
   // 按照state查询
   if (['0', '1', '-1'].includes(state)) {
-    query.state = state;
+    querys.state = state;
   };
 
   // 按照公开程度查询
   if (['0', '1', '-1'].includes(public)) {
-    query.public = public;
+    querys.public = public;
   };
 
   // 关键词查询
   if (keyword) {
     const keywordReg = new RegExp(keyword);
-    query['$or'] = [
+    querys['$or'] = [
       { 'title': keywordReg },
       { 'content': keywordReg },
       { 'description': keywordReg }
     ]
   };
 
-  // 标签查询
+  // 标签id查询
   if (tag) {
-    query.tag = tag;
+    querys.tag = tag;
   };
 
-  // 分类查询
+  // 分类id查询
   if (category) {
-    query.category = category;
+    querys.category = category;
   };
 
   // 请求
-  Article.paginate(query, options)
+  Article.paginate(querys, options)
   .then(articles => {
     handleSuccess({
       res,

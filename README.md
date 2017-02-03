@@ -17,7 +17,8 @@
 - 加入网站地图接口，同时驱动ping  https://github.com/ekalinin/sitemap.js
 - 文章发布后自动ping给搜索引擎xml
 - 对接百度统计开放平台api
-- 密码存储需要使用加密机制
+- 密码存储需要使用md5加密机制
+- token... 等config信息使用node命令参数在shell中配置覆盖
 
 
 ```bash
