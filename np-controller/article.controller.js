@@ -5,21 +5,25 @@
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../np-handle');
+const Category = require('../np-model/category.model');
 const Article = require('../np-model/article.model');
+const Tag = require('../np-model/tag.model');
 const htmlToText = require('html-to-text');
+const authIsVerified = require('../np-auth');
 const articleCtrl = { list: {}, item: {} };
 
 // 获取文章列表
-articleCtrl.list.GET = ({ query }, res) => {
+articleCtrl.list.GET = (req, res) => {
 
-  let { page, per_page, state, public, keyword, category, category_slug, tag, tag_slug } = query;
+  let { page, per_page, state, public, keyword, category, category_slug, tag, tag_slug, date } = req.query;
 
   // 过滤条件
   const options = {
     sort: { _id: -1 },
     page: Number(page || 1),
     limit: Number(per_page || 10),
-    populate: ['category', 'tag']
+    populate: ['category', 'tag'],
+    select: '-password -content'
   };
 
   // 查询参数
@@ -55,30 +59,83 @@ articleCtrl.list.GET = ({ query }, res) => {
     querys.category = category;
   };
 
-  // 请求
-  Article.paginate(querys, options)
-  .then(articles => {
-    handleSuccess({
-      res,
-      message: '文章列表获取成功',
-      result: {
-        pagination: {
-          total: articles.total,
-          current_page: articles.page,
-          total_page: articles.pages,
-          per_page: articles.limit
-        },
-        data: articles.docs.map(article => {
-          article.content = htmlToText.fromString(article.t_content);
-          article.password = '';
-          return article;
-        })
+  // 时间查询
+  if (date) {
+    const gteDate = new Date(date);
+    if(!Object.is(gteDate, 'Invalid Date')) {
+      querys.date = {
+        "$gte": gteDate,
+        "$lt": new Date((gteDate / 1000 + 86400) * 1000)
+      }
+    }
+  }
+
+  // 如果是前台请求，则重置公开状态和发布状态
+  if (!authIsVerified(req)) {
+    querys.state = 1;
+    querys.public = 1;
+  }
+
+  // 请求对应文章
+  const getArticles = () => {
+    Article.paginate(querys, options)
+    .then(articles => {
+      // console.log(articles.docs[0].t_content);
+      handleSuccess({
+        res,
+        message: '文章列表获取成功',
+        result: {
+          pagination: {
+            total: articles.total,
+            current_page: articles.page,
+            total_page: articles.pages,
+            per_page: articles.limit
+          },
+          data: articles.docs
+        }
+      })
+    })
+    .catch(err => {
+      handleError({ res, err, message: '文章列表获取失败' });
+    })
+  };
+
+  // 分类别名查询 - 根据别名查询到id，然后根据id查询
+  if (category_slug) {
+    Category.find({ slug: category_slug })
+    .then(([category] = []) => {
+      if (category) {
+        querys.category = category._id;
+        getArticles();
+      } else {
+        handleError({ res, message: '分类不存在' });
       }
     })
-  })
-  .catch(err => {
-    handleError({ res, err, message: '文章列表获取失败' });
-  })
+    .catch(err => {
+      handleError({ res, err, message: '分类查找失败' });
+    })
+    return false;
+  }
+  
+  // 标签别名查询 - 根据别名查询到id，然后根据id查询
+  if (tag_slug) {
+    Tag.find({ slug: tag_slug })
+    .then(([tag] = []) => {
+      if (tag) {
+        querys.tag = tag._id;
+        getArticles();
+      } else {
+        handleError({ res, message: '标签不存在' });
+      }
+    })
+    .catch(err => {
+      handleError({ res, err, message: '标签查找失败' });
+    })
+    return false;
+  }
+
+  // 默认请求文章列表
+  getArticles();
 };
 
 // 发布文章

@@ -47,11 +47,12 @@ const articleSchema = new mongoose.Schema({
   // 文章分类
   category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
 
-  // meta: {
-  //   views: { type: Number, default: 0 },
-  //   favs:  { type: Number, default: 0 },
-  //   comments: { type: Number, default: 0 },
-  // },
+  // 其他元信息
+  meta: {
+    views: { type: Number, default: 0 },
+    favs:  { type: Number, default: 0 },
+    // comments: { type: Number, default: 0 },
+  },
 
   // 自定义扩展
   extends: [{ name: String, value: Object }]
@@ -75,7 +76,7 @@ articleSchema.pre('save', next => {
 
 // 列表时用的文章内容虚拟属性
 articleSchema.virtual('t_content').get(function() {
-  return this.content.substring(0, 190);
+  return this.content.substring(0, 130);
 });
 
 // 文章模型
