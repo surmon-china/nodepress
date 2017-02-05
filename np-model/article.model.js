@@ -58,6 +58,8 @@ const articleSchema = new mongoose.Schema({
   extends: [{ name: String, value: Object }]
 });
 
+articleSchema.set('toObject', { getters: true });
+
 // 翻页 + 自增ID插件配置
 articleSchema.plugin(mongoosePaginate)
 articleSchema.plugin(autoIncrement.plugin, {

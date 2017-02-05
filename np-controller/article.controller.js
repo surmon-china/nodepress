@@ -216,9 +216,27 @@ articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 // 获取单个文章
 articleCtrl.item.GET = ({ params: { article_id }}, res) => {
   const isFindById = !Object.is(Number(article_id), NaN);
-  (isFindById ? Article.find({ id: Number(article_id) }) : Article.findById(article_id))
+
+  const getRelatedArticles = result => {
+    Article.find(
+      { state: 1, public: 1, tag: { $in: result.tag.map(t => t._id) }}, 
+      'id title description thumb -_id', 
+      (err, articles) => {
+        result.related = err ? [] : articles;
+        handleSuccess({ res, result, message: '文章获取成功' });
+      })
+  };
+
+  (isFindById
+    ? Article.findOne({ id: Number(article_id) }).populate('category tag').exec()
+    : Article.findById(article_id)
+  )
   .then(result => {
-    handleSuccess({ res, result: isFindById ? result[0] : result, message: '文章获取成功' });
+    if (isFindById && result.tag.length) {
+      getRelatedArticles(result.toObject());
+    } else {
+      handleSuccess({ res, result, message: '文章获取成功' });
+    }
   })
   .catch(err => {
     handleError({ res, err, message: '文章获取失败' });
