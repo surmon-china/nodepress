@@ -215,9 +215,10 @@ articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 
 // 获取单个文章
 articleCtrl.item.GET = ({ params: { article_id }}, res) => {
-  Article.findById(article_id)
+  const isFindById = !Object.is(Number(article_id), NaN);
+  (isFindById ? Article.find({ id: Number(article_id) }) : Article.findById(article_id))
   .then(result => {
-    handleSuccess({ res, result, message: '文章获取成功' });
+    handleSuccess({ res, result: isFindById ? result[0] : result, message: '文章获取成功' });
   })
   .catch(err => {
     handleError({ res, err, message: '文章获取失败' });
