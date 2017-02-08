@@ -7,30 +7,37 @@
 const { handleRequest, handleError, handleSuccess } = require('../np-handle');
 const Announcement = require('../np-model/announcement.model');
 const announcementCtrl = { list: {}, item: {} };
+const authIsVerified = require('../np-auth');
 
 // 获取公告列表
-announcementCtrl.list.GET = ({ query: { page = 1, per_page = 10, state, keyword = '' }}, res) => {
+announcementCtrl.list.GET = (req, res) => {
+
+  let { page = 1, per_page = 10, state, keyword = '' } = req.query;
 
   // 过滤条件
   const options = {
-    lean: true,
     sort: { _id: -1 },
     page: Number(page),
     limit: Number(per_page)
   };
 
   // 查询参数
-  const query = { 
+  const querys = { 
     'content': new RegExp(keyword)
   };
   
   // 按照type查询
   if (['0', '1'].includes(state)) {
-    query.state = state;
+    querys.state = state;
   };
 
+  // 如果是前台请求，则重置公开状态和发布状态
+  if (!authIsVerified(req)) {
+    querys.state = 1;
+  }
+
   // 请求
-  Announcement.paginate(query, options)
+  Announcement.paginate(querys, options)
   .then(announcements => {
     handleSuccess({
       res,
