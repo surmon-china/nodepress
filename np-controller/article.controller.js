@@ -19,7 +19,6 @@ articleCtrl.list.GET = (req, res) => {
 
   // 过滤条件
   const options = {
-    lean: true,
     sort: { _id: -1 },
     page: Number(page || 1),
     limit: Number(per_page || 10),

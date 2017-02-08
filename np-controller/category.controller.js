@@ -46,6 +46,7 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
       }
     ])
     .then(counts => {
+      console.log(counts)
       const newCtefories = categories.docs.map(t => {
         const finded = counts.find(c => String(c._id) === String(t._id));
         t.count = finded ? finded.num_tutorial : 0;
@@ -62,6 +63,7 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
   // 请求
   Category.paginate({}, options)
   .then(categories => {
+    console.log(categories)
     getCatrgoriesCount(categories);
   })
   .catch(err => {
@@ -130,8 +132,11 @@ categoryCtrl.item.GET = ({ params: { category_id } }, res) => {
     Category.findById(_id)
     .then(category => {
       if (!category) {
-        if (!categories.length) handleError({ res, err, message: '分类不存在' });
-        if (categories.length) handleSuccess({ res, result: categories, message: '分类获取成功' });
+        if (!categories.length) {
+          handleError({ res, err, message: '分类不存在' });
+        } else {
+          handleSuccess({ res, result: categories, message: '分类获取成功' });
+        }
         return false;
       }
       categories.unshift(category);
