@@ -14,7 +14,6 @@ tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) =>
 
   // 过滤条件
   const options = {
-    lean: true,
     sort: { _id: -1 },
     page: Number(page),
     limit: Number(per_page)
