@@ -5,6 +5,7 @@
 */
 
 const { handleRequest, handleError, handleSuccess } = require('../np-handle');
+const Article = require('../np-model/article.model');
 const Tag = require('../np-model/tag.model');
 const tagCtrl = { list: {}, item: {} };
 
@@ -13,6 +14,7 @@ tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) =>
 
   // 过滤条件
   const options = {
+    lean: true,
     sort: { _id: -1 },
     page: Number(page),
     limit: Number(per_page)
@@ -28,9 +30,7 @@ tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) =>
     ]
   };
 
-  // 请求
-  Tag.paginate(query, options)
-  .then(tags => {
+  const querySuccess = tags => {
     handleSuccess({
       res,
       message: '标签列表获取成功',
@@ -44,6 +44,35 @@ tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) =>
         data: tags.docs
       }
     });
+  };
+
+  // 查询article-tag的count聚合数据
+  const getTagsCount = tags => {
+    Article.aggregate([
+      { $unwind : "$tag" }, 
+      { $group: { 
+        _id: "$tag", 
+        num_tutorial: { $sum : 1 }}
+      }
+    ])
+    .then(counts => {
+      const newTags = tags.docs.map(t => {
+        const finded = counts.find(c => String(c._id) === String(t._id));
+        t.count = finded ? finded.num_tutorial : 0;
+        return t;
+      });
+      tags.docs = newTags;
+      querySuccess(tags);
+    })
+    .catch(err => {
+      querySuccess(tags);
+    })
+  };
+
+  // 请求标签
+  Tag.paginate(query, options)
+  .then(tags => {
+    getTagsCount(tags);
   })
   .catch(err => {
     handleError({ res, err, message: '标签列表获取失败' });
