@@ -21,7 +21,10 @@ const announcementSchema = new mongoose.Schema({
   state: { type: Number, default: 1 },
 
   // 发布日期
-  date: { type: Date, default: Date.now },
+  create_time: { type: Date, default: Date.now },
+
+  // 最后修改日期
+  update_time: { type: Date },
 
   // 自定义扩展
   extends: [{ name: String, value: Object }]
@@ -36,7 +39,7 @@ announcementSchema.plugin(autoIncrement.plugin, {
   incrementBy: 1
 });
 
-// 自增ID配置
+// 时间更新
 announcementSchema.pre('save', next => {
   if (this.isNew) this.create_time = this.update_time = Date.now();
   if (!this.isNew) this.update_time = Date.now();

@@ -19,6 +19,7 @@ articleCtrl.list.GET = (req, res) => {
 
   // 过滤条件
   const options = {
+    lean: true,
     sort: { _id: -1 },
     page: Number(page || 1),
     limit: Number(per_page || 10),
@@ -80,7 +81,6 @@ articleCtrl.list.GET = (req, res) => {
   const getArticles = () => {
     Article.paginate(querys, options)
     .then(articles => {
-      // console.log(articles.docs[0].t_content);
       handleSuccess({
         res,
         message: '文章列表获取成功',
@@ -215,8 +215,11 @@ articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 
 // 获取单个文章
 articleCtrl.item.GET = ({ params: { article_id }}, res) => {
+
+  // 判断来源函数
   const isFindById = !Object.is(Number(article_id), NaN);
 
+  // 获取相关文章
   const getRelatedArticles = result => {
     Article.find(
       { state: 1, public: 1, tag: { $in: result.tag.map(t => t._id) }}, 
@@ -232,6 +235,9 @@ articleCtrl.item.GET = ({ params: { article_id }}, res) => {
     : Article.findById(article_id)
   )
   .then(result => {
+    // 每请求一次，浏览次数都要增加
+    result.meta.views += 1;
+    result.save();
     if (isFindById && result.tag.length) {
       getRelatedArticles(result.toObject());
     } else {
