@@ -39,7 +39,10 @@ const articleSchema = new mongoose.Schema({
   password: { type: String, default: '' },
 
   // 发布日期
-  date: { type: Date, default: Date.now },
+  create_time: { type: Date, default: Date.now },
+
+  // 最后修改日期
+  update_time: { type: Date },
 
   // 文章标签
   tag: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
@@ -47,11 +50,12 @@ const articleSchema = new mongoose.Schema({
   // 文章分类
   category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
 
+  // 评论
+  comment: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
+
   // 其他元信息
   meta: {
-    views: { type: Number, default: 0 },
-    favs:  { type: Number, default: 0 },
-    // comments: { type: Number, default: 0 },
+    views: { type: Number, default: 0 }
   },
 
   // 自定义扩展
@@ -69,8 +73,9 @@ articleSchema.plugin(autoIncrement.plugin, {
   incrementBy: 1
 });
 
-// 自增ID配置
+// 时间更新
 articleSchema.pre('save', next => {
+  console.log('save', this)
   if (this.isNew) this.create_time = this.update_time = Date.now();
   if (!this.isNew) this.update_time = Date.now();
   next();

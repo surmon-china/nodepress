@@ -6,6 +6,7 @@
 
 const { handleRequest, handleError, handleSuccess } = require('../np-handle');
 const Category = require('../np-model/category.model');
+const Article = require('../np-model/article.model');
 const categoryCtrl = { list: {}, item: {} };
 
 // 获取分类列表
@@ -13,14 +14,13 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
 
   // 过滤条件
   const options = {
+    lean: true,
     sort: { _id: 1 },
     page: Number(page),
     limit: Number(per_page)
   };
 
-  // 请求
-  Category.paginate({}, options)
-  .then(categories => {
+  const querySuccess = categories => {
     handleSuccess({
       res,
       message: '分类列表获取成功',
@@ -34,6 +34,35 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
         data: categories.docs
       }
     });
+  };
+
+  // 查询article-category的count聚合数据
+  const getCatrgoriesCount = categories => {
+    Article.aggregate([
+      { $unwind : "$category" }, 
+      { $group: { 
+        _id: "$category", 
+        num_tutorial: { $sum : 1 }}
+      }
+    ])
+    .then(counts => {
+      const newCtefories = categories.docs.map(t => {
+        const finded = counts.find(c => String(c._id) === String(t._id));
+        t.count = finded ? finded.num_tutorial : 0;
+        return t;
+      });
+      categories.docs = newCtefories;
+      querySuccess(categories);
+    })
+    .catch(err => {
+      querySuccess(categories);
+    })
+  };
+
+  // 请求
+  Category.paginate({}, options)
+  .then(categories => {
+    getCatrgoriesCount(categories);
   })
   .catch(err => {
     handleError({ res, err, message: '分类列表获取失败' });
