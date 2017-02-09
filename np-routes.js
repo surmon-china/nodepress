@@ -25,11 +25,14 @@ const routes = app => {
       return false;
     };
 
+    // 排除auth的post请求
+    if (Object.is(req.url, '/auth') && (Object.is(req.method, 'GET') || Object.is(req.method, 'POST'))) {
+      next();
+      return false;
+    };
+
     // 拦截所有非管路员的非get请求（排除auth的post请求）
-    if (!authIsVerified(req) &&
-        !Object.is(req.method, 'GET')  && 
-        !(Object.is(req.method, 'POST') && Object.is(req.url, '/auth'))
-       ) {
+    if (!authIsVerified(req) && !Object.is(req.method, 'GET')) {
       res.status(401).jsonp({ code: 0, message: '来者何人！' })
       return false;
     };
@@ -50,6 +53,9 @@ const routes = app => {
 
   // 全局option
   app.all('/option', controller.option);
+
+  // sitemap
+  app.get('/sitemap.xml', controller.sitemap);
 
   // Tag
   app.all('/tag', controller.tag.list);
