@@ -8,7 +8,13 @@ const { handleRequest, handleError, handleSuccess } = require('../np-handle');
 const Auth = require('../np-model/auth.model');
 const config = require('../np-config');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const authCtrl = {};
+
+// md5编码
+const md5Decode = pwd => {
+	return crypto.createHash('md5').update(pwd).digest('hex');
+};
 
 // 获取个人信息
 authCtrl.GET = (req, res) => {
@@ -24,8 +30,8 @@ authCtrl.GET = (req, res) => {
 // 生成登陆口令Token
 authCtrl.POST = ({ body: { password }}, res) => {
 	Auth.find({}, '-_id password')
-	.then(([auth = { password: config.AUTH.DEFAULT_PASSWORD }]) => {
-		if (Object.is(password, auth.password)) {
+	.then(([auth = { password: md5Decode(config.AUTH.DEFAULT_PASSWORD) }]) => {
+		if (Object.is(md5Decode(password), auth.password)) {
 			const token = jwt.sign({
 			  data: config.AUTH.data,
 			  exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7)
@@ -57,30 +63,23 @@ authCtrl.PUT = ({ body: auth }, res) => {
 		return false;
 	};
 	
-	// doPutAuth
-	const doPutAuth = _id => {
-		if (!auth.password) delete auth.password;
-		if (auth.rel_new_password) auth.password = auth.rel_new_password;
-		(_id ? Auth.findByIdAndUpdate(_id, auth, { new: true }) : new Auth(auth).save())
-		.then(({ name, slogan, gravatar } = auth) => {
-			handleSuccess({ res, result: { name, slogan, gravatar }, message: '用户权限修改成功' });
-		})
-		.catch(err => {
-			handleError({ res, err, message: '用户权限修改失败' });
-		})
-	};
-
 	// 修改前查询验证
 	Auth.find({}, '_id name slogan gravatar password')
-	.then(([auth = { password: config.AUTH.DEFAULT_PASSWORD }]) => {
-		if (!!password && !Object.is(auth.password, password)) {
+	.then(([_auth = { password: md5Decode(config.AUTH.DEFAULT_PASSWORD) }]) => {
+		if (!!password && !Object.is(_auth.password, md5Decode(password))) {
 			handleError({ res, message: '原密码不正确' }); 
 		} else {
-			doPutAuth(auth._id);
+			if (!auth.password) delete auth.password;
+			if (auth.rel_new_password) auth.password = md5Decode(auth.rel_new_password);
+			return (_auth._id ? Auth.findByIdAndUpdate(_auth._id, auth, { new: true }) : new Auth(auth).save())
 		}
 	})
+	.then(({ name, slogan, gravatar } = auth) => {
+		console.log({ name, slogan, gravatar });
+		handleSuccess({ res, result: { name, slogan, gravatar }, message: '用户权限修改成功' });
+	})
 	.catch(err => {
-		handleError({ res, err, message: '修改权限失败' });
+		handleError({ res, err, message: '用户权限修改失败' });
 	})
 };
 

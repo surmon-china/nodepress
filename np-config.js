@@ -1,28 +1,31 @@
+const argv = require('yargs').argv;
+// console.log(argv)
+
 exports.MONGODB = {
-  uri: 'mongodb://localhost:27017/NodePress',
-  username: 'DB_username',
-  password: 'DB_password'
+  uri: 'mongodb://127.0.0.1:27017/NodePress',
+  username: argv.dbusername || 'DB_username',
+  password: argv.dbpassword || 'DB_password'
 }
 
 exports.QINIU = {
-  accessKey: 'Me09Zx9_QyBJuViVxy_UP-KC9tUQu7t9RLBg207N',
-  secretKey: 'ZwFYrSsCB1mSXnIsH4VR9JpIy-Bc-YLlk3SMMNae',
-  bucket: 'nodepress',
-  origin: 'http://nodepress.u.qiniudn.com',
-  uploadURL: 'http://up.qiniu.com/'
+  accessKey: argv.accessKey || 'your access key',
+  secretKey: argv.secretKey || 'your secret key',
+  bucket: argv.bucket || 'your bucket name',
+  origin: argv.origin || 'http://nodepress.u.qiniudn.com',
+  uploadURL: argv.uploadURL || 'http://up.qiniu.com/'
 }
 
 exports.AUTH = {
-  data: { user: 'root' },
-  jwtTokenSecret: 'nodepress',
-  DEFAULT_PASSWORD: 'root'
+  data: argv.authdata || { user: 'root' },
+  jwtTokenSecret: argv.authkey || 'nodepress',
+  DEFAULT_PASSWORD: argv.defaultpassword || 'root'
 }
 
 exports.INFO = {
   name: 'NodePress',
   version: '1.0.0',
   author: 'Surmon',
-  site: 'http://api.surmon.me',
+  site: 'http://surmon.me',
   powered: ['Vue2', 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
 }
 
