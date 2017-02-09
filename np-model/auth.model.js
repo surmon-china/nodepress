@@ -4,6 +4,7 @@
 *
 */
 
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const config = require('../np-config');
 const authSchema = new mongoose.Schema({
@@ -18,7 +19,10 @@ const authSchema = new mongoose.Schema({
   gravatar: { type: String, default: '' },
 
   // 密码
-  password: { type: String, default: config.AUTH.DEFAULT_PASSWORD }
+  password: { 
+  	type: String, 
+  	default: crypto.createHash('md5').update(config.AUTH.DEFAULT_PASSWORD).digest('hex')
+  }
 });
 
 const Auth = mongoose.model('Auth', authSchema);

@@ -10,6 +10,7 @@ const Article = require('../np-model/article.model');
 const Tag = require('../np-model/tag.model');
 const htmlToText = require('html-to-text');
 const authIsVerified = require('../np-auth');
+const buildSiteMap = require('../np-sitemap');
 const articleCtrl = { list: {}, item: {} };
 
 // 获取文章列表
@@ -63,18 +64,18 @@ articleCtrl.list.GET = (req, res) => {
   if (date) {
     const gteDate = new Date(date);
     if(!Object.is(gteDate, 'Invalid Date')) {
-      querys.date = {
-        "$gte": gteDate,
-        "$lt": new Date((gteDate / 1000 + 86400) * 1000)
+      querys.create_time = {
+        "$gte": new Date((gteDate / 1000 - 60 * 60 * 8) * 1000),
+        "$lt": new Date((gteDate / 1000 + 60 * 60 * 16) * 1000)
       }
     }
-  }
+  };
 
   // 如果是前台请求，则重置公开状态和发布状态
   if (!authIsVerified(req)) {
     querys.state = 1;
     querys.public = 1;
-  }
+  };
 
   // 请求对应文章
   const getArticles = () => {
@@ -114,7 +115,7 @@ articleCtrl.list.GET = (req, res) => {
       handleError({ res, err, message: '分类查找失败' });
     })
     return false;
-  }
+  };
   
   // 标签别名查询 - 根据别名查询到id，然后根据id查询
   if (tag_slug) {
@@ -131,7 +132,7 @@ articleCtrl.list.GET = (req, res) => {
       handleError({ res, err, message: '标签查找失败' });
     })
     return false;
-  }
+  };
 
   // 默认请求文章列表
   getArticles();
@@ -150,6 +151,7 @@ articleCtrl.list.POST = ({ body: article }, res) => {
   new Article(article).save()
   .then((result = article) => {
     handleSuccess({ res, result, message: '文章发布成功' });
+    buildSiteMap();
   })
   .catch(err => {
     handleError({ res, err, message: '文章发布失败' });
@@ -187,10 +189,11 @@ articleCtrl.list.PUT = ({ body: { articles, params: { action }}}, res) => {
 
   Article.update({ '_id': { $in: articles }}, { $set: updatePart }, { multi: true })
   .then(result => {
-    handleSuccess({ res, result, message: '文章批量删除成功' });
+    handleSuccess({ res, result, message: '文章批量操作成功' });
+    buildSiteMap();
   })
   .catch(err => {
-    handleError({ res, err, message: '文章批量删除失败' });
+    handleError({ res, err, message: '文章批量操作失败' });
   })
 };
 
@@ -201,11 +204,12 @@ articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
   if (!articles || !articles.length) {
     handleError({ res, message: '缺少有效参数' });
     return false;
-  }
+  };
 
   Article.remove({ '_id': { $in: articles }})
   .then(result => {
     handleSuccess({ res, result, message: '文章批量删除成功' });
+    buildSiteMap();
   })
   .catch(err => {
     handleError({ res, err, message: '文章批量删除失败' });
@@ -261,6 +265,7 @@ articleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
   Article.findByIdAndUpdate(article_id, article, { new: true })
   .then(result => {
     handleSuccess({ res, result, message: '文章修改成功' });
+    buildSiteMap();
   })
   .catch(err => {
     handleError({ res, err, message: '文章修改失败' });
@@ -272,6 +277,7 @@ articleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
   Article.findByIdAndRemove(article_id)
   .then(result => {
     handleSuccess({ res, result, message: '文章删除成功' });
+    buildSiteMap();
   })
   .catch(err => {
     handleError({ res, err, message: '文章删除失败' });

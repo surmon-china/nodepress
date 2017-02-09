@@ -4,10 +4,10 @@
 *
 */
 
-const { handleRequest } = require('../np-handle');
-const config = require('../np-config');
 const qiniu = require('qn');
+const config = require('../np-config');
 const client = qiniu.create(config.QINIU);
+const { handleRequest } = require('../np-handle');
 const qiniuCtrl = {};
 
 // 获取配置列表
