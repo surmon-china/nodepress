@@ -36,6 +36,8 @@ const categorySchema = new mongoose.Schema({
   extends: [{ name: String, value: Object }]
 });
 
+categorySchema.set('toObject', { getters: true });
+
 // 翻页 + 自增ID插件配置
 categorySchema.plugin(mongoosePaginate);
 categorySchema.plugin(autoIncrement.plugin, {

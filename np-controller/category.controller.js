@@ -7,14 +7,17 @@
 const { handleRequest, handleError, handleSuccess } = require('../np-handle');
 const Category = require('../np-model/category.model');
 const Article = require('../np-model/article.model');
+const authIsVerified = require('../np-auth');
+const buildSiteMap = require('../np-sitemap');
 const categoryCtrl = { list: {}, item: {} };
 
 // 获取分类列表
-categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
+categoryCtrl.list.GET = (req, res) => {
+
+  let { page = 1, per_page = 10 } = req.query;
 
   // 过滤条件
   const options = {
-    lean: true,
     sort: { _id: 1 },
     page: Number(page),
     limit: Number(per_page)
@@ -38,7 +41,12 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
 
   // 查询article-category的count聚合数据
   const getCatrgoriesCount = categories => {
+    let $match = {};
+    if (!authIsVerified(req)) {
+      $match = { state: 1, public: 1 };
+    }
     Article.aggregate([
+      { $match },
       { $unwind : "$category" }, 
       { $group: { 
         _id: "$category", 
@@ -46,7 +54,6 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
       }
     ])
     .then(counts => {
-      console.log(counts)
       const newCtefories = categories.docs.map(t => {
         const finded = counts.find(c => String(c._id) === String(t._id));
         t.count = finded ? finded.num_tutorial : 0;
@@ -63,7 +70,7 @@ categoryCtrl.list.GET = ({ query: { page = 1, per_page = 10 }}, res) => {
   // 请求
   Category.paginate({}, options)
   .then(categories => {
-    console.log(categories)
+    categories = JSON.parse(JSON.stringify(categories));
     getCatrgoriesCount(categories);
   })
   .catch(err => {
@@ -89,6 +96,7 @@ categoryCtrl.list.POST = ({ body: category, body: { slug } }, res) => {
     new Category(category).save()
     .then(result => {
       handleSuccess({ res, result, message: '分类发布成功' });
+      buildSiteMap();
     })
     .catch(err => {
       handleError({ res, err, message: '分类发布失败' });
@@ -119,6 +127,7 @@ categoryCtrl.list.DELETE = ({ body: { categories }}, res) => {
   Category.remove({ '_id': { $in: categories }})
   .then(result => {
     handleSuccess({ res, result, message: '分类批量删除成功' });
+    buildSiteMap();
   })
   .catch(err => {
     handleError({ res, err, message: '分类批量删除失败' });
@@ -167,6 +176,7 @@ categoryCtrl.item.PUT = ({ params: { category_id }, body: category, body: { pid,
     Category.findByIdAndUpdate(category_id, category, { new: true })
     .then(result => {
       handleSuccess({ res, result, message: '分类修改成功' });
+      buildSiteMap();
     })
     .catch(err => {
       handleError({ res, err, message: '分类修改失败' });
@@ -217,7 +227,10 @@ categoryCtrl.item.DELETE = ({ params: { category_id }}, res) => {
     let category = await deleteCategory();
     return await deletePid(category);
   })()
-  .then(({ result }) => handleSuccess({ res, result, message: '分类删除成功' }))
+  .then(({ result }) => {
+    handleSuccess({ res, result, message: '分类删除成功' });
+    buildSiteMap();
+  })
   .catch(({ err }) => handleError({ res, err, message: '分类删除失败' }));
 };
 

@@ -7,10 +7,14 @@
 const { handleRequest, handleError, handleSuccess } = require('../np-handle');
 const Article = require('../np-model/article.model');
 const Tag = require('../np-model/tag.model');
+const authIsVerified = require('../np-auth');
+const buildSiteMap = require('../np-sitemap');
 const tagCtrl = { list: {}, item: {} };
 
 // 获取标签列表
-tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) => {
+tagCtrl.list.GET = (req, res) => {
+
+  let { page = 1, per_page = 12, keyword = '' } = req.query;
 
   // 过滤条件
   const options = {
@@ -47,7 +51,12 @@ tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) =>
 
   // 查询article-tag的count聚合数据
   const getTagsCount = tags => {
+    let $match = {};
+    if (!authIsVerified(req)) {
+      $match = { state: 1, public: 1 };
+    }
     Article.aggregate([
+      { $match },
       { $unwind : "$tag" }, 
       { $group: { 
         _id: "$tag", 
@@ -71,6 +80,7 @@ tagCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) =>
   // 请求标签
   Tag.paginate(query, options)
   .then(tags => {
+    tags = JSON.parse(JSON.stringify(tags));
     getTagsCount(tags);
   })
   .catch(err => {
@@ -92,6 +102,7 @@ tagCtrl.list.POST = ({ body: tag, body: { slug }}, res) => {
     new Tag(tag).save()
     .then((result = tag) => {
       handleSuccess({ res, result, message: '标签发布成功' });
+      buildSiteMap();
     })
     .catch(err => {
       handleError({ res, err, message: '标签发布失败' });
@@ -120,6 +131,7 @@ tagCtrl.list.DELETE = ({ body: { tags }}, res) => {
   Tag.remove({ '_id': { $in: tags }})
   .then(result => {
     handleSuccess({ res, result, message: '标签批量删除成功' });
+    buildSiteMap();
   })
   .catch(err => {
     handleError({ res, err, message: '标签批量删除失败' });
@@ -139,6 +151,7 @@ tagCtrl.item.PUT = ({ params: { tag_id }, body: tag, body: { slug }}, res) => {
     Tag.findByIdAndUpdate(tag_id, tag, { new: true })
     .then(result => {
       handleSuccess({ res, result, message: '标签修改成功' });
+      buildSiteMap();
     })
     .catch(err => {
       handleError({ res, err, message: '标签修改失败' });
@@ -161,6 +174,7 @@ tagCtrl.item.DELETE = ({ params: { tag_id }}, res) => {
   Tag.findByIdAndRemove(tag_id)
   .then(result => {
     handleSuccess({ res, result, message: '标签删除成功' });
+    buildSiteMap();
   })
   .catch(err => {
     handleError({ res, err, message: '标签删除失败' });

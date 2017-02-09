@@ -14,15 +14,18 @@
 ----------
 
 # Todos & Issues
-- 加入网站地图接口，同时驱动ping  https://github.com/ekalinin/sitemap.js
-- 文章发布后自动ping给搜索引擎xml
-- 对接百度统计开放平台api
-- 密码存储需要使用md5加密机制
-- token... 等config信息使用node命令参数在shell中配置覆盖
-- lean 和 翻页插件一起使用，返回的id字段是_id bug
-- ~~整理统一result的返回结构~~
-
+- 驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml
 - 更新readme
+
+- ~~rss订阅接口 https://github.com/dylang/node-rss~~
+- ~~加入网站地图接口~~
+- ~~网站地图由于缓存或者primise不能及时更新~~
+- ~~网站地图的数据构成中文章需要筛选公开一发布的文章~~
+- ~~对接百度统计开放平台api~~
+- ~~密码存储需要使用md5加密机制~~
+- ~~token... 等config信息使用node命令参数在shell中配置覆盖~~
+- ~~lean 和 翻页插件一起使用，返回的id字段是_id bug~~
+- ~~整理统一result的返回结构~~
 - ~~围观后计数功能~~
 - ~~多说转发热门文章接口~~
 - ~~相关文章接口~~
@@ -30,9 +33,10 @@
 
 ```bash
 # 启动开发模式
-nodemon --exec \"npm start\"
+npm run dev
+
 # 生产模式
-pm2
+npm start
 ```
 
 ## 接口
