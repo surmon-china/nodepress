@@ -25,8 +25,8 @@ exports.INFO = {
   name: 'NodePress',
   version: '1.0.0',
   author: 'Surmon',
-  site: 'http://surmon.me',
-  powered: ['Vue2', 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
+  site: 'https://surmon.me',
+  powered: ['Vue2', 'Nuxt.js', 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
 }
 
 exports.APP = {

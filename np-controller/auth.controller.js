@@ -75,7 +75,6 @@ authCtrl.PUT = ({ body: auth }, res) => {
 		}
 	})
 	.then(({ name, slogan, gravatar } = auth) => {
-		console.log({ name, slogan, gravatar });
 		handleSuccess({ res, result: { name, slogan, gravatar }, message: '用户权限修改成功' });
 	})
 	.catch(err => {

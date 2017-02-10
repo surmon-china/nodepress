@@ -75,7 +75,6 @@ articleSchema.plugin(autoIncrement.plugin, {
 
 // 时间更新
 articleSchema.pre('save', next => {
-  console.log('save', this)
   if (this.isNew) this.create_time = this.update_time = Date.now();
   if (!this.isNew) this.update_time = Date.now();
   next();

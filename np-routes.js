@@ -9,7 +9,7 @@ const routes = app => {
   app.all('*', (req, res, next) => {
 
     // Set Header
-    const allowedOrigins = ['http://surmon.me', 'http://admin.surmon.me'];
+    const allowedOrigins = ['https://surmon.me', 'https://admin.surmon.me'];
     const origin = req.headers.origin || '';
     if (allowedOrigins.includes(origin) || origin.includes('localhost')) {
       res.setHeader('Access-Control-Allow-Origin', origin);
