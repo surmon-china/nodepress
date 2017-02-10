@@ -10,6 +10,7 @@ node_modules
 .DS_Store
 /np-config.js
 np-config.js
+ecosystem.config.js
 
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*

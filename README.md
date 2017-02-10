@@ -84,7 +84,7 @@ npm start
   - 公共封装函数
 
     ```
-    np-common.js -> api/ctrl/model公共函数
+    np-handle.js -> 公共处理器
 
     commonApiMethod -> API类型识别器
 
