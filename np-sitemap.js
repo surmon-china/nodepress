@@ -16,7 +16,7 @@ let pages = [
 // 获取数据
 const getDatas = success => {
   sitemap = sm.createSitemap ({
-    hostname: config.INFO.site || 'http://surmon.me',
+    hostname: config.INFO.site || 'https://surmon.me',
     cacheTime: 600000,
     urls: [...pages]
   });
