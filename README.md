@@ -1,7 +1,5 @@
 ## NodePress 开发文档
 
-----------
-
 > Author By Surmon Surmon@foxmail.com
 >
 > Site: https://surmon.me
@@ -11,11 +9,8 @@
 > 前端后台：[angular-admin](https://github.com/surmon-china/angular-admin) By Angular2 + Bootstrap4
 >
 
-----------
-
 # Todos & Issues
 - 驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml
-
 - ~~更新readme~~
 - ~~rss订阅接口 https://github.com/dylang/node-rss~~
 - ~~加入网站地图接口~~
@@ -30,17 +25,15 @@
 - ~~多说转发热门文章接口~~
 - ~~相关文章接口~~
 
-----------
-
+## 开发命令
 ```bash
 # 启动开发模式
 npm run dev
 
 # 生产模式
 npm start
+pm2 start ***
 ```
-
-----------
 
 ## 文件目录
 
@@ -66,8 +59,6 @@ npm start
     np-mongo.js -> 数据库连接启动
 
     连接并启动数据库
-
-    TODO: 连接失败时前台应该可以得到提示
     ```
 
   - 公共封装函数
@@ -122,13 +113,9 @@ npm start
 
     ```
 
-----------
-
 ## 接口概述
 
 稍后补充...
-
--------------------
 
 ## 数据结构
 
@@ -158,8 +145,6 @@ npm start
     ···
 
   - 其他...
-
-----------
 
 ## 程序架构
 
