@@ -239,8 +239,10 @@ articleCtrl.item.GET = ({ params: { article_id }}, res) => {
   )
   .then(result => {
     // 每请求一次，浏览次数都要增加
-    result.meta.views += 1;
-    result.save();
+    if (isFindById) {
+      result.meta.views += 1;
+      result.save();
+    }
     if (isFindById && result.tag.length) {
       getRelatedArticles(result.toObject());
     } else {
