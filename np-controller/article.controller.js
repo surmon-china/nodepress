@@ -219,7 +219,7 @@ articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 // 获取单个文章
 articleCtrl.item.GET = ({ params: { article_id }}, res) => {
 
-  // 判断来源函数
+  // 判断来源
   const isFindById = !Object.is(Number(article_id), NaN);
 
   // 获取相关文章
@@ -234,7 +234,7 @@ articleCtrl.item.GET = ({ params: { article_id }}, res) => {
   };
 
   (isFindById
-    ? Article.findOne({ id: Number(article_id) }).populate('category tag').exec()
+    ? Article.findOne({ id: Number(article_id), state: 1, public: 1 }).populate('category tag').exec()
     : Article.findById(article_id)
   )
   .then(result => {
