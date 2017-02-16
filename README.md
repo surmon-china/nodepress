@@ -1,15 +1,15 @@
 ## NodePress 开发文档
 
 > Author By Surmon Surmon@foxmail.com
->
-> Site: https://surmon.me
->
-> 前端前台PC端：[vue-blog](https://github.com/surmon-china/vue-blog) By Vue2 + Vuex + Nuxt.js
->
-> 前端后台：[angular-admin](https://github.com/surmon-china/angular-admin) By Angular2 + Bootstrap4
->
 
-# Todos & Issues
+> Site: https://surmon.me
+
+> 前端前台PC端：[vue-blog](https://github.com/surmon-china/surmon.me) By Vue2 + Vuex + Nuxt.js
+
+> 前端后台：[angular-admin](https://github.com/surmon-china/angular-admin) By Angular2 + Bootstrap4
+
+
+## Todos & Issues
 - 驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml
 - ~~更新readme~~
 - ~~rss订阅接口 https://github.com/dylang/node-rss~~
@@ -50,7 +50,7 @@ pm2 start ***
     ```
     np-config.js -> 主程序配置
 
-    数据库配置（程序内部），全局使用（程序内部），基本信息，其他配置
+    数据库配置（程序内部），全局使用（程序内部），其他配置（程序内部），基本信息（API输出）
     ```
 
   - 数据库
@@ -67,22 +67,24 @@ pm2 start ***
     np-handle.js -> 请求处理器
 
     handleRequest -> API类型识别器
-
     handleError -> 控制器失败时解析
-
     handleSuccess -> 控制器成功时解析
     ```
 
-  - np-auth.js
+  - 权限处理
 
     ```
+    np-auth.js -> 权限处理器
+    
     权限验证方法，抽象出的对象
     首先会校验jwt的合理性，然后核对加密信息，核对时间戳
     ```
 
-  - np-sitemap.js
+  - seo服务
 
     ```
+    np-sitemap.js -> 地图生成器
+    
     网站地图xml生成，抽象出的对象
     包含Tag、Article、Category及一些死数据（页面）的集合，生成xml并写入本地
     实际上，在每次访问sitemap-api和有相关CRUD操作的时候都会被执行
@@ -115,33 +117,40 @@ pm2 start ***
 
 ## 接口概述
 
-稍后补充...
+  - http状态码
+    * 401 权限不足
+    * 403 权限不足
+    * 404 项目中存在
+    * 405 无此方法
+    * 500 服务器挂了
+    * 200 正常
+
+  - 数据特征码
+    * code:
+        * 1 正常
+        * 0 异常
+    * message:
+        一般均会返回
+    * debug:
+        一般会返回错误发生节点的err
+        在code为0的时候必须返回，方便调试
+    * result:
+        一定会返回，若请求为列表数据，一般返回`{ pagenation: {...}, data: {..} }`
+        若请求具体数据，如文章，则包含直接数据如`{ title: '', content: ... }`
 
 ## 数据结构
 
   - 通用
     * extend 通用扩展
+        文章、分类、tag表都包含extend字段，用于在后台管理中自定义扩展，类似于wordpress中的自定义字段功能，目前用来实现前台icon图标的class
     ···
 
-  - 分类 CRUD
-    * name         - 分类名称 required
-    * slug         - 分类名称 required onlyone 唯一!
-    * description  - 分类名称
-    * pid          - 父分类ID false || null || 0 || ObjectID
-    ···
 
-  - 文章 CRUD
-    * title        - 文章标题
-    * content      - 文章内容
-    * description  - 文章描述
-    * status       - 文章发布状态 => -1已删除，0草稿，1发布
-    * public       - 文章公开状态 =>  0非公开，1公开
-    * password     - 文章密码 => 非公开状态生效
-    * date         - 发布日期
-    * tag          - 文章标签 数组 ObjID
-    * category     - 文章分类 数组 ObjID
-    * comment      - 数组（对象）
-    * meta         - 元数据
+  - 各种 CRUD 重要字段
+    * name         - 名称
+    * _id          - mongodb生成的id，一般用于后台执行非get操作
+    * id           - 插件生成的自增数字id，类似mysql中的id，具有唯一性
+    * pid          - 父级ID，用于建立数据关系，与id字段映射
     ···
 
   - 其他...
@@ -153,6 +162,8 @@ pm2 start ***
     * [Express](http://www.expressjs.com.cn/ )
 
     * [node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) JWT Json Web Token
+    
+    * crypto
 
   - 后台
 
@@ -162,55 +173,43 @@ pm2 start ***
 
     * JQuery
 
-    * 富文本编辑器 ---
+    * 富文本编辑器 
+    
+        - 最终使用CodeMirror实现了markdown编辑器
 
-    * [Simditor](http://simditor.tower.im/) Simditor
+        - [ng2-quill-editor](https://github.com/surmon-china/ng2-quill-editor)
+        
+        - WebIDE （此项目中不再实现）
 
-    * [Quill](http://quilljs.com/) Quill
+        - [Codiad](https://github.com/Codiad/Codiad) WebIDE
 
-    * [Draft.js](http://facebook.github.io/draft-js/) Draft for React
-
-    * [bootstrap-wysiwyg](http://www.bootcss.com/p/bootstrap-wysiwyg/) bootstrap-wysiwyg
-
-    * [wangEditor](http://www.wangeditor.com/) wangEditor
-
-    * MarkDown (最终使用codemirror创建了适用于自己的markdown)
-
-    * [Editor.md](http://pandao.github.io/editor.md/) MarkDown编辑器 - Editor
-
-    * [MarkdownEditor](https://github.com/alecgorge/MarkdownEditor) 简单的MarkDown编辑器 - MarkdownEditor
-
-    * WebIDE （此项目中不再实现）
-
-    * [Codiad](https://github.com/Codiad/Codiad) WebIDE
-
-    * [CodeMirror](http://codemirror.net/) CodeMirror WebIDE
+        - [CodeMirror](http://codemirror.net/) CodeMirror WebIDE
 
     * Other （此项目中不再实现）
 
-    * [谷歌云输入法]() 云输入法
+        - [谷歌云输入法]() 云输入法
 
-    * [Web Audio Editor](http://audiee.io/) 音频处理（剪切处理）
+        - [Web Audio Editor](http://audiee.io/) 音频处理（剪切处理）
 
-    * [webgl-filter](https://github.com/evanw/webgl-filter) WebGL 图片处理 - webgl-filter
+        - [webgl-filter](https://github.com/evanw/webgl-filter) WebGL 图片处理 - webgl-filter
 
-    * [h5slides](https://github.com/Jinjiang/h5slides) h5slides 幻灯放映
+        - [h5slides](https://github.com/Jinjiang/h5slides) h5slides 幻灯放映
 
-    * [H5lock](https://github.com/lvming6816077/H5lock) H5手势解锁
+        - [H5lock](https://github.com/lvming6816077/H5lock) H5手势解锁
 
-    * [favico.js](http://lab.ejci.net/favico.js/) 网站通知徽标
+        - [favico.js](http://lab.ejci.net/favico.js/) 网站通知徽标
 
-    * [OS.js](https://github.com/os-js/OS.js) OS.js Web OS
+        - [OS.js](https://github.com/os-js/OS.js) OS.js Web OS
 
-    * [Antiscroll](https://github.com/Automattic/antiscroll) Dom代替原生滚动条
+        - [Antiscroll](https://github.com/Automattic/antiscroll) Dom代替原生滚动条
 
-    * [APlayer](https://github.com/DIYgod/APlayer) APlayer音频播放器
+        - [APlayer](https://github.com/DIYgod/APlayer) APlayer音频播放器
 
-    * [CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary) JS栈弹幕解决方案
+        - [CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary) JS栈弹幕解决方案
 
-    * [CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary) JS栈弹幕解决方案
+        - [CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary) JS栈弹幕解决方案
 
-  - 搜索引擎 （使用了Nuxt.js服务端首屏渲染）
+  - 搜索引擎 （最终前端使用了Nuxt.js服务端首屏渲染）
 
     * [Prerender.io](https://prerender.io/) SEO
 
@@ -228,15 +227,15 @@ pm2 start ***
 
     * [Video.js](http://videojs.com/) 播放器
 
-    * [vue-awesome-swiper](https://github.com/surmon-china/vue-awesome-swiper) 跑马灯
+    * [vue-awesome-swiper](https://github.com/surmon-china/vue-awesome-swiper) 幻灯
 
-  - 前台WAP端
+  - 前台WAP端（暂未实现）
 
     * [Vue2](http://cn.vuejs.org/) MVVM
 
     * [Vux](https://github.com/airyland/vux) UI
 
-  - Android/IOS客户端
+  - Android/IOS客户端（暂未实现）
 
     * [Weex](https://alibaba.github.io/weex/)
 
