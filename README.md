@@ -32,7 +32,7 @@ npm run dev
 
 # 生产模式
 npm start
-pm2 start ***
+pm2 start ecosystem.config.js
 ```
 
 ## 文件目录
