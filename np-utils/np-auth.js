@@ -1,6 +1,6 @@
+/* auth验证方法 */
 
-
-const config = require('./np-config');
+const config = require('np-config');
 const jwt = require('jsonwebtoken');
 
 // 验证Auth

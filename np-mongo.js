@@ -1,6 +1,6 @@
 // 数据库模块
 const mongoose = require('mongoose');
-const config   = require('./np-config');
+const config   = require('np-config');
 const mongodb  = mongoose.connection;
 mongoose.Promise = Promise;
 

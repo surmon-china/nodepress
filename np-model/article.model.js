@@ -82,7 +82,8 @@ articleSchema.pre('save', next => {
 
 // 列表时用的文章内容虚拟属性
 articleSchema.virtual('t_content').get(function() {
-  return this.content.substring(0, 130);
+  const content = this.content;
+  return !!content ? content.substring(0, 130) : content;
 });
 
 // 文章模型
