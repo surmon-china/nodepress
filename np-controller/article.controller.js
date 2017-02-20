@@ -4,14 +4,16 @@
  *
  */
 
-const { handleRequest, handleError, handleSuccess } = require('../np-handle');
-const Category = require('../np-model/category.model');
-const Article = require('../np-model/article.model');
-const Tag = require('../np-model/tag.model');
+const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+const { baiduSeoPush, baiduSeoUpdate, baiduSeoDelete } = require('np-utils/np-baidu-seo-push');
+const Category = require('np-model/category.model');
+const Article = require('np-model/article.model');
+const Tag = require('np-model/tag.model');
 const htmlToText = require('html-to-text');
-const authIsVerified = require('../np-auth');
-const buildSiteMap = require('../np-sitemap');
+const authIsVerified = require('np-utils/np-auth');
+const buildSiteMap = require('np-utils/np-sitemap');
 const articleCtrl = { list: {}, item: {} };
+const config = require('np-config');
 
 // 获取文章列表
 articleCtrl.list.GET = (req, res) => {
@@ -152,6 +154,7 @@ articleCtrl.list.POST = ({ body: article }, res) => {
   .then((result = article) => {
     handleSuccess({ res, result, message: '文章发布成功' });
     buildSiteMap();
+    baiduSeoPush(`${config.INFO.site}/article/${result.id}`);
   })
   .catch(err => {
     handleError({ res, err, message: '文章发布失败' });
@@ -206,13 +209,29 @@ articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
     return false;
   };
 
-  Article.remove({ '_id': { $in: articles }})
-  .then(result => {
-    handleSuccess({ res, result, message: '文章批量删除成功' });
-    buildSiteMap();
+  // delete action
+  const deleteArticls = () => {
+    Article.remove({ '_id': { $in: articles }})
+    .then(result => {
+      handleSuccess({ res, result, message: '文章批量删除成功' });
+      buildSiteMap();
+    })
+    .catch(err => {
+      handleError({ res, err, message: '文章批量删除失败' });
+    })
+  };
+
+  // baidu-seo-delete
+  Article.find({ '_id': { $in: articles }}, 'id')
+  .then(articles => {
+    if (articles && articles.length) {
+      const urls = articles.map(article => `${config.INFO.site}/article/${article.id}`).join('\n');
+      baiduSeoDelete(urls);
+    }
+    deleteArticls();
   })
   .catch(err => {
-    handleError({ res, err, message: '文章批量删除失败' });
+    deleteArticls();
   })
 };
 
@@ -268,6 +287,7 @@ articleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
   .then(result => {
     handleSuccess({ res, result, message: '文章修改成功' });
     buildSiteMap();
+    baiduSeoUpdate(`${config.INFO.site}/article/${result.id}`);
   })
   .catch(err => {
     handleError({ res, err, message: '文章修改失败' });
@@ -280,6 +300,7 @@ articleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
   .then(result => {
     handleSuccess({ res, result, message: '文章删除成功' });
     buildSiteMap();
+    baiduSeoDelete(`${config.INFO.site}/article/${result.id}`);
   })
   .catch(err => {
     handleError({ res, err, message: '文章删除失败' });

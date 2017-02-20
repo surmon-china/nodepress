@@ -1,4 +1,4 @@
-/* comment */
+/* 公共解析器 */
 
 exports.handleRequest = ({ req, res, controller }) => {
   const method = req.method

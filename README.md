@@ -8,9 +8,12 @@
 
 > 前端后台：[angular-admin](https://github.com/surmon-china/angular-admin) By Angular2 + Bootstrap4
 
+> 基于Express + mongoose + jwt
 
 ## Todos & Issues
 - 驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml
+- ~~增加百度搜索引擎的实时提交~~
+- ~~更新模块化别名~~
 - ~~更新readme~~
 - ~~rss订阅接口 https://github.com/dylang/node-rss~~
 - ~~加入网站地图接口~~
@@ -90,6 +93,14 @@ pm2 start ecosystem.config.js
     实际上，在每次访问sitemap-api和有相关CRUD操作的时候都会被执行
     ```
 
+  - 百度更新服务
+
+    ```
+    np-baidu-push.js -> 自动根据操作通知百度蜘蛛
+    
+    分别会在文章、分类、标签、进行CUD的时候调用此类
+    ```
+
   - 路由
 
     ```
@@ -100,7 +111,7 @@ pm2 start ecosystem.config.js
   - 控制器
 
     ```
-    np-controller -> 控制器文件夹
+    np-controller -> 控制器
 
     ***.controller.js -> 各功能控制器
 
@@ -109,7 +120,7 @@ pm2 start ecosystem.config.js
   - 数据模型
 
     ```
-    np-model -> 数据模型文件夹
+    np-model -> 数据模型
 
     ***.model.js -> 各功能数据模型，映射Mongoose对应的模型方法
 
@@ -120,7 +131,7 @@ pm2 start ecosystem.config.js
   - http状态码
     * 401 权限不足
     * 403 权限不足
-    * 404 项目中存在
+    * 404 项目中不存在
     * 405 无此方法
     * 500 服务器挂了
     * 200 正常
@@ -148,9 +159,9 @@ pm2 start ecosystem.config.js
 
   - 各种 CRUD 重要字段
     * name         - 名称
-    * _id          - mongodb生成的id，一般用于后台执行非get操作
-    * id           - 插件生成的自增数字id，类似mysql中的id，具有唯一性
-    * pid          - 父级ID，用于建立数据关系，与id字段映射
+    * _id          - mongodb生成的id，一般用于后台执行CRUD操作
+    * id           - 插件生成的自增数字id，类似mysql中的id，具有唯一性，用于前台获取数据
+    * pid          - 父级ID，用于建立数据表关系，与id字段映射
     ···
 
   - 其他...
