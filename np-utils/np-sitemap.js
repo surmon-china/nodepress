@@ -1,9 +1,11 @@
+/* 地图更新器 */
+
 const fs = require('fs');
 const sm = require('sitemap');
-const config = require('./np-config');
-const Tag = require('./np-model/tag.model');
-const Article = require('./np-model/article.model');
-const Category = require('./np-model/category.model');
+const config = require('np-config');
+const Tag = require('np-model/tag.model');
+const Article = require('np-model/article.model');
+const Category = require('np-model/category.model');
 let sitemap = null;
 let pages = [
   { url: '', changefreq: 'always', priority: 1 },

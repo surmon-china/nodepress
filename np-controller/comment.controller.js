@@ -4,8 +4,8 @@
 *
 */
 
-const { handleRequest, handleError, handleSuccess } = require('../np-handle');
-const Comment = require('../np-model/comment.model');
+const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+const Comment = require('np-model/comment.model');
 const commentCtrl = { list: {}, item: {} };
 
 // 获取评论列表
