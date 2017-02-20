@@ -1,8 +1,8 @@
 // 路由管理
 
-const config = require('./np-config');
-const controller = require('./np-controller');
-const authIsVerified = require('./np-auth');
+const config = require('np-config');
+const controller = require('np-controller');
+const authIsVerified = require('np-utils/np-auth');
 const routes = app => {
 
   // 拦截器

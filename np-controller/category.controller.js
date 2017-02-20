@@ -4,12 +4,14 @@
 *
 */
 
-const { handleRequest, handleError, handleSuccess } = require('../np-handle');
-const Category = require('../np-model/category.model');
-const Article = require('../np-model/article.model');
-const authIsVerified = require('../np-auth');
-const buildSiteMap = require('../np-sitemap');
+const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+const { baiduSeoPush, baiduSeoUpdate } = require('np-utils/np-baidu-seo-push');
+const Category = require('np-model/category.model');
+const Article = require('np-model/article.model');
+const authIsVerified = require('np-utils/np-auth');
+const buildSiteMap = require('np-utils/np-sitemap');
 const categoryCtrl = { list: {}, item: {} };
+const config = require('np-config');
 
 // 获取分类列表
 categoryCtrl.list.GET = (req, res) => {
@@ -97,6 +99,7 @@ categoryCtrl.list.POST = ({ body: category, body: { slug } }, res) => {
     .then(result => {
       handleSuccess({ res, result, message: '分类发布成功' });
       buildSiteMap();
+      baiduSeoPush(`${config.INFO.site}/category/${result.slug}`);
     })
     .catch(err => {
       handleError({ res, err, message: '分类发布失败' });
@@ -177,6 +180,7 @@ categoryCtrl.item.PUT = ({ params: { category_id }, body: category, body: { pid,
     .then(result => {
       handleSuccess({ res, result, message: '分类修改成功' });
       buildSiteMap();
+      baiduSeoUpdate(`${config.INFO.site}/category/${result.slug}`);
     })
     .catch(err => {
       handleError({ res, err, message: '分类修改失败' });

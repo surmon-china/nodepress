@@ -5,11 +5,12 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoosePaginate = require('mongoose-paginate');
+require('app-module-path').addPath(__dirname + '/');
 
 // app modules
-const config = require('./np-config');
-const mongodb = require('./np-mongo');
-const routes = require('./np-routes');
+const config = require('np-config');
+const routes = require('np-routes');
+const mongodb = require('np-mongo');
 const app = express();
 
 // 连接数据库

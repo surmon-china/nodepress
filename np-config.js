@@ -1,5 +1,4 @@
 const argv = require('yargs').argv;
-// console.log(argv)
 
 exports.MONGODB = {
   uri: 'mongodb://127.0.0.1:27017/NodePress',
@@ -19,6 +18,11 @@ exports.AUTH = {
   data: argv.authdata || { user: 'root' },
   jwtTokenSecret: argv.authkey || 'nodepress',
   DEFAULT_PASSWORD: argv.defaultpassword || 'root'
+}
+
+exports.BAIDU = {
+  site: argv.baidusite || 'your baidu site domain like : surmon.me',
+  token: argv.baidutoken || 'your baidu seo push token'
 }
 
 exports.INFO = {

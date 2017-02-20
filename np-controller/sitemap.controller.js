@@ -1,5 +1,5 @@
-const { handleRequest, handleError } = require('../np-handle');
-const buildSiteMap = require('../np-sitemap');
+const { handleRequest, handleError } = require('np-utils/np-handle');
+const buildSiteMap = require('np-utils/np-sitemap');
 const sitrmapCtrl = {};
 
 // 获取地图

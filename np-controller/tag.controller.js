@@ -4,12 +4,14 @@
 *
 */
 
-const { handleRequest, handleError, handleSuccess } = require('../np-handle');
-const Article = require('../np-model/article.model');
-const Tag = require('../np-model/tag.model');
-const authIsVerified = require('../np-auth');
-const buildSiteMap = require('../np-sitemap');
+const Tag = require('np-model/tag.model');
+const Article = require('np-model/article.model');
+const authIsVerified = require('np-utils/np-auth');
+const buildSiteMap = require('np-utils/np-sitemap');
+const { baiduSeoPush, baiduSeoUpdate } = require('np-utils/np-baidu-seo-push');
+const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 const tagCtrl = { list: {}, item: {} };
+const config = require('np-config');
 
 // 获取标签列表
 tagCtrl.list.GET = (req, res) => {
@@ -103,6 +105,7 @@ tagCtrl.list.POST = ({ body: tag, body: { slug }}, res) => {
     .then((result = tag) => {
       handleSuccess({ res, result, message: '标签发布成功' });
       buildSiteMap();
+      baiduSeoPush(`${config.INFO.site}/tag/${result.slug}`);
     })
     .catch(err => {
       handleError({ res, err, message: '标签发布失败' });
@@ -152,6 +155,7 @@ tagCtrl.item.PUT = ({ params: { tag_id }, body: tag, body: { slug }}, res) => {
     .then(result => {
       handleSuccess({ res, result, message: '标签修改成功' });
       buildSiteMap();
+      baiduSeoUpdate(`${config.INFO.site}/tag/${result.slug}`);
     })
     .catch(err => {
       handleError({ res, err, message: '标签修改失败' });
