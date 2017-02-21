@@ -2,6 +2,7 @@
 
 // import
 const http = require('http');
+const gc   = require('idle-gc');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoosePaginate = require('mongoose-paginate');
@@ -31,5 +32,6 @@ routes(app);
 
 // Start server
 http.createServer(app).listen(app.get('port'), () => {
+	gc.start();
   console.log(`NodePress Run！port at ${app.get('port')}`)
 });

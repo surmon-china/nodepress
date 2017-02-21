@@ -11,6 +11,7 @@
     "body-parser": "^1.15.2",
     "express": "4.x",
     "html-to-text": "^3.0.0",
+    "idle-gc": "^1.0.1",
     "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.8.0",
     "mongoose-auto-increment": "^5.0.1",
