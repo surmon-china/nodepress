@@ -81,7 +81,7 @@ articleSchema.pre('findOneAndUpdate', function(next) {
 
 // 自动计数
 articleSchema.pre('findOne', function(next) {
-  console.log(this)
+  // console.log(this)
   // this.findOneAndUpdate({}, { update_time: Date.now() });
   next();
 });
