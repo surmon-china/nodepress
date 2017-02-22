@@ -24,7 +24,7 @@ const announcementSchema = new mongoose.Schema({
   create_time: { type: Date, default: Date.now },
 
   // 最后修改日期
-  update_time: { type: Date }
+  update_time: { type: Date, default: Date.now }
 });
 
 // 翻页 + 自增ID插件配置
@@ -37,9 +37,8 @@ announcementSchema.plugin(autoIncrement.plugin, {
 });
 
 // 时间更新
-announcementSchema.pre('save', next => {
-  if (this.isNew) this.create_time = this.update_time = Date.now();
-  if (!this.isNew) this.update_time = Date.now();
+announcementSchema.pre('findOneAndUpdate', function(next) {
+  this.findOneAndUpdate({}, { update_time: Date.now() });
   next();
 });
 
