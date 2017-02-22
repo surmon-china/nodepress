@@ -42,7 +42,7 @@ const articleSchema = new mongoose.Schema({
   create_time: { type: Date, default: Date.now },
 
   // 最后修改日期
-  update_time: { type: Date },
+  update_time: { type: Date, default: Date.now },
 
   // 文章标签
   tag: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
@@ -74,9 +74,15 @@ articleSchema.plugin(autoIncrement.plugin, {
 });
 
 // 时间更新
-articleSchema.pre('save', next => {
-  if (this.isNew) this.create_time = this.update_time = Date.now();
-  if (!this.isNew) this.update_time = Date.now();
+articleSchema.pre('findOneAndUpdate', function(next) {
+  this.findOneAndUpdate({}, { update_time: Date.now() });
+  next();
+});
+
+// 自动计数
+articleSchema.pre('findOne', function(next) {
+  console.log(this)
+  // this.findOneAndUpdate({}, { update_time: Date.now() });
   next();
 });
 

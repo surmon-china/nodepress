@@ -64,11 +64,11 @@ articleCtrl.list.GET = (req, res) => {
 
   // 时间查询
   if (date) {
-    const gteDate = new Date(date);
-    if(!Object.is(gteDate, 'Invalid Date')) {
+    const getDate = new Date(date);
+    if(!Object.is(getDate.toString(), 'Invalid Date')) {
       querys.create_time = {
-        "$gte": new Date((gteDate / 1000 - 60 * 60 * 8) * 1000),
-        "$lt": new Date((gteDate / 1000 + 60 * 60 * 16) * 1000)
+        "$gte": new Date((getDate / 1000 - 60 * 60 * 8) * 1000),
+        "$lt": new Date((getDate / 1000 + 60 * 60 * 16) * 1000)
       }
     }
   };
@@ -239,7 +239,7 @@ articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 articleCtrl.item.GET = ({ params: { article_id }}, res) => {
 
   // 判断来源
-  const isFindById = !Object.is(Number(article_id), NaN);
+  const isFindById = Object.is(Number(article_id), NaN);
 
   // 获取相关文章
   const getRelatedArticles = result => {
@@ -253,16 +253,16 @@ articleCtrl.item.GET = ({ params: { article_id }}, res) => {
   };
 
   (isFindById
-    ? Article.findOne({ id: Number(article_id), state: 1, public: 1 }).populate('category tag').exec()
-    : Article.findById(article_id)
+    ? Article.findById(article_id)
+    : Article.findOne({ id: Number(article_id), state: 1, public: 1 }).populate('category tag').exec()
   )
   .then(result => {
     // 每请求一次，浏览次数都要增加
-    if (isFindById) {
+    if (!isFindById) {
       result.meta.views += 1;
       result.save();
     }
-    if (isFindById && result.tag.length) {
+    if (!isFindById && result.tag.length) {
       getRelatedArticles(result.toObject());
     } else {
       handleSuccess({ res, result, message: '文章获取成功' });

@@ -48,9 +48,8 @@ categorySchema.plugin(autoIncrement.plugin, {
 });
 
 // 时间更新
-categorySchema.pre('save', next => {
-  if (this.isNew) this.create_time = this.update_time = Date.now();
-  if (!this.isNew) this.update_time = Date.now();
+categorySchema.pre('findOneAndUpdate', function(next) {
+  this.findOneAndUpdate({}, { update_time: Date.now() });
   next();
 });
 
