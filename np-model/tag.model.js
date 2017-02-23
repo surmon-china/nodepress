@@ -24,10 +24,10 @@ const tagSchema = new mongoose.Schema({
   description: String,
 
   // 发布日期
-  create_time: { type: Date, default: Date.now },
+  create_at: { type: Date, default: Date.now },
 
   // 最后修改日期
-  update_time: { type: Date },
+  update_at: { type: Date },
 
   // 自定义扩展
   extends: [{ name: String, value: Object }]
@@ -44,7 +44,7 @@ tagSchema.plugin(autoIncrement.plugin, {
 
 // 时间更新
 tagSchema.pre('findOneAndUpdate', function(next) {
-  this.findOneAndUpdate({}, { update_time: Date.now() });
+  this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 });
 
