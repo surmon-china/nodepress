@@ -66,8 +66,8 @@ const routes = app => {
   app.all('/category/:category_id', controller.category.item);
 
   // 评论
-  app.all('/comment', controller.comment.list);
-  app.all('/comment/:comment_id', controller.comment.item);
+  // app.all('/comment', controller.comment.list);
+  // app.all('/comment/:comment_id', controller.comment.item);
 
   // Article
   app.all('/article', controller.article.list);

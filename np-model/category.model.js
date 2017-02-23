@@ -27,10 +27,10 @@ const categorySchema = new mongoose.Schema({
   pid: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', default: null },
 
   // 创建时间
-  create_time: { type: Date, default: Date.now },
+  create_at: { type: Date, default: Date.now },
 
   // 最后修改日期
-  update_time: { type: Date },
+  update_at: { type: Date },
 
   // 自定义扩展
   extends: [{ name: String, value: Object }]
@@ -49,7 +49,7 @@ categorySchema.plugin(autoIncrement.plugin, {
 
 // 时间更新
 categorySchema.pre('findOneAndUpdate', function(next) {
-  this.findOneAndUpdate({}, { update_time: Date.now() });
+  this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 });
 
