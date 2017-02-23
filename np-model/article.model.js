@@ -39,10 +39,10 @@ const articleSchema = new mongoose.Schema({
   password: { type: String, default: '' },
 
   // 发布日期
-  create_time: { type: Date, default: Date.now },
+  create_at: { type: Date, default: Date.now },
 
   // 最后修改日期
-  update_time: { type: Date, default: Date.now },
+  update_at: { type: Date, default: Date.now },
 
   // 文章标签
   tag: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
@@ -75,14 +75,7 @@ articleSchema.plugin(autoIncrement.plugin, {
 
 // 时间更新
 articleSchema.pre('findOneAndUpdate', function(next) {
-  this.findOneAndUpdate({}, { update_time: Date.now() });
-  next();
-});
-
-// 自动计数
-articleSchema.pre('findOne', function(next) {
-  // console.log(this)
-  // this.findOneAndUpdate({}, { update_time: Date.now() });
+  this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 });
 
