@@ -60,14 +60,6 @@ announcementCtrl.list.GET = (req, res) => {
 
 // 发布公告
 announcementCtrl.list.POST = ({ body: announcement }, res) => {
-
-  // 验证
-  if (!announcement.content) {
-    handleError({ res, message: '内容不合法' });
-    return false;
-  };
-
-  // 保存公告
   new Announcement(announcement).save()
   .then((result = announcement) => {
     handleSuccess({ res, result, message: '公告发布成功' });
