@@ -21,7 +21,7 @@ const routes = app => {
 
     // OPTIONS
     if (req.method == 'OPTIONS') {
-      res.send(200);
+      res.sendStatus(200);
       return false;
     };
 

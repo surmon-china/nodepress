@@ -4,7 +4,7 @@
 *
 */
 
-const mongoose = require('mongoose');
+const mongoose = require('np-mongodb').mongoose;
 const autoIncrement = require('mongoose-auto-increment');
 const mongoosePaginate = require('mongoose-paginate');
 
