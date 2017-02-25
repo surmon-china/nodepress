@@ -5,8 +5,8 @@
 */
 
 const crypto = require('crypto');
-const mongoose = require('mongoose');
 const config = require('../np-config');
+const mongoose = require('np-mongodb').mongoose;
 const authSchema = new mongoose.Schema({
 
 	// 名字
