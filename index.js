@@ -11,11 +11,11 @@ require('app-module-path').addPath(__dirname + '/');
 // app modules
 const config = require('np-config');
 const routes = require('np-routes');
-const mongodb = require('np-mongo');
+const mongodb = require('np-mongodb');
 const app = express();
 
 // 连接数据库
-mongodb();
+mongodb.connect();
 
 // 翻页全局配置
 mongoosePaginate.paginate.options = {
