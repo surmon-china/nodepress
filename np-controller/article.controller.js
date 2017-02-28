@@ -9,7 +9,6 @@ const { baiduSeoPush, baiduSeoUpdate, baiduSeoDelete } = require('np-utils/np-ba
 const Category = require('np-model/category.model');
 const Article = require('np-model/article.model');
 const Tag = require('np-model/tag.model');
-const htmlToText = require('html-to-text');
 const authIsVerified = require('np-utils/np-auth');
 const buildSiteMap = require('np-utils/np-sitemap');
 const articleCtrl = { list: {}, item: {} };

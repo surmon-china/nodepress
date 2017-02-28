@@ -55,7 +55,8 @@ const articleSchema = new mongoose.Schema({
 
   // 其他元信息
   meta: {
-    views: { type: Number, default: 0 }
+    views: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 }
   },
 
   // 自定义扩展

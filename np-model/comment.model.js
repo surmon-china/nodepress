@@ -14,11 +14,11 @@ autoIncrement.initialize(mongoose.connection);
 // 标签模型
 const commentSchema = new mongoose.Schema({
 
-  // 评论所在的文章id的id或页面别名
-  article_key: { type: String, required: true },
-
   // 第三方评论id
   third_id: { type: Number },
+
+  // 评论所在的文章id，0代表系统留言板
+  post_id: { type: String, required: true },
 
   // pid，0代表默认留言
   pid: { type: Number, default: 0 },
@@ -26,15 +26,28 @@ const commentSchema = new mongoose.Schema({
   // content
   content: { type: String, required: true },
 
+  // 是否置顶
+  is_top: { type: Boolean, default: false },
+
+  // 被赞数
+  likes: { type: Number, default: 0 },
+
   // 评论产生者
   author: {
-  	id: { type: String, default: 0 },
-  	ip: { type: String },
-  	url: { type: String },
   	name: { type: String, required: true },
-  	email: { type: String },
-  	agent: { type: String }
+    email: { type: String, required: true },
+    gravatar: { type: String },
+    site: { type: String }
   },
+
+  // IP地址
+  ip: { type: String },
+
+  // ip物理地址
+  ip_location: { type: String },
+
+  // 用户ua
+  agent: { type: String },
 
   // 状态 0待审核/1通过正常/-1已删除/-2垃圾评论
   state: { type: Number, default: 0 },

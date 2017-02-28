@@ -30,7 +30,13 @@ const optionSchema = new mongoose.Schema({
   site_icp: String,
 
   // 搜索引擎ping
-  ping_sites: [{ type: String }]
+  ping_sites: [{ type: String }],
+
+  // 其他元信息
+  meta: {
+    // 被喜欢次数
+    likes: { type: Number, default: 0 }
+  }
 });
 
 const Option = mongoose.model('Option', optionSchema);
