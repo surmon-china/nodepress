@@ -25,13 +25,16 @@ const routes = app => {
       return false;
     };
 
-    // 排除auth的post请求
-    if (Object.is(req.url, '/auth') && (Object.is(req.method, 'GET') || Object.is(req.method, 'POST'))) {
+    // 排除auth的post请求 && 评论的post请求 && like请求
+    const isLike = Object.is(req.url, '/like') && Object.is(req.method, 'POST');
+    const isPostAuth = Object.is(req.url, '/auth') && Object.is(req.method, 'POST');
+    const isPostComment = Object.is(req.url, '/comment') && Object.is(req.method, 'POST');
+    if (isLike || isPostAuth || isPostComment) {
       next();
       return false;
     };
 
-    // 拦截所有非管路员的非get请求（排除auth的post请求）
+    // 拦截所有非管路员的非get请求
     if (!authIsVerified(req) && !Object.is(req.method, 'GET')) {
       res.status(401).jsonp({ code: 0, message: '来者何人！' })
       return false;
@@ -57,6 +60,9 @@ const routes = app => {
   // sitemap
   app.get('/sitemap.xml', controller.sitemap);
 
+  // like
+  app.post('/like', controller.like);
+
   // Tag
   app.all('/tag', controller.tag.list);
   app.all('/tag/:tag_id', controller.tag.item);
@@ -66,8 +72,8 @@ const routes = app => {
   app.all('/category/:category_id', controller.category.item);
 
   // 评论
-  // app.all('/comment', controller.comment.list);
-  // app.all('/comment/:comment_id', controller.comment.item);
+  app.all('/comment', controller.comment.list);
+  app.all('/comment/:comment_id', controller.comment.item);
 
   // Article
   app.all('/article', controller.article.list);

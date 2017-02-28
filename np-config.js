@@ -25,16 +25,26 @@ exports.BAIDU = {
   token: argv.baidutoken || 'your baidu seo push token'
 }
 
-exports.INFO = {
-  name: 'NodePress',
-  version: '1.0.0',
-  author: 'Surmon',
-  site: 'https://surmon.me',
-  powered: ['Vue2', 'Nuxt.js', 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
+exports.EMAIL = {
+  account: argv.emailaccount || 'your email address like : admin@surmon.me',
+  password: argv.emailpassword || 'your email password'
+}
+
+exports.COMMENT = {
+  akismetKey: argv.akismetkey || 'your akismet Key',
+  blacklistKeywords: argv.blacklistkeywords || 'your blacklist keywords string'
 }
 
 exports.APP = {
   ROOT_PATH: __dirname,
   LIMIT: 10,
   PORT: 8000
+}
+
+exports.INFO = {
+  name: 'NodePress',
+  version: '1.0.0',
+  author: 'Surmon',
+  site: 'https://surmon.me',
+  powered: ['Vue.js', 'Nuxt.js', 'React', 'Angular2', 'Bootstrap', 'Jquery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx', 'Aliyun']
 }
