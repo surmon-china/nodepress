@@ -6,10 +6,11 @@
 
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 const Comment = require('np-model/comment.model');
+const htmlToText = require('html-to-text');
 const commentCtrl = { list: {}, item: {} };
 
 // 获取评论列表
-commentCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res) => {
+commentCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '', post_id }}, res) => {
 
   // 过滤条件
   const options = {
@@ -20,17 +21,24 @@ commentCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res
   };
 
   // 查询参数
-  const keywordReg = new RegExp(keyword);
-  const query = {
-    "$or": [
-      { 'name': keywordReg },
-      { 'slug': keywordReg },
-      { 'description': keywordReg }
+  let querys = {};
+
+  // 关键词查询
+  if (keyword) {
+    const keywordReg = new RegExp(keyword);
+    querys['$or'] = [
+      { 'author.name': keywordReg },
+      { 'content': keywordReg }
     ]
   };
 
+  // 通过post-id过滤
+  if (!Object.is(post_id, undefined)) {
+    querys.post_id = post_id
+  }
+
   // 请求评论
-  Comment.paginate(query, options)
+  Comment.paginate(querys, options)
   .then(comments => {
     handleSuccess({
       res,
@@ -53,6 +61,7 @@ commentCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '' }}, res
 
 // 发布评论
 commentCtrl.list.POST = ({ body: comment }, res) => {
+  // 验证用户ua
   new Comment(comment).save()
   .then((result = comment) => {
     handleSuccess({ res, result, message: '评论发布成功' });

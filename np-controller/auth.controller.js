@@ -20,7 +20,7 @@ const md5Decode = pwd => {
 authCtrl.GET = (req, res) => {
 	Auth.find({}, '-_id name slogan gravatar')
 	.then(([result = {}]) => {
-		handleSuccess({ res, result, message: '用户权限获取成功' });
+		handleSuccess({ res, result, message: '用户资料获取成功' });
 	})
 	.catch(err => {
 		handleError({ res, err, message: '获取失败' });
@@ -38,7 +38,7 @@ authCtrl.POST = ({ body: { password }}, res) => {
 			}, config.AUTH.jwtTokenSecret);
 			handleSuccess({ res, result: { token }, message: '登陆成功' });
 		} else {
-			handleError({ res, err, message: '来者何人？' });
+			handleError({ res, err, message: '来者何人!' });
 		}
 	})
 	.catch(err => {
