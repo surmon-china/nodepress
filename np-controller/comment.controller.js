@@ -6,16 +6,15 @@
 
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 const Comment = require('np-model/comment.model');
-const htmlToText = require('html-to-text');
+const geoip = require('geoip-lite');
 const commentCtrl = { list: {}, item: {} };
 
 // 获取评论列表
-commentCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '', post_id }}, res) => {
+commentCtrl.list.GET = ({ query: { sort = 1, page = 1, per_page = 12, keyword = '', post_id }}, res) => {
 
   // 过滤条件
   const options = {
-    lean: true,
-    sort: { _id: -1 },
+    sort: { _id: 1 },
     page: Number(page),
     limit: Number(per_page)
   };
@@ -60,8 +59,43 @@ commentCtrl.list.GET = ({ query: { page = 1, per_page = 12, keyword = '', post_i
 };
 
 // 发布评论
-commentCtrl.list.POST = ({ body: comment }, res) => {
-  // 验证用户ua
+commentCtrl.list.POST = (req, res) => {
+
+  let { body: comment } = req
+  
+  // 如果是生产环境，需要验证用户来源渠道
+  if (Object.is(process.env.NODE_ENV, 'production')) {
+    const originVerified = req.headers.origin.includes('surmon.me') && 
+                         req.headers.referer.includes('surmon.me') &&
+                         req.hostname.includes('surmon.me')
+    if (!originVerified) {
+      handleError({ res, message: '评论发布失败' });
+      return false;
+    };
+  };
+
+  // 获取ip地址以及物理地理地址
+  const ip = (req.headers['x-forwarded-for'] || 
+             req.connection.remoteAddress || 
+             req.socket.remoteAddress ||
+             req.connection.socket.remoteAddress ||
+             req.ip ||
+             req.ips[0]).replace('::ffff:', '');
+  const ip_location = geoip.lookup(ip)
+  if (ip_location) {
+    comment.ip_location = {
+      city: ip_location.city,
+      range: ip_location.range,
+      country: ip_location.country
+    };
+  };
+  comment.ip = ip;
+  comment.likes = 0;
+  comment.is_top = false;
+  comment.agent =  req.headers['user-agent'] || comment.agent;
+
+  console.log(comment)
+
   new Comment(comment).save()
   .then((result = comment) => {
     handleSuccess({ res, result, message: '评论发布成功' });

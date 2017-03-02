@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "author": "Surmon",
   "scripts": {
-    "start": "node --harmony index.js",
-    "dev": "nodemon --exec \"npm start\""
+    "start": "NODE_ENV=production node --harmony index.js",
+    "dev": "nodemon --exec \"NODE_ENV=development node --harmony index.js\"",
+    "updatedb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
   },
   "dependencies": {
     "app-module-path": "^2.2.0",
     "body-parser": "^1.15.2",
     "express": "4.x",
-    "html-to-text": "^3.0.0",
+    "geoip-lite": "^1.1.9",
+    "gravatar": "^1.6.0",
+    "helmet": "^3.4.1",
     "idle-gc": "^1.0.1",
     "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.8.4",
