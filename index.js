@@ -3,6 +3,7 @@
 // import
 const http = require('http');
 const gc   = require('idle-gc');
+const helmet = require('helmet');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoosePaginate = require('mongoose-paginate');
@@ -24,6 +25,7 @@ mongoosePaginate.paginate.options = {
 
 // app config
 app.set('port', config.APP.PORT);
+app.use(helmet());
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 

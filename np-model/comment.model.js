@@ -18,7 +18,7 @@ const commentSchema = new mongoose.Schema({
   third_id: { type: Number },
 
   // 评论所在的文章id，0代表系统留言板
-  post_id: { type: String, required: true },
+  post_id: { type: Number, required: true },
 
   // pid，0代表默认留言
   pid: { type: Number, default: 0 },
@@ -36,7 +36,6 @@ const commentSchema = new mongoose.Schema({
   author: {
   	name: { type: String, required: true },
     email: { type: String, required: true },
-    gravatar: { type: String },
     site: { type: String }
   },
 
@@ -44,13 +43,13 @@ const commentSchema = new mongoose.Schema({
   ip: { type: String },
 
   // ip物理地址
-  ip_location: { type: String },
+  ip_location: { type: Object },
 
   // 用户ua
   agent: { type: String },
 
   // 状态 0待审核/1通过正常/-1已删除/-2垃圾评论
-  state: { type: Number, default: 0 },
+  state: { type: Number, default: 1 },
 
   // 发布日期
   create_at: { type: Date, default: Date.now },
