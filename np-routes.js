@@ -63,6 +63,9 @@ const routes = app => {
   // like
   app.post('/like', controller.like);
 
+  // gravatar
+  app.get('/gravatar', controller.gravatar);
+
   // Tag
   app.all('/tag', controller.tag.list);
   app.all('/tag/:tag_id', controller.tag.item);
