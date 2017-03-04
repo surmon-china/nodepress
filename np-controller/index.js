@@ -9,5 +9,4 @@ exports.sitemap = require('./sitemap.controller');
 exports.comment  = require('./comment.controller');
 exports.article = require('./article.controller');
 exports.category = require('./category.controller');
-exports.gravatar = require('./gravatar.controller');
 exports.announcement = require('./announcement.controller');
