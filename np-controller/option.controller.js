@@ -10,8 +10,8 @@ const optionCtrl = {};
 
 // 获取权限
 optionCtrl.GET = (req, res) => {
-  Option.find({})
-  .then(([result = {}]) => {
+  Option.findOne({})
+  .then((result = {}) => {
 		handleSuccess({ res, result, message: '配置项获取成功' });
   })
   .catch(err => {
@@ -20,7 +20,7 @@ optionCtrl.GET = (req, res) => {
 };
 
 // 修改权限
-optionCtrl.PUT = ({ body: options, body: { _id } }, res) => {
+optionCtrl.PUT = ({ body: options, body: { _id }}, res) => {
   if (!_id) delete options._id;
   (!!_id ? Option.findByIdAndUpdate(_id, options, { new: true }) : new Option(options).save())
   .then((result = options) => {
