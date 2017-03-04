@@ -5,6 +5,7 @@
 */
 
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+const { sendMail } = require('np-utils/np-email');
 const Comment = require('np-model/comment.model');
 const geoip = require('geoip-lite');
 const commentCtrl = { list: {}, item: {} };
@@ -19,6 +20,15 @@ commentCtrl.list.GET = ({ query: { sort = 1, page = 1, per_page = 50, keyword = 
     limit: Number(per_page)
   };
 
+  // 排序字段
+  sort = Number(sort);
+
+  if ([-1, 1].includes(sort)) {
+    options.sort = { _id: sort };
+  } else if (Object.is(sort, 2)) {
+    options.sort = { likes: -1 };
+  };
+
   // 查询参数
   let querys = {};
 
@@ -26,8 +36,9 @@ commentCtrl.list.GET = ({ query: { sort = 1, page = 1, per_page = 50, keyword = 
   if (keyword) {
     const keywordReg = new RegExp(keyword);
     querys['$or'] = [
+      { 'content': keywordReg },
       { 'author.name': keywordReg },
-      { 'content': keywordReg }
+      { 'author.email': keywordReg }
     ]
   };
 
@@ -84,10 +95,27 @@ commentCtrl.list.POST = (req, res) => {
   comment.agent =  req.headers['user-agent'] || comment.agent;
 
   console.log(comment)
+  // 使用akismet过滤
+
+  // 读取关键词黑名单过滤
+
+  // 读取设置的黑名单ip过滤
+
+  // 读取设置的黑名单邮箱过滤
+
+  // 是否设置过滤词呢
 
   new Comment(comment).save()
   .then((result = comment) => {
     handleSuccess({ res, result, message: '评论发布成功' });
+    // 发布成功后，向网站主及被回复者发送邮件提醒
+    sendMail({
+      from: '"Surmon" <admin@surmon.me>',
+      to: '794939078@qq.com, surmon@foxmail.com',
+      subject: 'Hello ✔',
+      text: 'Hello world ?',
+      html: '<b>Hello world ?</b>'
+    });
   })
   .catch(err => {
     handleError({ res, err, message: '评论发布失败' });
