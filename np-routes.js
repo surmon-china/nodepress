@@ -25,6 +25,17 @@ const routes = app => {
       return false;
     };
 
+    // 如果是生产环境，需要验证用户来源渠道，防止非正常请求
+    if (Object.is(process.env.NODE_ENV, 'production')) {
+      const originVerified = req.headers.origin.includes('surmon.me') && 
+                             req.headers.referer.includes('surmon.me') &&
+                             req.hostname.includes('surmon.me')
+      if (!originVerified) {
+        res.status(403).jsonp({ code: 0, message: '来者何人！' })
+        return false;
+      };
+    };
+
     // 排除auth的post请求 && 评论的post请求 && like请求
     const isLike = Object.is(req.url, '/like') && Object.is(req.method, 'POST');
     const isPostAuth = Object.is(req.url, '/auth') && Object.is(req.method, 'POST');
