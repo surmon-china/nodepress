@@ -10,7 +10,7 @@ const geoip = require('geoip-lite');
 const commentCtrl = { list: {}, item: {} };
 
 // 获取评论列表
-commentCtrl.list.GET = ({ query: { sort = 1, page = 1, per_page = 12, keyword = '', post_id }}, res) => {
+commentCtrl.list.GET = ({ query: { sort = 1, page = 1, per_page = 50, keyword = '', post_id }}, res) => {
 
   // 过滤条件
   const options = {
@@ -62,17 +62,6 @@ commentCtrl.list.GET = ({ query: { sort = 1, page = 1, per_page = 12, keyword = 
 commentCtrl.list.POST = (req, res) => {
 
   let { body: comment } = req
-  
-  // 如果是生产环境，需要验证用户来源渠道
-  if (Object.is(process.env.NODE_ENV, 'production')) {
-    const originVerified = req.headers.origin.includes('surmon.me') && 
-                         req.headers.referer.includes('surmon.me') &&
-                         req.hostname.includes('surmon.me')
-    if (!originVerified) {
-      handleError({ res, message: '评论发布失败' });
-      return false;
-    };
-  };
 
   // 获取ip地址以及物理地理地址
   const ip = (req.headers['x-forwarded-for'] || 
