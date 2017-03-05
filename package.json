@@ -8,6 +8,7 @@
     "updatedb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
   },
   "dependencies": {
+    "akismet-api": "^2.2.0",
     "app-module-path": "^2.2.0",
     "body-parser": "^1.15.2",
     "express": "4.x",
