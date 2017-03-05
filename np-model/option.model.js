@@ -32,6 +32,13 @@ const optionSchema = new mongoose.Schema({
   // 搜索引擎ping
   ping_sites: [{ type: String }],
 
+  // 评论黑名单
+  comment_blacklist: {
+    ips: [{ type: String }],
+    mails: [{ type: String }],
+    keywords: [{ type: String }]
+  },
+
   // 其他元信息
   meta: {
     // 被喜欢次数

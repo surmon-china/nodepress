@@ -5,13 +5,18 @@
 */
 
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+const { akismetClient } = require('np-utils/np-akismet');
 const { sendMail } = require('np-utils/np-email');
 const Comment = require('np-model/comment.model');
+const authIsVerified = require('np-utils/np-auth');
 const geoip = require('geoip-lite');
 const commentCtrl = { list: {}, item: {} };
 
+
 // 获取评论列表
-commentCtrl.list.GET = ({ query: { sort = 1, page = 1, per_page = 50, keyword = '', post_id }}, res) => {
+commentCtrl.list.GET = (req, res) => {
+
+  let { sort = 1, page = 1, per_page = 50, keyword = '', post_id } = req.query;
 
   // 过滤条件
   const options = {
@@ -31,6 +36,11 @@ commentCtrl.list.GET = ({ query: { sort = 1, page = 1, per_page = 50, keyword = 
 
   // 查询参数
   let querys = {};
+
+  // 如果是前台请求，则重置公开状态和发布状态
+  if (!authIsVerified(req)) {
+    querys.state = 1;
+  };
 
   // 关键词查询
   if (keyword) {
@@ -95,31 +105,62 @@ commentCtrl.list.POST = (req, res) => {
   comment.agent =  req.headers['user-agent'] || comment.agent;
 
   console.log(comment)
+
+  // 连接
+  const permalink = `https://surmon.me/` + 
+                   Object.is(comment.post_id, 0) ? 'guestbook' : `article/${comment.post_id}`
+
+  // 发布评论
+  const saveComment = () => {
+    new Comment(comment).save()
+    .then((result = comment) => {
+      handleSuccess({ res, result, message: '评论发布成功' });
+      // 发布成功后，向网站主及被回复者发送邮件提醒
+      sendMail({
+        to: 'surmon@foxmail.com',
+        subject: '博客有新的留言',
+        text: `来自 ${comment.author.name} 的留言：${comment.content}`,
+        html: `<p> 来自 ${comment.author.name} 的留言：${comment.content}</p>
+              <a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+      });
+      if (!!comment.pid) {
+        Comment.findOne({ id: comment.pid }).then(parentComment => {
+          sendMail({
+            to: parentComment.author.email,
+            subject: '你在Surmon.me有新的评论回复',
+            text: `来自 ${comment.author.name} 的评论回复：${comment.content}`,
+            html: `<p> 来自${comment.author.name} 的评论回复：${comment.content}</p>
+              <a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+          });
+        }).catch(err => {
+          console.log('未找到对应评论数据')
+        })
+      }
+    })
+    .catch(err => {
+      handleError({ res, err, message: '评论发布失败' });
+    })
+  };
+
   // 使用akismet过滤
-
-  // 读取关键词黑名单过滤
-
-  // 读取设置的黑名单ip过滤
-
-  // 读取设置的黑名单邮箱过滤
-
-  // 是否设置过滤词呢
-
-  new Comment(comment).save()
-  .then((result = comment) => {
-    handleSuccess({ res, result, message: '评论发布成功' });
-    // 发布成功后，向网站主及被回复者发送邮件提醒
-    sendMail({
-      from: '"Surmon" <admin@surmon.me>',
-      to: '794939078@qq.com, surmon@foxmail.com',
-      subject: 'Hello ✔',
-      text: 'Hello world ?',
-      html: '<b>Hello world ?</b>'
-    });
+  akismetClient.checkSpam({
+    user_ip: comment.ip,
+    user_agent: comment.agent,
+    referrer: req.headers.referer,
+    permalink,
+    comment_type: 'comment',
+    comment_author: comment.author.name,
+    comment_author_email: comment.author.email,
+    comment_author_url: comment.author.site,
+    comment_content: comment.content,
+    // is_test : true
+  }).then(span => {
+    saveComment();
+  }).catch(err => {
+    handleError({ res, err: 'spam!', message: '评论发布失败' });
   })
-  .catch(err => {
-    handleError({ res, err, message: '评论发布失败' });
-  })
+
+  // 读取设置的黑名单ip/邮箱/关键词过滤
 };
 
 // 批量删除评论
