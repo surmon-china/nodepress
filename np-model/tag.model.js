@@ -15,10 +15,10 @@ autoIncrement.initialize(mongoose.connection);
 const tagSchema = new mongoose.Schema({
 
   // 标签名称
-  name:  String,
+  name: { type: String, required: true, validate: /\S+/ },
 
   // 别名
-  slug: String,
+  slug: { type: String, required: true, validate: /\S+/ },
 
   // 标签描述
   description: String,

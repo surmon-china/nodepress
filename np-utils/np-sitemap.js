@@ -1,4 +1,4 @@
-/* 地图更新器 */
+/* 网站地图更新器 */
 
 const fs = require('fs');
 const sm = require('sitemap');
@@ -56,7 +56,7 @@ const getDatas = success => {
   })
   .catch(err => {
     success();
-    console.log('生成地图前获取数据库发生错误', err);
+    console.warn('生成地图前获取数据库发生错误', err);
   })
 };
 

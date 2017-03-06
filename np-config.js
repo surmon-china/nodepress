@@ -2,37 +2,37 @@ const argv = require('yargs').argv;
 
 exports.MONGODB = {
   uri: `mongodb://127.0.0.1:${argv.dbport || '27017'}/NodePress`,
-  username: argv.dbusername || 'DB_username',
-  password: argv.dbpassword || 'DB_password'
+  username: argv.db_username || 'DB_username',
+  password: argv.db_password || 'DB_password'
 }
 
 exports.QINIU = {
-  accessKey: argv.accessKey || 'your access key',
-  secretKey: argv.secretKey || 'your secret key',
-  bucket: argv.bucket || 'your bucket name',
-  origin: argv.origin || 'http://nodepress.u.qiniudn.com',
-  uploadURL: argv.uploadURL || 'http://up.qiniu.com/'
+  accessKey: argv.qn_accessKey || 'your access key',
+  secretKey: argv.qn_secretKey || 'your secret key',
+  bucket: argv.qn_bucket || 'your bucket name',
+  origin: argv.qn_origin || 'http://nodepress.u.qiniudn.com',
+  uploadURL: argv.qn_uploadURL || 'http://up.qiniu.com/'
 }
 
 exports.AUTH = {
-  data: argv.authdata || { user: 'root' },
-  jwtTokenSecret: argv.authkey || 'nodepress',
-  DEFAULT_PASSWORD: argv.defaultpassword || 'root'
+  data: argv.auth_data || { user: 'root' },
+  jwtTokenSecret: argv.auth_key || 'nodepress',
+  DEFAULT_PASSWORD: argv.auth_default_password || 'root'
 }
 
 exports.BAIDU = {
-  site: argv.baidusite || 'your baidu site domain like : surmon.me',
-  token: argv.baidutoken || 'your baidu seo push token'
+  site: argv.baidu_site || 'your baidu site domain like : surmon.me',
+  token: argv.baidu_token || 'your baidu seo push token'
 }
 
 exports.EMAIL = {
-  account: argv.emailaccount || 'your email address like : admin@surmon.me',
-  password: argv.emailpassword || 'your email password'
+  account: argv.email_account || 'your email address like : admin@surmon.me',
+  password: argv.email_password || 'your email password'
 }
 
-exports.COMMENT = {
-  akismetKey: argv.akismetkey || 'your akismet Key',
-  blacklistKeywords: argv.blacklistkeywords || 'your blacklist keywords string'
+exports.AKISMET = {
+  key: argv.akismet_key || 'your akismet Key',
+  blog: argv.akismet_blog || 'your akismet blog site, like: https://surmon.me'
 }
 
 exports.APP = {
