@@ -1,34 +1,41 @@
+/* akismet-spam */
 
-let akismet = require('akismet-api');
+const config = require('np-config');
+const akismet = require('akismet-api');
 let client = akismet.client({
-  key: '95af4bb98b97',
-  blog: 'https://surmon.me'
+  key: config.AKISMET.key,
+  blog: config.AKISMET.blog
 });
-let clientIsValid = false
+let clientIsValid = false;
 
 // 验证key
 client.verifyKey((err, valid) => {
-  if (err) return console.log('Akismet VerifyKey Error:', err.message);
+  if (err) return console.warn('Akismet VerifyKey Error:', err.message);
   clientIsValid = valid;
   console.log(`Akismet ${ valid ? 'Valid' : 'Invalid' } key!`);
 });
 
 const akismetClient = {
   checkSpam(options) {
+    console.log('Akismet验证评论中...', new Date());
     return new Promise((resolve, solve) => {
       if (clientIsValid) {
         client.checkSpam(options, (err, spam) => {
-          if (err) return solve(err);
+          if (err) {
+            resolve(err);
+            return false;
+          }
           if (spam) {
-            console.log('这是一条 Spam!');
-            return solve(spam);
+            console.warn('Akismet验证不通过!', new Date());
+            solve(new Error('spam!'));
           } else {
-            console.log('这不是一条 Spam');
-            return resolve(spam);
+            console.log('Akismet验证通过', new Date());
+            resolve(spam);
           }
         });
       } else {
-        return solve();
+        console.warn('Akismet key 未认证，放弃验证');
+        resolve('akismet key Invalid!');
       }
     })
   },

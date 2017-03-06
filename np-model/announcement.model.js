@@ -15,7 +15,7 @@ autoIncrement.initialize(mongoose.connection);
 const announcementSchema = new mongoose.Schema({
 
   // 公告内容
-  content: { type: String, required: true },
+  content: { type: String, required: true, validate: /\S+/ },
 
   // 公告发布状态 => 0草稿，1已发布
   state: { type: Number, default: 1 },

@@ -17,7 +17,7 @@ const config = require('np-config');
 // 获取文章列表
 articleCtrl.list.GET = (req, res) => {
 
-  let { page, per_page, state, public, keyword, category, category_slug, tag, tag_slug, date } = req.query;
+  let { page, per_page, state, public, keyword, category, category_slug, tag, tag_slug, date, hot } = req.query;
 
   // 过滤条件
   const options = {
@@ -61,6 +61,14 @@ articleCtrl.list.GET = (req, res) => {
     querys.category = category;
   };
 
+  // 热评查询
+  if (!!hot) {
+    options.sort = { 
+      'meta.likes': -1,
+      'meta.comments': -1 
+    };
+  };
+
   // 时间查询
   if (date) {
     const getDate = new Date(date);
@@ -68,7 +76,7 @@ articleCtrl.list.GET = (req, res) => {
       querys.create_time = {
         "$gte": new Date((getDate / 1000 - 60 * 60 * 8) * 1000),
         "$lt": new Date((getDate / 1000 + 60 * 60 * 16) * 1000)
-      }
+      };
     }
   };
 

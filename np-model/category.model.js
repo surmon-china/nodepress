@@ -15,10 +15,10 @@ autoIncrement.initialize(mongoose.connection);
 const categorySchema = new mongoose.Schema({
 
   // 分类名称
-  name: { type: String, required: true },
+  name: { type: String, required: true, validate: /\S+/ },
 
   // 别名
-  slug: { type: String, required: true },
+  slug: { type: String, required: true, validate: /\S+/ },
 
   // 分类描述
   description: String,
