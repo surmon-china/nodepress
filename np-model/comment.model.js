@@ -24,7 +24,7 @@ const commentSchema = new mongoose.Schema({
   pid: { type: Number, default: 0 },
 
   // content
-  content: { type: String, required: true },
+  content: { type: String, required: true, validate: /\S+/ },
 
   // 是否置顶
   is_top: { type: Boolean, default: false },
@@ -34,9 +34,9 @@ const commentSchema = new mongoose.Schema({
 
   // 评论产生者
   author: {
-  	name: { type: String, required: true },
-    email: { type: String, required: true },
-    site: { type: String }
+  	name: { type: String, required: true, validate: /\S+/ },
+    email: { type: String, required: true, validate: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/ },
+    site: { type: String, validate: /^((https|http):\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/ }
   },
 
   // IP地址
@@ -46,7 +46,7 @@ const commentSchema = new mongoose.Schema({
   ip_location: { type: Object },
 
   // 用户ua
-  agent: { type: String },
+  agent: { type: String, validate: /\S+/ },
 
   // 状态 0待审核/1通过正常/-1已删除/-2垃圾评论
   state: { type: Number, default: 1 },

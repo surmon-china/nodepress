@@ -15,7 +15,7 @@ autoIncrement.initialize(mongoose.connection);
 const articleSchema = new mongoose.Schema({
 
   // 文章标题
-  title:  { type: String, required: true },
+  title:  { type: String, required: true, validate: /\S+/ },
 
   // 文章关键字（SEO）
   keywords: [{ type: String }],
@@ -24,7 +24,7 @@ const articleSchema = new mongoose.Schema({
   description: String,
 
   // 文章内容
-  content: { type: String, required: true },
+  content: { type: String, required: true, validate: /\S+/ },
 
   // 缩略图
   thumb: String,
@@ -50,13 +50,11 @@ const articleSchema = new mongoose.Schema({
   // 文章分类
   category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
 
-  // 评论
-  comment: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
-
   // 其他元信息
   meta: {
     views: { type: Number, default: 0 },
-    likes: { type: Number, default: 0 }
+    likes: { type: Number, default: 0 },
+    comments: { type: Number, default: 0 }
   },
 
   // 自定义扩展

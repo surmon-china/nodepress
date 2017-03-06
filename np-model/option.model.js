@@ -30,17 +30,18 @@ const optionSchema = new mongoose.Schema({
   site_icp: String,
 
   // 搜索引擎ping
-  ping_sites: [{ type: String }],
+  ping_sites: [{ type: String, validate: /\S+/ }],
 
-  // 评论黑名单
-  comment_blacklist: {
-    ips: [{ type: String }],
-    mails: [{ type: String }],
-    keywords: [{ type: String }]
+  // 黑名单
+  blacklist: {
+    ips: [{ type: String, validate: /\S+/ }],
+    mails: [{ type: String, validate: /\S+/ }],
+    keywords: [{ type: String, validate: /\S+/ }]
   },
 
   // 其他元信息
   meta: {
+    
     // 被喜欢次数
     likes: { type: Number, default: 0 }
   }
