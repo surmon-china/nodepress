@@ -28,6 +28,8 @@ const verifyClient = () => {
   });
 };
 
+verifyClient();
+
 const sendMail = mailOptions => {
   if (!clientIsValid) {
     console.warn('由于未初始化成功，邮件客户端发送被拒绝');
