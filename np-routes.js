@@ -73,6 +73,7 @@ const routes = app => {
 
   // like
   app.post('/like', controller.like);
+  app.get('/duoshuo', controller.duoshuo);
 
   // Tag
   app.all('/tag', controller.tag.list);
