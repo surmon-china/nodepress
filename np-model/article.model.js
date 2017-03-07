@@ -58,7 +58,10 @@ const articleSchema = new mongoose.Schema({
   },
 
   // 自定义扩展
-  extends: [{ name: String, value: Object }]
+  extends: [{ 
+    name: { type: String, validate: /\S+/ },
+    value: Object 
+  }]
 });
 
 articleSchema.set('toObject', { getters: true });

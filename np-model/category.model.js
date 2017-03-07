@@ -33,7 +33,10 @@ const categorySchema = new mongoose.Schema({
   update_at: { type: Date },
 
   // 自定义扩展
-  extends: [{ name: String, value: Object }]
+  extends: [{ 
+    name: { type: String, validate: /\S+/ },
+    value: Object 
+  }]
 });
 
 categorySchema.set('toObject', { getters: true });
