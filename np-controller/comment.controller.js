@@ -62,7 +62,10 @@ const sendMailToAdminAndTargetUser = (comment, permalink) => {
 // 获取评论列表
 commentCtrl.list.GET = (req, res) => {
 
-  let { sort = -1, page = 1, per_page = 50, keyword = '', post_id } = req.query;
+  let { sort = -1, page = 1, per_page = 50, keyword = '', post_id, state } = req.query;
+  
+  sort = Number(sort);
+  state = !Object.is(state, undefined) ? Number(state) : null;
 
   // 过滤条件
   const options = {
@@ -72,13 +75,19 @@ commentCtrl.list.GET = (req, res) => {
   };
 
   // 排序字段
-  sort = Number(sort);
-  if (Object.is(sort, 2)) {
+  if ([1, -1].includes(sort)) {
+    options.sort = { _id: sort };
+  } else if (Object.is(sort, 2)) {
     options.sort = { likes: -1 };
   };
 
   // 查询参数
   let querys = {};
+
+  // 查询各种状态
+  if (!Object.is(state, NaN) && [-2, -1, 1, 0].includes(state)) {
+    querys.state = state;
+  };
 
   // 如果是前台请求，则重置公开状态和发布状态
   if (!authIsVerified(req)) {
@@ -202,6 +211,18 @@ commentCtrl.list.DELETE = ({ body: { comments }}, res) => {
     handleError({ res, message: '缺少有效参数' });
     return false;
   };
+
+  // 查询到评论内包含的文章的post_ids
+  /*
+  Comment.aggregate([
+    { $match: { _id: { $in: comments }}},
+    { $group: { _id: "$post_id", num_tutorial: { $sum : 1 }}}
+  ]).then(counts => {
+    console.log(counts);
+  }).catch(err => {
+    console.log(err);
+  })
+  */
 
   Comment.remove({ '_id': { $in: comments }})
   .then(result => {
