@@ -14,23 +14,29 @@ const config = require('np-config');
 
 module.exports = ({ body: { id, type }}, res) => {
 
-	// 验证
+	// 验证，1=>评论，2=>页面
 	if (![1, 2].includes(type)) {
 		res.jsonp({ code: 0, message: '点赞失败，没有原因' });
 	}
 
 	// like
 	(Object.is(type, 1) ? Comment : (Object.is(id, 0) ? Option : Article))
-	.findOne((() => (Object.is(id, 0)) ? null : { id })())
+	.findOne((() => (Object.is(id, 0)) ? {} : { id })())
 	.then(result => {
 		if (Object.is(type, 1)) {
 			result.likes ++;
 		} else {
 			result.meta.likes ++;
 		}
-		result.save();
+		result.save()
+		.then(info => {
+			console.log('赞更新成功', info);
+		})
+		.catch(err => {
+			console.log('赞更新失败', err);
+		});
 		handleSuccess({ res, result, message: '点赞成功' });
 	}).catch(err => {
-		handleError({ res, err, message: '公告发布失败' });
+		handleError({ res, err, message: '点赞失败' });
 	})
 };

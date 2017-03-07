@@ -23,8 +23,15 @@ const updateArticleCommentCount = post_ids => {
       { $group: { _id: "$post_id", num_tutorial: { $sum : 1 }}}
     ])
     .then(counts => {
+      console.log(counts);
       counts.forEach(count => {
-        Article.update({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }});
+        Article.update({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }})
+        .then(info => {
+          console.log('评论聚合更新成功', info);
+        })
+        .catch(err => {
+          console.log('评论聚合更新失败', err);
+        });
       });
     })
     .catch(err => {
