@@ -28,14 +28,12 @@ module.exports = ({ body: { id, type }}, res) => {
 		} else {
 			result.meta.likes ++;
 		}
-		result.save()
-		.then(info => {
-			console.log('赞更新成功', info);
-		})
-		.catch(err => {
-			console.log('赞更新失败', err);
+		result.save().then(info => {
+			// console.log('赞更新成功', info);
+		}).catch(err => {
+			console.warn('赞更新失败', err);
 		});
-		handleSuccess({ res, result, message: '点赞成功' });
+		handleSuccess({ res, message: '点赞成功' });
 	}).catch(err => {
 		handleError({ res, err, message: '点赞失败' });
 	})
