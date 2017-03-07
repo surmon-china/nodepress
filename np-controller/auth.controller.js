@@ -30,7 +30,7 @@ authCtrl.GET = (req, res) => {
 // 生成登陆口令Token
 authCtrl.POST = ({ body: { password }}, res) => {
 	Auth.find({}, '-_id password')
-	.then(([auth = { password: md5Decode(config.AUTH.DEFAULT_PASSWORD) }]) => {
+	.then(([auth = { password: md5Decode(config.AUTH.defaultPassword) }]) => {
 		if (Object.is(md5Decode(password), auth.password)) {
 			const token = jwt.sign({
 			  data: config.AUTH.data,
@@ -65,7 +65,7 @@ authCtrl.PUT = ({ body: auth }, res) => {
 	
 	// 修改前查询验证
 	Auth.find({}, '_id name slogan gravatar password')
-	.then(([_auth = { password: md5Decode(config.AUTH.DEFAULT_PASSWORD) }]) => {
+	.then(([_auth = { password: md5Decode(config.AUTH.defaultPassword) }]) => {
 		if (!!password && !Object.is(_auth.password, md5Decode(password))) {
 			handleError({ res, message: '原密码不正确' }); 
 		} else {
