@@ -169,7 +169,7 @@ articleCtrl.list.POST = ({ body: article }, res) => {
 };
 
 // 批量修改文章（移回收站、回收站恢复）
-articleCtrl.list.PATCH = ({ body: { articles, params: { action }}}, res) => {
+articleCtrl.list.PATCH = ({ body: { articles, action }}, res) => {
 
   // 验证
   if (!articles || !articles.length) {
