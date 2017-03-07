@@ -30,7 +30,10 @@ const tagSchema = new mongoose.Schema({
   update_at: { type: Date },
 
   // 自定义扩展
-  extends: [{ name: String, value: Object }]
+  extends: [{ 
+    name: { type: String, validate: /\S+/ },
+    value: Object 
+  }]
 });
 
 // 翻页 + 自增ID插件配置
