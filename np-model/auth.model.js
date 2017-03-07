@@ -21,7 +21,7 @@ const authSchema = new mongoose.Schema({
   // 密码
   password: { 
   	type: String, 
-  	default: crypto.createHash('md5').update(config.AUTH.DEFAULT_PASSWORD).digest('hex')
+  	default: crypto.createHash('md5').update(config.AUTH.defaultPassword).digest('hex')
   }
 });
 
