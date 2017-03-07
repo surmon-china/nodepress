@@ -203,6 +203,26 @@ commentCtrl.list.POST = (req, res) => {
   })
 };
 
+// 批量修改（移回收站、回收站恢复）
+commentCtrl.list.PATCH = ({ body: { comments, state }}, res) => {
+
+  state = Object.is(state, undefined) ? null : Number(state)
+
+  // 验证 comments0待审核/1通过正常/-1已删除/-2垃圾评论
+  if (!comments || !comments.length || Object.is(state, null) || Object.is(state, NaN) || ![-1, -2, 0, 1].includes(state)) {
+    handleError({ res, message: '缺少有效参数或参数无效' });
+    return false;
+  };
+
+  Comment.update({ '_id': { $in: comments }}, { $set: { state }}, { multi: true })
+  .then(result => {
+    handleSuccess({ res, result, message: '评论批量操作成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '评论批量操作失败' });
+  })
+};
+
 // 批量删除评论
 commentCtrl.list.DELETE = ({ body: { comments }}, res) => {
 
@@ -212,7 +232,7 @@ commentCtrl.list.DELETE = ({ body: { comments }}, res) => {
     return false;
   };
 
-  // 查询到评论内包含的文章的post_ids
+  // 查询到评论内包含的评论的post_ids
   /*
   Comment.aggregate([
     { $match: { _id: { $in: comments }}},
