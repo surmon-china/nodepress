@@ -34,13 +34,12 @@ const updateArticleCommentCount = post_ids => {
 };
 
 // 邮件通知网站主及目标对象
-const sendMailToAdminAndTargetUser = comment => {
+const sendMailToAdminAndTargetUser = (comment, permalink) => {
   sendMail({
     to: 'surmon@foxmail.com',
     subject: '博客有新的留言',
     text: `来自 ${comment.author.name} 的留言：${comment.content}`,
-    html: `<p> 来自 ${comment.author.name} 的留言：${comment.content}</p>
-           <a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+    html: `<p> 来自 ${comment.author.name} 的留言：${comment.content}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
   });
   if (!!comment.pid) {
     Comment.findOne({ id: comment.pid }).then(parentComment => {
@@ -48,8 +47,7 @@ const sendMailToAdminAndTargetUser = comment => {
         to: parentComment.author.email,
         subject: '你在Surmon.me有新的评论回复',
         text: `来自 ${comment.author.name} 的评论回复：${comment.content}`,
-        html: `<p> 来自${comment.author.name} 的评论回复：${comment.content}</p>
-               <a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+        html: `<p> 来自${comment.author.name} 的评论回复：${comment.content}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
       });
     })
   };
@@ -144,7 +142,7 @@ commentCtrl.list.POST = (req, res) => {
   comment.agent =  req.headers['user-agent'] || comment.agent;
 
   // 永久链接
-  const permalink = `https://surmon.me/` +  Object.is(comment.post_id, 0) ? 'guestbook' : `article/${comment.post_id}`
+  const permalink = 'https://surmon.me/' + (Object.is(comment.post_id, 0) ? 'guestbook' : `article/${comment.post_id}`);
 
   // 发布评论
   const saveComment = () => {
@@ -152,7 +150,7 @@ commentCtrl.list.POST = (req, res) => {
     .then((result = comment) => {
       handleSuccess({ res, result, message: '评论发布成功' });
       // 发布成功后，向网站主及被回复者发送邮件提醒，并更新网站聚合
-      sendMailToAdminAndTargetUser(comment);
+      sendMailToAdminAndTargetUser(comment, permalink);
       updateArticleCommentCount([comment.post_id]);
     })
     .catch(err => {
