@@ -48,7 +48,7 @@ const getDatas = success => {
       sitemap.add({ 
         url: `/article/${article.id}`, 
         changefreq: 'daily', 
-        lastmodISO: article.create_time.toISOString(), 
+        lastmodISO: article.create_at.toISOString(), 
         priority: 0.8 
       });
     })
