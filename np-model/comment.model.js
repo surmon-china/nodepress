@@ -60,7 +60,7 @@ const commentSchema = new mongoose.Schema({
   // 自定义扩展
   extends: [{ 
     name: { type: String, validate: /\S+/ },
-    value: Object 
+    value: { type: String, validate: /\S+/ }
   }]
 });
 
