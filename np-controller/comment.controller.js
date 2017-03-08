@@ -15,8 +15,8 @@ const geoip = require('geoip-lite');
 const commentCtrl = { list: {}, item: {} };
 
 // 更新当前所受影响的文章的评论聚合数据
-const updateArticleCommentCount = post_ids => {
-  post_ids = post_ids.filter(id => !!id);
+const updateArticleCommentCount = (post_ids = []) => {
+  post_ids = [...new Set(post_ids)].filter(id => !!id);
   if (post_ids.length) {
     Comment.aggregate([
       { $match: { state: 1, post_id: { $in: post_ids }}},
@@ -138,11 +138,12 @@ commentCtrl.list.POST = (req, res) => {
 
   // 获取ip地址以及物理地理地址
   const ip = (req.headers['x-forwarded-for'] || 
-             req.connection.remoteAddress || 
-             req.socket.remoteAddress ||
-             req.connection.socket.remoteAddress ||
-             req.ip ||
-             req.ips[0]).replace('::ffff:', '');
+              req.headers['x-real-ip'] || 
+              req.connection.remoteAddress || 
+              req.socket.remoteAddress ||
+              req.connection.socket.remoteAddress ||
+              req.ip ||
+              req.ips[0]).replace('::ffff:', '');
   const ip_location = geoip.lookup(ip)
   if (ip_location) {
     comment.ip_location = {
@@ -204,7 +205,7 @@ commentCtrl.list.POST = (req, res) => {
 };
 
 // 批量修改（移回收站、回收站恢复）
-commentCtrl.list.PATCH = ({ body: { comments, state }}, res) => {
+commentCtrl.list.PATCH = ({ body: { comments, post_ids, state }}, res) => {
 
   state = Object.is(state, undefined) ? null : Number(state)
 
@@ -217,6 +218,9 @@ commentCtrl.list.PATCH = ({ body: { comments, state }}, res) => {
   Comment.update({ '_id': { $in: comments }}, { $set: { state }}, { multi: true })
   .then(result => {
     handleSuccess({ res, result, message: '评论批量操作成功' });
+    if (post_ids && post_ids.length) {
+      updateArticleCommentCount(post_ids);
+    }
   })
   .catch(err => {
     handleError({ res, err, message: '评论批量操作失败' });
@@ -224,33 +228,34 @@ commentCtrl.list.PATCH = ({ body: { comments, state }}, res) => {
 };
 
 // 批量删除评论
-commentCtrl.list.DELETE = ({ body: { comments }}, res) => {
+commentCtrl.list.DELETE = ({ body: { comments, post_ids }}, res) => {
 
   // 验证
   if (!comments || !comments.length) {
     handleError({ res, message: '缺少有效参数' });
     return false;
   };
-
-  // 查询到评论内包含的评论的post_ids
-  /*
-  Comment.aggregate([
-    { $match: { _id: { $in: comments }}},
-    { $group: { _id: "$post_id", num_tutorial: { $sum : 1 }}}
-  ]).then(counts => {
-    console.log(counts);
-  }).catch(err => {
-    console.log(err);
-  })
-  */
-
+  
   Comment.remove({ '_id': { $in: comments }})
   .then(result => {
     handleSuccess({ res, result, message: '评论批量删除成功' });
-    updateArticleCommentCount(comments);
+    if (post_ids && post_ids.length) {
+      updateArticleCommentCount(post_ids);
+    }
   })
   .catch(err => {
     handleError({ res, err, message: '评论批量删除失败' });
+  })
+};
+
+// 获取单个评论
+commentCtrl.item.GET = ({ params: { comment_id }}, res) => {
+  Comment.findById(comment_id)
+  .then(result => {
+    handleSuccess({ res, result, message: '评论获取成功' });
+  })
+  .catch(err => {
+    handleError({ res, err, message: '评论获取失败' });
   })
 };
 
@@ -259,6 +264,9 @@ commentCtrl.item.PUT = ({ params: { comment_id }, body: comment }, res) => {
   Comment.findByIdAndUpdate(comment_id, comment, { new: true })
   .then(result => {
     handleSuccess({ res, result, message: '评论修改成功' });
+    if (comment.post_id) {
+      updateArticleCommentCount([comment.post_id]);
+    }
   })
   .catch(err => {
     handleError({ res, err, message: '评论修改失败' });
