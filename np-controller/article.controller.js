@@ -73,7 +73,7 @@ articleCtrl.list.GET = (req, res) => {
   if (date) {
     const getDate = new Date(date);
     if(!Object.is(getDate.toString(), 'Invalid Date')) {
-      querys.create_time = {
+      querys.create_at = {
         "$gte": new Date((getDate / 1000 - 60 * 60 * 8) * 1000),
         "$lt": new Date((getDate / 1000 + 60 * 60 * 16) * 1000)
       };
