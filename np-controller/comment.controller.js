@@ -62,7 +62,7 @@ const sendMailToAdminAndTargetUser = (comment, permalink) => {
 // 获取评论列表
 commentCtrl.list.GET = (req, res) => {
 
-  let { sort = -1, page = 1, per_page = 50, keyword = '', post_id, state } = req.query;
+  let { sort = -1, page = 1, per_page = 88, keyword = '', post_id, state } = req.query;
   
   sort = Number(sort);
   state = !Object.is(state, undefined) ? Number(state) : null;
