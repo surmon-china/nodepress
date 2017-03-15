@@ -64,8 +64,8 @@ articleCtrl.list.GET = (req, res) => {
   // 热评查询
   if (!!hot) {
     options.sort = { 
-      'meta.likes': -1,
-      'meta.comments': -1 
+      'meta.comments': -1,
+      'meta.likes': -1
     };
   };
 
