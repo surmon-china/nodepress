@@ -2,15 +2,11 @@
 
 A RESTful application.
 
-> Author By Surmon Surmon@foxmail.com
-
-> Online site: https://surmon.me
-
-> Front end (user client): [nuxt-blog](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue2) + Vuex
-
-> Front end (admin client): [angular-admin](https://github.com/surmon-china/angular-admin) By Angular2 + Bootstrap4
-
-> Build with Express + mongoose
+- Author By Surmon Surmon@foxmail.com
+- Online site: https://surmon.me
+- Front end (user client): [nuxt-blog](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue2) + Vuex
+- Front end (admin client): [angular-admin](https://github.com/surmon-china/angular-admin) By Angular2 + Bootstrap4
+- Build with Express + mongoose
 
 
 ## 文件目录
@@ -120,7 +116,7 @@ A RESTful application.
 
 ## 接口概述
 
-  - http状态码
+  - HTTP状态码
     * 401 权限不足
     * 403 权限不足
     * 404 项目中不存在
@@ -170,8 +166,6 @@ A RESTful application.
     * [Express](http://www.expressjs.com.cn/ )
 
     * [node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) JWT Json Web Token
-    
-    * crypto
 
   - 后台
 
