@@ -74,6 +74,11 @@ const routes = app => {
   // like
   app.post('/like', controller.like);
 
+  // 163
+  app.get('/music/:play_list_id', controller.music.list);
+  app.get('/music/lrc/:song_id', controller.music.lrc);
+  app.get('/music/song/:song_id', controller.music.song);
+
   // Tag
   app.all('/tag', controller.tag.list);
   app.all('/tag/:tag_id', controller.tag.item);
