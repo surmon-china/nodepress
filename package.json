@@ -8,6 +8,7 @@
     "updatedb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
   },
   "dependencies": {
+    "NeteaseCloudMusicApi": "^1.5.2",
     "akismet-api": "^2.2.0",
     "app-module-path": "^2.2.0",
     "body-parser": "^1.15.2",
