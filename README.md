@@ -4,8 +4,9 @@ A RESTful application.
 
 - Author By Surmon Surmon@foxmail.com
 - Online site: https://surmon.me
-- Front end (user client): [nuxt-blog](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue2) + Vuex
-- Front end (admin client): [angular-admin](https://github.com/surmon-china/angular-admin) By Angular2 + Bootstrap4
+- Front end (User client): [surmon.me](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue2) + Vuex
+- Front end (Admin client): [angular-admin](https://github.com/surmon-china/angular-admin) By Angular4 + Bootstrap4
+- App client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) By React native
 - Build with Express + mongoose
 
 
@@ -158,8 +159,48 @@ A RESTful application.
     * mongoose支持的virtual虚拟数据
     * 计算数据
 
+## Todos & Issues
 
-## 程序架构
+- 驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml
+- ~~增加评论功能+黑名单，评论可自动校验spam，及黑名单（ip、邮箱、关键字的校验）~~
+- ~~使用helmet + 手动优化，优化程序安全性~~
+- ~~优化mongoose实例~~
+- ~~优化数据表结构~~
+- ~~更新数据时时间更新~~
+- ~~修复时间检索失效~~
+- ~~增加idle-gc内存回收~~
+- ~~增加百度搜索引擎的实时提交~~
+- ~~更新模块化别名~~
+- ~~更新readme~~
+- ~~rss订阅接口 https://github.com/dylang/node-rss~~
+- ~~加入网站地图接口~~
+- ~~网站地图由于缓存或者primise不能及时更新~~
+- ~~网站地图的数据构成中文章需要筛选公开一发布的文章~~
+- ~~对接百度统计开放平台api~~
+- ~~密码存储需要使用md5加密机制~~
+- ~~token... 等config信息使用node命令参数在shell中配置覆盖~~
+- ~~lean 和 翻页插件一起使用，返回的id字段是_id bug~~
+- ~~整理统一result的返回结构~~
+- ~~围观后计数功能~~
+- ~~多说转发热门文章接口~~
+- ~~相关文章接口~~
+
+
+## 开发命令
+
+```bash
+npm install
+
+# 启动开发模式（需全局安装nodemon）
+npm run dev
+
+# 生产模式
+npm start
+pm2 start ecosystem.config.js
+```
+
+
+## 总项目架构
 
   - 服务端
 
@@ -235,48 +276,10 @@ A RESTful application.
 
     * [Vux](https://github.com/airyland/vux) UI
 
-  - Android/IOS客户端（暂未实现）
+  - Android/IOS客户端（ReactNative实现）
 
     * [Weex](https://alibaba.github.io/weex/)
 
     * [NativeScript 2.0](https://www.nativescript.org/)
 
     * [React Native](http://reactnative.cn/)
-
-
-## Todos & Issues
-
-- 驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml
-- ~~增加评论功能+黑名单，评论可自动校验spam，及黑名单（ip、邮箱、关键字的校验）~~
-- ~~使用helmet + 手动优化，优化程序安全性~~
-- ~~优化mongoose实例~~
-- ~~优化数据表结构~~
-- ~~更新数据时时间更新~~
-- ~~修复时间检索失效~~
-- ~~增加idle-gc内存回收~~
-- ~~增加百度搜索引擎的实时提交~~
-- ~~更新模块化别名~~
-- ~~更新readme~~
-- ~~rss订阅接口 https://github.com/dylang/node-rss~~
-- ~~加入网站地图接口~~
-- ~~网站地图由于缓存或者primise不能及时更新~~
-- ~~网站地图的数据构成中文章需要筛选公开一发布的文章~~
-- ~~对接百度统计开放平台api~~
-- ~~密码存储需要使用md5加密机制~~
-- ~~token... 等config信息使用node命令参数在shell中配置覆盖~~
-- ~~lean 和 翻页插件一起使用，返回的id字段是_id bug~~
-- ~~整理统一result的返回结构~~
-- ~~围观后计数功能~~
-- ~~多说转发热门文章接口~~
-- ~~相关文章接口~~
-
-## 开发命令
-
-```bash
-# 启动开发模式
-npm run dev
-
-# 生产模式
-npm start
-pm2 start ecosystem.config.js
-```
