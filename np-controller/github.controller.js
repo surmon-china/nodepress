@@ -14,7 +14,6 @@ githubCtrl.GET = (req, res) => {
     url: 'https://api.github.com/users/surmon-china/repos',
     headers: { 'User-Agent': 'request' }
   }, (err, response, body) => {
-    console.log(body);
     if(!err && response.statusCode == 200) {
       handleSuccess({ res, result: JSON.parse(body), message: '项目列表获取成功' });
     } else {
