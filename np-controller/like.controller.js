@@ -1,6 +1,6 @@
 /*
 *
-* 点赞功能控制器
+* 喜欢功能控制器
 *
 */
 
@@ -16,7 +16,7 @@ module.exports = ({ body: { id, type }}, res) => {
 
 	// 验证，1=>评论，2=>页面
 	if (![1, 2].includes(type)) {
-		res.jsonp({ code: 0, message: '点赞失败，没有原因' });
+		res.jsonp({ code: 0, message: '喜欢失败，没有原因' });
 	}
 
 	// like
@@ -33,8 +33,8 @@ module.exports = ({ body: { id, type }}, res) => {
 		}).catch(err => {
 			console.warn('赞更新失败', err);
 		});
-		handleSuccess({ res, message: '点赞成功' });
+		handleSuccess({ res, message: '爱你么么扎' });
 	}).catch(err => {
-		handleError({ res, err, message: '点赞失败' });
+		handleError({ res, err, message: '喜欢失败' });
 	})
 };
