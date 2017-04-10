@@ -12,7 +12,7 @@ let clientIsValid = false;
 client.verifyKey((err, valid) => {
   if (err) return console.warn('Akismet VerifyKey Error:', err.message);
   clientIsValid = valid;
-  console.log(`Akismet ${ valid ? 'Valid' : 'Invalid' } key!`);
+  console.log(`Akismet key ${ valid ? '有效' : '无效' }!`);
 });
 
 const akismetClient = {
