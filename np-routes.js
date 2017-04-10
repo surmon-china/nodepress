@@ -14,10 +14,11 @@ const routes = app => {
     if (allowedOrigins.includes(origin) || origin.includes('localhost')) {
       res.setHeader('Access-Control-Allow-Origin', origin);
     };
-    res.header("Access-Control-Allow-Headers", "Authorization, Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With");
-    res.header("Access-Control-Allow-Methods", "PUT,PATCH,POST,GET,DELETE,OPTIONS");
-    res.header("Content-Type", "application/json;charset=utf-8");
-    res.header("X-Powered-By", 'Nodepress 1.0.0');
+    res.header('Access-Control-Allow-Headers', 'Authorization, Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With');
+    res.header('Access-Control-Allow-Methods', 'PUT,PATCH,POST,GET,DELETE,OPTIONS');
+    res.header('Access-Control-Max-Age', '1728000');
+    res.header('Content-Type', 'application/json;charset=utf-8');
+    res.header('X-Powered-By', 'Nodepress 1.0.0');
 
     // OPTIONS
     if (req.method == 'OPTIONS') {
@@ -73,6 +74,9 @@ const routes = app => {
 
   // like
   app.post('/like', controller.like);
+
+  // github
+  app.all('/github', controller.github);
 
   // 163
   app.get('/music/:play_list_id', controller.music.list);
