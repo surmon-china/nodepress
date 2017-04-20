@@ -289,6 +289,11 @@ articleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
     return false;
   };
 
+  // 修正信息
+  delete article.meta
+  delete article.create_at
+  delete article.update_at
+
   // 修改文章
   Article.findByIdAndUpdate(article_id, article, { new: true })
   .then(result => {
