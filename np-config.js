@@ -37,7 +37,7 @@ exports.AKISMET = {
 
 exports.APP = {
   ROOT_PATH: __dirname,
-  LIMIT: 10,
+  LIMIT: 16,
   PORT: 8000
 }
 

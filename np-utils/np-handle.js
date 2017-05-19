@@ -14,3 +14,16 @@ exports.handleError = ({ res, message = '请求失败', err = null }) => {
 exports.handleSuccess = ({ res, message = '请求成功', result = null }) => {
   res.jsonp({ code: 1, message, result });
 };
+
+exports.handleThrottle = (method, delay) => {
+  let canRun = true;
+  return () => {
+    if (canRun) {
+    	canRun = false;
+    	method();
+    	setTimeout(function() {
+    	 	canRun = true;
+    	}, delay);
+    }
+  }
+}

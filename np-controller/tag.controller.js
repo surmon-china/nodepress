@@ -4,14 +4,71 @@
 *
 */
 
+const redis = require('np-redis');
 const Tag = require('np-model/tag.model');
 const Article = require('np-model/article.model');
 const authIsVerified = require('np-utils/np-auth');
 const buildSiteMap = require('np-utils/np-sitemap');
 const { baiduSeoPush, baiduSeoUpdate } = require('np-utils/np-baidu-seo-push');
-const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+const { handleRequest, handleError, handleSuccess, handleThrottle } = require('np-utils/np-handle');
 const tagCtrl = { list: {}, item: {} };
 const config = require('np-config');
+
+let canGetTags = true;
+
+// 查询标签列表
+const getTags = ({ query, options, success_cb, err_cb, req }) => {
+
+  // 查询article-tag的count聚合数据
+  const getTagsCount = tags => {
+    let $match = {};
+    if (req && !authIsVerified(req)) {
+      $match = { state: 1, public: 1 };
+    }
+    Article.aggregate([
+      { $match },
+      { $unwind : "$tag" }, 
+      { $group: { 
+        _id: "$tag", 
+        num_tutorial: { $sum : 1 }}
+      }
+    ])
+    .then(counts => {
+      const newTags = tags.docs.map(t => {
+        const finded = counts.find(c => String(c._id) === String(t._id));
+        t.count = finded ? finded.num_tutorial : 0;
+        return t;
+      });
+      tags.docs = newTags;
+      if (success_cb) success_cb(tags);
+    })
+    .catch(err => {
+      if (success_cb) success_cb(tags);
+    })
+  };
+
+  // 请求标签
+  Tag.paginate(query, options).then(tags => {
+    tags = JSON.parse(JSON.stringify(tags));
+    getTagsCount(tags);
+  }).catch(err => {
+    if (err_cb) err_cb(err);
+  })
+}
+
+// 初始化
+setTimeout(function() {
+  getTags({ query: {}, options: { 
+      sort: { _id: -1 },
+      page: 1,
+      limit: 160 
+    }, 
+    success_cb(tags) {
+      redis.set('tags', tags);
+    }
+  });
+}, 0);
+
 
 // 获取标签列表
 tagCtrl.list.GET = (req, res) => {
@@ -35,6 +92,7 @@ tagCtrl.list.GET = (req, res) => {
     ]
   };
 
+  // 成功响应
   const querySuccess = tags => {
     handleSuccess({
       res,
@@ -48,46 +106,42 @@ tagCtrl.list.GET = (req, res) => {
         },
         data: tags.docs
       }
-    });
+    })
   };
 
-  // 查询article-tag的count聚合数据
-  const getTagsCount = tags => {
-    let $match = {};
-    if (!authIsVerified(req)) {
-      $match = { state: 1, public: 1 };
-    }
-    Article.aggregate([
-      { $match },
-      { $unwind : "$tag" }, 
-      { $group: { 
-        _id: "$tag", 
-        num_tutorial: { $sum : 1 }}
+  // 管理员请求
+  if (authIsVerified(req)) {
+    getTags({
+      req, query, options,
+      success_cb(tags) {
+        querySuccess(tags);
+      }, 
+      err_cb(err) {
+        handleError({ res, err, message: '标签列表获取失败' });
       }
-    ])
-    .then(counts => {
-      const newTags = tags.docs.map(t => {
-        const finded = counts.find(c => String(c._id) === String(t._id));
-        t.count = finded ? finded.num_tutorial : 0;
-        return t;
-      });
-      tags.docs = newTags;
-      querySuccess(tags);
-    })
-    .catch(err => {
-      querySuccess(tags);
-    })
-  };
+    });
+    return false;
+  }
 
-  // 请求标签
-  Tag.paginate(query, options)
-  .then(tags => {
-    tags = JSON.parse(JSON.stringify(tags));
-    getTagsCount(tags);
-  })
-  .catch(err => {
-    handleError({ res, err, message: '标签列表获取失败' });
-  })
+  // 前台请求缓存
+  redis.get('tags', (err, tags) => {
+    querySuccess(tags);
+    if (canGetTags) {
+      getTags({
+        req, query, options,
+        success_cb(tags) {
+          redis.set('tags', tags);
+        }, 
+        err_cb(err) {
+          handleError({ res, err, message: '标签列表获取失败' });
+        }
+      });
+      canGetTags = false;
+      setTimeout(function () {
+        canGetTags = true;
+      }, 1000 * 60 * 5)
+    }
+  });
 };
 
 // 发布标签
