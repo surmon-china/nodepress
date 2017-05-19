@@ -3,7 +3,7 @@
 exports.tag = require('./tag.controller');
 exports.like = require('./like.controller');
 exports.auth = require('./auth.controller');
-exports.music = require('./music.controller');
+// exports.music = require('./music.controller');
 exports.qiniu = require('./qiniu.controller');
 exports.github = require('./github.controller');
 exports.option = require('./option.controller');
