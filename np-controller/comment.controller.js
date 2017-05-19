@@ -23,15 +23,25 @@ const updateArticleCommentCount = (post_ids = []) => {
       { $group: { _id: "$post_id", num_tutorial: { $sum : 1 }}}
     ])
     .then(counts => {
-      counts.forEach(count => {
-        Article.update({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }})
+      if (counts.length === 0) {
+        Article.update({ id: post_ids[0] }, { $set: { 'meta.comments': 0 }})
         .then(info => {
           // console.log('评论聚合更新成功', info);
         })
         .catch(err => {
-          console.warn('评论聚合更新失败', err);
+          // console.warn('评论聚合更新失败', err);
         });
-      });
+      } else {
+        counts.forEach(count => {
+          Article.update({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }})
+          .then(info => {
+            // console.log('评论聚合更新成功', info);
+          })
+          .catch(err => {
+            // console.warn('评论聚合更新失败', err);
+          });
+        });
+      }
     })
     .catch(err => {
       console.warn('更新评论count聚合数据前，查询失败', err);
