@@ -13,12 +13,14 @@ require('app-module-path').addPath(__dirname + '/');
 const config = require('np-config');
 const routes = require('np-routes');
 const mongodb = require('np-mongodb');
+const redis = require('np-redis');
 const app = express();
 
-// 连接数据库
+// data server
 mongodb.connect();
+redis.connect();
 
-// 翻页全局配置
+// global options
 mongoosePaginate.paginate.options = {
   limit: config.APP.LIMIT
 };
