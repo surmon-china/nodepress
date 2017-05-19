@@ -82,6 +82,7 @@ const routes = app => {
   app.get('/music/:play_list_id', controller.music.list);
   app.get('/music/lrc/:song_id', controller.music.lrc);
   app.get('/music/song/:song_id', controller.music.song);
+  // app.get('/music/url/:song_url', controller.music.url);
 
   // Tag
   app.all('/tag', controller.tag.list);

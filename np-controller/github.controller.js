@@ -4,12 +4,10 @@
 *
 */
 
+const redis = require('np-redis');
 const request = require('request');
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 const githubCtrl = {};
-
-// 保存内存中代理redis
-let currentRepositories = [];
 
 // 获取远程项目列表
 const getGithubRepositories = () => {
@@ -18,7 +16,7 @@ const getGithubRepositories = () => {
     headers: { 'User-Agent': 'request' }
   }, (err, response, body) => {
     if(!err && response.statusCode == 200) {
-      currentRepositories = JSON.parse(body);
+      redis.set('github-projects', body);
     } else {
       console.warn('项目列表获取失败', 'err:', err, 'body:', body);
     }
@@ -31,7 +29,9 @@ getGithubRepositories();
 
 // 获取项目列表
 githubCtrl.GET = (req, res) => {
-  handleSuccess({ res, result: currentRepositories, message: '项目列表获取成功' });
+  redis.get('github-projects', (err, github_projects) => {
+    handleSuccess({ res, result: github_projects, message: '项目列表获取成功' });
+  })
 };
 
 // export
