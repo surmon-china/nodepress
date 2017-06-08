@@ -35,7 +35,7 @@ const sendMail = mailOptions => {
     console.warn('由于未初始化成功，邮件客户端发送被拒绝');
     return false;
   }
-  mailOptions.from = '"Surmon" <admin@surmon.me>'
+  mailOptions.from = '"Surmon" <i@surmon.me>'
 	transporter.sendMail(mailOptions, (error, info) => {
     if (error) return console.warn('邮件发送失败', error);
     console.log('邮件发送成功', info.messageId, info.response);
