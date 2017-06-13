@@ -2,7 +2,6 @@
 
 // import
 const http = require('http');
-const gc   = require('idle-gc');
 const helmet = require('helmet');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -36,6 +35,5 @@ routes(app);
 
 // Start server
 http.createServer(app).listen(app.get('port'), () => {
-	gc.start();
   console.log(`NodePress Run！port at ${app.get('port')}`)
 });
