@@ -78,11 +78,12 @@ const routes = app => {
   // github
   app.all('/github', controller.github);
 
-  // 163
-  // app.get('/music/:play_list_id', controller.music.list);
-  // app.get('/music/lrc/:song_id', controller.music.lrc);
-  // app.get('/music/song/:song_id', controller.music.song);
-  // app.get('/music/url/:song_url', controller.music.url);
+  // music
+  app.get('/music/pic/:pic_id', controller.music.pic);
+  app.get('/music/lrc/:song_id', controller.music.lrc);
+  app.get('/music/url/:song_id', controller.music.url);
+  app.get('/music/song/:song_id', controller.music.song);
+  app.get('/music/list/:play_list_id', controller.music.list);
 
   // Tag
   app.all('/tag', controller.tag.list);
