@@ -6,7 +6,7 @@ const sitrmapCtrl = {};
 sitrmapCtrl.GET = (req, res) => {
 	buildSiteMap(xml => {
 		res.header('Content-Type', 'application/xml');
-    res.send(xml);
+		res.send(xml);
 	}, err => {
 		handleError({ res, err, message: '获取失败' });
 	});

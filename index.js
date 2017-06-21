@@ -21,7 +21,7 @@ redis.connect();
 
 // global options
 mongoosePaginate.paginate.options = {
-  limit: config.APP.LIMIT
+	limit: config.APP.LIMIT
 };
 
 // app config
@@ -35,5 +35,5 @@ routes(app);
 
 // Start server
 http.createServer(app).listen(app.get('port'), () => {
-  console.log(`NodePress Run！port at ${app.get('port')}`)
+	console.log(`NodePress Run！port at ${app.get('port')}`)
 });

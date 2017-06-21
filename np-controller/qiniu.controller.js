@@ -12,7 +12,7 @@ const qiniuCtrl = {};
 
 // 获取配置列表
 qiniuCtrl.GET = (req, res) => {
-  res.jsonp({ uptoken: client.uploadToken() });
+	res.jsonp({ uptoken: client.uploadToken() });
 }
 
 module.exports = (req, res) => { handleRequest({ req, res, controller: qiniuCtrl })};
