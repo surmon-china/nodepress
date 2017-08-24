@@ -12,7 +12,19 @@ const Comment = require('np-model/comment.model');
 const Article = require('np-model/article.model');
 const Option = require('np-model/option.model');
 const geoip = require('geoip-lite');
+const marked = require('marked');
 const commentCtrl = { list: {}, item: {} };
+
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false
+});
 
 // 更新当前所受影响的文章的评论聚合数据
 const updateArticleCommentCount = (post_ids = []) => {
@@ -51,11 +63,12 @@ const updateArticleCommentCount = (post_ids = []) => {
 
 // 邮件通知网站主及目标对象
 const sendMailToAdminAndTargetUser = (comment, permalink) => {
+	const commentContent = marked(comment.content)
 	sendMail({
 		to: 'surmon@foxmail.com',
 		subject: '博客有新的留言',
 		text: `来自 ${comment.author.name} 的留言：${comment.content}`,
-		html: `<p> 来自 ${comment.author.name} 的留言：${comment.content}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+		html: `<p> 来自 ${comment.author.name} 的留言：${commentContent}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
 	});
 	if (!!comment.pid) {
 		Comment.findOne({ id: comment.pid }).then(parentComment => {
@@ -63,7 +76,7 @@ const sendMailToAdminAndTargetUser = (comment, permalink) => {
 				to: parentComment.author.email,
 				subject: '你在Surmon.me有新的评论回复',
 				text: `来自 ${comment.author.name} 的评论回复：${comment.content}`,
-				html: `<p> 来自${comment.author.name} 的评论回复：${comment.content}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+				html: `<p> 来自${comment.author.name} 的评论回复：${commentContent}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
 			});
 		})
 	};
