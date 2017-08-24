@@ -17,6 +17,7 @@
     "helmet": "^3.4.1",
     "hiredis": "^0.5.0",
     "jsonwebtoken": "^7.2.1",
+    "marked": "^0.3.6",
     "mongoose": "^4.8.4",
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-paginate": "^5.0.0",
