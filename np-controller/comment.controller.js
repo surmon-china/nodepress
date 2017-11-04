@@ -7,6 +7,7 @@
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 const { akismetClient } = require('np-utils/np-akismet');
 const { sendMail } = require('np-utils/np-email');
+const queryIp = require('np-utils/np-ip');
 const authIsVerified = require('np-utils/np-auth');
 const Comment = require('np-model/comment.model');
 const Article = require('np-model/article.model');
@@ -159,6 +160,66 @@ commentCtrl.list.POST = (req, res) => {
 
 	let { body: comment } = req
 
+	const doSaveComment = () => {
+		if (ip_location) {
+			comment.ip_location = {
+				city: ip_location.city,
+				range: ip_location.range,
+				country: ip_location.country
+			};
+		};
+		comment.ip = ip;
+		comment.likes = 0;
+		comment.is_top = false;
+		comment.agent =	req.headers['user-agent'] || comment.agent;
+
+		// 永久链接
+		const permalink = 'https://surmon.me/' + (Object.is(comment.post_id, 0) ? 'guestbook' : `article/${comment.post_id}`);
+
+		// 发布评论
+		const saveComment = () => {
+			new Comment(comment).save()
+			.then((result = comment) => {
+				handleSuccess({ res, result, message: '评论发布成功' });
+				// 发布成功后，向网站主及被回复者发送邮件提醒，并更新网站聚合
+				sendMailToAdminAndTargetUser(comment, permalink);
+				updateArticleCommentCount([comment.post_id]);
+			})
+			.catch(err => {
+				handleError({ res, err, message: '评论发布失败' });
+			})
+		};
+
+		// 使用akismet过滤
+		akismetClient.checkSpam({
+			user_ip: comment.ip,
+			user_agent: comment.agent,
+			referrer: req.headers.referer,
+			permalink,
+			comment_type: 'comment',
+			comment_author: comment.author.name,
+			comment_author_email: comment.author.email,
+			comment_author_url: comment.author.site,
+			comment_content: comment.content,
+			is_test : Object.is(process.env.NODE_ENV, 'development')
+
+		// 使用设置的黑名单ip/邮箱/关键词过滤
+		}).then(info => {
+			return Option.findOne()
+		}).then(options => {
+			const { keywords, mails, ips } = options.blacklist;
+			if (ips.includes(comment.ip) || 
+					mails.includes(comment.author.email) ||
+				 (keywords.length && eval(`/${keywords.join('|')}/ig`).test(comment.content))) {
+				handleError({ res, err: '内容||ip||邮箱 => 不合法', message: '评论发布失败' });
+			} else {
+				saveComment();
+			}
+		}).catch(err => {
+			handleError({ res, err, message: '评论发布失败' });
+		})
+	};
+
 	// 获取ip地址以及物理地理地址
 	const ip = (req.headers['x-forwarded-for'] || 
 							req.headers['x-real-ip'] || 
@@ -167,64 +228,20 @@ commentCtrl.list.POST = (req, res) => {
 							req.connection.socket.remoteAddress ||
 							req.ip ||
 							req.ips[0]).replace('::ffff:', '');
-	const ip_location = geoip.lookup(ip)
-	if (ip_location) {
-		comment.ip_location = {
-			city: ip_location.city,
-			range: ip_location.range,
-			country: ip_location.country
-		};
-	};
-	comment.ip = ip;
-	comment.likes = 0;
-	comment.is_top = false;
-	comment.agent =	req.headers['user-agent'] || comment.agent;
-
-	// 永久链接
-	const permalink = 'https://surmon.me/' + (Object.is(comment.post_id, 0) ? 'guestbook' : `article/${comment.post_id}`);
-
-	// 发布评论
-	const saveComment = () => {
-		new Comment(comment).save()
-		.then((result = comment) => {
-			handleSuccess({ res, result, message: '评论发布成功' });
-			// 发布成功后，向网站主及被回复者发送邮件提醒，并更新网站聚合
-			sendMailToAdminAndTargetUser(comment, permalink);
-			updateArticleCommentCount([comment.post_id]);
-		})
-		.catch(err => {
-			handleError({ res, err, message: '评论发布失败' });
-		})
-	};
-
-	// 使用akismet过滤
-	akismetClient.checkSpam({
-		user_ip: comment.ip,
-		user_agent: comment.agent,
-		referrer: req.headers.referer,
-		permalink,
-		comment_type: 'comment',
-		comment_author: comment.author.name,
-		comment_author_email: comment.author.email,
-		comment_author_url: comment.author.site,
-		comment_content: comment.content,
-		is_test : Object.is(process.env.NODE_ENV, 'development')
-
-	// 使用设置的黑名单ip/邮箱/关键词过滤
-	}).then(info => {
-		return Option.findOne()
-	}).then(options => {
-		const { keywords, mails, ips } = options.blacklist;
-		if (ips.includes(comment.ip) || 
-				mails.includes(comment.author.email) ||
-			 (keywords.length && eval(`/${keywords.join('|')}/ig`).test(comment.content))) {
-			handleError({ res, err: '内容||ip||邮箱 => 不合法', message: '评论发布失败' });
-		} else {
-			saveComment();
+	
+	let ip_location = null;
+	queryIp(ip).then(data => {
+		// console.log('查询到IP', data);
+		ip_location = {
+			city: data.city,
+			country: data.country_id,
 		}
+		doSaveComment();
 	}).catch(err => {
-		handleError({ res, err, message: '评论发布失败' });
-	})
+		console.log('阿里云查询IP发生错误，改用本地库', ip, err);
+		ip_location = geoip.lookup(ip);
+		doSaveComment();
+	});
 };
 
 // 批量修改（移回收站、回收站恢复）
