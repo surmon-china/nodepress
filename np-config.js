@@ -25,6 +25,10 @@ exports.BAIDU = {
 	token: argv.baidu_token || 'your baidu seo push token'
 }
 
+exports.ALIYUN = {
+	ip: argv.aliyun_ip_auth
+}
+
 exports.EMAIL = {
 	account: argv.email_account || 'your email address like : admin@surmon.me',
 	password: argv.email_password || 'your email password'
