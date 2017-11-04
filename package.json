@@ -5,6 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=production node --harmony index.js",
     "dev": "nodemon --exec \"NODE_ENV=development node --harmony index.js\"",
+    "dev:tool": "devtool index.js --js-flags=\"NODE_ENV=development --harmony --inspect\" --watch",
     "updatedb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
   },
   "dependencies": {
