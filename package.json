@@ -1,6 +1,6 @@
 {
   "name": "NodePress",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "author": "Surmon",
   "scripts": {
     "start": "NODE_ENV=production node --harmony index.js",
@@ -9,7 +9,6 @@
     "updatedb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
   },
   "dependencies": {
-    "NeteaseCloudMusicApi": "^2.5.0",
     "akismet-api": "^2.2.0",
     "app-module-path": "^2.2.0",
     "body-parser": "^1.15.2",
@@ -27,7 +26,7 @@
     "qn": "^1.3.0",
     "redis": "^2.7.1",
     "request": "^2.79.0",
-    "simple-netease-cloud-music": "^0.1.8",
+    "simple-netease-cloud-music": "^0.2.0",
     "sitemap": "^1.9.0",
     "yargs": "^6.6.0"
   },

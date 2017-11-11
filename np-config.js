@@ -47,8 +47,9 @@ exports.APP = {
 
 exports.INFO = {
 	name: 'NodePress',
-	version: '1.1.0',
+	version: '1.2.0',
 	author: 'Surmon',
 	site: 'https://surmon.me',
-	powered: ['Vue2', 'Nuxt.js', 'React', 'Angular4', 'Bootstrap4', 'jQuery', 'Video.js', 'Node.js', 'MongoDB', 'Express', 'Nginx']
+	github: 'https://github.com/surmon-china',
+	powered: ['Vue', 'Nuxt.js', 'React', 'Angular', 'Bootstrap4', 'Nodejs', 'MongoDB', 'Express', 'Nginx']
 }

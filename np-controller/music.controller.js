@@ -17,7 +17,7 @@ musicCtrl.list.GET = (req, res) => {
 		handleError({ res, message: '参数无效' });
 		return false;
 	}
-	neteseMusic.playlist(play_list_id).then(({ playlist }) => {
+	neteseMusic._playlist(play_list_id).then(({ playlist }) => {
 		handleSuccess({ res, result: playlist, message: '歌单列表获取成功' });
 	});
 }
