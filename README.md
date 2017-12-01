@@ -8,7 +8,7 @@
 
 #### RESTful API server application for my blog.
 
-- Author By Surmon Surmon@foxmail.com
+- Maintained by me surmon@foxmail.com
 - Online site: https://surmon.me
 - Web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue)
 - Web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by Angular + Bootstrap4
