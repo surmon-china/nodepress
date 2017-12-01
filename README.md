@@ -4,15 +4,60 @@
 [![GitHub issues](https://img.shields.io/github/issues/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/issues)
 [![GitHub forks](https://img.shields.io/github/forks/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/network)
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square)](https://github.com/surmon-china/nodepress)
 
-A RESTful application.
+#### RESTful API server application for my blog.
 
 - Author By Surmon Surmon@foxmail.com
 - Online site: https://surmon.me
-- Front end (User client): [surmon.me](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue2) + Vuex
-- Front end (Admin client): [angular-admin](https://github.com/surmon-china/angular-admin) By Angular4 + Bootstrap4
-- App client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) By React native
-- Build with Express + mongoose
+- Web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue)
+- Web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by Angular + Bootstrap4
+- Native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by React native
+
+
+## 接口概述
+
+  - HTTP状态码
+    * 401 权限不足
+    * 403 权限不足
+    * 404 项目中不存在
+    * 405 无此方法
+    * 500 服务器挂了
+    * 200 正常
+
+  - 数据特征码
+    * code:
+        * 1 正常
+        * 0 异常
+    * message:
+        一般均会返回
+    * debug:
+        一般会返回错误发生节点的err
+        在code为0的时候必须返回，方便调试
+    * result:
+        一定会返回，若请求为列表数据，一般返回`{ pagenation: {...}, data: {..} }`
+        若请求具体数据，如文章，则包含直接数据如`{ title: '', content: ... }`
+
+
+## 数据结构
+
+  - 通用
+    * extend 通用扩展
+        文章、分类、tag表都包含extend字段，用于在后台管理中自定义扩展，类似于wordpress中的自定义字段功能，目前用来实现前台icon图标的class或者其他功能
+    ···
+
+
+  - 各种 CRUD 重要字段
+    * name         - 名称
+    * _id          - mongodb生成的id，一般用于后台执行CRUD操作
+    * id           - 插件生成的自增数字id，类似mysql中的id，具有唯一性，用于前台获取数据
+    * pid          - 父级ID，用于建立数据表关系，与id字段映射
+    ···
+
+  - 数据组成的三种可能
+    * 数据库真实存在数据
+    * mongoose支持的virtual虚拟数据
+    * 计算数据
 
 
 ## 文件目录
@@ -120,53 +165,9 @@ A RESTful application.
     ```
 
 
-## 接口概述
-
-  - HTTP状态码
-    * 401 权限不足
-    * 403 权限不足
-    * 404 项目中不存在
-    * 405 无此方法
-    * 500 服务器挂了
-    * 200 正常
-
-  - 数据特征码
-    * code:
-        * 1 正常
-        * 0 异常
-    * message:
-        一般均会返回
-    * debug:
-        一般会返回错误发生节点的err
-        在code为0的时候必须返回，方便调试
-    * result:
-        一定会返回，若请求为列表数据，一般返回`{ pagenation: {...}, data: {..} }`
-        若请求具体数据，如文章，则包含直接数据如`{ title: '', content: ... }`
-
-
-## 数据结构
-
-  - 通用
-    * extend 通用扩展
-        文章、分类、tag表都包含extend字段，用于在后台管理中自定义扩展，类似于wordpress中的自定义字段功能，目前用来实现前台icon图标的class或者其他功能
-    ···
-
-
-  - 各种 CRUD 重要字段
-    * name         - 名称
-    * _id          - mongodb生成的id，一般用于后台执行CRUD操作
-    * id           - 插件生成的自增数字id，类似mysql中的id，具有唯一性，用于前台获取数据
-    * pid          - 父级ID，用于建立数据表关系，与id字段映射
-    ···
-
-  - 数据组成的三种可能
-    * 数据库真实存在数据
-    * mongoose支持的virtual虚拟数据
-    * 计算数据
-
 ## Todos & Issues
 
-- 驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml
+- ~~驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml~~
 - ~~增加评论功能+黑名单，评论可自动校验spam，及黑名单（ip、邮箱、关键字的校验）~~
 - ~~使用helmet + 手动优化，优化程序安全性~~
 - ~~优化mongoose实例~~
@@ -206,88 +207,3 @@ npm run dev
 npm start
 pm2 start ecosystem.config.js
 ```
-
-
-## 总项目架构
-
-  - 服务端
-
-    * [Express](http://www.expressjs.com.cn/ )
-
-    * [node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) JWT Json Web Token
-
-  - 后台
-
-    * [ng2-admin](https://akveo.github.io/ng2-admin/) [Angular 2](https://angular.cn/) MVVM
-
-    * [Bootstrap 4](http://v4.bootcss.com/) UI
-
-    * 富文本编辑器 
-    
-        - 最终使用CodeMirror实现了markdown编辑器
-
-        - [ng2-quill-editor](https://github.com/surmon-china/ng2-quill-editor)
-        
-        - WebIDE （此项目中不再实现）
-
-        - [Codiad](https://github.com/Codiad/Codiad) WebIDE
-
-        - [CodeMirror](http://codemirror.net/) CodeMirror WebIDE
-
-    * Other （此项目中不再实现）
-
-        - [谷歌云输入法]() 云输入法
-
-        - [Web Audio Editor](http://audiee.io/) 音频处理（剪切处理）
-
-        - [webgl-filter](https://github.com/evanw/webgl-filter) WebGL 图片处理 - webgl-filter
-
-        - [h5slides](https://github.com/Jinjiang/h5slides) h5slides 幻灯放映
-
-        - [H5lock](https://github.com/lvming6816077/H5lock) H5手势解锁
-
-        - [favico.js](http://lab.ejci.net/favico.js/) 网站通知徽标
-
-        - [OS.js](https://github.com/os-js/OS.js) OS.js Web OS
-
-        - [Antiscroll](https://github.com/Automattic/antiscroll) Dom代替原生滚动条
-
-        - [APlayer](https://github.com/DIYgod/APlayer) APlayer音频播放器
-
-        - [CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary) JS栈弹幕解决方案
-
-        - [CommentCoreLibrary](https://github.com/jabbany/CommentCoreLibrary) JS栈弹幕解决方案
-
-  - 搜索引擎 （最终前端使用了Nuxt.js服务端首屏渲染）
-
-    * [Prerender.io](https://prerender.io/) SEO
-
-    * [Handlebars](http://handlebarsjs.com/) HTML 渲染
-
-    * [Vue服务端渲染](https://vuefe.cn/guide/ssr.html)
-
-  - 前台PC端 （仅参考）
-
-    * [Vue2](http://cn.vuejs.org/) MVVM
-
-    * [SOCKET.IO](http://socket.io/) 实时通讯
-
-    * [HOWLER.JS](https://howlerjs.com/) 音频库
-
-    * [Video.js](http://videojs.com/) 播放器
-
-    * [vue-awesome-swiper](https://github.com/surmon-china/vue-awesome-swiper) 幻灯
-
-  - 前台WAP端（基于PC端的CSS+Nuxt.js响应式实现）
-
-    * [Vue2](http://cn.vuejs.org/) MVVM
-
-    * [Vux](https://github.com/airyland/vux) UI
-
-  - Android/IOS客户端（ReactNative实现）
-
-    * [Weex](https://alibaba.github.io/weex/)
-
-    * [NativeScript 2.0](https://www.nativescript.org/)
-
-    * [React Native](http://reactnative.cn/)
