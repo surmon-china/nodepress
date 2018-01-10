@@ -276,7 +276,7 @@ articleCtrl.item.GET = ({ params: { article_id }}, res) => {
 		}
 	})
 	.catch(err => {
-		handleError({ res, err, message: '文章获取失败' });
+		handleError({ res, err, code: 404, message: '文章获取失败' });
 	})
 };
 
