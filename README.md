@@ -10,7 +10,7 @@
 
 - Maintained by [me](mailto://surmon@foxmail.com)
 - Online site: https://surmon.me
-- Web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue)
+- Web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By Nuxt.js(Vue)
 - Web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by Angular + Bootstrap4
 - Native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by React native
 
@@ -43,21 +43,21 @@
 
   - 通用
     * `extend` 通用扩展
-        文章、分类、tag表都包含extend字段，用于在后台管理中自定义扩展，类似于wordpress中的自定义字段功能，目前用来实现前台icon图标的class或者其他功能
+        文章、分类、tag 表都包含 extend 字段，用于在后台管理中自定义扩展，类似于 wordpress 中的自定义字段功能，目前用来实现前台 icon 图标的class 或者其他功能
     ···
 
 
   - 各种 CRUD 重要字段
     * `name`         - 名称
-    * `_id`          - `mongodb`生成的 id，一般用于后台执行 CRUD 操作
+    * `_id`          - mongodb 生成的 id，一般用于后台执行 CRUD 操作
     * `id`           - 插件生成的自增数字 id，类似 mysql 中的 id，具有唯一性，用于前台获取数据
-    * `pid`          - 父级ID，用于建立数据表关系，与id字段映射
+    * `pid`          - 父级ID，用于建立数据表关系，与 id 字段映射
     ···
 
   - 数据组成的三种可能
     * 数据库真实存在数据
     * mongoose 支持的 virtual 虚拟数据
-    * 计算数据
+    * 业务计算数据
 
 
 ## 文件目录
@@ -162,6 +162,19 @@
     ```
 
 
+## 开发命令
+
+```bash
+npm install
+
+# 启动开发模式（需全局安装nodemon）
+npm run dev
+
+# 生产模式
+npm start
+pm2 start ecosystem.config.js
+```
+
 ## Todos & Issues
 
 - ~~驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml~~
@@ -190,17 +203,3 @@
 - ~~使用Redis缓存标签、播放器、githb数据~~
 - ~~修复了评论数bug~~
 - ~~重构了播放器API~~
-
-
-## 开发命令
-
-```bash
-npm install
-
-# 启动开发模式（需全局安装nodemon）
-npm run dev
-
-# 生产模式
-npm start
-pm2 start ecosystem.config.js
-```
