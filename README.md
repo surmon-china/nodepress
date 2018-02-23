@@ -8,7 +8,7 @@
 
 #### RESTful API server application for my blog.
 
-- Maintained by me surmon@foxmail.com
+- Maintained by [me](mailto://surmon@foxmail.com)
 - Online site: https://surmon.me
 - Web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By  Nuxt.js(Vue)
 - Web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by Angular + Bootstrap4
@@ -18,23 +18,23 @@
 ## 接口概述
 
   - HTTP状态码
-    * 401 权限不足
-    * 403 权限不足
-    * 404 项目中不存在
-    * 405 无此方法
-    * 500 服务器挂了
-    * 200 正常
+    * `401` 权限不足
+    * `403` 权限不足
+    * `404` 项目中不存在
+    * `405` 无此方法
+    * `500` 服务器挂了
+    * `200` 正常
 
   - 数据特征码
-    * code:
-        * 1 正常
-        * 0 异常
-    * message:
+    * `code`:
+        * `1` 正常
+        * `0` 异常
+    * `message`:
         一般均会返回
-    * debug:
-        一般会返回错误发生节点的err
-        在code为0的时候必须返回，方便调试
-    * result:
+    * `debug`:
+        一般会返回错误发生节点的 err
+        在`code`为`0`的时候必须返回，方便调试
+    * `result`:
         一定会返回，若请求为列表数据，一般返回`{ pagenation: {...}, data: {..} }`
         若请求具体数据，如文章，则包含直接数据如`{ title: '', content: ... }`
 
@@ -42,21 +42,21 @@
 ## 数据结构
 
   - 通用
-    * extend 通用扩展
+    * `extend` 通用扩展
         文章、分类、tag表都包含extend字段，用于在后台管理中自定义扩展，类似于wordpress中的自定义字段功能，目前用来实现前台icon图标的class或者其他功能
     ···
 
 
   - 各种 CRUD 重要字段
-    * name         - 名称
-    * _id          - mongodb生成的id，一般用于后台执行CRUD操作
-    * id           - 插件生成的自增数字id，类似mysql中的id，具有唯一性，用于前台获取数据
-    * pid          - 父级ID，用于建立数据表关系，与id字段映射
+    * `name`         - 名称
+    * `_id`          - `mongodb`生成的 id，一般用于后台执行 CRUD 操作
+    * `id`           - 插件生成的自增数字 id，类似 mysql 中的 id，具有唯一性，用于前台获取数据
+    * `pid`          - 父级ID，用于建立数据表关系，与id字段映射
     ···
 
   - 数据组成的三种可能
     * 数据库真实存在数据
-    * mongoose支持的virtual虚拟数据
+    * mongoose 支持的 virtual 虚拟数据
     * 计算数据
 
 
@@ -90,7 +90,6 @@
 
     ```
     np-routes.js -> 路由控制集合
-
     ```
 
   - 控制器
@@ -99,7 +98,6 @@
     np-controller -> 控制器
 
     ***.controller.js -> 各功能控制器
-
     ```
 
   - 数据模型
@@ -108,7 +106,6 @@
     np-model -> 数据模型
 
     ***.model.js -> 各功能数据模型，映射Mongoose对应的模型方法
-
     ```
 
   - 公共解析器
