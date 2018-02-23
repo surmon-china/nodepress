@@ -14,6 +14,8 @@
 - Web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by Angular + Bootstrap4
 - Native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by React native
 
+所有的依赖，[都在这里](https://github.com/surmon-china/nodepress/blob/master/package.json#L11)，具体都是做什么的，自己看吧
+
 
 ## 接口概述
 
