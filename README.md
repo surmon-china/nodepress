@@ -83,7 +83,7 @@
     ```
     np-mongo.js -> 数据库连接启动
 
-    暴露数据库连接方法，以及包装后的mongoose对象
+    暴露数据库连接方法，以及包装后的 mongoose 对象
     ```
 
   - 路由
@@ -105,7 +105,7 @@
     ```
     np-model -> 数据模型
 
-    ***.model.js -> 各功能数据模型，映射Mongoose对应的模型方法
+    ***.model.js -> 各功能数据模型，映射 Mongoose 对应的模型方法
     ```
 
   - 公共解析器
@@ -124,7 +124,7 @@
     np-utils/np-auth.js -> 权限处理器
     
     权限验证方法，抽象出的对象
-    首先会校验jwt的合理性，然后核对加密信息，核对时间戳
+    首先会校验 jwt 的合理性，然后核对加密信息，核对时间戳
     ```
 
   - seo服务
@@ -133,8 +133,8 @@
     np-utils/np-sitemap.js -> 地图生成器
     
     网站地图xml生成，抽象出的对象
-    包含Tag、Article、Category及一些死数据（页面）的集合，生成xml并写入本地
-    实际上，在每次访问sitemap-api和有相关CRUD操作的时候都会被执行
+    包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
+    实际上，在每次访问 sitemap-api 和有相关 CRUD 操作的时候都会被执行
     ```
 
   - 百度实时更新服务
@@ -142,13 +142,13 @@
     ```
     np-utils/np-baidu-push.js -> 自动根据操作通知百度蜘蛛
     
-    分别会在文章、分类、标签、进行CUD的时候调用此类
+    分别会在文章、分类、标签、进行 CUD 的时候调用此类
     ```
 
   - 垃圾评论校验
 
     ```
-    np-utils/np-akismet.js -> 使用akismet过滤spam
+    np-utils/np-akismet.js -> 使用 akismet 过滤 spam
     
     本应该暴露三个方法：校验spam、提交spam、提交ham
     ```
