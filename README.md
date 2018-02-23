@@ -167,12 +167,11 @@
 ```bash
 npm install
 
-# 启动开发模式（需全局安装nodemon）
+# 开发模式（需全局安装nodemon）
 npm run dev
 
 # 生产模式
 npm start
-pm2 start ecosystem.config.js
 ```
 
 ## Todos & Issues
