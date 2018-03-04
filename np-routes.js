@@ -3,6 +3,8 @@
 const config = require('np-config');
 const controller = require('np-controller');
 const authIsVerified = require('np-utils/np-auth');
+
+console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 const routes = app => {
 
 	// 拦截器
@@ -11,6 +13,9 @@ const routes = app => {
 		// Set Header
 		const allowedOrigins = ['https://surmon.me', 'https://admin.surmon.me'];
 		const origin = req.headers.origin || '';
+		if (process.env.NODE_ENV === 'development') {
+			allowedOrigins.push(origin);
+		};
 		if (allowedOrigins.includes(origin) || origin.includes('localhost')) {
 			res.setHeader('Access-Control-Allow-Origin', origin);
 		};
