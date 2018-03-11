@@ -4,19 +4,21 @@ const config = require('np-config');
 const controller = require('np-controller');
 const authIsVerified = require('np-utils/np-auth');
 
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 const routes = app => {
 
 	// 拦截器
 	app.all('*', (req, res, next) => {
 
+		// production env
+		const isProduction = Object.is(process.env.NODE_ENV, 'production');
+
 		// Set Header
 		const allowedOrigins = ['https://surmon.me', 'https://admin.surmon.me'];
 		const origin = req.headers.origin || '';
-		if (process.env.NODE_ENV === 'development') {
+		if (!isProduction) {
 			allowedOrigins.push(origin);
 		};
-		if (allowedOrigins.includes(origin) || origin.includes('localhost')) {
+		if (allowedOrigins.includes(origin)) {
 			res.setHeader('Access-Control-Allow-Origin', origin);
 		};
 		res.header('Access-Control-Allow-Headers', 'Authorization, Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With');
@@ -32,7 +34,7 @@ const routes = app => {
 		};
 
 		// 如果是生产环境，需要验证用户来源渠道，防止非正常请求
-		if (Object.is(process.env.NODE_ENV, 'production')) {
+		if (isProduction) {
 			const { origin, referer } = req.headers;
 			const originVerified = (!origin	|| origin.includes('surmon.me')) && 
 														 (!referer || referer.includes('surmon.me'))
