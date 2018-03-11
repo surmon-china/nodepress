@@ -35,5 +35,5 @@ routes(app);
 
 // Start server
 http.createServer(app).listen(app.get('port'), () => {
-	console.log(`NodePress Run！port at ${app.get('port')}`)
+	console.log(`NodePress Run！port at ${app.get('port')}, env: ${process.env.NODE_ENV}`)
 });
