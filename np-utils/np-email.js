@@ -1,8 +1,13 @@
-/* email */
+/*
+*
+* 邮件模块
+*
+*/
 
-const config = require('np-config');
+const config = require('app.config');
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
+
 let clientIsValid = false;
 
 const transporter = nodemailer.createTransport(smtpTransport({

@@ -4,9 +4,11 @@
 *
 */
 
-const redis = require('np-redis');
 const request = require('request');
+
+const redis = require('np-core/np-redis');
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+
 const githubCtrl = {};
 
 // 获取远程项目列表

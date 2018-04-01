@@ -1,7 +1,12 @@
-/* akismet-spam */
+/*
+*
+* akismet-spam 反垃圾模块
+*
+*/
 
-const config = require('np-config');
 const akismet = require('akismet-api');
+const config = require('app.config');
+
 let client = akismet.client({
 	key: config.AKISMET.key,
 	blog: config.AKISMET.blog

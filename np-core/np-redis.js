@@ -1,4 +1,9 @@
-// Redis
+/*
+*
+* Redis 模块
+*
+*/
+
 const redis = require('redis');
 let redisClientAvailable = false;
 let redisClient = null;

@@ -6,13 +6,14 @@ const helmet = require('helmet');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoosePaginate = require('mongoose-paginate');
+
 require('app-module-path').addPath(__dirname + '/');
 
 // app modules
-const config = require('np-config');
-const routes = require('np-routes');
-const mongodb = require('np-mongodb');
-const redis = require('np-redis');
+const config = require('app.config');
+const routes = require('np-core/np-routes');
+const mongodb = require('np-core/np-mongodb');
+const redis = require('np-core/np-redis');
 const app = express();
 
 // data server

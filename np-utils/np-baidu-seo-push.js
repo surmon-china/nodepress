@@ -1,7 +1,11 @@
-/* badu-seo-push */
+/*
+*
+* badu-seo-push 模块
+*
+*/
 
 const request = require('request');
-const config = require('np-config');
+const config = require('app.config');
 
 // 提交记录
 exports.baiduSeoPush = urls => {
