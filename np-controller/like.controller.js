@@ -4,13 +4,13 @@
 *
 */
 
+const config = require('app.config');
+
 const { handleError, handleSuccess } = require('np-utils/np-handle');
 
 const Article = require('np-model/article.model');
 const Comment = require('np-model/comment.model');
 const Option = require('np-model/option.model');
-
-const config = require('np-config');
 
 module.exports = ({ body: { id, type }}, res) => {
 

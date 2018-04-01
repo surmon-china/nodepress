@@ -5,9 +5,10 @@
  */
 
 const authIsVerified = require('np-utils/np-auth');
+const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+
 const Announcement = require('np-model/announcement.model');
 
-const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 const announcementCtrl = { list: {}, item: {} };
 
 // 获取公告列表

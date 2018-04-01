@@ -1,6 +1,11 @@
-// 路由管理
+/*
+*
+* 路由模块
+*
+*/
 
-const config = require('np-config');
+const config = require('app.config');
+
 const controller = require('np-controller');
 const authIsVerified = require('np-utils/np-auth');
 

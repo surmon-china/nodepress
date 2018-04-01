@@ -1,4 +1,8 @@
-/* 公共解析器 */
+/*
+*
+* 路由统一解析器
+*
+*/
 
 exports.handleRequest = ({ req, res, controller }) => {
 	const method = req.method;
@@ -30,4 +34,4 @@ exports.handleThrottle = (method, delay) => {
 			}, delay);
 		}
 	}
-}
+};
