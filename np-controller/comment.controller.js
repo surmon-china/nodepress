@@ -4,16 +4,19 @@
 *
 */
 
+const marked = require('marked');
+const geoip = require('geoip-lite');
+
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 const { akismetClient } = require('np-utils/np-akismet');
 const { sendMail } = require('np-utils/np-email');
-const queryIp = require('np-utils/np-ip');
 const authIsVerified = require('np-utils/np-auth');
+const queryIp = require('np-utils/np-ip');
+
 const Comment = require('np-model/comment.model');
 const Article = require('np-model/article.model');
 const Option = require('np-model/option.model');
-const geoip = require('geoip-lite');
-const marked = require('marked');
+
 const commentCtrl = { list: {}, item: {} };
 
 marked.setOptions({

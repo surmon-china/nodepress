@@ -4,7 +4,7 @@
 *
 */
 
-const mongoose = require('np-mongodb').mongoose;
+const mongoose = require('np-core/np-mongodb').mongoose;
 
 const optionSchema = new mongoose.Schema({
 

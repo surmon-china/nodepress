@@ -4,14 +4,17 @@
 *
 */
 
+const config = require('app.config');
+
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 const { baiduSeoPush, baiduSeoUpdate } = require('np-utils/np-baidu-seo-push');
-const Category = require('np-model/category.model');
-const Article = require('np-model/article.model');
 const authIsVerified = require('np-utils/np-auth');
 const buildSiteMap = require('np-utils/np-sitemap');
+
+const Category = require('np-model/category.model');
+const Article = require('np-model/article.model');
+
 const categoryCtrl = { list: {}, item: {} };
-const config = require('np-config');
 
 // 获取分类列表
 categoryCtrl.list.GET = (req, res) => {

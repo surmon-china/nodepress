@@ -1,7 +1,12 @@
-/* 阿里云 ip 查询方法 */
+/*
+*
+* IP 地址统一查询模块
+*
+*/
 
 const https = require('https');
-const config = require('np-config');
+const config = require('app.config');
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // 验证权限

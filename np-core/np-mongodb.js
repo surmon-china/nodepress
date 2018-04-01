@@ -1,6 +1,11 @@
-// 数据库模块
+/*
+*
+* 数据库模块
+*
+*/
+
 const mongoose = require('mongoose');
-const config	 = require('np-config');
+const config	 = require('app.config');
 mongoose.Promise = global.Promise;
 
 exports.mongoose = mongoose;
@@ -9,7 +14,9 @@ exports.mongoose = mongoose;
 exports.connect = () => {
 
 	// 连接数据库
-	mongoose.connect(config.MONGODB.uri);
+	mongoose.connect(config.MONGODB.uri, {
+		promiseLibrary: global.Promise
+	});
 
 	// 连接错误
 	mongoose.connection.on('error', error => {
@@ -23,4 +30,3 @@ exports.connect = () => {
 
 	return mongoose;
 };
-

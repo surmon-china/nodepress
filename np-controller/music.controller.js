@@ -6,8 +6,10 @@
 
 const request = require('request');
 const NeteseMusic = require('simple-netease-cloud-music');
-const neteseMusic = new NeteseMusic();
+
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+
+const neteseMusic = new NeteseMusic();
 const musicCtrl = { lrc: {}, list: {}, song: {}, url: {}, pic: {} };
 
 // 获取某歌单列表
