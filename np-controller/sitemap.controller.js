@@ -1,5 +1,12 @@
-const { handleRequest, handleError } = require('np-utils/np-handle');
+/*
+*
+* 网站地图控制器
+*
+*/
+
 const buildSiteMap = require('np-utils/np-sitemap');
+const { handleRequest, handleError } = require('np-utils/np-handle');
+
 const sitrmapCtrl = {};
 
 // 获取地图
@@ -14,4 +21,3 @@ sitrmapCtrl.GET = (req, res) => {
 
 // export
 module.exports = (req, res) => { handleRequest({ req, res, controller: sitrmapCtrl })};
-

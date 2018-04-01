@@ -1,11 +1,18 @@
-/* 网站地图更新器 */
+/*
+*
+* 网站地图更新器
+*
+*/
 
 const fs = require('fs');
 const sm = require('sitemap');
-const config = require('np-config');
+
+const config = require('app.config');
+
 const Tag = require('np-model/tag.model');
 const Article = require('np-model/article.model');
 const Category = require('np-model/category.model');
+
 let sitemap = null;
 let pages = [
 	{ url: '', changefreq: 'always', priority: 1 },
@@ -76,4 +83,3 @@ const buildSiteMap = (success, error) => {
 
 // export
 module.exports = buildSiteMap;
-

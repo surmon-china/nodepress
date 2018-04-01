@@ -4,11 +4,15 @@
 *
 */
 
-const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
-const Auth = require('np-model/auth.model');
-const config = require('np-config');
+const config = require('app.config');
+
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+
+const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+
+const Auth = require('np-model/auth.model');
+
 const authCtrl = {};
 
 // md5编码
