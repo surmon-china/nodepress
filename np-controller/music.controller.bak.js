@@ -48,8 +48,8 @@ musicCtrl.lrc.GET = (req, res) => {
 		} else {
 			handleError({ res, err, message: '请求失败' });
 		}
-	})
-}
+	});
+};
 
 // 获取某歌单列表
 musicCtrl.list.GET = (req, res) => {
@@ -62,7 +62,7 @@ musicCtrl.list.GET = (req, res) => {
 	if (!playerListFetching) {
 		getMusicPlayerList(list_id);
 	};
-}
+};
 
 // 获取歌曲详情
 musicCtrl.song.GET = (req, res) => {
@@ -84,8 +84,8 @@ musicCtrl.song.GET = (req, res) => {
 		} else {
 			handleError({ res, err, message: '请求失败' });
 		}
-	})
-}
+	});
+};
 
 exports.lrc = (req, res) => { handleRequest({ req, res, controller: musicCtrl.lrc })};
 exports.list = (req, res) => { handleRequest({ req, res, controller: musicCtrl.list })};

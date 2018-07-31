@@ -5,9 +5,10 @@
 */
 
 const redis = require('redis');
+const memoryClient = {};
+
 let redisClientAvailable = false;
 let redisClient = null;
-const memoryClient = {};
 
 exports.redis = null;
 
@@ -16,15 +17,15 @@ exports.set = (key, value, callback) => {
 		// console.log('into redis')
 		if (typeof value !== 'string') {
 			try {
-				value = JSON.stringify(value)
+				value = JSON.stringify(value);
 			} catch (err) {
-				value = value.toString()
+				value = value.toString();
 			}
 		}
-		redisClient.set(key, value, callback)
+		redisClient.set(key, value, callback);
 	} else {
 		// console.log('into memory')
-		memoryClient[key] = value 
+		memoryClient[key] = value;
 	}
 };
 
@@ -32,15 +33,15 @@ exports.get = (key, callback) => {
 	if (redisClientAvailable) {
 		redisClient.get(key, (err, value) => {
 			try {
-				value = JSON.parse(value)
+				value = JSON.parse(value);
 			} catch(err) {
-				value = value
+				value = value;
 			}
-			callback(err, value)
+			callback(err, value);
 		})
 	} else {
-		callback(null, memoryClient[key])
-		return memoryClient[key]
+		callback(null, memoryClient[key]);
+		return memoryClient[key];
 	}
 };
 

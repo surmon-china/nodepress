@@ -15,6 +15,7 @@ exports.connect = () => {
 
 	// 连接数据库
 	mongoose.connect(config.MONGODB.uri, {
+		useNewUrlParser: true,
 		promiseLibrary: global.Promise
 	});
 

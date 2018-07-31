@@ -4,7 +4,6 @@
 *
 */
 
-const request = require('request');
 const NeteseMusic = require('simple-netease-cloud-music');
 
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
@@ -22,7 +21,7 @@ musicCtrl.list.GET = (req, res) => {
 	neteseMusic._playlist(play_list_id).then(({ playlist }) => {
 		handleSuccess({ res, result: playlist, message: '歌单列表获取成功' });
 	});
-}
+};
 
 // 获取歌曲详情
 musicCtrl.song.GET = (req, res) => {
@@ -34,7 +33,7 @@ musicCtrl.song.GET = (req, res) => {
 	neteseMusic.song(song_id).then(result => {
 		handleSuccess({ res, result, message: '歌曲详情获取成功' });
 	});
-}
+};
 
 // 获取歌曲地址
 musicCtrl.url.GET = (req, res) => {
@@ -46,7 +45,7 @@ musicCtrl.url.GET = (req, res) => {
 	neteseMusic.url(song_id, 128).then(result => {
 		handleSuccess({ res, result, message: '歌曲地址获取成功' });
 	});
-}
+};
 
 // 获取歌词
 musicCtrl.lrc.GET = (req, res) => {
@@ -58,7 +57,7 @@ musicCtrl.lrc.GET = (req, res) => {
 	neteseMusic.lyric(song_id).then(result => {
 		handleSuccess({ res, result, message: '歌词获取成功' });
 	});
-}
+};
 
 // 获取图片封面
 musicCtrl.pic.GET = (req, res) => {
@@ -70,7 +69,7 @@ musicCtrl.pic.GET = (req, res) => {
 	neteseMusic.picture(pic_id, 700).then(result => {
 		handleSuccess({ res, result, message: '封面获取成功' });
 	});
-}
+};
 
 exports.pic = (req, res) => { handleRequest({ req, res, controller: musicCtrl.pic })};
 exports.url = (req, res) => { handleRequest({ req, res, controller: musicCtrl.url })};

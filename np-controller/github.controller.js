@@ -25,7 +25,7 @@ const getGithubRepositories = () => {
 		// 无论成功失败都定时更新，10分钟一次
 		setTimeout(getGithubRepositories, 1000 * 60 * 10);
 	})
-}
+};
 
 getGithubRepositories();
 

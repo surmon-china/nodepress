@@ -31,7 +31,7 @@ const queryIpInfo = ip => {
 			res.on('data', chunk => {
 				data = JSON.parse(chunk);
 			});  
-			res.on('end', () => {  
+			res.on('end', () => {
 				if (success && data && data.code === 0) {
 					resolve(data.data);
 				} else {
@@ -39,9 +39,7 @@ const queryIpInfo = ip => {
 				}
 			});
 		});  
-		req.on('error', err => {  
-			reject(err);
-		});  
+		req.on('error', err => reject(err));  
 		req.end();
 	})
 };
