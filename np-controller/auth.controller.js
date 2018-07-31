@@ -8,10 +8,11 @@ const config = require('app.config');
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-
-const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
+const Base64 = require('js-base64').Base64;
 
 const Auth = require('np-model/auth.model');
+
+const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 
 const authCtrl = {};
 
@@ -35,6 +36,7 @@ authCtrl.GET = (req, res) => {
 authCtrl.POST = ({ body: { password }}, res) => {
 	Auth.find({}, '-_id password')
 	.then(([auth = { password: md5Decode(config.AUTH.defaultPassword) }]) => {
+		password = password ? Base64.decode(password) : password;
 		if (Object.is(md5Decode(password), auth.password)) {
 			const token = jwt.sign({
 			  data: config.AUTH.data,
@@ -42,12 +44,10 @@ authCtrl.POST = ({ body: { password }}, res) => {
 			}, config.AUTH.jwtTokenSecret);
 			handleSuccess({ res, result: { token }, message: '登陆成功' });
 		} else {
-			handleError({ res, err, message: '来者何人!' });
+			handleError({ res, message: '来者何人!' });
 		}
 	})
-	.catch(err => {
-		handleError({ res, err, message: '登录失败' });
-	})
+	.catch(err => handleError({ res, err, message: '登录失败' }));
 };
 
 // 修改权限和个人信息
@@ -55,6 +55,11 @@ authCtrl.PUT = ({ body: auth }, res) => {
 
 	// 初始化
 	let { name, slogan, gravatar, password, new_password, rel_new_password } = auth;
+
+	// 密码解码
+	password = password ? Base64.decode(password) : password;
+	new_password = new_password ? Base64.decode(new_password) : new_password;
+	rel_new_password = rel_new_password ? Base64.decode(rel_new_password) : rel_new_password;
 
 	// 验证密码
 	if (!!password && ((!new_password || !rel_new_password) || !Object.is(new_password, rel_new_password))) {
@@ -71,19 +76,20 @@ authCtrl.PUT = ({ body: auth }, res) => {
 	Auth.find({}, '_id name slogan gravatar password')
 	.then(([_auth = { password: md5Decode(config.AUTH.defaultPassword) }]) => {
 		if (!!password && !Object.is(_auth.password, md5Decode(password))) {
-			handleError({ res, message: '原密码不正确' }); 
+			handleError({ res, message: '原密码不正确' });
 		} else {
-			if (!auth.password) delete auth.password;
-			if (auth.rel_new_password) auth.password = md5Decode(auth.rel_new_password);
-			return (_auth._id ? Auth.findByIdAndUpdate(_auth._id, auth, { new: true }) : new Auth(auth).save())
+			if (rel_new_password) {
+				auth.password = md5Decode(rel_new_password);
+				delete auth.new_password;
+				delete auth.rel_new_password;
+			}
+			(_auth._id ? Auth.findByIdAndUpdate(_auth._id, auth, { new: true }) : new Auth(auth).save())
+			.then(({ name, slogan, gravatar } = auth) => {
+				handleSuccess({ res, result: { name, slogan, gravatar }, message: '用户权限修改成功' });
+			})
+			.catch(err => handleError({ res, err, message: '用户权限修改失败' }));
 		}
-	})
-	.then(({ name, slogan, gravatar } = auth) => {
-		handleSuccess({ res, result: { name, slogan, gravatar }, message: '用户权限修改成功' });
-	})
-	.catch(err => {
-		handleError({ res, err, message: '用户权限修改失败' });
-	})
+	}).catch(err => handleError({ res, err, message: '用户权限修改失败' }));
 };
 
 // export

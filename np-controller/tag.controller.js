@@ -30,17 +30,17 @@ const getTags = ({ query, options, success_cb, err_cb, req }) => {
 		}
 		Article.aggregate([
 			{ $match },
-			{ $unwind : "$tag" }, 
-			{ $group: { 
-				_id: "$tag", 
+			{ $unwind: "$tag" },
+			{ $group: {
+				_id: "$tag",
 				num_tutorial: { $sum : 1 }}
 			}
 		])
 		.then(counts => {
-			const newTags = tags.docs.map(t => {
-				const finded = counts.find(c => String(c._id) === String(t._id));
-				t.count = finded ? finded.num_tutorial : 0;
-				return t;
+			const newTags = tags.docs.map(tag => {
+				const finded = counts.find(c => String(c._id) === String(tag._id));
+				tag.count = finded ? finded.num_tutorial : 0;
+				return tag;
 			});
 			tags.docs = newTags;
 			if (success_cb) success_cb(tags);
@@ -57,15 +57,15 @@ const getTags = ({ query, options, success_cb, err_cb, req }) => {
 	}).catch(err => {
 		if (err_cb) err_cb(err);
 	})
-}
+};
 
 // 初始化
-setTimeout(function() {
-	getTags({ query: {}, options: { 
+setTimeout(() => {
+	getTags({ query: {}, options: {
 			sort: { _id: -1 },
 			page: 1,
-			limit: 160 
-		}, 
+			limit: 160
+		},
 		success_cb(tags) {
 			redis.set('tags', tags);
 		}
@@ -118,7 +118,7 @@ tagCtrl.list.GET = (req, res) => {
 			req, query, options,
 			success_cb(tags) {
 				querySuccess(tags);
-			}, 
+			},
 			err_cb(err) {
 				handleError({ res, err, message: '标签列表获取失败' });
 			}
@@ -134,15 +134,15 @@ tagCtrl.list.GET = (req, res) => {
 				req, query, options,
 				success_cb(tags) {
 					redis.set('tags', tags);
-				}, 
+				},
 				err_cb(err) {
 					handleError({ res, err, message: '标签列表获取失败' });
 				}
 			});
 			canGetTags = false;
-			setTimeout(function () {
+			setTimeout(() => {
 				canGetTags = true;
-			}, 1000 * 60 * 5)
+			}, 1000 * 60 * 5);
 		}
 	});
 };
