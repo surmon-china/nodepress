@@ -33,5 +33,5 @@ exports.handleThrottle = (method, delay) => {
 			 	canRun = true;
 			}, delay);
 		}
-	}
+	};
 };

@@ -49,7 +49,7 @@ const routes = app => {
 			};
 		};
 
-		// 排除auth的post请求 && 评论的post请求 && like请求
+		// 排除 auth 的 post 请求 && 评论的 post 请求 && like 请求
 		const isLike = Object.is(req.url, '/like') && Object.is(req.method, 'POST');
 		const isPostAuth = Object.is(req.url, '/auth') && Object.is(req.method, 'POST');
 		const isPostComment = Object.is(req.url, '/comment') && Object.is(req.method, 'POST');
@@ -58,8 +58,8 @@ const routes = app => {
 			return false;
 		};
 
-		// 拦截所有非管路员的非get请求
-		if (!authIsVerified(req) && !Object.is(req.method, 'GET')) {
+		// 拦截（所有非管路员的非 get 请求，或文件上传请求）
+		if (!authIsVerified(req) && (!Object.is(req.method, 'GET') || Object.is(req.url, '/qiniu'))) {
 			res.status(401).jsonp({ code: 0, message: '来者何人！' })
 			return false;
 		};

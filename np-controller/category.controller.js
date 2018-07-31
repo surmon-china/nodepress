@@ -44,7 +44,7 @@ categoryCtrl.list.GET = (req, res) => {
 		});
 	};
 
-	// 查询article-category的count聚合数据
+	// 查询 article-category 的 count 聚合数据
 	const getCatrgoriesCount = categories => {
 		let $match = {};
 		if (!authIsVerified(req)) {
@@ -59,10 +59,10 @@ categoryCtrl.list.GET = (req, res) => {
 			}
 		])
 		.then(counts => {
-			const newCtefories = categories.docs.map(t => {
-				const finded = counts.find(c => String(c._id) === String(t._id));
-				t.count = finded ? finded.num_tutorial : 0;
-				return t;
+			const newCtefories = categories.docs.map(category => {
+				const finded = counts.find(c => String(c._id) === String(category._id));
+				category.count = finded ? finded.num_tutorial : 0;
+				return category;
 			});
 			categories.docs = newCtefories;
 			querySuccess(categories);

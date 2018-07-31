@@ -35,6 +35,9 @@ const articleSchema = new mongoose.Schema({
 	// 文章公开状态 = // -1私密，0需要密码，1私密
 	public: { type: Number, default: 1 },
 
+	// 文章转载状态 = // 0原创，1转载，2混合
+	origin: { type: Number, default: 0 },
+
 	// 文章密码 => 加密状态生效
 	password: { type: String, default: '' },
 

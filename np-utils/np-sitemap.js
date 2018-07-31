@@ -13,8 +13,7 @@ const Tag = require('np-model/tag.model');
 const Article = require('np-model/article.model');
 const Category = require('np-model/category.model');
 
-let sitemap = null;
-let pages = [
+const pages = [
 	{ url: '', changefreq: 'always', priority: 1 },
 	{ url: '/about', changefreq: 'monthly', priority: 1 },
 	{ url: '/project', changefreq: 'monthly', priority: 1 },
@@ -22,15 +21,16 @@ let pages = [
 	{ url: '/guestbook', changefreq: 'always', priority: 1 }
 ];
 
+let sitemap = null;
+
 // 获取数据
 const getDatas = success => {
-	sitemap = sm.createSitemap ({
+	sitemap = sm.createSitemap({
 		hostname: config.INFO.site || 'https://surmon.me',
 		cacheTime: 600000,
 		urls: [...pages]
 	});
-	Tag.find().sort({ '_id': -1 })
-	.then(tags => {
+	Tag.find().sort({ '_id': -1 }).then(tags => {
 		tags.forEach(tag => {
 			sitemap.add({ 
 				url: `/tag/${tag.slug}`, 
@@ -39,8 +39,7 @@ const getDatas = success => {
 			});
 		})
 		return Category.find().sort({ '_id': -1 });
-	})
-	.then(categories => {
+	}).then(categories => {
 		categories.forEach(category => {
 			sitemap.add({ 
 				url: `/category/${category.slug}`, 
@@ -49,8 +48,7 @@ const getDatas = success => {
 			});
 		})
 		return Article.find({ state: 1, public: 1 }).sort({ '_id': -1 });
-	})
-	.then(articles => {
+	}).then(articles => {
 		articles.forEach(article => {
 			sitemap.add({ 
 				url: `/article/${article.id}`, 
@@ -60,8 +58,7 @@ const getDatas = success => {
 			});
 		})
 		success();
-	})
-	.catch(err => {
+	}).catch(err => {
 		success();
 		console.warn('生成地图前获取数据库发生错误', err);
 	})
@@ -75,7 +72,7 @@ const buildSiteMap = (success, error) => {
 		sitemap.toXML((err, xml) => {
 			if (err && error) return error(err);
 			if (!err && success) success(xml);
-			fs.writeFileSync("../surmon.me/static/sitemap.xml", sitemap.toString());
+			fs.writeFileSync('../surmon.me/static/sitemap.xml', sitemap.toString());
 			sitemap = null;
 		});
 	});
