@@ -20,7 +20,7 @@ const articleCtrl = { list: {}, item: {} };
 // 获取文章列表
 articleCtrl.list.GET = (req, res) => {
 
-	let { page, per_page, state, public, keyword, category, category_slug, tag, tag_slug, date, hot } = req.query;
+	let { page, per_page, state, origin, public, keyword, category, category_slug, tag, tag_slug, date, hot } = req.query;
 
 	// 过滤条件
 	const options = {
@@ -42,6 +42,11 @@ articleCtrl.list.GET = (req, res) => {
 	// 按照公开程度查询
 	if (['0', '1', '-1'].includes(public)) {
 		querys.public = public;
+	};
+
+	// 文章来源性质
+	if (['0', '1', '2'].includes(origin)) {
+		querys.origin = origin;
 	};
 
 	// 关键词查询

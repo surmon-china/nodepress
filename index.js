@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // import
 const http = require('http');
@@ -17,8 +17,8 @@ const redis = require('np-core/np-redis');
 const app = express();
 
 // data server
-mongodb.connect();
 redis.connect();
+mongodb.connect();
 
 // global options
 mongoosePaginate.paginate.options = {

@@ -19,6 +19,7 @@ const Option = require('np-model/option.model');
 
 const commentCtrl = { list: {}, item: {} };
 
+// 为评论内容创建一个编译器实例
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -67,23 +68,75 @@ const updateArticleCommentCount = (post_ids = []) => {
 
 // 邮件通知网站主及目标对象
 const sendMailToAdminAndTargetUser = (comment, permalink) => {
-	const commentContent = marked(comment.content)
+	const commentContent = marked(comment.content);
+	const commentType = !!comment.post_id ? '评论' : '留言';
 	sendMail({
 		to: 'surmon@foxmail.com',
-		subject: '博客有新的留言',
-		text: `来自 ${comment.author.name} 的留言：${comment.content}`,
-		html: `<p> 来自 ${comment.author.name} 的留言：${commentContent}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+		subject: `博客有新的${commentType}`,
+		text: `来自 ${comment.author.name} 的${commentType}：${comment.content}`,
+		html: `<p> 来自 ${comment.author.name} 的${commentType}：${commentContent}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
 	});
 	if (!!comment.pid) {
 		Comment.findOne({ id: comment.pid }).then(parentComment => {
 			sendMail({
 				to: parentComment.author.email,
-				subject: '你在Surmon.me有新的评论回复',
-				text: `来自 ${comment.author.name} 的评论回复：${comment.content}`,
-				html: `<p> 来自${comment.author.name} 的评论回复：${commentContent}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+				subject: `你在 Surmon.me 有新的${commentType}回复`,
+				text: `来自 ${comment.author.name} 的${commentType}回复：${comment.content}`,
+				html: `<p> 来自${comment.author.name} 的${commentType}回复：${commentContent}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
 			});
 		})
 	};
+};
+
+// 根据操作状态处理评论转移
+const handleCommentsStateChange = (state, comments, referer) => {
+	Option.findOne().then(options => {
+
+		const spam_comment = Object.is(state, -2);
+		const { keywords, mails, ips } = options.blacklist;
+
+		// 如果是将评论状态标记为垃圾邮件，则加入黑名单，以及 submitSpam
+		if (spam_comment) {
+			// console.log('把这些评论拉到黑名单+++');
+			options.blacklist.mails = [...new Set([...mails, ...comments.map(comment => comment.author.email)])];
+			options.blacklist.keywords = [...new Set([...keywords, ...comments.map(comment => comment.content)])];
+			options.blacklist.ips = [...new Set([...ips, ...comments.map(comment => comment.ip)])];
+
+		// 如果是将评论状态标记为误标邮件，则移出黑名单，以及 submitHam
+		} else {
+			// console.log('把这些评论移出黑名单---');
+			options.blacklist.mails = options.blacklist.mails.filter(mail => {
+				return !comments.some(comment => Object.is(comment.author.email, mail));
+			});
+			options.blacklist.keywords = options.blacklist.keywords.filter(keyword => {
+				return !comments.some(comment => Object.is(comment.content, keyword));
+			});
+			options.blacklist.ips = options.blacklist.ips.filter(ip => !comments.some(comment => Object.is(comment.ip, ip)));
+		}
+
+		comments.forEach(comment => {
+			akismetClient[`submit${spam_comment ? 'Spam' : 'Ham'}`]({
+				user_ip: comment.ip,
+				user_agent: comment.agent,
+				referrer: referer,
+				comment_type: 'comment',
+				comment_author: comment.author.name,
+				comment_author_email: comment.author.email,
+				comment_author_url: comment.author.site,
+				comment_content: comment.author.content,
+				is_test: Object.is(process.env.NODE_ENV, 'development')
+			});
+		});
+
+		options.save().then(options => {
+			// console.log('黑名单什么的已经更新成功', options.blacklist);
+		}).catch(err => {
+			console.warn('评论状态转译后，黑名单更新失败', err);
+		});
+
+	}).catch(err => {
+		console.warn(`处理评论状态转移之前，获取系统黑名单失败！${err}`);
+	});
 };
 
 // 获取评论列表
@@ -161,7 +214,7 @@ commentCtrl.list.GET = (req, res) => {
 // 发布评论
 commentCtrl.list.POST = (req, res) => {
 
-	let { body: comment } = req
+	const { body: comment } = req
 
 	const doSaveComment = () => {
 		if (ip_location) {
@@ -204,12 +257,10 @@ commentCtrl.list.POST = (req, res) => {
 			comment_author_email: comment.author.email,
 			comment_author_url: comment.author.site,
 			comment_content: comment.content,
-			is_test : Object.is(process.env.NODE_ENV, 'development')
+			is_test: Object.is(process.env.NODE_ENV, 'development')
 
 		// 使用设置的黑名单ip/邮箱/关键词过滤
-		}).then(info => {
-			return Option.findOne()
-		}).then(options => {
+		}).then(info => Option.findOne()).then(options => {
 			const { keywords, mails, ips } = options.blacklist;
 			if (ips.includes(comment.ip) || 
 					mails.includes(comment.author.email) ||
@@ -248,7 +299,7 @@ commentCtrl.list.POST = (req, res) => {
 };
 
 // 批量修改（移回收站、回收站恢复）
-commentCtrl.list.PATCH = ({ body: { comments, post_ids, state }}, res) => {
+commentCtrl.list.PATCH = ({ body: { comments, post_ids, state }, headers: { referer }}, res) => {
 
 	state = Object.is(state, undefined) ? null : Number(state)
 
@@ -261,9 +312,16 @@ commentCtrl.list.PATCH = ({ body: { comments, post_ids, state }}, res) => {
 	Comment.update({ '_id': { $in: comments }}, { $set: { state }}, { multi: true })
 	.then(result => {
 		handleSuccess({ res, result, message: '评论批量操作成功' });
+		// 如果处理的状态有超过包含一篇文章评论以上的状态，则更新所相关文章的聚合数据
 		if (post_ids && post_ids.length) {
 			updateArticleCommentCount(post_ids);
-		}
+		};
+		// 处理评论状态转译，如果是将评论状态标记为垃圾邮件，则加入黑名单，以及 submitSpam
+		Comment.find({ '_id': { $in: comments } }).then(todo_comments => {
+			handleCommentsStateChange(state, todo_comments, referer);
+		}).catch(err => {
+			console.log(`批量转译评论数据状态至${state}时，出现错误！${err}`);
+		});
 	})
 	.catch(err => {
 		handleError({ res, err, message: '评论批量操作失败' });
@@ -303,13 +361,16 @@ commentCtrl.item.GET = ({ params: { comment_id }}, res) => {
 };
 
 // 修改单个评论
-commentCtrl.item.PUT = ({ params: { comment_id }, body: comment }, res) => {
+commentCtrl.item.PUT = ({ params: { comment_id }, body: comment, headers: { referer }}, res) => {
 	Comment.findByIdAndUpdate(comment_id, comment, { new: true })
 	.then(result => {
 		handleSuccess({ res, result, message: '评论修改成功' });
+		// 如果评论所属为文章评论，则更新文章所属的聚合数据
 		if (comment.post_id) {
 			updateArticleCommentCount([comment.post_id]);
 		}
+		// 处理评论状态转移
+		handleCommentsStateChange(comment.state, [comment], referer);
 	})
 	.catch(err => {
 		handleError({ res, err, message: '评论修改失败' });

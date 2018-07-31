@@ -16,6 +16,7 @@
 
 所有的依赖，[都在这里](https://github.com/surmon-china/nodepress/blob/master/package.json#L11)
 
+更新记录，[在这里](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
 
 ## 接口概述
 
@@ -60,7 +61,6 @@
     + 业务计算数据
     + 数据库真实存在数据
     + mongoose 支持的 virtual 虚拟数据
-
 
 ## 文件目录
 
@@ -187,7 +187,6 @@
     目前只有百度
     ```
 
-
 ## 开发命令
 
 ```bash
@@ -199,32 +198,3 @@ npm run dev
 # 生产模式
 npm start
 ```
-
-## Todos & Issues
-
-- ~~驱动搜索引擎ping接口 文章发布后自动ping给搜索引擎xml~~
-- ~~增加评论功能+黑名单，评论可自动校验spam，及黑名单（ip、邮箱、关键字的校验）~~
-- ~~使用helmet + 手动优化，优化程序安全性~~
-- ~~优化mongoose实例~~
-- ~~优化数据表结构~~
-- ~~更新数据时时间更新~~
-- ~~修复时间检索失效~~
-- ~~增加idle-gc内存回收~~
-- ~~增加百度搜索引擎的实时提交~~
-- ~~更新模块化别名~~
-- ~~更新readme~~
-- ~~rss订阅接口 https://github.com/dylang/node-rss~~
-- ~~加入网站地图接口~~
-- ~~网站地图由于缓存或者primise不能及时更新~~
-- ~~网站地图的数据构成中文章需要筛选公开一发布的文章~~
-- ~~对接百度统计开放平台api~~
-- ~~密码存储需要使用md5加密机制~~
-- ~~token... 等config信息使用node命令参数在shell中配置覆盖~~
-- ~~lean 和 翻页插件一起使用，返回的id字段是_id bug~~
-- ~~整理统一result的返回结构~~
-- ~~围观后计数功能~~
-- ~~多说转发热门文章接口~~
-- ~~相关文章接口~~
-- ~~使用Redis缓存标签、播放器、githb数据~~
-- ~~修复了评论数bug~~
-- ~~重构了播放器API~~
