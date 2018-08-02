@@ -12,6 +12,7 @@ const Base64 = require('js-base64').Base64;
 
 const Auth = require('np-model/auth.model');
 
+const authIsVerified = require('np-utils/np-auth');
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
 
 const authCtrl = {};
@@ -48,6 +49,15 @@ authCtrl.POST = ({ body: { password }}, res) => {
 		}
 	})
 	.catch(err => handleError({ res, err, message: '登录失败' }));
+};
+
+// 检查 Token 的有效性
+authCtrl.PATCH = (req, res) => {
+	if (authIsVerified(req)) {
+		handleSuccess({ res, result: true, message: 'Token 验证成功' });
+	} else {
+		handleError({ res, result: false, code: 403, message: 'Token 验证不通过!' });
+	}
 };
 
 // 修改权限和个人信息
