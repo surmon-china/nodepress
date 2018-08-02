@@ -20,6 +20,7 @@
 - 升级 yargs 库
 - fork mongoose-paginate 修复旧方法警告问题
 - 更新密码加密机制
+- 增加检查 Token 有效性接口
 
 ### v1.2.0
 
