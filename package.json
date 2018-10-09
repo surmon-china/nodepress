@@ -1,7 +1,13 @@
 {
-  "name": "NodePress",
-  "version": "2.0.0",
-  "author": "Surmon",
+  "name": "nodepress",
+  "version": "2.1.0",
+  "description": "RESTful API server application for Surmon.me blog",
+  "private": false,
+  "author": {
+    "name": "Surmon",
+    "email": "surmon@foxmail.com",
+    "url": "https://surmon.me"
+  },
   "scripts": {
     "start": "NODE_ENV=production node --harmony index.js",
     "dev": "nodemon --exec \"NODE_ENV=development node --harmony index.js\"",
