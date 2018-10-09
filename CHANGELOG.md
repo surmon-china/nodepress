@@ -1,6 +1,16 @@
 
 ## CHANGELOG
 
+### v2.1.0
+
+- 优化编码风格
+- 完善项目信息
+- 完善 JsDoc 信息
+- Music 控制器增加 Limit 参数
+- Github 控制器优化数据
+- 增加 bing-wallpaper API 服务
+- 使用更友好的 consola 日志模块
+
 ### v2.0.0
 
 - 文章增加原创、转载字段
