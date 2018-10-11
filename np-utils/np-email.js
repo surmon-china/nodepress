@@ -4,10 +4,10 @@
 *
 */
 
-const config = require('app.config');
-const nodemailer = require('nodemailer');
+const config = require('app.config')
+const nodemailer = require('nodemailer')
 
-let clientIsValid = false;
+let clientIsValid = false
 
 const transporter = nodemailer.createTransport({
 	host: 'smtp.qq.com',
@@ -17,38 +17,38 @@ const transporter = nodemailer.createTransport({
 		user: config.EMAIL.account,
 		pass: config.EMAIL.password
 	}
-});
+})
 
 const verifyClient = () => {
 	transporter.verify((error, success) => {
 		if (error) {
-			clientIsValid = false;
-			console.warn('邮件客户端初始化连接失败，将在一小时后重试');
-			setTimeout(verifyClient, 1000 * 60 * 60);
+			clientIsValid = false
+			console.warn('邮件客户端初始化连接失败，将在一小时后重试')
+			setTimeout(verifyClient, 1000 * 60 * 60)
 		} else {
-			clientIsValid = true;
-			console.log('邮件客户端初始化连接成功，随时可发送邮件');
+			clientIsValid = true
+			console.log('邮件客户端初始化连接成功，随时可发送邮件')
 		}
-	});
-};
+	})
+}
 
-verifyClient();
+verifyClient()
 
 const sendMail = mailOptions => {
 	if (!clientIsValid) {
-		console.warn('由于未初始化成功，邮件客户端发送被拒绝');
-		return false;
+		console.warn('由于未初始化成功，邮件客户端发送被拒绝')
+		return false
 	}
-	mailOptions.from = '"Surmon" <i@surmon.me>';
+	mailOptions.from = '"Surmon" <i@surmon.me>'
 	transporter.sendMail(mailOptions, (error, info) => {
 		if (error) {
-			console.warn('邮件发送失败', error);
+			console.warn('邮件发送失败', error)
 		} else {
-			console.log('邮件发送成功', info.messageId, info.response);
+			console.log('邮件发送成功', info.messageId, info.response)
 		}
-	});
-};
+	})
+}
 
-exports.sendMail = sendMail;
-exports.nodemailer = nodemailer;
-exports.transporter = transporter;
+exports.sendMail = sendMail
+exports.nodemailer = nodemailer
+exports.transporter = transporter
