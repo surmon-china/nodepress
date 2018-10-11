@@ -1,7 +1,7 @@
 /**
  * App config module.
  * @file 应用运行配置
- * @module nodepress/ecosystem
+ * @module nodepress/app.config
  * @author Surmon <i@surmon.me>
  */
 
@@ -30,6 +30,10 @@ exports.AUTH = {
 exports.BAIDU = {
 	site: argv.baidu_site || 'your baidu site domain like : surmon.me',
 	token: argv.baidu_token || 'your baidu seo push token'
+}
+
+exports.GITHUB = {
+	username: argv.github_username || 'surmon-china',
 }
 
 exports.ALIYUN = {
