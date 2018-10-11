@@ -6,8 +6,8 @@
  */
 
 const request = require('request')
-const config = require('app.config')
 const consola = require('consola')
+const config = require('app.config')
 
 const BAIDU_SITE = config.BAIDU.site
 const BAIDU_TOKEN = config.BAIDU.token
