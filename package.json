@@ -11,6 +11,7 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production node --harmony index.js",
+    "lint": "eslint --ext .js --ignore-path .eslintignore .",
     "dev": "nodemon --exec \"NODE_ENV=development node --harmony index.js\"",
     "dev:tool": "devtool index.js --js-flags=\"NODE_ENV=development --harmony --inspect\" --watch",
     "updatedb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
@@ -36,9 +37,16 @@
     "request": "^2.87.0",
     "simple-netease-cloud-music": "^0.3.4",
     "sitemap": "^1.13.0",
+    "wonderful-bing-wallpaper": "^0.1.0",
     "yargs": "^12.0.1"
   },
   "engines": {
     "node": ">=0.10"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.6.1",
+    "eslint-plugin-node": "^7.0.1",
+    "nodemon": "^1.18.4"
   }
 }

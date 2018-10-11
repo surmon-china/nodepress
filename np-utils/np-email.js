@@ -1,9 +1,11 @@
-/*
-*
-* 邮件模块
-*
-*/
+/**
+ * Email module.
+ * @file email 模块
+ * @module utils/email
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
+const consola = require('consola')
 const config = require('app.config')
 const nodemailer = require('nodemailer')
 
@@ -23,11 +25,11 @@ const verifyClient = () => {
 	transporter.verify((error, success) => {
 		if (error) {
 			clientIsValid = false
-			console.warn('邮件客户端初始化连接失败，将在一小时后重试')
+			consola.warn('邮件客户端初始化连接失败，将在一小时后重试')
 			setTimeout(verifyClient, 1000 * 60 * 60)
 		} else {
 			clientIsValid = true
-			console.log('邮件客户端初始化连接成功，随时可发送邮件')
+			consola.info('邮件客户端初始化连接成功，随时可发送邮件')
 		}
 	})
 }
@@ -36,15 +38,15 @@ verifyClient()
 
 const sendMail = mailOptions => {
 	if (!clientIsValid) {
-		console.warn('由于未初始化成功，邮件客户端发送被拒绝')
+		consola.warn('由于未初始化成功，邮件客户端发送被拒绝')
 		return false
 	}
-	mailOptions.from = '"Surmon" <i@surmon.me>'
+	mailOptions.from = config.EMAIL.from
 	transporter.sendMail(mailOptions, (error, info) => {
 		if (error) {
-			console.warn('邮件发送失败', error)
+			consola.warn('邮件发送失败', error)
 		} else {
-			console.log('邮件发送成功', info.messageId, info.response)
+			consola.info('邮件发送成功', info.messageId, info.response)
 		}
 	})
 }

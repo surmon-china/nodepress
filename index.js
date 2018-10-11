@@ -1,8 +1,8 @@
 /**
  * Entry module.
  * @file Index 入口文件
- * @module nodepress/index
- * @author Surmon <i@surmon.me>
+ * @module entry
+ * @author Surmon <https://github.com/surmon-china>
  */
 
 'use strict'
@@ -15,6 +15,7 @@ const consola = require('consola')
 const bodyParser = require('body-parser')
 const mongoosePaginate = require('mongoose-paginate')
 
+// global path
 require('app-module-path').addPath(__dirname + '/')
 
 // app modules
@@ -43,7 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // app routes
 routes(app)
 
-// Start server
+// start server
 http.createServer(app).listen(app.get('port'), () => {
 	consola.ready(`NodePress Run！port at ${app.get('port')}, env: ${environment.environment}`)
 })

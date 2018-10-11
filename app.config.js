@@ -1,11 +1,18 @@
 /**
  * App config module.
  * @file 应用运行配置
- * @module nodepress/app.config
- * @author Surmon <i@surmon.me>
+ * @module app.config
+ * @author Surmon <https://github.com/surmon-china>
  */
 
-const argv = require('yargs').argv
+const { argv } = require('yargs')
+const package = require('package')
+
+exports.APP = {
+	ROOT_PATH: __dirname,
+	LIMIT: 16,
+	PORT: 8000
+}
 
 exports.MONGODB = {
 	uri: `mongodb://127.0.0.1:${argv.dbport || '27017'}/NodePress`,
@@ -41,8 +48,9 @@ exports.ALIYUN = {
 }
 
 exports.EMAIL = {
-	account: argv.email_account || 'your email address like : admin@surmon.me',
-	password: argv.email_password || 'your email password'
+	account: argv.email_account || 'your email address like : i@surmon.me',
+	password: argv.email_password || 'your email password',
+	from: argv.email_from || '"Surmon" <i@surmon.me>'
 }
 
 exports.AKISMET = {
@@ -50,17 +58,11 @@ exports.AKISMET = {
 	blog: argv.akismet_blog || 'your akismet blog site, like: https://surmon.me'
 }
 
-exports.APP = {
-	ROOT_PATH: __dirname,
-	LIMIT: 16,
-	PORT: 8000
-}
-
 exports.INFO = {
-	name: 'NodePress',
-	version: '2.0.0',
-	author: 'Surmon',
-	site: 'https://surmon.me',
+	name: package.name,
+	version: package.version,
+	author: package.author,
+	site: package.author.url,
 	github: 'https://github.com/surmon-china',
 	powered: ['Vue', 'Nuxt.js', 'ReactNative', 'Angular', 'Bootstrap4', 'Nodejs', 'MongoDB', 'Express', 'Nginx']
 }

@@ -1,20 +1,20 @@
 /**
  * Eslint config module.
  * @file Eslint 配置
- * @module nodepress/eslintrc
- * @author Surmon <i@surmon.me>
+ * @module eslintrc
+ * @author Surmon <https://github.com/surmon-china>
  */
 
  module.exports = {
   root: true,
   env: {
+    es6: true,
     node: true
   },
   parserOptions: {
     parser: 'babel-eslint'
   },
   extends: [
-    'plugin:vue/recommended',
     // 'plugin:prettier/recommended'
   ],
   //  https:// github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
@@ -370,7 +370,7 @@
     /*Strict Mode*/
 
     // 使用严格模式
-    "strict": 2,
+    "strict": 0,
 
     /*Variables*/
 

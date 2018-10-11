@@ -1,46 +1,33 @@
-/*
-*
-* IP 地址统一查询模块
-*
-*/
+/**
+ * Ip module.
+ * @file IP 地址统一查询模块
+ * @module utils/ip
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-const https = require('https')
+const request = require('request')
 const config = require('app.config')
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 // 验证权限
 const queryIpInfo = ip => {
-	let data = null
-	let success = false
 	return new Promise((resolve, reject) => {
-		const req = https.request({
-			hostname: 'dm-81.data.aliyun.com',
-			path: `/rest/160601/ip/getIpInfo.json?ip=${ip}`,
-			port: 443,
-			method: 'GET',
-			protocol: 'https:',
-			headers:{
-				'Authorization': `APPCODE ${config.ALIYUN.ip}`,
-			}
-		}, res => {
-			if (res.statusCode == 200) {
-				success = true
-			}
-			res.setEncoding('utf-8')
-			res.on('data', chunk => {
-				data = JSON.parse(chunk)
-			})  
-			res.on('end', () => {
-				if (success && data && data.code === 0) {
-					resolve(data.data)
+		request({
+			headers: { 'Authorization': `APPCODE ${config.ALIYUN.ip}` },
+			url: `https://dm-81.data.aliyun.com/rest/160601/ip/getIpInfo.json?ip=${ip}`
+		}, (error, response, body) => {
+			if (!error && response.statusCode == 200) {
+				const result = JSON.parse(body)
+				if (result && result.code === 0) {
+					resolve(result.data)
 				} else {
-					reject(data)
+					reject(result)
 				}
-			})
-		})  
-		req.on('error', err => reject(err))  
-		req.end()
+			} else {
+				reject(error || response.statusMessage)
+			}
+		})
 	})
 }
 
