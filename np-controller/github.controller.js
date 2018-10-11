@@ -5,6 +5,7 @@
 */
 
 const request = require('request')
+const config = require('app.config');
 const redis = require('np-core/np-redis')
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle')
 
@@ -13,7 +14,7 @@ const githubCtrl = {}
 // 获取远程项目列表
 const getGithubRepositories = () => {
 	request({
-		url: 'https://api.github.com/users/surmon-china/repos',
+		url: `https://api.github.com/users/${config.GITHUB.username}/repos`,
 		headers: { 'User-Agent': 'request' }
 	}, (err, response, body) => {
 		if(!err && response.statusCode == 200) {
