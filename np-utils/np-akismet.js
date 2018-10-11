@@ -1,39 +1,40 @@
 /**
  * Akismet spam module.
  * @file akismet-spam 反垃圾
- * @module nodepress/utils/akismet
- * @author Surmon <i@surmon.me>
+ * @module utils/akismet
+ * @author Surmon <https://github.com/surmon-china>
  */
 
-const akismet = require('akismet-api')
+const consola = require('consola')
 const config = require('app.config')
+const akismet = require('akismet-api')
+
+let clientIsValid = false
 
 const client = akismet.client({
 	key: config.AKISMET.key,
 	blog: config.AKISMET.blog
 })
 
-let clientIsValid = false
-
 // check key
 client.verifyKey().then(valid => {
 	clientIsValid = valid
-	console.log(`Akismet key ${ valid ? '有效' : '无效' }!`)
+	consola.info(`Akismet key ${valid ? '有效' : '无效'}!`)
 }).catch(err => {
 	console.warn('Akismet VerifyKey Error:', err.message)
 })
 
 // check spam
 const checkSpam = comment => {
-	console.log('Akismet 验证评论中...', new Date())
-	return new Promise((resolve, solve) => {
+	consola.info('Akismet 验证评论中...', new Date())
+	return new Promise((resolve, reject) => {
 		if (clientIsValid) {
 			client.checkSpam(comment).then(spam => {
 				if (spam) {
-					console.warn('Akismet 验证不通过!', new Date())
-					solve(new Error('spam!'))
+					consola.warn('Akismet 验证不通过!', new Date())
+					reject(new Error('spam!'))
 				} else {
-					console.log('Akismet 验证通过', new Date())
+					consola.info('Akismet 验证通过', new Date())
 					resolve(spam)
 				}
 			}).catch(err => {
@@ -51,9 +52,9 @@ const checkSpam = comment => {
 const handleCommentInterceptor = handle_type => {
 	return comment => {
 		if (clientIsValid) {
-			console.log(`Akismet ${handle_type}...`, new Date())
+			consola.info(`Akismet ${handle_type}...`, new Date())
 			client[handle_type](comment).then(result => {
-				console.log(`Akismet ${handle_type} success!`)
+				consola.info(`Akismet ${handle_type} success!`)
 			}).catch(err => {
 				console.warn(`Akismet ${handle_type} failed!`, err)
 			})

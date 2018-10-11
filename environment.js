@@ -1,8 +1,8 @@
 /**
  * Environment module.
  * @file Environment 环境配置
- * @module nodepress/environment
- * @author Surmon <i@surmon.me>
+ * @module environment
+ * @author Surmon <https://github.com/surmon-china>
  */
 
 const environment = process.env.NODE_ENV
