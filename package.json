@@ -8,6 +8,7 @@
     "email": "surmon@foxmail.com",
     "url": "https://surmon.me"
   },
+  "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=production node --harmony index.js",
     "dev": "nodemon --exec \"NODE_ENV=development node --harmony index.js\"",
@@ -18,6 +19,7 @@
     "akismet-api": "^4.2.0",
     "app-module-path": "^2.2.0",
     "body-parser": "^1.18.3",
+    "consola": "^1.4.3",
     "express": "^4.16.3",
     "geoip-lite": "^1.3.1",
     "helmet": "^3.13.0",
