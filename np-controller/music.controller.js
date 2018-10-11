@@ -5,7 +5,6 @@
 */
 
 const NeteseMusic = require('simple-netease-cloud-music')
-
 const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle')
 
 const neteseMusic = new NeteseMusic()
