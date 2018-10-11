@@ -9,6 +9,7 @@ const fs = require('fs')
 const sm = require('sitemap')
 const consola = require('consola')
 const config = require('app.config')
+
 const Tag = require('np-model/tag.model')
 const Article = require('np-model/article.model')
 const Category = require('np-model/category.model')
