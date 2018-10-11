@@ -4,10 +4,10 @@
 *
 */
 
-const crypto = require('crypto');
-const config = require('app.config');
+const crypto = require('crypto')
+const config = require('app.config')
+const { mongoose } = require('np-core/np-mongodb')
 
-const mongoose = require('np-core/np-mongodb').mongoose;
 const authSchema = new mongoose.Schema({
 
 	// 名字
@@ -24,7 +24,8 @@ const authSchema = new mongoose.Schema({
 		type: String, 
 		default: crypto.createHash('md5').update(config.AUTH.defaultPassword).digest('hex')
 	}
-});
+})
 
-const Auth = mongoose.model('Auth', authSchema);
-module.exports = Auth;
+const Auth = mongoose.model('Auth', authSchema)
+
+module.exports = Auth

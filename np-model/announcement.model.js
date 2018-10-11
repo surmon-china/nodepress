@@ -1,15 +1,16 @@
-/*
-*
-* 公告数据模型
-*
-*/
+/**
+ * Announcement model module.
+ * @file 公告数据模型
+ * @module nodepress/model/announcement
+ * @author Surmon <i@surmon.me>
+ */
 
-const mongoose = require('np-core/np-mongodb').mongoose;
-const autoIncrement = require('mongoose-auto-increment');
-const mongoosePaginate = require('mongoose-paginate');
+const { mongoose } = require('np-core/np-mongodb')
+const autoIncrement = require('mongoose-auto-increment')
+const mongoosePaginate = require('mongoose-paginate')
 
 // 自增ID初始化
-autoIncrement.initialize(mongoose.connection);
+autoIncrement.initialize(mongoose.connection)
 
 // 公告模型
 const announcementSchema = new mongoose.Schema({
@@ -25,25 +26,24 @@ const announcementSchema = new mongoose.Schema({
 
 	// 最后修改日期
 	update_at: { type: Date, default: Date.now }
-});
+})
 
 // 翻页 + 自增ID插件配置
-announcementSchema.plugin(mongoosePaginate);
+announcementSchema.plugin(mongoosePaginate)
 announcementSchema.plugin(autoIncrement.plugin, {
 	model: 'Announcement',
 	field: 'id',
 	startAt: 1,
 	incrementBy: 1
-});
+})
 
 // 时间更新
 announcementSchema.pre('findOneAndUpdate', function(next) {
-	this.findOneAndUpdate({}, { update_at: Date.now() });
-	next();
-});
+	this.findOneAndUpdate({}, { update_at: Date.now() })
+	next()
+})
 
 // 公告模型
-const Announcement = mongoose.model('Announcement', announcementSchema);
+const Announcement = mongoose.model('Announcement', announcementSchema)
 
-// export
-module.exports = Announcement;
+module.exports = Announcement
