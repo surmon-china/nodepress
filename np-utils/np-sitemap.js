@@ -4,14 +4,12 @@
 *
 */
 
-const fs = require('fs');
-const sm = require('sitemap');
-
-const config = require('app.config');
-
-const Tag = require('np-model/tag.model');
-const Article = require('np-model/article.model');
-const Category = require('np-model/category.model');
+const fs = require('fs')
+const sm = require('sitemap')
+const config = require('app.config')
+const Tag = require('np-model/tag.model')
+const Article = require('np-model/article.model')
+const Category = require('np-model/category.model')
 
 const pages = [
 	{ url: '', changefreq: 'always', priority: 1 },
@@ -19,9 +17,9 @@ const pages = [
 	{ url: '/project', changefreq: 'monthly', priority: 1 },
 	{ url: '/sitemap', changefreq: 'always', priority: 1 },
 	{ url: '/guestbook', changefreq: 'always', priority: 1 }
-];
+]
 
-let sitemap = null;
+let sitemap = null
 
 // 获取数据
 const getDatas = success => {
@@ -29,25 +27,25 @@ const getDatas = success => {
 		hostname: config.INFO.site || 'https://surmon.me',
 		cacheTime: 600000,
 		urls: [...pages]
-	});
+	})
 	Tag.find().sort({ '_id': -1 }).then(tags => {
 		tags.forEach(tag => {
 			sitemap.add({ 
 				url: `/tag/${tag.slug}`, 
 				changefreq: 'daily', 
 				priority: 0.6 
-			});
+			})
 		})
-		return Category.find().sort({ '_id': -1 });
+		return Category.find().sort({ '_id': -1 })
 	}).then(categories => {
 		categories.forEach(category => {
 			sitemap.add({ 
 				url: `/category/${category.slug}`, 
 				changefreq: 'daily', 
 				priority: 0.6 
-			});
+			})
 		})
-		return Article.find({ state: 1, public: 1 }).sort({ '_id': -1 });
+		return Article.find({ state: 1, public: 1 }).sort({ '_id': -1 })
 	}).then(articles => {
 		articles.forEach(article => {
 			sitemap.add({ 
@@ -55,28 +53,28 @@ const getDatas = success => {
 				changefreq: 'daily', 
 				lastmodISO: article.create_at.toISOString(), 
 				priority: 0.8 
-			});
+			})
 		})
-		success();
+		success()
 	}).catch(err => {
-		success();
-		console.warn('生成地图前获取数据库发生错误', err);
+		success()
+		console.warn('生成地图前获取数据库发生错误', err)
 	})
-};
+}
 
 
 // 获取地图
 const buildSiteMap = (success, error) => {
 	getDatas(() => {
-		// console.log('data', sitemap);
+		// console.log('data', sitemap)
 		sitemap.toXML((err, xml) => {
-			if (err && error) return error(err);
-			if (!err && success) success(xml);
-			fs.writeFileSync('../surmon.me/static/sitemap.xml', sitemap.toString());
-			sitemap = null;
-		});
-	});
-};
+			if (err && error) return error(err)
+			if (!err && success) success(xml)
+			fs.writeFileSync('../surmon.me/static/sitemap.xml', sitemap.toString())
+			sitemap = null
+		})
+	})
+}
 
 // export
-module.exports = buildSiteMap;
+module.exports = buildSiteMap

@@ -4,15 +4,15 @@
 *
 */
 
-const https = require('https');
-const config = require('app.config');
+const https = require('https')
+const config = require('app.config')
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 // 验证权限
 const queryIpInfo = ip => {
-	let data = null;
-	let success = false;
+	let data = null
+	let success = false
 	return new Promise((resolve, reject) => {
 		const req = https.request({
 			hostname: 'dm-81.data.aliyun.com',
@@ -25,23 +25,23 @@ const queryIpInfo = ip => {
 			}
 		}, res => {
 			if (res.statusCode == 200) {
-				success = true;
+				success = true
 			}
-			res.setEncoding('utf-8');
+			res.setEncoding('utf-8')
 			res.on('data', chunk => {
-				data = JSON.parse(chunk);
-			});  
+				data = JSON.parse(chunk)
+			})  
 			res.on('end', () => {
 				if (success && data && data.code === 0) {
-					resolve(data.data);
+					resolve(data.data)
 				} else {
-					reject(data);
+					reject(data)
 				}
-			});
-		});  
-		req.on('error', err => reject(err));  
-		req.end();
+			})
+		})  
+		req.on('error', err => reject(err))  
+		req.end()
 	})
-};
+}
 
-module.exports = queryIpInfo;
+module.exports = queryIpInfo
