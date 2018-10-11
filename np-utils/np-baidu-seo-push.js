@@ -1,44 +1,42 @@
-/*
-*
-* badu-seo-push 模块
-*
-*/
+/**
+ * Auth module.
+ * @file badu-seo-push 模块
+ * @module utils/badu-seo-push
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 const request = require('request')
 const config = require('app.config')
+const consola = require('consola')
+
+const BAIDU_SITE = config.BAIDU.site
+const BAIDU_TOKEN = config.BAIDU.token
+
+// POST request
+const postRequest = ({ urlKey, urls, msg }) => {
+	request.post({
+		body: urls,
+		headers: { 'Content-Type': 'text/plain' },
+		url: `http://data.zz.baidu.com/${urlKey}?site=${BAIDU_SITE}&token=${BAIDU_TOKEN}`
+	}, (error, response, body) => {
+		consola.info(urls, msg, error, body)
+	})
+}
 
 // 提交记录
 exports.baiduSeoPush = urls => {
-	// console.log('百度推送：', urls)
-	request.post({
-		url: `http://data.zz.baidu.com/urls?site=${config.BAIDU.site}&token=${config.BAIDU.token}`, 
-		headers: { 'Content-Type': 'text/plain' },
-		body: urls
-	}, (error, response, body) => {
-		console.log(urls, '百度推送结果：', error, body)
-	})
+	// consola.log('百度推送：', urls)
+	postRequest({ urls, urlKey: 'urls', msg: '百度推送结果：' })
 }
 
 // 更新记录
 exports.baiduSeoUpdate = urls => {
-	// console.log('百度更新：', urls)
-	request.post({
-		url: `http://data.zz.baidu.com/update?site=${config.BAIDU.site}&token=${config.BAIDU.token}`, 
-		headers: { 'Content-Type': 'text/plain' },
-		body: urls
-	}, (error, response, body) => {
-		console.log(urls, '百度更新结果：', error, body)
-	})
+	// consola.log('百度更新：', urls)
+	postRequest({ urls, urlKey: 'update', msg: '百度更新结果：' })
 }
 
 // 删除记录
 exports.baiduSeoDelete = urls => {
-	// console.log('百度删除：', urls)
-	request.post({
-		url: `http://data.zz.baidu.com/del?site=${config.BAIDU.site}&token=${config.BAIDU.token}`, 
-		headers: { 'Content-Type': 'text/plain' },
-		body: urls
-	}, (error, response, body) => {
-		console.log(urls, '百度删除结果：', error, body)
-	})
+	// consola.log('百度删除：', urls)
+	postRequest({ urls, urlKey: 'del', msg: '百度删除结果：' })
 }

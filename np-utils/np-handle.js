@@ -1,9 +1,11 @@
-/*
-*
-* 路由统一解析器
-*
-*/
+/**
+ * Handle module.
+ * @file 路由统一解析器模块
+ * @module utils/handle
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
+// todo: -> 参数待优化
 exports.handleRequest = ({ req, res, controller }) => {
 	const method = req.method
 	const support = !!controller[method]
@@ -29,8 +31,8 @@ exports.handleThrottle = (method, delay) => {
 		if (canRun) {
 			canRun = false
 			method()
-			setTimeout(function() {
-			 	canRun = true
+			setTimeout(() => {
+				canRun = true
 			}, delay)
 		}
 	}

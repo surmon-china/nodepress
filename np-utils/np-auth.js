@@ -1,8 +1,8 @@
 /**
  * Auth module.
  * @file auth 鉴权
- * @module nodepress/utils/auth
- * @author Surmon <i@surmon.me>
+ * @module utils/auth
+ * @author Surmon <https://github.com/surmon-china>
  */
 
 const jwt = require('jsonwebtoken')
@@ -10,13 +10,13 @@ const config = require('app.config')
 
 // 验证Auth
 const authToken = req => {
-	if (req.headers && req.headers.authorization) {
-		const parts = req.headers.authorization.split(' ')
-		if (Object.is(parts.length, 2) && Object.is(parts[0], 'Bearer')) {
-			return parts[1]
-		}
+	if (!req.headers || !req.headers.authorization) {
+		return false
 	}
-	return false
+	const parts = req.headers.authorization.split(' ')
+	if (parts.length === 2 && parts[0] === 'Bearer') {
+		return parts[1]
+	}
 }
 
 // 验证权限
@@ -25,10 +25,10 @@ const authIsVerified = req => {
 	if (token) {
 		try {
 			const decodedToken = jwt.verify(token, config.AUTH.jwtTokenSecret)
-			if (decodedToken.exp > Math.floor(Date.now() / 1000)) {
-				return true
-			}
-		} catch (err) {}
+			return (decodedToken.exp > Math.floor(Date.now() / 1000))
+		} catch (err) {
+			return false
+		}
 	}
 	return false
 }
