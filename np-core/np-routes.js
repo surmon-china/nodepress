@@ -1,8 +1,9 @@
-/*
-*
-* 路由模块
-*
-*/
+/**
+ * Routes module.
+ * @file Routes 模块
+ * @module core/routes
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 const config = require('app.config')
 const environment = require('environment')
@@ -15,12 +16,12 @@ const routes = app => {
 	app.all('*', (req, res, next) => {
 
 		// production env
-		const isProduction = environment.isProdMode
+		const { isProdMode, isDevMode } = environment
 
-		// Set Header
-		const allowedOrigins = ['https://surmon.me', 'https://admin.surmon.me']
+		// set Header
+		const allowedOrigins = config.CROSS_DOMAIN.allowedOrigins
 		const origin = req.headers.origin || ''
-		if (!isProduction) {
+		if (isDevMode) {
 			allowedOrigins.push(origin)
 		}
 		if (allowedOrigins.includes(origin)) {
@@ -32,53 +33,58 @@ const routes = app => {
 		res.header('Content-Type', 'application/json;charset=utf-8')
 		res.header('X-Powered-By', 'Nodepress 1.0.0')
 
-		// OPTIONS
+		// OPTIONS request
 		if (req.method == 'OPTIONS') {
 			res.sendStatus(200)
 			return false
 		}
 
 		// 如果是生产环境，需要验证用户来源渠道，防止非正常请求
-		if (isProduction) {
+		if (isProdMode) {
 			const { origin, referer } = req.headers
-			const originVerified = (!origin	|| origin.includes('surmon.me')) && 
-														 (!referer || referer.includes('surmon.me'))
-			if (!originVerified) {
+			const originVerified = !origin || origin.includes(config.CROSS_DOMAIN.allowedReferer)
+			const refererVerified = !referer || referer.includes(config.CROSS_DOMAIN.allowedReferer)
+			if (!originVerified || !refererVerified) {
 				res.status(403).jsonp({ code: 0, message: '来者何人！' })
 				return false
 			}
 		}
 
 		// 排除 auth 的 post 请求 && 评论的 post 请求 && like 请求
-		const isLike = Object.is(req.url, '/like') && Object.is(req.method, 'POST')
-		const isPostAuth = Object.is(req.url, '/auth') && Object.is(req.method, 'POST')
-		const isPostComment = Object.is(req.url, '/comment') && Object.is(req.method, 'POST')
+		const isPostUrl = (req, url) => Object.is(req.url, url) && Object.is(req.method, 'POST')
+		const isLike = isPostUrl(req, '/like')
+		const isPostAuth = isPostUrl(req, '/auth')
+		const isPostComment = isPostUrl(req, '/comment')
 		if (isLike || isPostAuth || isPostComment) {
 			next()
 			return false
 		}
 
 		// 拦截（所有非管路员的非 get 请求，或文件上传请求）
-		if (!authIsVerified(req) && (!Object.is(req.method, 'GET') || Object.is(req.url, '/qiniu'))) {
+		const notGetRequest = req.method !== 'GET'
+		const isFileRequest = req.url === '/qiniu'
+		const isGuestRequest = !authIsVerified(req)
+		if (isGuestRequest && (notGetRequest || isFileRequest)) {
 			res.status(401).jsonp({ code: 0, message: '来者何人！' })
 			return false
 		}
 
+		// 其他情况都通行
 		next()
 	})
 
-	// Api
+	// api
 	app.get('/', (req, res) => {
 		res.jsonp(config.INFO)
 	})
 
-	// Auth
+	// auth
 	app.all('/auth', controller.auth)
 
-	// 七牛Token
+	// 七牛 token
 	app.all('/qiniu', controller.qiniu)
 
-	// 全局option
+	// 全局 option
 	app.all('/option', controller.option)
 
 	// sitemap
@@ -97,19 +103,19 @@ const routes = app => {
 	app.get('/music/song/:song_id', controller.music.song)
 	app.get('/music/list/:play_list_id', controller.music.list)
 
-	// Tag
+	// tag
 	app.all('/tag', controller.tag.list)
 	app.all('/tag/:tag_id', controller.tag.item)
 
-	// Category
+	// category
 	app.all('/category', controller.category.list)
 	app.all('/category/:category_id', controller.category.item)
 
-	// 评论
+	// comment
 	app.all('/comment', controller.comment.list)
 	app.all('/comment/:comment_id', controller.comment.item)
 
-	// Article
+	// article
 	app.all('/article', controller.article.list)
 	app.all('/article/:article_id', controller.article.item)
 

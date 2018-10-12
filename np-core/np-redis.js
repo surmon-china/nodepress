@@ -1,20 +1,22 @@
-/*
-*
-* Redis 模块
-*
-*/
+/**
+ * Redis module.
+ * @file Redis 模块
+ * @module core/redis
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 const redis = require('redis')
-const memoryClient = {}
+const consola = require('consola')
 
-let redisClientAvailable = false
+const memoryClient = {}
+let redisAvailable = false
 let redisClient = null
 
 exports.redis = null
 
 exports.set = (key, value, callback) => {
-	if (redisClientAvailable) {
-		// console.log('into redis')
+	if (redisAvailable) {
+		// consola.log('into redis')
 		if (typeof value !== 'string') {
 			try {
 				value = JSON.stringify(value)
@@ -24,18 +26,18 @@ exports.set = (key, value, callback) => {
 		}
 		redisClient.set(key, value, callback)
 	} else {
-		// console.log('into memory')
+		// consola.log('into memory')
 		memoryClient[key] = value
 	}
 }
 
 exports.get = (key, callback) => {
-	if (redisClientAvailable) {
+	if (redisAvailable) {
 		redisClient.get(key, (err, value) => {
 			try {
 				value = JSON.parse(value)
-			} catch(err) {
-				value = value
+			} catch (error) {
+				// value = value
 			}
 			callback(err, value)
 		})
@@ -50,17 +52,17 @@ exports.connect = () => {
 	exports.redis = redisClient = redis.createClient({ detect_buffers: true })
 
 	redisClient.on('error', err => {
-		redisClientAvailable = false
-		console.log('Redis连接失败！' + err)
+		redisAvailable = false
+		consola.warn('Redis连接失败！', err)
 	})
 
 	redisClient.on('ready', err => {
-		console.log('Redis已准备好！')
-		redisClientAvailable = true
+		redisAvailable = true
+		consola.ready('Redis已准备好！')
 	})
 
 	redisClient.on('reconnecting', err => {
-		console.log('Redis正在重连！')
+		consola.info('Redis正在重连！')
 	})
 
 	return redisClient
