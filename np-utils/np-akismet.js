@@ -19,9 +19,13 @@ const client = akismet.client({
 // check key
 client.verifyKey().then(valid => {
 	clientIsValid = valid
-	consola.info(`Akismet key ${valid ? '有效' : '无效'}!`)
+	if (valid) {
+		consola.ready(`Akismet key 有效，已准备好工作!`)
+	} else {
+		consola.warn(`Akismet key 无效，无法工作!`)
+	}
 }).catch(err => {
-	console.warn('Akismet VerifyKey Error:', err.message)
+	consola.warn('Akismet VerifyKey Error:', err.message)
 })
 
 // check spam
@@ -41,12 +45,11 @@ const checkSpam = comment => {
 				resolve(err)
 			})
 		} else {
-			console.warn('Akismet key 未认证，放弃验证')
+			consola.warn('Akismet key 未认证，放弃验证')
 			resolve('akismet key Invalid!')
 		}
 	})
 }
-
 
 // submit Interceptor
 const handleCommentInterceptor = handle_type => {
@@ -56,10 +59,10 @@ const handleCommentInterceptor = handle_type => {
 			client[handle_type](comment).then(result => {
 				consola.info(`Akismet ${handle_type} success!`)
 			}).catch(err => {
-				console.warn(`Akismet ${handle_type} failed!`, err)
+				consola.warn(`Akismet ${handle_type} failed!`, err)
 			})
 		} else {
-			console.warn('Akismet key Invalid!')
+			consola.warn('Akismet key Invalid!')
 		}
 	}
 }

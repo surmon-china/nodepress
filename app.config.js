@@ -14,10 +14,24 @@ exports.APP = {
 	PORT: 8000
 }
 
+exports.CROSS_DOMAIN = {
+	allowedOrigins: ['https://surmon.me', 'https://admin.surmon.me'],
+	allowedReferer: 'surmon.me'
+}
+
 exports.MONGODB = {
 	uri: `mongodb://127.0.0.1:${argv.dbport || '27017'}/NodePress`,
 	username: argv.db_username || 'DB_username',
 	password: argv.db_password || 'DB_password'
+}
+exports.AUTH = {
+	data: argv.auth_data || { user: 'root' },
+	jwtTokenSecret: argv.auth_key || 'nodepress',
+	defaultPassword: argv.auth_default_password || 'root'
+}
+
+exports.GITHUB = {
+	username: 'surmon-china',
 }
 
 exports.QINIU = {
@@ -28,19 +42,9 @@ exports.QINIU = {
 	uploadURL: argv.qn_uploadURL || 'http://up.qiniu.com/'
 }
 
-exports.AUTH = {
-	data: argv.auth_data || { user: 'root' },
-	jwtTokenSecret: argv.auth_key || 'nodepress',
-	defaultPassword: argv.auth_default_password || 'root'
-}
-
 exports.BAIDU = {
 	site: argv.baidu_site || 'your baidu site domain like : surmon.me',
 	token: argv.baidu_token || 'your baidu seo push token'
-}
-
-exports.GITHUB = {
-	username: argv.github_username || 'surmon-china',
 }
 
 exports.ALIYUN = {

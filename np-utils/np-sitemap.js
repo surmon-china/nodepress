@@ -34,9 +34,8 @@ const getDatas = success => {
 		hostname: config.INFO.site
 	})
 
-	// Tag
-	Tag.find().sort({ '_id': -1 })
-	.then(tags => {
+	// tag
+	const addTags = Tag.find().sort({ '_id': -1 }).then(tags => {
 		tags.forEach(tag => {
 			sitemap.add({
 				priority: 0.6,
@@ -44,9 +43,10 @@ const getDatas = success => {
 				url: `/tag/${tag.slug}`
 			})
 		})
-		return Category.find().sort({ '_id': -1 })
 	})
-	.then(categories => {
+
+	// category
+	const addCategories = Category.find().sort({ '_id': -1 }).then(categories => {
 		categories.forEach(category => {
 			sitemap.add({
 				priority: 0.6,
@@ -54,9 +54,10 @@ const getDatas = success => {
 				url: `/category/${category.slug}`
 			})
 		})
-		return Article.find({ state: 1, public: 1 }).sort({ '_id': -1 })
 	})
-	.then(articles => {
+
+	// article
+	const addArticles = Article.find({ state: 1, public: 1 }).sort({ '_id': -1 }).then(articles => {
 		articles.forEach(article => {
 			sitemap.add({
 				priority: 0.8,
@@ -65,8 +66,10 @@ const getDatas = success => {
 				lastmodISO: article.create_at.toISOString()
 			})
 		})
-		success()
 	})
+
+	Promise.all([addTags, addCategories, addArticles])
+	.then(success)
 	.catch(err => {
 		success()
 		consola.warn('生成地图前获取数据库发生错误', err)
