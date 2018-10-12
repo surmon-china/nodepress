@@ -8,7 +8,7 @@
 const jwt = require('jsonwebtoken')
 const config = require('app.config')
 
-// 验证Auth
+// 验证 Auth
 const authToken = req => {
 	if (!req.headers || !req.headers.authorization) {
 		return false
