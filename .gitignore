@@ -8,6 +8,7 @@ node_modules
 *.bak
 *.swp
 .DS_Store
+# dump.rdb
 ecosystem.config.js
 
 [Tt]est[Rr]esult*/
