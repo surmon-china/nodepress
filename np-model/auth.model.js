@@ -1,8 +1,9 @@
-/*
-*
-* 权限和用户数据模型
-*
-*/
+/**
+ * Auth model module.
+ * @file 权限和用户数据模型
+ * @module model/auth
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 const crypto = require('crypto')
 const config = require('app.config')
@@ -26,6 +27,4 @@ const authSchema = new mongoose.Schema({
 	}
 })
 
-const Auth = mongoose.model('Auth', authSchema)
-
-module.exports = Auth
+module.exports = mongoose.model('Auth', authSchema)

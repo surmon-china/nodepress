@@ -8,6 +8,7 @@
 const mongoose = require('mongoose')
 const config = require('app.config')
 const consola = require('consola')
+const autoIncrement = require('mongoose-auto-increment')
 
 mongoose.Promise = global.Promise
 
@@ -28,6 +29,8 @@ exports.connect = () => {
 	// 连接成功
 	mongoose.connection.once('open', () => {
 		consola.ready('数据库连接成功!')
+		// 自增 ID 初始化
+		autoIncrement.initialize(mongoose.connection)
 	})
 
 	return mongoose
