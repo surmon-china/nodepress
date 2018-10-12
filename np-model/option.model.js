@@ -1,10 +1,11 @@
-/*
-*
-* 设置数据模型
-*
-*/
+/**
+ * Option model module.
+ * @file 设置数据模型
+ * @module model/option
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-const mongoose = require('np-core/np-mongodb').mongoose;
+const { mongoose } = require('np-core/np-mongodb')
 
 const optionSchema = new mongoose.Schema({
 
@@ -45,7 +46,6 @@ const optionSchema = new mongoose.Schema({
 		// 被喜欢次数
 		likes: { type: Number, default: 0 }
 	}
-});
+})
 
-const Option = mongoose.model('Option', optionSchema);
-module.exports = Option;
+module.exports = mongoose.model('Option', optionSchema)

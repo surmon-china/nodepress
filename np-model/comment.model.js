@@ -1,15 +1,16 @@
-/*
-*
-* 评论数据模型
-*
-*/
+/**
+ * Comment model module.
+ * @file 评论数据模型
+ * @module model/comment
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-const mongoose = require('np-core/np-mongodb').mongoose;
-const autoIncrement = require('mongoose-auto-increment');
-const mongoosePaginate = require('mongoose-paginate');
+const { mongoose } = require('np-core/np-mongodb')
+const autoIncrement = require('mongoose-auto-increment')
+const mongoosePaginate = require('mongoose-paginate')
 
 // 自增ID初始化
-autoIncrement.initialize(mongoose.connection);
+autoIncrement.initialize(mongoose.connection)
 
 // 标签模型
 const commentSchema = new mongoose.Schema({
@@ -62,25 +63,22 @@ const commentSchema = new mongoose.Schema({
 		name: { type: String, validate: /\S+/ },
 		value: { type: String, validate: /\S+/ }
 	}]
-});
+})
 
-// 翻页 + 自增ID插件配置
+// 翻页 + 自增 ID 插件配置
 commentSchema.plugin(mongoosePaginate)
 commentSchema.plugin(autoIncrement.plugin, {
 	model: 'Comment',
 	field: 'id',
 	startAt: 1,
 	incrementBy: 1
-});
+})
 
 // 时间更新
 commentSchema.pre('findOneAndUpdate', function(next) {
-	this.findOneAndUpdate({}, { update_at: Date.now() });
-	next();
-});
+	this.findOneAndUpdate({}, { update_at: Date.now() })
+	next()
+})
 
 // 标签模型
-const Comment = mongoose.model('Comment', commentSchema);
-
-// export
-module.exports = Comment;
+module.exports = mongoose.model('Comment', commentSchema)
