@@ -1,15 +1,15 @@
 /**
  * Article model module.
  * @file 文章数据模型
- * @module nodepress/model/article
- * @author Surmon <i@surmon.me>
+ * @module model/article
+ * @author Surmon <https://github.com/surmon-china>
  */
 
 const { mongoose } = require('np-core/np-mongodb')
 const autoIncrement = require('mongoose-auto-increment')
 const mongoosePaginate = require('mongoose-paginate')
 
-// 自增ID初始化
+// 自增 ID 初始化
 autoIncrement.initialize(mongoose.connection)
 
 // 文章模型
@@ -70,7 +70,7 @@ const articleSchema = new mongoose.Schema({
 
 articleSchema.set('toObject', { getters: true })
 
-// 翻页 + 自增ID插件配置
+// 翻页 + 自增 ID 插件配置
 articleSchema.plugin(mongoosePaginate)
 articleSchema.plugin(autoIncrement.plugin, {
 	model: 'Article',
@@ -92,7 +92,4 @@ articleSchema.virtual('t_content').get(function() {
 })
 
 // 文章模型
-const Article = mongoose.model('Article', articleSchema)
-
-// export
-module.exports = Article
+module.exports = mongoose.model('Article', articleSchema)
