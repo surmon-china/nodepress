@@ -1,154 +1,155 @@
-/*
- *
- * 文章控制器
- *
+/**
+ * ArticleCtrl module.
+ * @file 文章控制器模块
+ * @module controller/article
+ * @author Surmon <https://github.com/surmon-china>
  */
 
-const config = require('app.config')
-
-const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle')
-const { baiduSeoPush, baiduSeoUpdate, baiduSeoDelete } = require('np-utils/np-baidu-seo-push')
+const CONFIG = require('app.config')
 const authIsVerified = require('np-utils/np-auth')
 const buildSiteMap = require('np-utils/np-sitemap')
-
+const Tag = require('np-model/tag.model')
 const Category = require('np-model/category.model')
 const Article = require('np-model/article.model')
-const Tag = require('np-model/tag.model')
+const { arrayIsInvalid, getObjectValues } = require('np-helper/np-data-validate')
+const { PUBLISH_STATE, PUBLIC_STATE, ORIGIN_STATE, SORT_TYPE } = require('np-core/np-constants')
+const { baiduSeoPush, baiduSeoUpdate, baiduSeoDelete } = require('np-utils/np-baidu-seo-push')
+const {
+	handleError,
+	handleSuccess,
+	humanizedHandleError,
+	handlePaginateData,
+	buildController,
+	initController
+} = require('np-core/np-processor')
 
-const articleCtrl = { list: {}, item: {} }
+// Controller
+const ArticleCtrl = initController(['list', 'item'])
 
 // 获取文章列表
-articleCtrl.list.GET = (req, res) => {
+ArticleCtrl.list.GET = (req, res) => {
 
-	let { page, per_page, state, origin, public, keyword, category, category_slug, tag, tag_slug, date, hot } = req.query
+	// 初始参数
+	const { keyword, category, category_slug, tag, tag_slug, date, hot } = req.query
+	const [page, per_page, state, public, origin] = [
+		req.query.page || 1,
+		req.query.per_page || 10,
+		req.query.state,
+		req.query.public,
+		req.query.origin
+	].map(k => Number(k))
 
 	// 过滤条件
 	const options = {
-		sort: { _id: -1 },
-		page: Number(page || 1),
-		limit: Number(per_page || 10),
+		page,
+		limit: per_page,
 		populate: ['category', 'tag'],
-		select: '-password -content'
+		select: '-password -content',
+		sort: { _id: SORT_TYPE.desc }
 	}
 
 	// 查询参数
-	let querys = {}
+	const query = {}
 
-	// 按照state查询
-	if (['0', '1', '-1'].includes(state)) {
-		querys.state = state
+	// 标签 id 查询
+	if (tag) {
+		query.tag = tag
 	}
 
-	// 按照公开程度查询
-	if (['0', '1', '-1'].includes(public)) {
-		querys.public = public
+	// 分类 id 查询
+	if (category) {
+		query.category = category
 	}
 
-	// 文章来源性质
-	if (['0', '1', '2'].includes(origin)) {
-		querys.origin = origin
+	// 热评查询
+	if (hot) {
+		options.sort = {
+			'meta.comments': SORT_TYPE.desc,
+			'meta.likes': SORT_TYPE.desc
+		}
 	}
 
 	// 关键词查询
 	if (keyword) {
 		const keywordReg = new RegExp(keyword)
-		querys['$or'] = [
+		query.$or = [
 			{ 'title': keywordReg },
 			{ 'content': keywordReg },
 			{ 'description': keywordReg }
 		]
 	}
 
-	// 标签id查询
-	if (tag) {
-		querys.tag = tag
-	}
-
-	// 分类id查询
-	if (category) {
-		querys.category = category
-	}
-
-	// 热评查询
-	if (!!hot) {
-		options.sort = { 
-			'meta.comments': -1,
-			'meta.likes': -1
-		}
-	}
-
 	// 时间查询
 	if (date) {
 		const getDate = new Date(date)
-		if(!Object.is(getDate.toString(), 'Invalid Date')) {
-			querys.create_at = {
-				"$gte": new Date((getDate / 1000 - 60 * 60 * 8) * 1000),
-				"$lt": new Date((getDate / 1000 + 60 * 60 * 16) * 1000)
+		if (getDate.toString() !== 'Invalid Date') {
+			query.create_at = {
+				$gte: new Date((getDate / 1000 - 60 * 60 * 8) * 1000),
+				$lt: new Date((getDate / 1000 + 60 * 60 * 16) * 1000)
 			}
 		}
+	}
+
+	// 按照发布状态查询
+	if (getObjectValues(PUBLISH_STATE).includes(state)) {
+		query.state = state
+	}
+
+	// 按照公开状态查询
+	if (getObjectValues(PUBLIC_STATE).includes(public)) {
+		query.public = public
+	}
+
+	// 文章来源性质查询
+	if (getObjectValues(ORIGIN_STATE).includes(origin)) {
+		query.origin = origin
 	}
 
 	// 如果是前台请求，则重置公开状态和发布状态
 	if (!authIsVerified(req)) {
-		querys.state = 1
-		querys.public = 1
+		query.state = PUBLISH_STATE.published
+		query.public = PUBLIC_STATE.public
 	}
 
 	// 请求对应文章
 	const getArticles = () => {
-		Article.paginate(querys, options)
-		.then(articles => {
-			handleSuccess({
-				res,
-				message: '文章列表获取成功',
-				result: {
-					pagination: {
-						total: articles.total,
-						current_page: articles.page,
-						total_page: articles.pages,
-						per_page: articles.limit
-					},
-					data: articles.docs
-				}
+		Article.paginate(query, options)
+			.then(articles => {
+				handleSuccess({
+					res,
+					message: '文章列表获取成功',
+					result: handlePaginateData(articles)
+				})
 			})
-		})
-		.catch(err => {
-			handleError({ res, err, message: '文章列表获取失败' })
-		})
+			.catch(humanizedHandleError(res, '文章列表获取失败'))
 	}
 
-	// 分类别名查询 - 根据别名查询到id，然后根据id查询
+	// 分类别名查询 - 根据别名查询到 id，然后根据 id 查询
 	if (category_slug) {
-		Category.find({ slug: category_slug })
-		.then(([category] = []) => {
-			if (category) {
-				querys.category = category._id
-				getArticles()
-			} else {
-				handleError({ res, message: '分类不存在' })
-			}
-		})
-		.catch(err => {
-			handleError({ res, err, message: '分类查找失败' })
-		})
-		return false
+		return Category.find({ slug: category_slug })
+			.then(([category] = []) => {
+				if (category) {
+					query.category = category._id
+					getArticles()
+				} else {
+					handleError({ res, message: '分类不存在' })
+				}
+			})
+			.catch(humanizedHandleError(res, '分类查找失败'))
 	}
 	
-	// 标签别名查询 - 根据别名查询到id，然后根据id查询
+	// 标签别名查询 - 根据别名查询到 id，然后根据 id 查询
 	if (tag_slug) {
-		Tag.find({ slug: tag_slug })
-		.then(([tag] = []) => {
-			if (tag) {
-				querys.tag = tag._id
-				getArticles()
-			} else {
-				handleError({ res, message: '标签不存在' })
-			}
-		})
-		.catch(err => {
-			handleError({ res, err, message: '标签查找失败' })
-		})
-		return false
+		return Tag.find({ slug: tag_slug })
+			.then(([tag] = []) => {
+				if (tag) {
+					query.tag = tag._id
+					getArticles()
+				} else {
+					handleError({ res, message: '标签不存在' })
+				}
+			})
+			.catch(humanizedHandleError(res, '标签查找失败'))
 	}
 
 	// 默认请求文章列表
@@ -156,115 +157,95 @@ articleCtrl.list.GET = (req, res) => {
 }
 
 // 发布文章
-articleCtrl.list.POST = ({ body: article }, res) => {
+ArticleCtrl.list.POST = ({ body: article }, res) => {
 
 	// 验证
 	if (!article.title || !article.content) {
-		handleError({ res, message: '内容不合法' })
-		return false
+		return handleError({ res, message: '内容不合法' })
 	}
 
 	// 保存文章
 	new Article(article).save()
-	.then((result = article) => {
-		handleSuccess({ res, result, message: '文章发布成功' })
-		buildSiteMap()
-		baiduSeoPush(`${config.INFO.site}/article/${result.id}`)
-	})
-	.catch(err => {
-		handleError({ res, err, message: '文章发布失败' })
-	})
+		.then((result = article) => {
+			handleSuccess({ res, result, message: '文章发布成功' })
+			buildSiteMap()
+			baiduSeoPush(`${CONFIG.APP.URL}/article/${result.id}`)
+		})
+		.catch(humanizedHandleError(res, '文章发布失败'))
 }
 
 // 批量修改文章（移回收站、回收站恢复）
-articleCtrl.list.PATCH = ({ body: { articles, action }}, res) => {
+ArticleCtrl.list.PATCH = ({ body: { articles, action }}, res) => {
 
 	// 验证
-	if (!articles || !articles.length) {
-		handleError({ res, message: '缺少有效参数' })
-		return false
+	if (arrayIsInvalid(articles)) {
+		return handleError({ res, message: '缺少有效参数' })
 	}
 
 	// 要改的数据
-	let updatePart = {}
-
-	switch (action) {
-		// 移至回收站
-		case 1:
-			updatePart.state = -1
-			break
-		// 移至草稿
-		case 2:
-			updatePart.state = 0
-			break
-		// 移至已发布
-		case 3:
-			updatePart.state = 1
-			break
-		default:
-			break
+	const actions = {
+		1: PUBLISH_STATE.recycle,
+		2: PUBLISH_STATE.draft,
+		3: PUBLISH_STATE.published
 	}
 
+	const doAction = actions[action]
+	const updatePart = doAction ? { state: doAction } : {}
+
 	Article.update({ '_id': { $in: articles }}, { $set: updatePart }, { multi: true })
-	.then(result => {
-		handleSuccess({ res, result, message: '文章批量操作成功' })
-		buildSiteMap()
-	})
-	.catch(err => {
-		handleError({ res, err, message: '文章批量操作失败' })
-	})
+		.then(result => {
+			handleSuccess({ res, result, message: '文章批量操作成功' })
+			buildSiteMap()
+		})
+		.catch(humanizedHandleError(res, '文章批量操作失败'))
 }
 
 // 批量删除文章
-articleCtrl.list.DELETE = ({ body: { articles }}, res) => {
+ArticleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 
 	// 验证
-	if (!articles || !articles.length) {
-		handleError({ res, message: '缺少有效参数' })
-		return false
+	if (arrayIsInvalid(articles)) {
+		return handleError({ res, message: '缺少有效参数' })
 	}
 
 	// delete action
 	const deleteArticls = () => {
 		Article.remove({ '_id': { $in: articles }})
-		.then(result => {
-			handleSuccess({ res, result, message: '文章批量删除成功' })
-			buildSiteMap()
-		})
-		.catch(err => {
-			handleError({ res, err, message: '文章批量删除失败' })
-		})
+			.then(result => {
+				handleSuccess({ res, result, message: '文章批量删除成功' })
+				buildSiteMap()
+			})
+			.catch(humanizedHandleError(res, '文章批量删除失败'))
 	}
 
 	// baidu-seo-delete
 	Article.find({ '_id': { $in: articles }}, 'id')
-	.then(articles => {
-		if (articles && articles.length) {
-			const urls = articles.map(article => `${config.INFO.site}/article/${article.id}`).join('\n')
-			baiduSeoDelete(urls)
-		}
-		deleteArticls()
-	})
-	.catch(err => {
-		deleteArticls()
-	})
+		.then(articles => {
+			if (articles && articles.length) {
+				const urls = articles.map(article => `${CONFIG.APP.URL}/article/${article.id}`).join('\n')
+				baiduSeoDelete(urls)
+			}
+			deleteArticls()
+		})
+		.catch(deleteArticls)
 }
 
 // 获取单个文章
-articleCtrl.item.GET = ({ params: { article_id }}, res) => {
+ArticleCtrl.item.GET = ({ params: { article_id }}, res) => {
 
 	// 判断来源
-	const isFindById = Object.is(Number(article_id), NaN)
+	const isFindById = isNaN(Number(article_id))
 
 	// 获取相关文章
 	const getRelatedArticles = result => {
 		Article.find(
-			{ state: 1, public: 1, tag: { $in: result.tag.map(t => t._id) }}, 
-			'id title description thumb -_id', 
+			{ state: 1, public: 1, tag: { $in: result.tag.map(t => t._id) }},
+			'id title description thumb -_id',
 			(err, articles) => {
 				result.related = err ? [] : articles
 				handleSuccess({ res, result, message: '文章获取成功' })
-			})
+			}
+		)
 	}
 
 	(isFindById
@@ -283,50 +264,42 @@ articleCtrl.item.GET = ({ params: { article_id }}, res) => {
 			handleSuccess({ res, result, message: '文章获取成功' })
 		}
 	})
-	.catch(err => {
-		handleError({ res, err, code: 404, message: '文章获取失败' })
-	})
+	.catch(humanizedHandleError(res, '文章获取失败', 404))
 }
 
 // 修改单个文章
-articleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
+ArticleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
 
 	// 验证
 	if (!article.title || !article.content) {
-		handleError({ res, message: '内容不合法' })
-		return false
+		return handleError({ res, message: '内容不合法' })
 	}
 
 	// 修正信息
-	delete article.meta
-	delete article.create_at
-	delete article.update_at
+	Reflect.deleteProperty(article, 'meta')
+	Reflect.deleteProperty(article, 'create_at')
+	Reflect.deleteProperty(article, 'update_at')
 
 	// 修改文章
 	Article.findByIdAndUpdate(article_id, article, { new: true })
-	.then(result => {
-		handleSuccess({ res, result, message: '文章修改成功' })
-		buildSiteMap()
-		baiduSeoUpdate(`${config.INFO.site}/article/${result.id}`)
-	})
-	.catch(err => {
-		handleError({ res, err, message: '文章修改失败' })
-	})
+		.then(result => {
+			handleSuccess({ res, result, message: '文章修改成功' })
+			buildSiteMap()
+			baiduSeoUpdate(`${CONFIG.APP.URL}/article/${result.id}`)
+		})
+		.catch(humanizedHandleError(res, '文章修改失败'))
 }
 
 // 删除单个文章
-articleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
+ArticleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
 	Article.findByIdAndRemove(article_id)
-	.then(result => {
-		handleSuccess({ res, result, message: '文章删除成功' })
-		buildSiteMap()
-		baiduSeoDelete(`${config.INFO.site}/article/${result.id}`)
-	})
-	.catch(err => {
-		handleError({ res, err, message: '文章删除失败' })
-	})
+		.then(result => {
+			handleSuccess({ res, result, message: '文章删除成功' })
+			buildSiteMap()
+			baiduSeoDelete(`${CONFIG.APP.URL}/article/${result.id}`)
+		})
+		.catch(humanizedHandleError(res, '文章删除失败'))
 }
 
-// export
-exports.list = (req, res) => { handleRequest({ req, res, controller: articleCtrl.list })}
-exports.item = (req, res) => { handleRequest({ req, res, controller: articleCtrl.item })}
+exports.list = buildController(ArticleCtrl.list)
+exports.item = buildController(ArticleCtrl.item)

@@ -8,11 +8,11 @@
 const fs = require('fs')
 const sm = require('sitemap')
 const consola = require('consola')
-const config = require('app.config')
-
+const CONFIG = require('app.config')
 const Tag = require('np-model/tag.model')
 const Article = require('np-model/article.model')
 const Category = require('np-model/category.model')
+const { PUBLISH_STATE, PUBLIC_STATE, SORT_TYPE } = require('np-core/np-constants')
 
 const pages = [
 	{ url: '', changefreq: 'always', priority: 1 },
@@ -31,11 +31,14 @@ const getDatas = success => {
 	sitemap = sm.createSitemap({
 		urls: [...pages],
 		cacheTime: 600000,
-		hostname: config.INFO.site
+		hostname: CONFIG.APP.URL
 	})
 
 	// tag
-	const addTags = Tag.find().sort({ '_id': -1 }).then(tags => {
+	const addTags = Tag
+	.find()
+	.sort({ _id: SORT_TYPE.desc })
+	.then(tags => {
 		tags.forEach(tag => {
 			sitemap.add({
 				priority: 0.6,
@@ -46,7 +49,10 @@ const getDatas = success => {
 	})
 
 	// category
-	const addCategories = Category.find().sort({ '_id': -1 }).then(categories => {
+	const addCategories = Category
+	.find()
+	.sort({ _id: SORT_TYPE.desc })
+	.then(categories => {
 		categories.forEach(category => {
 			sitemap.add({
 				priority: 0.6,
@@ -57,7 +63,10 @@ const getDatas = success => {
 	})
 
 	// article
-	const addArticles = Article.find({ state: 1, public: 1 }).sort({ '_id': -1 }).then(articles => {
+	const addArticles = Article
+	.find({ state: PUBLISH_STATE.published, public: PUBLIC_STATE.public })
+	.sort({ _id: SORT_TYPE.desc })
+	.then(articles => {
 		articles.forEach(article => {
 			sitemap.add({
 				priority: 0.8,
@@ -69,26 +78,27 @@ const getDatas = success => {
 	})
 
 	Promise.all([addTags, addCategories, addArticles])
-	.then(success)
+	.then(data => success && success())
 	.catch(err => {
-		success()
+		success && success()
 		consola.warn('生成地图前获取数据库发生错误', err)
 	})
 }
 
 // 获取地图
-const buildSiteMap = (success, error) => {
-	getDatas(() => {
-		// consola.log('data', sitemap)
-		sitemap.toXML((err, xml) => {
-			if (err && error) {
-				return error(err)
-			}
-			if (!err && success) {
-				success(xml)
-				fs.writeFileSync('../surmon.me/static/sitemap.xml', sitemap.toString())
-				sitemap = null
-			}
+const buildSiteMap = () => {
+	return new Promise((resolve, reject) => {
+		getDatas(() => {
+			sitemap.toXML((err, xml) => {
+				if (err) {
+					reject(err)
+					consola.warn('生成地图 XML 时发生错误', err)
+				} else {
+					resolve(xml)
+					fs.writeFileSync('../surmon.me/static/sitemap.xml', sitemap.toString())
+					sitemap = null
+				}
+			})
 		})
 	})
 }

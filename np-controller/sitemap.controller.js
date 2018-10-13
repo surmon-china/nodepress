@@ -1,23 +1,22 @@
-/*
-*
-* 网站地图控制器
-*
-*/
+/**
+ * SitrmapCtrl module.
+ * @file 网站地图控制器模块
+ * @module controller/sitrmap
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 const buildSiteMap = require('np-utils/np-sitemap')
-const { handleRequest, handleError } = require('np-utils/np-handle')
+const { buildController, initController, humanizedHandleError } = require('np-core/np-processor')
 
-const sitrmapCtrl = {}
+// Controller
+const SitrmapCtrl = initController()
 
 // 获取地图
-sitrmapCtrl.GET = (req, res) => {
-	buildSiteMap(xml => {
+SitrmapCtrl.GET = (req, res) => {
+	buildSiteMap().then(xml => {
 		res.header('Content-Type', 'application/xml')
 		res.send(xml)
-	}, err => {
-		handleError({ res, err, message: '获取失败' })
-	})
+	}).catch(humanizedHandleError(res, '获取地图失败'))
 }
 
-// export
-module.exports = (req, res) => { handleRequest({ req, res, controller: sitrmapCtrl })}
+module.exports = buildController(SitrmapCtrl)
