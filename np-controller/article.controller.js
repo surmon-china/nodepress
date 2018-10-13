@@ -192,7 +192,7 @@ ArticleCtrl.list.PATCH = ({ body: { articles, action }}, res) => {
 	const doAction = actions[action]
 	const updatePart = doAction ? { state: doAction } : {}
 
-	Article.update({ '_id': { $in: articles }}, { $set: updatePart }, { multi: true })
+	Article.update({ _id: { $in: articles }}, { $set: updatePart }, { multi: true })
 		.then(result => {
 			handleSuccess({ res, result, message: '文章批量操作成功' })
 			buildSiteMap()
@@ -210,7 +210,7 @@ ArticleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 
 	// delete action
 	const deleteArticls = () => {
-		Article.remove({ '_id': { $in: articles }})
+		Article.remove({ _id: { $in: articles }})
 			.then(result => {
 				handleSuccess({ res, result, message: '文章批量删除成功' })
 				buildSiteMap()
@@ -219,7 +219,7 @@ ArticleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 	}
 
 	// baidu-seo-delete
-	Article.find({ '_id': { $in: articles }}, 'id')
+	Article.find({ _id: { $in: articles }}, 'id')
 		.then(articles => {
 			if (articles && articles.length) {
 				const urls = articles.map(article => `${CONFIG.APP.URL}/article/${article.id}`).join('\n')
@@ -239,7 +239,7 @@ ArticleCtrl.item.GET = ({ params: { article_id }}, res) => {
 	// 获取相关文章
 	const getRelatedArticles = result => {
 		Article.find(
-			{ state: 1, public: 1, tag: { $in: result.tag.map(t => t._id) }},
+			{ state: PUBLISH_STATE.published, public: PUBLIC_STATE.public, tag: { $in: result.tag.map(t => t._id) }},
 			'id title description thumb -_id',
 			(err, articles) => {
 				result.related = err ? [] : articles
@@ -250,14 +250,17 @@ ArticleCtrl.item.GET = ({ params: { article_id }}, res) => {
 
 	(isFindById
 		? Article.findById(article_id)
-		: Article.findOne({ id: article_id, state: 1, public: 1 }).populate('category tag').exec()
+		: Article.findOne({ id: article_id, state: PUBLISH_STATE.published, public: PUBLIC_STATE.public }).populate('category tag').exec()
 	)
 	.then(result => {
+
 		// 每请求一次，浏览次数都要增加
 		if (!isFindById) {
-			result.meta.views += 1
+			result.meta.views++
 			result.save()
 		}
+
+		// 如果是前台用户请求，则需要获取相关文章
 		if (!isFindById && result.tag.length) {
 			getRelatedArticles(result.toObject())
 		} else {
