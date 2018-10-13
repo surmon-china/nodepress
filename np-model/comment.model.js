@@ -6,23 +6,21 @@
  */
 
 const { mongoose } = require('np-core/np-mongodb')
-const autoIncrement = require('mongoose-auto-increment')
 const mongoosePaginate = require('mongoose-paginate')
-
-// 自增ID初始化
-autoIncrement.initialize(mongoose.connection)
+const autoIncrement = require('mongoose-auto-increment')
+const { COMMENT_STATE, COMMENT_PARENT_TYPE } = require('np-core/np-constants')
 
 // 标签模型
 const commentSchema = new mongoose.Schema({
 
-	// 第三方评论id
+	// 第三方评论 ID
 	third_id: { type: Number },
 
-	// 评论所在的文章id，0代表系统留言板
+	// 评论所在的文章 ID，0 代表系统留言板
 	post_id: { type: Number, required: true },
 
-	// pid，0代表默认留言
-	pid: { type: Number, default: 0 },
+	// pid，0 代表默认留言
+	pid: { type: Number, default: COMMENT_PARENT_TYPE.self },
 
 	// content
 	content: { type: String, required: true, validate: /\S+/ },
@@ -43,14 +41,14 @@ const commentSchema = new mongoose.Schema({
 	// IP地址
 	ip: { type: String },
 
-	// ip物理地址
+	// IP物理地址
 	ip_location: { type: Object },
 
-	// 用户ua
+	// 用户UA
 	agent: { type: String, validate: /\S+/ },
 
-	// 状态 0待审核/1通过正常/-1已删除/-2垃圾评论
-	state: { type: Number, default: 1 },
+	// 状态 => 0 待审核 / 1 通过正常 / -1 已删除 / -2 垃圾评论
+	state: { type: Number, default: COMMENT_STATE.published },
 
 	// 发布日期
 	create_at: { type: Date, default: Date.now },

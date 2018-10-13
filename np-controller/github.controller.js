@@ -1,23 +1,23 @@
-/*
-*
-* Github控制器
-*
-*/
+/**
+ * GithubCtrl module.
+ * @file Github 控制器模块
+ * @module controller/github
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 const request = require('request')
-const config = require('app.config');
+const consola = require('consola')
+const CONFIG = require('app.config')
 const redis = require('np-core/np-redis')
-const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle')
-
-const githubCtrl = {}
+const { handleSuccess } = require('np-core/np-processor')
 
 // 获取远程项目列表
-const getGithubRepositories = () => {
+;((function getGithubRepositories() {
 	request({
-		url: `https://api.github.com/users/${config.GITHUB.username}/repos`,
+		url: `https://api.github.com/users/${CONFIG.GITHUB.username}/repos`,
 		headers: { 'User-Agent': 'request' }
 	}, (err, response, body) => {
-		if(!err && response.statusCode == 200) {
+		if (!err && response.statusCode == 200) {
 			const peojects = JSON.parse(body).map(rep => {
 				return {
 					html_url: rep.html_url,
@@ -32,23 +32,19 @@ const getGithubRepositories = () => {
 					language: rep.language
 				}
 			})
+			// consola.success('项目列表获取成功', peojects)
 			redis.set('github-projects', peojects)
 		} else {
-			console.warn('项目列表获取失败', 'err:', err, 'body:', body)
+			consola.warn('项目列表获取失败', 'err:', err, 'body:', body)
 		}
-		// 无论成功失败都定时更新，10分钟一次
+		// 无论成功失败都定时更新，10 分钟一次
 		setTimeout(getGithubRepositories, 1000 * 60 * 10)
 	})
-}
+})())
 
-getGithubRepositories()
-
-// 获取项目列表
-githubCtrl.GET = (req, res) => {
-	redis.get('github-projects', (err, github_projects) => {
-		handleSuccess({ res, result: github_projects, message: '项目列表获取成功' })
+// 获取内存中项目列表数据
+module.exports = (req, res) => {
+	redis.get('github-projects', (err, result) => {
+		handleSuccess({ res, result, message: '项目列表获取成功' })
 	})
 }
-
-// export
-module.exports = (req, res) => { handleRequest({ req, res, controller: githubCtrl })}

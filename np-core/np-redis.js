@@ -7,17 +7,37 @@
 
 const redis = require('redis')
 const consola = require('consola')
+const { isString } = require('np-helper/np-data-validate')
 
 const memoryClient = {}
 let redisAvailable = false
 let redisClient = null
 
-exports.redis = null
+const connectRedis = () => {
 
-exports.set = (key, value, callback) => {
+	redisClient = redis.createClient({ detect_buffers: true })
+	exports.redis = redis.createClient({ detect_buffers: true })
+
+	redisClient.on('error', err => {
+		redisAvailable = false
+		consola.warn('Redis连接失败！', err)
+	})
+
+	redisClient.on('ready', _ => {
+		redisAvailable = true
+		consola.ready('Redis已准备好！')
+	})
+
+	redisClient.on('reconnecting', _ => {
+		consola.info('Redis正在重连！')
+	})
+
+	return redisClient
+}
+
+const hommizationSet = (key, value, callback) => {
 	if (redisAvailable) {
-		// consola.log('into redis')
-		if (typeof value !== 'string') {
+		if (!isString(value)) {
 			try {
 				value = JSON.stringify(value)
 			} catch (err) {
@@ -26,12 +46,11 @@ exports.set = (key, value, callback) => {
 		}
 		redisClient.set(key, value, callback)
 	} else {
-		// consola.log('into memory')
 		memoryClient[key] = value
 	}
 }
 
-exports.get = (key, callback) => {
+const hommizationGet = (key, callback) => {
 	if (redisAvailable) {
 		redisClient.get(key, (err, value) => {
 			try {
@@ -40,6 +59,7 @@ exports.get = (key, callback) => {
 				// value = value
 			}
 			callback(err, value)
+			return value
 		})
 	} else {
 		callback(null, memoryClient[key])
@@ -47,24 +67,7 @@ exports.get = (key, callback) => {
 	}
 }
 
-exports.connect = () => {
-
-	exports.redis = redisClient = redis.createClient({ detect_buffers: true })
-
-	redisClient.on('error', err => {
-		redisAvailable = false
-		consola.warn('Redis连接失败！', err)
-	})
-
-	redisClient.on('ready', err => {
-		redisAvailable = true
-		consola.ready('Redis已准备好！')
-	})
-
-	redisClient.on('reconnecting', err => {
-		consola.info('Redis正在重连！')
-	})
-
-	return redisClient
-}
-
+exports.redis = redisClient
+exports.set = hommizationSet
+exports.get = hommizationGet
+exports.connect = connectRedis

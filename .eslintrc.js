@@ -9,10 +9,12 @@
   root: true,
   env: {
     es6: true,
-    node: true
+    node: true,
+    commonjs: true
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
+    ecmaVersion: 8
   },
   extends: [
     // 'plugin:prettier/recommended'

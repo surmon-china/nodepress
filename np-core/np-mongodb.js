@@ -5,18 +5,32 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const mongoose = require('mongoose')
-const config = require('app.config')
 const consola = require('consola')
+const CONFIG = require('app.config')
+const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
 const autoIncrement = require('mongoose-auto-increment')
 
+// remove DeprecationWarning
+mongoose.set('useFindAndModify', false)
+
+// plugin options
+mongoosePaginate.paginate.options = {
+	limit: CONFIG.APP.LIMIT
+}
+
+// mongoose Promise
 mongoose.Promise = global.Promise
 
+// mongoose
 exports.mongoose = mongoose
+
+// connect
 exports.connect = () => {
 
 	// 连接数据库
-	mongoose.connect(config.MONGODB.uri, {
+	mongoose.connect(CONFIG.MONGODB.uri, {
+		useCreateIndex: true,
 		useNewUrlParser: true,
 		promiseLibrary: global.Promise
 	})
@@ -29,9 +43,11 @@ exports.connect = () => {
 	// 连接成功
 	mongoose.connection.once('open', () => {
 		consola.ready('数据库连接成功!')
-		// 自增 ID 初始化
-		autoIncrement.initialize(mongoose.connection)
 	})
 
+	// 自增 ID 初始化
+	autoIncrement.initialize(mongoose.connection)
+	
+	// 返回实例
 	return mongoose
 }

@@ -1,40 +1,47 @@
-/*
-*
-* 喜欢功能控制器
-*
-*/
+/**
+ * LikeCtrl module.
+ * @file 喜欢功能控制器模块
+ * @module controller/like
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-const config = require('app.config');
-
-const { handleError, handleSuccess } = require('np-utils/np-handle');
-
-const Article = require('np-model/article.model');
-const Comment = require('np-model/comment.model');
-const Option = require('np-model/option.model');
+const consola = require('consola')
+const Article = require('np-model/article.model')
+const Comment = require('np-model/comment.model')
+const Option = require('np-model/option.model')
+const { getObjectValues } = require('np-helper/np-data-validate')
+const { LIKE_TYPE, COMMENT_POST_TYPE } = require('np-core/np-constants')
+const {
+	handleError,
+	handleSuccess,
+	humanizedHandleError
+} = require('np-core/np-processor')
 
 module.exports = ({ body: { id, type }}, res) => {
 
-	// 验证，1=>评论，2=>页面
-	if (![1, 2].includes(type)) {
-		res.jsonp({ code: 0, message: '喜欢失败，没有原因' });
+	// 验证参数的正确性，1 => 评论，2 => 页面
+	if (!getObjectValues(LIKE_TYPE).includes(type)) {
+		return handleError({ res, message: '喜欢失败，没有原因' })
 	}
 
 	// like
-	(Object.is(type, 1) ? Comment : (Object.is(id, 0) ? Option : Article))
-	.findOne((() => (Object.is(id, 0)) ? {} : { id })())
-	.then(result => {
-		if (Object.is(type, 1)) {
-			result.likes ++;
-		} else {
-			result.meta.likes ++;
-		}
-		result.save().then(info => {
-			// console.log('赞更新成功', info);
-		}).catch(err => {
-			console.warn('赞更新失败', err);
-		});
-		handleSuccess({ res, message: '爱你么么扎' });
-	}).catch(err => {
-		handleError({ res, err, message: '喜欢失败' });
-	})
-};
+	const isLikeGuestook = id === COMMENT_POST_TYPE.guestbook
+	const ModelService = type === LIKE_TYPE.comment
+		? Comment
+		: (isLikeGuestook ? Option : Article)
+
+	ModelService
+	.findOne(isLikeGuestook ? {} : { id })
+		.then(result => {
+			type === LIKE_TYPE.comment
+				? result.likes++
+				: result.meta.likes++
+			result.save().then(info => {
+				// consola.success('赞更新成功', info)
+			}).catch(err => {
+				consola.warn('赞更新失败', err)
+			})
+			handleSuccess({ res, message: '爱你么么扎' })
+		})
+		.catch(humanizedHandleError(res, '喜欢失败'))
+}
