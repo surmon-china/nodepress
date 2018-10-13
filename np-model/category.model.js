@@ -6,11 +6,8 @@
  */
 
 const { mongoose } = require('np-core/np-mongodb')
-const autoIncrement = require('mongoose-auto-increment')
 const mongoosePaginate = require('mongoose-paginate')
-
-// 自增ID初始化
-autoIncrement.initialize(mongoose.connection)
+const autoIncrement = require('mongoose-auto-increment')
 
 // 分类集合模型
 const categorySchema = new mongoose.Schema({
@@ -34,7 +31,7 @@ const categorySchema = new mongoose.Schema({
 	update_at: { type: Date },
 
 	// 自定义扩展
-	extends: [{ 
+	extends: [{
 		name: { type: String, validate: /\S+/ },
 		value: { type: String, validate: /\S+/ }
 	}]

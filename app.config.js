@@ -9,9 +9,11 @@ const { argv } = require('yargs')
 const package = require('package')
 
 exports.APP = {
-	ROOT_PATH: __dirname,
 	LIMIT: 16,
-	PORT: 8000
+	PORT: 8000,
+	ROOT_PATH: __dirname,
+	NAME: 'Surmon.me',
+	URL: 'https://surmon.me'
 }
 
 exports.CROSS_DOMAIN = {
@@ -28,6 +30,18 @@ exports.AUTH = {
 	data: argv.auth_data || { user: 'root' },
 	jwtTokenSecret: argv.auth_key || 'nodepress',
 	defaultPassword: argv.auth_default_password || 'root'
+}
+
+exports.EMAIL = {
+	account: argv.email_account || 'your email address like : i@surmon.me',
+	password: argv.email_password || 'your email password',
+	from: '"Surmon" <i@surmon.me>',
+	admin: 'surmon@foxmail.com'
+}
+
+exports.AKISMET = {
+	key: argv.akismet_key || 'your akismet Key',
+	blog: argv.akismet_blog || 'your akismet blog site, like: https://surmon.me'
 }
 
 exports.GITHUB = {
@@ -51,22 +65,11 @@ exports.ALIYUN = {
 	ip: argv.aliyun_ip_auth
 }
 
-exports.EMAIL = {
-	account: argv.email_account || 'your email address like : i@surmon.me',
-	password: argv.email_password || 'your email password',
-	from: argv.email_from || '"Surmon" <i@surmon.me>'
-}
-
-exports.AKISMET = {
-	key: argv.akismet_key || 'your akismet Key',
-	blog: argv.akismet_blog || 'your akismet blog site, like: https://surmon.me'
-}
-
 exports.INFO = {
 	name: package.name,
 	version: package.version,
 	author: package.author,
-	site: package.author.url,
+	site: exports.APP.URL,
 	github: 'https://github.com/surmon-china',
 	powered: ['Vue', 'Nuxt.js', 'ReactNative', 'Angular', 'Bootstrap4', 'Nodejs', 'MongoDB', 'Express', 'Nginx']
 }

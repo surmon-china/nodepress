@@ -1,20 +1,21 @@
-/*
-*
-* 七牛控制器
-*
-*/
+/**
+ * QiniuCtrl module.
+ * @file 七牛控制器模块
+ * @module controller/qiniu
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-const qiniu = require('qn');
-const config = require('app.config');
-const { handleRequest, handleSuccess } = require('np-utils/np-handle');
+const qiniu = require('qn')
+const CONFIG = require('app.config')
+const { buildController, initController, handleSuccess } = require('np-core/np-processor')
 
-const client = qiniu.create(config.QINIU);
-const qiniuCtrl = {};
+const client = qiniu.create(CONFIG.QINIU)
+const QiniuCtrl = initController()
 
 // 获取配置列表
-qiniuCtrl.GET = (req, res) => {
-	const result = { uptoken: client.uploadToken() };
-  handleSuccess({ res, result, message: 'upToken 获取成功' });
-};
+QiniuCtrl.GET = (req, res) => {
+	const result = { uptoken: client.uploadToken() }
+  handleSuccess({ res, result, message: 'upToken 获取成功' })
+}
 
-module.exports = (req, res) => { handleRequest({ req, res, controller: qiniuCtrl })};
+module.exports = buildController(QiniuCtrl)

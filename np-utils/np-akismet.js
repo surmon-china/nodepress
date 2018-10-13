@@ -6,14 +6,14 @@
  */
 
 const consola = require('consola')
-const config = require('app.config')
+const CONFIG = require('app.config')
 const akismet = require('akismet-api')
 
 let clientIsValid = false
 
 const client = akismet.client({
-	key: config.AKISMET.key,
-	blog: config.AKISMET.blog
+	key: CONFIG.AKISMET.key,
+	blog: CONFIG.AKISMET.blog
 })
 
 // check key
@@ -36,17 +36,17 @@ const checkSpam = comment => {
 			client.checkSpam(comment).then(spam => {
 				if (spam) {
 					consola.warn('Akismet 验证不通过!', new Date())
-					reject(new Error('spam!'))
+					return reject(new Error('spam!'))
 				} else {
 					consola.info('Akismet 验证通过', new Date())
-					resolve(spam)
+					return resolve(spam)
 				}
 			}).catch(err => {
-				resolve(err)
+				return resolve(err)
 			})
 		} else {
 			consola.warn('Akismet key 未认证，放弃验证')
-			resolve('akismet key Invalid!')
+			return resolve('akismet key Invalid!')
 		}
 	})
 }

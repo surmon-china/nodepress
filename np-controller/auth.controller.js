@@ -1,106 +1,115 @@
-/*
-*
-* 权限控制器
-*
-*/
+/**
+ * AuthCtrl module.
+ * @file 权限控制器模块
+ * @module controller/auth
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-const config = require('app.config')
-
-const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
-const Base64 = require('js-base64').Base64
-
+const jwt = require('jsonwebtoken')
+const { Base64 } = require('js-base64')
+const CONFIG = require('app.config')
 const Auth = require('np-model/auth.model')
-
 const authIsVerified = require('np-utils/np-auth')
-const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle')
+const {
+	handleError,
+	handleSuccess,
+	humanizedHandleError,
+	buildController,
+	initController
+} = require('np-core/np-processor')
 
-const authCtrl = {}
+// Controller
+const AuthCtrl = initController()
+
+// 密码编码
+const decodePassword = pwd => pwd ? Base64.decode(pwd) : pwd
 
 // md5编码
-const md5Decode = pwd => {
-	return crypto.createHash('md5').update(pwd).digest('hex')
+const md5Decode = password => {
+	return crypto.createHash('md5').update(password).digest('hex')
 }
 
 // 获取个人信息
-authCtrl.GET = (req, res) => {
+AuthCtrl.GET = (req, res) => {
 	Auth.find({}, '-_id name slogan gravatar')
-	.then(([result = {}]) => {
-		handleSuccess({ res, result, message: '用户资料获取成功' })
-	})
-	.catch(err => {
-		handleError({ res, err, message: '获取失败' })
-	})
+		.then(([result = {}]) => {
+			handleSuccess({ res, result, message: '用户资料获取成功' })
+		})
+		.catch(humanizedHandleError(res, '用户资料获取失败'))
 }
 
 // 生成登陆口令Token
-authCtrl.POST = ({ body: { password }}, res) => {
+AuthCtrl.POST = ({ body: { password }}, res) => {
 	Auth.find({}, '-_id password')
-	.then(([auth = { password: md5Decode(config.AUTH.defaultPassword) }]) => {
-		password = password ? Base64.decode(password) : password
-		if (Object.is(md5Decode(password), auth.password)) {
-			const token = jwt.sign({
-			  data: config.AUTH.data,
-			  exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7)
-			}, config.AUTH.jwtTokenSecret)
-			handleSuccess({ res, result: { token }, message: '登陆成功' })
-		} else {
-			handleError({ res, message: '来者何人!' })
-		}
-	})
-	.catch(err => handleError({ res, err, message: '登录失败' }))
+		.then(([auth = { password: md5Decode(CONFIG.AUTH.defaultPassword) }]) => {
+			if (md5Decode(decodePassword(password)) === auth.password) {
+				const token = jwt.sign({
+					data: CONFIG.AUTH.data,
+					exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7)
+				}, CONFIG.AUTH.jwtTokenSecret)
+				handleSuccess({ res, result: { token }, message: '登陆成功' })
+			} else {
+				handleError({ res, message: '来者何人!' })
+			}
+		})
+		.catch(humanizedHandleError(res, '登录失败', 401))
 }
 
 // 检查 Token 的有效性
-authCtrl.PATCH = (req, res) => {
-	if (authIsVerified(req)) {
-		handleSuccess({ res, result: true, message: 'Token 验证成功' })
-	} else {
-		handleError({ res, result: false, code: 403, message: 'Token 验证不通过!' })
-	}
+AuthCtrl.PATCH = (req, res) => {
+	authIsVerified(req)
+		? handleSuccess({ res, result: true, message: 'Token 验证成功' })
+		: handleError({ res, result: false, code: 403, message: 'Token 验证不通过!' })
 }
 
 // 修改权限和个人信息
-authCtrl.PUT = ({ body: auth }, res) => {
+AuthCtrl.PUT = ({ body: auth }, res) => {
 
 	// 初始化
-	let { name, slogan, gravatar, password, new_password, rel_new_password } = auth
+	let { password, new_password, rel_new_password } = auth
 
 	// 密码解码
-	password = password ? Base64.decode(password) : password
-	new_password = new_password ? Base64.decode(new_password) : new_password
-	rel_new_password = rel_new_password ? Base64.decode(rel_new_password) : rel_new_password
+	password = decodePassword(password)
+	new_password = decodePassword(new_password)
+	rel_new_password = decodePassword(rel_new_password)
 
 	// 验证密码
-	if (!!password && ((!new_password || !rel_new_password) || !Object.is(new_password, rel_new_password))) {
-		handleError({ res, message: '密码不一致或无效' })
-		return false
-	}
-
-	if (!!password && [new_password, rel_new_password].includes(password)) {
-		handleError({ res, message: '新旧密码不可一致' })
-		return false
+	if (password || new_password || rel_new_password) {
+		if ((!new_password || !rel_new_password) || new_password !== rel_new_password) {
+			return handleError({ res, message: '密码不一致或无效' })
+		}
+		if ([new_password, rel_new_password].includes(password)) {
+			return handleError({ res, message: '新旧密码不可一致' })
+		}
 	}
 	
 	// 修改前查询验证
 	Auth.find({}, '_id name slogan gravatar password')
-	.then(([_auth = { password: md5Decode(config.AUTH.defaultPassword) }]) => {
-		if (!!password && !Object.is(_auth.password, md5Decode(password))) {
-			handleError({ res, message: '原密码不正确' })
-		} else {
-			if (rel_new_password) {
-				auth.password = md5Decode(rel_new_password)
-				delete auth.new_password
-				delete auth.rel_new_password
+		.then(([_auth = { password: md5Decode(CONFIG.AUTH.defaultPassword) }]) => {
+
+			if (password) {
+				// 判断旧密码是否一致
+				if (_auth.password !== md5Decode(password)) {
+					return handleError({ res, message: '原密码不正确' })
+				}
+				// 新密码赋值
+				if (rel_new_password) {
+					auth.password = md5Decode(rel_new_password)
+					Reflect.deleteProperty(auth, 'new_password')
+					Reflect.deleteProperty(auth, 'rel_new_password')
+				}
 			}
-			(_auth._id ? Auth.findByIdAndUpdate(_auth._id, auth, { new: true }) : new Auth(auth).save())
+
+			(_auth._id
+				? Auth.findByIdAndUpdate(_auth._id, auth, { new: true })
+				: new Auth(auth).save()
+			)
 			.then(({ name, slogan, gravatar } = auth) => {
 				handleSuccess({ res, result: { name, slogan, gravatar }, message: '用户权限修改成功' })
 			})
-			.catch(err => handleError({ res, err, message: '用户权限修改失败' }))
-		}
-	}).catch(err => handleError({ res, err, message: '用户权限修改失败' }))
+			.catch(humanizedHandleError(res, '用户权限修改失败'))
+		}).catch(humanizedHandleError(res, '用户权限修改失败'))
 }
 
-// export
-module.exports = (req, res) => { handleRequest({ req, res, controller: authCtrl })}
+module.exports = buildController(AuthCtrl)

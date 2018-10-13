@@ -30,7 +30,7 @@ const optionSchema = new mongoose.Schema({
 	// 备案号
 	site_icp: String,
 
-	// 搜索引擎ping
+	// 搜索引擎 ping
 	ping_sites: [{ type: String, validate: /\S+/ }],
 
 	// 黑名单
@@ -42,7 +42,7 @@ const optionSchema = new mongoose.Schema({
 
 	// 其他元信息
 	meta: {
-		
+
 		// 被喜欢次数
 		likes: { type: Number, default: 0 }
 	}

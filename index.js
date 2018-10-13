@@ -13,30 +13,26 @@ const helmet = require('helmet')
 const express = require('express')
 const consola = require('consola')
 const bodyParser = require('body-parser')
-const mongoosePaginate = require('mongoose-paginate')
 
 // global path
 require('app-module-path').addPath(__dirname + '/')
 
 // app modules
-const config = require('app.config')
+const CONFIG = require('app.config')
 const environment = require('environment')
-const routes = require('np-core/np-routes')
-const mongodb = require('np-core/np-mongodb')
 const redis = require('np-core/np-redis')
-const app = express()
-
-// global options
-mongoosePaginate.paginate.options = {
-	limit: config.APP.LIMIT
-}
+const mongodb = require('np-core/np-mongodb')
 
 // data server
 redis.connect()
 mongodb.connect()
 
+// app routes
+const routes = require('np-core/np-routes')
+const app = express()
+
 // app config
-app.set('port', config.APP.PORT)
+app.set('port', CONFIG.APP.PORT)
 app.use(helmet())
 app.use(bodyParser.json({ limit: '1mb' }))
 app.use(bodyParser.urlencoded({ extended: true }))

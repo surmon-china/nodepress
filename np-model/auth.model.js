@@ -21,7 +21,7 @@ const authSchema = new mongoose.Schema({
 	gravatar: { type: String, default: '' },
 
 	// 密码
-	password: { 
+	password: {
 		type: String, 
 		default: crypto.createHash('md5').update(config.AUTH.defaultPassword).digest('hex')
 	}

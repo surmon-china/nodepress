@@ -6,7 +6,7 @@
  */
 
 const jwt = require('jsonwebtoken')
-const config = require('app.config')
+const CONFIG = require('app.config')
 
 // 验证 Auth
 const authToken = req => {
@@ -24,7 +24,7 @@ const authIsVerified = req => {
 	const token = authToken(req)
 	if (token) {
 		try {
-			const decodedToken = jwt.verify(token, config.AUTH.jwtTokenSecret)
+			const decodedToken = jwt.verify(token, CONFIG.AUTH.jwtTokenSecret)
 			return (decodedToken.exp > Math.floor(Date.now() / 1000))
 		} catch (err) {
 			return false
