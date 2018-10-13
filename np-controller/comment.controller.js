@@ -260,6 +260,7 @@ CommentCtrl.list.POST = (req, res) => {
 			new Comment(comment).save()
 				.then((result = comment) => {
 					handleSuccess({ res, result, message: '评论发布成功' })
+					
 					// 发布成功后，向网站主及被回复者发送邮件提醒，并更新网站聚合
 					sendMailToAdminAndTargetUser(comment, permalink)
 					updateArticleCommentCount([comment.post_id])
@@ -279,12 +280,11 @@ CommentCtrl.list.POST = (req, res) => {
 			comment_author_url: comment.author.site,
 			comment_content: comment.content,
 			is_test: environment.isDevMode
-
-		// 使用设置的黑名单ip/邮箱/关键词过滤
 		})
 		.then(info => Option.findOne())
 		.then(options => {
 
+			// 使用设置的黑名单 ip/邮箱/关键词过滤
 			const { keywords, mails, ips } = options.blacklist
 			const blockIp = ips.includes(comment.ip)
 			const blockEmail = mails.includes(comment.author.email)
@@ -323,7 +323,7 @@ CommentCtrl.list.POST = (req, res) => {
 // 批量修改（移回收站、回收站恢复）
 CommentCtrl.list.PATCH = ({ body: { comments, post_ids, state }, headers: { referer }}, res) => {
 
-	// 验证 comments 0待审核/1通过正常/-1已删除/-2垃圾评论
+	// 验证 comments 有效性
 	const stateIsInvalid = numberIsInvalid(state) || !getObjectValues(COMMENT_STATE).includes(Number(state))
 	
 	if (arrayIsInvalid(comments) || stateIsInvalid) {
@@ -335,10 +335,12 @@ CommentCtrl.list.PATCH = ({ body: { comments, post_ids, state }, headers: { refe
 	Comment.update({ '_id': { $in: comments }}, { $set: { state }}, { multi: true })
 		.then(result => {
 			handleSuccess({ res, result, message: '评论批量操作成功' })
+
 			// 如果处理的评论有超过包含一篇文章评论以上的状态，则更新所相关文章的聚合数据
 			if (!arrayIsInvalid(post_ids)) {
 				updateArticleCommentCount(post_ids)
 			}
+
 			// 处理评论状态转移，如果是将评论状态标记为垃圾邮件，则同时加入黑名单，以及 submitSpam
 			Comment.find({ '_id': { $in: comments } })
 				.then(todo_comments => {
@@ -362,6 +364,7 @@ CommentCtrl.list.DELETE = ({ body: { comments, post_ids }}, res) => {
 	Comment.remove({ '_id': { $in: comments }})
 		.then(result => {
 			handleSuccess({ res, result, message: '评论批量删除成功' })
+
 			// 如果处理的评论有超过包含一篇文章评论以上的状态，则更新所相关文章的聚合数据
 			if (!arrayIsInvalid(post_ids)) {
 				updateArticleCommentCount(post_ids)
@@ -382,10 +385,12 @@ CommentCtrl.item.PUT = ({ params: { comment_id }, body: comment, headers: { refe
 	Comment.findByIdAndUpdate(comment_id, comment, { new: true })
 		.then(result => {
 			handleSuccess({ res, result, message: '评论修改成功' })
+
 			// 如果评论所属为文章评论，则更新文章所属的聚合数据
 			if (comment.post_id) {
 				updateArticleCommentCount([comment.post_id])
 			}
+
 			// 处理评论状态转移
 			handleCommentsStateChange(comment.state, [comment], referer)
 		})
