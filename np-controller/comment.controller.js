@@ -260,7 +260,7 @@ CommentCtrl.list.POST = (req, res) => {
 			new Comment(comment).save()
 				.then((result = comment) => {
 					handleSuccess({ res, result, message: '评论发布成功' })
-					
+
 					// 发布成功后，向网站主及被回复者发送邮件提醒，并更新网站聚合
 					sendMailToAdminAndTargetUser(comment, permalink)
 					updateArticleCommentCount([comment.post_id])
@@ -268,7 +268,7 @@ CommentCtrl.list.POST = (req, res) => {
 				.catch(humanizedHandleError(res, '评论发布失败'))
 		}
 
-		// 使用akismet过滤
+		// 使用 akismet 过滤
 		akismetClient.checkSpam({
 			permalink,
 			user_ip: comment.ip,
@@ -297,7 +297,7 @@ CommentCtrl.list.POST = (req, res) => {
 		.catch(humanizedHandleError(res, '评论发布失败'))
 	}
 
-	// 获取ip地址以及物理地理地址
+	// 获取 ip 地址以及物理地址
 	const ip = (req.headers['x-forwarded-for'] ||
 							req.headers['x-real-ip'] ||
 							req.connection.remoteAddress ||
