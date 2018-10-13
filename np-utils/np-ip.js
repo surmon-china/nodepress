@@ -6,7 +6,7 @@
  */
 
 const request = require('request')
-const config = require('app.config')
+const CONFIG = require('app.config')
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
@@ -14,7 +14,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 const queryIpInfo = ip => {
 	return new Promise((resolve, reject) => {
 		request({
-			headers: { 'Authorization': `APPCODE ${config.ALIYUN.ip}` },
+			headers: { 'Authorization': `APPCODE ${CONFIG.ALIYUN.ip}` },
 			url: `https://dm-81.data.aliyun.com/rest/160601/ip/getIpInfo.json?ip=${ip}`
 		}, (error, response, body) => {
 			if (!error && response.statusCode == 200) {

@@ -10,6 +10,7 @@
 - Github 控制器优化数据
 - 增加 bing-wallpaper API 服务
 - 使用更友好的 consola 日志模块
+- 为控制器和 Model 抽象出单独的状态常量
 
 ### v2.0.0
 

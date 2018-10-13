@@ -6,7 +6,7 @@
  */
 
 const consola = require('consola')
-const config = require('app.config')
+const CONFIG = require('app.config')
 const nodemailer = require('nodemailer')
 
 let clientIsValid = false
@@ -16,8 +16,8 @@ const transporter = nodemailer.createTransport({
 	secure: true,
 	port: 465,
 	auth: {
-		user: config.EMAIL.account,
-		pass: config.EMAIL.password
+		user: CONFIG.EMAIL.account,
+		pass: CONFIG.EMAIL.password
 	}
 })
 
@@ -29,7 +29,7 @@ const verifyClient = () => {
 			setTimeout(verifyClient, 1000 * 60 * 60)
 		} else {
 			clientIsValid = true
-			consola.info('邮件客户端初始化连接成功，随时可发送邮件')
+			consola.ready('邮件客户端初始化连接成功，随时可发送邮件')
 		}
 	})
 }
@@ -41,12 +41,12 @@ const sendMail = mailOptions => {
 		consola.warn('由于未初始化成功，邮件客户端发送被拒绝')
 		return false
 	}
-	mailOptions.from = config.EMAIL.from
+	mailOptions.from = CONFIG.EMAIL.from
 	transporter.sendMail(mailOptions, (error, info) => {
 		if (error) {
 			consola.warn('邮件发送失败', error)
 		} else {
-			consola.info('邮件发送成功', info.messageId, info.response)
+			consola.success('邮件发送成功', info.messageId, info.response)
 		}
 	})
 }

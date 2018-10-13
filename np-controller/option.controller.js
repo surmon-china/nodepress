@@ -1,41 +1,46 @@
-/*
-*
-* 设置控制器
-*
-*/
+/**
+ * OptionCtrl module.
+ * @file 设置控制器模块
+ * @module controller/option
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-const { handleRequest, handleError, handleSuccess } = require('np-utils/np-handle');
-const Option = require('np-model/option.model');
+const Option = require('np-model/option.model')
+const {
+	humanizedHandleError,
+	humanizedHandleSuccess,
+	buildController,
+	initController
+} = require('np-core/np-processor')
 
-const optionCtrl = {};
+// Controller
+const OptionCtrl = initController()
 
 // 获取权限
-optionCtrl.GET = (req, res) => {
+OptionCtrl.GET = (req, res) => {
 	Option.findOne({})
-	.then((result = {}) => {
-		handleSuccess({ res, result, message: '配置项获取成功' });
-	})
-	.catch(err => {
-		handleError({ res, err, message: '配置项获取失败' });
-	});
-};
+		.then(humanizedHandleSuccess(res, '配置项获取成功'))
+		.catch(humanizedHandleError(res, '配置项获取失败'))
+}
 
 // 修改权限
-optionCtrl.PUT = ({ body: options, body: { _id }}, res) => {
-	if (!_id) delete options._id;
-	// 检测黑名单和ping地址列表不能存入空元素
-	options.ping_sites = (options.ping_sites || []).filter(t => !!t);
-	options.blacklist.ips = (options.blacklist.ips || []).filter(t => !!t);
-	options.blacklist.mails = (options.blacklist.mails || []).filter(t => !!t);
-	options.blacklist.keywords = (options.blacklist.keywords || []).filter(t => !!t);
-	(!!_id ? Option.findByIdAndUpdate(_id, options, { new: true }) : new Option(options).save())
-	.then((result = options) => {
-		handleSuccess({ res, result, message: '配置项修改成功' });
-	})
-	.catch(err => {
-		handleError({ res, err, message: '配置项修改失败' });
-	})
-};
+OptionCtrl.PUT = ({ body: options, body: { _id }}, res) => {
+	// 如果 _id 是 null 或空值
+	if (!_id) {
+		Reflect.deleteProperty(options, '_id')
+	}
+	// 检测黑名单和 ping 地址列表不能存入空元素
+	const checkEmpty = data => (data && data.length) ? data.filter(t => !!t) : []
+	options.ping_sites = checkEmpty(options.ping_sites)
+	options.blacklist.ips = checkEmpty(options.blacklist.ips)
+	options.blacklist.mails = checkEmpty(options.blacklist.mails)
+	options.blacklist.keywords = checkEmpty(options.blacklist.keywords);
+	(_id
+		? Option.findByIdAndUpdate(_id, options, { new: true })
+		: new Option(options).save()
+	)
+	.then(humanizedHandleSuccess(res, '配置项修改成功'))
+	.catch(humanizedHandleError(res, '配置项修改失败'))
+}
 
-// export
-module.exports = (req, res) => { handleRequest({ req, res, controller: optionCtrl })};
+module.exports = buildController(OptionCtrl)

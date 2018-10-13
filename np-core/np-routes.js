@@ -5,26 +5,21 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const config = require('app.config')
-const environment = require('environment')
+const CONFIG = require('app.config')
 const controller = require('np-controller')
 const authIsVerified = require('np-utils/np-auth')
+const { isProdMode, isDevMode } = require('environment')
 
 const routes = app => {
 
 	// 拦截器
 	app.all('*', (req, res, next) => {
 
-		// production env
-		const { isProdMode, isDevMode } = environment
-
 		// set Header
-		const allowedOrigins = config.CROSS_DOMAIN.allowedOrigins
 		const origin = req.headers.origin || ''
-		if (isDevMode) {
-			allowedOrigins.push(origin)
-		}
-		if (allowedOrigins.includes(origin)) {
+		const allowedOrigins = [...CONFIG.CROSS_DOMAIN.allowedOrigins]
+	
+		if (allowedOrigins.includes(origin) || isDevMode) {
 			res.setHeader('Access-Control-Allow-Origin', origin)
 		}
 		res.header('Access-Control-Allow-Headers', 'Authorization, Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With')
@@ -35,29 +30,26 @@ const routes = app => {
 
 		// OPTIONS request
 		if (req.method == 'OPTIONS') {
-			res.sendStatus(200)
-			return false
+			return res.sendStatus(200)
 		}
 
 		// 如果是生产环境，需要验证用户来源渠道，防止非正常请求
 		if (isProdMode) {
 			const { origin, referer } = req.headers
-			const originVerified = !origin || origin.includes(config.CROSS_DOMAIN.allowedReferer)
-			const refererVerified = !referer || referer.includes(config.CROSS_DOMAIN.allowedReferer)
+			const originVerified = !origin || origin.includes(CONFIG.CROSS_DOMAIN.allowedReferer)
+			const refererVerified = !referer || referer.includes(CONFIG.CROSS_DOMAIN.allowedReferer)
 			if (!originVerified || !refererVerified) {
-				res.status(403).jsonp({ code: 0, message: '来者何人！' })
-				return false
+				return res.status(403).jsonp({ code: 0, message: '来者何人！' })
 			}
 		}
 
-		// 排除 auth 的 post 请求 && 评论的 post 请求 && like 请求
+		// 排除 (auth 的 post 请求) & (评论的 post 请求) & (like 请求)
 		const isPostUrl = (req, url) => Object.is(req.url, url) && Object.is(req.method, 'POST')
 		const isLike = isPostUrl(req, '/like')
 		const isPostAuth = isPostUrl(req, '/auth')
 		const isPostComment = isPostUrl(req, '/comment')
 		if (isLike || isPostAuth || isPostComment) {
-			next()
-			return false
+			return next()
 		}
 
 		// 拦截（所有非管路员的非 get 请求，或文件上传请求）
@@ -65,8 +57,7 @@ const routes = app => {
 		const isFileRequest = req.url === '/qiniu'
 		const isGuestRequest = !authIsVerified(req)
 		if (isGuestRequest && (notGetRequest || isFileRequest)) {
-			res.status(401).jsonp({ code: 0, message: '来者何人！' })
-			return false
+			return res.status(401).jsonp({ code: 0, message: '来者何人！' })
 		}
 
 		// 其他情况都通行
@@ -75,7 +66,7 @@ const routes = app => {
 
 	// api
 	app.get('/', (req, res) => {
-		res.jsonp(config.INFO)
+		res.jsonp(CONFIG.INFO)
 	})
 
 	// auth
@@ -94,7 +85,11 @@ const routes = app => {
 	app.post('/like', controller.like)
 
 	// github
-	app.all('/github', controller.github)
+	app.get('/github', controller.github)
+
+	// wallpaper
+	app.get('/wallpaper/list', controller.wallpaper.list)
+	app.get('/wallpaper/story', controller.wallpaper.story)
 
 	// music
 	app.get('/music/pic/:pic_id', controller.music.pic)

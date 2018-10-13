@@ -6,8 +6,9 @@
  */
 
 const { mongoose } = require('np-core/np-mongodb')
-const autoIncrement = require('mongoose-auto-increment')
 const mongoosePaginate = require('mongoose-paginate')
+const autoIncrement = require('mongoose-auto-increment')
+const { PUBLISH_STATE } = require('np-core/np-constants')
 
 // 公告模型
 const announcementSchema = new mongoose.Schema({
@@ -16,7 +17,7 @@ const announcementSchema = new mongoose.Schema({
 	content: { type: String, required: true, validate: /\S+/ },
 
 	// 公告发布状态 => 0 草稿，1 已发布
-	state: { type: Number, default: 1 },
+	state: { type: Number, default: PUBLISH_STATE.published },
 
 	// 发布日期
 	create_at: { type: Date, default: Date.now },

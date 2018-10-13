@@ -7,17 +7,14 @@
 
 const request = require('request')
 const consola = require('consola')
-const config = require('app.config')
-
-const BAIDU_SITE = config.BAIDU.site
-const BAIDU_TOKEN = config.BAIDU.token
+const CONFIG = require('app.config')
 
 // POST request
 const postRequest = ({ urlKey, urls, msg }) => {
 	request.post({
 		body: urls,
 		headers: { 'Content-Type': 'text/plain' },
-		url: `http://data.zz.baidu.com/${urlKey}?site=${BAIDU_SITE}&token=${BAIDU_TOKEN}`
+		url: `http://data.zz.baidu.com/${urlKey}?site=${CONFIG.BAIDU.site}&token=${CONFIG.BAIDU.token}`
 	}, (error, response, body) => {
 		consola.info(urls, msg, error, body)
 	})
