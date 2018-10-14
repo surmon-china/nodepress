@@ -86,7 +86,7 @@ const sendMailToAdminAndTargetUser = (comment, permalink) => {
 	const commentType = comment.post_id === COMMENT_POST_TYPE.guestbook ? '评论' : '留言'
 	const replyText = isReply => isReply ? '回复' : ''
 	const sendMailText = isReply => `来自 ${comment.author.name} 的${commentType}${replyText(isReply)}：${comment.content}`
-	const sendMailHtml = isReply => `<p> 来自${comment.author.name} 的${commentType}${replyText(isReply)}：${commentContent}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
+	const sendMailHtml = isReply => `<p> 来自 ${comment.author.name} 的${commentType}${replyText(isReply)}：${commentContent}</p><br><a href="${permalink}" target="_blank">[ 点击查看 ]</a>`
 	sendMail({
 		to: CONFIG.EMAIL.admin,
 		subject: `博客有新的${commentType}`,
