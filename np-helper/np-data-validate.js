@@ -1,6 +1,6 @@
 /**
  * Data helper module.
- * @file  数据助手模块
+ * @file 数据助手模块
  * @module helper/data-validate
  * @author Surmon <https://github.com/surmon-china>
  */
