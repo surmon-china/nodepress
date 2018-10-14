@@ -1,6 +1,14 @@
 
 ## CHANGELOG
 
+###  TODO
+
+- Tag 删除时需要更新相关文章的 tag 字段
+- Category 也是同样的操作
+- 删除一条存在子级评论的评论时，子级评论的 PID 需要置空
+- 集成 [Analytics Reporting API](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/web-js?hl=zh-cn) 供管理员使用
+- 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
+
 ### v2.1.0
 
 - 优化编码风格
@@ -54,13 +62,12 @@
 - 增加百度搜索引擎的实时提交
 - 更新模块化别名
 - 更新 README.md
-- RSS 订阅接口 https://github.com/dylang/node-rss
 - 加入网站地图接口
 - 网站地图由于缓存或者 primise 不能及时更新
 - 网站地图的数据构成中文章需要筛选公开一发布的文章
 - 对接百度统计开放平台api
 - 密码存储需要使用 md5 加密机制
-- token... 等 config 信息使用 node 命令参数在 shell  中配置覆盖
+- token... 等 config 信息使用 node 命令参数在 shell 中配置覆盖
 - lean 和 翻页插件一起使用，返回的 id 字段是 _id bug
 - 整理统一 result 的返回结构
 - 围观后计数功能

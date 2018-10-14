@@ -95,13 +95,11 @@ TagCtrl.list.GET = (req, res) => {
 	// 关键字查询
 	if (keyword)  {
 		const keywordReg = new RegExp(keyword)
-		const query = {
-			$or: [
-				{ 'name': keywordReg },
-				{ 'slug': keywordReg },
-				{ 'description': keywordReg }
-			]
-		}
+		query.$or = [
+			{ 'name': keywordReg },
+			{ 'slug': keywordReg },
+			{ 'description': keywordReg }
+		]
 	}
 
 	// 成功响应
@@ -172,7 +170,7 @@ TagCtrl.list.DELETE = ({ body: { tags }}, res) => {
 		return handleError({ res, message: '缺少有效参数' })
 	}
 
-	Tag.remove({ _id: { $in: tags }})
+	Tag.deleteMany({ _id: { $in: tags }})
 		.then(result => {
 			handleSuccess({ res, result, message: '标签批量删除成功' })
 			buildSiteMap()

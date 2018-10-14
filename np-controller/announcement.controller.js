@@ -86,7 +86,7 @@ AnnouncementCtrl.list.DELETE = ({ body: { announcements }}, res) => {
 	}
 
 	// 删除
-	Announcement.remove({ '_id': { $in: announcements }})
+	Announcement.deleteMany({ _id: { $in: announcements }})
 		.then(humanizedHandleSuccess(res, '公告批量删除成功'))
 		.catch(humanizedHandleError(res, '公告批量删除失败'))
 }
