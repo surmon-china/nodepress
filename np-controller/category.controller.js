@@ -120,7 +120,7 @@ CategoryCtrl.list.DELETE = ({ body: { categories }}, res) => {
 	}
 
 	// 把所有 pid 为 categories 中任何一个 id 的分类分别提升到自己分类本身的 PID 分类或者 null
-	Category.remove({ '_id': { $in: categories }})
+	Category.deleteMany({ _id: { $in: categories }})
 		.then(result => {
 			handleSuccess({ res, result, message: '分类批量删除成功' })
 			buildSiteMap()

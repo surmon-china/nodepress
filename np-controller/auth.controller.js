@@ -53,7 +53,7 @@ AuthCtrl.POST = ({ body: { password }}, res) => {
 				handleError({ res, message: '来者何人!' })
 			}
 		})
-		.catch(humanizedHandleError(res, '登录失败', 401))
+		.catch(humanizedHandleError(res, '登录失败'))
 }
 
 // 检查 Token 的有效性

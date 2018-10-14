@@ -190,9 +190,9 @@ ArticleCtrl.list.PATCH = ({ body: { articles, action }}, res) => {
 	}
 
 	const doAction = actions[action]
-	const updatePart = doAction ? { state: doAction } : {}
+	const updatePart = getObjectValues(actions).includes(doAction) ? { state: doAction } : {}
 
-	Article.update({ _id: { $in: articles }}, { $set: updatePart }, { multi: true })
+	Article.updateMany({ _id: { $in: articles }}, { $set: updatePart }, { multi: true })
 		.then(result => {
 			handleSuccess({ res, result, message: '文章批量操作成功' })
 			buildSiteMap()
@@ -210,7 +210,7 @@ ArticleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 
 	// delete action
 	const deleteArticls = () => {
-		Article.remove({ _id: { $in: articles }})
+		Article.deleteMany({ _id: { $in: articles }})
 			.then(result => {
 				handleSuccess({ res, result, message: '文章批量删除成功' })
 				buildSiteMap()
