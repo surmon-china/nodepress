@@ -48,6 +48,15 @@ exports.GITHUB = {
 	username: 'surmon-china',
 }
 
+exports.ALIYUN = {
+	ip: argv.aliyun_ip_auth
+}
+
+exports.BAIDU = {
+	site: argv.baidu_site || 'your baidu site domain like : surmon.me',
+	token: argv.baidu_token || 'your baidu seo push token'
+}
+
 exports.QINIU = {
 	accessKey: argv.qn_accessKey || 'your access key',
 	secretKey: argv.qn_secretKey || 'your secret key',
@@ -56,20 +65,11 @@ exports.QINIU = {
 	uploadURL: argv.qn_uploadURL || 'http://up.qiniu.com/'
 }
 
-exports.BAIDU = {
-	site: argv.baidu_site || 'your baidu site domain like : surmon.me',
-	token: argv.baidu_token || 'your baidu seo push token'
-}
-
-exports.ALIYUN = {
-	ip: argv.aliyun_ip_auth
-}
-
 exports.INFO = {
 	name: package.name,
 	version: package.version,
 	author: package.author,
 	site: exports.APP.URL,
 	github: 'https://github.com/surmon-china',
-	powered: ['Vue', 'Nuxt.js', 'ReactNative', 'Angular', 'Bootstrap4', 'Nodejs', 'MongoDB', 'Express', 'Nginx']
+	powered: ['Vue', 'Nuxt.js', 'ReactNative', 'Angular', 'Bootstrap', 'Nodejs', 'MongoDB', 'Express', 'Nginx']
 }

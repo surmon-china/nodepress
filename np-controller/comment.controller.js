@@ -56,7 +56,7 @@ const updateArticleCommentCount = (post_ids = []) => {
 	])
 	.then(counts => {
 		if (arrayIsInvalid(counts)) {
-			Article.update({ id: post_ids[0] }, { $set: { 'meta.comments': 0 }})
+			Article.updateOne({ id: post_ids[0] }, { $set: { 'meta.comments': 0 }})
 				.then(info => {
 					// consola.info('评论聚合更新成功', info)
 				})
@@ -65,7 +65,7 @@ const updateArticleCommentCount = (post_ids = []) => {
 				})
 		} else {
 			counts.forEach(count => {
-				Article.update({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }})
+				Article.updateOne({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }})
 					.then(info => {
 						// consola.info('评论聚合更新成功', info)
 					})
@@ -233,8 +233,17 @@ CommentCtrl.list.GET = (req, res) => {
 // 发布评论
 CommentCtrl.list.POST = (req, res) => {
 
+	const comment = req.body
+
+	// 获取 ip 地址以及物理地址
 	let ip_location = null
-	const { comment } = req.body
+	const ip = (req.headers['x-forwarded-for'] ||
+							req.headers['x-real-ip'] ||
+							req.connection.remoteAddress ||
+							req.socket.remoteAddress ||
+							req.connection.socket.remoteAddress ||
+							req.ip ||
+							req.ips[0]).replace('::ffff:', '')
 
 	const doSaveComment = () => {
 
@@ -288,23 +297,14 @@ CommentCtrl.list.POST = (req, res) => {
 			const { keywords, mails, ips } = options.blacklist
 			const blockIp = ips.includes(comment.ip)
 			const blockEmail = mails.includes(comment.author.email)
-			const blockKeyword = keywords.length && eval(`/${keywords.join('|')}/ig`).test(comment.content);
-
-			(blockIp || blockEmail || blockKeyword)
+			const blockKeyword = keywords.length && eval(`/${keywords.join('|')}/ig`).test(comment.content)
+			const isBlocked = blockIp || blockEmail || blockKeyword
+			isBlocked
 				? handleError({ res, err: '内容||ip||邮箱 => 不合法', message: '评论发布失败' })
 				: saveComment()
 		})
 		.catch(humanizedHandleError(res, '评论发布失败'))
 	}
-
-	// 获取 ip 地址以及物理地址
-	const ip = (req.headers['x-forwarded-for'] ||
-							req.headers['x-real-ip'] ||
-							req.connection.remoteAddress ||
-							req.socket.remoteAddress ||
-							req.connection.socket.remoteAddress ||
-							req.ip ||
-							req.ips[0]).replace('::ffff:', '')
 	
 	queryIp(ip).then(data => {
 		// consola.log('查询到IP', data)
@@ -332,7 +332,7 @@ CommentCtrl.list.PATCH = ({ body: { comments, post_ids, state }, headers: { refe
 		state = Number(state)
 	}
 	
-	Comment.update({ '_id': { $in: comments }}, { $set: { state }}, { multi: true })
+	Comment.updateMany({ _id: { $in: comments }}, { $set: { state }}, { multi: true })
 		.then(result => {
 			handleSuccess({ res, result, message: '评论批量操作成功' })
 
@@ -342,7 +342,7 @@ CommentCtrl.list.PATCH = ({ body: { comments, post_ids, state }, headers: { refe
 			}
 
 			// 处理评论状态转移，如果是将评论状态标记为垃圾邮件，则同时加入黑名单，以及 submitSpam
-			Comment.find({ '_id': { $in: comments } })
+			Comment.find({ _id: { $in: comments } })
 				.then(todo_comments => {
 					handleCommentsStateChange(state, todo_comments, referer)
 				})
@@ -361,7 +361,7 @@ CommentCtrl.list.DELETE = ({ body: { comments, post_ids }}, res) => {
 		return handleError({ res, message: '缺少有效参数' })
 	}
 	
-	Comment.remove({ '_id': { $in: comments }})
+	Comment.deleteMany({ _id: { $in: comments }})
 		.then(result => {
 			handleSuccess({ res, result, message: '评论批量删除成功' })
 
