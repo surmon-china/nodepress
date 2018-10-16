@@ -33,7 +33,7 @@ ArticleCtrl.list.GET = (req, res) => {
 	const { keyword, category, category_slug, tag, tag_slug, date, hot } = req.query
 	const [page, per_page, state, public, origin] = [
 		req.query.page || 1,
-		req.query.per_page || 10,
+		req.query.per_page,
 		req.query.state,
 		req.query.public,
 		req.query.origin
@@ -42,10 +42,13 @@ ArticleCtrl.list.GET = (req, res) => {
 	// 过滤条件
 	const options = {
 		page,
-		limit: per_page,
 		populate: ['category', 'tag'],
 		select: '-password -content',
 		sort: { _id: SORT_TYPE.desc }
+	}
+
+	if (!isNaN(per_page)) {
+		options.limit = per_page
 	}
 
 	// 查询参数
