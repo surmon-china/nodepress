@@ -38,7 +38,7 @@ const routes = app => {
 			const { origin, referer } = req.headers
 			const originVerified = !origin || origin.includes(CONFIG.CROSS_DOMAIN.allowedReferer)
 			const refererVerified = !referer || referer.includes(CONFIG.CROSS_DOMAIN.allowedReferer)
-			if (!originVerified || !refererVerified) {
+			if (!originVerified && !refererVerified) {
 				return res.status(403).jsonp({ code: 0, message: '来者何人！' })
 			}
 		}
