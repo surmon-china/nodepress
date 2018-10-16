@@ -29,15 +29,18 @@ AnnouncementCtrl.list.GET = (req, res) => {
 	const keyword = req.query.keyword
 	const [page, per_page, state] = [
 		req.query.page || 1,
-		req.query.per_page || 10,
+		req.query.per_page,
 		req.query.state,
 	].map(k => Number(k))
 
 	// 过滤条件
 	const options = {
 		page,
-		limit: per_page,
 		sort: { _id: SORT_TYPE.desc }
+	}
+
+	if (!isNaN(per_page)) {
+		options.limit = per_page
 	}
 
 	// 查询参数

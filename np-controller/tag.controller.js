@@ -80,13 +80,16 @@ setTimeout(() => {
 TagCtrl.list.GET = (req, res) => {
 
 	const keyword = req.query.keyword
-	const [page, per_page] = [req.query.page || 1, req.query.per_page || 12].map(k => Number(k))
+	const [page, per_page] = [req.query.page || 1, req.query.per_page].map(k => Number(k))
 
 	// 过滤条件
 	const options = {
 		page,
-		limit: per_page,
 		sort: { _id: SORT_TYPE.desc }
+	}
+
+	if (!isNaN(per_page)) {
+		options.limit = per_page
 	}
 
 	// 查询参数
