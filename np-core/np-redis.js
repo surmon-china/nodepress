@@ -48,6 +48,7 @@ const hommizationSet = (key, value, callback) => {
 	} else {
 		memoryClient[key] = value
 	}
+	return true
 }
 
 const hommizationGet = (key, callback) => {

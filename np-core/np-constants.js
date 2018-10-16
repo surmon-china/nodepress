@@ -5,6 +5,13 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+// Redis 存储字段
+exports.REDIS_CACHE_FIELDS = {
+  github: 'github-projects',
+  wallpapers: 'wallpapers',
+  wallpaperStory: 'wallpaper-story'
+}
+
 // 发布状态
 exports.PUBLISH_STATE = {
   draft: 0, // 草稿
