@@ -29,7 +29,7 @@ const hours = hours => 1000 * 60 * 60 * hours
 const intervalGetPapers = h => setTimeout(getWallpapers, hours(h))
 
 // 获取今日壁纸
-const getWallpapers = ({ res = null, params = WALLPAPER_PARAMS, isRedis = true }) => {
+const getWallpapers = ({ res = null, params = WALLPAPER_PARAMS, isRedis = true } = {}) => {
   wbw.getWallpapers(params)
     .then(wallpaperJSON => {
 			try {
@@ -53,7 +53,7 @@ const getWallpapers = ({ res = null, params = WALLPAPER_PARAMS, isRedis = true }
 }
 
 // 初始化自动请求
-getWallpapers({})
+getWallpapers()
 
 // 请求响应
 WallpaperCtrl.list.GET = (req, res) => {
