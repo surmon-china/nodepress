@@ -82,7 +82,7 @@
     ```
     core/np-routes.js -> 路由及请求响应相关逻辑
     
-    core/np-redis.js ->  Redis/内存 存储的抽象模块
+    core/np-redis.js ->  Redis/内存/存储的抽象模块
 
     core/np-mongodb.js -> 数据库连接启动
 

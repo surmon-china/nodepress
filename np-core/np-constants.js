@@ -7,6 +7,7 @@
 
 // Redis 存储字段
 exports.REDIS_CACHE_FIELDS = {
+  tags: 'tags',
   github: 'github-projects',
   wallpapers: 'wallpapers',
   wallpaperStory: 'wallpaper-story'
