@@ -7,24 +7,24 @@
 
 const redis = require('redis')
 const consola = require('consola')
+const schedule = require('node-schedule')
 const { isString } = require('np-helper/np-data-validate')
 
 const memoryClient = {}
-let redisAvailable = false
 let redisClient = null
+let redisIsAvailable = false
 
 const connectRedis = () => {
 
-	redisClient = redis.createClient({ detect_buffers: true })
-	exports.redis = redis.createClient({ detect_buffers: true })
+	exports.redis = redisClient = redis.createClient({ detect_buffers: true })
 
 	redisClient.on('error', err => {
-		redisAvailable = false
+		redisIsAvailable = false
 		consola.warn('Redis连接失败！', err)
 	})
 
 	redisClient.on('ready', _ => {
-		redisAvailable = true
+		redisIsAvailable = true
 		consola.ready('Redis已准备好！')
 	})
 
@@ -35,40 +35,106 @@ const connectRedis = () => {
 	return redisClient
 }
 
-const hommizationSet = (key, value, callback) => {
-	if (redisAvailable) {
-		if (!isString(value)) {
-			try {
-				value = JSON.stringify(value)
-			} catch (err) {
-				value = value.toString()
+// 写数据
+const hommizationSet = (key, value) => {
+	return new Promise((resolve, reject) => {
+		if (redisIsAvailable) {
+			if (!isString(value)) {
+				try {
+					value = JSON.stringify(value)
+				} catch (err) {
+					value = value.toString()
+				}
 			}
+			redisClient.set(key, value)
+			return resolve(true)
+		} else {
+			memoryClient[key] = value
+			return resolve(true)
 		}
-		redisClient.set(key, value, callback)
-	} else {
-		memoryClient[key] = value
-	}
-	return true
+	})
 }
 
-const hommizationGet = (key, callback) => {
-	if (redisAvailable) {
-		redisClient.get(key, (err, value) => {
-			try {
-				value = JSON.parse(value)
-			} catch (error) {
-				// value = value
-			}
-			callback(err, value)
-			return value
-		})
-	} else {
-		callback(null, memoryClient[key])
-		return memoryClient[key]
+// redis get -> Promise
+const hommizationGet = key => {
+	return new Promise((resolve, reject) => {
+		if (!redisIsAvailable) {
+			return resolve(memoryClient[key])
+		} else {
+			redisClient.get(key, (err, value) => {
+				try {
+					value = JSON.parse(value)
+				} catch (error) {
+					value = value.toString()
+				}
+				return err ? reject(err) : resolve(value)
+			})
+		}
+	})
+}
+
+// 从 Promise 拦截
+const hommizationPromise = ({key, promise}) => {
+	return new Promise((resolve, reject) => {
+		const doPromise = () => {
+			promise()
+				.then(data => {
+					hommizationSet(key, data)
+					resolve(data)
+				})
+				.catch(err => {
+					reject(err)
+				})
+		}
+		hommizationGet(key)
+			.then(value => {
+				value !== null && value !== undefined
+					? resolve(value)
+					: doPromise()
+			})
+			.catch(err => {
+				reject(err)
+			})
+	})
+}
+
+// 定时或间隔时间
+const hommizationInterval = options => {
+
+	const { key, promise, timeout, timing } = options
+
+	// 超时任务
+	if (timeout) {
+		((function promiseTask() {
+			promise()
+				.then(data => {
+					hommizationSet(key, data)
+					setTimeout(promiseTask, timeout.success)
+				})
+				.catch(err => {
+					setTimeout(promiseTask, timeout.error || timeout.success)
+				})
+		})())
 	}
+
+	// 定时任务
+	if (timing) {
+		const promiseTask = () => {
+			promise()
+				.then(data => hommizationSet(key, data))
+				.catch(err => setTimeout(promiseTask, timing.error))
+		}
+		promiseTask()
+		schedule.scheduleJob(timing.schedule, promiseTask)
+	}
+	
+	// 返回 Redis 获取器
+	return () => hommizationGet(key)
 }
 
 exports.redis = redisClient
 exports.set = hommizationSet
 exports.get = hommizationGet
 exports.connect = connectRedis
+exports.promise = hommizationPromise
+exports.interval = hommizationInterval

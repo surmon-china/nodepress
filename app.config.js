@@ -17,7 +17,7 @@ exports.APP = {
 }
 
 exports.CROSS_DOMAIN = {
-	allowedOrigins: ['https://surmon.me', 'https://admin.surmon.me'],
+	allowedOrigins: ['https://surmon.me', 'https://cdn.surmon.me', 'https://admin.surmon.me'],
 	allowedReferer: 'surmon.me'
 }
 
