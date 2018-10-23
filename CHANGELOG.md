@@ -8,6 +8,11 @@
 - 删除一条存在子级评论的评论时，子级评论的 PID 需要置空
 - 集成 [Analytics Reporting API](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/web-js?hl=zh-cn) 供管理员使用
 - 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
+- sitemap，tags CUD 时进行缓存更新，使用 redis.promise
+
+### v2.1.2
+
+- 升级完善全站缓存机制
 
 ### v2.1.0
 
