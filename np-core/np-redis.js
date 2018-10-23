@@ -35,7 +35,7 @@ const connectRedis = () => {
 	return redisClient
 }
 
-// 写数据
+// set -> Promise
 const hommizationSet = (key, value) => {
 	return new Promise((resolve, reject) => {
 		if (redisIsAvailable) {
@@ -55,7 +55,7 @@ const hommizationSet = (key, value) => {
 	})
 }
 
-// redis get -> Promise
+// get -> Promise
 const hommizationGet = key => {
 	return new Promise((resolve, reject) => {
 		if (!redisIsAvailable) {
@@ -73,7 +73,7 @@ const hommizationGet = key => {
 	})
 }
 
-// 从 Promise 拦截
+// promise -> redis
 const hommizationPromise = ({key, promise}) => {
 	return new Promise((resolve, reject) => {
 		const doPromise = () => {
@@ -82,9 +82,7 @@ const hommizationPromise = ({key, promise}) => {
 					hommizationSet(key, data)
 					resolve(data)
 				})
-				.catch(err => {
-					reject(err)
-				})
+				.catch(reject)
 		}
 		hommizationGet(key)
 			.then(value => {
@@ -92,9 +90,7 @@ const hommizationPromise = ({key, promise}) => {
 					? resolve(value)
 					: doPromise()
 			})
-			.catch(err => {
-				reject(err)
-			})
+			.catch(reject)
 	})
 }
 
