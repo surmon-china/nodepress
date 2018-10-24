@@ -16,10 +16,10 @@ const { humanizedHandleSuccess, humanizedHandleError } = require('np-core/np-pro
 const redisGithubCache = redis.interval({
 	key: REDIS_CACHE_FIELDS.github,
 	timeout: {
-		// 成功后 1h 获取数据
+		// 成功后 1小时 获取数据
 		success: 1000 * 60 * 60,
-		// 失败后 10m 获取数据
-		error: 1000 * 60 * 10
+		// 失败后 5分钟 获取数据
+		error: 1000 * 60 * 5
 	},
 	promise() {
 		return new Promise((resolve, reject) => {

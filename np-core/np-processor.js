@@ -68,15 +68,3 @@ exports.handlePaginateData = data => ({
 		per_page: data.limit
 	}
 })
-
-// 处理节流
-exports.handleThrottle = (method, delay) => {
-	let canRun = true
-	return () => {
-		if (canRun) {
-			canRun = false
-			method()
-			setTimeout(() => { canRun = true }, delay)
-		}
-	}
-}

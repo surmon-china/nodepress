@@ -12,18 +12,18 @@ const isString = string => typeof string === 'string'
 // 数组是否无效
 const arrayIsInvalid = array => !array || !array.length
 
-// 检查数字是否有效
-const numberIsInvalid = number => number === null || isNaN(number)
+// 检查数字是否无效
+const numberIsInvalid = number => number === null || number === undefined || isNaN(number)
 
 // 数组去重
 const arrayUniq = (a, b = []) => [...new Set([...a, ...b])]
 
 // 获取对象值数组
-const getObjectValues = object => Object.keys(object).map(key => object[key])
+const objectValues = object => Object.keys(object).map(key => object[key])
 
 exports.isArray = isArray
 exports.isString = isString
 exports.arrayUniq = arrayUniq
+exports.objectValues = objectValues
 exports.arrayIsInvalid = arrayIsInvalid
 exports.numberIsInvalid = numberIsInvalid
-exports.getObjectValues = getObjectValues

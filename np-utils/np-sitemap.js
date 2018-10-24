@@ -6,13 +6,24 @@
  */
 
 const fs = require('fs')
+const path = require('path')
 const sm = require('sitemap')
 const consola = require('consola')
 const CONFIG = require('app.config')
+const redis = require('np-core/np-redis')
 const Tag = require('np-model/tag.model')
 const Article = require('np-model/article.model')
 const Category = require('np-model/category.model')
+const { REDIS_CACHE_FIELDS } = require('np-core/np-constants')
 const { PUBLISH_STATE, PUBLIC_STATE, SORT_TYPE } = require('np-core/np-constants')
+
+let sitemap = null
+
+const xmlFilePath = path.format({
+	dir: path.join(CONFIG.APP.FRONT_END_PATH, 'static'),
+	name: 'sitemap',
+	ext: '.xml'
+})
 
 const pages = [
 	{ url: '', changefreq: 'always', priority: 1 },
@@ -21,8 +32,6 @@ const pages = [
 	{ url: '/sitemap', changefreq: 'always', priority: 1 },
 	{ url: '/guestbook', changefreq: 'always', priority: 1 }
 ]
-
-let sitemap = null
 
 // 获取数据
 const getDatas = success => {
@@ -86,7 +95,7 @@ const getDatas = success => {
 }
 
 // 获取地图
-const buildSiteMap = () => {
+const updateAndBuildSiteMap = () => {
 	return new Promise((resolve, reject) => {
 		getDatas(() => {
 			sitemap.toXML((err, xml) => {
@@ -95,7 +104,8 @@ const buildSiteMap = () => {
 					consola.warn('生成地图 XML 时发生错误', err)
 				} else {
 					resolve(xml)
-					fs.writeFileSync('../surmon.me/static/sitemap.xml', sitemap.toString())
+					redis.set(REDIS_CACHE_FIELDS.sitemap, xml)
+					fs.writeFileSync(xmlFilePath, sitemap.toString())
 					sitemap = null
 				}
 			})
@@ -103,4 +113,4 @@ const buildSiteMap = () => {
 	})
 }
 
-module.exports = buildSiteMap
+module.exports = updateAndBuildSiteMap
