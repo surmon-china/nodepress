@@ -6,10 +6,10 @@
  */
 
 const CONFIG = require('app.config')
-const authIsVerified = require('np-utils/np-auth')
-const buildSiteMap = require('np-utils/np-sitemap')
 const Category = require('np-model/category.model')
 const Article = require('np-model/article.model')
+const authIsVerified = require('np-utils/np-auth')
+const updateAndBuildSiteMap = require('np-utils/np-sitemap')
 const { arrayIsInvalid } = require('np-helper/np-data-validate')
 const { baiduSeoPush, baiduSeoUpdate } = require('np-utils/np-baidu-seo-push')
 const { PUBLISH_STATE, PUBLIC_STATE, SORT_TYPE } = require('np-core/np-constants')
@@ -22,7 +22,7 @@ const {
 	initController
 } = require('np-core/np-processor')
 
-// Controller
+// controller
 const CategoryCtrl = initController(['list', 'item'])
 
 // 获取分类列表
@@ -98,7 +98,7 @@ CategoryCtrl.list.POST = ({ body: category, body: { slug } }, res) => {
 		new Category(category).save()
 			.then(result => {
 				handleSuccess({ res, result, message: '分类发布成功' })
-				buildSiteMap()
+				updateAndBuildSiteMap()
 				baiduSeoPush(`${CONFIG.APP.URL}/category/${result.slug}`)
 			})
 			.catch(humanizedHandleError(res, '分类发布失败'))
@@ -126,7 +126,7 @@ CategoryCtrl.list.DELETE = ({ body: { categories }}, res) => {
 	Category.deleteMany({ _id: { $in: categories }})
 		.then(result => {
 			handleSuccess({ res, result, message: '分类批量删除成功' })
-			buildSiteMap()
+			updateAndBuildSiteMap()
 		})
 		.catch(humanizedHandleError(res, '分类批量删除失败'))
 }
@@ -169,7 +169,7 @@ CategoryCtrl.item.PUT = ({ params: { category_id }, body: category, body: { pid,
 		Category.findByIdAndUpdate(category_id, category, { new: true })
 			.then(result => {
 				handleSuccess({ res, result, message: '分类修改成功' })
-				buildSiteMap()
+				updateAndBuildSiteMap()
 				baiduSeoUpdate(`${CONFIG.APP.URL}/category/${result.slug}`)
 			})
 			.catch(humanizedHandleError(res, '分类修改失败'))
@@ -223,7 +223,7 @@ CategoryCtrl.item.DELETE = ({ params: { category_id }}, res) => {
 	})()
 	.then((result) => {
 		handleSuccess({ res, result, message: '分类删除成功' })
-		buildSiteMap()
+		updateAndBuildSiteMap()
 	})
 	.catch(humanizedHandleError(res, '分类删除失败'))
 }

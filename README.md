@@ -125,7 +125,7 @@
     utils/np-sitemap.js -> 地图生成器
     
     网站地图 xml 生成，抽象出的对象。
-    包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地；实际上，在每次访问 sitemap-api 和有相关 CRUD 操作的时候都会被执行
+    包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
     
     
     * 百度实时更新服务

@@ -18,7 +18,7 @@ const Comment = require('np-model/comment.model')
 const Article = require('np-model/article.model')
 const Option = require('np-model/option.model')
 const { COMMENT_STATE, COMMENT_POST_TYPE, SORT_TYPE } = require('np-core/np-constants')
-const { arrayUniq, arrayIsInvalid, getObjectValues, numberIsInvalid } = require('np-helper/np-data-validate')
+const { arrayUniq, arrayIsInvalid, objectValues, numberIsInvalid } = require('np-helper/np-data-validate')
 const {
 	handleError,
 	handleSuccess,
@@ -29,7 +29,7 @@ const {
 	initController
 } = require('np-core/np-processor')
 
-// Controller
+// controller
 const CommentCtrl = initController(['list', 'item'])
 
 // 为评论内容创建一个编译器实例
@@ -184,7 +184,7 @@ CommentCtrl.list.GET = (req, res) => {
 	}
 
 	// 排序字段
-	if (getObjectValues(SORT_TYPE).includes(sort)) {
+	if (objectValues(SORT_TYPE).includes(sort)) {
 		options.sort = { _id: sort }
 	} else if (sort === 2) {
 		options.sort = { likes: SORT_TYPE.desc }
@@ -194,7 +194,7 @@ CommentCtrl.list.GET = (req, res) => {
 	const query = {}
 
 	// 查询各种状态
-	if (getObjectValues(COMMENT_STATE).includes(state)) {
+	if (objectValues(COMMENT_STATE).includes(state)) {
 		query.state = state
 	}
 
@@ -324,7 +324,7 @@ CommentCtrl.list.POST = (req, res) => {
 CommentCtrl.list.PATCH = ({ body: { comments, post_ids, state }, headers: { referer }}, res) => {
 
 	// 验证 comments 有效性
-	const stateIsInvalid = numberIsInvalid(state) || !getObjectValues(COMMENT_STATE).includes(Number(state))
+	const stateIsInvalid = numberIsInvalid(state) || !objectValues(COMMENT_STATE).includes(Number(state))
 	
 	if (arrayIsInvalid(comments) || stateIsInvalid) {
 		return handleError({ res, message: '缺少有效参数或参数无效' })

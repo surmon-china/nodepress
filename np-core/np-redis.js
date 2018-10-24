@@ -74,24 +74,40 @@ const hommizationGet = key => {
 }
 
 // promise -> redis
-const hommizationPromise = ({key, promise}) => {
-	return new Promise((resolve, reject) => {
-		const doPromise = () => {
-			promise()
-				.then(data => {
-					hommizationSet(key, data)
-					resolve(data)
-				})
-				.catch(reject)
-		}
-		hommizationGet(key)
-			.then(value => {
-				value !== null && value !== undefined
-					? resolve(value)
-					: doPromise()
+const hommizationPromise = options => {
+
+	const { key, promise, ioMode = false } = options
+
+	// 执行任务
+	const doPromise = (resolve, reject) => {
+		return promise()
+			.then(data => {
+				hommizationSet(key, data)
+				resolve(data)
 			})
 			.catch(reject)
+	}
+
+	// Promise 拦截模式
+	const handlePromiseMode = () => {
+		return new Promise((resolve, reject) => {
+			hommizationGet(key)
+				.then(value => {
+					value !== null && value !== undefined
+						? resolve(value)
+						: doPromise(resolve, reject)
+				})
+				.catch(reject)
+		})
+	}
+
+	// 双向同步模式
+	const handleIoMode = () => ({
+		get: handlePromiseMode,
+		update: () => new Promise(doPromise)
 	})
+
+	return ioMode ? handleIoMode() : handlePromiseMode()
 }
 
 // 定时或间隔时间
