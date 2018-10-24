@@ -5,12 +5,15 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-// Redis 存储字段
+// redis 存储字段
 exports.REDIS_CACHE_FIELDS = {
   tags: 'tags',
+  sitemap: 'sitemap',
   github: 'github-projects',
   wallpapers: 'wallpapers',
-  wallpaperStory: 'wallpaper-story'
+  wallpaperStory: 'wallpaper-story',
+  musicList: 'music-list-',
+  musicUrl: 'music-url-'
 }
 
 // 发布状态

@@ -5,6 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+const path = require('path')
 const { argv } = require('yargs')
 const package = require('package')
 
@@ -13,7 +14,8 @@ exports.APP = {
 	PORT: 8000,
 	ROOT_PATH: __dirname,
 	NAME: 'Surmon.me',
-	URL: 'https://surmon.me'
+	URL: 'https://surmon.me',
+	FRONT_END_PATH: path.join(__dirname, '..', 'surmon.me')
 }
 
 exports.CROSS_DOMAIN = {

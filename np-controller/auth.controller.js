@@ -5,10 +5,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+const CONFIG = require('app.config')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const { Base64 } = require('js-base64')
-const CONFIG = require('app.config')
 const Auth = require('np-model/auth.model')
 const authIsVerified = require('np-utils/np-auth')
 const {
@@ -19,7 +19,7 @@ const {
 	initController
 } = require('np-core/np-processor')
 
-// Controller
+// controller
 const AuthCtrl = initController()
 
 // 密码编码
@@ -39,7 +39,7 @@ AuthCtrl.GET = (req, res) => {
 		.catch(humanizedHandleError(res, '用户资料获取失败'))
 }
 
-// 生成登陆口令Token
+// 生成登陆口令 Token
 AuthCtrl.POST = ({ body: { password }}, res) => {
 	Auth.find({}, '-_id password')
 		.then(([auth = { password: md5Decode(CONFIG.AUTH.defaultPassword) }]) => {

@@ -13,7 +13,7 @@ const {
 	initController
 } = require('np-core/np-processor')
 
-// Controller
+// controller
 const OptionCtrl = initController()
 
 // 获取设置
@@ -41,12 +41,12 @@ OptionCtrl.PUT = ({ body: options, body: { _id }}, res) => {
 	options.blacklist.mails = checkEmpty(options.blacklist.mails)
 	options.blacklist.keywords = checkEmpty(options.blacklist.keywords);
 	
-	(_id
+	const optionService = _id
 		? Option.findByIdAndUpdate(_id, options, { new: true })
 		: new Option(options).save()
-	)
-	.then(humanizedHandleSuccess(res, '配置项修改成功'))
-	.catch(humanizedHandleError(res, '配置项修改失败'))
+	optionService
+		.then(humanizedHandleSuccess(res, '配置项修改成功'))
+		.catch(humanizedHandleError(res, '配置项修改失败'))
 }
 
 module.exports = buildController(OptionCtrl)
