@@ -6,10 +6,10 @@
  */
 
 const consola = require('consola')
+const Option = require('np-model/option.model')
 const Article = require('np-model/article.model')
 const Comment = require('np-model/comment.model')
-const Option = require('np-model/option.model')
-const { getObjectValues } = require('np-helper/np-data-validate')
+const { objectValues } = require('np-helper/np-data-validate')
 const { LIKE_TYPE, COMMENT_POST_TYPE } = require('np-core/np-constants')
 const {
 	handleError,
@@ -20,7 +20,7 @@ const {
 module.exports = ({ body: { id, type }}, res) => {
 
 	// 验证参数的正确性，1 => 评论，2 => 页面
-	if (!getObjectValues(LIKE_TYPE).includes(type)) {
+	if (!objectValues(LIKE_TYPE).includes(type)) {
 		return handleError({ res, message: '喜欢失败，没有原因' })
 	}
 

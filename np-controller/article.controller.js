@@ -6,12 +6,13 @@
  */
 
 const CONFIG = require('app.config')
-const authIsVerified = require('np-utils/np-auth')
-const buildSiteMap = require('np-utils/np-sitemap')
 const Tag = require('np-model/tag.model')
+const TagCtrl = require('./tag.controller')
 const Category = require('np-model/category.model')
 const Article = require('np-model/article.model')
-const { arrayIsInvalid, getObjectValues } = require('np-helper/np-data-validate')
+const authIsVerified = require('np-utils/np-auth')
+const updateAndBuildSiteMap = require('np-utils/np-sitemap')
+const { numberIsInvalid, arrayIsInvalid, objectValues } = require('np-helper/np-data-validate')
 const { PUBLISH_STATE, PUBLIC_STATE, ORIGIN_STATE, SORT_TYPE } = require('np-core/np-constants')
 const { baiduSeoPush, baiduSeoUpdate, baiduSeoDelete } = require('np-utils/np-baidu-seo-push')
 const {
@@ -23,7 +24,7 @@ const {
 	initController
 } = require('np-core/np-processor')
 
-// Controller
+// controller
 const ArticleCtrl = initController(['list', 'item'])
 
 // 获取文章列表
@@ -47,7 +48,7 @@ ArticleCtrl.list.GET = (req, res) => {
 		sort: { _id: SORT_TYPE.desc }
 	}
 
-	if (!isNaN(per_page)) {
+	if (!numberIsInvalid(per_page)) {
 		options.limit = per_page
 	}
 
@@ -94,17 +95,17 @@ ArticleCtrl.list.GET = (req, res) => {
 	}
 
 	// 按照发布状态查询
-	if (getObjectValues(PUBLISH_STATE).includes(state)) {
+	if (objectValues(PUBLISH_STATE).includes(state)) {
 		query.state = state
 	}
 
 	// 按照公开状态查询
-	if (getObjectValues(PUBLIC_STATE).includes(public)) {
+	if (objectValues(PUBLIC_STATE).includes(public)) {
 		query.public = public
 	}
 
 	// 文章来源性质查询
-	if (getObjectValues(ORIGIN_STATE).includes(origin)) {
+	if (objectValues(ORIGIN_STATE).includes(origin)) {
 		query.origin = origin
 	}
 
@@ -171,7 +172,8 @@ ArticleCtrl.list.POST = ({ body: article }, res) => {
 	new Article(article).save()
 		.then((result = article) => {
 			handleSuccess({ res, result, message: '文章发布成功' })
-			buildSiteMap()
+			TagCtrl.redisTagsCache.update()
+			updateAndBuildSiteMap()
 			baiduSeoPush(`${CONFIG.APP.URL}/article/${result.id}`)
 		})
 		.catch(humanizedHandleError(res, '文章发布失败'))
@@ -193,12 +195,13 @@ ArticleCtrl.list.PATCH = ({ body: { articles, action }}, res) => {
 	}
 
 	const doAction = actions[action]
-	const updatePart = getObjectValues(actions).includes(doAction) ? { state: doAction } : {}
+	const updatePart = objectValues(actions).includes(doAction) ? { state: doAction } : {}
 
 	Article.updateMany({ _id: { $in: articles }}, { $set: updatePart }, { multi: true })
 		.then(result => {
 			handleSuccess({ res, result, message: '文章批量操作成功' })
-			buildSiteMap()
+			TagCtrl.redisTagsCache.update()
+			updateAndBuildSiteMap()
 		})
 		.catch(humanizedHandleError(res, '文章批量操作失败'))
 }
@@ -216,7 +219,7 @@ ArticleCtrl.list.DELETE = ({ body: { articles }}, res) => {
 		Article.deleteMany({ _id: { $in: articles }})
 			.then(result => {
 				handleSuccess({ res, result, message: '文章批量删除成功' })
-				buildSiteMap()
+				updateAndBuildSiteMap()
 			})
 			.catch(humanizedHandleError(res, '文章批量删除失败'))
 	}
@@ -290,7 +293,8 @@ ArticleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
 	Article.findByIdAndUpdate(article_id, article, { new: true })
 		.then(result => {
 			handleSuccess({ res, result, message: '文章修改成功' })
-			buildSiteMap()
+			TagCtrl.redisTagsCache.update()
+			updateAndBuildSiteMap()
 			baiduSeoUpdate(`${CONFIG.APP.URL}/article/${result.id}`)
 		})
 		.catch(humanizedHandleError(res, '文章修改失败'))
@@ -301,7 +305,8 @@ ArticleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
 	Article.findByIdAndRemove(article_id)
 		.then(result => {
 			handleSuccess({ res, result, message: '文章删除成功' })
-			buildSiteMap()
+			TagCtrl.redisTagsCache.update()
+			updateAndBuildSiteMap()
 			baiduSeoDelete(`${CONFIG.APP.URL}/article/${result.id}`)
 		})
 		.catch(humanizedHandleError(res, '文章删除失败'))

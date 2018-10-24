@@ -76,7 +76,11 @@ WallpaperCtrl.list.GET = (req, res) => {
 	// 缓存任务
 	const cacheTask = () => redisWallpapersCache()
 
-	;((isDefaultDay && isDefaultSize) ? cacheTask() : normalTask())
+	// 命中缓存请求
+	const hitCacheRequest = isDefaultDay && isDefaultSize
+	const wallpapersRequest = hitCacheRequest ? cacheTask() : normalTask()
+	
+	wallpapersRequest
 		.then(humanizedHandleSuccess(res, '今日壁纸获取成功'))
 		.catch(humanizedHandleError(res, '今日壁纸获取失败'))
 }

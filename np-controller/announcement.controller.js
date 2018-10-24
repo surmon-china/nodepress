@@ -19,7 +19,7 @@ const {
 	initController
 } = require('np-core/np-processor')
 
-// Controller
+// controller
 const AnnouncementCtrl = initController(['list', 'item'])
 
 // 获取公告列表
