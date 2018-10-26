@@ -187,7 +187,7 @@ TagCtrl.item.PUT = ({ params: { tag_id }, body: tag, body: { slug }}, res) => {
 			.catch(humanizedHandleError(res, '标签修改失败'))
 	}
 
-	// 修改前判断slug的唯一性，是否被占用
+	// 修改前判断 slug 的唯一性，是否被占用
 	Tag.find({ slug })
 		.then(([existed_tag]) => {
 			const hasExisted = (existed_tag && (String(existed_tag._id) !== tag_id))
