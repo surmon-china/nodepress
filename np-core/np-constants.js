@@ -20,21 +20,21 @@ exports.REDIS_CACHE_FIELDS = {
 exports.PUBLISH_STATE = {
   draft: 0, // 草稿
   published: 1, // 已发布
-  recycle: -1, // 回收站
+  recycle: -1 // 回收站
 }
 
 // 公开状态
 exports.PUBLIC_STATE = {
   password: 0, // 需要密码
   public: 1, // 公开状态
-  secret: -1, // 私密
+  secret: -1 // 私密
 }
 
 // 转载状态
 exports.ORIGIN_STATE = {
   original: 0, // 原创
   reprint: 1, // 转载
-  hybrid: -1, // 混合
+  hybrid: -1 // 混合
 }
 
 exports.COMMENT_STATE = {

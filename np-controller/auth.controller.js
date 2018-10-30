@@ -86,7 +86,10 @@ AuthCtrl.PUT = ({ body: auth }, res) => {
 	
 	// 修改前查询验证
 	Auth.find({}, '_id name slogan gravatar password')
-		.then(([_auth = { password: md5Decode(CONFIG.AUTH.defaultPassword) }]) => {
+		.then(([_auth]) => {
+
+			// 初始默认密码
+			_auth.password = _auth.password || md5Decode(CONFIG.AUTH.defaultPassword)
 
 			if (password) {
 				// 判断旧密码是否一致
