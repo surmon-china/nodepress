@@ -124,7 +124,9 @@ const hommizationInterval = options => {
 					setTimeout(promiseTask, timeout.success)
 				})
 				.catch(err => {
-					setTimeout(promiseTask, timeout.error || timeout.success)
+					const timeOut = timeout.error || timeout.success
+					consola.warn(`Redis 超时任务执行失败，${timeOut} 后重试：`, err)
+					setTimeout(promiseTask, timeOut)
 				})
 		})())
 	}
@@ -134,7 +136,10 @@ const hommizationInterval = options => {
 		const promiseTask = () => {
 			promise()
 				.then(data => hommizationSet(key, data))
-				.catch(err => setTimeout(promiseTask, timing.error))
+				.catch(err => {
+					consola.warn(`Redis 定时任务执行失败，${timing.error} 后重试：`, err)
+					setTimeout(promiseTask, timing.error)
+				})
 		}
 		promiseTask()
 		schedule.scheduleJob(timing.schedule, promiseTask)
