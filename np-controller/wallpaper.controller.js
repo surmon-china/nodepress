@@ -89,7 +89,7 @@ WallpaperCtrl.list.GET = (req, res) => {
 const redisStoryCache = redis.interval({
 	key: REDIS_CACHE_FIELDS.wallpaperStory,
 	timing: commonTimingConfig,
-	promise: wbw.getTodayWallpaperStory
+	promise: () => wbw.getTodayWallpaperStory() 
 })
 
 // 获取今日壁纸故事
