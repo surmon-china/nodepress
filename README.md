@@ -10,6 +10,7 @@
 
 - Maintained by [me](mailto://surmon@foxmail.com)
 - Online site: https://surmon.me
+- SRE service: [sre.surmon.me](https://github.com/surmon-china/sre.surmon.me)
 - Web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By Nuxt.js(Vue)
 - Web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by Angular + Bootstrap4
 - Native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by React native
