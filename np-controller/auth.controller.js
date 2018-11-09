@@ -42,7 +42,13 @@ AuthCtrl.GET = (req, res) => {
 // 生成登陆口令 Token
 AuthCtrl.POST = ({ body: { password }}, res) => {
 	Auth.find({}, '-_id password')
+<<<<<<< HEAD
 		.then(([auth = { password: md5Decode(CONFIG.AUTH.defaultPassword) }]) => {
+=======
+		.then(([auth]) => {
+			auth = auth || {}
+			auth.password = auth.password || md5Decode(CONFIG.AUTH.defaultPassword)
+>>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
 			if (md5Decode(decodePassword(password)) === auth.password) {
 				const token = jwt.sign({
 					data: CONFIG.AUTH.data,
