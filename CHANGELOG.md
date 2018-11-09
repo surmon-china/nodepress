@@ -10,14 +10,11 @@
 - 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
 - sitemap，tags CUD 时进行缓存更新，使用 redis.promise
 
-<<<<<<< HEAD
-=======
 ### v2.1.4
 
 - 增加统计数据接口
 - 优化密码更新机制
 
->>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
 ### v2.1.2
 
 - 升级完善全站缓存机制
