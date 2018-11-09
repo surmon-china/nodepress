@@ -43,11 +43,7 @@ const routes = app => {
 			}
 		}
 
-<<<<<<< HEAD
-		// 排除 (auth 的 post 请求) & (评论的 post 请求) & (like 请求)
-=======
 		// 排除 (auth 的 post 请求) & (评论的 post 请求) & (like post 请求)
->>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
 		const isPostUrl = (req, url) => Object.is(req.url, url) && Object.is(req.method, 'POST')
 		const isLike = isPostUrl(req, '/like')
 		const isPostAuth = isPostUrl(req, '/auth')
@@ -91,12 +87,9 @@ const routes = app => {
 	// github
 	app.get('/github', controller.github)
 
-<<<<<<< HEAD
-=======
 	// statistic
 	app.get('/statistic', controller.statistic)
 
->>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
 	// wallpaper
 	app.get('/wallpaper/list', controller.wallpaper.list)
 	app.get('/wallpaper/story', controller.wallpaper.story)
