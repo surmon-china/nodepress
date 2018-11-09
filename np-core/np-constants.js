@@ -13,7 +13,8 @@ exports.REDIS_CACHE_FIELDS = {
   wallpapers: 'wallpapers',
   wallpaperStory: 'wallpaper-story',
   musicList: 'music-list-',
-  musicUrl: 'music-url-'
+  musicUrl: 'music-url-',
+  todayViews: 'today-views'
 }
 
 // 发布状态

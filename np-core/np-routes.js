@@ -43,7 +43,7 @@ const routes = app => {
 			}
 		}
 
-		// 排除 (auth 的 post 请求) & (评论的 post 请求) & (like 请求)
+		// 排除 (auth 的 post 请求) & (评论的 post 请求) & (like post 请求)
 		const isPostUrl = (req, url) => Object.is(req.url, url) && Object.is(req.method, 'POST')
 		const isLike = isPostUrl(req, '/like')
 		const isPostAuth = isPostUrl(req, '/auth')
@@ -86,6 +86,9 @@ const routes = app => {
 
 	// github
 	app.get('/github', controller.github)
+
+	// statistic
+	app.get('/statistic', controller.statistic)
 
 	// wallpaper
 	app.get('/wallpaper/list', controller.wallpaper.list)
