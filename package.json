@@ -1,6 +1,10 @@
 {
   "name": "nodepress",
+<<<<<<< HEAD
   "version": "2.1.2",
+=======
+  "version": "2.1.4",
+>>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
   "description": "RESTful API server application for Surmon.me blog",
   "private": false,
   "author": {
