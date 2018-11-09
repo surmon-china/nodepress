@@ -16,5 +16,9 @@ exports.sitemap = require('./sitemap.controller')
 exports.comment = require('./comment.controller')
 exports.article = require('./article.controller')
 exports.category = require('./category.controller')
+<<<<<<< HEAD
+=======
+exports.statistic = require('./statistic.controller')
+>>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
 exports.wallpaper = require('./wallpaper.controller')
 exports.announcement = require('./announcement.controller')

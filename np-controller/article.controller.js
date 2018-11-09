@@ -6,6 +6,10 @@
  */
 
 const CONFIG = require('app.config')
+<<<<<<< HEAD
+=======
+const redis = require('np-core/np-redis')
+>>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
 const Tag = require('np-model/tag.model')
 const TagCtrl = require('./tag.controller')
 const Category = require('np-model/category.model')
@@ -13,7 +17,11 @@ const Article = require('np-model/article.model')
 const authIsVerified = require('np-utils/np-auth')
 const updateAndBuildSiteMap = require('np-utils/np-sitemap')
 const { numberIsInvalid, arrayIsInvalid, objectValues } = require('np-helper/np-data-validate')
+<<<<<<< HEAD
 const { PUBLISH_STATE, PUBLIC_STATE, ORIGIN_STATE, SORT_TYPE } = require('np-core/np-constants')
+=======
+const { PUBLISH_STATE, PUBLIC_STATE, ORIGIN_STATE, SORT_TYPE, REDIS_CACHE_FIELDS } = require('np-core/np-constants')
+>>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
 const { baiduSeoPush, baiduSeoUpdate, baiduSeoDelete } = require('np-utils/np-baidu-seo-push')
 const {
 	handleError,
@@ -264,6 +272,12 @@ ArticleCtrl.item.GET = ({ params: { article_id }}, res) => {
 		if (!isFindById) {
 			result.meta.views++
 			result.save()
+<<<<<<< HEAD
+=======
+			redis.get(REDIS_CACHE_FIELDS.todayViews).then(views => {
+				redis.set(REDIS_CACHE_FIELDS.todayViews, (views || 0) + 1)
+			})
+>>>>>>> a345f161df5de5012b9be4202c8049860ffcd00b
 		}
 
 		// 如果是前台用户请求，则需要获取相关文章
