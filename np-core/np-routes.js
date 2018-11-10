@@ -78,6 +78,9 @@ const routes = app => {
 	// 全局 option
 	app.all('/option', controller.option)
 
+	// 常量配置
+	app.get('/constants', controller.constants)
+
 	// sitemap
 	app.get('/sitemap.xml', controller.sitemap)
 
