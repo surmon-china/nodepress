@@ -186,7 +186,7 @@ CommentCtrl.list.GET = (req, res) => {
 	// 排序字段
 	if (objectValues(SORT_TYPE).includes(sort)) {
 		options.sort = { _id: sort }
-	} else if (sort === 2) {
+	} else if (sort === SORT_TYPE.hot) {
 		options.sort = { likes: SORT_TYPE.desc }
 	}
 

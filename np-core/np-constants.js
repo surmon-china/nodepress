@@ -58,7 +58,8 @@ exports.COMMENT_PARENT_TYPE = {
 // 排序状态
 exports.SORT_TYPE = {
   asc: 1, // 升序
-  desc: -1 // 降序
+  desc: -1, // 降序
+  hot: 2 // 最热
 }
 
 // 喜欢类型
