@@ -14,7 +14,7 @@ const QiniuCtrl = initController()
 
 // 获取配置列表
 QiniuCtrl.GET = (req, res) => {
-	const result = { uptoken: client.uploadToken() }
+	const result = { upToken: client.uploadToken() }
   handleSuccess({ res, result, message: 'upToken 获取成功' })
 }
 
