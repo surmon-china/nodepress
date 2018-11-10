@@ -10,6 +10,11 @@
 - 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
 - sitemap，tags CUD 时进行缓存更新，使用 redis.promise
 
+### v2.2.0
+
+- opeitime logic
+- add constants api
+
 ### v2.1.4
 
 - 增加统计数据接口
