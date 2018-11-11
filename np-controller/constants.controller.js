@@ -8,18 +8,10 @@
 const constants = require('np-core/np-constants')
 const { handleSuccess } = require('np-core/np-processor')
 
-// 获取内存中项目列表数据
+const result = Object.assign({}, constants)
+Reflect.deleteProperty(result, 'REDIS_CACHE_FIELDS')
+
+// 获取同构常量数据
 module.exports = (_, res) => {
-	handleSuccess({
-		res,
-		result: {
-			SORT_TYPE: constants.SORT_TYPE,
-			LIKE_TYPE: constants.LIKE_TYPE,
-			PUBLIC_STATE: constants.PUBLIC_STATE,
-			ORIGIN_STATE: constants.ORIGIN_STATE,
-			PUBLISH_STATE: constants.PUBLISH_STATE,
-			COMMENT_STATE: constants.COMMENT_STATE
-		},
-		message: '配置常量获取成功'
-	})
+	handleSuccess({ res, result, message: '配置常量获取成功' })
 }
