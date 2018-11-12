@@ -24,7 +24,7 @@ const redisGithubCache = redis.interval({
 	promise() {
 		return new Promise((resolve, reject) => {
 			request({
-				url: `https://api.github.com/users/${CONFIG.GITHUB.username}/repos`,
+				url: `https://api.github.com/users/${CONFIG.GITHUB.username}/repos?per_page=1000`,
 				headers: { 'User-Agent': 'request' }
 			}, (err, response, body) => {
 				if (!err && response.statusCode == 200) {
