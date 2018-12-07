@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <span>&nbsp;&nbsp;&nbsp;</span>
+  <img src="https://raw.githubusercontent.com/surmon-china/angular-admin/master/src/assets/img/logo.png" width="100" alt="Nest Logo" />
+</p>
+
 ## NodePress
 
 [![](https://badge.juejin.im/entry/58a5f22c8d6d810057c8f0a5/likes.svg?style=flat-square)](https://juejin.im/entry/58a5f22c8d6d810057c8f0a5/detail)
@@ -7,6 +13,8 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square)](https://github.com/surmon-china/nodepress)
 
 #### RESTful API server application for my blog.
+
+v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 
 - Maintained by [me](mailto://surmon@foxmail.com)
 - Online site: https://surmon.me
@@ -166,12 +174,38 @@
 
 ## 开发命令
 
+### Installation
+
 ```bash
-npm install
+$ npm install
+```
 
-# 开发模式
-npm run dev
+### Running the app
 
-# 生产模式
-npm start
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# incremental rebuild (webpack)
+$ npm run webpack
+$ npm run start:hmr
+
+# production mode
+$ npm run start:prod
+```
+
+### Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
 ```

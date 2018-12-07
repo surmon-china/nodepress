@@ -10,6 +10,10 @@
 - 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
 - sitemap，tags CUD 时进行缓存更新，使用 redis.promise
 
+### v3.0.0
+
+- 使用 [Nest](https://github.com/nestjs/nest) 进行重构
+
 ### v2.2.0
 
 - opeitime logic
