@@ -5,66 +5,96 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const { isString, isArray } = require('np-helper/np-data-validate')
-
-// 控制器初始化器
-exports.initController = params => {
-  if (!params) {
-    return {}
-  } else if (isString(params)) {
-    return { [params]: {} }
-  } else if (isArray(params)) {
-    return Object.assign({}, ...params.map(k => ({ [k]: {} })))
-  }
-}
-
-// 控制器包装器
-exports.buildController = controller => {
-  return (req, res) => {
-    return exports.handleRequest({ req, res, controller })
-  }
-}
+// const { isString, isArray } = require('np-helper/np-data-validate');
 
 // 处理请求
-exports.handleRequest = ({ req, res, controller }) => {
-  const method = req.method
+export const handle = (params) => {
+  console.log('说实话我不知道这是啥', params);
+  return (target, methodName: string, descriptor: PropertyDescriptor) => {
+    console.log('target-------', target, 'methodName-------', methodName, 'descriptor-------', descriptor);
+    // 这个的需要改变来源，然后是你
+    // new Promise((resolve, reject) => {
+    //   resolve([]);
+    // });
+  };
+};
+
+export const handleRequest = ({ req, res, controller }) => {
+  const method = req.method;
   controller[method]
     ? controller[method](req, res)
-    : res.status(405).jsonp({ code: 0, message: '不支持该请求类型！' })
-}
+    : res.status(405).jsonp({ code: 0, message: '不支持该请求类型！' });
+};
 
 // 处理成功
-exports.handleSuccess = ({ res, result = null, message = '请求成功' }) => {
-  res.jsonp({ code: 1, message, result })
-}
+export const handleSuccess = ({ res, result = null, message = '请求成功' }) => {
+  res.jsonp({ code: 1, message, result });
+};
 
 // 处理错误
-exports.handleError = ({ res, err = null, message = '请求失败', code }) => {
-  const json = { code: 0, message, debug: err }
-  code ? res.status(code).jsonp(json) : res.jsonp(json)
-}
+export const handleError = ({ res, err = null, message = '请求失败', code }) => {
+  const json = { code: 0, message, debug: err };
+  code ? res.status(code).jsonp(json) : res.jsonp(json);
+};
 
 // 更友好的成功处理
-exports.humanizedHandleSuccess = (res, message) => {
+export const humanizedHandleSuccess = (res, message) => {
   return result => {
-    return exports.handleSuccess({ res, result, message })
-  }
-}
+    return handleSuccess({ res, result, message });
+  };
+};
 
 // 更友好的错误处理
-exports.humanizedHandleError = (res, message, code) => {
+export const humanizedHandleError = (res, message, code) => {
   return err => {
-    return exports.handleError({ res, err, message, code })
-  }
-}
+    return handleError({ res, err, message, code });
+  };
+};
 
 // 处理翻页数据
-exports.handlePaginateData = data => ({
+export const handlePaginateData = data => ({
   data: data.docs,
   pagination: {
     total: data.total,
     current_page: data.page,
     total_page: data.pages,
-    per_page: data.limit
+    per_page: data.limit,
+  },
+});
+
+export default {
+  handle,
+};
+
+/*
+  promise<T>(
+    promise: Promise<T>,
+    successText?: string,
+    failureText?: string,
+    levels?: { [key: string]: string }
+  ): Promise<T> {
+    levels = this.getLevels(levels)
+    promise.then(
+      resolved => {
+        if (successText) {
+          // TODO: 模版渲染的单测
+          successText = mustache.render(successText, { resolved })
+          this[levels['resolve']](successText)
+        }
+      },
+      rejected => this.exception(rejected, failureText, levels)
+    )
+    return promise
   }
-})
+
+  handle(successText?: string, failureText?: string, levels?: { [key: string]: string }) {
+    levels = this.getLevels(levels)
+
+    const me = this
+
+    return replaceMethod(origin => function (...args) {
+      const promise = origin.apply(this, args)
+      return me.promise(promise, successText, failureText, levels)
+    })
+  }
+  */

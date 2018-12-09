@@ -27,6 +27,7 @@
   "dependencies": {
     "@nestjs/common": "^5.4.1",
     "@nestjs/core": "^5.4.1",
+    "@nestjs/mongoose": "^5.2.2",
     "@nestjs/typeorm": "^5.2.2",
     "akismet-api": "^4.2.0",
     "body-parser": "^1.18.3",
@@ -49,6 +50,7 @@
     "rimraf": "^2.6.2",
     "simple-netease-cloud-music": "^0.4.0",
     "sitemap": "^2.1.0",
+    "typeorm": "^0.2.9",
     "typescript": "^3.2.2",
     "wonderful-bing-wallpaper": "^0.1.0",
     "yargs": "^12.0.5"
