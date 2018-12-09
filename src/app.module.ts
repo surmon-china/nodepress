@@ -5,15 +5,19 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from '@app/app.controller';
-import { AppService } from '@app/app.service';
 import * as appConfig from '@app/app.config';
 
+import { Module } from '@nestjs/common';
+import { AppService } from '@app/app.service';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { GithubModule } from '@app/modules/github/github.module';
+
 @Module({
-  imports: [TypeOrmModule.forRoot(appConfig.MONGODB)],
-  controllers: [AppController],
+  imports: [
+    // MongooseModule.forRoot(appConfig.MONGODB),
+    GithubModule,
+  ],
   providers: [AppService],
 })
 export class AppModule {}
