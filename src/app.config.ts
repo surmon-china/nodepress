@@ -8,7 +8,7 @@
 import * as path from 'path';
 import { argv } from 'yargs';
 import { environment } from '@app/app.environment';
-import { packageJson } from '@app/utils/module.transform';
+import { packageJson } from '@app/transforms/module.transform';
 
 export const APP = {
   LIMIT: 16,
@@ -32,7 +32,7 @@ export const MONGODB = {
   host: '127.0.0.1',
   port: argv.dbport || 27017,
   database: 'NodePress',
-  entities: ['src/**/**.entity{.ts,.js}'],
+  entities: ['src/**/**.model{.ts,.js}'],
   synchronize: true,
 };
 
