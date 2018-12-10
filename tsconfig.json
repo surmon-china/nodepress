@@ -5,7 +5,7 @@
     "declaration": true,
     "noImplicitAny": false,
     "removeComments": true,
-    "noLib": false,
+    "lib": ["es2015", "es2016", "es2017"],
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
