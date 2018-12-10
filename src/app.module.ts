@@ -7,10 +7,13 @@
 
 import * as appConfig from '@app/app.config';
 
-import { Module } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AppService } from '@app/app.service';
-import { MongooseModule } from '@nestjs/mongoose';
 
+import { CorsMiddleware } from '@app/middlewares/cors.middleware';
+import { AuthMiddleware } from '@app/middlewares/auth.middleware';
+
+import { MongooseModule } from '@nestjs/mongoose';
 import { GithubModule } from '@app/modules/github/github.module';
 
 @Module({
@@ -20,4 +23,10 @@ import { GithubModule } from '@app/modules/github/github.module';
   ],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(CorsMiddleware).forRoutes('*');
+    // apply(AuthMiddleware).forRoutes('cats');
+  }
+}
