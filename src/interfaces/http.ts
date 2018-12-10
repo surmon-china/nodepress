@@ -5,33 +5,26 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-// HTTP 状态码
-export enum EHttpCode {
-  success = 200,
-  notFound = 404,
-  error = 400,
-}
-
-// 业务特征状态码
-export enum EHttpStateCode {
-  error = 0,
-  success = 1,
+export enum EStatus {
+  Error = 'error',
+  Success = 'success',
 }
 
 // HTTP 状态返回
 export interface IHttpResponseBase {
-  code: EHttpStateCode;
+  status: EStatus;
   message: string;
 }
 
 // HTTP error
 export type THttpErrorResponse = IHttpResponseBase & {
-  debug: any;
+  error: any;
+  debug?: string
 };
 
 // HTTP success 返回
-export type THttpSuccessResponse<HttpResponseData> = IHttpResponseBase & {
-  result: HttpResponseData;
+export type THttpSuccessResponse<T> = IHttpResponseBase & {
+  result: T;
 };
 
 // HTTP Response

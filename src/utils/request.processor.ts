@@ -5,20 +5,47 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-// const { isString, isArray } = require('np-helper/np-data-validate');
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { THttpSuccessResponse, EStatus } from '@app/interfaces/http';
 
-// 处理请求
-export const handle = (params) => {
-  console.log('说实话我不知道这是啥', params);
-  return (target, methodName: string, descriptor: PropertyDescriptor) => {
-    console.log('target-------', target, 'methodName-------', methodName, 'descriptor-------', descriptor);
-    // 这个的需要改变来源，然后是你
-    // new Promise((resolve, reject) => {
-    //   resolve([]);
-    // });
+type TStatus = number;
+type TMessage = string;
+
+const errorMsg = message => `${message}失败`;
+const successMsg = message => `${message}成功`;
+
+export const handle = (message: TMessage, status?: TStatus) => {
+  return (_, __, descriptor: PropertyDescriptor) => {
+    const origin = descriptor.value;
+    descriptor.value = function(...args) {
+      return origin.apply(this, args)
+        .then(response => ({
+          ...response,
+          message: successMsg(message),
+          status: EStatus.Error,
+        }))
+        .catch(error => {
+          return Promise.reject(
+            new HttpException(
+              { message: errorMsg(message), error },
+              status || HttpStatus.INTERNAL_SERVER_ERROR,
+            ));
+        });
+    };
+    return descriptor;
   };
 };
 
+export const transform = <T>(promise: Promise<T>): Promise<THttpSuccessResponse<T>> => {
+  return promise.then(result => ({ status: EStatus.Success, message: '数据请求成功', result }));
+};
+
+export default {
+  handle,
+  transform,
+};
+
+/*
 export const handleRequest = ({ req, res, controller }) => {
   const method = req.method;
   controller[method]
@@ -32,10 +59,10 @@ export const handleSuccess = ({ res, result = null, message = '请求成功' }) 
 };
 
 // 处理错误
-export const handleError = ({ res, err = null, message = '请求失败', code }) => {
-  const json = { code: 0, message, debug: err };
-  code ? res.status(code).jsonp(json) : res.jsonp(json);
-};
+// export const handleError = ({ res, err = null, message = '请求失败', code }) => {
+//   const json = { code: 0, message, debug: err };
+//   code ? res.status(code).jsonp(json) : res.jsonp(json);
+// };
 
 // 更友好的成功处理
 export const humanizedHandleSuccess = (res, message) => {
@@ -61,40 +88,4 @@ export const handlePaginateData = data => ({
     per_page: data.limit,
   },
 });
-
-export default {
-  handle,
-};
-
-/*
-  promise<T>(
-    promise: Promise<T>,
-    successText?: string,
-    failureText?: string,
-    levels?: { [key: string]: string }
-  ): Promise<T> {
-    levels = this.getLevels(levels)
-    promise.then(
-      resolved => {
-        if (successText) {
-          // TODO: 模版渲染的单测
-          successText = mustache.render(successText, { resolved })
-          this[levels['resolve']](successText)
-        }
-      },
-      rejected => this.exception(rejected, failureText, levels)
-    )
-    return promise
-  }
-
-  handle(successText?: string, failureText?: string, levels?: { [key: string]: string }) {
-    levels = this.getLevels(levels)
-
-    const me = this
-
-    return replaceMethod(origin => function (...args) {
-      const promise = origin.apply(this, args)
-      return me.promise(promise, successText, failureText, levels)
-    })
-  }
-  */
+*/

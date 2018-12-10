@@ -20,7 +20,7 @@ export class GithubService {
     return new Promise((resolve, reject) => {
       request({
         headers: { 'User-Agent': 'request' },
-        url: `https://api.github.com/users/${appConfig.GITHUB.username}/repos?per_page=1000`,
+        url: `https://api.github.com/users/${appConfig.GITHUB.username}/repos2?per_page=1000`,
       }, (err, response, body) => {
         if (!err && response.statusCode === 200) {
           try {
@@ -40,12 +40,13 @@ export class GithubService {
             });
             return resolve(peojects);
           } catch (error) {
-            console.warn('github 控制器解析为 JSON 失败', body);
-            return reject(body);
+            const errmsg = 'Github 控制器解析为 JSON 失败';
+            console.warn(errmsg, body);
+            return reject(errmsg);
           }
         } else {
           console.warn('项目列表获取失败', 'err:', err, 'body:', body);
-          return reject(err);
+          return reject(err || body);
         }
       });
     });
