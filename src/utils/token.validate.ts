@@ -5,8 +5,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const jwt = require('jsonwebtoken');
-const CONFIG = require('app.config');
+import * as jwt from 'jsonwebtoken';
+import * as appConfig from '@app/app.config';
 
 // 验证 Auth
 const authToken = req => {
@@ -24,7 +24,7 @@ const authIsVerified = req => {
   const token = authToken(req);
   if (token) {
     try {
-      const decodedToken = jwt.verify(token, CONFIG.AUTH.jwtTokenSecret);
+      const decodedToken = jwt.verify(token, appConfig.AUTH.jwtTokenSecret);
       return (decodedToken.exp > Math.floor(Date.now() / 1000));
     } catch (err) {
       return false;
