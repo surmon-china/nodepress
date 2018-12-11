@@ -20,7 +20,7 @@ export class GithubService {
     return new Promise((resolve, reject) => {
       request({
         headers: { 'User-Agent': 'request' },
-        url: `https://api.github.com/users/${appConfig.GITHUB.username}/repos2?per_page=1000`,
+        url: `https://api.github.com/users/${appConfig.GITHUB.username}/repos?per_page=1000`,
       }, (err, response, body) => {
         if (!err && response.statusCode === 200) {
           try {
