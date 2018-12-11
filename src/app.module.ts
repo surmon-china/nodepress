@@ -8,6 +8,7 @@
 import * as appConfig from '@app/app.config';
 
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { AppController } from '@app/app.controller';
 import { AppService } from '@app/app.service';
 
 import { CorsMiddleware } from '@app/middlewares/cors.middleware';
@@ -18,15 +19,22 @@ import { GithubModule } from '@app/modules/github/github.module';
 
 @Module({
   imports: [
-    // MongooseModule.forRoot(appConfig.MONGODB),
+    // MongooseModule.forRoot(appConfig.MONGODB, {
+    //   useCreateIndex: true,
+    //   useNewUrlParser: true,
+    //   promiseLibrary: global.Promise
+    // }),
     GithubModule,
   ],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CorsMiddleware).forRoutes('*');
-    // apply(AuthMiddleware).forRoutes('cats');
+      // .apply(AuthMiddleware).forRoutes([
+
+      // ]);
   }
 }
