@@ -8,7 +8,7 @@
 import { HttpStatus } from '@nestjs/common';
 import { Controller, Get } from '@nestjs/common';
 import { THttpSuccessResponse } from '@app/interfaces/http';
-import requestProcessor from '@app/utils/request.processor';
+import HttpProcessor from '@app/utils/http.processor';
 
 import { GithubService } from './github.service';
 import { IGithubRepositorie } from './github.interface';
@@ -19,9 +19,9 @@ export class GithubController {
   constructor(private readonly githubService: GithubService) {}
 
   @Get()
-  @requestProcessor.handle('获取项目列表', HttpStatus.BAD_GATEWAY)
+  @HttpProcessor.handle('获取项目列表', HttpStatus.BAD_GATEWAY)
   async getRepositories(): Promise<THttpSuccessResponse<IGithubRepositorie[]>> {
-    return requestProcessor.transform<IGithubRepositorie[]>(
+    return HttpProcessor.transform<IGithubRepositorie[]>(
       this.githubService.getRepositories(),
     );
   }
