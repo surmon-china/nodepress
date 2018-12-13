@@ -1,32 +1,33 @@
 import { INFO, CROSS_DOMAIN } from '@app/app.config';
 import { isDevMode } from '@app/app.environment';
-import { Injectable, NestMiddleware, MiddlewareFunction } from '@nestjs/common';
+import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus, RequestMethod } from '@nestjs/common';
 
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {
   resolve(...args: any[]): MiddlewareFunction {
-    return (req, res, next) => {
+    return (request, response, next) => {
 
-      const origin = req.headers.origin || '';
+      const getMethod = method => RequestMethod[method];
+      const origin = request.headers.origin || '';
       const allowedOrigins = [...CROSS_DOMAIN.allowedOrigins];
-      const allowedMethods = ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'];
+      const allowedMethods = [RequestMethod.GET, RequestMethod.HEAD, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.POST, RequestMethod.DELETE];
       const allowedHeaders = ['Authorization', 'Origin', 'No-Cache', 'X-Requested-With', 'If-Modified-Since', 'Pragma', 'Last-Modified', 'Cache-Control', 'Expires', 'Content-Type', 'X-E4M-With'];
 
       // Allow Origin
       if (!origin || allowedOrigins.includes(origin) || isDevMode) {
-        res.setHeader('Access-Control-Allow-Origin', origin || '*');
+        response.setHeader('Access-Control-Allow-Origin', origin || '*');
       }
 
       // Headers
-      res.header('Access-Control-Allow-Headers', allowedHeaders.join(','));
-      res.header('Access-Control-Allow-Methods',  allowedMethods.join(','));
-      res.header('Access-Control-Max-Age', '1728000');
-      res.header('Content-Type', 'application/json; charset=utf-8');
-      res.header('X-Powered-By', `Nodepress ${INFO.version}`);
+      response.header('Access-Control-Allow-Headers', allowedHeaders.join(','));
+      response.header('Access-Control-Allow-Methods',  allowedMethods.map(getMethod).join(','));
+      response.header('Access-Control-Max-Age', '1728000');
+      response.header('Content-Type', 'application/json; charset=utf-8');
+      response.header('X-Powered-By', `Nodepress ${INFO.version}`);
 
       // OPTIONS Request
-      if (req.method === 'OPTIONS') {
-        return res.sendStatus(204);
+      if (request.method === getMethod(RequestMethod.OPTIONS)) {
+        return response.sendStatus(HttpStatus.NO_CONTENT);
       } else {
         return next();
       }

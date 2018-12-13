@@ -1,7 +1,8 @@
 import { CROSS_DOMAIN } from '@app/app.config';
 import { isProdMode } from '@app/app.environment';
+import { isVerifiedToken } from '@app/validates/token.validate';
 import { THttpErrorResponse, EStatus } from '@app/interfaces/http';
-import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus } from '@nestjs/common';
+import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus, RequestMethod } from '@nestjs/common';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -15,7 +16,8 @@ export class AuthMiddleware implements NestMiddleware {
         error: null,
       };
 
-      const unauthorizedResponse = res => {
+      // 发送拦截请求
+      const sendUnauthorizedResponse = res => {
         return res.status(HttpStatus.UNAUTHORIZED).jsonp(errorResBody);
       };
 
@@ -26,38 +28,40 @@ export class AuthMiddleware implements NestMiddleware {
         const isVerifiedOrigin = checkHeader(origin);
         const isVerifiedReferer = checkHeader(referer);
         if (!isVerifiedOrigin && !isVerifiedReferer) {
-          return unauthorizedResponse(response);
+          return sendUnauthorizedResponse(response);
         }
       }
 
-      const isNotGetRequest = request.method !== 'GET';
-      const isPostRequest = req => req.method === 'POST';
-      const isUrlRequest = (req, url) => req.url === url;
-      const isPostUrlRequest = (req, url) => isUrlRequest(req, url) && isPostRequest(req);
+      // 排除检查权限的路由
+      const excludes = [
+        { url: '/like', method: RequestMethod.POST },
+        { url: '/auth', method: RequestMethod.POST },
+        { url: '/comment', method: RequestMethod.POST },
+      ];
 
-      // 文件 token 请求
-      const isFileRequest = isUrlRequest(request, '/qiniu');
-      // 喜欢操作
-      const isLikeRequest = isPostUrlRequest(request, '/like');
-      // 登陆操作
-      const isPostAuthRequest = isPostUrlRequest(request, '/auth');
-      // 提交评论
-      const isPostCommentRequest = isPostUrlRequest(request, '/comment');
-      // 非管理员
-      const isGuestRequest = !authIsVerified(request);
+      // 需要检查权限的路由
+      const includes = [
+        { url: '/qiniu', method: RequestMethod.GET },
+        { url: '*', method: RequestMethod.PUT },
+        { url: '*', method: RequestMethod.POST },
+        { url: '*', method: RequestMethod.PATCH },
+        { url: '*', method: RequestMethod.DELETE },
+      ];
 
-      // 排除 -> auth.POST & comment.POST & like.POST
-      if (isLikeRequest || isPostAuthRequest || isPostCommentRequest) {
-        return next();
+      const isSameUrl = rule => request.baseUrl === rule.url || rule.url === '*';
+      const isSameMethod = rule => request.method === RequestMethod[rule.method] || rule.method === RequestMethod.ALL;
+      const isMatchRule = rule => isSameUrl(rule) && isSameMethod(rule);
+      const isExcludeRule = excludes.some(isMatchRule);
+      const isIncludeRule = includes.some(isMatchRule);
+      const isValidToken = isVerifiedToken(request);
+
+      // 不属于排除规则 &&（属于命中规则 && 验证失败）
+      if (!isExcludeRule && (isIncludeRule && !isValidToken)) {
+        return sendUnauthorizedResponse(response);
       }
 
-      // 拦截 -> 所有非管理员的 -> 非 GET 请求 / 文件上传请求
-      if (isGuestRequest && (isNotGetRequest || isFileRequest)) {
-        return unauthorizedResponse(response);
-      }
-
-      // 其他情况都通行
-      next();
+      // 其他通行
+      return next();
     };
   }
 }
