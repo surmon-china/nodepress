@@ -8,20 +8,20 @@
 import * as jwt from 'jsonwebtoken';
 import * as appConfig from '@app/app.config';
 
-// 验证 Auth
-const authToken = req => {
-  if (!req.headers || !req.headers.authorization) {
+// 验证 Auth 是否存在
+export const getAuthToken = request => {
+  if (!request.headers || !request.headers.authorization) {
     return false;
   }
-  const parts = req.headers.authorization.split(' ');
+  const parts = request.headers.authorization.split(' ');
   if (parts.length === 2 && parts[0] === 'Bearer') {
     return parts[1];
   }
 };
 
-// 验证权限
-const authIsVerified = req => {
-  const token = authToken(req);
+// 验证 Auth 有效性
+export const isVerifiedToken = request => {
+  const token = getAuthToken(request);
   if (token) {
     try {
       const decodedToken = jwt.verify(token, appConfig.AUTH.jwtTokenSecret);
@@ -32,5 +32,3 @@ const authIsVerified = req => {
   }
   return false;
 };
-
-module.exports = authIsVerified;
