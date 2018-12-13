@@ -7,7 +7,7 @@
 
 import * as appConfig from '@app/app.config';
 
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from '@app/app.controller';
 import { AppService } from '@app/app.service';
 
@@ -31,10 +31,6 @@ import { GithubModule } from '@app/modules/github/github.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(CorsMiddleware).forRoutes('*');
-      // .apply(AuthMiddleware).forRoutes([
-
-      // ]);
+    consumer.apply(CorsMiddleware, AuthMiddleware).forRoutes('*');
   }
 }
