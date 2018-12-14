@@ -11,6 +11,7 @@ import * as request from 'request';
 import * as appConfig from '@app/app.config';
 import { Injectable } from '@nestjs/common';
 import { IGithubRepositorie } from './github.interface';
+import { consola } from '@app/transforms/module.transform';
 
 @Injectable()
 export class GithubService {
@@ -41,11 +42,11 @@ export class GithubService {
             return resolve(peojects);
           } catch (error) {
             const errmsg = 'Github 控制器解析为 JSON 失败';
-            console.warn(errmsg, body);
+            consola.warn(errmsg, body);
             return reject(errmsg);
           }
         } else {
-          console.warn('项目列表获取失败', 'err:', err, 'body:', body);
+          consola.warn('项目列表获取失败', 'err:', err, 'body:', body);
           return reject(err || body);
         }
       });

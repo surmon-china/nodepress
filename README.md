@@ -27,6 +27,14 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 
 更新记录：[在这里](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
 
+AUTH guard 的执行流程
+
+request ---> middleware ---> guard ---> interceptor:before ---> pipe ---> controller ---> interceptor:after ---> filters
+
+guard ->: guard -> guard.canActivate -> JwtStrategy.validate -> AuthService.validateAuthData -> guard.handleRequest
+
+ReflectMetadata('TEST2', 'test-text')(descriptor.value); === Reflect.defineMetadata('TEST', statusCode, descriptor.value);
+
 ## 接口概述
 
   - HTTP 状态码
