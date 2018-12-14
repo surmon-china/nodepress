@@ -1,6 +1,7 @@
 
+import * as lodash from 'lodash';
 import { isDevMode } from '@app/app.environment';
-import { EStatus, THttpErrorResponse } from '@app/interfaces/http';
+import { EStatus, THttpErrorResponse, TExceptionOption, TMessage } from '@app/interfaces/http';
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
 
 /*
@@ -13,11 +14,14 @@ export class ErrorFilter implements ExceptionFilter {
     const status = error instanceof HttpException
       ? error.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
-    const { message, error: errorInfo } = error.message as any;
+    const errorOption: TExceptionOption = error.message as TExceptionOption;
+    const isString = (value): value is TMessage => lodash.isString(value);
+    const errMessage = isString(errorOption) ? errorOption : errorOption.message;
+    const errorInfo = isString(errorOption) ? null : errorOption.error;
     const data: THttpErrorResponse = {
       status: EStatus.Error,
-      message,
-      error: String(errorInfo),
+      message: errMessage,
+      error: errorInfo ? String(errorInfo) : null,
       debug: isDevMode ? error.stack : null,
     };
     return response.status(status).jsonp(data);

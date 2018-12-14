@@ -33,6 +33,7 @@
     // "*/*.spec.ts"
   ],
   "typeRoots": [
-    "node_modules/@types"
+    "node_modules/@types",
+    "consola/types/consola"
   ]
 }

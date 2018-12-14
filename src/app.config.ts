@@ -37,6 +37,7 @@ export const MONGODB = {
 };
 
 export const AUTH = {
+  expiresIn: argv.auth_expires_in || 3600,
   data: argv.auth_data || { user: 'root' },
   jwtTokenSecret: argv.auth_key || 'nodepress',
   defaultPassword: argv.auth_default_password || 'root',
