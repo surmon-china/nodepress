@@ -5,6 +5,13 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+export type TExceptionOption = TMessage | {
+  message: TMessage;
+  error?: any
+};
+
+export type TMessage = string;
+
 export enum EStatus {
   Error = 'error',
   Success = 'success',
@@ -13,7 +20,7 @@ export enum EStatus {
 // HTTP 状态返回
 export interface IHttpResponseBase {
   status: EStatus;
-  message: string;
+  message: TMessage;
 }
 
 // HTTP error

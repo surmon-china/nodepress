@@ -5,87 +5,68 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { THttpSuccessResponse, EStatus } from '@app/interfaces/http';
+import { ReflectMetadata, HttpStatus } from '@nestjs/common';
+import { TMessage } from '@app/interfaces/http';
+import * as META from '@app/constants/meta';
+import * as TEXT from '@app/constants/text';
+import * as lodash from 'lodash';
 
-type TStatus = number;
-type TMessage = string;
+// 构造器参数
+interface IBuildDecoratorOption {
+  errCode?: HttpStatus;
+  successCode?: HttpStatus;
+  errMessage?: TMessage;
+  successMessage?: TMessage;
+}
 
-const errorMsg = message => `${message}失败`;
-const successMsg = message => `${message}成功`;
+// handle 参数
+interface IHandleOption {
+  error?: HttpStatus;
+  success?: HttpStatus;
+  message: TMessage;
+}
+type THandleOption = TMessage | IHandleOption;
 
-export const handle = (message: TMessage, status?: TStatus) => {
+// 构造请求装饰器
+const buildHttpDecorator = (options: IBuildDecoratorOption): MethodDecorator => {
+  const { errMessage, successMessage, errCode, successCode } = options;
   return (_, __, descriptor: PropertyDescriptor) => {
-    const origin = descriptor.value;
-    descriptor.value = function(...args) {
-      return origin.apply(this, args)
-        .then(response => ({
-          ...response,
-          message: successMsg(message),
-          status: EStatus.Error,
-        }))
-        .catch(error => {
-          return Promise.reject(
-            new HttpException(
-              { message: errorMsg(message), error },
-              status || HttpStatus.INTERNAL_SERVER_ERROR,
-            ));
-        });
-    };
+    if (errCode) {
+      ReflectMetadata(META.HTTP_ERROR_CODE, errCode)(descriptor.value);
+    }
+    if (successCode) {
+      ReflectMetadata(META.HTTP_SUCCESS_CODE, successCode)(descriptor.value);
+    }
+    if (errMessage) {
+      ReflectMetadata(META.HTTP_ERROR_MESSAGE, errMessage)(descriptor.value);
+    }
+    if (successMessage) {
+      ReflectMetadata(META.HTTP_SUCCESS_MESSAGE, successMessage)(descriptor.value);
+    }
     return descriptor;
   };
 };
 
-export const transform = <T>(promise: Promise<T>): Promise<THttpSuccessResponse<T>> => {
-  return promise.then(result => ({ status: EStatus.Success, message: '数据请求成功', result }));
+// 异常构造器
+export const error = (message: TMessage, statusCode?: HttpStatus): MethodDecorator => {
+  return buildHttpDecorator({ errMessage: message, errCode: statusCode });
 };
 
-export default {
-  handle,
-  transform,
+// 成功构造器
+export const success = (message: TMessage, statusCode?: HttpStatus): MethodDecorator => {
+  return buildHttpDecorator({ successMessage: message, successCode: statusCode });
 };
 
-/*
-export const handleRequest = ({ req, res, controller }) => {
-  const method = req.method;
-  controller[method]
-    ? controller[method](req, res)
-    : res.status(405).jsonp({ code: 0, message: '不支持该请求类型！' });
+// 统配构造器
+export const handle = (...args: [THandleOption]): MethodDecorator => {
+  const option = args[0];
+  const isOption = (value: THandleOption): value is IHandleOption => lodash.isObject(option);
+  const message: TMessage = isOption(option) ? option.message : option;
+  const errMessage: TMessage = message + TEXT.HTTP_ERROR_SUFFIX;
+  const successMessage: TMessage = message + TEXT.HTTP_SUCCESS_SUFFIX;
+  const errCode: HttpStatus = isOption(option) ? option.error : null;
+  const successCode: HttpStatus = isOption(option) ? option.success : null;
+  return buildHttpDecorator({ errCode, successCode, errMessage, successMessage });
 };
 
-// 处理成功
-export const handleSuccess = ({ res, result = null, message = '请求成功' }) => {
-  res.jsonp({ code: 1, message, result });
-};
-
-// 处理错误
-// export const handleError = ({ res, err = null, message = '请求失败', code }) => {
-//   const json = { code: 0, message, debug: err };
-//   code ? res.status(code).jsonp(json) : res.jsonp(json);
-// };
-
-// 更友好的成功处理
-export const humanizedHandleSuccess = (res, message) => {
-  return result => {
-    return handleSuccess({ res, result, message });
-  };
-};
-
-// 更友好的错误处理
-export const humanizedHandleError = (res, message, code) => {
-  return err => {
-    return handleError({ res, err, message, code });
-  };
-};
-
-// 处理翻页数据
-export const handlePaginateData = data => ({
-  data: data.docs,
-  pagination: {
-    total: data.total,
-    current_page: data.page,
-    total_page: data.pages,
-    per_page: data.limit,
-  },
-});
-*/
+export default { error, success, handle };

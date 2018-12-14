@@ -5,9 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { HttpStatus } from '@nestjs/common';
-import { Controller, Get } from '@nestjs/common';
-import { THttpSuccessResponse } from '@app/interfaces/http';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import HttpProcessor from '@app/utils/http.processor';
 
 import { GithubService } from './github.service';
@@ -19,10 +17,8 @@ export class GithubController {
   constructor(private readonly githubService: GithubService) {}
 
   @Get()
-  @HttpProcessor.handle('获取项目列表', HttpStatus.BAD_GATEWAY)
-  async getRepositories(): Promise<THttpSuccessResponse<IGithubRepositorie[]>> {
-    return HttpProcessor.transform<IGithubRepositorie[]>(
-      this.githubService.getRepositories(),
-    );
+  @HttpProcessor.handle('获取项目列表')
+  async getRepositories(): Promise<IGithubRepositorie[]> {
+    return await this.githubService.getRepositories();
   }
 }
