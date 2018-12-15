@@ -5,42 +5,39 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as appConfig from '@app/app.config';
-
-import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import * as APP_CONFIG from '@app/app.config';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from '@app/app.controller';
-import { AppService } from '@app/app.service';
-
+import { HttpCacheInterceptor } from '@app/interceptors/cache.interceptor';
+import { CacheModule } from '@app/processors/cache/cache.module';
 import { CorsMiddleware } from '@app/middlewares/cors.middleware';
 import { OriginMiddleware } from '@app/middlewares/origin.middleware';
-
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { GithubModule } from '@app/modules/github/github.module';
 import { AuthModule } from '@app/modules/auth/auth.module';
-
-// import { JwtModule } from '@nestjs/jwt';
-// import { PassportModule } from '@nestjs/passport';
-// import { JwtStrategy } from '@app/utils/jwt.strategy';
+import { AnnouncementModule } from '@app/modules/announcement/announcement.module';
 
 @Module({
   imports: [
-    // PassportModule.register({ defaultStrategy: 'jwt' }),
-    // JwtModule.register({
-    //   secretOrPrivateKey: 'secretKey',
-    //   signOptions: {
-    //     expiresIn: 3600,
-    //   },
-    // }),
-    // MongooseModule.forRoot(appConfig.MONGODB, {
-    //   useCreateIndex: true,
-    //   useNewUrlParser: true,
-    //   promiseLibrary: global.Promise
-    // }),
+    MongooseModule.forRoot(APP_CONFIG.MONGODB.uri, {
+      useCreateIndex: true,
+      useNewUrlParser: true,
+      promiseLibrary: global.Promise,
+    }),
+    CacheModule,
     GithubModule,
     AuthModule,
+    AnnouncementModule,
   ],
   controllers: [AppController],
-  providers: [AppService /* JwtStrategy */],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: HttpCacheInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

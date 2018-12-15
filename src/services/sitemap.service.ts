@@ -8,7 +8,7 @@
 const fs = require('fs')
 const path = require('path')
 const sm = require('sitemap')
-const consola = require('consola')
+const console = require('console')
 const CONFIG = require('app.config')
 const redis = require('np-core/np-redis')
 const Tag = require('np-model/tag.model')
@@ -90,7 +90,7 @@ const getDatas = success => {
   .then(data => success && success())
   .catch(err => {
     success && success()
-    consola.warn('生成地图前获取数据库发生错误', err)
+    console.warn('生成地图前获取数据库发生错误', err)
   })
 }
 
@@ -101,7 +101,7 @@ const updateAndBuildSiteMap = () => {
       sitemap.toXML((err, xml) => {
         if (err) {
           reject(err)
-          consola.warn('生成地图 XML 时发生错误', err)
+          console.warn('生成地图 XML 时发生错误', err)
         } else {
           resolve(xml)
           redis.set(REDIS_CACHE_FIELDS.sitemap, xml)

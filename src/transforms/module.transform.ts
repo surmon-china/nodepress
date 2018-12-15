@@ -6,12 +6,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-export const consola = require('consola');
 export const request = require('request-promise');
 export const packageJson = require('../../package.json');
 
 export default {
-  consola,
   request,
   packageJson,
 };

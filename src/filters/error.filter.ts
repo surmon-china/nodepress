@@ -1,7 +1,7 @@
 
 import * as lodash from 'lodash';
 import { isDevMode } from '@app/app.environment';
-import { EStatus, THttpErrorResponse, TExceptionOption, TMessage } from '@app/interfaces/http';
+import { EStatus, THttpErrorResponse, TExceptionOption, TMessage } from '@app/interfaces/http.interface';
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
 
 /*
