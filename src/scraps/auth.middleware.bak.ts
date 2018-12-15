@@ -1,7 +1,7 @@
 import { CROSS_DOMAIN } from '@app/app.config';
 import { isProdMode } from '@app/app.environment';
 import { isVerifiedToken } from '@app/validates/token.validate';
-import { THttpErrorResponse, EStatus } from '@app/interfaces/http';
+import { THttpErrorResponse, EStatus } from '@app/interfaces/http.interface';
 import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus, RequestMethod } from '@nestjs/common';
 
 @Injectable()

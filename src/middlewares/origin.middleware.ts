@@ -1,8 +1,8 @@
 import { CROSS_DOMAIN } from '@app/app.config';
 import { isProdMode } from '@app/app.environment';
-import { THttpErrorResponse, EStatus } from '@app/interfaces/http';
-import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus, RequestMethod } from '@nestjs/common';
-import * as TEXT from '@app/constants/text';
+import { THttpErrorResponse, EStatus } from '@app/interfaces/http.interface';
+import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus } from '@nestjs/common';
+import * as TEXT from '@app/constants/text.constant';
 
 @Injectable()
 export class OriginMiddleware implements NestMiddleware {

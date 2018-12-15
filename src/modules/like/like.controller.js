@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const consola = require('consola')
+const console = require('console')
 const Option = require('np-model/option.model')
 const Article = require('np-model/article.model')
 const Comment = require('np-model/comment.model')
@@ -37,9 +37,9 @@ module.exports = ({ body: { id, type }}, res) => {
         ? result.likes++
         : result.meta.likes++
       result.save().then(info => {
-        // consola.success('赞更新成功', info)
+        // console.success('赞更新成功', info)
       }).catch(err => {
-        consola.warn('赞更新失败', err)
+        console.warn('赞更新失败', err)
       })
       handleSuccess({ res, message: '爱你么么扎' })
     })
