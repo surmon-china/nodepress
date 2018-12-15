@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const consola = require('consola')
+const console = require('console')
 const CONFIG = require('app.config')
 const akismet = require('akismet-api')
 
@@ -20,32 +20,32 @@ const client = akismet.client({
 client.verifyKey().then(valid => {
   clientIsValid = valid
   if (valid) {
-    consola.ready(`Akismet key 有效，已准备好工作!`)
+    console.ready(`Akismet key 有效，已准备好工作!`)
   } else {
-    consola.warn(`Akismet key 无效，无法工作!`)
+    console.warn(`Akismet key 无效，无法工作!`)
   }
 }).catch(err => {
-  consola.warn('Akismet VerifyKey Error:', err.message)
+  console.warn('Akismet VerifyKey Error:', err.message)
 })
 
 // check spam
 const checkSpam = comment => {
-  consola.info('Akismet 验证评论中...', new Date())
+  console.info('Akismet 验证评论中...', new Date())
   return new Promise((resolve, reject) => {
     if (clientIsValid) {
       client.checkSpam(comment).then(spam => {
         if (spam) {
-          consola.warn('Akismet 验证不通过!', new Date())
+          console.warn('Akismet 验证不通过!', new Date())
           return reject(new Error('spam!'))
         } else {
-          consola.info('Akismet 验证通过', new Date())
+          console.info('Akismet 验证通过', new Date())
           return resolve(spam)
         }
       }).catch(err => {
         return resolve(err)
       })
     } else {
-      consola.warn('Akismet key 未认证，放弃验证')
+      console.warn('Akismet key 未认证，放弃验证')
       return resolve('akismet key Invalid!')
     }
   })
@@ -55,14 +55,14 @@ const checkSpam = comment => {
 const handleCommentInterceptor = handle_type => {
   return comment => {
     if (clientIsValid) {
-      consola.info(`Akismet ${handle_type}...`, new Date())
+      console.info(`Akismet ${handle_type}...`, new Date())
       client[handle_type](comment).then(result => {
-        consola.info(`Akismet ${handle_type} success!`)
+        console.info(`Akismet ${handle_type} success!`)
       }).catch(err => {
-        consola.warn(`Akismet ${handle_type} failed!`, err)
+        console.warn(`Akismet ${handle_type} failed!`, err)
       })
     } else {
-      consola.warn('Akismet key Invalid!')
+      console.warn('Akismet key Invalid!')
     }
   }
 }

@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const consola = require('consola')
+const console = require('console')
 const redis = require('np-core/np-redis')
 const WonderfulBingWallpaper = require('wonderful-bing-wallpaper')
 const { REDIS_CACHE_FIELDS } = require('np-core/np-constants')
@@ -38,12 +38,12 @@ const getWallpapers = params => {
           const wallpapers = wbw.humanizeWallpapers(wallpaperJSON)
           return resolve(wallpapers)
         } catch (err) {
-          consola.warn('wallpaper 控制器解析 JSON 失败', wallpaperJSON)
+          console.warn('wallpaper 控制器解析 JSON 失败', wallpaperJSON)
           return reject(err)
         }
       })
       .catch(err => {
-        consola.warn('getWallpapers 获取多个壁纸出现了问题', err)
+        console.warn('getWallpapers 获取多个壁纸出现了问题', err)
         return reject(err)
       })
   })

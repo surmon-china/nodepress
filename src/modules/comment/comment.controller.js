@@ -6,7 +6,7 @@
  */
 
 const marked = require('marked')
-const consola = require('consola')
+const console = require('console')
 const geoip = require('geoip-lite')
 const CONFIG = require('app.config')
 const environment = require('environment')
@@ -58,25 +58,25 @@ const updateArticleCommentCount = (post_ids = []) => {
     if (arrayIsInvalid(counts)) {
       Article.updateOne({ id: post_ids[0] }, { $set: { 'meta.comments': 0 }})
         .then(info => {
-          // consola.info('评论聚合更新成功', info)
+          // console.info('评论聚合更新成功', info)
         })
         .catch(err => {
-          // consola.warn('评论聚合更新失败', err)
+          // console.warn('评论聚合更新失败', err)
         })
     } else {
       counts.forEach(count => {
         Article.updateOne({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }})
           .then(info => {
-            // consola.info('评论聚合更新成功', info)
+            // console.info('评论聚合更新成功', info)
           })
           .catch(err => {
-            // consola.warn('评论聚合更新失败', err)
+            // console.warn('评论聚合更新失败', err)
           })
       })
     }
   })
   .catch(err => {
-    consola.warn('更新评论count聚合数据前，查询失败', err)
+    console.warn('更新评论count聚合数据前，查询失败', err)
   })
 }
 
@@ -117,14 +117,14 @@ const handleCommentsStateChange = (state, comments, referrer) => {
 
       // 如果是将评论状态标记为垃圾邮件，则加入黑名单，以及 submitSpam
       if (is_spam) {
-        // consola.log('把这些评论拉到黑名单')
+        // console.log('把这些评论拉到黑名单')
         options.blacklist.ips = arrayUniq(ips, comments.map(comment => comment.ip))
         options.blacklist.mails = arrayUniq(mails, comments.map(comment => comment.author.email))
         options.blacklist.keywords = arrayUniq(keywords, comments.map(comment => comment.content))
 
       // 如果是将评论状态标记为误标邮件，则移出黑名单，以及 submitHam
       } else {
-        // consola.log('把这些评论移出黑名单')
+        // console.log('把这些评论移出黑名单')
         options.blacklist.mails = options.blacklist.mails.filter(mail => {
           return !comments.some(comment => comment.author.email === mail)
         })
@@ -152,15 +152,15 @@ const handleCommentsStateChange = (state, comments, referrer) => {
       // 更新黑名单
       options.save()
         .then(options => {
-          // consola.info('黑名单什么的已经更新成功', options.blacklist)
+          // console.info('黑名单什么的已经更新成功', options.blacklist)
         })
         .catch(err => {
-          consola.warn('评论状态转译后，黑名单更新失败', err)
+          console.warn('评论状态转译后，黑名单更新失败', err)
         })
 
     })
     .catch(err => {
-      consola.warn(`处理评论状态转移之前，获取系统黑名单失败！`, err)
+      console.warn(`处理评论状态转移之前，获取系统黑名单失败！`, err)
     })
 }
 
@@ -307,14 +307,14 @@ CommentCtrl.list.POST = (req, res) => {
   }
   
   queryIp(ip).then(data => {
-    // consola.log('查询到IP', data)
+    // console.log('查询到IP', data)
     ip_location = {
       city: data.city,
       country: data.country_id,
     }
     doSaveComment()
   }).catch(err => {
-    consola.info('阿里云查询IP发生错误，改用本地库', ip, err)
+    console.info('阿里云查询IP发生错误，改用本地库', ip, err)
     ip_location = geoip.lookup(ip)
     doSaveComment()
   })
@@ -347,7 +347,7 @@ CommentCtrl.list.PATCH = ({ body: { comments, post_ids, state }, headers: { refe
           handleCommentsStateChange(state, todo_comments, referer)
         })
         .catch(err => {
-          consola.warn(`批量转译评论数据状态至 ${state} 时，出现错误！`, err)
+          console.warn(`批量转译评论数据状态至 ${state} 时，出现错误！`, err)
         })
     })
     .catch(humanizedHandleError(res, '评论批量操作失败'))

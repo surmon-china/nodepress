@@ -6,7 +6,7 @@
  */
 
 const request = require('request')
-const consola = require('consola')
+const console = require('console')
 const CONFIG = require('app.config')
 const redis = require('np-core/np-redis')
 const { REDIS_CACHE_FIELDS } = require('np-core/np-constants')
@@ -45,11 +45,11 @@ const redisGithubCache = redis.interval({
             })
             return resolve(peojects)
           } catch (error) {
-            consola.warn('github 控制器解析为 JSON 失败', body)
+            console.warn('github 控制器解析为 JSON 失败', body)
             return reject(body)
           }
         } else {
-          consola.warn('项目列表获取失败', 'err:', err, 'body:', body)
+          console.warn('项目列表获取失败', 'err:', err, 'body:', body)
           return reject(err)
         }
       })

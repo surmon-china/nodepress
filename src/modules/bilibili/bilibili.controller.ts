@@ -7,7 +7,7 @@
 
 import { HttpStatus } from '@nestjs/common';
 import { Controller, Get } from '@nestjs/common';
-import { THttpSuccessResponse } from '@app/interfaces/http';
+import { THttpSuccessResponse } from '@app/interfaces/http.interface';
 import HttpProcessor from '@app/utils/http.processor';
 
 import { GithubService } from './github.service';

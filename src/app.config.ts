@@ -26,14 +26,16 @@ export const CROSS_DOMAIN = {
 };
 
 export const MONGODB = {
+  uri: `mongodb://127.0.0.1:${argv.dbport || '27017'}/NodePress`,
   username: argv.db_username || 'DB_username',
   password: argv.db_password || 'DB_password',
-  type: 'mongodb',
-  host: '127.0.0.1',
-  port: argv.dbport || 27017,
-  database: 'NodePress',
-  entities: ['src/**/**.model{.ts,.js}'],
-  synchronize: true,
+};
+
+export const REDIS = {
+  host: argv.redis_host || 'localhost',
+  port: argv.redis_port || 6379,
+  ttl: null,
+  defaultCacheTTL: 60 * 60 * 24,
 };
 
 export const AUTH = {

@@ -1,35 +1,38 @@
-import { Controller, Get, Put, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { AuthService } from './auth.service';
+import { ITokenResult } from './auth.interface';
+import HttpProcessor from '@app/processors/decorators/http.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // 获取个人资料
   @Get('admin')
+  @HttpProcessor.handle('获取个人数据')
   async getAdminInfo(): Promise<any> {
     return await this.authService.getAdminInfo();
   }
 
-  // 修改用户资料和密码
   @Put('admin')
   @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('获取个人数据')
   async putAdminInfo() {
     // This route is restricted by AuthGuard
     // JWT strategy
   }
 
-  // 登陆
   @Post('login')
-  async createToken() {
-    return await this.authService.createToken();
+  @HttpProcessor.handle({ message: '登陆', success: HttpStatus.OK })
+  createToken(@Body() { password }): ITokenResult {
+    return this.authService.createToken(password);
   }
 
   // 检测 Token 有效性
   @Post('check')
   @UseGuards(JwtAuthGuard)
-  async checkToken() {
+  @HttpProcessor.handle({ message: '检测 Token ', success: HttpStatus.OK })
+  checkToken(): string {
     return 'ok';
   }
 }
