@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const consola = require('consola')
+const console = require('console')
 const CONFIG = require('app.config')
 const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate')
@@ -37,12 +37,12 @@ exports.connect = () => {
 
   // 连接错误
   mongoose.connection.on('error', error => {
-    consola.warn('数据库连接失败!', error)
+    console.warn('数据库连接失败!', error)
   })
 
   // 连接成功
   mongoose.connection.once('open', () => {
-    consola.ready('数据库连接成功!')
+    console.ready('数据库连接成功!')
   })
 
   // 自增 ID 初始化

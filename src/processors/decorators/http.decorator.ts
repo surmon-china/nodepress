@@ -5,11 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { ReflectMetadata, HttpStatus } from '@nestjs/common';
-import { TMessage } from '@app/interfaces/http';
-import * as META from '@app/constants/meta';
-import * as TEXT from '@app/constants/text';
 import * as lodash from 'lodash';
+import * as META from '@app/constants/meta.constant';
+import * as TEXT from '@app/constants/text.constant';
+import { ReflectMetadata, HttpStatus } from '@nestjs/common';
+import { TMessage } from '@app/interfaces/http.interface';
 
 // 构造器参数
 interface IBuildDecoratorOption {
@@ -58,6 +58,7 @@ export const success = (message: TMessage, statusCode?: HttpStatus): MethodDecor
 };
 
 // 统配构造器
+// { message: '操作', err: 500, success: 200 } | '操作'
 export const handle = (...args: [THandleOption]): MethodDecorator => {
   const option = args[0];
   const isOption = (value: THandleOption): value is IHandleOption => lodash.isObject(option);

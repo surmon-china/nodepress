@@ -6,7 +6,7 @@
  */
 
 const redis = require('redis')
-const consola = require('consola')
+const console = require('console')
 const schedule = require('node-schedule')
 const { isString } = require('np-helper/np-data-validate')
 
@@ -20,16 +20,16 @@ const connectRedis = () => {
 
   redisClient.on('error', err => {
     redisIsAvailable = false
-    consola.warn('Redis连接失败！', err)
+    console.warn('Redis连接失败！', err)
   })
 
   redisClient.on('ready', _ => {
     redisIsAvailable = true
-    consola.ready('Redis已准备好！')
+    console.ready('Redis已准备好！')
   })
 
   redisClient.on('reconnecting', _ => {
-    consola.info('Redis正在重连！')
+    console.info('Redis正在重连！')
   })
 
   return redisClient
@@ -125,7 +125,7 @@ const hommizationInterval = options => {
         })
         .catch(err => {
           const timeOut = timeout.error || timeout.success
-          consola.warn(`Redis 超时任务执行失败，${timeOut} 后重试：`, err)
+          console.warn(`Redis 超时任务执行失败，${timeOut} 后重试：`, err)
           setTimeout(promiseTask, timeOut)
         })
     })())
@@ -137,7 +137,7 @@ const hommizationInterval = options => {
       promise()
         .then(data => hommizationSet(key, data))
         .catch(err => {
-          consola.warn(`Redis 定时任务执行失败，${timing.error} 后重试：`, err)
+          console.warn(`Redis 定时任务执行失败，${timing.error} 后重试：`, err)
           setTimeout(promiseTask, timing.error)
         })
     }

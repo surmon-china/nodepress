@@ -1,11 +1,11 @@
-import { Injectable, NestInterceptor, ExecutionContext, HttpStatus } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
-import { THttpSuccessResponse, EStatus } from '@app/interfaces/http';
-import { TMessage } from '@app/interfaces/http';
-import * as META from '@app/constants/meta';
-import * as TEXT from '@app/constants/text';
+import { Injectable, NestInterceptor, ExecutionContext } from '@nestjs/common';
+import { THttpSuccessResponse, EStatus } from '@app/interfaces/http.interface';
+import { TMessage } from '@app/interfaces/http.interface';
+import * as META from '@app/constants/meta.constant';
+import * as TEXT from '@app/constants/text.constant';
 
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, THttpSuccessResponse<T>> {

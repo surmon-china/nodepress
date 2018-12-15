@@ -2,10 +2,10 @@ import { Injectable, NestInterceptor, ExecutionContext, HttpStatus } from '@nest
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
-import { TMessage } from '@app/interfaces/http';
-import * as META from '@app/constants/meta';
-import * as TEXT from '@app/constants/text';
-import buildCustomError from '@app/errors/custom';
+import { TMessage } from '@app/interfaces/http.interface';
+import buildCustomError from '@app/errors/custom.error';
+import * as META from '@app/constants/meta.constant';
+import * as TEXT from '@app/constants/text.constant';
 
 @Injectable()
 export class ErrorInterceptor implements NestInterceptor {

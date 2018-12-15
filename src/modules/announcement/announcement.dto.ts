@@ -1,7 +1,7 @@
-import { Document } from 'mongoose';
+
 import { EPublishState } from '@app/interfaces/state.interface';
 
-export interface IAnnouncement extends Document {
+export class CreateAnnouncementDto {
   readonly content: string;
   readonly state: EPublishState;
   readonly create_at: Date;
