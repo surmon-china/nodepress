@@ -5,11 +5,20 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { Schema, Document } from 'mongoose';
+import { NAME } from '../announcement.constants';
 import { EPublishState } from '@app/interfaces/state.interface';
-import { mongoose, mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+
+export interface IAnnouncement extends Document {
+  readonly content: string;
+  readonly state?: EPublishState;
+  readonly create_at?: Date;
+  readonly update_at?: Date;
+}
 
 // 公告模型
-const schema = new mongoose.Schema({
+export const AnnouncementSchema = new Schema({
 
   // 公告内容
   content: { type: String, required: true, validate: /\S+/ },
@@ -25,19 +34,16 @@ const schema = new mongoose.Schema({
 });
 
 // 翻页 + 自增 ID 插件配置
-schema.plugin(mongoosePaginate);
-schema.plugin(mongooseAutoIncrement.plugin, {
-  model: 'Announcement',
+AnnouncementSchema.plugin(mongoosePaginate);
+AnnouncementSchema.plugin(mongooseAutoIncrement.plugin, {
+  model: NAME,
   field: 'id',
   startAt: 1,
   incrementBy: 1,
 });
 
 // 时间更新
-schema.pre('findOneAndUpdate', function(next) {
+AnnouncementSchema.pre('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 });
-
-// 公告模型
-export const AnnouncementSchema = schema;

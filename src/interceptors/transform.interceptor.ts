@@ -13,6 +13,18 @@ export class TransformInterceptor<T> implements NestInterceptor<T, THttpSuccessR
   intercept(context: ExecutionContext, call$: Observable<T>): Observable<THttpSuccessResponse<T>> {
     const target = context.getHandler();
     const message = this.reflector.get<TMessage>(META.HTTP_SUCCESS_MESSAGE, target) || TEXT.HTTP_DEFAULT_SUCCESS_TEXT;
-    return call$.pipe(map(data => ({ status: EStatus.Success, message, result: data })));
+    const usePaginate = this.reflector.get<boolean>(META.HTTP_RES_TRANSFORM_PAGINATE, target);
+    return call$.pipe(map((data: any) => {
+      const result = !usePaginate ? data : {
+        data: data.docs,
+        pagination: {
+          total: data.total,
+          current_page: data.page,
+          total_page: data.pages,
+          per_page: data.limit,
+        },
+      };
+      return { status: EStatus.Success, message, result };
+    }));
   }
 }

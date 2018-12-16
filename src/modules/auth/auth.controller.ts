@@ -1,8 +1,8 @@
 import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common';
+import { HttpProcessor } from '@app/decorators/http.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { AuthService } from './auth.service';
 import { ITokenResult } from './auth.interface';
-import HttpProcessor from '@app/processors/decorators/http.decorator';
 
 @Controller('auth')
 export class AuthController {

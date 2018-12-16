@@ -5,12 +5,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Bind } from '@nestjs/common';
 import { CacheService } from '@app/processors/cache/cache.service';
 import { GITHUB_REPOSITORIES } from '@app/constants/cache.constant';
 import { GithubService } from './github.service';
 import { IGithubRepositorie } from './github.interface';
-import HttpProcessor from '@app/processors/decorators/http.decorator';
+import { HttpProcessor } from '@app/decorators/http.decorator';
 
 @Controller('github')
 export class GithubController {
@@ -26,7 +26,7 @@ export class GithubController {
         success: 1000 * 60 * 60, // 成功后 1 小时更新一次数据
         error: 1000 * 60 * 5, // 失败后 5 分钟更新一次数据
       },
-      promise: this.githubService.getRepositories,
+      promise: this.githubService.getRepositories.bind(this.githubService),
     });
   }
 

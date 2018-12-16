@@ -10,8 +10,12 @@ interface ICacheOption {
 
 type TCacheOptions = [string, number?] | [ICacheOption];
 
-// 统配构造器
-export default function httpCacheDecorator(...args: TCacheOptions): MethodDecorator {
+/*
+统配构造器
+@HttpCache(CACHE_KEY.INFO, 60 * 60)
+@HttpCache({ key: CACHE_KEY.INFO, ttl: 60 * 60 })
+*/
+export function HttpCache(...args: TCacheOptions): MethodDecorator {
   const option = args[0];
   const isOption = (value): value is ICacheOption => lodash.isObject(option);
   const key: string = isOption(option) ? option.key : option;
