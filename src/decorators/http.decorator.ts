@@ -17,6 +17,7 @@ interface IBuildDecoratorOption {
   successCode?: HttpStatus;
   errMessage?: TMessage;
   successMessage?: TMessage;
+  usePaginate?: boolean;
 }
 
 // handle 参数
@@ -24,12 +25,13 @@ interface IHandleOption {
   error?: HttpStatus;
   success?: HttpStatus;
   message: TMessage;
+  usePaginate?: boolean;
 }
 type THandleOption = TMessage | IHandleOption;
 
 // 构造请求装饰器
 const buildHttpDecorator = (options: IBuildDecoratorOption): MethodDecorator => {
-  const { errMessage, successMessage, errCode, successCode } = options;
+  const { errMessage, successMessage, errCode, successCode, usePaginate } = options;
   return (_, __, descriptor: PropertyDescriptor) => {
     if (errCode) {
       ReflectMetadata(META.HTTP_ERROR_CODE, errCode)(descriptor.value);
@@ -42,6 +44,9 @@ const buildHttpDecorator = (options: IBuildDecoratorOption): MethodDecorator => 
     }
     if (successMessage) {
       ReflectMetadata(META.HTTP_SUCCESS_MESSAGE, successMessage)(descriptor.value);
+    }
+    if (usePaginate) {
+      ReflectMetadata(META.HTTP_RES_TRANSFORM_PAGINATE, true)(descriptor.value);
     }
     return descriptor;
   };
@@ -57,8 +62,11 @@ export const success = (message: TMessage, statusCode?: HttpStatus): MethodDecor
   return buildHttpDecorator({ successMessage: message, successCode: statusCode });
 };
 
-// 统配构造器
-// { message: '操作', err: 500, success: 200 } | '操作'
+/*
+统配构造器
+@HttpProcessor.handle('获取项目列表')
+@HttpProcessor.handle({ message: '操作', err: 500, success: 200, usePaginate: true })
+*/
 export const handle = (...args: [THandleOption]): MethodDecorator => {
   const option = args[0];
   const isOption = (value: THandleOption): value is IHandleOption => lodash.isObject(option);
@@ -67,7 +75,13 @@ export const handle = (...args: [THandleOption]): MethodDecorator => {
   const successMessage: TMessage = message + TEXT.HTTP_SUCCESS_SUFFIX;
   const errCode: HttpStatus = isOption(option) ? option.error : null;
   const successCode: HttpStatus = isOption(option) ? option.success : null;
-  return buildHttpDecorator({ errCode, successCode, errMessage, successMessage });
+  const usePaginate: boolean = isOption(option) ? option.usePaginate : null;
+  return buildHttpDecorator({ errCode, successCode, errMessage, successMessage, usePaginate });
 };
 
-export default { error, success, handle };
+// 分页装饰器
+export const paginate = (): MethodDecorator => {
+  return buildHttpDecorator({ usePaginate: true });
+};
+
+export const HttpProcessor = { error, success, handle, paginate };

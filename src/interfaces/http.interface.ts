@@ -5,12 +5,23 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+export type TMessage = string;
+
 export type TExceptionOption = TMessage | {
   message: TMessage;
   error?: any
 };
 
-export type TMessage = string;
+// 翻页数据
+export interface IHttpResultPaginate<T> {
+  data: T;
+  pagination: {
+    total: number,
+    current_page: number,
+    total_page: number,
+    per_page: number,
+  };
+}
 
 export enum EStatus {
   Error = 'error',
@@ -31,7 +42,7 @@ export type THttpErrorResponse = IHttpResponseBase & {
 
 // HTTP success 返回
 export type THttpSuccessResponse<T> = IHttpResponseBase & {
-  result: T;
+  result: T | IHttpResultPaginate<T>;
 };
 
 // HTTP Response
