@@ -1,24 +1,27 @@
-import { Controller, Get, Put, Post, Body, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Put, Post, Body, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
+import { HttpProcessor } from '@app/decorators/http.decorator';
+import { Paginate } from '@app/decorators/paginate.decorator';
+import { Announcement } from './announcement.modal';
 import { AnnouncementService } from './announcement.service';
-import { IAnnouncement } from './announcement.interface';
-import { CreateAnnouncementDto } from './announcement.dto';
-import HttpProcessor from '@app/processors/decorators/http.decorator';
 
 @Controller('announcement')
 export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) {}
 
   @Get()
+  @HttpProcessor.paginate()
   @HttpProcessor.handle('获取公告')
-  async getAdminInfo(@Query() query): Promise<any> {
-    return await this.announcementService.findAll(query);
+  async getAnnouncements(@Paginate() { query, options }): Promise<Announcement[]> {
+    console.log('getAnnouncements paginate', query, options);
+    return await this.announcementService.findAll(query, options);
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加公告')
-  createToken(@Body() createAnnouncementDto: CreateAnnouncementDto) {
-    return this.announcementService.create(createAnnouncementDto);
+  async createAnnouncement(@Body() createAnnouncementDto: Announcement) {
+    return await this.announcementService.create(createAnnouncementDto);
   }
 
   @Put()

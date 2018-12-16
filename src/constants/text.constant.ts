@@ -5,5 +5,8 @@ export const HTTP_DEFAULT_TEXT = '数据请求';
 export const HTTP_DEFAULT_ERROR_TEXT = HTTP_DEFAULT_TEXT + HTTP_ERROR_SUFFIX;
 export const HTTP_DEFAULT_SUCCESS_TEXT = HTTP_DEFAULT_TEXT + HTTP_SUCCESS_SUFFIX;
 
-export const HTTP_DEFAULT_UNAUTHORIZED_TEXT = '权限验证失败';
 export const HTTP_ANONYMOUSE_TEXT = '来者何人';
+export const HTTP_UNAUTHORIZED_TEXT_DEFAULT = '权限验证失败';
+export const HTTP_BAD_REQUEST_TEXT_DEFAULT = '未知错误';
+
+export const VALIDATION_ERROR_DEFAULT = '参数验证失败';

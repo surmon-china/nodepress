@@ -9,5 +9,7 @@ export const HTTP_MESSAGE = '__customHttpMessage__';
 export const HTTP_ERROR_MESSAGE = '__customHttpErrorMessage__';
 export const HTTP_SUCCESS_MESSAGE = '__customHttpSuccessMessage__';
 
+export const HTTP_RES_TRANSFORM_PAGINATE = '__customHttpResTransformPagenate__';
+
 export const HTTP_CACHE_KEY_METADATA = CACHE_KEY_METADATA;
 export const HTTP_CACHE_TTL_METADATA = '__customHttpCacheTTL__';
