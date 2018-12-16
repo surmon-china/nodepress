@@ -1,15 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { AnnouncementController } from './announcement.controller';
+import { TypegooseModule } from 'nestjs-typegoose';
+import { Announcement } from './announcement.modal';
 import { AnnouncementService } from './announcement.service';
-import { AnnouncementSchema } from './announcement.schema';
+import { AnnouncementController } from './announcement.controller';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: 'Announcement', schema: AnnouncementSchema },
-    ]),
-  ],
+  imports: [TypegooseModule.forFeature(Announcement)],
   controllers: [AnnouncementController],
   providers: [AnnouncementService],
   exports: [AnnouncementService],

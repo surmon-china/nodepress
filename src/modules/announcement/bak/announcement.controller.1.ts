@@ -73,13 +73,6 @@ AnnouncementCtrl.list.GET = (req, res) => {
     .catch(humanizedHandleError(res, '公告列表获取失败'));
 };
 
-// 发布公告
-AnnouncementCtrl.list.POST = ({ body: announcement }, res) => {
-  new Announcement(announcement).save()
-    .then(humanizedHandleSuccess(res, '公告发布成功'))
-    .catch(humanizedHandleError(res, '公告发布失败'));
-};
-
 // 批量删除公告
 AnnouncementCtrl.list.DELETE = ({ body: { announcements }}, res) => {
 

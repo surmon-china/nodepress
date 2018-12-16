@@ -1,4 +1,3 @@
-import console from 'console';
 import schedule from 'schedule';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 

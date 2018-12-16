@@ -6,20 +6,20 @@
  */
 
 import * as APP_CONFIG from '@app/app.config';
-import { Injectable } from '@nestjs/common';
-import { request } from '@app/transforms/module.transform';
+import { Injectable, HttpService } from '@nestjs/common';
 import { IGithubRepositorie } from './github.interface';
 
 @Injectable()
 export class GithubService {
+  constructor(private readonly httpService: HttpService) {}
   getRepositories(): Promise<IGithubRepositorie[]> {
-    return request({
-      headers: { 'User-Agent': 'request' },
-      url: `https://api.github.com/users/${APP_CONFIG.GITHUB.username}/repos?per_page=1000`,
+    return this.httpService.axiosRef.request({
+      headers: { 'User-Agent': 'nodepress' },
+      url: `http://api.github.com/users/${APP_CONFIG.GITHUB.username}/repos?per_page=1000`,
     })
-    .then(data => {
+    .then(response => {
       try {
-        return JSON.parse(data).map(rep => {
+        return response.data.map(rep => {
           return {
             html_url: rep.html_url,
             name: rep.name || ' ',
@@ -40,8 +40,9 @@ export class GithubService {
       }
     })
     .catch(error => {
-      console.warn('项目列表获取失败', 'error:', error);
-      return Promise.reject(error);
+      const message = (error.response && error.response.data) || error;
+      console.warn('项目列表获取失败', 'error:', message);
+      return Promise.reject(message);
     });
   }
 }
