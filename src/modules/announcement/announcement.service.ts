@@ -9,8 +9,8 @@ import { Announcement } from './announcement.modal';
 export class AnnouncementService {
   constructor(@InjectModel(Announcement) private readonly announcementModel: TMongooseModel<Announcement>) {}
 
-  async findAll(query, options): Promise<PaginateResult<Announcement>> {
-    return await this.announcementModel.paginate(query, options);
+  async findAll(querys, options): Promise<PaginateResult<Announcement>> {
+    return await this.announcementModel.paginate(querys, options);
   }
 
   async create(createAnnouncementDto: Announcement): Promise<Announcement> {
