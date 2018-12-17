@@ -1,9 +1,9 @@
 
 import { NAME } from './announcement.constants';
 import { prop, plugin, pre, Typegoose } from 'typegoose';
-import { EPublishState } from '@app/interfaces/state.interface';
-import { IsString, IsInt, IsIn, IsOptional, IsDefined, IsNotEmpty } from 'class-validator';
+import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+import { EPublishState } from '@app/interfaces/state.interface';
 
 @pre('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
@@ -20,7 +20,7 @@ import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoos
 
 export class Announcement extends Typegoose {
 
-  @IsDefined({ message: '内容呢' })
+  @IsNotEmpty({ message: '内容呢' })
   @IsString({ message: '这都是什么内容' })
   @prop({ required: true, validate: /\S+/ })
   content: string;

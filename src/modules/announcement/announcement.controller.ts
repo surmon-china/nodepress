@@ -1,8 +1,9 @@
 import { Controller, Get, Put, Post, Body, UseGuards } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
+import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
-import { Paginate } from '@app/decorators/paginate.decorator';
+import { QueryParams } from '@app/decorators/query-params.decorator';
 import { Announcement } from './announcement.modal';
 import { AnnouncementService } from './announcement.service';
 
@@ -11,11 +12,14 @@ export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) {}
 
   @Get()
+  @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取公告')
-  async getAnnouncements(@Paginate() { query, options }): Promise<PaginateResult<Announcement>> {
-    console.log('getAnnouncements paginate', query, options);
-    return await this.announcementService.findAll(query, options);
+  async getAnnouncements(@QueryParams() { querys, options, origin }): Promise<PaginateResult<Announcement>> {
+    if (origin.keyword) {
+      querys.content = new RegExp(origin.keyword);
+    }
+    return await this.announcementService.findAll(querys, options);
   }
 
   @Post()
