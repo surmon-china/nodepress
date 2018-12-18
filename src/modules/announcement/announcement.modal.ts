@@ -1,9 +1,15 @@
+/**
+ * Announcement modal.
+ * @file 公告模块数据模型
+ * @module modules/announcement/modal
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-import { NAME } from './announcement.constants';
 import { prop, plugin, pre, Typegoose } from 'typegoose';
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { EPublishState } from '@app/interfaces/state.interface';
+import { NAME } from './announcement.constant';
 
 @pre('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
@@ -29,7 +35,7 @@ export class Announcement extends Typegoose {
   @IsIn([EPublishState.Draft, EPublishState.Published])
   @IsInt({ message: '状态要是数字' })
   @prop({ default: EPublishState.Published })
-  state?: EPublishState;
+  state: EPublishState;
 
   @prop({ default: Date.now })
   create_at?: Date;

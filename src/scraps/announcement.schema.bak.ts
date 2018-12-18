@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { NAME } from '../modules/announcement/announcement.constants';
+import { NAME } from '../modules/announcement/announcement.constant';
 import { EPublishState } from '@app/interfaces/state.interface';
 import { plugin, pre, prop, Typegoose, ModelType, InstanceType } from 'typegoose';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
