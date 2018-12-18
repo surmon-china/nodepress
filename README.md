@@ -35,6 +35,8 @@ guard ->: guard -> guard.canActivate -> JwtStrategy.validate -> AuthService.vali
 
 ReflectMetadata('TEST2', 'test-text')(descriptor.value); === Reflect.defineMetadata('TEST', statusCode, descriptor.value);
 
+error.filters 有很大问题，还需要调整
+
 ## 接口概述
 
   - HTTP 状态码

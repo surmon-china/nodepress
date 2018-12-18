@@ -1,9 +1,16 @@
-import { Controller, Get, Put, Post, Body, UseGuards } from '@nestjs/common';
-import { PaginateResult } from 'mongoose';
-import { JwtAuthGuard } from '@app/guards/auth.guard';
+/**
+ * Announcement controller.
+ * @file 公告模块数据模型
+ * @module modules/announcement/controller
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
+import { PaginateResult, Types } from 'mongoose';
+import { Controller, Get, Put, Post, Param, Body, UseGuards } from '@nestjs/common';
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams } from '@app/decorators/query-params.decorator';
+import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { Announcement } from './announcement.modal';
 import { AnnouncementService } from './announcement.service';
 
@@ -19,21 +26,21 @@ export class AnnouncementController {
     if (origin.keyword) {
       querys.content = new RegExp(origin.keyword);
     }
-    return await this.announcementService.findAll(querys, options);
+    return await this.announcementService.getList(querys, options);
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加公告')
-  async createAnnouncement(@Body() createAnnouncementDto: Announcement): Promise<Announcement> {
-    return await this.announcementService.create(createAnnouncementDto);
+  async createAnnouncement(@Body() announcement: Announcement): Promise<Announcement> {
+    return await this.announcementService.createItem(announcement);
   }
 
-  @Put()
+  @Put(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('修改公告')
-  async putAdminInfo() {
-    // This route is restricted by AuthGuard
-    // JWT strategy
+  async putAnnouncement(@QueryParams() { params }, @Body() announcement: Announcement): Promise<any> {
+    console.log('putAnnouncement params.id', params.id);
+    return await this.announcementService.putItem(params.id, announcement);
   }
 }
