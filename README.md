@@ -6,6 +6,8 @@
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square)](https://github.com/surmon-china/nodepress)
 
+**正在重构为基于 [Nestjs](https://github.com/nestjs/nest) 的新架构，[在此分支](https://github.com/surmon-china/nodepress/tree/nest) 可见进度**
+
 #### RESTful API server application for my blog.
 
 - Maintained by [me](mailto://surmon@foxmail.com)
