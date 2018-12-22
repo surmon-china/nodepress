@@ -1,3 +1,9 @@
+/**
+ * Announcement service.
+ * @file 公告模块数据服务
+ * @module modules/announcement/service
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
@@ -26,11 +32,11 @@ export class AnnouncementService {
   }
 
   // 删除单个公告
-  async deleteItem(announcementId: Types.ObjectId): Promise<Announcement> {
+  async deleteItem(announcementId: Types.ObjectId): Promise<any> {
     return await this.announcementModel.findByIdAndRemove(announcementId);
   }
 
-  // 删除单个公告
+  // 批量删除公告
   async deleteList(announcementIds: Types.ObjectId[]): Promise<any> {
     return await this.announcementModel.deleteMany({ _id: { $in: announcementIds }});
   }
