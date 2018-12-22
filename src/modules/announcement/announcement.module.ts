@@ -1,3 +1,10 @@
+/**
+ * Announcement module.
+ * @file 公告模块
+ * @module modules/announcement/module
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import { Module } from '@nestjs/common';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { Announcement } from './announcement.modal';

@@ -1,10 +1,9 @@
 
 import * as TEXT from '@app/constants/text.constant';
-import { BadRequestException } from '@nestjs/common';
-import { TMessage } from '@app/interfaces/http.interface';
+import { HttpException, HttpStatus } from '@nestjs/common';
 
-export class HttpUnauthorizedError extends BadRequestException {
-  constructor(message?: TMessage, error?: any) {
-    super(message || TEXT.HTTP_BAD_REQUEST_TEXT_DEFAULT, error);
+export class HttpBadRequestError extends HttpException {
+  constructor(error?: any) {
+    super(error || TEXT.HTTP_BAD_REQUEST_TEXT_DEFAULT, HttpStatus.BAD_REQUEST);
   }
 }

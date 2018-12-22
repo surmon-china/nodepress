@@ -5,8 +5,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { Types } from 'mongoose';
 import { prop, plugin, pre, Typegoose } from 'typegoose';
-import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty } from 'class-validator';
+import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { EPublishState } from '@app/interfaces/state.interface';
 import { NAME } from './announcement.constant';
@@ -42,4 +43,12 @@ export class Announcement extends Typegoose {
 
   @prop({ default: Date.now })
   update_at?: Date;
+}
+
+export class DelAnnouncements extends Typegoose {
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  announcements: Types.ObjectId[];
 }

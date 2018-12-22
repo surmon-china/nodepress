@@ -3,6 +3,7 @@ import * as lodash from 'lodash';
 import { Types } from 'mongoose';
 import { createParamDecorator } from '@nestjs/common';
 import { HttpForbiddenError } from '@app/errors/forbidden.error';
+import { HttpBadRequestError } from '@app/errors/bad-request.error';
 import { EPublishState, EPublicState, EOriginState, ESortType } from '@app/interfaces/state.interface';
 
 export interface IOptions {
@@ -14,12 +15,15 @@ export interface IParams {
 }
 
 interface IValidateError {
-  condition: boolean;
-  message: string;
+  name: string;
+  isTodo: boolean;
+  isAllowed: boolean;
+  isIllegal: boolean;
+  setValue(): void;
 }
 
 interface ITransformConfigBase {
-  [key: string]: string | number;
+  [key: string]: string | number | boolean;
 }
 
 export interface ITransformConfig {
@@ -33,27 +37,13 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
   // 是否已验证权限
   const isAuthenticated = request.isAuthenticated();
 
-  // 默认配置
-  const transformConfig: ITransformConfig = Object.assign({
-    params: {
-      id: 'id',
-    },
-    querys: {
-      page: 1,
-    },
+  // 字段转换配置（传入字符串则代表默认值，传入 false 则代表不启用，初始为默认值或 false）
+  const fieldsConfig: ITransformConfig = lodash.merge({
+    params: { id: 'id' },
+    querys: {  },
+    options: { page: 1, per_page: true, sort: true },
   }, config);
-
-  // 初始参数
-  const { date } = request.query;
-  const paramsId = request.params[transformConfig.params.id];
-  const [page, per_page, sort, state, ppublic, origin] = [
-    request.query.page || transformConfig.querys.page,
-    request.query.per_page,
-    request.query.sort,
-    request.query.state,
-    request.query.public,
-    request.query.origin,
-  ].map(k => Number(k));
+  const isTodoField = field => field != null && field !== false;
 
   // 查询参数
   const querys: IOptions = {};
@@ -62,91 +52,152 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
   const options: IOptions = {};
 
   // 路径参数
-  const params: IParams = Object.assign({
-    url: request.url,
-  }, request.params);
+  const params: IParams = lodash.merge({ url: request.url }, request.params);
 
-  // 如果用户传了 ID，则转为数字或 ObjectId
-  if (paramsId) {
-    const isNumberType = isNaN(paramsId);
-    params[transformConfig.params.id] = isNumberType ? Number(paramsId) : Types.ObjectId(paramsId);
-  }
+  // 初始参数
+  const date = request.query.date;
+  const paramsId = request.params[fieldsConfig.params.id as string];
+  const [page, per_page, sort, state, ppublic, origin] = [
+    request.query.page || fieldsConfig.options.page,
+    request.query.per_page,
+    request.query.sort,
+    request.query.state,
+    request.query.public,
+    request.query.origin,
+  ].map(item => item != null ? Number(item) : item);
 
-  // 排序方式
-  if ([ESortType.Asc, ESortType.Desc].includes(sort)) {
-    options.sort = { _id: ESortType.Desc };
-  }
+  // 参数提取验证规则
+  // 1. isTodo 这条校验规则是否执行
+  // 2. isAllowed 请求参数是否在允许规则之内 -> 400
+  // 3. isIllegal 请求参数是否不合法地调用了管理员权限参数 -> 403
+  // 任一条件返回错误；否则，设置或重置参数
+  const validates: IValidateError[] = [
+    {
+      name: '路由/ID',
+      isTodo: isTodoField(fieldsConfig.params.id),
+      isAllowed: true,
+      isIllegal: paramsId != null && !isAuthenticated && isNaN(paramsId),
+      setValue() {
+        // 如果用户传了 ID，则转为数字或 ObjectId
+        if (paramsId != null) {
+          params[fieldsConfig.params.id as string] = isNaN(paramsId)
+            ? Types.ObjectId(paramsId)
+            : Number(paramsId);
+        }
+      },
+    },
+    {
+      name: '排序/sort',
+      isTodo: isTodoField(fieldsConfig.options.sort),
+      isAllowed: lodash.isUndefined(sort) || [ESortType.Asc, ESortType.Desc, ESortType.Hot].includes(sort),
+      isIllegal: false,
+      setValue() {
+        if (sort != null) {
+          options.sort = sort === ESortType.Hot
+            ? { likes: ESortType.Desc }
+            : { _id: sort };
+        }
+      },
+    },
+    {
+      name: '目标页/page',
+      isTodo: isTodoField(fieldsConfig.options.page),
+      isAllowed: lodash.isUndefined(page) || (lodash.isInteger(page) && page > 0),
+      isIllegal: false,
+      setValue() {
+        if (page != null) {
+          options.page = page;
+        }
+      },
+    },
+    {
+      name: '每页数量/per_page',
+      isTodo: isTodoField(fieldsConfig.options.per_page),
+      isAllowed: lodash.isUndefined(per_page) || (lodash.isInteger(per_page) && per_page > 0),
+      isIllegal: false,
+      setValue() {
+        if (per_page != null) {
+          options.limit = per_page;
+        }
+      },
+    },
+    {
+      name: '日期查询/date',
+      isTodo: isTodoField(fieldsConfig.querys.date),
+      isAllowed: lodash.isUndefined(date) || new Date(date).toString() !== 'Invalid Date',
+      isIllegal: false,
+      setValue() {
+        if (date != null) {
+          const queryDate = new Date(date);
+          querys.create_at = {
+            $gte: new Date(((queryDate as any) / 1000 - 60 * 60 * 8) * 1000),
+            $lt: new Date(((queryDate as any) / 1000 + 60 * 60 * 16) * 1000),
+          };
+        }
+      },
+    },
+    {
+      name: '发布状态/state',
+      isTodo: isTodoField(fieldsConfig.querys.state),
+      isAllowed: lodash.isUndefined(state) || [EPublishState.Published, EPublishState.Draft, EPublishState.Recycle].includes(state),
+      isIllegal: state != null && !isAuthenticated && state !== EPublishState.Published,
+      setValue() {
+        // 管理员/任意状态 || 普通用户/已发布
+        if (state != null) {
+          querys.state = state;
+          return false;
+        }
+        // 普通用户/未设置
+        if (!isAuthenticated) {
+          querys.state = EPublishState.Published;
+        }
+      },
+    },
+    {
+      name: '公开状态/public',
+      isTodo: isTodoField(fieldsConfig.querys.public),
+      isAllowed: lodash.isUndefined(ppublic) || [EPublicState.Public, EPublicState.Password, EPublicState.Secret].includes(ppublic),
+      isIllegal: ppublic != null && !isAuthenticated && ppublic !== EPublicState.Public,
+      setValue() {
+        // 管理员/任意状态 || 普通用户/公开
+        if (ppublic != null) {
+          querys.public = ppublic;
+          return false;
+        }
+        // 普通用户/未设置
+        if (!isAuthenticated) {
+          querys.public = EPublicState.Public;
+        }
+      },
+    },
+    {
+      name: '来源状态/origin',
+      isTodo: isTodoField(fieldsConfig.querys.origin),
+      isAllowed: lodash.isUndefined(origin) || [EOriginState.Original, EOriginState.Hybrid, EOriginState.Reprint].includes(origin),
+      isIllegal: false,
+      setValue() {
+        if (origin != null) {
+          querys.origin = origin;
+        }
+      },
+    },
+  ];
 
-  // 目标页
-  if (page) {
-    options.page = page;
-  }
-
-  // 每页多少数据
-  if (per_page) {
-    options.limit = per_page;
-  }
-
-  // 时间查询
-  if (date) {
-    const getDate = new Date(date);
-    if (getDate.toString() !== 'Invalid Date') {
-      querys.create_at = {
-        $gte: new Date(((getDate as any) / 1000 - 60 * 60 * 8) * 1000),
-        $lt: new Date(((getDate as any) / 1000 + 60 * 60 * 16) * 1000),
-      };
+  // 验证参数及生成参数
+  validates.forEach(validate => {
+    if (!validate.isTodo) {
+      return false;
     }
-  }
-
-  // 发布状态
-  if ([EPublishState.Published, EPublishState.Draft, EPublishState.Recycle].includes(state)) {
-    querys.state = state;
-  }
-
-  // 公开状态
-  if ([EPublicState.Public, EPublicState.Password, EPublicState.Secret].includes(ppublic)) {
-    querys.public = ppublic;
-  }
-
-  // 来源状态
-  if ([EOriginState.Original, EOriginState.Hybrid, EOriginState.Reprint].includes(origin)) {
-    querys.public = origin;
-  }
-
-  // 如果是前台请求，却请求了各种管理员参数，则返回 403
-  if (!isAuthenticated) {
-
-    // 非已发布数据
-    const isNotPublishedRequest: IValidateError = {
-      condition: !lodash.isUndefined(querys.state) && querys.state !== EPublishState.Published,
-      message: '非已发布数据',
-    };
-
-    // 非公开数据
-    const isNotPublicRequest: IValidateError = {
-      condition: !lodash.isUndefined(querys.public) && querys.public !== EPublicState.Public,
-      message: '非公开数据',
-    };
-
-    // 非数字 ID 请求
-    const validateParamsId = params[transformConfig.params.id];
-    const isNotNumberIDRequest: IValidateError = {
-      condition: validateParamsId && !lodash.isNumber(validateParamsId),
-      message: '非数字 ID 请求',
-    };
-
-    // 权限条件
-    const conditions: IValidateError[] = [
-      isNotPublishedRequest, isNotPublicRequest, isNotNumberIDRequest,
-    ];
-
-    const errors = conditions.filter(condition => condition.condition);
-
-    // 做判断
-    if (errors.length) {
-      throw new HttpForbiddenError('参数不合法：' + errors.map(err => err.message).join(';'));
+    if (!validate.isAllowed) {
+      throw new HttpBadRequestError('参数不合法：' + validate.name);
     }
-  }
+    if (validate.isIllegal) {
+      throw new HttpForbiddenError('权限与参数匹配不合法：' + validate.name);
+    }
+    validate.setValue();
+  });
 
-  return { querys, options, params, origin: request.query };
+  // 挂载到 request 上下文并返回
+  request.requestParams = { querys, options, params, isAuthenticated };
+  return { querys, options, params, origin: request.query, isAuthenticated };
 });
