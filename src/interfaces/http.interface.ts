@@ -15,6 +15,7 @@ export type TExceptionOption = TMessage | {
 // 翻页数据
 export interface IHttpResultPaginate<T> {
   data: T;
+  params: any;
   pagination: {
     total: number,
     current_page: number,

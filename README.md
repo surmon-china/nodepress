@@ -14,6 +14,9 @@
 
 #### RESTful API server application for my blog.
 
+普通用户使用高级查询参数将被视为无权限，403
+普通用户无特殊参数情况下，也无法拿到高级参数得到的数据
+
 v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 
 - Maintained by [me](mailto://surmon@foxmail.com)
