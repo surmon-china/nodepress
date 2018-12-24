@@ -11,7 +11,7 @@ import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams } from '@app/decorators/query-params.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
-import { Announcement, DelAnnouncements } from './announcement.modal';
+import { Announcement, DelAnnouncements } from './announcement.model';
 import { AnnouncementService } from './announcement.service';
 
 @Controller('announcement')
@@ -22,39 +22,39 @@ export class AnnouncementController {
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取公告')
-  async getAnnouncements(@QueryParams({ querys: { state: true }}) { querys, options, origin }): Promise<PaginateResult<Announcement>> {
+  getAnnouncements(@QueryParams({ querys: { state: true }}) { querys, options, origin }): Promise<PaginateResult<Announcement>> {
     // 搜索关键词配置
     if (origin.keyword) {
       querys.content = new RegExp(origin.keyword);
     }
-    return await this.announcementService.getList(querys, options);
+    return this.announcementService.getList(querys, options);
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加公告')
-  async createAnnouncement(@Body() announcement: Announcement): Promise<Announcement> {
-    return await this.announcementService.createItem(announcement);
-  }
-
-  @Put(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('修改公告')
-  async putAnnouncement(@QueryParams() { params }, @Body() announcement: Announcement): Promise<Announcement> {
-    return await this.announcementService.putItem(params.id, announcement);
-  }
-
-  @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('删除单个公告')
-  async delAnnouncement(@QueryParams() { params }): Promise<any> {
-    return await this.announcementService.deleteItem(params.id);
+  createAnnouncement(@Body() announcement: Announcement): Promise<Announcement> {
+    return this.announcementService.createItem(announcement);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除公告')
-  async delAnnouncements(@Body() body: DelAnnouncements): Promise<any> {
-    return await this.announcementService.deleteList(body.announcements);
+  delAnnouncements(@Body() body: DelAnnouncements): Promise<any> {
+    return this.announcementService.deleteList(body.announcements);
+  }
+
+  @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('修改公告')
+  putAnnouncement(@QueryParams() { params }, @Body() announcement: Announcement): Promise<Announcement> {
+    return this.announcementService.putItem(params.id, announcement);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('删除单个公告')
+  delAnnouncement(@QueryParams() { params }): Promise<any> {
+    return this.announcementService.deleteItem(params.id);
   }
 }

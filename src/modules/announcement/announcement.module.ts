@@ -7,7 +7,7 @@
 
 import { Module } from '@nestjs/common';
 import { TypegooseModule } from 'nestjs-typegoose';
-import { Announcement } from './announcement.modal';
+import { Announcement } from './announcement.model';
 import { AnnouncementService } from './announcement.service';
 import { AnnouncementController } from './announcement.controller';
 

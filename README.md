@@ -14,9 +14,6 @@
 
 #### RESTful API server application for my blog.
 
-普通用户使用高级查询参数将被视为无权限，403
-普通用户无特殊参数情况下，也无法拿到高级参数得到的数据
-
 v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 
 - Maintained by [me](mailto://surmon@foxmail.com)
@@ -30,15 +27,54 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 
 更新记录：[在这里](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
 
-AUTH guard 的执行流程
+## 模块完成度：
+  - 公告
+  - 鉴权
+  - github
+
+
+## v3.0.0 架构说明
+
+  - 请求流程
 
 request ---> middleware ---> guard ---> interceptor:before ---> pipe ---> controller ---> interceptor:after ---> filters
-
 guard ->: guard -> guard.canActivate -> JwtStrategy.validate -> AuthService.validateAuthData -> guard.handleRequest
-
 ReflectMetadata('TEST2', 'test-text')(descriptor.value); === Reflect.defineMetadata('TEST', statusCode, descriptor.value);
 
-error.filters 有很大问题，还需要调整
+  - 参数校验逻辑
+    * 普通用户使用高级查询参数将被视为无权限，返回 403
+    * 任何用户的请求参数不合法，将被校验器拦截，返回 400
+    
+  - 错误过滤器
+
+  - 拦截器
+    * 缓存拦截器
+    * 数据转换拦截器
+    * 日志拦截器
+    * 错误拦截器
+
+  - 装饰器
+    * 缓存装饰器，用于配置 cache key/ cache ttl
+    * 控制器响应装饰器，用于输出规范化的信息，如 message 和 翻页参数数据
+    * 请求参数装饰器，用户自动校验和格式化请求参数，包括 query/params
+
+  - 守卫
+    * 默认所有非 GET 请求会使用 Auth 守卫鉴权
+    * 所有涉及到多角色请求的 GET 接口会使用 HumanizedJwtAuthGuard 进行鉴权
+
+  - 中间件
+    * cors 中间件，用于处理跨域访问
+    * origin 中间件，用于拦截各路不明请求
+
+  - 管道
+    * 用于验证所有基于 class-validate 的验证类
+
+  - 核心辅助模块/processors
+    * 数据库
+    * 缓存/Redis
+    * 邮件服务
+    * 评论过滤服务
+    * ...
 
 ## 接口概述
 
