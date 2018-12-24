@@ -9,21 +9,21 @@ import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
-import { Announcement } from './announcement.modal';
+import { Announcement } from './announcement.model';
 
 @Injectable()
 export class AnnouncementService {
   constructor(@InjectModel(Announcement) private readonly announcementModel: TMongooseModel<Announcement>) {}
 
   // 请求公告列表
-  async getList(querys, options): Promise<PaginateResult<Announcement>> {
-    return await this.announcementModel.paginate(querys, options);
+  getList(querys, options): Promise<PaginateResult<Announcement>> {
+    return this.announcementModel.paginate(querys, options);
   }
 
   // 创建公告
-  async createItem(announcement: Announcement): Promise<Announcement> {
+  createItem(announcement: Announcement): Promise<Announcement> {
     const createdAnnouncement = new this.announcementModel(announcement);
-    return await createdAnnouncement.save();
+    return createdAnnouncement.save();
   }
 
   // 修改公告
@@ -33,11 +33,11 @@ export class AnnouncementService {
 
   // 删除单个公告
   async deleteItem(announcementId: Types.ObjectId): Promise<any> {
-    return await this.announcementModel.findByIdAndRemove(announcementId);
+    return this.announcementModel.findByIdAndRemove(announcementId);
   }
 
   // 批量删除公告
   async deleteList(announcementIds: Types.ObjectId[]): Promise<any> {
-    return await this.announcementModel.deleteMany({ _id: { $in: announcementIds }});
+    return this.announcementModel.deleteMany({ _id: { $in: announcementIds }});
   }
 }

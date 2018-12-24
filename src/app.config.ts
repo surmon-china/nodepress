@@ -73,7 +73,7 @@ export const BAIDU = {
 export const QINIU = {
   accessKey: argv.qn_accessKey || 'your access key',
   secretKey: argv.qn_secretKey || 'your secret key',
-  bucket: argv.qn_bucket || 'your bucket name',
+  bucket: argv.qn_bucket || 'nodepress',
   origin: argv.qn_origin || 'http://nodepress.u.qiniudn.com',
   uploadURL: argv.qn_uploadURL || 'http://up.qiniu.com/',
 };

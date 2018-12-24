@@ -1,7 +1,7 @@
 /**
- * Announcement modal.
+ * Announcement model.
  * @file 公告模块数据模型
- * @module modules/announcement/modal
+ * @module modules/announcement/model
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -27,14 +27,14 @@ import { NAME } from './announcement.constant';
 
 export class Announcement extends Typegoose {
 
-  @IsNotEmpty({ message: '内容呢' })
-  @IsString({ message: '这都是什么内容' })
+  @IsNotEmpty({ message: '内容？' })
+  @IsString({ message: '字符串？' })
   @prop({ required: true, validate: /\S+/ })
   content: string;
 
   @IsDefined()
   @IsIn([EPublishState.Draft, EPublishState.Published])
-  @IsInt({ message: '状态要是数字' })
+  @IsInt({ message: '数字？' })
   @prop({ default: EPublishState.Published })
   state: EPublishState;
 
