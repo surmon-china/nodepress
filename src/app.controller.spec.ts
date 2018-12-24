@@ -1,3 +1,10 @@
+/**
+ * App controller.spec.
+ * @file 主页控制器单测用例
+ * @module app.controller.spec
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 
@@ -11,9 +18,9 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-   it('should return "Hello World!"', () => {
+   it('should return "object"', () => {
     const appController = app.get<AppController>(AppController);
-    expect(appController.root()).toBe('Hello World!');
+    expect(typeof appController.root()).toBe('object');
    });
   });
 });

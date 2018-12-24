@@ -7,7 +7,7 @@ import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
-    // const request = host.switchToHttp().getRequest();
+    const request = host.switchToHttp().getRequest();
     const response = host.switchToHttp().getResponse();
     const status = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
     const errorOption: TExceptionOption = exception.message as TExceptionOption;
@@ -24,6 +24,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
       error: resultError,
       debug: isDevMode ? exception.stack : null,
     };
+    // 对默认的 404 进行特殊处理
+    if (status === HttpStatus.NOT_FOUND && data.error === 'Not Found') {
+      data.error = `资源不存在`;
+      data.message = `接口 ${request.url} 无效`;
+    }
     return response.status(resultStatus).jsonp(data);
   }
 }
