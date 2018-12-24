@@ -1,9 +1,16 @@
+/**
+ * Auth jwt.strategy.
+ * @file 鉴权器
+ * @module modules/auth/jwt.strategy
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AuthService } from './auth.service';
 import { HttpUnauthorizedError } from '@app/errors/unauthorized.error';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

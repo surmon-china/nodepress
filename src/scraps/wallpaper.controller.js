@@ -5,10 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const console = require('console')
-const redis = require('np-core/np-redis')
-const WonderfulBingWallpaper = require('wonderful-bing-wallpaper')
-const { REDIS_CACHE_FIELDS } = require('np-core/np-constants')
+
 const {
   handleError,
   handleSuccess,
@@ -18,7 +15,6 @@ const {
   initController
 } = require('np-core/np-processor')
 
-const WallpaperCtrl = initController(['list', 'story'])
 const wbw = new WonderfulBingWallpaper({ local: 'zh-CN', host: 'cn.bing.com' })
 
 // 通用定时配置

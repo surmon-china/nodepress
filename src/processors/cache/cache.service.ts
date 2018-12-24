@@ -1,8 +1,15 @@
-import schedule from 'schedule';
+/**
+ * Cache service.
+ * @file Cache 缓存模块服务
+ * @module processors/cache/service
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
+import * as schedule from 'node-schedule';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 
-type TCacheKey = string;
-type TCacheResult = Promise<any>;
+export type TCacheKey = string;
+export type TCacheResult = Promise<any>;
 
 export interface ICacheManager {
   store: any;
@@ -21,20 +28,24 @@ export type TCachePromiseResult = TCacheResult | {
   update()
 };
 
-interface ICacheIntervalOption {
-  key: TCacheKey;
-  promise();
-  timeout?: {
-    error?: number;
-    success?: number;
-  };
-  timing?: {
-    error: number;
-    schedule: any;
-  };
+export interface ICacheIntervalTimeoutOption {
+  error?: number;
+  success?: number;
 }
 
-export type ICacheIntervalResult = () => void;
+export interface ICacheIntervalTimingOption {
+  error: number;
+  schedule: any;
+}
+
+export interface ICacheIntervalOption {
+  key: TCacheKey;
+  promise();
+  timeout?: ICacheIntervalTimeoutOption;
+  timing?: ICacheIntervalTimingOption;
+}
+
+export type ICacheIntervalResult = () => TCacheResult;
 
 @Injectable()
 export class CacheService {

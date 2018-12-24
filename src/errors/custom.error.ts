@@ -1,5 +1,4 @@
 
-import * as TEXT from '@app/constants/text.constant';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { TExceptionOption } from '@app/interfaces/http.interface';
 

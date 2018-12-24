@@ -1,30 +1,43 @@
 /**
- * Auth model module.
+ * Auth model.
  * @file 权限和用户数据模型
- * @module model/auth
+ * @module modules/auth/model
  * @author Surmon <https://github.com/surmon-china>
  */
 
-const crypto = require('crypto')
-const config = require('app.config')
-const { mongoose } = require('np-core/np-mongodb')
+import { createHash } from 'crypto';
+import { prop, Typegoose } from 'typegoose';
+import { IsString, IsDefined, IsNotEmpty } from 'class-validator';
+import * as APP_CONFIG from '@app/app.config';
 
-const authSchema = new mongoose.Schema({
+export class Auth extends Typegoose {
 
-  // 名字
-  name: { type: String, default: '' },
+  @IsDefined()
+  @IsString({ message: '名字？' })
+  @prop({ default: '' })
+  name: string;
 
-  // 签名
-  slogan: { type: String, default: '' },
+  @IsDefined()
+  @IsString({ message: '你的口号呢？' })
+  @prop({ default: '' })
+  slogan: string;
 
-  // 头像
-  gravatar: { type: String, default: '' },
+  @IsDefined()
+  @IsString({ message: '头像？' })
+  @prop({ default: '' })
+  gravatar: string;
 
-  // 密码
-  password: {
-    type: String, 
-    default: crypto.createHash('md5').update(config.AUTH.defaultPassword).digest('hex')
-  }
-})
+  @prop({ default: createHash('md5').update(APP_CONFIG.AUTH.defaultPassword).digest('hex') })
+  password?: string;
 
-module.exports = mongoose.model('Auth', authSchema)
+  new_password?: string;
+  rel_new_password?: string;
+}
+
+export class AuthLogin extends Typegoose {
+
+  @IsDefined()
+  @IsNotEmpty({ message: '密码？' })
+  @IsString({ message: '字符串？' })
+  password: string;
+}
