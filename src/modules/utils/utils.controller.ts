@@ -13,7 +13,7 @@ import { HttpProcessor } from '@app/decorators/http.decorator';
 import { HttpCache } from '@app/decorators/cache.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
 import * as CACHE_KEY from '@app/constants/cache.constant';
-import * as STATE_INTERFACES from '@app/interfaces/state.interface';
+import * as STATE_CONSTANTS from '@app/interfaces/state.interface';
 
 @Controller('utils')
 export class UtilsController {
@@ -29,7 +29,7 @@ export class UtilsController {
   @HttpCache(CACHE_KEY.CONSTANTS, 60 * 60)
   @HttpProcessor.handle('获取配置常量')
   getConstants(): object {
-    return STATE_INTERFACES;
+    return STATE_CONSTANTS;
   }
 
   @Get('statistic')
