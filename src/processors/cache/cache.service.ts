@@ -19,14 +19,17 @@ export interface ICacheManager {
 
 export interface ICachePromiseOption {
   key: TCacheKey;
-  ioMode?: boolean;
-  promise();
+  promise(): TCacheResult;
 }
 
-export type TCachePromiseResult = TCacheResult | {
-  get();
-  update()
-};
+export interface ICachePromiseIoOption extends ICachePromiseOption {
+  ioMode?: boolean;
+}
+
+export interface TCachePromiseIoResult {
+  get(): TCacheResult;
+  update(): TCacheResult;
+}
 
 export interface ICacheIntervalTimeoutOption {
   error?: number;
@@ -40,7 +43,7 @@ export interface ICacheIntervalTimingOption {
 
 export interface ICacheIntervalOption {
   key: TCacheKey;
-  promise();
+  promise(): TCacheResult;
   timeout?: ICacheIntervalTimeoutOption;
   timing?: ICacheIntervalTimingOption;
 }
@@ -64,7 +67,9 @@ export class CacheService {
   }
 
   // promise -> redis
-  public promise(options: ICachePromiseOption): TCachePromiseResult {
+  promise(options: ICachePromiseOption): TCacheResult;
+  promise(options: ICachePromiseIoOption): TCachePromiseIoResult;
+  promise(options) {
 
     const { key, promise, ioMode = false } = options;
 

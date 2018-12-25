@@ -20,9 +20,7 @@ export class QiniuService {
   private putPolicy: qiniu.rs.PutPolicy;
 
   constructor() {
-    const bucket = APP_CONFIG.QINIU.bucket;
-    const accessKey = APP_CONFIG.QINIU.accessKey;
-    const secretKey = APP_CONFIG.QINIU.secretKey;
+    const { bucket, accessKey, secretKey } = APP_CONFIG.QINIU;
     this.mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
     this.putPolicy = new qiniu.rs.PutPolicy({ scope: bucket });
   }
