@@ -30,8 +30,8 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 ## 模块完成度：
   - 公告
   - 鉴权
-  - github
-
+  - utils github/constant/statistic/qiniu
+  - wallpaper
 
 ## v3.0.0 架构说明
 

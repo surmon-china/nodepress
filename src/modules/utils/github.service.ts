@@ -51,8 +51,8 @@ export class GithubService {
   // 获取项目列表
   getRepositories(): Promise<IGithubRepositorie[]> {
     return this.httpService.axiosRef.request({
-      headers: { 'User-Agent': 'nodepress' },
-      url: `http://api.Giithub.com/users/${APP_CONFIG.GITHUB.username}/repos?per_page=1000`,
+      headers: { 'User-Agent': APP_CONFIG.INFO.name },
+      url: `http://api.github.com/users/${APP_CONFIG.GITHUB.username}/repos?per_page=1000`,
     }).then(response => {
       try {
         return response.data.map(rep => {
