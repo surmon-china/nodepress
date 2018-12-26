@@ -23,7 +23,6 @@ export class AnnouncementController {
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取公告')
   getAnnouncements(@QueryParams({ querys: { state: true }}) { querys, options, origin }): Promise<PaginateResult<Announcement>> {
-    // 搜索关键词配置
     if (origin.keyword) {
       querys.content = new RegExp(origin.keyword);
     }
