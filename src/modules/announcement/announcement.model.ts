@@ -10,7 +10,6 @@ import { prop, plugin, pre, Typegoose } from 'typegoose';
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { EPublishState } from '@app/interfaces/state.interface';
-import { NAME } from './announcement.constant';
 
 @pre('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
@@ -19,7 +18,7 @@ import { NAME } from './announcement.constant';
 
 @plugin(mongoosePaginate)
 @plugin(mongooseAutoIncrement.plugin, {
-  model: NAME,
+  model: Announcement.name,
   field: 'id',
   startAt: 1,
   incrementBy: 1,

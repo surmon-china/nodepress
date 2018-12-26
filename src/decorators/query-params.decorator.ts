@@ -14,14 +14,6 @@ export interface IParams {
   [key: string]: string | number | Types.ObjectId;
 }
 
-interface IValidateError {
-  name: string;
-  isTodo: boolean;
-  isAllowed: boolean;
-  isIllegal: boolean;
-  setValue(): void;
-}
-
 interface ITransformConfigBase {
   [key: string]: string | number | boolean;
 }
@@ -32,6 +24,14 @@ export interface ITransformConfig {
   options: ITransformConfigBase;
 }
 
+interface IValidateError {
+  name: string;
+  isTodo: boolean;
+  isAllowed: boolean;
+  isIllegal: boolean;
+  setValue(): void;
+}
+
 export const QueryParams = createParamDecorator((config: ITransformConfig, request) => {
 
   // 是否已验证权限
@@ -39,8 +39,8 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
 
   // 字段转换配置（传入字符串则代表默认值，传入 false 则代表不启用，初始为默认值或 false）
   const fieldsConfig: ITransformConfig = lodash.merge({
+    querys: {},
     params: { id: 'id' },
-    querys: {  },
     options: { page: 1, per_page: true, sort: true },
   }, config);
   const isTodoField = field => field != null && field !== false;
