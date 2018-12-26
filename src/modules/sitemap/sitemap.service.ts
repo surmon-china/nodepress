@@ -10,8 +10,8 @@ import * as path from 'path';
 import * as sitemap from 'sitemap';
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
-import { ESortType, EPublishState, EPublicState } from '@app/interfaces/state.interface';
 import { Injectable } from '@nestjs/common';
+import { ESortType, EPublishState, EPublicState } from '@app/interfaces/state.interface';
 import { CacheService, TCachePromiseIoResult } from '@app/processors/cache/cache.service';
 // const Tag = require('np-model/tag.model')
 // const Article = require('np-model/article.model')

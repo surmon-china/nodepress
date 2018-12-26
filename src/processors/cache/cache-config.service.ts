@@ -10,6 +10,7 @@ export class CacheConfigService implements CacheOptionsFactory {
   public retryStrategy() {
     return {
       retry_strategy: (options: any) => {
+        console.warn('Redis 连接出了问题：', options);
         if (options.error && options.error.code === 'ECONNREFUSED') {
           return new Error('The server refused the connection');
         }

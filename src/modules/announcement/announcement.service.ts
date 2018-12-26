@@ -22,13 +22,12 @@ export class AnnouncementService {
 
   // 创建公告
   createItem(announcement: Announcement): Promise<Announcement> {
-    const createdAnnouncement = new this.announcementModel(announcement);
-    return createdAnnouncement.save();
+    return new this.announcementModel(announcement).save();
   }
 
   // 修改公告
   async putItem(announcementId: Types.ObjectId, announcement: Announcement): Promise<Announcement> {
-    return await this.announcementModel.findByIdAndUpdate(announcementId, announcement, { new: true });
+    return this.announcementModel.findByIdAndUpdate(announcementId, announcement, { new: true });
   }
 
   // 删除单个公告

@@ -58,11 +58,22 @@ export class CacheService {
     this.cache = cache;
   }
 
+  get checkCacheServiceAvailable(): boolean {
+    const client = this.cache.store.getClient();
+    return client.connected && client.ready;
+  }
+
   public get(key: TCacheKey): TCacheResult {
+    if (!this.checkCacheServiceAvailable) {
+      return Promise.reject('缓存客户端没准备好');
+    }
     return this.cache.get(key);
   }
 
   public set(key: TCacheKey, value: any, options?: { ttl: number }): TCacheResult {
+    if (!this.checkCacheServiceAvailable) {
+      return Promise.reject('缓存客户端没准备好');
+    }
     return this.cache.set(key, value, options);
   }
 
