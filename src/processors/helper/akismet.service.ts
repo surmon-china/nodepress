@@ -34,11 +34,27 @@ export class AkismetService {
   private clientIsValid: boolean;
 
   constructor() {
+    console.log('就看看她会实例化几次');
     this.client = akismet.client({
       key: APP_CONFIG.AKISMET.key,
       blog: APP_CONFIG.AKISMET.blog,
     });
     this.initVerify();
+  }
+
+  // 检查 SPAM
+  public checkSpam(content: TContent): Promise<any> {
+    return this.buildAkismetInterceptor(EAkismetActionTypes.CheckSpam)(content);
+  }
+
+  // 提交 SPAM
+  public submitSpam(content: TContent): Promise<any> {
+    return this.buildAkismetInterceptor(EAkismetActionTypes.SubmitSpam)(content);
+  }
+
+  // 提交 HAM
+  public submitHam(content: TContent): Promise<any> {
+    return this.buildAkismetInterceptor(EAkismetActionTypes.SubmitHam)(content);
   }
 
   // 初始化验证
@@ -88,20 +104,5 @@ export class AkismetService {
         });
       });
     };
-  }
-
-  // 检查 SPAM
-  public checkSpam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionTypes.CheckSpam)(content);
-  }
-
-  // 提交 SPAM
-  public submitSpam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionTypes.SubmitSpam)(content);
-  }
-
-  // 提交 HAM
-  public submitHam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionTypes.SubmitHam)(content);
   }
 }
