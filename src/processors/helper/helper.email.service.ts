@@ -1,7 +1,7 @@
 /**
  * Helper Email service.
  * @file Helper Email 邮件服务
- * @module processors/helper/akismet.service
+ * @module processors/helper/email.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -11,10 +11,10 @@ import { Injectable } from '@nestjs/common';
 
 // todo -> 待优化
 export interface IEmailOptions {
-  from: string;
   to: string;
+  subject: string;
   text: string;
-  content: string;
+  html: string;
 }
 
 @Injectable()
@@ -56,8 +56,8 @@ export class EmailService {
       console.warn('由于未初始化成功，邮件客户端发送被拒绝');
       return false;
     }
-    mailOptions.from = APP_CONFIG.EMAIL.from;
-    this.transporter.sendMail(mailOptions, (error, info) => {
+    const options = Object.assign(mailOptions, { from: APP_CONFIG.EMAIL.from });
+    this.transporter.sendMail(options, (error, info) => {
       if (error) {
         console.warn('邮件发送失败', error);
       } else {
