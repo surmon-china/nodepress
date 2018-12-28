@@ -18,36 +18,10 @@ import { Category } from './category.model';
 
 @Injectable()
 export class CategoryService {
-
-  private categoryListCache: TCachePromiseIoResult;
-
-  constructor(
-    @InjectModel(Category) private readonly categoryModel: TMongooseModel<Category>,
-    private readonly cacheService: CacheService,
-  ) {
-    this.categoryListCache = this.cacheService.promise({
-      ioMode: true,
-      key: CACHE_KEY.TAGS,
-      promise() {
-        const options = { page: 1, limit: 166, sort: { _id: ESortType.Desc }};
-        return this.getList.bind(this)(null, options, false);
-      },
-    });
-  }
-
-  // 请求分类列表缓存
-  getListCache(): Promise<PaginateResult<Category>> {
-    return this.categoryListCache.get();
-  }
-
-  // 更新分类列表缓存
-  updateListCache(): Promise<PaginateResult<Category>> {
-    return this.categoryListCache.update();
-  }
+  constructor(@InjectModel(Category) private readonly categoryModel: TMongooseModel<Category>) {}
 
   // 更新所有相关服务
   updateExternalService<T>(category: T): T {
-    this.updateListCache();
     // this.sitemapService.updateSitemap();
     if ((category as any).slug) {
       // this.seoService.push(`${APP_CONFIG.APP.URL}/category/${category.slug}`);

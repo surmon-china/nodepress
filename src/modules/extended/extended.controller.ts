@@ -1,22 +1,22 @@
 /**
- * Utils controller.
- * @file Utils 模块控制器 -> 统计/常量/七牛/github
- * @module modules/utils/controller
+ * Extended controller.
+ * @file Extended 模块控制器 -> 统计/常量/七牛/github
+ * @module modules/extended/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { GithubService, IGithubRepositorie } from './github.service';
-import { QiniuService, IUpToken } from './qiniu.service';
-import { StatisticService, ITodayStatistic } from './statistic.service';
+import { GithubService, IGithubRepositorie } from './extended.github.service';
+import { QiniuService, IUpToken } from './extended.qiniu.service';
+import { StatisticService, ITodayStatistic } from './extended.statistic.service';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { HttpCache } from '@app/decorators/cache.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as STATE_CONSTANTS from '@app/interfaces/state.interface';
 
-@Controller('utils')
-export class UtilsController {
+@Controller('extended')
+export class ExtendedController {
 
   constructor(
     private readonly githubService: GithubService,
