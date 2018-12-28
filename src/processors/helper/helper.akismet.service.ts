@@ -34,7 +34,6 @@ export class AkismetService {
   private clientIsValid: boolean;
 
   constructor() {
-    console.log('就看看她会实例化几次');
     this.client = akismet.client({
       key: APP_CONFIG.AKISMET.key,
       blog: APP_CONFIG.AKISMET.blog,

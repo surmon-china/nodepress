@@ -6,14 +6,13 @@
  */
 
 import { Module, Global, HttpModule } from '@nestjs/common';
-import { AkismetService } from './akismet.service';
-import { BaiduSeoService } from './baidu-seo.service';
-import { EmailService } from './email.service';
-import { IpService } from './ip.service';
+import { AkismetService } from './helper.akismet.service';
+import { BaiduSeoService } from './helper.baidu-seo.service';
+import { EmailService } from './helper.email.service';
+import { IpService } from './helper.ip.service';
 
 const services = [AkismetService, BaiduSeoService, EmailService, IpService];
 
-// todo -> 测试全局和局部引入是否单例
 @Global()
 @Module({
   imports: [HttpModule],
