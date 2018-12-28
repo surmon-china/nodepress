@@ -17,7 +17,7 @@ import { DatabaseModule } from '@app/processors/database/database.module';
 import { AuthModule } from '@app/modules/auth/auth.module';
 import { AnnouncementModule } from '@app/modules/announcement/announcement.module';
 import { TagModule } from '@app/modules/tag/tag.module';
-import { UtilsModule } from '@app/modules/utils/utils.module';
+import { ExtendedModule } from '@app/modules/extended/extended.module';
 import { MusicModule } from '@app/modules/music/music.module';
 import { OptionModule } from '@app/modules/option/option.module';
 import { WallpaperModule } from '@app/modules/wallpaper/wallpaper.module';
@@ -32,7 +32,7 @@ import { WallpaperModule } from '@app/modules/wallpaper/wallpaper.module';
     OptionModule,
     WallpaperModule,
     MusicModule,
-    UtilsModule,
+    ExtendedModule,
   ],
   controllers: [AppController],
   providers: [
