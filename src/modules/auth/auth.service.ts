@@ -41,7 +41,7 @@ export class AuthService {
 
   // 获取管理员信息
   async getAdminInfo(): Promise<Auth> {
-    return await this.authModel.findOne(null, '-_id name slogan gravatar');
+    return this.authModel.findOne(null, '-_id name slogan gravatar');
   }
 
   // 修改管理员信息
@@ -100,7 +100,7 @@ export class AuthService {
     });
   }
 
-  // 登陆 / 创建 Token
+  // 登陆/创建 Token
   createToken(password: string): Promise<ITokenResult> {
     return this.authModel.findOne(null, '-_id password').then(auth => {
       const extantAuth = auth || { password: null };

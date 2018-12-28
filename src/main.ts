@@ -19,6 +19,9 @@ import { LoggingInterceptor } from '@app/interceptors/logging.interceptor';
 import { ErrorInterceptor } from '@app/interceptors/error.interceptor';
 import { isProdMode } from '@app/app.environment';
 
+// 解决 Nodejs 环境中请求 HTTPS 的证书授信问题
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, isProdMode ? { logger: false } : null);
   app.use(helmet());

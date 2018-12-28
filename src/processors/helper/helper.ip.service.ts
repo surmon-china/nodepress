@@ -1,6 +1,6 @@
 /**
- * Extended Ip service.
- * @file Extended Ip 模块服务
+ * Helper Ip service.
+ * @file Helper Ip 模块服务
  * @module modules/helper/ip.service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -9,11 +9,10 @@ import * as geoip from 'geoip-lite';
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable, HttpService } from '@nestjs/common';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 export type IP = string;
 export interface IIPDetail {
-
+  city: string;
+  country: string;
 }
 
 @Injectable()
@@ -24,10 +23,10 @@ export class IpService {
   private queryIpByAliyun(ip: IP): Promise<IIPDetail> {
     return this.httpService.axiosRef.request({
       headers: { Authorization: `APPCODE ${APP_CONFIG.ALIYUN.ip}` },
-      url: `https://dm-81.data.aliyun.com/rest/160601/ip/getIpInfo.json?ip=${ip}`,
+      url: `https://api01.aliyun.venuscn.com/ip?ip=${ip}`,
     }).then(response => {
       const result = JSON.parse(response.data);
-      if (result && result.code === 0) {
+      if (result && result.ret === 200) {
         return Promise.resolve(result.data);
       } else {
         return Promise.reject(result);
@@ -44,6 +43,8 @@ export class IpService {
 
   // 查询 IP 地址
   query(ip: IP): Promise<IIPDetail> {
-    return this.queryIpByAliyun(ip).catch(error => Promise.resolve(this.queryIpByGeo(ip)));
+    return this.queryIpByAliyun(ip)
+      .then(({ city, country }) => ({ city, country }))
+      .catch(error => Promise.resolve(this.queryIpByGeo(ip)));
   }
 }

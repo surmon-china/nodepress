@@ -8,13 +8,19 @@
 import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
+import { EmailService } from '@app/processors/helper/helper.email.service';
+import { QueryParams } from '@app/decorators/query-params.decorator';
 import { AuthService } from './auth.service';
 import { ITokenResult } from './auth.interface';
 import { Auth, AuthLogin } from './auth.model';
+import * as APP_CONFIG from '@app/app.config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly emailService: EmailService,
+  ) {}
 
   @Get('admin')
   @HttpProcessor.handle('获取管理员信息')
@@ -31,8 +37,16 @@ export class AuthController {
 
   @Post('login')
   @HttpProcessor.handle({ message: '登陆', error: HttpStatus.BAD_REQUEST })
-  createToken(@Body() body: AuthLogin): Promise<ITokenResult> {
-    return this.authService.createToken(body.password);
+  createToken(@QueryParams() { ip }, @Body() body: AuthLogin): Promise<ITokenResult> {
+    return this.authService.createToken(body.password).then(data => {
+      this.emailService.sendMail({
+        to: APP_CONFIG.EMAIL.admin,
+        subject: '博客有新的登陆行为',
+        text: `来源 IP：${ip}`,
+        html: `来源 IP：${ip}`,
+      });
+      return data;
+    });
   }
 
   // 检测 Token 有效性
