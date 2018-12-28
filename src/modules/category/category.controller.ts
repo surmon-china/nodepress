@@ -31,9 +31,7 @@ export class CategoryController {
         { description: keywordRegExp },
       ];
     }
-    return isAuthenticated
-      ? this.categoryService.getList(querys, options, isAuthenticated)
-      : this.categoryService.getListCache();
+    return this.categoryService.getList(querys, options, isAuthenticated);
   }
 
   @Post()
