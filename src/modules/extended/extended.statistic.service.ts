@@ -1,7 +1,7 @@
 /**
- * Utils Statistic service.
- * @file Utils Statistic 模块服务
- * @module modules/utils/statistic.service
+ * Extended Statistic service.
+ * @file Extended Statistic 模块服务
+ * @module modules/extended/statistic.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
