@@ -37,6 +37,17 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
   // 是否已验证权限
   const isAuthenticated = request.isAuthenticated();
 
+  // 获取有效 IP 地址
+  const requestIp = (
+    request.headers['x-forwarded-for'] ||
+    request.headers['x-real-ip'] ||
+    request.connection.remoteAddress ||
+    request.socket.remoteAddress ||
+    request.connection.socket.remoteAddress ||
+    request.ip ||
+    request.ips[0]
+  ).replace('::ffff:', '');
+
   // 字段转换配置（传入字符串则代表默认值，传入 false 则代表不启用，初始为默认值或 false）
   const fieldsConfig: ITransformConfig = lodash.merge({
     querys: {},
@@ -197,7 +208,15 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     validate.setValue();
   });
 
-  // 挂载到 request 上下文并返回
+  // 挂载到 request 上下文
   request.requestParams = { querys, options, params, isAuthenticated };
-  return { querys, options, params, origin: request.query, isAuthenticated };
+
+  return {
+    querys,
+    options,
+    params,
+    origin: request.query,
+    ip: requestIp,
+    isAuthenticated,
+  };
 });

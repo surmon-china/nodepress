@@ -1,15 +1,20 @@
 /**
- * Extended Giithub service.
- * @file Extended Giithub 模块服务
- * @module modules/extended/github.service
+ * Helper BaiduSeo service.
+ * @file Helper BaiduSeo 模块服务
+ * @module modules/helper/baidu-seo.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable, HttpService } from '@nestjs/common';
 
-export type TUrl = string;
+export enum EBaiduSeoActions {
+  Push = 'push',
+  Update = 'update',
+  Delete = 'delete',
+}
 
+export type TUrl = string;
 export interface IBaiduSeoRequestOption {
   urlKey: string;
   urls: TUrl[];

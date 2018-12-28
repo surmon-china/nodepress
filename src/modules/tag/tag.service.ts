@@ -11,9 +11,10 @@ import * as CACHE_KEY from '@app/constants/cache.constant';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { CacheService, TCachePromiseIoResult } from '@app/processors/cache/cache.service';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { CacheService, TCachePromiseIoResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
+import { BaiduSeoService, EBaiduSeoActions } from '@app/processors/helper/helper.baidu-seo.service';
 import { Tag } from './tag.model';
 
 @Injectable()
@@ -22,8 +23,9 @@ export class TagService {
   private tagListCache: TCachePromiseIoResult;
 
   constructor(
-    @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
     private readonly cacheService: CacheService,
+    private readonly baiduSeoService: BaiduSeoService,
+    @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
   ) {
     const promiseTask = () => {
       const options = { page: 1, limit: 166, sort: { _id: ESortType.Desc }};
@@ -47,13 +49,15 @@ export class TagService {
   }
 
   // 更新所有相关服务
-  updateExternalService<T>(tag: T): T {
-    this.updateListCache();
-    // this.sitemapService.updateSitemap();
-    if ((tag as any).slug) {
-      // this.seoService.push(`${APP_CONFIG.APP.URL}/tag/${tag.slug}`);
-    }
-    return tag;
+  updateExternalService(action?: EBaiduSeoActions) {
+    return tag => {
+      this.updateListCache();
+      // this.sitemapService.updateSitemap();
+      if (action) {
+        this.baiduSeoService[action](`${APP_CONFIG.APP.URL}/tag/${tag.slug}`);
+      }
+      return tag;
+    };
   }
 
   // 请求标签列表
@@ -81,7 +85,9 @@ export class TagService {
     return this.tagModel.find({ slug: newTag.slug }).then(existedTags => {
       return existedTags.length
         ? Promise.reject('slug 已被占用')
-        : new this.tagModel(newTag).save().then(this.updateExternalService);
+        : new this.tagModel(newTag).save().then(
+            this.updateExternalService(EBaiduSeoActions.Push),
+          );
     });
   }
 
@@ -90,17 +96,19 @@ export class TagService {
     return this.tagModel.findOne({ slug: newTag.slug }).then(existedTag => {
       return existedTag && existedTag._id !== tagId
         ? Promise.reject('slug 已被占用')
-        : this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).then(this.updateExternalService);
+        : this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).then(
+            this.updateExternalService(EBaiduSeoActions.Update),
+          );
     });
   }
 
   // 删除单个标签
   async deleteItem(tagId: Types.ObjectId): Promise<any> {
-    return this.tagModel.findByIdAndRemove(tagId).then(this.updateExternalService);
+    return this.tagModel.findByIdAndRemove(tagId).then(this.updateExternalService());
   }
 
   // 批量删除标签
   async deleteList(tagIds: Types.ObjectId[]): Promise<any> {
-    return this.tagModel.deleteMany({ _id: { $in: tagIds }}).then(this.updateExternalService);
+    return this.tagModel.deleteMany({ _id: { $in: tagIds }}).then(this.updateExternalService());
   }
 }
