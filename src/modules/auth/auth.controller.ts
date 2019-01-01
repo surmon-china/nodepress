@@ -8,7 +8,7 @@
 import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
-import { EmailService } from '@app/processors/helper/helper.email.service';
+import { EmailService } from '@app/processors/helper/helper.service.email';
 import { QueryParams } from '@app/decorators/query-params.decorator';
 import { AuthService } from './auth.service';
 import { ITokenResult } from './auth.interface';

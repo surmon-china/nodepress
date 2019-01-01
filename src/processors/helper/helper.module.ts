@@ -6,10 +6,10 @@
  */
 
 import { Module, Global, HttpModule } from '@nestjs/common';
-import { AkismetService } from './helper.akismet.service';
-import { BaiduSeoService } from './helper.baidu-seo.service';
-import { EmailService } from './helper.email.service';
-import { IpService } from './helper.ip.service';
+import { AkismetService } from './helper.service.akismet';
+import { BaiduSeoService } from './helper.service.baidu-seo';
+import { EmailService } from './helper.service.email';
+import { IpService } from './helper.service.ip';
 
 const services = [AkismetService, BaiduSeoService, EmailService, IpService];
 

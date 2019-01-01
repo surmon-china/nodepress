@@ -11,7 +11,7 @@ import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams } from '@app/decorators/query-params.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
-import { Category, DelCategorys } from './category.model';
+import { Category, DelCategories } from './category.model';
 import { CategoryService } from './category.service';
 
 @Controller('category')
@@ -21,8 +21,8 @@ export class CategoryController {
   @Get()
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
-  @HttpProcessor.handle('获取分类')
-  getCategorys(@QueryParams() { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Category>> {
+  @HttpProcessor.handle('获取分类列表')
+  getCategories(@QueryParams() { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Category>> {
     if (origin.keyword) {
       const keywordRegExp = new RegExp(origin.keyword);
       querys.$or = [
@@ -44,13 +44,19 @@ export class CategoryController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除分类')
-  delCategorys(@Body() body: DelCategorys): Promise<any> {
-    return this.categoryService.deleteList(body.categorys);
+  delCategories(@Body() body: DelCategories): Promise<any> {
+    return this.categoryService.deleteList(body.categories);
+  }
+
+  @Get(':id')
+  @HttpProcessor.handle('获取单个分类')
+  getCategory(@QueryParams() { params }): Promise<Category[]> {
+    return this.categoryService.getItem(params.id);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('修改分类')
+  @HttpProcessor.handle('修改单个分类')
   putCategory(@QueryParams() { params }, @Body() category: Category): Promise<Category> {
     return this.categoryService.putItem(params.id, category);
   }

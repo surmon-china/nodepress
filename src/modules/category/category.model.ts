@@ -57,10 +57,10 @@ export class Category extends Typegoose {
   count?: number;
 }
 
-export class DelCategorys extends Typegoose {
+export class DelCategories extends Typegoose {
 
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
-  categorys: Types.ObjectId[];
+  categories: Types.ObjectId[];
 }
