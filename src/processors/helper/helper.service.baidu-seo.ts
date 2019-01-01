@@ -15,6 +15,7 @@ export enum EBaiduSeoActions {
 }
 
 export type TUrl = string;
+export type THumanizedUrl = TUrl | TUrl[];
 export interface IBaiduSeoRequestOption {
   urlKey: string;
   urls: TUrl[];
@@ -43,18 +44,22 @@ export class BaiduSeoService {
     });
   }
 
+  private humanizedUrl(url: THumanizedUrl): TUrl[] {
+    return typeof url === 'string' ? [url] : url;
+  }
+
   // 提交记录
-  push(url: TUrl) {
-    this.baiduRequest({ urls: [url], urlKey: 'urls', action: '百度推送' });
+  push(url: THumanizedUrl) {
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: 'urls', action: '百度推送' });
   }
 
   // 更新记录
-  update(url: TUrl) {
-    this.baiduRequest({ urls: [url], urlKey: 'update', action: '百度更新' });
+  update(url: THumanizedUrl) {
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: 'update', action: '百度更新' });
   }
 
   // 删除记录
-  delete(url: TUrl) {
-    this.baiduRequest({ urls: [url], urlKey: 'del', action: '百度删除' });
+  delete(url: THumanizedUrl) {
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: 'del', action: '百度删除' });
   }
 }

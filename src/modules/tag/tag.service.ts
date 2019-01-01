@@ -12,18 +12,21 @@ import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { CacheService, TCachePromiseIoResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
-import { BaiduSeoService, EBaiduSeoActions } from '@app/processors/helper/helper.baidu-seo.service';
+import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
 import { Tag } from './tag.model';
 
 @Injectable()
 export class TagService {
 
+  // 为非鉴权用户所用
   private tagListCache: TCachePromiseIoResult;
 
   constructor(
     private readonly cacheService: CacheService,
+    private readonly sitemapService: SitemapService,
     private readonly baiduSeoService: BaiduSeoService,
     @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
   ) {
@@ -38,6 +41,17 @@ export class TagService {
     });
   }
 
+  // 构造链接
+  private buildSeoUrl(slug: string): string {
+    return `${APP_CONFIG.APP.URL}/tag/${slug}`;
+  }
+
+  // 更新所有内容相关服务
+  private updateContentExternalService(): void {
+    this.updateListCache();
+    this.sitemapService.updateSitemap();
+  }
+
   // 请求标签列表缓存
   getListCache(): Promise<PaginateResult<Tag>> {
     return this.tagListCache.get();
@@ -48,19 +62,7 @@ export class TagService {
     return this.tagListCache.update();
   }
 
-  // 更新所有相关服务
-  updateExternalService(action?: EBaiduSeoActions) {
-    return tag => {
-      this.updateListCache();
-      // this.sitemapService.updateSitemap();
-      if (action) {
-        this.baiduSeoService[action](`${APP_CONFIG.APP.URL}/tag/${tag.slug}`);
-      }
-      return tag;
-    };
-  }
-
-  // 请求标签列表
+  // 请求标签列表（及聚和数据）
   getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
     const matchState = { state: EPublishState.Published, public: EPublicState.Public };
     return this.tagModel.paginate(querys, options).then(tags => {
@@ -85,9 +87,11 @@ export class TagService {
     return this.tagModel.find({ slug: newTag.slug }).then(existedTags => {
       return existedTags.length
         ? Promise.reject('slug 已被占用')
-        : new this.tagModel(newTag).save().then(
-            this.updateExternalService(EBaiduSeoActions.Push),
-          );
+        : new this.tagModel(newTag).save().then(tag => {
+            this.baiduSeoService.push(this.buildSeoUrl(tag.slug));
+            this.updateContentExternalService();
+            return tag;
+          });
     });
   }
 
@@ -96,19 +100,31 @@ export class TagService {
     return this.tagModel.findOne({ slug: newTag.slug }).then(existedTag => {
       return existedTag && existedTag._id !== tagId
         ? Promise.reject('slug 已被占用')
-        : this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).then(
-            this.updateExternalService(EBaiduSeoActions.Update),
-          );
+        : this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).then(tag => {
+            this.baiduSeoService.push(this.buildSeoUrl(tag.slug));
+            this.updateContentExternalService();
+            return tag;
+          });
     });
   }
 
   // 删除单个标签
   async deleteItem(tagId: Types.ObjectId): Promise<any> {
-    return this.tagModel.findByIdAndRemove(tagId).then(this.updateExternalService());
+    return this.tagModel.findByIdAndRemove(tagId).then(tag => {
+      this.baiduSeoService.delete(this.buildSeoUrl(tag.slug));
+      this.updateContentExternalService();
+      return tag;
+    });
   }
 
   // 批量删除标签
   async deleteList(tagIds: Types.ObjectId[]): Promise<any> {
-    return this.tagModel.deleteMany({ _id: { $in: tagIds }}).then(this.updateExternalService());
+    return this.tagModel.find({ _id: { $in: tagIds }}).then(tags => {
+      this.baiduSeoService.delete(tags.map(tag => this.buildSeoUrl(tag.slug)));
+      return this.tagModel.deleteMany({ _id: { $in: tagIds }}).then(result => {
+        this.updateContentExternalService();
+        return result;
+      });
+    });
   }
 }

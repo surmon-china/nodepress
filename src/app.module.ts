@@ -20,7 +20,7 @@ import { DatabaseModule } from '@app/processors/database/database.module';
 import { HelperModule } from '@app/processors/helper/helper.module';
 
 import { AuthModule } from '@app/modules/auth/auth.module';
-
+import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
 import { AnnouncementModule } from '@app/modules/announcement/announcement.module';
 import { TagModule } from '@app/modules/tag/tag.module';
 import { MusicModule } from '@app/modules/music/music.module';
@@ -33,7 +33,9 @@ import { ExtendedModule } from '@app/modules/extended/extended.module';
     DatabaseModule,
     CacheModule,
     HelperModule,
+
     AuthModule,
+    SitemapModule,
     AnnouncementModule,
     TagModule,
     OptionModule,

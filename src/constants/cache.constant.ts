@@ -1,5 +1,10 @@
+/**
+ * Cache constant.
+ * @file 缓存存储键
+ * @module constants/cache
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
-// 缓存存储键
 export const CACHE_PERFIX = '__nodepress_cache_';
 export const INFO = CACHE_PERFIX + 'info';
 export const TAGS = CACHE_PERFIX + 'tags';
