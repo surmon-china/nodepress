@@ -27,11 +27,12 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 
 更新记录：[在这里](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
 
-## 模块完成度：
-  - 公告
-  - 鉴权
-  - utils github/constant/statistic/qiniu
-  - wallpaper
+## 待完成模块：
+  - Article
+  - Comment
+  - Bilibili
+  - review
+  - jsdoc
 
 ## v3.0.0 架构说明
 

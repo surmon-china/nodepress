@@ -88,7 +88,6 @@ export class Option extends Typegoose {
   // 其他元信息
   @prop()
   meta: Meta;
-  // todo -> 表结构有问题
 
   @prop({ default: Date.now })
   update_at?: Date;

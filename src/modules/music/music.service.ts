@@ -6,8 +6,8 @@
  */
 
 import * as lodash from 'lodash';
-import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as NeteseMusic from 'simple-netease-cloud-music';
+import * as CACHE_KEY from '@app/constants/cache.constant';
 import { Injectable } from '@nestjs/common';
 import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
 
@@ -36,10 +36,12 @@ export class MusicService {
     });
   }
 
+  // 获取播放列表缓存
   getMusicListCache() {
     return this.musicListCache();
   }
 
+  // 是否获取默认列表
   isRequestDefaultList(listId, listLimit): boolean {
     const isHitDefaultListId = listId === this.defaultListId;
     const isHitDefaultListLimit = listLimit === this.defaultListLimit || lodash.isUndefined(listLimit);
