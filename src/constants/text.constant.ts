@@ -1,3 +1,9 @@
+/**
+ * Text constant.
+ * @file 用于全局路由请求的响应文案
+ * @module constants/text
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 export const HTTP_ERROR_SUFFIX = '失败';
 export const HTTP_SUCCESS_SUFFIX = '成功';

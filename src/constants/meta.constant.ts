@@ -1,3 +1,9 @@
+/**
+ * Meta constant.
+ * @file 用于装饰器的元信息常量
+ * @module constants/meta
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 import * as constants from '@nestjs/common/constants';
 import { CACHE_KEY_METADATA } from '@nestjs/common/cache/cache.constants';

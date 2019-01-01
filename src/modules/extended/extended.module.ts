@@ -7,9 +7,9 @@
 
 import { Module, HttpModule } from '@nestjs/common';
 import { ExtendedController } from './extended.controller';
-import { GithubService } from './extended.github.service';
-import { QiniuService } from './extended.qiniu.service';
-import { StatisticService } from './extended.statistic.service';
+import { GithubService } from './extended.service.github';
+import { QiniuService } from './extended.service.qiniu';
+import { StatisticService } from './extended.service.statistic';
 
 @Module({
   imports: [HttpModule],

@@ -6,9 +6,9 @@
  */
 
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { GithubService, IGithubRepositorie } from './extended.github.service';
-import { QiniuService, IUpToken } from './extended.qiniu.service';
-import { StatisticService, ITodayStatistic } from './extended.statistic.service';
+import { GithubService, IGithubRepositorie } from './extended.service.github';
+import { QiniuService, IUpToken } from './extended.service.qiniu';
+import { StatisticService, ITodayStatistic } from './extended.service.statistic';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { HttpCache } from '@app/decorators/cache.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
