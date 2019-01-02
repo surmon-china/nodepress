@@ -1,7 +1,7 @@
 /**
  * Announcement model.
  * @file 公告模块数据模型
- * @module modules/announcement/model
+ * @module module/announcement/model
  * @author Surmon <https://github.com/surmon-china>
  */
 

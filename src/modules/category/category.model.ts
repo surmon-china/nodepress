@@ -1,7 +1,7 @@
 /**
  * Category model.
  * @file 分类模块数据模型
- * @module modules/category/model
+ * @module module/category/model
  * @author Surmon <https://github.com/surmon-china>
  */
 

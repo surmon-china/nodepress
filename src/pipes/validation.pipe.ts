@@ -1,8 +1,19 @@
+/**
+ * ValidationPipe.
+ * @file 数据表验证器
+ * @module pipe/validation
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
 import { ValidationError } from '@app/errors/validation.error';
 
+/**
+ * @class ValidationPipe
+ * @classdesc 验证所有使用 class-validator 的地方的 class 模型
+ */
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
 
@@ -21,6 +32,6 @@ export class ValidationPipe implements PipeTransform<any> {
 
   private toValidate(metatype): boolean {
     const types = [String, Boolean, Number, Array, Object];
-    return !types.find((type) => metatype === type);
+    return !types.find(type => metatype === type);
   }
 }

@@ -1,7 +1,7 @@
 /**
  * Option service.
  * @file 设置模块数据服务
- * @module modules/option/service
+ * @module module/option/service
  * @author Surmon <https://github.com/surmon-china>
  */
 

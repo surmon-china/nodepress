@@ -1,7 +1,7 @@
 /**
  * Helper Email service.
  * @file Helper Email 邮件服务
- * @module processors/helper/email.service
+ * @module processor/helper/email.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -9,7 +9,7 @@ import * as nodemailer from 'nodemailer';
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable } from '@nestjs/common';
 
-// todo -> 待优化
+// 邮件格式
 export interface IEmailOptions {
   to: string;
   subject: string;

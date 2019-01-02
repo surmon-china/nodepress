@@ -1,7 +1,7 @@
 /**
  * Option controller.
  * @file 设置模块控制器
- * @module modules/option/controller
+ * @module module/option/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 

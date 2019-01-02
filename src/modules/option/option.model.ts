@@ -1,7 +1,7 @@
 /**
  * Option model.
  * @file 设置模块数据模型
- * @module modules/option/model
+ * @module module/option/model
  * @author Surmon <https://github.com/surmon-china>
  */
 

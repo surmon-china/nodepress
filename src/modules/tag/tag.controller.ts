@@ -1,7 +1,7 @@
 /**
  * Tag controller.
  * @file 标签模块控制器
- * @module modules/tag/controller
+ * @module module/tag/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 

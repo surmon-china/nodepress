@@ -1,7 +1,7 @@
 /**
  * Helper BaiduSeo service.
  * @file Helper BaiduSeo 模块服务
- * @module modules/helper/baidu-seo.service
+ * @module module/helper/baidu-seo.service
  * @author Surmon <https://github.com/surmon-china>
  */
 

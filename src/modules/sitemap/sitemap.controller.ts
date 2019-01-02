@@ -1,7 +1,7 @@
 /**
  * Sitemap controller.
  * @file Sitemap 模块控制器
- * @module modules/sitemap/controller
+ * @module module/sitemap/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 

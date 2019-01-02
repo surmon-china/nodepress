@@ -1,7 +1,7 @@
 /**
  * Like service.
  * @file 点赞模块数据服务
- * @module modules/like/service
+ * @module module/like/service
  * @author Surmon <https://github.com/surmon-china>
  */
 

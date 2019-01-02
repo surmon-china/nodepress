@@ -3,6 +3,7 @@
 
 ###  TODO
 
+- v2.0.0
 - Tag 删除时需要更新相关文章的 tag 字段
 - Category 也是同样的操作
 - 删除一条存在子级评论的评论时，子级评论的 PID 需要置空
@@ -10,9 +11,15 @@
 - 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
 - sitemap，tags CUD 时进行缓存更新，使用 redis.promise
 
+- v3.0.0
+- Article
+- Comment
+- review
+
 ### v3.0.0
 
 - 使用 [Nest](https://github.com/nestjs/nest) 进行重构
+- 增加 Bilibili Vlog 业务模块
 
 ### v2.2.0
 

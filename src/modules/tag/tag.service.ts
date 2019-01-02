@@ -1,15 +1,15 @@
 /**
  * Tag service.
  * @file 标签模块数据服务
- * @module modules/tag/service
+ * @module module/tag/service
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
-import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
+import { PaginateResult, Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';

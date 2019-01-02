@@ -1,7 +1,7 @@
 /**
  * Cache decorator.
  * @file 缓存装饰器
- * @module decorators/cache
+ * @module decorator/cache
  * @author Surmon <https://github.com/surmon-china>
  */
 

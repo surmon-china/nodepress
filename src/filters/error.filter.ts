@@ -1,9 +1,19 @@
+/**
+ * HttpException filter.
+ * @file 全局异常拦截器
+ * @module filter/error
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 import * as lodash from 'lodash';
 import { isDevMode } from '@app/app.environment';
 import { EStatus, THttpErrorResponse, TExceptionOption, TMessage } from '@app/interfaces/http.interface';
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
 
+/**
+ * @class HttpExceptionFilter
+ * @classdesc 拦截全局抛出的所有异常，同时任何错误将在这里被规范化输出 THttpErrorResponse
+ */
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {

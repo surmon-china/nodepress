@@ -1,3 +1,10 @@
+/**
+ * TransformInterceptor.
+ * @file 请求流拦截器
+ * @module interceptor/transform
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
@@ -7,6 +14,10 @@ import { TMessage } from '@app/interfaces/http.interface';
 import * as META from '@app/constants/meta.constant';
 import * as TEXT from '@app/constants/text.constant';
 
+/**
+ * @class TransformInterceptor
+ * @classdesc 当控制器所需的 Promise service 成功响应时，将在此被转换为标准的数据结构 IHttpResultPaginate
+ */
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, THttpSuccessResponse<T>> {
   constructor(private readonly reflector: Reflector) {}

@@ -1,7 +1,7 @@
 /**
  * Helper Akismet service.
  * @file Helper Akismet 评论反垃圾服务
- * @module processors/helper/akismet.service
+ * @module processor/helper/akismet.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
