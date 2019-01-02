@@ -1,6 +1,6 @@
 /**
  * Extended Giithub service.
- * @file Extended Giithub 模块服务
+ * @file 扩展模块 Giithub 服务
  * @module modules/extended/github.service
  * @author Surmon <https://github.com/surmon-china>
  */
