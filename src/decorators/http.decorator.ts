@@ -1,7 +1,7 @@
 /**
  * Http decorator.
  * @file 响应解析装饰器
- * @module decorators/http
+ * @module decorator/http
  * @author Surmon <https://github.com/surmon-china>
  */
 

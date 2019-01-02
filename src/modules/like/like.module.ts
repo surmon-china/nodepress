@@ -1,7 +1,7 @@
 /**
  * Like module.
  * @file 点赞模块
- * @module modules/like/module
+ * @module module/like/module
  * @author Surmon <https://github.com/surmon-china>
  */
 

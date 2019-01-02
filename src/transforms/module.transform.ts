@@ -1,12 +1,13 @@
-
 /**
- * App module transform.
- * @file 模块转换器
- * @module app.utils.module.transform
+ * Module transform.
+ * @file 通用模块转换器
+ * @description 用于兼容各种 Commomjs 包在 TS 下的不兼容问题
+ * @module transform/module
  * @author Surmon <https://github.com/surmon-china>
  */
 
-export const packageJson = require('../../package.json');
+import * as path from 'path';
+export const packageJson = require(path.join(__dirname, '..', '..') + 'package.json');
 
 export default {
   packageJson,

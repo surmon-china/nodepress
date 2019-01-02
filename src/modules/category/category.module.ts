@@ -1,7 +1,7 @@
 /**
  * Category module.
  * @file 分类模块
- * @module modules/category/module
+ * @module module/category/module
  * @author Surmon <https://github.com/surmon-china>
  */
 

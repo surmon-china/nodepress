@@ -1,7 +1,7 @@
 /**
  * Announcement module.
  * @file 公告模块
- * @module modules/announcement/module
+ * @module module/announcement/module
  * @author Surmon <https://github.com/surmon-china>
  */
 

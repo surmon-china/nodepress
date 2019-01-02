@@ -1,7 +1,7 @@
 /**
  * Wallpaper service.
  * @file Wallpaper 模块服务
- * @module modules/wallpaper/service
+ * @module module/wallpaper/service
  * @author Surmon <https://github.com/surmon-china>
  */
 

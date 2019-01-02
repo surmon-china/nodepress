@@ -1,7 +1,7 @@
 /**
  * Category service.
  * @file 分类模块数据服务
- * @module modules/category/service
+ * @module module/category/service
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -114,9 +114,9 @@ export class CategoryService {
           .then(_ => category);
       });
     })
-    .then(result => {
+    .then(category => {
       this.sitemapService.updateSitemap();
-      return result;
+      return category;
     });
   }
 

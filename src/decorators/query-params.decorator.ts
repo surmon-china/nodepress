@@ -1,3 +1,9 @@
+/**
+ * QueryParams decorator.
+ * @file 请求参数解析装饰器
+ * @module decorator/query-params
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 import * as lodash from 'lodash';
 import { Types } from 'mongoose';
@@ -18,12 +24,14 @@ interface ITransformConfigBase {
   [key: string]: string | number | boolean;
 }
 
+// 导出参数结构
 export interface ITransformConfig {
   params: ITransformConfigBase;
   querys: ITransformConfigBase;
   options: ITransformConfigBase;
 }
 
+// 验证器结构
 interface IValidateError {
   name: string;
   isTodo: boolean;
@@ -32,6 +40,15 @@ interface IValidateError {
   setValue(): void;
 }
 
+/**
+ * 参数解析器构造器
+ * @function QueryParams
+ * @description 根据入参配置是否启用某些参数的验证和解析
+ * @example @QueryParams()
+ * @example @QueryParams({ options: { page: 1 } })
+ * @example @QueryParams({ params: { id: 'listId' } })
+ * @example @QueryParams({ querys: { state: true, date: true } })
+ */
 export const QueryParams = createParamDecorator((config: ITransformConfig, request) => {
 
   // 是否已验证权限

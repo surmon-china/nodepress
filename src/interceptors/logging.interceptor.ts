@@ -1,6 +1,13 @@
-import { Injectable, NestInterceptor, ExecutionContext } from '@nestjs/common';
+/**
+ * LoggingInterceptor.
+ * @file 日志拦截器
+ * @module interceptor/logging
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Injectable, NestInterceptor, ExecutionContext } from '@nestjs/common';
 import { isDevMode } from '@app/app.environment';
 
 @Injectable()

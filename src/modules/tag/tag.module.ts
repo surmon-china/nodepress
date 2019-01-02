@@ -1,7 +1,7 @@
 /**
  * Tag module.
  * @file 标签模块
- * @module modules/tag/module
+ * @module module/tag/module
  * @author Surmon <https://github.com/surmon-china>
  */
 

@@ -1,7 +1,7 @@
 /**
  * Bilibili controller.
  * @file Bilibili 模块控制器
- * @module modules/bilibili/controller
+ * @module module/bilibili/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
