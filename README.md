@@ -30,7 +30,6 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 ## 待完成模块：
   - Article
   - Comment
-  - Bilibili
   - review
   - jsdoc
 

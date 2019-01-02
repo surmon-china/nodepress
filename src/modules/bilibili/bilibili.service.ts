@@ -1,55 +1,67 @@
 /**
- * AnnouncementCtrl module.
- * @file 公告控制器模块
- * @module controller/announcement
+ * Bilibili service.
+ * @file Bilibili 模块服务
+ * @module modules/bilibili/service
  * @author Surmon <https://github.com/surmon-china>
  */
 
-// const redis = require('np-core/np-redis');
-// const { REDIS_CACHE_FIELDS } = require('np-core/np-constants');
-import * as request from 'request';
-import * as appConfig from '@app/app.config';
-import { Injectable } from '@nestjs/common';
-import { IGithubRepositorie } from './github.interface';
-import { console } from '@app/transforms/module.transform';
+import * as lodash from 'lodash';
+import * as APP_CONFIG from '@app/app.config';
+import * as CACHE_KEY from '@app/constants/cache.constant';
+import { Injectable, HttpService } from '@nestjs/common';
+import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
+
+export interface IBilibiliVideoList {
+  status: boolean;
+  data: any;
+  vlist: any[];
+}
 
 @Injectable()
-export class GithubService {
-  constructor() {}
+export class BilibiliService {
 
-  getVideos(): Promise<IGithubRepositorie[]> {
-    return new Promise((resolve, reject) => {
-      request({
-        headers: { 'User-Agent': 'request' },
-        url: `https://space.bilibili.com/ajax/member/getSubmitVideos?mid=27940710&pagesize=30&tid=0&page=1&keyword=&order=pubdate`,
-      }, (err, response, body) => {
-        if (!err && response.statusCode === 200) {
-          try {
-            const peojects: IGithubRepositorie[] = JSON.parse(body).map(rep => {
-              return {
-                html_url: rep.html_url,
-                name: rep.name || ' ',
-                fork: rep.fork,
-                forks: rep.forks,
-                forks_count: rep.forks_count,
-                description: rep.description || ' ',
-                open_issues_count: rep.open_issues_count,
-                stargazers_count: rep.stargazers_count,
-                created_at: rep.created_at,
-                language: rep.language,
-              };
-            });
-            return resolve(peojects);
-          } catch (error) {
-            const errmsg = 'Github 控制器解析为 JSON 失败';
-            console.warn(errmsg, body);
-            return reject(errmsg);
-          }
-        } else {
-          console.warn('项目列表获取失败', 'err:', err, 'body:', body);
-          return reject(err || body);
-        }
-      });
+  private uid = 27940710;
+  private keyword = 'vlog';
+  private defaultPageSize = 66;
+  private defaultPage = 1;
+  private cache: ICacheIntervalResult;
+
+  constructor(private readonly httpService: HttpService, private readonly cacheService: CacheService) {
+    this.cache = this.cacheService.interval({
+      key: CACHE_KEY.BILIBILI_LIST,
+      promise: () => this.getVideoList(this.defaultPageSize, this.defaultPage),
+      timeout: {
+        success: 1000 * 60 * 30, // 成功后 30 分钟更新一次数据
+        error: 1000 * 60 * 5, // 失败后 5 分钟更新一次数据
+      },
+    });
+  }
+
+  // 是否获取默认列表
+  isRequestDefaultList(pageSize?: string | number, page?: string | number): boolean {
+    const isHitDefaultPageSize = pageSize === this.defaultPageSize || lodash.isUndefined(pageSize);
+    const isHitDefaultPage = page === this.defaultPage || lodash.isUndefined(page);
+    return isHitDefaultPageSize && isHitDefaultPage;
+  }
+
+  // 获取缓存
+  getVideoListCache(): Promise<IBilibiliVideoList> {
+    return this.cache();
+  }
+
+  // 获取项目列表
+  getVideoList(pageSize?: string | number, page?: string | number): Promise<IBilibiliVideoList> {
+    page = page || this.defaultPage;
+    pageSize = pageSize || this.defaultPageSize;
+    return this.httpService.axiosRef.request({
+      headers: { 'User-Agent': APP_CONFIG.INFO.name },
+      url: `https://space.bilibili.com/ajax/member/getSubmitVideos?mid=${this.uid}&pagesize=${pageSize}&page=${page}&keyword=${this.keyword}&order=pubdate`,
+    }).then(videosResult => {
+      if (videosResult.data.status) {
+        return Promise.resolve(videosResult.data);
+      } else {
+        return Promise.reject(videosResult.status + videosResult.statusText);
+      }
     });
   }
 }
