@@ -1,7 +1,7 @@
 /**
  * Helper module.
- * @file Helper 模块
- * @module modules/helper/module
+ * @file Helper 全局模块
+ * @module processor/helper/module
  * @author Surmon <https://github.com/surmon-china>
  */
 

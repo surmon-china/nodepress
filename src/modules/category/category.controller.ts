@@ -1,7 +1,7 @@
 /**
  * Category controller.
  * @file 分类模块控制器
- * @module modules/category/controller
+ * @module module/category/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 

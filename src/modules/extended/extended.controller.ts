@@ -2,14 +2,14 @@
  * Extended controller.
  * @file 扩展模块控制器
  * @description 分发 -> 统计/常量/七牛/github
- * @module modules/extended/controller
+ * @module module/extended/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GithubService, IGithubRepositorie } from './extended.service.github';
-import { QiniuService, IUpToken } from './extended.service.qiniu';
 import { StatisticService, ITodayStatistic } from './extended.service.statistic';
+import { QiniuService, IUpToken } from './extended.service.qiniu';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { HttpCache } from '@app/decorators/cache.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';

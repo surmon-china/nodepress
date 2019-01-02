@@ -1,7 +1,7 @@
 /**
- * Constants module.
- * @file 数据表常量模块
- * @module core/constants
+ * Bussniss constants.
+ * @file 业务数据表常量接口
+ * @module interface/state
  * @author Surmon <https://github.com/surmon-china>
  */
 

@@ -1,7 +1,7 @@
 /**
  * Bilibili service.
  * @file Bilibili 模块服务
- * @module modules/bilibili/service
+ * @module module/bilibili/service
  * @author Surmon <https://github.com/surmon-china>
  */
 

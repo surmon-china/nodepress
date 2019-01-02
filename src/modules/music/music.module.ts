@@ -1,7 +1,7 @@
 /**
  * Music module.
  * @file Music 模块
- * @module modules/music/module
+ * @module module/music/module
  * @author Surmon <https://github.com/surmon-china>
  */
 

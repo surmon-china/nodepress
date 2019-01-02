@@ -1,7 +1,18 @@
+/**
+ * CorsMiddleware.
+ * @file CORS 中间件
+ * @module middleware/cors
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import * as APP_CONFIG from '@app/app.config';
 import { isDevMode } from '@app/app.environment';
 import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus, RequestMethod } from '@nestjs/common';
 
+/**
+ * @class CorsMiddleware
+ * @classdesc 用于处理 CORS 跨域
+ */
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {
   resolve(...args: any[]): MiddlewareFunction {

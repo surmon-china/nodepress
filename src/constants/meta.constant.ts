@@ -1,7 +1,8 @@
 /**
  * Meta constant.
- * @file 用于装饰器的元信息常量
- * @module constants/meta
+ * @file 元数据常量键
+ * @description 用于全局装饰器元信息的常量键
+ * @module constant/meta
  * @author Surmon <https://github.com/surmon-china>
  */
 

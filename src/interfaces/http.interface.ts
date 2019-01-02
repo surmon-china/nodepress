@@ -1,7 +1,7 @@
 /**
- * http interface module.
- * @file http 响应接口模块
- * @module interface.http
+ * HTTP interface.
+ * @file HTTP 响应接口模型
+ * @module interface/http
  * @author Surmon <https://github.com/surmon-china>
  */
 

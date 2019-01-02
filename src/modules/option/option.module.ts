@@ -1,7 +1,7 @@
 /**
  * Option module.
  * @file 设置模块
- * @module modules/option/module
+ * @module module/option/module
  * @author Surmon <https://github.com/surmon-china>
  */
 
