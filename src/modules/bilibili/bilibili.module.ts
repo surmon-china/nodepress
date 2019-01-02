@@ -1,10 +1,18 @@
-import { Module } from '@nestjs/common';
-import { GithubController } from './github.controller';
-import { GithubService } from './github.service';
+/**
+ * Bilibili module.
+ * @file Bilibili 模块
+ * @module modules/bilibili/module
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
+import { Module, HttpModule } from '@nestjs/common';
+import { BilibiliController } from './bilibili.controller';
+import { BilibiliService } from './bilibili.service';
 
 @Module({
-  controllers: [GithubController],
-  providers: [GithubService],
-  exports: [GithubService],
+  imports: [HttpModule],
+  controllers: [BilibiliController],
+  providers: [BilibiliService],
+  exports: [BilibiliService],
 })
-export class GithubModule {}
+export class BilibiliModule {}

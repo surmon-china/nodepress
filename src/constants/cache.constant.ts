@@ -16,3 +16,4 @@ export const WALLPAPER_STORY = CACHE_PERFIX + 'wallpaper-story';
 export const MUSIC_LIST_PREFIX = CACHE_PERFIX + 'music-list-';
 export const MUSIC_URL_PREFIX = CACHE_PERFIX + 'music-url-';
 export const TODAY_VIEWS = CACHE_PERFIX + 'today-views';
+export const BILIBILI_LIST = CACHE_PERFIX + 'bilibili-list';
