@@ -1,6 +1,6 @@
 /**
  * Extended Statistic service.
- * @file Extended Statistic 模块服务
+ * @file 扩展模块 Statistic 服务
  * @module modules/extended/statistic.service
  * @author Surmon <https://github.com/surmon-china>
  */

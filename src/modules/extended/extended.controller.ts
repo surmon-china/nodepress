@@ -1,6 +1,7 @@
 /**
  * Extended controller.
- * @file Extended 模块控制器 -> 统计/常量/七牛/github
+ * @file 扩展模块控制器
+ * @description 分发 -> 统计/常量/七牛/github
  * @module modules/extended/controller
  * @author Surmon <https://github.com/surmon-china>
  */
