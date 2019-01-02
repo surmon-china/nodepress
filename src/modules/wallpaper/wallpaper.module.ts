@@ -1,7 +1,7 @@
 /**
  * Wallpaper module.
  * @file Wallpaper 模块
- * @module modules/wallpaper/module
+ * @module module/wallpaper/module
  * @author Surmon <https://github.com/surmon-china>
  */
 

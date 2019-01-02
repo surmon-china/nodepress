@@ -1,10 +1,11 @@
 /**
  * Auth controller.
  * @file 权限模块控制器
- * @module modules/auth/controller
+ * @module module/auth/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import * as APP_CONFIG from '@app/app.config';
 import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
@@ -13,7 +14,6 @@ import { QueryParams } from '@app/decorators/query-params.decorator';
 import { AuthService } from './auth.service';
 import { ITokenResult } from './auth.interface';
 import { Auth, AuthLogin } from './auth.model';
-import * as APP_CONFIG from '@app/app.config';
 
 @Controller('auth')
 export class AuthController {

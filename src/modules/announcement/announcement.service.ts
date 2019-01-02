@@ -1,7 +1,7 @@
 /**
  * Announcement service.
  * @file 公告模块数据服务
- * @module modules/announcement/service
+ * @module module/announcement/service
  * @author Surmon <https://github.com/surmon-china>
  */
 

@@ -1,7 +1,7 @@
 /**
  * Sitemap module.
  * @file Sitemap 模块
- * @module modules/sitemap/module
+ * @module module/sitemap/module
  * @author Surmon <https://github.com/surmon-china>
  */
 

@@ -1,7 +1,7 @@
 /**
  * Music controller.
  * @file Music 模块控制器
- * @module modules/music/controller
+ * @module module/music/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 

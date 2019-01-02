@@ -1,9 +1,20 @@
+/**
+ * OriginMiddleware.
+ * @file Origin 中间件
+ * @module middleware/cors
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import { CROSS_DOMAIN } from '@app/app.config';
 import { isProdMode } from '@app/app.environment';
 import { THttpErrorResponse, EStatus } from '@app/interfaces/http.interface';
 import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus } from '@nestjs/common';
 import * as TEXT from '@app/constants/text.constant';
 
+/**
+ * @class OriginMiddleware
+ * @classdesc 用于验证是否为非法来源请求
+ */
 @Injectable()
 export class OriginMiddleware implements NestMiddleware {
   resolve(...args: any[]): MiddlewareFunction {

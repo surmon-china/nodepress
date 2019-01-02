@@ -1,3 +1,10 @@
+/**
+ * Cache module.
+ * @file Cache 全局模块
+ * @module processor/cache/module
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
 import { CacheModule as NestCacheModule, Global, Module } from '@nestjs/common';
 import { CacheConfigService } from './cache.service.config';
 import { CacheService } from './cache.service';

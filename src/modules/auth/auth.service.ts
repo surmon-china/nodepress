@@ -1,7 +1,7 @@
 /**
  * Auth service.
  * @file 权限与管理员模块服务
- * @module modules/auth/service
+ * @module module/auth/service
  * @author Surmon <https://github.com/surmon-china>
  */
 

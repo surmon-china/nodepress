@@ -1,7 +1,7 @@
 /**
  * Extend model.
  * @file 通用扩展字段数据模型
- * @module models/extend
+ * @module model/extend
  * @author Surmon <https://github.com/surmon-china>
  */
 

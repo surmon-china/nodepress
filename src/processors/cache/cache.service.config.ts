@@ -1,3 +1,9 @@
+/**
+ * Cache config.
+ * @file Cache 配置器
+ * @module processor/cache/config.service
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
 import * as APP_CONFIG from '@app/app.config';
 import * as redisStore from 'cache-manager-redis-store';

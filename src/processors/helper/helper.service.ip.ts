@@ -1,7 +1,7 @@
 /**
  * Helper Ip service.
  * @file Helper Ip 模块服务
- * @module modules/helper/ip.service
+ * @module module/helper/ip.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -25,14 +25,11 @@ export class IpService {
       headers: { Authorization: `APPCODE ${APP_CONFIG.ALIYUN.ip}` },
       url: `https://api01.aliyun.venuscn.com/ip?ip=${ip}`,
     }).then(response => {
-      const result = JSON.parse(response.data);
-      if (result && result.ret === 200) {
-        return Promise.resolve(result.data);
+      if (response.data && response.data.ret === 200) {
+        return Promise.resolve(response.data.data);
       } else {
-        return Promise.reject(result);
+        return Promise.reject(response.data);
       }
-    }).catch(error => {
-      return Promise.reject(error);
     });
   }
 

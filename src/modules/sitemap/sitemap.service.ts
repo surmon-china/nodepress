@@ -1,7 +1,7 @@
 /**
  * Sitemap service.
  * @file Sitemap 模块服务
- * @module modules/sitemap/service
+ * @module module/sitemap/service
  * @author Surmon <https://github.com/surmon-china>
  */
 

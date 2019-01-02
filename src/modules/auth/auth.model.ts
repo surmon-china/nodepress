@@ -1,7 +1,7 @@
 /**
  * Auth model.
  * @file 权限和用户数据模型
- * @module modules/auth/model
+ * @module module/auth/model
  * @author Surmon <https://github.com/surmon-china>
  */
 

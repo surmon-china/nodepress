@@ -1,10 +1,20 @@
+/**
+ * HttpCacheInterceptor.
+ * @file 缓存拦截器
+ * @module interceptor/cache
+ * @author Surmon <https://github.com/surmon-china>
+ */
 
+import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { CacheInterceptor, ExecutionContext, Injectable, RequestMethod } from '@nestjs/common';
 import * as META from '@app/constants/meta.constant';
 import * as APP_CONFIG from '@app/app.config';
-import { CacheInterceptor, ExecutionContext, Injectable, RequestMethod } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
+/**
+ * @class HttpCacheInterceptor
+ * @classdesc 自定义这个拦截器是是要弥补框架不支持 ttl 参数的缺陷
+ */
 @Injectable()
 export class HttpCacheInterceptor extends CacheInterceptor {
 
@@ -31,6 +41,10 @@ export class HttpCacheInterceptor extends CacheInterceptor {
     }
   }
 
+  /**
+   * @function trackBy
+   * @description 目前的命中规则是：必须手动设置了 CacheKey 才会启用缓存机制，默认 ttl 为 APP_CONFIG.REDIS.defaultCacheTTL
+   */
   trackBy(context: ExecutionContext): string | undefined {
     const request = context.switchToHttp().getRequest();
     const httpServer = this.applicationRefHost.applicationRef;

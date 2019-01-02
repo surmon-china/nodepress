@@ -1,7 +1,7 @@
 /**
  * App controller.
  * @file 主页控制器
- * @module app.controller
+ * @module app/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 

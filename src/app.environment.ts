@@ -1,7 +1,7 @@
 /**
- * App environment module.
+ * App environment.
  * @file Environment 环境配置
- * @module app.environment
+ * @module app/environment
  * @author Surmon <https://github.com/surmon-china>
  */
 

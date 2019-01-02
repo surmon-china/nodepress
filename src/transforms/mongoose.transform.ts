@@ -1,7 +1,7 @@
 /**
- * App module transform.
- * @file 模块转换器
- * @module app.utils.module.transform
+ * Mongoose transform.
+ * @file Mongoose 模块转换器
+ * @module transform/mongoose
  * @author Surmon <https://github.com/surmon-china>
  */
 

@@ -1,16 +1,18 @@
 /**
  * Extended Statistic service.
  * @file 扩展模块 Statistic 服务
- * @module modules/extended/statistic.service
+ * @module module/extended/statistic.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as schedule from 'node-schedule';
+import * as CACHE_KEY from '@app/constants/cache.constant';
+import { InjectModel } from 'nestjs-typegoose';
 import { Injectable } from '@nestjs/common';
+import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { CacheService } from '@app/processors/cache/cache.service';
-// const Article = require('np-model/article.model')
-// const Comment = require('np-model/comment.model')
+import { Article } from '@app/modules/article/article.model';
+import { Comment } from '@app/modules/comment/comment.model';
 
 export interface ITodayStatistic {
   tags: number;
@@ -29,13 +31,18 @@ export class StatisticService {
     comments: null,
   };
 
-  constructor(private readonly cacheService: CacheService) {
+  constructor(
+    private readonly cacheService: CacheService,
+    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
+    @InjectModel(Comment) private readonly commentModel: TMongooseModel<Comment>,
+  ) {
+    // 每天 0 点数据清零
     schedule.scheduleJob('1 0 0 * * *', () => {
       this.cacheService.set(CACHE_KEY.TODAY_VIEWS, 0);
     });
   }
 
-  getStatistic() {
+  public getStatistic() {
     return Promise.all([
       this.getTagsCount(),
       this.getViewsCount(),
@@ -60,18 +67,16 @@ export class StatisticService {
   }
 
   private getArticlesCount(): Promise<number> {
-    return Promise.resolve(100);
-    // return Article.countDocuments({}, (err, count) => {
-    //   this.resultData.articles = count;
-    //   return count;
-    // });
+    return this.articleModel.countDocuments({}).then(count => {
+      this.resultData.articles = count;
+      return count;
+    });
   }
 
   private getCommentsCount(): Promise<number> {
-    return Promise.resolve(100);
-    // return Comment.countDocuments({}, (err, count) => {
-    //   this.resultData.comments = count;
-    //   return count;
-    // });
+    return this.commentModel.countDocuments({}).then(count => {
+      this.resultData.comments = count;
+      return count;
+    });
   }
 }

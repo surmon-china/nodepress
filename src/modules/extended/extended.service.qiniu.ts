@@ -1,7 +1,7 @@
 /**
  * Extended Qiniu service.
  * @file 扩展模块 Qiniu 服务
- * @module modules/extended/qiniu.service
+ * @module module/extended/qiniu.service
  * @author Surmon <https://github.com/surmon-china>
  */
 

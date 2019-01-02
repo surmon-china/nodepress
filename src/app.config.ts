@@ -1,7 +1,7 @@
 /**
- * App config module.
+ * App config.
  * @file 应用运行配置
- * @module app.config
+ * @module app/config
  * @author Surmon <https://github.com/surmon-china>
  */
 
