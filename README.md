@@ -48,10 +48,10 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
         * `error`：异常
     * `message`：永远返回（由 [http.decorator](https://github.com/surmon-china/nodepress/blob/nest/src/decorators/http.decorator.ts) 装饰）
     * `error`：一般会返回错误发生节点的 error；在 `status` 为 `error` 的时候必须返回，方便调试
-    * `debug`：开发模式下为错误的错误堆栈，生产模式不返回
+    * `debug`：开发模式下为发生错误的堆栈，生产模式不返回
     * `result`：在 `status` 为 `success` 的时候必须返回
         * 列表数据：一般返回`{ pagenation: {...}, data: {..} }`
-        * 具体数据，如文章，则包含直接数据如`{ title: '', content: ... }`
+        * 具体数据：例如文章，则包含直接数据如`{ title: '', content: ... }`
 
 
 ## 数据结构
@@ -59,17 +59,14 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   - 通用
     * `extend` 为通用扩展（[模型在此](https://github.com/surmon-china/nodepress/blob/nest/src/models/extend.model.ts)）
     * 文章、分类、Tag 表都包含 extend 字段，用于在后台管理中自定义扩展，类似于 Wordpress 中的自定义字段功能，目前用来实现前台 icon 图标的 class 或者其他功能
-    ···
 
 
   - 各表重要字段
-    * `name`：名称
     * `_id`：mongodb 生成的 id，一般用于后台执行 CRUD 操作
     * `id`：插件生成的自增数字 id，类似 mysql 中的 id，具有唯一性，用于前台获取数据
-    * `pid`：父级ID，用于建立数据表关系，与 id 字段映射
-    ···
+    * `pid`：父级 id，用于建立数据表关系，与 id 字段映射
 
-  - 数据组成的三种可能
+  - 数据组成的几种可能
     * 数据库真实存在数据
     * 业务计算出的数据，非存储数据，如：统计数据
     * Mongoose 支持的 virtual 虚拟数据
@@ -91,11 +88,11 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   1. `request`：收到请求
   2. `middleware`：中间件过滤（跨域、来源校验等处理）
   3. `guard`：守卫过滤（鉴权）
-  4. `interceptor:before`：数据拦截器（本应用为空，即：无处理）
+  4. `interceptor:before`：数据流拦截器（本应用为空，即：无处理）
   5. `pipe`：参数提取（校验）器
   6. `controller`：业务控制器
   7. `service`：业务服务
-  8. `interceptor:after`：数据拦截器（格式化数据、错误）
+  8. `interceptor:after`：数据流拦截器（格式化数据、错误）
   9. `filter`：捕获以上所有流程中出现的异常，如果任何一个环节抛出异常，则返回错误
 
 - 鉴权处理流程
@@ -106,7 +103,7 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   4. `guard.handleRequest`：[根据鉴权服务返回的结果作判断处理，通行或拦截](https://github.com/surmon-china/nodepress/blob/nest/src/guards/auth.guard.ts#L11)
 
 - 鉴权级别
-  * 任何高级操作（CUD）都会校验必须的 Token
+  * 任何高级操作（CUD）都会校验必须的 Token（代码见 [auth.guard.ts](https://github.com/surmon-china/nodepress/blob/nest/src/guards/auth.guard.ts) ）
   * 涉及表数据读取的 GET 请求会智能校验 Token，无 Token 或 Token 验证生效则通行，否则不通行（代码见 [humanized-auth.guard.ts](https://github.com/surmon-china/nodepress/blob/nest/src/guards/humanized-auth.guard.ts) ）
 
 - 参数校验逻辑（代码见 [query-params.decorator.ts](https://github.com/surmon-china/nodepress/blob/nest/src/decorators/query-params.decorator.ts#L198) ）
@@ -121,20 +118,20 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   * 日志拦截器
   * 错误拦截器
 
-- 装饰器
-  * 缓存装饰器，用于配置 cache key/ cache ttl
+- 装饰器 decorators
+  * 缓存装饰器，用于配置 cache key / cache ttl
   * 控制器响应装饰器，用于输出规范化的信息，如 message 和 翻页参数数据
   * 请求参数装饰器，用户自动校验和格式化请求参数，包括 query/params
 
-- 守卫
-  * 默认所有非 GET 请求会使用 Auth 守卫鉴权
-  * 所有涉及到多角色请求的 GET 接口会使用 HumanizedJwtAuthGuard 进行鉴权
+- 守卫 guards
+  * 默认所有非 GET 请求会使用 [Auth](https://github.com/surmon-china/nodepress/blob/nest/src/guards/auth.guard.ts) 守卫鉴权
+  * 所有涉及到多角色请求的 GET 接口会使用 [HumanizedJwtAuthGuard](https://github.com/surmon-china/nodepress/blob/nest/src/guards/humanized-auth.guard.ts) 进行鉴权
 
-- 中间件
-  * cors 中间件，用于处理跨域访问
-  * origin 中间件，用于拦截各路不明请求
+- 中间件 middlewares
+  * [Cors 中间件](https://github.com/surmon-china/nodepress/blob/nest/src/middlewares/cors.middleware.ts)，用于处理跨域访问
+  * [Origin 中间件](https://github.com/surmon-china/nodepress/blob/nest/src/middlewares/origin.middleware.ts)，用于拦截各路不明请求
 
-- 管道
+- 管道 pipes
   * 用于验证所有基于 class-validate 的验证类
 
 - 业务模块
