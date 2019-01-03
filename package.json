@@ -30,7 +30,7 @@
     "test:watch": "NODE_ENV=test jest --watch",
     "test:cov": "NODE_ENV=test jest --coverage",
     "test:e2e": "NODE_ENV=test jest --config ./test/jest-e2e.json",
-    "updatedb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
+    "updategeodb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
   },
   "dependencies": {
     "@nestjs/common": "^5.4.1",
