@@ -7,8 +7,8 @@
 
 const CONFIG = require('app.config')
 const redis = require('np-core/np-redis')
-const Tag = require('np-model/tag.model')
-const TagCtrl = require('./tag.controller')
+const Article = require('np-model/article.model')
+const ArticleCtrl = require('./article.controller')
 const Category = require('np-model/category.model')
 const Article = require('np-model/article.model')
 const authIsVerified = require('np-utils/np-auth')
@@ -32,7 +32,7 @@ const ArticleCtrl = initController(['list', 'item'])
 ArticleCtrl.list.GET = (req, res) => {
 
   // 初始参数
-  const { keyword, category, category_slug, tag, tag_slug, date, hot } = req.query
+  const { keyword, category, category_slug, article, article_slug, date, hot } = req.query
   const [page, per_page, state, public, origin] = [
     req.query.page || 1,
     req.query.per_page,
@@ -44,7 +44,7 @@ ArticleCtrl.list.GET = (req, res) => {
   // 过滤条件
   const options = {
     page,
-    populate: ['category', 'tag'],
+    populate: ['category', 'article'],
     select: '-password -content',
     sort: { _id: SORT_TYPE.desc }
   }
@@ -56,9 +56,9 @@ ArticleCtrl.list.GET = (req, res) => {
   // 查询参数
   const query = {}
 
-  // 标签 id 查询
-  if (tag) {
-    query.tag = tag
+  // 文章 id 查询
+  if (article) {
+    query.article = article
   }
 
   // 分类 id 查询
@@ -143,18 +143,18 @@ ArticleCtrl.list.GET = (req, res) => {
       .catch(humanizedHandleError(res, '分类查找失败'))
   }
   
-  // 标签别名查询 - 根据别名查询到 id，然后根据 id 查询
-  if (tag_slug) {
-    return Tag.find({ slug: tag_slug })
-      .then(([tag] = []) => {
-        if (tag) {
-          query.tag = tag._id
+  // 文章别名查询 - 根据别名查询到 id，然后根据 id 查询
+  if (article_slug) {
+    return Article.find({ slug: article_slug })
+      .then(([article] = []) => {
+        if (article) {
+          query.article = article._id
           getArticles()
         } else {
-          handleError({ res, message: '标签不存在' })
+          handleError({ res, message: '文章不存在' })
         }
       })
-      .catch(humanizedHandleError(res, '标签查找失败'))
+      .catch(humanizedHandleError(res, '文章查找失败'))
   }
 
   // 默认请求文章列表
@@ -173,7 +173,7 @@ ArticleCtrl.list.POST = ({ body: article }, res) => {
   new Article(article).save()
     .then((result = article) => {
       handleSuccess({ res, result, message: '文章发布成功' })
-      TagCtrl.redisTagsCache.update()
+      ArticleCtrl.redisArticlesCache.update()
       updateAndBuildSiteMap()
       baiduSeoPush(`${CONFIG.APP.URL}/article/${result.id}`)
     })
@@ -201,7 +201,7 @@ ArticleCtrl.list.PATCH = ({ body: { articles, action }}, res) => {
   Article.updateMany({ _id: { $in: articles }}, { $set: updatePart }, { multi: true })
     .then(result => {
       handleSuccess({ res, result, message: '文章批量操作成功' })
-      TagCtrl.redisTagsCache.update()
+      ArticleCtrl.redisArticlesCache.update()
       updateAndBuildSiteMap()
     })
     .catch(humanizedHandleError(res, '文章批量操作失败'))
@@ -246,7 +246,7 @@ ArticleCtrl.item.GET = ({ params: { article_id }}, res) => {
   // 获取相关文章
   const getRelatedArticles = result => {
     Article.find(
-      { state: PUBLISH_STATE.published, public: PUBLIC_STATE.public, tag: { $in: result.tag.map(t => t._id) }},
+      { state: PUBLISH_STATE.published, public: PUBLIC_STATE.public, article: { $in: result.article.map(t => t._id) }},
       'id title description thumb -_id',
       (err, articles) => {
         result.related = err ? [] : articles
@@ -257,7 +257,7 @@ ArticleCtrl.item.GET = ({ params: { article_id }}, res) => {
 
   (isFindById
     ? Article.findById(article_id)
-    : Article.findOne({ id: article_id, state: PUBLISH_STATE.published, public: PUBLIC_STATE.public }).populate('category tag').exec()
+    : Article.findOne({ id: article_id, state: PUBLISH_STATE.published, public: PUBLIC_STATE.public }).populate('category article').exec()
   )
   .then(result => {
 
@@ -271,7 +271,7 @@ ArticleCtrl.item.GET = ({ params: { article_id }}, res) => {
     }
 
     // 如果是前台用户请求，则需要获取相关文章
-    if (!isFindById && result.tag.length) {
+    if (!isFindById && result.article.length) {
       getRelatedArticles(result.toObject())
     } else {
       handleSuccess({ res, result, message: '文章获取成功' })
@@ -297,7 +297,7 @@ ArticleCtrl.item.PUT = ({ params: { article_id }, body: article }, res) => {
   Article.findByIdAndUpdate(article_id, article, { new: true })
     .then(result => {
       handleSuccess({ res, result, message: '文章修改成功' })
-      TagCtrl.redisTagsCache.update()
+      ArticleCtrl.redisArticlesCache.update()
       updateAndBuildSiteMap()
       baiduSeoUpdate(`${CONFIG.APP.URL}/article/${result.id}`)
     })
@@ -309,7 +309,7 @@ ArticleCtrl.item.DELETE = ({ params: { article_id }}, res) => {
   Article.findByIdAndRemove(article_id)
     .then(result => {
       handleSuccess({ res, result, message: '文章删除成功' })
-      TagCtrl.redisTagsCache.update()
+      ArticleCtrl.redisArticlesCache.update()
       updateAndBuildSiteMap()
       baiduSeoDelete(`${CONFIG.APP.URL}/article/${result.id}`)
     })
