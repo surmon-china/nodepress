@@ -138,17 +138,17 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   * 分类
   * 标签
   * 评论
-  * bilibili
-  * 鉴权/登陆
-  * 点赞
-  * 音乐
   * 配置
+  * bilibili：Vlog 业务的请求
+  * 鉴权/登陆：全局鉴权业务和 Token 业务
+  * 点赞：点赞评论、文章、主站
+  * 音乐：播放器音乐数据业务
   * [网站地图](https://github.com/surmon-china/nodepress/blob/nest/src/modules/sitemap/sitemap.service.ts)：负责网站地图 xml 生成，抽象出的对象。包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
-  * 壁纸
+  * 壁纸：主站每日壁纸模块业务
   * 扩展模块
-    + Github
-    + 统计
-    + 七牛
+    + Github：Github 项目列表业务
+    + 统计：简单的统计业务
+    + 七牛：生成七牛上传 Token
 
 - 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
   * [数据库](https://github.com/surmon-china/nodepress/blob/nest/src/processors/database)
@@ -181,7 +181,7 @@ $ npm run start:dev
 $ npm run build
 
 # 更新 GEO IP 库数据
-$ npm run updatedb
+$ npm run updategeodb
 
 # 生产环境运行
 $ npm run start:prod
