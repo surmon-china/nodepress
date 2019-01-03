@@ -32,8 +32,8 @@ export class ArticleController {
   getArticles(@QueryParams(
     EQPFields.Date, EQPFields.State, EQPFields.Public, EQPFields.Origin, EQPFields.Sort, EQPFields.Keyword,
     'cache', 'tag', 'category', 'tag_slug', 'category_slug',
-  ) queryParams): Promise<PaginateResult<Article>> {
-    const { querys, options, origin, isAuthenticated } = queryParams;
+  ) { querys, options, isAuthenticated }): Promise<PaginateResult<Article>> {
+
     // 如果是前台请求缓存文章，则忽略一切后续处理
     if (querys.cache && !isAuthenticated && querys.sort === ESortType.Hot) {
       return this.articleService.getHotListCache();
@@ -54,14 +54,15 @@ export class ArticleController {
       { field: 'tag_slug', name: 'tag', service: this.tagService.getItemBySlug as TSlugService},
       { field: 'category_slug', name: 'category', service: this.categoryService.getItemBySlug as TSlugService},
     ].find(item => querys[item.field]);
+
     return !matchedParams
       ? this.articleService.getList(querys, options)
-      : matchedParams.service(origin[matchedParams.field]).then(paramItem => {
+      : matchedParams.service(querys[matchedParams.field]).then(paramItem => {
           if (paramItem) {
             querys[matchedParams.name] = paramItem._id;
             return this.articleService.getList(querys, options);
           } else {
-            return Promise.reject(`标签 ${origin.tag_slug}不存在`);
+            return Promise.reject(`标签 ${querys.tag_slug}不存在`);
           }
         });
   }
