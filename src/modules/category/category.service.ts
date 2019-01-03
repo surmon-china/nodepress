@@ -62,7 +62,7 @@ export class CategoryService {
     });
   }
 
-  // 获取单个分类
+  // 获取单个分类（及自身关联的所有父级）
   async getItem(categoryId: Types.ObjectId): Promise<Category[]> {
     const categories = [];
     return new Promise((resolve, reject) => {
@@ -82,6 +82,11 @@ export class CategoryService {
           .catch(reject);
       })(categoryId));
     });
+  }
+
+  // 获取标签详情（使用别名）
+  async getItemBySlug(slug: string): Promise<Category> {
+    return this.categoryModel.findOne({ slug });
   }
 
   // 修改分类

@@ -102,6 +102,18 @@ export class Article extends Typegoose {
   @prop({ default: EOriginState.Original })
   origin: EOriginState;
 
+  // 文章标签
+  @arrayProp({ itemsRef: Tag })
+  tag: Ref<Tag>[];
+
+  // 文章分类
+  @arrayProp({ itemsRef: Category, required: true })
+  category: Ref<Category>[];
+
+  // 其他元信息
+  @prop()
+  meta: Meta;
+
   // 发布日期
   @prop({ default: Date.now })
   create_at?: Date;
@@ -114,18 +126,6 @@ export class Article extends Typegoose {
   @ArrayUnique()
   @arrayProp({ items: Extend })
   extends: Extend[];
-
-  // 文章标签
-  @arrayProp({ itemsRef: Tag })
-  tag: Ref<Tag>[];
-
-  // 文章分类
-  @arrayProp({ itemsRef: Category, required: true })
-  category: Ref<Category>[];
-
-  // 其他元信息
-  @prop()
-  meta: Meta;
 }
 
 export class DelArticles extends Typegoose {
