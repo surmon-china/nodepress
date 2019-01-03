@@ -53,7 +53,6 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
         * 列表数据：一般返回`{ pagenation: {...}, data: {..} }`
         * 具体数据：例如文章，则包含直接数据如`{ title: '', content: ... }`
 
-
 ## 数据结构
 
   - 通用
@@ -81,7 +80,6 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   * `app.controller.ts`：主程序根控制器
   * `app.config.ts`：主程序配置，数据库、程序、第三方，一切可配置项
   * `app.environment.ts：`全局环境变量
-
 
 - 请求处理流程
 
@@ -112,29 +110,29 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   
 - 错误过滤器（代码见 [error.filter.ts](https://github.com/surmon-china/nodepress/blob/nest/src/filters/error.filter.ts) ）
 
-- 拦截器
-  * 缓存拦截器
-  * 数据转换拦截器
-  * 日志拦截器
-  * 错误拦截器
+- 拦截器 [interceptors](https://github.com/surmon-china/nodepress/tree/nest/src/interceptors)
+  * [缓存拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/cache.interceptor.ts)：自定义这个拦截器是是要弥补框架不支持 ttl 参数的缺陷
+  * [数据流转换拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/transform.interceptor.ts)：当控制器所需的 Promise service 成功响应时，将在此被转换为标准的数据结构 IHttpResultPaginate
+  * [数据流异常拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/error.interceptor.ts)：当控制器所需的 Promise service 发生错误时，错误将在此被捕获
+  * [日志拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/logging.interceptor.ts)：代替默认的全局日志
 
-- 装饰器 decorators
-  * 缓存装饰器，用于配置 cache key / cache ttl
-  * 控制器响应装饰器，用于输出规范化的信息，如 message 和 翻页参数数据
-  * 请求参数装饰器，用户自动校验和格式化请求参数，包括 query/params
+- 装饰器 [decorators](https://github.com/surmon-china/nodepress/tree/nest/src/decorators)
+  * [缓存装饰器](https://github.com/surmon-china/nodepress/blob/nest/src/decorators/cache.decorator.ts)：用于配置 `cache key / cache ttl`
+  * [控制器响应装饰器](https://github.com/surmon-china/nodepress/blob/nest/src/decorators/http.decorator.ts)：用于输出规范化的信息，如 `message` 和 翻页参数数据
+  * [请求参数提取器](https://github.com/surmon-china/nodepress/blob/nest/src/decorators/query-params.decorator.ts)：用户自动校验和格式化请求参数，包括 `query/params/辅助信息`
 
-- 守卫 guards
+- 守卫 [guards](https://github.com/surmon-china/nodepress/tree/nest/src/guards)
   * 默认所有非 GET 请求会使用 [Auth](https://github.com/surmon-china/nodepress/blob/nest/src/guards/auth.guard.ts) 守卫鉴权
   * 所有涉及到多角色请求的 GET 接口会使用 [HumanizedJwtAuthGuard](https://github.com/surmon-china/nodepress/blob/nest/src/guards/humanized-auth.guard.ts) 进行鉴权
 
-- 中间件 middlewares
+- 中间件 [middlewares](https://github.com/surmon-china/nodepress/tree/nest/src/middlewares)
   * [Cors 中间件](https://github.com/surmon-china/nodepress/blob/nest/src/middlewares/cors.middleware.ts)，用于处理跨域访问
   * [Origin 中间件](https://github.com/surmon-china/nodepress/blob/nest/src/middlewares/origin.middleware.ts)，用于拦截各路不明请求
 
-- 管道 pipes
+- 管道 [pipes](https://github.com/surmon-china/nodepress/tree/nest/src/pipes)
   * 用于验证所有基于 class-validate 的验证类
 
-- 业务模块
+- 业务模块 [modules](https://github.com/surmon-china/nodepress/tree/nest/src/modules)
   * 公告
   * 文章
   * 分类
@@ -153,7 +151,7 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
     + 统计
     + 七牛
 
-- 核心辅助模块/processors
+- 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
   * 数据库
   * 缓存/Redis
   * 辅助/Helper
