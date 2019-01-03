@@ -11,7 +11,7 @@ import { IsString, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { Extend } from '@app/models/extend.model';
 
-@pre('findOneAndUpdate', function(next) {
+@pre<Tag>('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
