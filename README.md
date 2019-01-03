@@ -143,8 +143,7 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   * 点赞
   * 音乐
   * 配置
-  * 网站地图
-      > 网站地图 xml 生成，抽象出的对象。包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
+  * 网站地图：负责网站地图 xml 生成，抽象出的对象。包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
   * 壁纸
   * 扩展模块
     + Github
@@ -159,13 +158,10 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
     + 扩展的 [Promise 工作模式](https://github.com/surmon-china/nodepress/blob/nest/src/processors/cache/cache.service.ts#L99)（双向同步/被动更新）
     + 扩展的 [Interval 工作模式](https://github.com/surmon-china/nodepress/blob/nest/src/processors/cache/cache.service.ts#L138)（超时更新/定时更新）
   * 辅助/ Helper
-    + 百度实时更新服务：根据入参主动提交搜索引擎收录；目前只有百度；分别会在文章、分类、标签、进行 CUD 的时候调用此类
-    + 评论过滤服务
-      > 使用 akismet 过滤 spam；暴露三个方法：校验spam、提交spam、提交ham
-    + 邮件服务
-      > 根据入参发送邮件；程序启动时会自动校验，校验成功则根据入参发送邮件
-    + 地理查询服务
-      > 根据入参查询物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
+    + [百度实时更新服务](https://github.com/surmon-china/nodepress/blob/nest/src/processors/helper/helper.service.baidu-seo.ts)：根据入参主动提交搜索引擎收录；目前只有百度；分别会在文章、分类、标签、进行 CUD 的时候调用对应方法
+    + [评论过滤服务](https://github.com/surmon-china/nodepress/blob/nest/src/processors/helper/helper.service.akismet.ts)：使用 akismet 过滤 spam；暴露三个方法：校验 spam、提交 spam、提交 ham
+    + [邮件服务](https://github.com/surmon-china/nodepress/blob/nest/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
+    + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/nest/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
 
 ## 开发命令
 
