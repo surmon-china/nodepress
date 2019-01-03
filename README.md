@@ -143,7 +143,7 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
   * 点赞
   * 音乐
   * 配置
-  * 网站地图：负责网站地图 xml 生成，抽象出的对象。包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
+  * [网站地图](https://github.com/surmon-china/nodepress/blob/nest/src/modules/sitemap/sitemap.service.ts)：负责网站地图 xml 生成，抽象出的对象。包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
   * 壁纸
   * 扩展模块
     + Github
@@ -151,13 +151,13 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
     + 七牛
 
 - 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
-  * 数据库
+  * [数据库](https://github.com/surmon-china/nodepress/blob/nest/src/processors/database)
     + 连接数据库和异常自动重试
-  * 缓存/ Redis
+  * [缓存 / Redis](https://github.com/surmon-china/nodepress/blob/nest/src/processors/cache)
     + 基本的缓存数据 Set、Get
     + 扩展的 [Promise 工作模式](https://github.com/surmon-china/nodepress/blob/nest/src/processors/cache/cache.service.ts#L99)（双向同步/被动更新）
     + 扩展的 [Interval 工作模式](https://github.com/surmon-china/nodepress/blob/nest/src/processors/cache/cache.service.ts#L138)（超时更新/定时更新）
-  * 辅助/ Helper
+  * [辅助 / Helper](https://github.com/surmon-china/nodepress/blob/nest/src/processors/helper)
     + [百度实时更新服务](https://github.com/surmon-china/nodepress/blob/nest/src/processors/helper/helper.service.baidu-seo.ts)：根据入参主动提交搜索引擎收录；目前只有百度；分别会在文章、分类、标签、进行 CUD 的时候调用对应方法
     + [评论过滤服务](https://github.com/surmon-china/nodepress/blob/nest/src/processors/helper/helper.service.akismet.ts)：使用 akismet 过滤 spam；暴露三个方法：校验 spam、提交 spam、提交 ham
     + [邮件服务](https://github.com/surmon-china/nodepress/blob/nest/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
