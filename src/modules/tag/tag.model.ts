@@ -26,6 +26,8 @@ import { Extend } from '@app/models/extend.model';
 
 export class Tag extends Typegoose {
 
+  _id?: Types.ObjectId;
+
   @IsNotEmpty({ message: '标签名称？' })
   @IsString({ message: '字符串？' })
   @prop({ required: true, validate: /\S+/ })

@@ -12,6 +12,17 @@ import { HttpForbiddenError } from '@app/errors/forbidden.error';
 import { HttpBadRequestError } from '@app/errors/bad-request.error';
 import { EPublishState, EPublicState, EOriginState, ESortType } from '@app/interfaces/state.interface';
 
+// 需重构
+export enum EQueryParamsFields {
+  Page = 'page',
+  Sort = 'sort',
+  Date = 'date',
+  Keyword = 'keyword',
+  State = 'state',
+  Public = 'public',
+  Origin = 'origin',
+}
+
 export interface IOptions {
   [key: string]: string | number | Date | RegExp | IOptions;
 }
@@ -48,6 +59,7 @@ interface IValidateError {
  * @example @QueryParams({ options: { page: 1 } })
  * @example @QueryParams({ params: { id: 'listId' } })
  * @example @QueryParams({ querys: { state: true, date: true } })
+ * @example @QueryParams(EQPFields.State, EQPFields.Date, { [EQPFields.Page]: 1 })
  */
 export const QueryParams = createParamDecorator((config: ITransformConfig, request) => {
 
@@ -121,9 +133,7 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
       isIllegal: false,
       setValue() {
         if (sort != null) {
-          options.sort = sort === ESortType.Hot
-            ? { likes: ESortType.Desc }
-            : { _id: sort };
+          options.sort = { _id: sort };
         }
       },
     },
