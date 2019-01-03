@@ -46,8 +46,8 @@ const articleSchema = new mongoose.Schema({
   // 最后修改日期
   update_at: { type: Date, default: Date.now },
 
-  // 文章标签
-  tag: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}],
+  // 文章文章
+  article: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article'}],
 
   // 文章分类
   category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true }],
