@@ -21,8 +21,8 @@ import { Article, ArticleModel } from './article.model';
 @Injectable()
 export class ArticleService {
 
-  // 为非鉴权用户所用
-  private articleListCache: TCachePromiseIoResult;
+  // 热门文章列表缓存
+  private hotArticleListCache: TCachePromiseIoResult;
 
   constructor(
     private readonly cacheService: CacheService,
@@ -30,66 +30,50 @@ export class ArticleService {
     private readonly baiduSeoService: BaiduSeoService,
     @InjectModel(ArticleModel) private readonly articleModel: TMongooseModel<Article>,
   ) {
-    const promiseTask = () => {
-      const options = { page: 1, limit: 166, sort: { _id: ESortType.Desc }};
-      return this.getList.bind(this)(null, options, false);
-    };
-    this.articleListCache = this.cacheService.promise({
+    this.hotArticleListCache = this.cacheService.promise({
       ioMode: true,
       key: CACHE_KEY.TAGS,
-      promise: promiseTask,
+      promise() {
+        const options = {
+          limit: 10,
+          sort: {
+            'meta.comments': ESortType.Desc,
+            'meta.likes': ESortType.Desc,
+          },
+        };
+        return this.getList.bind(this)(null, options, false);
+      },
     });
   }
 
   // 构造链接
-  private buildSeoUrl(slug: string): string {
-    return `${APP_CONFIG.APP.URL}/article/${slug}`;
+  private buildSeoUrl(id: string | number): string {
+    return `${APP_CONFIG.APP.URL}/article/${id}`;
   }
 
-  // 更新所有内容相关服务
-  private updateContentExternalService(): void {
-    this.updateListCache();
-    this.sitemapService.updateSitemap();
+  // 热门文章列表缓存
+  getHotListCache(): Promise<PaginateResult<Article>> {
+    return this.hotArticleListCache.get();
   }
 
-  // 请求文章列表缓存
-  getListCache(): Promise<PaginateResult<Article>> {
-    return this.articleListCache.get();
-  }
-
-  // 更新文章列表缓存
-  updateListCache(): Promise<PaginateResult<Article>> {
-    return this.articleListCache.update();
-  }
-
-  // 请求文章列表（及聚和数据）
-  getList(querys, options, isAuthenticated): Promise<PaginateResult<Article>> {
-    const matchState = { state: EPublishState.Published, public: EPublicState.Public };
+  // 请求文章列表
+  getList(querys, options): Promise<PaginateResult<Article>> {
+    // 隐藏机密信息
+    options.populate = ['category', 'article'];
+    options.select = '-password -content';
     return this.articleModel.paginate(querys, options).then(articles => {
-      return this.articleModel.aggregate([
-        { $match: isAuthenticated ? null : matchState },
-        { $unwind: '$article' },
-        { $group: { _id: '$article', num_tutorial: { $sum: 1 }}},
-      ]).then(counts => {
-        const todoArticles = lodash.cloneDeep(articles);
-        todoArticles.docs = todoArticles.docs.map(article => {
-          const finded = counts.find(count => String(count._id) === String(article._id));
-          article.count = finded ? finded.num_tutorial : 0;
-          return article;
-        });
-        return todoArticles;
-      });
+      return articles;
     });
   }
 
   // 创建文章
   createItem(newArticle: Article): Promise<Article> {
-    return this.articleModel.find({ slug: newArticle.slug }).then(existedArticles => {
+    return this.articleModel.find({ slug: newArticle.id }).then(existedArticles => {
       return existedArticles.length
         ? Promise.reject('slug 已被占用')
         : new this.articleModel(newArticle).save().then(article => {
-            this.baiduSeoService.push(this.buildSeoUrl(article.slug));
-            this.updateContentExternalService();
+            this.baiduSeoService.push(this.buildSeoUrl(article.id));
+            this.sitemapService.updateSitemap();
             return article;
           });
     });
@@ -97,12 +81,12 @@ export class ArticleService {
 
   // 修改文章
   async putItem(articleId: Types.ObjectId, newArticle: Article): Promise<Article> {
-    return this.articleModel.findOne({ slug: newArticle.slug }).then(existedArticle => {
+    return this.articleModel.findOne({ slug: newArticle.id }).then(existedArticle => {
       return existedArticle && existedArticle._id !== articleId
         ? Promise.reject('slug 已被占用')
         : this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).then(article => {
-            this.baiduSeoService.push(this.buildSeoUrl(article.slug));
-            this.updateContentExternalService();
+            this.baiduSeoService.push(this.buildSeoUrl(article.id));
+            this.sitemapService.updateSitemap();
             return article;
           });
     });
@@ -111,8 +95,8 @@ export class ArticleService {
   // 删除单个文章
   async deleteItem(articleId: Types.ObjectId): Promise<any> {
     return this.articleModel.findByIdAndRemove(articleId).then(article => {
-      this.baiduSeoService.delete(this.buildSeoUrl(article.slug));
-      this.updateContentExternalService();
+      this.baiduSeoService.delete(this.buildSeoUrl(article.id));
+      this.sitemapService.updateSitemap();
       return article;
     });
   }
@@ -120,9 +104,9 @@ export class ArticleService {
   // 批量删除文章
   async deleteList(articleIds: Types.ObjectId[]): Promise<any> {
     return this.articleModel.find({ _id: { $in: articleIds }}).then(articles => {
-      this.baiduSeoService.delete(articles.map(article => this.buildSeoUrl(article.slug)));
+      this.baiduSeoService.delete(articles.map(article => this.buildSeoUrl(article.id)));
       return this.articleModel.deleteMany({ _id: { $in: articleIds }}).then(result => {
-        this.updateContentExternalService();
+        this.sitemapService.updateSitemap();
         return result;
       });
     });

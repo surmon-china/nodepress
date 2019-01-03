@@ -95,6 +95,11 @@ export class TagService {
     });
   }
 
+  // 获取标签详情
+  async getItemBySlug(slug: string): Promise<Tag> {
+    return this.tagModel.findOne({ slug });
+  }
+
   // 修改标签
   async putItem(tagId: Types.ObjectId, newTag: Tag): Promise<Tag> {
     return this.tagModel.findOne({ slug: newTag.slug }).then(existedTag => {
