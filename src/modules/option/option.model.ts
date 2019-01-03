@@ -33,7 +33,7 @@ class Blacklist {
   keywords: string[];
 }
 
-@pre('findOneAndUpdate', function(next) {
+@pre<Option>('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })

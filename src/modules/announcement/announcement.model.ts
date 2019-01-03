@@ -11,7 +11,7 @@ import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty, IsArray, ArrayNotEmpty, A
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { EPublishState } from '@app/interfaces/state.interface';
 
-@pre('findOneAndUpdate', function(next) {
+@pre<Announcement>('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
