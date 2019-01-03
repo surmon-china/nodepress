@@ -1,0 +1,67 @@
+/**
+ * Bilibili service.
+ * @file Bilibili 模块服务
+ * @module module/bilibili/service
+ * @author Surmon <https://github.com/surmon-china>
+ */
+
+import * as lodash from 'lodash';
+import * as APP_CONFIG from '@app/app.config';
+import * as CACHE_KEY from '@app/constants/cache.constant';
+import { Injectable, HttpService } from '@nestjs/common';
+import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
+
+export interface IBilibiliVideoList {
+  status: boolean;
+  data: any;
+  vlist: any[];
+}
+
+@Injectable()
+export class BilibiliService {
+
+  private uid = 27940710;
+  private keyword = 'vlog';
+  private defaultPageSize = 66;
+  private defaultPage = 1;
+  private cache: ICacheIntervalResult;
+
+  constructor(private readonly httpService: HttpService, private readonly cacheService: CacheService) {
+    this.cache = this.cacheService.interval({
+      key: CACHE_KEY.BILIBILI_LIST,
+      promise: () => this.getVideoList(this.defaultPageSize, this.defaultPage),
+      timeout: {
+        success: 1000 * 60 * 30, // 成功后 30 分钟更新一次数据
+        error: 1000 * 60 * 5, // 失败后 5 分钟更新一次数据
+      },
+    });
+  }
+
+  // 是否获取默认列表
+  isRequestDefaultList(pageSize?: string | number, page?: string | number): boolean {
+    const isHitDefaultPageSize = pageSize === this.defaultPageSize || lodash.isUndefined(pageSize);
+    const isHitDefaultPage = page === this.defaultPage || lodash.isUndefined(page);
+    return isHitDefaultPageSize && isHitDefaultPage;
+  }
+
+  // 获取缓存
+  getVideoListCache(): Promise<IBilibiliVideoList> {
+    return this.cache();
+  }
+
+  // 获取项目列表
+  getVideoList(pageSize?: string | number, page?: string | number): Promise<IBilibiliVideoList> {
+    page = page || this.defaultPage;
+    pageSize = pageSize || this.defaultPageSize;
+    return this.httpService.axiosRef.request({
+      headers: { 'User-Agent': APP_CONFIG.INFO.name },
+      url: `https://space.bilibili.com/ajax/member/getSubmitVideos?mid=${this.uid}&pagesize=${pageSize}&page=${page}&keyword=${this.keyword}&order=pubdate`,
+    }).then(videosResult => {
+      if (videosResult.data.status) {
+        return Promise.resolve(videosResult.data);
+      } else {
+        return Promise.reject(videosResult.status + videosResult.statusText);
+      }
+    });
+  }
+}

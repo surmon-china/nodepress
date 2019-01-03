@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "lib": ["es2015", "es2016", "es2017"],
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "strictNullChecks": false,
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@app": ["./src"],
+      "@app/*": ["./src/*"]
+    }
+  },
+  "typeAcquisition": {
+    "include": [
+      "jest"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    // "*/*.spec.ts"
+  ],
+  "typeRoots": [
+    "node_modules/@types",
+    "consola/types/consola"
+  ]
+}
