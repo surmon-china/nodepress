@@ -1,7 +1,0 @@
-# .eslintignore
-
-build/*.js
-config/*.js
-
-static/*
-static/*.js
