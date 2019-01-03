@@ -112,7 +112,7 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
 
 - 拦截器 [interceptors](https://github.com/surmon-china/nodepress/tree/nest/src/interceptors)
   * [缓存拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/cache.interceptor.ts)：自定义这个拦截器是是要弥补框架不支持 ttl 参数的缺陷
-  * [数据流转换拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/transform.interceptor.ts)：当控制器所需的 Promise service 成功响应时，将在此被转换为标准的数据结构 IHttpResultPaginate
+  * [数据流转换拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/transform.interceptor.ts)：当控制器所需的 Promise service 成功响应时，将在此被转换为标准的数据结构
   * [数据流异常拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/error.interceptor.ts)：当控制器所需的 Promise service 发生错误时，错误将在此被捕获
   * [日志拦截器](https://github.com/surmon-china/nodepress/blob/nest/src/interceptors/logging.interceptor.ts)：代替默认的全局日志
 
@@ -153,15 +153,18 @@ v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
 
 - 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
   * 数据库
-  * 缓存/Redis
-  * 辅助/Helper
-    * 百度实时更新服务
-      > 根据入参主动提交搜索引擎收录；目前只有百度；分别会在文章、分类、标签、进行 CUD 的时候调用此类
-    * 评论过滤服务
+    + 连接数据库和异常自动重试
+  * 缓存/ Redis
+    + 基本的缓存数据 Set、Get
+    + 扩展的 [Promise 工作模式](https://github.com/surmon-china/nodepress/blob/nest/src/processors/cache/cache.service.ts#L99)（双向同步/被动更新）
+    + 扩展的 [Interval 工作模式](https://github.com/surmon-china/nodepress/blob/nest/src/processors/cache/cache.service.ts#L138)（超时更新/定时更新）
+  * 辅助/ Helper
+    + 百度实时更新服务：根据入参主动提交搜索引擎收录；目前只有百度；分别会在文章、分类、标签、进行 CUD 的时候调用此类
+    + 评论过滤服务
       > 使用 akismet 过滤 spam；暴露三个方法：校验spam、提交spam、提交ham
-    * 邮件服务
+    + 邮件服务
       > 根据入参发送邮件；程序启动时会自动校验，校验成功则根据入参发送邮件
-    * 地理查询服务
+    + 地理查询服务
       > 根据入参查询物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
 
 ## 开发命令
