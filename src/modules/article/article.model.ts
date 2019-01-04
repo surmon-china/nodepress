@@ -6,7 +6,7 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, Typegoose, Ref } from 'typegoose';
+import { prop, arrayProp, plugin, pre, post, Typegoose, Ref } from 'typegoose';
 import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoose, mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { EPublishState, EPublicState, EOriginState } from '@app/interfaces/state.interface';
@@ -126,17 +126,26 @@ export class Article extends Typegoose {
   @ArrayUnique()
   @arrayProp({ items: Extend })
   extends: Extend[];
+
+  // 相关文章
+  related?: Article[];
 }
 
 export class DelArticles extends Typegoose {
-
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
   articles: Types.ObjectId[];
 }
 
-// todo -> 普及此处
+export class PatchArticles extends DelArticles {
+  @IsDefined()
+  @IsIn([EPublishState.Draft, EPublishState.Published, EPublishState.Recycle])
+  @IsInt({ message: '有效状态？' })
+  @prop({ default: EPublishState.Published })
+  state: EPublishState;
+}
+
 export const ArticleModel = new Article().getModelForClass(
   Article,
   {
