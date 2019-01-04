@@ -22,15 +22,7 @@ export class CategoryController {
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取分类列表')
-  getCategories(@QueryParams() { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Category>> {
-    if (origin.keyword) {
-      const keywordRegExp = new RegExp(origin.keyword);
-      querys.$or = [
-        { name: keywordRegExp },
-        { slug: keywordRegExp },
-        { description: keywordRegExp },
-      ];
-    }
+  getCategories(@QueryParams() { querys, options, isAuthenticated }): Promise<PaginateResult<Category>> {
     return this.categoryService.getList(querys, options, isAuthenticated);
   }
 
