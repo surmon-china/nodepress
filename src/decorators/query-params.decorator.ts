@@ -12,40 +12,44 @@ import { HttpForbiddenError } from '@app/errors/forbidden.error';
 import { HttpBadRequestError } from '@app/errors/bad-request.error';
 import { EPublishState, EPublicState, EOriginState, ESortType } from '@app/interfaces/state.interface';
 
-// 需重构
-export enum EQueryParamsFields {
+// 预置字段
+export enum EQueryParamsField {
   Page = 'page',
+  PerPage = 'per_page',
   Sort = 'sort',
   Date = 'date',
   Keyword = 'keyword',
   State = 'state',
   Public = 'public',
   Origin = 'origin',
+  ParamsId = 'paramsId',
 }
 
-export interface IOptions {
-  [key: string]: string | number | Date | RegExp | IOptions;
+// 内部参数类型
+export interface IQueryParamsConfig {
+  [key: string]: string | number | boolean | Types.ObjectId | Date | RegExp | IQueryParamsConfig;
 }
 
-export interface IParams {
-  [key: string]: string | number | Types.ObjectId;
+// 导出结构
+export interface IQueryParamsResult {
+  querys: IQueryParamsConfig;
+  options: IQueryParamsConfig;
+  params: IQueryParamsConfig;
+  origin: IQueryParamsConfig;
+  ip: string;
+  isAuthenticated: boolean;
 }
 
-interface ITransformConfigBase {
+// 入参转换配置
+export interface ITransformConfigObject {
   [key: string]: string | number | boolean;
 }
-
-// 导出参数结构
-export interface ITransformConfig {
-  params: ITransformConfigBase;
-  querys: ITransformConfigBase;
-  options: ITransformConfigBase;
-}
+export type TTransformConfig = EQueryParamsField | string | ITransformConfigObject;
 
 // 验证器结构
 interface IValidateError {
   name: string;
-  isTodo: boolean;
+  field: EQueryParamsField;
   isAllowed: boolean;
   isIllegal: boolean;
   setValue(): void;
@@ -56,12 +60,10 @@ interface IValidateError {
  * @function QueryParams
  * @description 根据入参配置是否启用某些参数的验证和解析
  * @example @QueryParams()
- * @example @QueryParams({ options: { page: 1 } })
- * @example @QueryParams({ params: { id: 'listId' } })
- * @example @QueryParams({ querys: { state: true, date: true } })
- * @example @QueryParams(EQPFields.State, EQPFields.Date, { [EQPFields.Page]: 1 })
+ * @example @QueryParams([EQPFields.State, EQPFields.Date, { [EQPFields.Page]: 1 }])
+ * @example @QueryParams(['custom_query_params'])
  */
-export const QueryParams = createParamDecorator((config: ITransformConfig, request) => {
+export const QueryParams = createParamDecorator((customConfig: TTransformConfig[], request): IQueryParamsResult => {
 
   // 是否已验证权限
   const isAuthenticated = request.isAuthenticated();
@@ -77,28 +79,41 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     request.ips[0]
   ).replace('::ffff:', '');
 
-  // 字段转换配置（传入字符串则代表默认值，传入 false 则代表不启用，初始为默认值或 false）
-  const fieldsConfig: ITransformConfig = lodash.merge({
-    querys: {},
-    params: { id: 'id' },
-    options: { page: 1, per_page: true, sort: true },
-  }, config);
-  const isTodoField = field => field != null && field !== false;
+  // 字段转换配置（字符串则代表启用，对象则代表默认值）
+  const transformConfig: IQueryParamsConfig = {
+    page: 1,
+    per_page: true,
+    paramsId: 'id',
+    sort: true,
+  };
+
+  // 合并配置
+  if (customConfig) {
+    customConfig.forEach(field => {
+      if (lodash.isString(field)) {
+        transformConfig[field] = true;
+      } else if (lodash.isObject(field)) {
+        Object.assign(transformConfig, field);
+      }
+    });
+  }
+
+  console.log('transformConfig', transformConfig);
 
   // 查询参数
-  const querys: IOptions = {};
+  const querys: IQueryParamsConfig = {};
 
   // 过滤条件
-  const options: IOptions = {};
+  const options: IQueryParamsConfig = {};
 
   // 路径参数
-  const params: IParams = lodash.merge({ url: request.url }, request.params);
+  const params: IQueryParamsConfig = lodash.merge({ url: request.url }, request.params);
 
   // 初始参数
   const date = request.query.date;
-  const paramsId = request.params[fieldsConfig.params.id as string];
+  const paramsId = request.params[transformConfig.paramsId as string];
   const [page, per_page, sort, state, ppublic, origin] = [
-    request.query.page || fieldsConfig.options.page,
+    request.query.page || transformConfig.page,
     request.query.per_page,
     request.query.sort,
     request.query.state,
@@ -107,20 +122,20 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
   ].map(item => item != null ? Number(item) : item);
 
   // 参数提取验证规则
-  // 1. isTodo 这条校验规则是否执行
+  // 1. field 用于校验这个字段是否被允许用做参数
   // 2. isAllowed 请求参数是否在允许规则之内 -> 400
   // 3. isIllegal 请求参数是否不合法地调用了管理员权限参数 -> 403
   // 任一条件返回错误；否则，设置或重置参数
   const validates: IValidateError[] = [
     {
       name: '路由/ID',
-      isTodo: isTodoField(fieldsConfig.params.id),
+      field: EQueryParamsField.ParamsId,
       isAllowed: true,
       isIllegal: paramsId != null && !isAuthenticated && isNaN(paramsId),
       setValue() {
         // 如果用户传了 ID，则转为数字或 ObjectId
         if (paramsId != null) {
-          params[fieldsConfig.params.id as string] = isNaN(paramsId)
+          params[transformConfig.paramsId as string] = isNaN(paramsId)
             ? Types.ObjectId(paramsId)
             : Number(paramsId);
         }
@@ -128,7 +143,7 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     },
     {
       name: '排序/sort',
-      isTodo: isTodoField(fieldsConfig.options.sort),
+      field: EQueryParamsField.Sort,
       isAllowed: lodash.isUndefined(sort) || [ESortType.Asc, ESortType.Desc, ESortType.Hot].includes(sort),
       isIllegal: false,
       setValue() {
@@ -139,7 +154,7 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     },
     {
       name: '目标页/page',
-      isTodo: isTodoField(fieldsConfig.options.page),
+      field: EQueryParamsField.Page,
       isAllowed: lodash.isUndefined(page) || (lodash.isInteger(page) && page > 0),
       isIllegal: false,
       setValue() {
@@ -150,7 +165,7 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     },
     {
       name: '每页数量/per_page',
-      isTodo: isTodoField(fieldsConfig.options.per_page),
+      field: EQueryParamsField.PerPage,
       isAllowed: lodash.isUndefined(per_page) || (lodash.isInteger(per_page) && per_page > 0),
       isIllegal: false,
       setValue() {
@@ -161,7 +176,7 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     },
     {
       name: '日期查询/date',
-      isTodo: isTodoField(fieldsConfig.querys.date),
+      field: EQueryParamsField.Date,
       isAllowed: lodash.isUndefined(date) || new Date(date).toString() !== 'Invalid Date',
       isIllegal: false,
       setValue() {
@@ -176,7 +191,7 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     },
     {
       name: '发布状态/state',
-      isTodo: isTodoField(fieldsConfig.querys.state),
+      field: EQueryParamsField.State,
       isAllowed: lodash.isUndefined(state) || [EPublishState.Published, EPublishState.Draft, EPublishState.Recycle].includes(state),
       isIllegal: state != null && !isAuthenticated && state !== EPublishState.Published,
       setValue() {
@@ -193,7 +208,7 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     },
     {
       name: '公开状态/public',
-      isTodo: isTodoField(fieldsConfig.querys.public),
+      field: EQueryParamsField.Public,
       isAllowed: lodash.isUndefined(ppublic) || [EPublicState.Public, EPublicState.Password, EPublicState.Secret].includes(ppublic),
       isIllegal: ppublic != null && !isAuthenticated && ppublic !== EPublicState.Public,
       setValue() {
@@ -210,7 +225,7 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     },
     {
       name: '来源状态/origin',
-      isTodo: isTodoField(fieldsConfig.querys.origin),
+      field: EQueryParamsField.Origin,
       isAllowed: lodash.isUndefined(origin) || [EOriginState.Original, EOriginState.Hybrid, EOriginState.Reprint].includes(origin),
       isIllegal: false,
       setValue() {
@@ -221,9 +236,12 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     },
   ];
 
+  // 验证字段是否被允许
+  const isEnableField = field => field != null && field !== false;
+
   // 验证参数及生成参数
   validates.forEach(validate => {
-    if (!validate.isTodo) {
+    if (!isEnableField(transformConfig[validate.field])) {
       return false;
     }
     if (!validate.isAllowed) {
@@ -235,8 +253,22 @@ export const QueryParams = createParamDecorator((config: ITransformConfig, reque
     validate.setValue();
   });
 
+  // 处理剩余的规则外参数
+
+  // 已处理字段
+  const isProcessedFields = validates.map(validate => validate.field);
+  // 配置允许的字段
+  const allAllowFields = Object.keys(transformConfig);
+  // 剩余的待处理字段 = 配置允许的字段 - 已处理字段
+  const todoFields = lodash.difference(allAllowFields, isProcessedFields);
+  // 将所有待处理字段循环，将值循环至 querys
+  todoFields.forEach(field => {
+    const targetValue = request.query[field];
+    if (targetValue != null) querys[field] = targetValue;
+  });
+
   // 挂载到 request 上下文
-  request.requestParams = { querys, options, params, isAuthenticated };
+  request.queryParams = { querys, options, params, isAuthenticated };
 
   return {
     querys,

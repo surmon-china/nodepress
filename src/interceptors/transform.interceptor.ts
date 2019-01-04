@@ -29,7 +29,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, THttpSuccessR
     return call$.pipe(map((data: any) => {
       const result = !usePaginate ? data : ({
         data: data.docs,
-        params: request.requestParams,
+        params: request.queryParams,
         pagination: {
           total: data.total,
           current_page: data.page,

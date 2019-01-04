@@ -13,7 +13,7 @@ import { PaginateResult, Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
-import { CacheService, TCachePromiseIoResult } from '@app/processors/cache/cache.service';
+import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
 import { Article, ArticleModel } from './article.model';
@@ -22,7 +22,7 @@ import { Article, ArticleModel } from './article.model';
 export class ArticleService {
 
   // 热门文章列表缓存
-  private hotArticleListCache: TCachePromiseIoResult;
+  private hotArticleListCache: ICacheIntervalResult;
 
   constructor(
     private readonly cacheService: CacheService,
@@ -30,8 +30,11 @@ export class ArticleService {
     private readonly baiduSeoService: BaiduSeoService,
     @InjectModel(ArticleModel) private readonly articleModel: TMongooseModel<Article>,
   ) {
-    this.hotArticleListCache = this.cacheService.promise({
-      ioMode: true,
+    this.hotArticleListCache = this.cacheService.interval({
+      timeout: {
+        success: 1000 * 60 * 30, // 成功后 30 分钟更新一次数据
+        error: 1000 * 60 * 5, // 失败后 5 分钟更新一次数据
+      },
       key: CACHE_KEY.TAGS,
       promise() {
         const options = {
@@ -53,43 +56,90 @@ export class ArticleService {
 
   // 热门文章列表缓存
   getHotListCache(): Promise<PaginateResult<Article>> {
-    return this.hotArticleListCache.get();
+    return this.hotArticleListCache();
   }
 
   // 请求文章列表
   getList(querys, options): Promise<PaginateResult<Article>> {
     // 隐藏机密信息
-    options.populate = ['category', 'article'];
+    options.populate = ['category', 'tag'];
     options.select = '-password -content';
     return this.articleModel.paginate(querys, options).then(articles => {
       return articles;
     });
   }
 
+  // 获取文章详情（管理员用）
+  async getItemForAdmin(articleId: Types.ObjectId): Promise<Article> {
+    return this.articleModel.findById(articleId);
+  }
+
+  // 获取文章详情（用户用）
+  async getItemForUser(articleId: number): Promise<Article> {
+    return this.articleModel
+      .findOne({ id: articleId, state: EPublishState.Published, public: EPublicState.Public })
+      .select('-password')
+      .populate('category')
+      .populate('tag')
+      .exec()
+      .then(article => {
+        // 增加浏览量
+        article.meta.views++;
+        article.save();
+        // 更新今日浏览缓存
+        this.cacheService.get(CACHE_KEY.TODAY_VIEWS).then(views => {
+          this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
+        });
+        const resultArticle = article.toObject();
+        // 获取相关文章
+        return this.getRelatedArticles(resultArticle).then(articles => {
+          return Object.assign(resultArticle, { related: articles });
+        });
+      });
+  }
+
+  // 获取相关文章
+  private async getRelatedArticles(article: Article): Promise<Article[]> {
+    return this.articleModel.find(
+      {
+        state: EPublishState.Published,
+        public: EPublicState.Public,
+        tag: { $in: article.tag.map(t => (t as any)._id) },
+        category: { $in: article.category.map(c => (c as any)._id) },
+      },
+      'id title description thumb -_id',
+    );
+  }
+
   // 创建文章
   createItem(newArticle: Article): Promise<Article> {
-    return this.articleModel.find({ slug: newArticle.id }).then(existedArticles => {
-      return existedArticles.length
-        ? Promise.reject('slug 已被占用')
-        : new this.articleModel(newArticle).save().then(article => {
-            this.baiduSeoService.push(this.buildSeoUrl(article.id));
-            this.sitemapService.updateSitemap();
-            return article;
-          });
+    return new this.articleModel(newArticle).save().then(article => {
+      this.baiduSeoService.push(this.buildSeoUrl(article.id));
+      this.sitemapService.updateSitemap();
+      return article;
     });
   }
 
   // 修改文章
   async putItem(articleId: Types.ObjectId, newArticle: Article): Promise<Article> {
-    return this.articleModel.findOne({ slug: newArticle.id }).then(existedArticle => {
-      return existedArticle && existedArticle._id !== articleId
-        ? Promise.reject('slug 已被占用')
-        : this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).then(article => {
-            this.baiduSeoService.push(this.buildSeoUrl(article.id));
-            this.sitemapService.updateSitemap();
-            return article;
-          });
+    // 修正信息
+    Reflect.deleteProperty(newArticle, 'meta');
+    Reflect.deleteProperty(newArticle, 'create_at');
+    Reflect.deleteProperty(newArticle, 'update_at');
+    return this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).then(article => {
+      this.baiduSeoService.update(this.buildSeoUrl(article.id));
+      this.sitemapService.updateSitemap();
+      return article;
     });
+  }
+
+  // 批量更新
+  async patchList(articls: Types.ObjectId[], state: EPublishState): Promise<any> {
+    return this.articleModel.updateMany({ _id: { $in: articls }}, { $set: { state }}, { multi: true })
+      .then(result => {
+        this.sitemapService.updateSitemap();
+        return result;
+      });
   }
 
   // 删除单个文章

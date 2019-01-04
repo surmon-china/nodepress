@@ -6,14 +6,14 @@
  */
 
 import { PaginateResult } from 'mongoose';
-import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards } from '@nestjs/common';
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
-import { QueryParams, EQueryParamsFields as EQPFields } from '@app/decorators/query-params.decorator';
+import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { TagService } from '@app/modules/tag/tag.service';
 import { CategoryService } from '@app/modules/category/category.service';
-import { Article, DelArticles } from './article.model';
+import { Article, DelArticles, PatchArticles } from './article.model';
 import { ArticleService } from './article.service';
 import { ESortType } from '@app/interfaces/state.interface';
 
@@ -29,19 +29,17 @@ export class ArticleController {
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取文章')
-  getArticles(@QueryParams(
-    EQPFields.Date, EQPFields.State, EQPFields.Public, EQPFields.Origin, EQPFields.Sort, EQPFields.Keyword,
+  getArticles(@QueryParams([
+    QueryField.Date, QueryField.State, QueryField.Public, QueryField.Origin,
     'cache', 'tag', 'category', 'tag_slug', 'category_slug',
-  ) { querys, options, isAuthenticated }): Promise<PaginateResult<Article>> {
-
+  ]) { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Article>> {
     // 如果是前台请求缓存文章，则忽略一切后续处理
     if (querys.cache && !isAuthenticated && querys.sort === ESortType.Hot) {
       return this.articleService.getHotListCache();
     }
     // 关键词搜索
-    if (querys.keyword) {
-      const keywordRegExp = new RegExp(querys.keyword);
-      delete querys.keyword;
+    if (origin.keyword) {
+      const keywordRegExp = new RegExp(origin.keyword);
       querys.$or = [
         { title: keywordRegExp },
         { content: keywordRegExp },
@@ -49,18 +47,19 @@ export class ArticleController {
       ];
     }
     // 分类别名查询
-    type TSlugService =  (slug: string) => Promise<any>;
+    type TSlugService = (slug: string) => Promise<any>;
     const matchedParams = [
       { field: 'tag_slug', name: 'tag', service: this.tagService.getItemBySlug as TSlugService},
       { field: 'category_slug', name: 'category', service: this.categoryService.getItemBySlug as TSlugService},
     ].find(item => querys[item.field]);
-
     return !matchedParams
       ? this.articleService.getList(querys, options)
       : matchedParams.service(querys[matchedParams.field]).then(paramItem => {
           if (paramItem) {
-            querys[matchedParams.name] = paramItem._id;
-            return this.articleService.getList(querys, options);
+            return this.articleService.getList(
+              Object.assign(querys, { [matchedParams.name]: paramItem._id }),
+              options,
+            );
           } else {
             return Promise.reject(`标签 ${querys.tag_slug}不存在`);
           }
@@ -74,11 +73,27 @@ export class ArticleController {
     return this.articleService.createItem(article);
   }
 
+  @Patch()
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('批量更新文章')
+  patchArticles(@Body() body: PatchArticles): Promise<any> {
+    return this.articleService.patchList(body.articles, body.state);
+  }
+
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除文章')
   delArticles(@Body() body: DelArticles): Promise<any> {
     return this.articleService.deleteList(body.articles);
+  }
+
+  @Get(':id')
+  @UseGuards(HumanizedJwtAuthGuard)
+  @HttpProcessor.handle('获取文章详情')
+  getArticle(@QueryParams() { params, isAuthenticated }): Promise<Article> {
+    return isAuthenticated
+      ? this.articleService.getItemForAdmin(params.id)
+      : this.articleService.getItemForUser(params.id);
   }
 
   @Put(':id')
