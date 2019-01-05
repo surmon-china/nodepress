@@ -10,9 +10,9 @@ import { Types } from 'mongoose';
 import { createParamDecorator } from '@nestjs/common';
 import { HttpForbiddenError } from '@app/errors/forbidden.error';
 import { HttpBadRequestError } from '@app/errors/bad-request.error';
-import { EPublishState, EPublicState, EOriginState, ESortType } from '@app/interfaces/state.interface';
+import { EPublishState, EPublicState, EOriginState, ECommentState, ESortType } from '@app/interfaces/state.interface';
 
-// 预置字段
+// 预置转换器可选字段
 export enum EQueryParamsField {
   Page = 'page',
   PerPage = 'per_page',
@@ -23,6 +23,7 @@ export enum EQueryParamsField {
   Public = 'public',
   Origin = 'origin',
   ParamsId = 'paramsId',
+  CommentState = 'commentState',
 }
 
 // 内部参数类型
@@ -32,16 +33,21 @@ export interface IQueryParamsConfig {
 
 // 导出结构
 export interface IQueryParamsResult {
-  querys: IQueryParamsConfig;
-  options: IQueryParamsConfig;
-  params: IQueryParamsConfig;
-  origin: IQueryParamsConfig;
-  ip: string;
-  isAuthenticated: boolean;
+  querys: IQueryParamsConfig; // 用于 paginate 的查询参数
+  options: IQueryParamsConfig; // 用于 paginate 的查询配置参数
+  params: IQueryParamsConfig; // 路由参数
+  origin: IQueryParamsConfig; // 原味的 querys 参数
+  request: any; // 用于 request 的对象
+  visitors: { // 访客信息
+    ip: string; // 真实 IP
+    ua: string; // 用户 UA
+    referer: string; // 跳转来源
+  };
+  isAuthenticated: boolean; // 是否鉴权
 }
 
 // 入参转换配置
-export interface ITransformConfigObject {
+interface ITransformConfigObject {
   [key: string]: string | number | boolean;
 }
 export type TTransformConfig = EQueryParamsField | string | ITransformConfigObject;
@@ -61,23 +67,12 @@ interface IValidateError {
  * @description 根据入参配置是否启用某些参数的验证和解析
  * @example @QueryParams()
  * @example @QueryParams([EQPFields.State, EQPFields.Date, { [EQPFields.Page]: 1 }])
- * @example @QueryParams(['custom_query_params'])
+ * @example @QueryParams(['custom_query_params', { test_params: true, [EQueryParamsField.Sort]: false }])
  */
 export const QueryParams = createParamDecorator((customConfig: TTransformConfig[], request): IQueryParamsResult => {
 
   // 是否已验证权限
   const isAuthenticated = request.isAuthenticated();
-
-  // 获取有效 IP 地址
-  const requestIp = (
-    request.headers['x-forwarded-for'] ||
-    request.headers['x-real-ip'] ||
-    request.connection.remoteAddress ||
-    request.socket.remoteAddress ||
-    request.connection.socket.remoteAddress ||
-    request.ip ||
-    request.ips[0]
-  ).replace('::ffff:', '');
 
   // 字段转换配置（字符串则代表启用，对象则代表默认值）
   const transformConfig: IQueryParamsConfig = {
@@ -92,7 +87,8 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     customConfig.forEach(field => {
       if (lodash.isString(field)) {
         transformConfig[field] = true;
-      } else if (lodash.isObject(field)) {
+      }
+      if (lodash.isObject(field)) {
         Object.assign(transformConfig, field);
       }
     });
@@ -155,7 +151,7 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     {
       name: '目标页/page',
       field: EQueryParamsField.Page,
-      isAllowed: lodash.isUndefined(page) || (lodash.isInteger(page) && page > 0),
+      isAllowed: lodash.isUndefined(page) || (lodash.isInteger(page) && Number(page) > 0),
       isIllegal: false,
       setValue() {
         if (page != null) {
@@ -166,7 +162,7 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     {
       name: '每页数量/per_page',
       field: EQueryParamsField.PerPage,
-      isAllowed: lodash.isUndefined(per_page) || (lodash.isInteger(per_page) && per_page > 0),
+      isAllowed: lodash.isUndefined(per_page) || (lodash.isInteger(per_page) && Number(per_page) > 0),
       isIllegal: false,
       setValue() {
         if (per_page != null) {
@@ -190,10 +186,21 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
       },
     },
     {
-      name: '发布状态/state',
+      name: '发布状态/state', // 评论或其他数据
       field: EQueryParamsField.State,
-      isAllowed: lodash.isUndefined(state) || [EPublishState.Published, EPublishState.Draft, EPublishState.Recycle].includes(state),
-      isIllegal: state != null && !isAuthenticated && state !== EPublishState.Published,
+      isAllowed: lodash.isUndefined(state) ||
+        (transformConfig[EQueryParamsField.CommentState]
+          ? [ECommentState.Auditing, ECommentState.Deleted, ECommentState.Published, ECommentState.Spam].includes(state)
+          : [EPublishState.Published, EPublishState.Draft, EPublishState.Recycle].includes(state)
+        ),
+      isIllegal:
+        state != null &&
+        !isAuthenticated &&
+        state !== (
+          transformConfig[EQueryParamsField.CommentState]
+            ? ECommentState.Published
+            : EPublishState.Published
+        ),
       setValue() {
         // 管理员/任意状态 || 普通用户/已发布
         if (state != null) {
@@ -202,7 +209,9 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
         }
         // 普通用户/未设置
         if (!isAuthenticated) {
-          querys.state = EPublishState.Published;
+          querys.state = transformConfig[EQueryParamsField.CommentState]
+            ? ECommentState.Published
+            : EPublishState.Published;
         }
       },
     },
@@ -270,12 +279,27 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
   // 挂载到 request 上下文
   request.queryParams = { querys, options, params, isAuthenticated };
 
+  // 来源 IP
+  const ip = (
+    request.headers['x-forwarded-for'] ||
+    request.headers['x-real-ip'] ||
+    request.connection.remoteAddress ||
+    request.socket.remoteAddress ||
+    request.connection.socket.remoteAddress ||
+    request.ip ||
+    request.ips[0]
+  ).replace('::ffff:', '');
+
+  // 用户标识
+  const ua = request.headers['user-agent'];
+
   return {
     querys,
     options,
     params,
+    request,
     origin: request.query,
-    ip: requestIp,
+    visitors: { ip, ua, referer: request.referer },
     isAuthenticated,
   };
 });

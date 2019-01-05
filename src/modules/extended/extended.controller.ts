@@ -6,7 +6,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { GithubService, IGithubRepositorie } from './extended.service.github';
 import { StatisticService, ITodayStatistic } from './extended.service.statistic';
 import { QiniuService, IUpToken } from './extended.service.qiniu';
@@ -26,7 +26,6 @@ export class ExtendedController {
   ) {}
 
   @Get('constants')
-  @UseGuards(JwtAuthGuard)
   @HttpCache(CACHE_KEY.CONSTANTS, 60 * 60)
   @HttpProcessor.handle('获取配置常量')
   getConstants(): object {
@@ -45,7 +44,8 @@ export class ExtendedController {
     return this.githubService.getCache();
   }
 
-  @Get('uptoken')
+  @Post('uptoken')
+  @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('获取上传 Token')
   getUpToken(): IUpToken {
     return this.qiniuService.getToken();
