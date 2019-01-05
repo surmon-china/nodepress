@@ -13,6 +13,7 @@ export interface TContent {
   user_ip: string;
   user_agent: string;
   referrer: string;
+  permalink: string;
   comment_type?: 'comment';
   comment_author?: string;
   comment_author_email?: string;
@@ -21,7 +22,7 @@ export interface TContent {
   is_test?: boolean;
 }
 
-export enum EAkismetActionTypes {
+export enum EAkismetActionType {
   CheckSpam = 'checkSpam',
   SubmitSpam = 'submitSpam',
   SubmitHam = 'submitHam',
@@ -43,17 +44,17 @@ export class AkismetService {
 
   // 检查 SPAM
   public checkSpam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionTypes.CheckSpam)(content);
+    return this.buildAkismetInterceptor(EAkismetActionType.CheckSpam)(content);
   }
 
   // 提交 SPAM
   public submitSpam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionTypes.SubmitSpam)(content);
+    return this.buildAkismetInterceptor(EAkismetActionType.SubmitSpam)(content);
   }
 
   // 提交 HAM
   public submitHam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionTypes.SubmitHam)(content);
+    return this.buildAkismetInterceptor(EAkismetActionType.SubmitHam)(content);
   }
 
   // 初始化验证
@@ -77,14 +78,14 @@ export class AkismetService {
   }
 
   // 构造检查器
-  private buildAkismetInterceptor(handleType: EAkismetActionTypes) {
+  private buildAkismetInterceptor(handleType: EAkismetActionType) {
     return (content: TContent): Promise<any> => {
       return new Promise((resolve, reject) => {
         this.verifyKey().then(_ => {
           console.info(`Akismet ${handleType} 操作中...`, new Date());
           this.client[handleType](content).then(result => {
             // 如果是检查 spam 且检查结果为 true
-            if (handleType === EAkismetActionTypes.CheckSpam && result) {
+            if (handleType === EAkismetActionType.CheckSpam && result) {
               console.warn('Akismet ${handleType} 操作失败!', new Date());
               reject(new Error('spam!'));
             } else {
