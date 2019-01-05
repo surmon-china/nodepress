@@ -132,7 +132,6 @@ CategoryCtrl.list.DELETE = ({ body: { categories }}, res) => {
 }
 
 // 获取单个分类以及自身的父分类
-// todo ->
 CategoryCtrl.item.GET = ({ params: { category_id } }, res) => {
   const categories = []
   ;((function findCateItem(_id) {

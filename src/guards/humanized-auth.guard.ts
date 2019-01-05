@@ -1,5 +1,5 @@
 /**
- * HumanizedJwtAuthGuard.
+ * HumanizedJwtAuth guard.
  * @file 智能鉴权卫士
  * @module guard/humanized-auth
  * @author Surmon <https://github.com/surmon-china>

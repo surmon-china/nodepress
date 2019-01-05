@@ -7,7 +7,7 @@
 
 import * as lodash from 'lodash';
 import { isDevMode } from '@app/app.environment';
-import { EStatus, THttpErrorResponse, TExceptionOption, TMessage } from '@app/interfaces/http.interface';
+import { EHttpStatus, THttpErrorResponse, TExceptionOption, TMessage } from '@app/interfaces/http.interface';
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common';
 
 /**
@@ -29,7 +29,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const resultError = isChildrenError ? errorInfo.message : parentErrorInfo;
     const resultStatus = isChildrenError ? errorInfo.status : status;
     const data: THttpErrorResponse = {
-      status: EStatus.Error,
+      status: EHttpStatus.Error,
       message: errMessage,
       error: resultError,
       debug: isDevMode ? exception.stack : null,

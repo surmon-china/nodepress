@@ -63,8 +63,8 @@ export type ICacheIntervalResult = () => TCacheResult;
  * @classdesc 承载缓存服务
  * @example CacheService.get(CacheKey).then()
  * @example CacheService.set(CacheKey).then()
- * @example CacheService.promise({ option })
- * @example CacheService.interval({ option })
+ * @example CacheService.promise({ option })()
+ * @example CacheService.interval({ option })()
  */
 @Injectable()
 export class CacheService {
