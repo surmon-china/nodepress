@@ -12,9 +12,7 @@
 - sitemap，tags CUD 时进行缓存更新，使用 redis.promise
 
 - v3.0.0
-- Comment
 - review
-- fix todo
 
 ### v3.0.0
 

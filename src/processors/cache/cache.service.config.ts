@@ -1,5 +1,5 @@
 /**
- * Cache config.
+ * Cache config service.
  * @file Cache 配置器
  * @module processor/cache/config.service
  * @author Surmon <https://github.com/surmon-china>
@@ -16,15 +16,15 @@ export class CacheConfigService implements CacheOptionsFactory {
   public retryStrategy() {
     return {
       retry_strategy: (options: any) => {
-        console.warn('Redis 连接出了问题：', options);
         if (options.error && options.error.code === 'ECONNREFUSED') {
-          return new Error('The server refused the connection');
+          console.warn('Redis 连接出了问题：', options.error);
+          return new Error('Redis 服务器拒绝连接');
         }
         if (options.total_retry_time > 1000 * 60) {
-          return new Error('Retry time exhausted');
+          return new Error('重试时间已用完');
         }
-        if (options.attempt > 2) {
-          return new Error('Max attempts exhausted');
+        if (options.attempt > 6) {
+          return new Error('尝试次数已达极限');
         }
         return Math.min(options.attempt * 100, 3000);
       },

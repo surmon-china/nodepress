@@ -1,5 +1,5 @@
 /**
- * ErrorInterceptor.
+ * Error interceptor.
  * @file 错误拦截器
  * @module interceptor/error
  * @author Surmon <https://github.com/surmon-china>

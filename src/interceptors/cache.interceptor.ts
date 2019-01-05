@@ -1,5 +1,5 @@
 /**
- * HttpCacheInterceptor.
+ * HttpCache interceptor.
  * @file 缓存拦截器
  * @module interceptor/cache
  * @author Surmon <https://github.com/surmon-china>
@@ -52,14 +52,14 @@ export class HttpCacheInterceptor extends CacheInterceptor {
     const isGetRequest = isHttpApp && httpServer.getRequestMethod(request) === RequestMethod[RequestMethod.GET];
     const requestUrl = httpServer.getRequestUrl(request);
     const cacheKey = this.reflector.get(META.HTTP_CACHE_KEY_METADATA, context.getHandler());
-    const isHitCache = isHttpApp && isGetRequest && cacheKey;
-    // console.log('isHitCache', isHitCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);
+    const isMatchedCache = isHttpApp && isGetRequest && cacheKey;
+    // console.log('isMatchedCache', isMatchedCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);
     // 缓存命中策略 -> http -> GET -> cachekey -> url -> undefined
-    return isHitCache ? cacheKey : undefined;
+    return isMatchedCache ? cacheKey : undefined;
     /*
     return undefined;
-    return isHitCache ? requestUrl : undefined;
-    return isHitCache ? (cacheKey || requestUrl) : undefined;
+    return isMatchedCache ? requestUrl : undefined;
+    return isMatchedCache ? (cacheKey || requestUrl) : undefined;
     */
   }
 }

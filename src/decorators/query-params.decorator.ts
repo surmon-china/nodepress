@@ -262,7 +262,12 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     validate.setValue();
   });
 
-  // 处理剩余的规则外参数
+  /**
+   * 处理剩余的规则外参数
+   * 1. 用户传入配置与默认配置混合得到需要处理的参数字段
+   * 2. 内置一堆关键参数的校验器
+   * 3. 剩下的非内部校验的非关键参数，在此合并至 querys
+   */
 
   // 已处理字段
   const isProcessedFields = validates.map(validate => validate.field);

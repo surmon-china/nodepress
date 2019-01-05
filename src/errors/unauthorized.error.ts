@@ -1,5 +1,5 @@
 /**
- * HttpUnauthorizedError.
+ * HttpUnauthorized error.
  * @file 401 错误生成器
  * @module error/unauthorized
  * @author Surmon <https://github.com/surmon-china>

@@ -8,7 +8,8 @@
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable, HttpService } from '@nestjs/common';
 
-export enum EBaiduSeoActions {
+// 提交器支持的操作行为
+export enum EBaiduSeoAction {
   Push = 'push',
   Update = 'update',
   Delete = 'delete',
@@ -17,9 +18,15 @@ export enum EBaiduSeoActions {
 export type TUrl = string;
 export type THumanizedUrl = TUrl | TUrl[];
 export interface IBaiduSeoRequestOption {
-  urlKey: string;
+  urlKey: EUrlKey;
   urls: TUrl[];
   action: string;
+}
+
+enum EUrlKey {
+  Push = 'urls',
+  Update = 'update',
+  Delete = 'del',
 }
 
 @Injectable()
@@ -50,16 +57,16 @@ export class BaiduSeoService {
 
   // 提交记录
   push(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: 'urls', action: '百度推送' });
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Push, action: '百度推送' });
   }
 
   // 更新记录
   update(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: 'update', action: '百度更新' });
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Update, action: '百度更新' });
   }
 
   // 删除记录
   delete(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: 'del', action: '百度删除' });
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Delete, action: '百度删除' });
   }
 }
