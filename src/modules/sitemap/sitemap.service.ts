@@ -52,16 +52,6 @@ export class SitemapService {
     });
   }
 
-  // 获取地图缓存
-  getSitemapCache(): Promise<any> {
-    return this.sitemapCache.get();
-  }
-
-  // 更新地图缓存
-  updateSitemap(): Promise<any> {
-    return this.sitemapCache.update();
-  }
-
   // 获取并将地图写入文件
   private getAndWriteSitemap(): Promise<sitemap> {
     return this.reBuildSitemap().then(_ => {
@@ -135,5 +125,15 @@ export class SitemapService {
         });
         return articles;
       });
+  }
+
+  // 获取地图缓存
+  public getSitemapCache(): Promise<any> {
+    return this.sitemapCache.get();
+  }
+
+  // 更新地图缓存
+  public updateSitemap(): Promise<any> {
+    return this.sitemapCache.update();
   }
 }

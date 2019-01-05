@@ -13,6 +13,7 @@ import { PaginateResult, Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
+import { TagService } from '@app/modules/tag/tag.service';
 import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
@@ -25,6 +26,7 @@ export class ArticleService {
   private hotArticleListCache: ICacheIntervalResult;
 
   constructor(
+    private readonly tagService: TagService,
     private readonly cacheService: CacheService,
     private readonly sitemapService: SitemapService,
     private readonly baiduSeoService: BaiduSeoService,
@@ -98,7 +100,7 @@ export class ArticleService {
       });
   }
 
-  // 获取相关文章
+  // 获取目标文章的相关文章
   private async getRelatedArticles(article: Article): Promise<Article[]> {
     return this.articleModel.find(
       {
@@ -116,6 +118,7 @@ export class ArticleService {
     return new this.articleModel(newArticle).save().then(article => {
       this.baiduSeoService.push(this.buildSeoUrl(article.id));
       this.sitemapService.updateSitemap();
+      this.tagService.updateListCache();
       return article;
     });
   }
@@ -129,6 +132,7 @@ export class ArticleService {
     return this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).then(article => {
       this.baiduSeoService.update(this.buildSeoUrl(article.id));
       this.sitemapService.updateSitemap();
+      this.tagService.updateListCache();
       return article;
     });
   }
@@ -138,6 +142,7 @@ export class ArticleService {
     return this.articleModel.updateMany({ _id: { $in: articls }}, { $set: { state }}, { multi: true })
       .then(result => {
         this.sitemapService.updateSitemap();
+        this.tagService.updateListCache();
         return result;
       });
   }
@@ -147,6 +152,7 @@ export class ArticleService {
     return this.articleModel.findByIdAndRemove(articleId).then(article => {
       this.baiduSeoService.delete(this.buildSeoUrl(article.id));
       this.sitemapService.updateSitemap();
+      this.tagService.updateListCache();
       return article;
     });
   }
@@ -157,6 +163,7 @@ export class ArticleService {
       this.baiduSeoService.delete(articles.map(article => this.buildSeoUrl(article.id)));
       return this.articleModel.deleteMany({ _id: { $in: articleIds }}).then(result => {
         this.sitemapService.updateSitemap();
+        this.tagService.updateListCache();
         return result;
       });
     });

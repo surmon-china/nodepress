@@ -23,7 +23,9 @@ export class CommentController {
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取评论列表')
-  getComments(@QueryParams([EQueryParamsField.CommentState, 'post_id']) { querys, options, origin }): Promise<PaginateResult<Comment>> {
+  getComments(
+    @QueryParams([EQueryParamsField.State, EQueryParamsField.CommentState, 'post_id']) { querys, options, origin },
+  ): Promise<PaginateResult<Comment>> {
     if (origin.sort === ESortType.Hot) {
       options.sort = { likes: ESortType.Desc };
     }

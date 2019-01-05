@@ -14,8 +14,8 @@ import { CacheService, ICacheIntervalResult, ICacheIntervalTimingOption } from '
 export class WallpaperService {
 
   private wbw: WonderfulBingWallpaper;
-  private storyCache: ICacheIntervalResult;
-  private wallpapersCache: ICacheIntervalResult;
+  private storyCache: ICacheIntervalResult<any>;
+  private wallpapersCache: ICacheIntervalResult<any>;
 
   // 通用定时配置
   private commonTimingConfig: ICacheIntervalTimingOption = {
@@ -41,17 +41,17 @@ export class WallpaperService {
   }
 
   // 今日壁纸故事缓存
-  getStoryCache(): Promise<any> {
+  public getStoryCache(): Promise<any> {
     return this.storyCache();
   }
 
   // 今日壁纸缓存
-  getWallpapersCache(): Promise<any> {
+  public getWallpapersCache(): Promise<any> {
     return this.wallpapersCache();
   }
 
   // 获取今日壁纸
-  getWallpapers(): Promise<any> {
+  public getWallpapers(): Promise<any> {
     return this.wbw.getWallpapers({ size: 8 }).then(wallpaperJSON => {
       try {
         const wallpapers = this.wbw.humanizeWallpapers(wallpaperJSON);
