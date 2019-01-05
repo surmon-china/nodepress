@@ -1,5 +1,5 @@
 /**
- * LoggingInterceptor.
+ * Logging interceptor.
  * @file 日志拦截器
  * @module interceptor/logging
  * @author Surmon <https://github.com/surmon-china>

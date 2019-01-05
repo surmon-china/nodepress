@@ -1,5 +1,5 @@
 /**
- * CustomError.
+ * Custom error.
  * @file 错误定制器
  * @module error/custom
  * @author Surmon <https://github.com/surmon-china>

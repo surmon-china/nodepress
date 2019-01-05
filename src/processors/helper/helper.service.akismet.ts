@@ -9,6 +9,14 @@ import * as akismet from 'akismet-api';
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable } from '@nestjs/common';
 
+// 验证器支持的操作行为
+export enum EAkismetActionType {
+  CheckSpam = 'checkSpam',
+  SubmitSpam = 'submitSpam',
+  SubmitHam = 'submitHam',
+}
+
+// 验证体数据结构
 export interface TContent {
   user_ip: string;
   user_agent: string;
@@ -20,12 +28,6 @@ export interface TContent {
   comment_author_url?: string;
   comment_content?: string;
   is_test?: boolean;
-}
-
-export enum EAkismetActionType {
-  CheckSpam = 'checkSpam',
-  SubmitSpam = 'submitSpam',
-  SubmitHam = 'submitHam',
 }
 
 @Injectable()
@@ -42,24 +44,9 @@ export class AkismetService {
     this.initVerify();
   }
 
-  // 检查 SPAM
-  public checkSpam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionType.CheckSpam)(content);
-  }
-
-  // 提交 SPAM
-  public submitSpam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionType.SubmitSpam)(content);
-  }
-
-  // 提交 HAM
-  public submitHam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionType.SubmitHam)(content);
-  }
-
   // 初始化验证
   private initVerify(): void {
-    this.verifyKey().then(_ => {
+    this.verifyClient().then(_ => {
       this.clientIsValid = true;
       console.info(`Akismet key 有效，已准备好工作!`);
     }).catch(error => {
@@ -69,7 +56,7 @@ export class AkismetService {
   }
 
   // 验证有效性
-  private verifyKey(): Promise<boolean> {
+  private verifyClient(): Promise<boolean> {
     return this.client.verifyKey().then(valid => {
       return valid
         ? Promise.resolve(true)
@@ -81,7 +68,7 @@ export class AkismetService {
   private buildAkismetInterceptor(handleType: EAkismetActionType) {
     return (content: TContent): Promise<any> => {
       return new Promise((resolve, reject) => {
-        this.verifyKey().then(_ => {
+        this.verifyClient().then(_ => {
           console.info(`Akismet ${handleType} 操作中...`, new Date());
           this.client[handleType](content).then(result => {
             // 如果是检查 spam 且检查结果为 true
@@ -104,5 +91,20 @@ export class AkismetService {
         });
       });
     };
+  }
+
+  // 检查 SPAM
+  public checkSpam(content: TContent): Promise<any> {
+    return this.buildAkismetInterceptor(EAkismetActionType.CheckSpam)(content);
+  }
+
+  // 提交 SPAM
+  public submitSpam(content: TContent): Promise<any> {
+    return this.buildAkismetInterceptor(EAkismetActionType.SubmitSpam)(content);
+  }
+
+  // 提交 HAM
+  public submitHam(content: TContent): Promise<any> {
+    return this.buildAkismetInterceptor(EAkismetActionType.SubmitHam)(content);
   }
 }

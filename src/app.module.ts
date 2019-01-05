@@ -23,15 +23,22 @@ import { CacheModule } from '@app/processors/cache/cache.module';
 import { DatabaseModule } from '@app/processors/database/database.module';
 import { HelperModule } from '@app/processors/helper/helper.module';
 
-// 业务模块
-import { AuthModule } from '@app/modules/auth/auth.module';
+// 业务模块（辅助）
 import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
-import { AnnouncementModule } from '@app/modules/announcement/announcement.module';
-import { TagModule } from '@app/modules/tag/tag.module';
-import { MusicModule } from '@app/modules/music/music.module';
-import { OptionModule } from '@app/modules/option/option.module';
-import { WallpaperModule } from '@app/modules/wallpaper/wallpaper.module';
 import { ExtendedModule } from '@app/modules/extended/extended.module';
+import { MusicModule } from '@app/modules/music/music.module';
+import { BilibiliModule } from '@app/modules/bilibili/bilibili.module';
+import { WallpaperModule } from '@app/modules/wallpaper/wallpaper.module';
+
+// 业务模块（核心）
+import { AuthModule } from '@app/modules/auth/auth.module';
+import { AnnouncementModule } from '@app/modules/announcement/announcement.module';
+import { ArticleModule } from '@app/modules/article/article.module';
+import { CategoryModule } from '@app/modules/category/category.module';
+import { CommentModule } from '@app/modules/comment/comment.module';
+import { TagModule } from '@app/modules/tag/tag.module';
+import { LikeModule } from '@app/modules/like/like.module';
+import { OptionModule } from '@app/modules/option/option.module';
 
 @Module({
   imports: [
@@ -39,13 +46,18 @@ import { ExtendedModule } from '@app/modules/extended/extended.module';
     CacheModule,
     HelperModule,
     AuthModule,
-    SitemapModule,
     AnnouncementModule,
+    ArticleModule,
+    CategoryModule,
+    CommentModule,
     TagModule,
+    LikeModule,
     OptionModule,
-    WallpaperModule,
-    MusicModule,
+    SitemapModule,
     ExtendedModule,
+    MusicModule,
+    BilibiliModule,
+    WallpaperModule,
   ],
   controllers: [AppController],
   providers: [

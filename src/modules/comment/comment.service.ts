@@ -107,15 +107,14 @@ export class CommentService {
       const isSpam = state === ECommentState.Spam;
       const action = isSpam ? EAkismetActionType.SubmitSpam : EAkismetActionType.SubmitHam;
 
-      // 系统黑名单处理
-      const todoFields: ({ [P in keyof Blacklist]: (comment: Comment) => string }) = {
-        keywords: (comment: Comment) => comment.content,
+      // 系统黑名单处理，目前不再处理关键词
+      const todoFields: ({ [P in keyof Blacklist]?: (comment: Comment) => string }) = {
         mails: (comment) => comment.author.email,
         ips: (comment) => comment.ip,
       };
+      // 如果是将评论状态标记为垃圾邮件，则加入黑名单，以及 submitSpam
+      // 如果是将评论状态标记为误标邮件，则移出黑名单，以及 submitHam
       Object.keys(todoFields).forEach(field => {
-        // 如果是将评论状态标记为垃圾邮件，则加入黑名单，以及 submitSpam
-        // 如果是将评论状态标记为误标邮件，则移出黑名单，以及 submitHam
         const data = option.blacklist[field];
         const getCommentField = todoFields[field];
         option.blacklist[field] = isSpam

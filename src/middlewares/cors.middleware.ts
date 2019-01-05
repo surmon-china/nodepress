@@ -1,5 +1,5 @@
 /**
- * CorsMiddleware.
+ * Cors middleware.
  * @file CORS 中间件
  * @module middleware/cors
  * @author Surmon <https://github.com/surmon-china>
@@ -15,7 +15,7 @@ import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus, RequestMeth
  */
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {
-  resolve(...args: any[]): MiddlewareFunction {
+  resolve(): MiddlewareFunction {
     return (request, response, next) => {
 
       const getMethod = method => RequestMethod[method];

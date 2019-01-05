@@ -1,7 +1,7 @@
 import { CROSS_DOMAIN } from '@app/app.config';
 import { isProdMode } from '@app/app.environment';
 import { isVerifiedToken } from '@app/validates/token.validate';
-import { THttpErrorResponse, EStatus } from '@app/interfaces/http.interface';
+import { THttpErrorResponse, EHttpStatus } from '@app/interfaces/http.interface';
 import { Injectable, NestMiddleware, MiddlewareFunction, HttpStatus, RequestMethod } from '@nestjs/common';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class AuthMiddleware implements NestMiddleware {
 
       // errorResBody
       const errorResBody: THttpErrorResponse = {
-        status: EStatus.Error,
+        status: EHttpStatus.Error,
         message: '来者何人！',
         error: null,
       };
