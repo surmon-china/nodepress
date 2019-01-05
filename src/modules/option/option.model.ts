@@ -16,7 +16,7 @@ class Meta {
 }
 
 // 黑名单
-class Blacklist {
+export class Blacklist {
   @IsArray()
   @ArrayUnique()
   @arrayProp({ items: String, validate: /\S+/ })
