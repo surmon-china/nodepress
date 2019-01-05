@@ -42,8 +42,8 @@ export class AuthController {
       this.emailService.sendMail({
         to: APP_CONFIG.EMAIL.admin,
         subject: '博客有新的登陆行为',
-        text: `来源 IP：${ip}`,
-        html: `来源 IP：${ip}`,
+        text: `来源 IP：${ip}，地理位置为：`,
+        html: `来源 IP：${ip}，地理位置为：`,
       });
       return data;
     });
