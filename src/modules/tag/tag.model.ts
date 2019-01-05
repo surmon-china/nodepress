@@ -25,9 +25,6 @@ import { Extend } from '@app/models/extend.model';
 })
 
 export class Tag extends Typegoose {
-
-  _id?: Types.ObjectId;
-
   @IsNotEmpty({ message: '标签名称？' })
   @IsString({ message: '字符串？' })
   @prop({ required: true, validate: /\S+/ })
@@ -53,6 +50,7 @@ export class Tag extends Typegoose {
   @arrayProp({ items: Extend })
   extends: Extend[];
 
+  _id?: Types.ObjectId;
   count?: number;
 }
 

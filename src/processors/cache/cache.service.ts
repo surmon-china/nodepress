@@ -9,7 +9,7 @@ import * as schedule from 'node-schedule';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 
 export type TCacheKey = string;
-export type TCacheResult = Promise<any>;
+export type TCacheResult<T> = Promise<T>;
 
 // Cache 客户端管理器
 export interface ICacheManager {
@@ -19,20 +19,20 @@ export interface ICacheManager {
 }
 
 // Promise 模式参数
-export interface ICachePromiseOption {
+export interface ICachePromiseOption<T> {
   key: TCacheKey;
-  promise(): TCacheResult;
+  promise(): TCacheResult<T>;
 }
 
 // Promise & IO 模式参数
-export interface ICachePromiseIoOption extends ICachePromiseOption {
+export interface ICachePromiseIoOption<T> extends ICachePromiseOption<T> {
   ioMode?: boolean;
 }
 
 // Promise & IO 模式返回结构
-export interface TCachePromiseIoResult {
-  get(): TCacheResult;
-  update(): TCacheResult;
+export interface TCachePromiseIoResult<T> {
+  get(): TCacheResult<T>;
+  update(): TCacheResult<T>;
 }
 
 // Interval & Timeout 超时模式参数
@@ -48,15 +48,15 @@ export interface ICacheIntervalTimingOption {
 }
 
 // Interval 模式参数
-export interface ICacheIntervalOption {
+export interface ICacheIntervalOption<T> {
   key: TCacheKey;
-  promise(): TCacheResult;
+  promise(): TCacheResult<T>;
   timeout?: ICacheIntervalTimeoutOption;
   timing?: ICacheIntervalTimingOption;
 }
 
 // Interval 模式返回类型
-export type ICacheIntervalResult = () => TCacheResult;
+export type ICacheIntervalResult<T> = () => TCacheResult<T>;
 
 /**
  * @class CacheService
@@ -81,14 +81,14 @@ export class CacheService {
     return client.connected && client.ready;
   }
 
-  public get(key: TCacheKey): TCacheResult {
+  public get<T>(key: TCacheKey): TCacheResult<T> {
     if (!this.checkCacheServiceAvailable) {
       return Promise.reject('缓存客户端没准备好');
     }
     return this.cache.get(key);
   }
 
-  public set(key: TCacheKey, value: any, options?: { ttl: number }): TCacheResult {
+  public set<T>(key: TCacheKey, value: any, options?: { ttl: number }): TCacheResult<T> {
     if (!this.checkCacheServiceAvailable) {
       return Promise.reject('缓存客户端没准备好');
     }
@@ -101,8 +101,8 @@ export class CacheService {
    * @example CacheService.promise({ key: CacheKey, promise() }) -> promise()
    * @example CacheService.promise({ key: CacheKey, promise(), ioMode: true }) -> { get: promise(), update: promise() }
    */
-  promise(options: ICachePromiseOption): TCacheResult;
-  promise(options: ICachePromiseIoOption): TCachePromiseIoResult;
+  promise<T>(options: ICachePromiseOption<T>): TCacheResult<T>;
+  promise<T>(options: ICachePromiseIoOption<T>): TCachePromiseIoResult<T>;
   promise(options) {
 
     const { key, promise, ioMode = false } = options;
@@ -140,7 +140,7 @@ export class CacheService {
    * @example CacheService.interval({ key: CacheKey, promise(), timeout: {} }) -> promise()
    * @example CacheService.interval({ key: CacheKey, promise(), timing: {} }) -> promise()
    */
-  public interval(options: ICacheIntervalOption): ICacheIntervalResult {
+  public interval<T>(options: ICacheIntervalOption<T>): ICacheIntervalResult<T> {
 
     const { key, promise, timeout, timing } = options;
 
