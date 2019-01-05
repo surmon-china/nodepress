@@ -1,5 +1,5 @@
 /**
- * TransformInterceptor.
+ * Transform interceptor.
  * @file 请求流拦截器
  * @module interceptor/transform
  * @author Surmon <https://github.com/surmon-china>
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
 import { Injectable, NestInterceptor, ExecutionContext } from '@nestjs/common';
-import { THttpSuccessResponse, IHttpResultPaginate, EStatus } from '@app/interfaces/http.interface';
+import { THttpSuccessResponse, IHttpResultPaginate, EHttpStatus } from '@app/interfaces/http.interface';
 import { TMessage } from '@app/interfaces/http.interface';
 import * as META from '@app/constants/meta.constant';
 import * as TEXT from '@app/constants/text.constant';
@@ -37,7 +37,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, THttpSuccessR
           per_page: data.limit,
         },
       } as IHttpResultPaginate<T>);
-      return { status: EStatus.Success, message, result };
+      return { status: EHttpStatus.Success, message, result };
     }));
   }
 }

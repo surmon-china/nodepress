@@ -7,8 +7,8 @@
 
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
-import { HttpCache } from '@app/decorators/cache.decorator';
 import { Get, Controller } from '@nestjs/common';
+import { HttpCache } from '@app/decorators/cache.decorator';
 
 @Controller()
 export class AppController {
