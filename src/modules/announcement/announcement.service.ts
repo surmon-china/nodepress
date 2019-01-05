@@ -5,6 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { InstanceType } from 'typegoose';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
@@ -16,27 +17,27 @@ export class AnnouncementService {
   constructor(@InjectModel(Announcement) private readonly announcementModel: TMongooseModel<Announcement>) {}
 
   // 请求公告列表
-  getList(querys, options): Promise<PaginateResult<Announcement>> {
+  public getList(querys, options): Promise<PaginateResult<Announcement>> {
     return this.announcementModel.paginate(querys, options);
   }
 
   // 创建公告
-  createItem(announcement: Announcement): Promise<Announcement> {
+  public createItem(announcement: Announcement): Promise<Announcement> {
     return new this.announcementModel(announcement).save();
   }
 
-  // 修改公告
-  async putItem(announcementId: Types.ObjectId, announcement: Announcement): Promise<Announcement> {
-    return this.announcementModel.findByIdAndUpdate(announcementId, announcement, { new: true });
+  // 修改单个公告
+  public putItem(announcementId: Types.ObjectId, announcement: Announcement): Promise<Announcement> {
+    return this.announcementModel.findByIdAndUpdate(announcementId, announcement, { new: true }).exec();
   }
 
   // 删除单个公告
-  async deleteItem(announcementId: Types.ObjectId): Promise<any> {
-    return this.announcementModel.findByIdAndRemove(announcementId);
+  public deleteItem(announcementId: Types.ObjectId): Promise<InstanceType<Announcement>> {
+    return this.announcementModel.findByIdAndRemove(announcementId).exec();
   }
 
   // 批量删除公告
-  async deleteList(announcementIds: Types.ObjectId[]): Promise<any> {
-    return this.announcementModel.deleteMany({ _id: { $in: announcementIds }});
+  public deleteList(announcementIds: Types.ObjectId[]): Promise<InstanceType<Announcement>> {
+    return this.announcementModel.deleteMany({ _id: { $in: announcementIds }}).exec();
   }
 }

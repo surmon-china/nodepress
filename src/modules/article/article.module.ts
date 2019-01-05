@@ -7,9 +7,8 @@
 
 import { Module } from '@nestjs/common';
 import { TypegooseModule } from 'nestjs-typegoose';
-import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
 import { TagModule } from '@app/modules/tag/tag.module';
-import { CategoryModule } from '@app/modules/category/category.module';
+import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { Article } from './article.model';
@@ -18,7 +17,6 @@ import { Article } from './article.model';
   imports: [
     TagModule,
     SitemapModule,
-    CategoryModule,
     TypegooseModule.forFeature(Article),
   ],
   controllers: [ArticleController],

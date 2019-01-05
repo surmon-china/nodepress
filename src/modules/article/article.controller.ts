@@ -30,13 +30,14 @@ export class ArticleController {
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取文章')
   getArticles(@QueryParams([
-    QueryField.Date, QueryField.State, QueryField.Public, QueryField.Origin,
-    'cache', 'tag', 'category', 'tag_slug', 'category_slug',
+    QueryField.Date, QueryField.State, QueryField.Public, QueryField.Origin, 'cache', 'tag', 'category', 'tag_slug', 'category_slug',
   ]) { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Article>> {
-    // 如果是前台请求缓存文章，则忽略一切后续处理
+
+    // 如果是前台请求热门缓存文章，则忽略一切后续处理（前后台都会请求热门文章）
     if (querys.cache && !isAuthenticated && querys.sort === ESortType.Hot) {
       return this.articleService.getHotListCache();
     }
+
     // 关键词搜索
     if (origin.keyword) {
       const keywordRegExp = new RegExp(origin.keyword);
@@ -46,6 +47,7 @@ export class ArticleController {
         { description: keywordRegExp },
       ];
     }
+
     // 分类别名查询
     type TSlugService = (slug: string) => Promise<any>;
     const matchedParams = [
