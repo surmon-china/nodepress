@@ -5,6 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { InstanceType } from 'typegoose';
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
 import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
@@ -39,8 +40,8 @@ export class AnnouncementController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除公告')
-  delAnnouncements(@Body() body: DelAnnouncements): Promise<any> {
-    return this.announcementService.deleteList(body.announcements);
+  delAnnouncements(@Body() body: DelAnnouncements): Promise<InstanceType<Announcement>> {
+    return this.announcementService.deleteList(body.announcementIds);
   }
 
   @Put(':id')
@@ -53,7 +54,7 @@ export class AnnouncementController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('删除单个公告')
-  delAnnouncement(@QueryParams() { params }): Promise<any> {
+  delAnnouncement(@QueryParams() { params }): Promise<InstanceType<Announcement>> {
     return this.announcementService.deleteItem(params.id);
   }
 }
