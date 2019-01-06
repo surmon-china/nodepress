@@ -30,33 +30,33 @@ export class CategoryController {
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加分类')
   createCategory(@Body() category: Category): Promise<Category> {
-    return this.categoryService.createItem(category);
+    return this.categoryService.create(category);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除分类')
   delCategories(@Body() body: DelCategories): Promise<any> {
-    return this.categoryService.deleteList(body.categories);
+    return this.categoryService.batchDelete(body.categories);
   }
 
   @Get(':id')
   @HttpProcessor.handle('获取单个分类')
   getCategory(@QueryParams() { params }): Promise<Category[]> {
-    return this.categoryService.getItem(params.id);
+    return this.categoryService.getGenealogyById(params.id);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('修改单个分类')
   putCategory(@QueryParams() { params }, @Body() category: Category): Promise<Category> {
-    return this.categoryService.putItem(params.id, category);
+    return this.categoryService.update(params.id, category);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('删除单个分类')
-  delCategory(@QueryParams() { params }): Promise<any> {
-    return this.categoryService.deleteItem(params.id);
+  delCategory(@QueryParams() { params }): Promise<Category> {
+    return this.categoryService.delete(params.id);
   }
 }

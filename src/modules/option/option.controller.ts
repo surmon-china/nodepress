@@ -17,14 +17,14 @@ export class OptionController {
 
   @Get()
   @HttpProcessor.handle('获取设置')
-  getOptions(): Promise<Option> {
-    return this.optionService.getOptions();
+  getOption(): Promise<Option> {
+    return this.optionService.getOption();
   }
 
   @Put()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('修改设置')
   putOption(@Body() option: Option): Promise<Option> {
-    return this.optionService.putOptions(option);
+    return this.optionService.putOption(option);
   }
 }

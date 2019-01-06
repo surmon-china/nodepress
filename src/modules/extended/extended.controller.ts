@@ -6,7 +6,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GithubService, IGithubRepositorie } from './extended.service.github';
 import { StatisticService, ITodayStatistic } from './extended.service.statistic';
 import { QiniuService, IUpToken } from './extended.service.qiniu';
@@ -28,26 +28,26 @@ export class ExtendedController {
   @Get('constants')
   @HttpCache(CACHE_KEY.CONSTANTS, 60 * 60)
   @HttpProcessor.handle('获取配置常量')
-  getConstants(): object {
+  getSystemConstants(): object {
     return STATE_CONSTANTS;
   }
 
   @Get('statistic')
   @HttpProcessor.handle('获取统计概览')
-  async getStatistics(): Promise<ITodayStatistic> {
-    return await this.statisticService.getStatistic();
+  getSystemStatistics(): Promise<ITodayStatistic> {
+    return this.statisticService.getStatistic();
   }
 
   @Get('github')
   @HttpProcessor.handle('获取项目列表')
-  getRepositories(): Promise<IGithubRepositorie[]> {
-    return this.githubService.getCache();
+  getGithubRepositories(): Promise<IGithubRepositorie[]> {
+    return this.githubService.getRepositoriesCache();
   }
 
-  @Post('uptoken')
+  @Get('uptoken')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('获取上传 Token')
-  getUpToken(): IUpToken {
+  getQiniuUpToken(): IUpToken {
     return this.qiniuService.getToken();
   }
 }

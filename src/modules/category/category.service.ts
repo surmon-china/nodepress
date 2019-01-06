@@ -30,40 +30,39 @@ export class CategoryService {
   }
 
   // 请求分类列表（及聚和数据）
-  getList(querys, options, isAuthenticated): Promise<PaginateResult<Category>> {
+  public getList(querys, options, isAuthenticated): Promise<PaginateResult<Category>> {
     const matchState = { state: EPublishState.Published, public: EPublicState.Public };
-    return this.categoryModel.paginate(querys, options).then(categorys => {
+    return this.categoryModel.paginate(querys, options).then(categories => {
       return this.categoryModel.aggregate([
         { $match: isAuthenticated ? null : matchState },
         { $unwind: '$category' },
         { $group: { _id: '$category', num_tutorial: { $sum: 1 }}},
       ]).then(counts => {
-        const todoCategorys = lodash.cloneDeep(categorys);
-        todoCategorys.docs = todoCategorys.docs.map(category => {
-          const finded = counts.find(count => String(count._id) === String(category._id));
-          category.count = finded ? finded.num_tutorial : 0;
-          return category;
+        return Object.assign(categories, {
+          docs: categories.docs.map(category => {
+            const finded = counts.find(count => String(count._id) === String(category._id));
+            return Object.assign(category, { count: finded ? finded.num_tutorial : 0 });
+          }),
         });
-        return todoCategorys;
       });
     });
   }
 
   // 创建分类
-  createItem(newCategory: Category): Promise<Category> {
-    return this.categoryModel.find({ slug: newCategory.slug }).then(existedCategorys => {
-      return existedCategorys.length
+  public create(newCategory: Category): Promise<Category> {
+    return this.categoryModel.find({ slug: newCategory.slug }).exec().then(categories => {
+      return categories.length
         ? Promise.reject('slug 已被占用')
         : new this.categoryModel(newCategory).save().then(category => {
             this.baiduSeoService.push(this.buildSeoUrl(category.slug));
-            this.sitemapService.updateSitemap();
+            this.sitemapService.updateCache();
             return category;
           });
     });
   }
 
-  // 获取单个分类（及自身关联的所有父级）
-  async getItem(categoryId: Types.ObjectId): Promise<Category[]> {
+  // 获取分类族谱
+  public getGenealogyById(categoryId: Types.ObjectId): Promise<Category[]> {
     const categories = [];
     return new Promise((resolve, reject) => {
       ((function findCateItem(id) {
@@ -85,27 +84,30 @@ export class CategoryService {
   }
 
   // 获取标签详情（使用别名）
-  async getItemBySlug(slug: string): Promise<Category> {
-    return this.categoryModel.findOne({ slug });
+  public getDetailBySlug(slug: string): Promise<Category> {
+    return this.categoryModel.findOne({ slug }).exec();
   }
 
   // 修改分类
-  async putItem(categoryId: Types.ObjectId, newCategory: Category): Promise<Category> {
-    return this.categoryModel.findOne({ slug: newCategory.slug }).then(existedCategory => {
-      return existedCategory && existedCategory._id !== categoryId
+  public update(categoryId: Types.ObjectId, newCategory: Category): Promise<Category> {
+    return this.categoryModel.findOne({ slug: newCategory.slug }).exec().then(existedCategory => {
+      return existedCategory && String(existedCategory._id) !== String(categoryId)
         ? Promise.reject('slug 已被占用')
         : this.categoryModel.findByIdAndUpdate(categoryId, newCategory, { new: true }).then(category => {
             this.baiduSeoService.push(this.buildSeoUrl(category.slug));
-            this.sitemapService.updateSitemap();
+            this.sitemapService.updateCache();
             return category;
           });
     });
   }
 
   // 删除单个分类
-  async deleteItem(categoryId: Types.ObjectId): Promise<any> {
-    return this.categoryModel.findByIdAndRemove(categoryId).then(category => {
-      return this.categoryModel.find({ pid: categoryId }).then(categories => {
+  public delete(categoryId: Types.ObjectId): Promise<Category> {
+    return this.categoryModel.findByIdAndRemove(categoryId).exec().then(category => {
+      // 更新网站地图
+      this.sitemapService.updateCache();
+      this.baiduSeoService.delete(this.buildSeoUrl(category.slug));
+      return this.categoryModel.find({ pid: categoryId }).exec().then(categories => {
         // 如果没有此分类的父分类，则删除 { pid: target.id } -> ok
         if (!categories.length) {
           return Promise.resolve(category);
@@ -118,19 +120,15 @@ export class CategoryService {
           .execute()
           .then(_ => category);
       });
-    })
-    .then(category => {
-      this.sitemapService.updateSitemap();
-      return category;
     });
   }
 
   // 批量删除分类
-  async deleteList(categoryIds: Types.ObjectId[]): Promise<any> {
-    return this.categoryModel.find({ _id: { $in: categoryIds }}).then(categories => {
+  public batchDelete(categoryIds: Types.ObjectId[]): Promise<any> {
+    return this.categoryModel.find({ _id: { $in: categoryIds }}).exec().then(categories => {
       this.baiduSeoService.delete(categories.map(category => this.buildSeoUrl(category.slug)));
-      return this.categoryModel.deleteMany({ _id: { $in: categoryIds }}).then(result => {
-        this.sitemapService.updateSitemap();
+      return this.categoryModel.deleteMany({ _id: { $in: categoryIds }}).exec().then(result => {
+        this.sitemapService.updateCache();
         return result;
       });
     });

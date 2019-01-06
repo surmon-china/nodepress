@@ -5,12 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
-import { Injectable } from '@nestjs/common';
 import { PaginateResult, Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
+import { Injectable } from '@nestjs/common';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { CacheService, TCachePromiseIoResult } from '@app/processors/cache/cache.service';
@@ -22,7 +21,7 @@ import { Tag } from './tag.model';
 export class TagService {
 
   // 为非鉴权用户所用
-  private tagListCache: TCachePromiseIoResult;
+  private tagListCache: TCachePromiseIoResult<PaginateResult<Tag>>;
 
   constructor(
     private readonly cacheService: CacheService,
@@ -30,14 +29,13 @@ export class TagService {
     private readonly baiduSeoService: BaiduSeoService,
     @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
   ) {
-    const promiseTask = () => {
-      const options = { page: 1, limit: 166, sort: { _id: ESortType.Desc }};
-      return this.getList.bind(this)(null, options, false);
-    };
     this.tagListCache = this.cacheService.promise({
       ioMode: true,
       key: CACHE_KEY.TAGS,
-      promise: promiseTask,
+      promise() {
+        const options = { page: 1, limit: 166, sort: { _id: ESortType.Desc }};
+        return this.getList.bind(this)(null, options, false);
+      },
     });
   }
 
@@ -46,88 +44,85 @@ export class TagService {
     return `${APP_CONFIG.APP.URL}/tag/${slug}`;
   }
 
-  // 更新所有内容相关服务
-  private updateContentExternalService(): void {
-    this.updateListCache();
-    this.sitemapService.updateSitemap();
-  }
-
   // 请求标签列表缓存
-  getListCache(): Promise<PaginateResult<Tag>> {
+  public getListCache(): Promise<PaginateResult<Tag>> {
     return this.tagListCache.get();
   }
 
   // 更新标签列表缓存
-  updateListCache(): Promise<PaginateResult<Tag>> {
+  public updateListCache(): Promise<PaginateResult<Tag>> {
     return this.tagListCache.update();
   }
 
   // 请求标签列表（及聚和数据）
-  getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
+  public getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
     const matchState = { state: EPublishState.Published, public: EPublicState.Public };
     return this.tagModel.paginate(querys, options).then(tags => {
       return this.tagModel.aggregate([
         { $match: isAuthenticated ? null : matchState },
         { $unwind: '$tag' },
         { $group: { _id: '$tag', num_tutorial: { $sum: 1 }}},
-      ]).then(counts => {
-        const todoTags = lodash.cloneDeep(tags);
-        todoTags.docs = todoTags.docs.map(tag => {
-          const finded = counts.find(count => String(count._id) === String(tag._id));
-          tag.count = finded ? finded.num_tutorial : 0;
-          return tag;
+      ]).exec().then(counts => {
+        return Object.assign(tags, {
+          docs: tags.docs.map(tag => {
+            const finded = counts.find(count => String(count._id) === String(tag._id));
+            return Object.assign(tag, { count: finded ? finded.num_tutorial : 0 });
+          }),
         });
-        return todoTags;
       });
     });
   }
 
   // 创建标签
-  createItem(newTag: Tag): Promise<Tag> {
-    return this.tagModel.find({ slug: newTag.slug }).then(existedTags => {
+  public create(newTag: Tag): Promise<Tag> {
+    return this.tagModel.find({ slug: newTag.slug }).exec().then(existedTags => {
       return existedTags.length
         ? Promise.reject('slug 已被占用')
         : new this.tagModel(newTag).save().then(tag => {
             this.baiduSeoService.push(this.buildSeoUrl(tag.slug));
-            this.updateContentExternalService();
+            this.sitemapService.updateCache();
+            this.updateListCache();
             return tag;
           });
     });
   }
 
   // 获取标签详情
-  async getItemBySlug(slug: string): Promise<Tag> {
-    return this.tagModel.findOne({ slug });
+  public getDetailBySlug(slug: string): Promise<Tag> {
+    return this.tagModel.findOne({ slug }).exec();
   }
 
   // 修改标签
-  async putItem(tagId: Types.ObjectId, newTag: Tag): Promise<Tag> {
-    return this.tagModel.findOne({ slug: newTag.slug }).then(existedTag => {
-      return existedTag && existedTag._id !== tagId
+  public update(tagId: Types.ObjectId, newTag: Tag): Promise<Tag> {
+    return this.tagModel.findOne({ slug: newTag.slug }).exec().then(existedTag => {
+      return existedTag && String(existedTag._id) !== String(tagId)
         ? Promise.reject('slug 已被占用')
-        : this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).then(tag => {
+        : this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).exec().then(tag => {
             this.baiduSeoService.push(this.buildSeoUrl(tag.slug));
-            this.updateContentExternalService();
+            this.sitemapService.updateCache();
+            this.updateListCache();
             return tag;
           });
     });
   }
 
   // 删除单个标签
-  async deleteItem(tagId: Types.ObjectId): Promise<any> {
-    return this.tagModel.findByIdAndRemove(tagId).then(tag => {
+  public delete(tagId: Types.ObjectId): Promise<Tag> {
+    return this.tagModel.findByIdAndRemove(tagId).exec().then(tag => {
       this.baiduSeoService.delete(this.buildSeoUrl(tag.slug));
-      this.updateContentExternalService();
+      this.sitemapService.updateCache();
+      this.updateListCache();
       return tag;
     });
   }
 
   // 批量删除标签
-  async deleteList(tagIds: Types.ObjectId[]): Promise<any> {
-    return this.tagModel.find({ _id: { $in: tagIds }}).then(tags => {
+  public batchDelete(tagIds: Types.ObjectId[]): Promise<any> {
+    return this.tagModel.find({ _id: { $in: tagIds }}).exec().then(tags => {
       this.baiduSeoService.delete(tags.map(tag => this.buildSeoUrl(tag.slug)));
-      return this.tagModel.deleteMany({ _id: { $in: tagIds }}).then(result => {
-        this.updateContentExternalService();
+      return this.tagModel.deleteMany({ _id: { $in: tagIds }}).exec().then(result => {
+        this.sitemapService.updateCache();
+        this.updateListCache();
         return result;
       });
     });
