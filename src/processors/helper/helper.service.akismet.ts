@@ -48,10 +48,10 @@ export class AkismetService {
   private initVerify(): void {
     this.verifyClient().then(_ => {
       this.clientIsValid = true;
-      console.info(`Akismet key 有效，已准备好工作!`);
+      setTimeout(() => console.info('Akismet key 有效，已准备好工作'), 0);
     }).catch(error => {
       this.clientIsValid = false;
-      console.warn('Akismet 初始化连接失败，无法工作!', error);
+      setTimeout(() => console.warn('Akismet 初始化连接失败，无法工作：', error), 0);
     });
   }
 
@@ -61,7 +61,7 @@ export class AkismetService {
       return valid
         ? Promise.resolve(true)
         : Promise.reject(`Akismet key 无效`);
-    }).catch(error => Promise.reject(error.message));
+    }).catch(error => Promise.reject(error.message || error));
   }
 
   // 构造检查器
