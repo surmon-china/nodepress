@@ -298,7 +298,7 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
   // 用户标识
   const ua = request.headers['user-agent'];
 
-  return {
+  const result = {
     querys,
     options,
     params,
@@ -307,4 +307,8 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     visitors: { ip, ua, referer: request.referer },
     isAuthenticated,
   };
+
+  console.log('queryparams result', 'querys::', querys, 'options::', options, 'params::', params, 'visitors::', result.visitors);
+
+  return result;
 });
