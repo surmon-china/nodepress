@@ -42,6 +42,7 @@ export class AuthController {
   createToken(@QueryParams() { visitors: { ip }}, @Body() body: AuthLogin): Promise<ITokenResult> {
     return this.authService.createToken(body.password).then(token => {
       this.ipService.query(ip).then(ipLocation => {
+        console.log('ipLocation', ip, ipLocation);
         this.emailService.sendMail({
           to: APP_CONFIG.EMAIL.admin,
           subject: '博客有新的登陆行为',
