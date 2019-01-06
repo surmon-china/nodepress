@@ -22,24 +22,24 @@ export class LikeService {
   ) {}
 
   // 喜欢主站
-  async likeSite(): Promise<Option> {
-    return this.optionModel.findOne().then(option => {
+  public likeSite(): Promise<Option> {
+    return this.optionModel.findOne().exec().then(option => {
       option.meta.likes++;
       return option.save();
     });
   }
 
   // 喜欢评论
-  async likeComment(commentId: Types.ObjectId): Promise<Comment> {
-    return this.commentModel.findOne(commentId).then(comment => {
+  public likeComment(commentId: Types.ObjectId): Promise<Comment> {
+    return this.commentModel.findOne(commentId).exec().then(comment => {
       comment.likes++;
       return comment.save();
     });
   }
 
   // 喜欢文章
-  async likeArticle(articleId: Types.ObjectId): Promise<Article> {
-    return this.articleModel.findOne(articleId).then(article => {
+  public likeArticle(articleId: Types.ObjectId): Promise<Article> {
+    return this.articleModel.findOne(articleId).exec().then(article => {
       article.meta.likes++;
       return article.save();
     });

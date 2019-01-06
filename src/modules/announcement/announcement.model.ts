@@ -49,5 +49,5 @@ export class DelAnnouncements extends Typegoose {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
-  announcementIds: Types.ObjectId[];
+  announcement_ids: Types.ObjectId[];
 }

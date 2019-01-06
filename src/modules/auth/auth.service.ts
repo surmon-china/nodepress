@@ -23,12 +23,6 @@ export class AuthService {
     @InjectModel(Auth) private readonly authModel: TMongooseModel<Auth>,
   ) {}
 
-  // 验证 Auth 数据
-  validateAuthData(payload: any): Promise<any> {
-    const isVerified = lodash.isEqual(payload.data, APP_CONFIG.AUTH.data);
-    return isVerified ? payload.data : null;
-  }
-
   // 密码编码
   private decodeBase64(password) {
     return password ? Base64.decode(password) : password;
@@ -39,20 +33,26 @@ export class AuthService {
     return createHash('md5').update(password).digest('hex');
   }
 
+  // 验证 Auth 数据
+  public validateAuthData(payload: any): Promise<any> {
+    const isVerified = lodash.isEqual(payload.data, APP_CONFIG.AUTH.data);
+    return isVerified ? payload.data : null;
+  }
+
   // 获取管理员信息
-  async getAdminInfo(): Promise<Auth> {
-    return this.authModel.findOne(null, '-_id name slogan gravatar');
+  public getAdminInfo(): Promise<Auth> {
+    return this.authModel.findOne(null, '-_id name slogan gravatar').exec();
   }
 
   // 修改管理员信息
-  putAdminInfo(auth: Auth): Promise<Auth> {
+  public putAdminInfo(auth: Auth): Promise<Auth> {
+
+    // 密码解码
+    const password = this.decodeBase64(auth.password);
+    const new_password = this.decodeBase64(auth.new_password);
+    const rel_new_password = this.decodeBase64(auth.rel_new_password);
+
     return new Promise((resolve, reject) => {
-
-      // 密码解码
-      const password = this.decodeBase64(auth.password);
-      const new_password = this.decodeBase64(auth.new_password);
-      const rel_new_password = this.decodeBase64(auth.rel_new_password);
-
       // 验证密码
       if (password || new_password || rel_new_password) {
         const isLackConfirmPassword = !new_password || !rel_new_password;
@@ -66,43 +66,39 @@ export class AuthService {
           return reject('新旧密码不可一致');
         }
       }
+      return resolve();
+    }).then(_ => {
 
       // 修改前查询验证
-      this.authModel.findOne(null, '_id name slogan gravatar password')
-        .then(_auth => {
+      return this.authModel.findOne(null, '_id name slogan gravatar password').exec();
+    }).then(extantAuth => {
 
-          // 已存在密码
-          const extantAuth = _auth || { _id: null, password: null };
-          const extantPassword = extantAuth.password || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
+      // 核对已存在密码
+      const virtualAuth = extantAuth || { _id: null, password: null };
+      const extantPassword = virtualAuth.password || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
+      const isExistedAuth = !!virtualAuth._id;
 
-          // 修改密码 -> 判断旧密码是否一致
-          if (password) {
-            if (extantPassword !== this.decodeMd5(password)) {
-              return reject('原密码不正确');
-            } else {
-              auth.password = this.decodeMd5(rel_new_password);
-              Reflect.deleteProperty(auth, 'new_password');
-              Reflect.deleteProperty(auth, 'rel_new_password');
-            }
-          }
+      // 修改密码 -> 判断旧密码是否一致
+      if (password) {
+        if (extantPassword !== this.decodeMd5(password)) {
+          return Promise.reject('原密码不正确');
+        } else {
+          auth.password = this.decodeMd5(rel_new_password);
+          Reflect.deleteProperty(auth, 'new_password');
+          Reflect.deleteProperty(auth, 'rel_new_password');
+        }
+      }
 
-          const getAdminInfo = () => {
-            this.getAdminInfo().then(resolve).catch(reject);
-          };
-
-          if (extantAuth._id) {
-            this.authModel.findByIdAndUpdate(extantAuth._id, auth, { new: true }).then(getAdminInfo).catch(reject);
-          } else {
-            new this.authModel(auth).save().then(getAdminInfo).catch(reject);
-          }
-
-        }).catch(reject);
+      // 新建数据或保存已有
+      return isExistedAuth
+        ? Object.assign(extantAuth, auth).save()
+        : new this.authModel(auth).save();
     });
   }
 
   // 登陆/创建 Token
-  createToken(password: string): Promise<ITokenResult> {
-    return this.authModel.findOne(null, '-_id password').then(auth => {
+  public createToken(password: string): Promise<ITokenResult> {
+    return this.authModel.findOne(null, '-_id password').exec().then(auth => {
       const extantAuth = auth || { password: null };
       const extantPassword = extantAuth.password || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
       const submittedPassword = this.decodeMd5(this.decodeBase64(password));
@@ -112,8 +108,6 @@ export class AuthService {
       } else {
         return Promise.reject('密码不匹配');
       }
-    }).catch(error => {
-      return Promise.reject(error);
     });
   }
 }

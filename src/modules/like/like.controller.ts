@@ -25,13 +25,13 @@ export class LikeController {
 
   @Patch('comment')
   @HttpProcessor.handle('爱你么么扎！点赞评论')
-  likeComment(@Body('id') commentId: Types.ObjectId): Promise<Article> {
+  likeComment(@Body('id') commentId: Types.ObjectId): Promise<Comment> {
     return this.likeService.likeComment(commentId);
   }
 
   @Patch('article')
   @HttpProcessor.handle('爱你么么扎！点赞文章')
-  likeArticle(@Body('id') articleId: Types.ObjectId): Promise<Comment> {
+  likeArticle(@Body('id') articleId: Types.ObjectId): Promise<Article> {
     return this.likeService.likeArticle(articleId);
   }
 }

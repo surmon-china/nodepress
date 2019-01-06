@@ -40,27 +40,27 @@ export class TagController {
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加标签')
   createTag(@Body() tag: Tag): Promise<Tag> {
-    return this.tagService.createItem(tag);
+    return this.tagService.create(tag);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除标签')
   delTags(@Body() body: DelTags): Promise<any> {
-    return this.tagService.deleteList(body.tags);
+    return this.tagService.batchDelete(body.tag_ids);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('修改标签')
   putTag(@QueryParams() { params }, @Body() tag: Tag): Promise<Tag> {
-    return this.tagService.putItem(params.id, tag);
+    return this.tagService.update(params.id, tag);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('删除单个标签')
-  delTag(@QueryParams() { params }): Promise<any> {
-    return this.tagService.deleteItem(params.id);
+  delTag(@QueryParams() { params }): Promise<Tag> {
+    return this.tagService.delete(params.id);
   }
 }

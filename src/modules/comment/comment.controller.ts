@@ -26,9 +26,11 @@ export class CommentController {
   getComments(
     @QueryParams([EQueryParamsField.State, EQueryParamsField.CommentState, 'post_id']) { querys, options, origin },
   ): Promise<PaginateResult<Comment>> {
+    // 热门排序
     if (origin.sort === ESortType.Hot) {
       options.sort = { likes: ESortType.Desc };
     }
+    // 关键词搜索
     if (origin.keyword) {
       const keywordRegExp = new RegExp(origin.keyword);
       querys.$or = [
@@ -37,47 +39,47 @@ export class CommentController {
         { 'author.email': keywordRegExp },
       ];
     }
-    return this.commentService.getCommentsList(querys, options);
+    return this.commentService.getList(querys, options);
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加评论')
   createComment(@Body() comment: Comment, @QueryParams() { visitors }): Promise<Comment> {
-    return this.commentService.createComment(comment, visitors);
+    return this.commentService.create(comment, visitors);
   }
 
   @Patch()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加评论')
   patchComments(@QueryParams() { visitors }, @Body() body: PatchComments): Promise<Comment> {
-    return this.commentService.patchCommentsState(body, visitors.referer);
+    return this.commentService.batchPatchState(body, visitors.referer);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除评论')
   delComments(@Body() body: DelComments): Promise<any> {
-    return this.commentService.deleteList(body.comment_ids, body.post_ids);
+    return this.commentService.batchDelete(body.comment_ids, body.post_ids);
   }
 
   @Get(':id')
   @HttpProcessor.handle('获取单个评论详情')
   getComment(@QueryParams() { params }): Promise<Comment> {
-    return this.commentService.getItem(params.id);
+    return this.commentService.getDetail(params.id);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('修改单个评论')
   putComment(@QueryParams() { params, visitors }, @Body() comment: Comment): Promise<Comment> {
-    return this.commentService.putItem(params.id, comment, visitors.referer);
+    return this.commentService.update(params.id, comment, visitors.referer);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('删除单个评论')
   delComment(@QueryParams() { params }): Promise<any> {
-    return this.commentService.deleteItem(params.id);
+    return this.commentService.delete(params.id);
   }
 }

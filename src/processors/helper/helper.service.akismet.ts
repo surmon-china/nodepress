@@ -65,7 +65,7 @@ export class AkismetService {
   }
 
   // 构造检查器
-  private buildAkismetInterceptor(handleType: EAkismetActionType) {
+  private buildInterceptor(handleType: EAkismetActionType) {
     return (content: TContent): Promise<any> => {
       return new Promise((resolve, reject) => {
         this.verifyClient().then(_ => {
@@ -95,16 +95,16 @@ export class AkismetService {
 
   // 检查 SPAM
   public checkSpam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionType.CheckSpam)(content);
+    return this.buildInterceptor(EAkismetActionType.CheckSpam)(content);
   }
 
   // 提交 SPAM
   public submitSpam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionType.SubmitSpam)(content);
+    return this.buildInterceptor(EAkismetActionType.SubmitSpam)(content);
   }
 
   // 提交 HAM
   public submitHam(content: TContent): Promise<any> {
-    return this.buildAkismetInterceptor(EAkismetActionType.SubmitHam)(content);
+    return this.buildInterceptor(EAkismetActionType.SubmitHam)(content);
   }
 }

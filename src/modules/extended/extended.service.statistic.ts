@@ -42,6 +42,35 @@ export class StatisticService {
     });
   }
 
+  private getTagsCount(): Promise<number> {
+    return this.cacheService.get<number>(CACHE_KEY.TAGS).then(tags => {
+      this.resultData.tags = tags;
+      return tags;
+    });
+  }
+
+  private getViewsCount(): Promise<number> {
+    return this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS).then(views => {
+      this.resultData.views = views || 0;
+      return views;
+    });
+  }
+
+  private getArticlesCount(): Promise<number> {
+    return this.articleModel.countDocuments({}).exec().then(count => {
+      this.resultData.articles = count;
+      return count;
+    });
+  }
+
+  private getCommentsCount(): Promise<number> {
+    return this.commentModel.countDocuments({}).exec().then(count => {
+      this.resultData.comments = count;
+      return count;
+    });
+  }
+
+  // 获取统计数据
   public getStatistic() {
     return Promise.all([
       this.getTagsCount(),
@@ -49,34 +78,7 @@ export class StatisticService {
       this.getArticlesCount(),
       this.getCommentsCount(),
     ])
-    .then(_ => this.resultData);
-  }
-
-  private getTagsCount(): Promise<number> {
-    return this.cacheService.get(CACHE_KEY.TAGS).then(tags => {
-      this.resultData.tags = tags;
-      return tags;
-    });
-  }
-
-  private getViewsCount(): Promise<number> {
-    return this.cacheService.get(CACHE_KEY.TODAY_VIEWS).then(views => {
-      this.resultData.views = views || 0;
-      return views;
-    });
-  }
-
-  private getArticlesCount(): Promise<number> {
-    return this.articleModel.countDocuments({}).then(count => {
-      this.resultData.articles = count;
-      return count;
-    });
-  }
-
-  private getCommentsCount(): Promise<number> {
-    return this.commentModel.countDocuments({}).then(count => {
-      this.resultData.comments = count;
-      return count;
-    });
+    .then(_ => Promise.resolve(this.resultData))
+    .catch(_ => Promise.resolve(this.resultData));
   }
 }

@@ -17,9 +17,9 @@ export class BilibiliController {
 
   @Get('list')
   @HttpProcessor.handle('获取视频列表')
-  async getVideos(@QueryParams() { options: { page }}, @Query() { per_page }): Promise<IBilibiliVideoList> {
-    return this.bilibiliService.isRequestDefaultList(per_page, page)
+  getBilibiliVideos(@QueryParams() { options: { page, limit }}): Promise<IBilibiliVideoList> {
+    return this.bilibiliService.isRequestDefaultList(limit, page)
       ? this.bilibiliService.getVideoListCache()
-      : this.bilibiliService.getVideoList(per_page, page);
+      : this.bilibiliService.getVideoList(limit, page);
   }
 }
