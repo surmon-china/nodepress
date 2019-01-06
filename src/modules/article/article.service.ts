@@ -16,7 +16,7 @@ import { TagService } from '@app/modules/tag/tag.service';
 import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
-import { Article, ArticleModel } from './article.model';
+import { Article } from './article.model';
 
 @Injectable()
 export class ArticleService {
@@ -29,7 +29,7 @@ export class ArticleService {
     private readonly cacheService: CacheService,
     private readonly sitemapService: SitemapService,
     private readonly baiduSeoService: BaiduSeoService,
-    @InjectModel(ArticleModel) private readonly articleModel: TMongooseModel<Article>,
+    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
   ) {
     this.hotArticleListCache = this.cacheService.interval({
       timeout: {
@@ -37,7 +37,7 @@ export class ArticleService {
         error: 1000 * 60 * 5, // 失败后 5 分钟更新一次数据
       },
       key: CACHE_KEY.TAGS,
-      promise() {
+      promise: () => {
         const options = {
           limit: 10,
           sort: { 'meta.comments': ESortType.Desc, 'meta.likes': ESortType.Desc },

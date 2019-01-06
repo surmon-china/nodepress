@@ -24,13 +24,13 @@ export const databaseProvider = {
     // 连接错误
     mongoose.connection.on('error', error => {
       const timeout = 6;
-      console.warn(`数据库连接失败！将在 ${timeout}s 后重试`, error);
       setTimeout(connection, timeout * 1000);
+      setTimeout(() => console.warn(`数据库连接失败！将在 ${timeout}s 后重试`, error), 0);
     });
 
     // 连接成功
     mongoose.connection.on('open', () => {
-      console.log('数据库连接成功！');
+      setTimeout(() => console.info('数据库连接成功'), 0);
     });
     return await connection();
   },

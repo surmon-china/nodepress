@@ -8,6 +8,31 @@
 import { prop, arrayProp, pre, Typegoose } from 'typegoose';
 import { IsString, IsInt, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator';
 
+// 元信息
+class Meta {
+  @IsInt()
+  @prop({ default: 0 })
+  likes: number;
+}
+
+// 黑名单
+export class Blacklist {
+  @IsArray()
+  @ArrayUnique()
+  @arrayProp({ items: String, validate: /\S+/ })
+  ips: string[];
+
+  @IsArray()
+  @ArrayUnique()
+  @arrayProp({ items: String, validate: /\S+/ })
+  mails: string[];
+
+  @IsArray()
+  @ArrayUnique()
+  @arrayProp({ items: String, validate: /\S+/ })
+  keywords: string[];
+}
+
 @pre<Option>('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
@@ -66,29 +91,4 @@ export class Option extends Typegoose {
 
   @prop({ default: Date.now })
   update_at?: Date;
-}
-
-// 元信息
-class Meta {
-  @IsInt()
-  @prop({ default: 0 })
-  likes: number;
-}
-
-// 黑名单
-export class Blacklist {
-  @IsArray()
-  @ArrayUnique()
-  @arrayProp({ items: String, validate: /\S+/ })
-  ips: string[];
-
-  @IsArray()
-  @ArrayUnique()
-  @arrayProp({ items: String, validate: /\S+/ })
-  mails: string[];
-
-  @IsArray()
-  @ArrayUnique()
-  @arrayProp({ items: String, validate: /\S+/ })
-  keywords: string[];
 }
