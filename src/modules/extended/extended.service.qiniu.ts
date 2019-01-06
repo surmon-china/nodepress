@@ -25,7 +25,7 @@ export class QiniuService {
     this.putPolicy = new qiniu.rs.PutPolicy({ scope: bucket });
   }
 
-  getToken(): IUpToken {
+  public getToken(): IUpToken {
     return { upToken: this.putPolicy.uploadToken(this.mac) };
   }
 }

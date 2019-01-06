@@ -59,5 +59,5 @@ export class DelTags extends Typegoose {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
-  tags: Types.ObjectId[];
+  tag_ids: Types.ObjectId[];
 }

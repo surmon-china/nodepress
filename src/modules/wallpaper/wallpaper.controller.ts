@@ -22,7 +22,7 @@ export class WallpaperController {
 
   @Get('story')
   @HttpProcessor.handle('获取今日壁纸故事')
-  getStory(): Promise<any> {
+  getWallpaperStory(): Promise<any> {
     return this.wallpaperService.getStoryCache();
   }
 }

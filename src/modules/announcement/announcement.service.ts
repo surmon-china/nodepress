@@ -5,7 +5,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { InstanceType } from 'typegoose';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
@@ -22,22 +21,22 @@ export class AnnouncementService {
   }
 
   // 创建公告
-  public createItem(announcement: Announcement): Promise<Announcement> {
+  public create(announcement: Announcement): Promise<Announcement> {
     return new this.announcementModel(announcement).save();
   }
 
   // 修改单个公告
-  public putItem(announcementId: Types.ObjectId, announcement: Announcement): Promise<Announcement> {
+  public update(announcementId: Types.ObjectId, announcement: Announcement): Promise<Announcement> {
     return this.announcementModel.findByIdAndUpdate(announcementId, announcement, { new: true }).exec();
   }
 
   // 删除单个公告
-  public deleteItem(announcementId: Types.ObjectId): Promise<InstanceType<Announcement>> {
+  public delete(announcementId: Types.ObjectId): Promise<Announcement> {
     return this.announcementModel.findByIdAndRemove(announcementId).exec();
   }
 
   // 批量删除公告
-  public deleteList(announcementIds: Types.ObjectId[]): Promise<InstanceType<Announcement>> {
+  public batchDelete(announcementIds: Types.ObjectId[]): Promise<any> {
     return this.announcementModel.deleteMany({ _id: { $in: announcementIds }}).exec();
   }
 }

@@ -12,23 +12,6 @@ import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoos
 import { ECommentParentType, ECommentState } from '@app/interfaces/state.interface';
 import { Extend } from '@app/models/extend.model';
 
-// 评论作者
-class Author {
-  @IsNotEmpty({ message: '作者名称？' })
-  @IsString()
-  @prop({ required: true, validate: /\S+/ })
-  name: string;
-
-  @IsNotEmpty({ message: '作者邮箱？' })
-  @IsString()
-  @prop({ required: true, validate: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/ })
-  email: string;
-
-  @IsString()
-  @prop({ validate: /^((https|http):\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/ })
-  site: string;
-}
-
 @pre<Comment>('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
@@ -102,6 +85,23 @@ export class Comment extends Typegoose {
   @ArrayUnique()
   @arrayProp({ items: Extend })
   extends?: Extend[];
+}
+
+// 评论作者
+export class Author {
+  @IsNotEmpty({ message: '作者名称？' })
+  @IsString()
+  @prop({ required: true, validate: /\S+/ })
+  name: string;
+
+  @IsNotEmpty({ message: '作者邮箱？' })
+  @IsString()
+  @prop({ required: true, validate: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/ })
+  email: string;
+
+  @IsString()
+  @prop({ validate: /^((https|http):\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/ })
+  site: string;
 }
 
 export class DelComments extends Typegoose {

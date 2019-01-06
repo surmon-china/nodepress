@@ -17,6 +17,6 @@ export class SitemapController {
   @Get()
   @HttpProcessor.handle('获取网站地图')
   getSitemap(): Promise<any> {
-    return this.sitemapService.getSitemapCache();
+    return this.sitemapService.getCache();
   }
 }

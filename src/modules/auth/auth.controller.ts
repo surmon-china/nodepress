@@ -9,6 +9,7 @@ import * as APP_CONFIG from '@app/app.config';
 import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
+import { IpService } from '@app/processors/helper/helper.service.ip';
 import { EmailService } from '@app/processors/helper/helper.service.email';
 import { QueryParams } from '@app/decorators/query-params.decorator';
 import { AuthService } from './auth.service';
@@ -18,6 +19,7 @@ import { Auth, AuthLogin } from './auth.model';
 @Controller('auth')
 export class AuthController {
   constructor(
+    private readonly ipService: IpService,
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
   ) {}
@@ -37,15 +39,17 @@ export class AuthController {
 
   @Post('login')
   @HttpProcessor.handle({ message: '登陆', error: HttpStatus.BAD_REQUEST })
-  createToken(@QueryParams() { ip }, @Body() body: AuthLogin): Promise<ITokenResult> {
-    return this.authService.createToken(body.password).then(data => {
-      this.emailService.sendMail({
-        to: APP_CONFIG.EMAIL.admin,
-        subject: '博客有新的登陆行为',
-        text: `来源 IP：${ip}，地理位置为：`,
-        html: `来源 IP：${ip}，地理位置为：`,
+  createToken(@QueryParams() { visitors: { ip }}, @Body() body: AuthLogin): Promise<ITokenResult> {
+    return this.authService.createToken(body.password).then(token => {
+      this.ipService.query(ip).then(ipLocation => {
+        this.emailService.sendMail({
+          to: APP_CONFIG.EMAIL.admin,
+          subject: '博客有新的登陆行为',
+          text: `来源 IP：${ip}，地理位置为：${ipLocation}`,
+          html: `来源 IP：${ip}，地理位置为：${ipLocation}`,
+        });
       });
-      return data;
+      return token;
     });
   }
 
