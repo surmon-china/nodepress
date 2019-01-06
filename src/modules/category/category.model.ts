@@ -58,7 +58,6 @@ export class Category extends Typegoose {
 }
 
 export class DelCategories extends Typegoose {
-
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()

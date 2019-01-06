@@ -30,10 +30,11 @@ export interface IGithubOriginRepositorie {
 @Injectable()
 export class GithubService {
 
-  private cache: ICacheIntervalResult;
+  // 项目列表缓存
+  private repositoriesCache: ICacheIntervalResult<IGithubRepositorie[]>;
 
   constructor(private readonly httpService: HttpService, private readonly cacheService: CacheService) {
-    this.cache = this.cacheService.interval({
+    this.repositoriesCache = this.cacheService.interval({
       key: CACHE_KEY.GITHUB_REPOSITORIES,
       promise: this.getRepositories.bind(this),
       timeout: {
@@ -44,12 +45,12 @@ export class GithubService {
   }
 
   // 获取缓存
-  getCache(): Promise<IGithubRepositorie[]> {
-    return this.cache();
+  public getRepositoriesCache(): Promise<IGithubRepositorie[]> {
+    return this.repositoriesCache();
   }
 
   // 获取项目列表
-  getRepositories(): Promise<IGithubRepositorie[]> {
+  public getRepositories(): Promise<IGithubRepositorie[]> {
     return this.httpService.axiosRef.request({
       headers: { 'User-Agent': APP_CONFIG.INFO.name },
       url: `http://api.github.com/users/${APP_CONFIG.GITHUB.username}/repos?per_page=1000`,

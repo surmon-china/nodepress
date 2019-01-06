@@ -5,8 +5,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { HttpProcessor } from '@app/decorators/http.decorator';
+import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
 import { MusicService } from './music.service';
 
 @Controller('music')
@@ -16,33 +17,33 @@ export class MusicController {
 
   @Get('list/:list_id')
   @HttpProcessor.handle('获取播放列表')
-  getPlaylist(@Param('list_id') listId, @Query('limit') listLimit): Promise<any> {
-    return this.musicService.isRequestDefaultList(listId, listLimit)
-      ? this.musicService.getMusicListCache()
-      : this.musicService.getMusicList(listId, listLimit);
+  getMusicPlaylist(@QueryParams([{ [QueryField.ParamsId]: 'list_id' }, 'limit' ]) { querys, params }): Promise<any> {
+    return this.musicService.isRequestDefaultList(params.list_id, querys.limit)
+      ? this.musicService.getListCache()
+      : this.musicService.getList(params.list_id, querys.limit);
   }
 
   @Get('song/:song_id')
   @HttpProcessor.handle('获取音乐详情')
-  getSong(@Param('song_id') songId): Promise<any> {
-    return this.musicService.getMusicSong(songId);
+  getMusicSong(@Param('song_id') songId): Promise<any> {
+    return this.musicService.getSong(songId);
   }
 
   @Get('url/:song_id')
   @HttpProcessor.handle('获取音乐地址')
-  getSongUrl(@Param('song_id') songId): Promise<any> {
-    return this.musicService.getMusicUrl(songId);
+  getMusicSongUrl(@Param('song_id') songId): Promise<any> {
+    return this.musicService.getUrl(songId);
   }
 
   @Get('lrc/:song_id')
   @HttpProcessor.handle('获取音乐歌词')
-  getSongLrc(@Param('song_id') songId): Promise<any> {
-    return this.musicService.getMusicLrc(songId);
+  getMusicSongLrc(@Param('song_id') songId): Promise<any> {
+    return this.musicService.getLrc(songId);
   }
 
   @Get('picture/:picture_id')
   @HttpProcessor.handle('获取音乐封面')
-  getSongPicture(@Param('picture_id') pictureId): Promise<any> {
-    return this.musicService.getMusicPic(pictureId);
+  getMusicSongPicture(@Param('picture_id') pictureId): Promise<any> {
+    return this.musicService.getPic(pictureId);
   }
 }

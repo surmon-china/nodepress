@@ -5,7 +5,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { InstanceType } from 'typegoose';
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
 import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
@@ -34,27 +33,27 @@ export class AnnouncementController {
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加公告')
   createAnnouncement(@Body() announcement: Announcement): Promise<Announcement> {
-    return this.announcementService.createItem(announcement);
+    return this.announcementService.create(announcement);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除公告')
-  delAnnouncements(@Body() body: DelAnnouncements): Promise<InstanceType<Announcement>> {
-    return this.announcementService.deleteList(body.announcementIds);
+  delAnnouncements(@Body() body: DelAnnouncements): Promise<any> {
+    return this.announcementService.batchDelete(body.announcement_ids);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('修改公告')
   putAnnouncement(@QueryParams() { params }, @Body() announcement: Announcement): Promise<Announcement> {
-    return this.announcementService.putItem(params.id, announcement);
+    return this.announcementService.update(params.id, announcement);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('删除单个公告')
-  delAnnouncement(@QueryParams() { params }): Promise<InstanceType<Announcement>> {
-    return this.announcementService.deleteItem(params.id);
+  delAnnouncement(@QueryParams() { params }): Promise<Announcement> {
+    return this.announcementService.delete(params.id);
   }
 }

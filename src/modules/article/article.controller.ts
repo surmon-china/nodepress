@@ -50,21 +50,19 @@ export class ArticleController {
 
     // 分类别名查询
     type TSlugService = (slug: string) => Promise<any>;
-    const matchedParams = [
-      { field: 'tag_slug', name: 'tag', service: this.tagService.getItemBySlug as TSlugService},
-      { field: 'category_slug', name: 'category', service: this.categoryService.getItemBySlug as TSlugService},
-    ].find(item => querys[item.field]);
-    return !matchedParams
+    const slugParams = [
+      { field: 'tag_slug', name: 'tag', service: this.tagService.getDetailBySlug as TSlugService},
+      { field: 'category_slug', name: 'category', service: this.categoryService.getDetailBySlug as TSlugService},
+    ];
+
+    const matchedParam = slugParams.find(item => querys[item.field]);
+    const matchedSlug = matchedParam && querys[matchedParam.field];
+    return !matchedParam
       ? this.articleService.getList(querys, options)
-      : matchedParams.service(querys[matchedParams.field]).then(paramItem => {
-          if (paramItem) {
-            return this.articleService.getList(
-              Object.assign(querys, { [matchedParams.name]: paramItem._id }),
-              options,
-            );
-          } else {
-            return Promise.reject(`标签 ${querys.tag_slug}不存在`);
-          }
+      : matchedParam.service(matchedSlug).then(param => {
+        return param && param._id
+          ? this.articleService.getList(Object.assign(querys, { [matchedParam.name]: param._id }), options)
+          : Promise.reject(`标签 ${querys.tag_slug}不存在`);
         });
   }
 
@@ -72,21 +70,21 @@ export class ArticleController {
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加文章')
   createArticle(@Body() article: Article): Promise<Article> {
-    return this.articleService.createItem(article);
+    return this.articleService.create(article);
   }
 
   @Patch()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量更新文章')
   patchArticles(@Body() body: PatchArticles): Promise<any> {
-    return this.articleService.patchList(body.articles, body.state);
+    return this.articleService.batchPatchState(body.articles, body.state);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除文章')
   delArticles(@Body() body: DelArticles): Promise<any> {
-    return this.articleService.deleteList(body.articles);
+    return this.articleService.batchDelete(body.articles);
   }
 
   @Get(':id')
@@ -94,21 +92,21 @@ export class ArticleController {
   @HttpProcessor.handle('获取文章详情')
   getArticle(@QueryParams() { params, isAuthenticated }): Promise<Article> {
     return isAuthenticated
-      ? this.articleService.getItemForAdmin(params.id)
-      : this.articleService.getItemForUser(params.id);
+      ? this.articleService.getDetailForAdmin(params.id)
+      : this.articleService.getDetailForUser(params.id);
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('修改文章')
   putArticle(@QueryParams() { params }, @Body() article: Article): Promise<Article> {
-    return this.articleService.putItem(params.id, article);
+    return this.articleService.update(params.id, article);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('删除单个文章')
-  delArticle(@QueryParams() { params }): Promise<any> {
-    return this.articleService.deleteItem(params.id);
+  delArticle(@QueryParams() { params }): Promise<Article> {
+    return this.articleService.delete(params.id);
   }
 }
