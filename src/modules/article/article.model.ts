@@ -14,6 +14,21 @@ import { Category } from '@app/modules/category/category.model';
 import { Extend } from '@app/models/extend.model';
 import { Tag } from '@app/modules/tag/tag.model';
 
+// 元信息
+export class Meta {
+  @IsInt()
+  @prop({ default: 0 })
+  likes: number;
+
+  @IsInt()
+  @prop({ default: 0 })
+  views: number;
+
+  @IsInt()
+  @prop({ default: 0 })
+  comments: number;
+}
+
 @pre<Article>('findOneAndUpdate', function(next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
@@ -116,21 +131,6 @@ export class Article extends Typegoose {
   related?: Article[];
 }
 
-// 元信息
-export class Meta {
-  @IsInt()
-  @prop({ default: 0 })
-  likes: number;
-
-  @IsInt()
-  @prop({ default: 0 })
-  views: number;
-
-  @IsInt()
-  @prop({ default: 0 })
-  comments: number;
-}
-
 export class DelArticles extends Typegoose {
   @IsArray()
   @ArrayNotEmpty()
@@ -145,13 +145,3 @@ export class PatchArticles extends DelArticles {
   @prop({ default: EPublishState.Published })
   state: EPublishState;
 }
-
-export const ArticleModel = new Article().getModelForClass(
-  Article,
-  {
-    existingMongoose: mongoose,
-    schemaOptions: {
-      toObject: { getters: true },
-    },
-  },
-);

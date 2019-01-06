@@ -28,7 +28,7 @@ export class AuthService {
     return password ? Base64.decode(password) : password;
   }
 
-  // md5编码
+  // md5 编码
   private decodeMd5(password) {
     return createHash('md5').update(password).digest('hex');
   }
