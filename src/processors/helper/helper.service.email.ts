@@ -41,11 +41,11 @@ export class EmailService {
     return this.transporter.verify((error, success) => {
       if (error) {
         this.clientIsValid = false;
-        console.warn('邮件客户端初始化连接失败，将在一小时后重试');
         setTimeout(this.verifyClient, 1000 * 60 * 60);
+        setTimeout(() => console.warn('邮件客户端初始化连接失败，将在一小时后重试'), 0);
       } else {
         this.clientIsValid = true;
-        console.info('邮件客户端初始化连接成功，随时可发送邮件');
+        setTimeout(() => console.info('邮件客户端初始化连接成功，随时可发送邮件'), 0);
       }
     });
   }
