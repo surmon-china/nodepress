@@ -38,10 +38,7 @@ export class ArticleService {
       },
       key: CACHE_KEY.TAGS,
       promise: () => {
-        const options = {
-          limit: 10,
-          sort: { 'meta.comments': ESortType.Desc, 'meta.likes': ESortType.Desc },
-        };
+        const options = { limit: 10, sort: this.getHotSortOption() };
         return this.getList.bind(this)(null, options, false);
       },
     });
@@ -68,6 +65,14 @@ export class ArticleService {
       },
       'id title description thumb -_id',
     ).exec();
+  }
+
+  // 得到热门排序配置
+  public getHotSortOption(): object {
+    return {
+      'meta.comments': ESortType.Desc,
+      'meta.likes': ESortType.Desc,
+    };
   }
 
   // 请求文章列表

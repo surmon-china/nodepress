@@ -1,16 +1,16 @@
 /**
- * Extended module.
- * @file Extended 模块
- * @module module/extended/module
+ * Expansion module.
+ * @file Expansion 模块
+ * @module module/expansion/module
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { TypegooseModule } from 'nestjs-typegoose';
 import { Module, HttpModule } from '@nestjs/common';
-import { ExtendedController } from './extended.controller';
-import { GithubService } from './extended.service.github';
-import { QiniuService } from './extended.service.qiniu';
-import { StatisticService } from './extended.service.statistic';
+import { ExpansionController } from './expansion.controller';
+import { GithubService } from './expansion.service.github';
+import { QiniuService } from './expansion.service.qiniu';
+import { StatisticService } from './expansion.service.statistic';
 import { Article } from '@app/modules/article/article.model';
 import { Comment } from '@app/modules/comment/comment.model';
 
@@ -20,8 +20,8 @@ import { Comment } from '@app/modules/comment/comment.model';
     TypegooseModule.forFeature(Article),
     TypegooseModule.forFeature(Comment),
   ],
-  controllers: [ExtendedController],
+  controllers: [ExpansionController],
   providers: [GithubService, QiniuService, StatisticService],
   exports: [GithubService, QiniuService, StatisticService],
 })
-export class ExtendedModule {}
+export class ExpansionModule {}

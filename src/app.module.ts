@@ -25,7 +25,7 @@ import { HelperModule } from '@app/processors/helper/helper.module';
 
 // 业务模块（辅助）
 import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
-import { ExtendedModule } from '@app/modules/extended/extended.module';
+import { ExpansionModule } from '@app/modules/expansion/expansion.module';
 import { MusicModule } from '@app/modules/music/music.module';
 import { BilibiliModule } from '@app/modules/bilibili/bilibili.module';
 import { WallpaperModule } from '@app/modules/wallpaper/wallpaper.module';
@@ -54,7 +54,7 @@ import { OptionModule } from '@app/modules/option/option.module';
     LikeModule,
     OptionModule,
     SitemapModule,
-    ExtendedModule,
+    ExpansionModule,
     MusicModule,
     BilibiliModule,
     WallpaperModule,

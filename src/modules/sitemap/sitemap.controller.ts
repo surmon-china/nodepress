@@ -9,7 +9,7 @@ import { Controller, Get } from '@nestjs/common';
 import { SitemapService } from './sitemap.service';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 
-@Controller('sitemap.xml')
+@Controller('sitemap')
 export class SitemapController {
 
   constructor(private readonly sitemapService: SitemapService) {}

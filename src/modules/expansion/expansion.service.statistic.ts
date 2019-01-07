@@ -1,18 +1,20 @@
 /**
- * Extended Statistic service.
+ * Expansion Statistic service.
  * @file 扩展模块 Statistic 服务
- * @module module/extended/statistic.service
+ * @module module/expansion/statistic.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import * as schedule from 'node-schedule';
 import * as CACHE_KEY from '@app/constants/cache.constant';
+import { PaginateResult } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { Injectable } from '@nestjs/common';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { CacheService } from '@app/processors/cache/cache.service';
 import { Article } from '@app/modules/article/article.model';
 import { Comment } from '@app/modules/comment/comment.model';
+import { Tag } from '@app/modules/tag/tag.model';
 
 export interface ITodayStatistic {
   tags: number;
@@ -43,9 +45,9 @@ export class StatisticService {
   }
 
   private getTagsCount(): Promise<number> {
-    return this.cacheService.get<number>(CACHE_KEY.TAGS).then(tags => {
-      this.resultData.tags = tags;
-      return tags;
+    return this.cacheService.get<PaginateResult<Tag>>(CACHE_KEY.TAGS).then(tags => {
+      this.resultData.tags = tags.total;
+      return tags.total;
     });
   }
 
@@ -57,14 +59,14 @@ export class StatisticService {
   }
 
   private getArticlesCount(): Promise<number> {
-    return this.articleModel.countDocuments({}).exec().then(count => {
+    return this.articleModel.countDocuments().exec().then(count => {
       this.resultData.articles = count;
       return count;
     });
   }
 
   private getCommentsCount(): Promise<number> {
-    return this.commentModel.countDocuments({}).exec().then(count => {
+    return this.commentModel.countDocuments().exec().then(count => {
       this.resultData.comments = count;
       return count;
     });
