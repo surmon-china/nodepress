@@ -5,7 +5,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
@@ -64,9 +63,10 @@ export class CategoryService {
   // 获取分类族谱
   public getGenealogyById(categoryId: Types.ObjectId): Promise<Category[]> {
     const categories = [];
+    const findById = this.categoryModel.findById.bind(this.categoryModel);
     return new Promise((resolve, reject) => {
       ((function findCateItem(id) {
-        this.categoryModel.findById(id)
+        findById(id)
           .then(category => {
             if (!category) {
               return resolve(categories);
