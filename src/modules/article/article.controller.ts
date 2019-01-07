@@ -33,9 +33,14 @@ export class ArticleController {
     QueryField.Date, QueryField.State, QueryField.Public, QueryField.Origin, 'cache', 'tag', 'category', 'tag_slug', 'category_slug',
   ]) { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Article>> {
 
-    // 如果是前台请求热门缓存文章，则忽略一切后续处理（前后台都会请求热门文章）
-    if (querys.cache && !isAuthenticated && querys.sort === ESortType.Hot) {
-      return this.articleService.getHotListCache();
+    // 如果是请求热门文章，则判断如何处理（注：前后台都会请求热门文章）
+    if (Number(origin.sort) === ESortType.Hot) {
+      // 先真的热门排序
+      options.sort = this.articleService.getHotSortOption();
+      // 前台缓存请求，则忽略一切后续处理
+      if (!isAuthenticated && querys.cache) {
+        return this.articleService.getHotListCache();
+      }
     }
 
     // 关键词搜索
@@ -60,8 +65,10 @@ export class ArticleController {
     return !matchedParam
       ? this.articleService.getList(querys, options)
       : matchedParam.service(matchedSlug).then(param => {
-        return param && param._id
-          ? this.articleService.getList(Object.assign(querys, { [matchedParam.name]: param._id }), options)
+        const paramField = matchedParam.name;
+        const paramId = param && param._id;
+        return paramId
+          ? this.articleService.getList(Object.assign(querys, { [paramField]: paramId }), options)
           : Promise.reject(`标签 ${querys.tag_slug}不存在`);
         });
   }

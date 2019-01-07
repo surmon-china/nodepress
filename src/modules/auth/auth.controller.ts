@@ -42,12 +42,13 @@ export class AuthController {
   createToken(@QueryParams() { visitors: { ip }}, @Body() body: AuthLogin): Promise<ITokenResult> {
     return this.authService.createToken(body.password).then(token => {
       this.ipService.query(ip).then(ipLocation => {
-        console.log('ipLocation', ip, ipLocation);
+        const subject = '博客有新的登陆行为';
+        const content = `来源 IP：${ip}，地理位置为：${ipLocation || '未知'}`;
         this.emailService.sendMail({
+          subject,
           to: APP_CONFIG.EMAIL.admin,
-          subject: '博客有新的登陆行为',
-          text: `来源 IP：${ip}，地理位置为：${ipLocation}`,
-          html: `来源 IP：${ip}，地理位置为：${ipLocation}`,
+          text: `${subject}，${content}`,
+          html: `${subject}，${content}`,
         });
       });
       return token;

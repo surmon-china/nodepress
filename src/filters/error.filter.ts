@@ -37,7 +37,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     // 对默认的 404 进行特殊处理
     if (status === HttpStatus.NOT_FOUND && data.error === 'Not Found') {
       data.error = `资源不存在`;
-      data.message = `接口 ${request.url} 无效`;
+      data.message = `接口 ${request.method} -> ${request.url} 无效`;
     }
     return response.status(resultStatus).jsonp(data);
   }

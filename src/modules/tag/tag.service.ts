@@ -32,16 +32,19 @@ export class TagService {
     this.tagListCache = this.cacheService.promise({
       ioMode: true,
       key: CACHE_KEY.TAGS,
-      promise() {
-        const options = { page: 1, limit: 166, sort: { _id: ESortType.Desc }};
-        return this.getList.bind(this)(null, options, false);
-      },
+      promise: this.getListCacheTask.bind(this),
     });
   }
 
   // 构造链接
   private buildSeoUrl(slug: string): string {
     return `${APP_CONFIG.APP.URL}/tag/${slug}`;
+  }
+
+  // 缓存任务
+  private getListCacheTask(): Promise<PaginateResult<Tag>> {
+    const options = { page: 1, limit: 166, sort: { _id: ESortType.Desc }};
+    return this.getList(null, options, false);
   }
 
   // 请求标签列表缓存

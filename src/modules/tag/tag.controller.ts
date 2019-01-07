@@ -22,7 +22,7 @@ export class TagController {
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取标签')
-  getTags(@QueryParams() { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Tag>> {
+  getTags(@QueryParams(['cache']) { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Tag>> {
     if (origin.keyword) {
       const keywordRegExp = new RegExp(origin.keyword);
       querys.$or = [
@@ -31,9 +31,9 @@ export class TagController {
         { description: keywordRegExp },
       ];
     }
-    return isAuthenticated
-      ? this.tagService.getList(querys, options, isAuthenticated)
-      : this.tagService.getListCache();
+    return !isAuthenticated && querys.cache
+      ? this.tagService.getListCache()
+      : this.tagService.getList(querys, options, isAuthenticated);
   }
 
   @Post()

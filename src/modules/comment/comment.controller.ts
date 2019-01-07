@@ -64,6 +64,7 @@ export class CommentController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('获取单个评论详情')
   getComment(@QueryParams() { params }): Promise<Comment> {
     return this.commentService.getDetail(params.id);
