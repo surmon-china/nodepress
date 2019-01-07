@@ -59,7 +59,7 @@ export class BilibiliService {
       url: `https://space.bilibili.com/ajax/member/getSubmitVideos?mid=${this.uid}&pagesize=${pageSize}&page=${page}&keyword=${this.keyword}&order=pubdate`,
     }).then(videosResult => {
       if (videosResult.data.status) {
-        return Promise.resolve(videosResult.data);
+        return Promise.resolve(videosResult.data.data);
       } else {
         return Promise.reject(videosResult.status + videosResult.statusText);
       }

@@ -1,23 +1,23 @@
 /**
- * Extended controller.
+ * Expansion controller.
  * @file 扩展模块控制器
  * @description 分发 -> 统计/常量/七牛/github
- * @module module/extended/controller
+ * @module module/expansion/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { GithubService, IGithubRepositorie } from './extended.service.github';
-import { StatisticService, ITodayStatistic } from './extended.service.statistic';
-import { QiniuService, IUpToken } from './extended.service.qiniu';
+import { GithubService, IGithubRepositorie } from './expansion.service.github';
+import { StatisticService, ITodayStatistic } from './expansion.service.statistic';
+import { QiniuService, IUpToken } from './expansion.service.qiniu';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { HttpCache } from '@app/decorators/cache.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as STATE_CONSTANTS from '@app/interfaces/state.interface';
 
-@Controller('extended')
-export class ExtendedController {
+@Controller('expansion')
+export class ExpansionController {
 
   constructor(
     private readonly githubService: GithubService,
@@ -25,7 +25,7 @@ export class ExtendedController {
     private readonly statisticService: StatisticService,
   ) {}
 
-  @Get('constants')
+  @Get('constant')
   @HttpCache(CACHE_KEY.CONSTANTS, 60 * 60)
   @HttpProcessor.handle('获取配置常量')
   getSystemConstants(): object {

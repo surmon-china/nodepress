@@ -6,7 +6,7 @@
  */
 
 import { PaginateResult } from 'mongoose';
-import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
+import { Controller, UseGuards, Get, Put, Post, Delete, Body, Param } from '@nestjs/common';
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams } from '@app/decorators/query-params.decorator';
@@ -41,9 +41,9 @@ export class CategoryController {
   }
 
   @Get(':id')
-  @HttpProcessor.handle('获取单个分类')
-  getCategory(@QueryParams() { params }): Promise<Category[]> {
-    return this.categoryService.getGenealogyById(params.id);
+  @HttpProcessor.handle('获取分类族谱')
+  getCategory(@Param('id') categoryId): Promise<Category[]> {
+    return this.categoryService.getGenealogyById(categoryId);
   }
 
   @Put(':id')
