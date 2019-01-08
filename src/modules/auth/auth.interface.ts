@@ -6,6 +6,6 @@
  */
 
 export interface ITokenResult {
-  accessToken: string;
-  expiresIn: number;
+  access_token: string;
+  expires_in: number;
 }

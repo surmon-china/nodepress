@@ -84,14 +84,14 @@ export class ArticleController {
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量更新文章')
   patchArticles(@Body() body: PatchArticles): Promise<any> {
-    return this.articleService.batchPatchState(body.articles, body.state);
+    return this.articleService.batchPatchState(body.article_ids, body.state);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除文章')
   delArticles(@Body() body: DelArticles): Promise<any> {
-    return this.articleService.batchDelete(body.articles);
+    return this.articleService.batchDelete(body.article_ids);
   }
 
   @Get(':id')
