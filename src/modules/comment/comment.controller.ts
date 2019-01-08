@@ -27,7 +27,7 @@ export class CommentController {
     @QueryParams([EQueryParamsField.State, EQueryParamsField.CommentState, 'post_id']) { querys, options, origin },
   ): Promise<PaginateResult<Comment>> {
     // 热门排序
-    if (origin.sort === ESortType.Hot) {
+    if (Number(origin.sort) === ESortType.Hot) {
       options.sort = { likes: ESortType.Desc };
     }
     // 关键词搜索

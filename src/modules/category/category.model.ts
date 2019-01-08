@@ -61,5 +61,5 @@ export class DelCategories extends Typegoose {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
-  categories: Types.ObjectId[];
+  categorie_ids: Types.ObjectId[];
 }
