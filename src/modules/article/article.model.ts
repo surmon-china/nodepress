@@ -135,7 +135,7 @@ export class DelArticles extends Typegoose {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
-  articles: Types.ObjectId[];
+  article_ids: Types.ObjectId[];
 }
 
 export class PatchArticles extends DelArticles {
