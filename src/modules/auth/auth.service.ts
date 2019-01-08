@@ -103,8 +103,8 @@ export class AuthService {
       const extantPassword = extantAuth.password || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
       const submittedPassword = this.decodeMd5(this.decodeBase64(password));
       if (submittedPassword === extantPassword) {
-        const accessToken = this.jwtService.sign({ data: APP_CONFIG.AUTH.data });
-        return Promise.resolve({ accessToken, expiresIn: APP_CONFIG.AUTH.expiresIn });
+        const access_token = this.jwtService.sign({ data: APP_CONFIG.AUTH.data });
+        return Promise.resolve({ access_token, expires_in: APP_CONFIG.AUTH.expiresIn });
       } else {
         return Promise.reject('密码不匹配');
       }

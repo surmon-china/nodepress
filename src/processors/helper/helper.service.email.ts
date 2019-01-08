@@ -37,12 +37,12 @@ export class EmailService {
   }
 
   // 验证有效性
-  private verifyClient(): Promise<any> {
+  private verifyClient(): void {
     return this.transporter.verify((error, success) => {
       if (error) {
         this.clientIsValid = false;
         setTimeout(this.verifyClient, 1000 * 60 * 60);
-        setTimeout(() => console.warn('邮件客户端初始化连接失败，将在一小时后重试'), 0);
+        setTimeout(() => console.warn('邮件客户端初始化连接失败，将在一小时后重试', error.message), 0);
       } else {
         this.clientIsValid = true;
         setTimeout(() => console.info('邮件客户端初始化连接成功，随时可发送邮件'), 0);
