@@ -5,10 +5,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { createHash } from 'crypto';
 import { prop, Typegoose } from 'typegoose';
 import { IsString, IsDefined, IsNotEmpty } from 'class-validator';
-import * as APP_CONFIG from '@app/app.config';
 
 export class Auth extends Typegoose {
 
@@ -27,7 +25,7 @@ export class Auth extends Typegoose {
   @prop({ default: '' })
   gravatar: string;
 
-  @prop({ default: createHash('md5').update(APP_CONFIG.AUTH.defaultPassword).digest('hex') })
+  @prop()
   password?: string;
 
   new_password?: string;

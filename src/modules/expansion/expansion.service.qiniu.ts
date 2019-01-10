@@ -10,7 +10,7 @@ import * as APP_CONFIG from '@app/app.config';
 import { Injectable } from '@nestjs/common';
 
 export interface IUpToken {
-  upToken: string;
+  up_token: string;
 }
 
 @Injectable()
@@ -26,6 +26,6 @@ export class QiniuService {
   }
 
   public getToken(): IUpToken {
-    return { upToken: this.putPolicy.uploadToken(this.mac) };
+    return { up_token: this.putPolicy.uploadToken(this.mac) };
   }
 }

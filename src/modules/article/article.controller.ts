@@ -98,7 +98,8 @@ export class ArticleController {
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.handle('获取文章详情')
   getArticle(@QueryParams() { params, isAuthenticated }): Promise<Article> {
-    return isAuthenticated
+    const isMongoId = isNaN(Number(params.id));
+    return isAuthenticated && isMongoId
       ? this.articleService.getDetailForAdmin(params.id)
       : this.articleService.getDetailForUser(params.id);
   }

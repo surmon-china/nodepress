@@ -38,7 +38,7 @@ async function bootstrap() {
   app.use(compression());
   app.use(bodyParser.json({ limit: '1mb' }));
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(rateLimit({ max: 100, windowMs: 15 * 60 * 1000 }));
+  app.use(rateLimit({ max: 1000, windowMs: 15 * 60 * 1000 }));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(
