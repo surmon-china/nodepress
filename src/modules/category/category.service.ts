@@ -33,7 +33,7 @@ export class CategoryService {
     const matchState = { state: EPublishState.Published, public: EPublicState.Public };
     return this.categoryModel.paginate(querys, options).then(categories => {
       return this.categoryModel.aggregate([
-        { $match: isAuthenticated ? null : matchState },
+        { $match: isAuthenticated ? {} : matchState },
         { $unwind: '$category' },
         { $group: { _id: '$category', num_tutorial: { $sum: 1 }}},
       ]).then(counts => {
@@ -51,7 +51,7 @@ export class CategoryService {
   public create(newCategory: Category): Promise<Category> {
     return this.categoryModel.find({ slug: newCategory.slug }).exec().then(categories => {
       return categories.length
-        ? Promise.reject('slug 已被占用')
+        ? Promise.reject('别名已被占用')
         : new this.categoryModel(newCategory).save().then(category => {
             this.baiduSeoService.push(this.buildSeoUrl(category.slug));
             this.sitemapService.updateCache();
@@ -92,7 +92,7 @@ export class CategoryService {
   public update(categoryId: Types.ObjectId, newCategory: Category): Promise<Category> {
     return this.categoryModel.findOne({ slug: newCategory.slug }).exec().then(existedCategory => {
       return existedCategory && String(existedCategory._id) !== String(categoryId)
-        ? Promise.reject('slug 已被占用')
+        ? Promise.reject('别名已被占用')
         : this.categoryModel.findByIdAndUpdate(categoryId, newCategory, { new: true }).then(category => {
             this.baiduSeoService.push(this.buildSeoUrl(category.slug));
             this.sitemapService.updateCache();
@@ -113,12 +113,11 @@ export class CategoryService {
           return Promise.resolve(category);
         }
         // 否则递归更改 -> { pid: target.id } -> { pid: target.pid || null }
-        return this.categoryModel.collection
-          .initializeOrderedBulkOp()
+        const bulk = this.categoryModel.collection.initializeOrderedBulkOp();
+        bulk
           .find({ _id: { $in: Array.from(categories, c => c._id) }})
-          .update({ $set: { pid: category.pid || null }})
-          .execute()
-          .then(_ => category);
+          .update({ $set: { pid: category.pid || null }});
+        return bulk.execute().then(_ => category);
       });
     });
   }

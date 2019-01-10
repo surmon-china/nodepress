@@ -70,13 +70,13 @@ export class AuthService {
     }).then(_ => {
 
       // 修改前查询验证
-      return this.authModel.findOne(null, '_id name slogan gravatar password').exec();
+      return this.authModel.findOne().exec();
     }).then(extantAuth => {
 
       // 核对已存在密码
-      const virtualAuth = extantAuth || { _id: null, password: null };
-      const extantPassword = virtualAuth.password || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
-      const isExistedAuth = !!virtualAuth._id;
+      const isExistedAuth = extantAuth && !!extantAuth._id;
+      const extantAuthPwd = extantAuth && extantAuth.password;
+      const extantPassword = extantAuthPwd || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
 
       // 修改密码 -> 判断旧密码是否一致
       if (password) {
@@ -98,9 +98,9 @@ export class AuthService {
 
   // 登陆/创建 Token
   public createToken(password: string): Promise<ITokenResult> {
-    return this.authModel.findOne(null, '-_id password').exec().then(auth => {
-      const extantAuth = auth || { password: null };
-      const extantPassword = extantAuth.password || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
+    return this.authModel.findOne(null, 'password').exec().then(auth => {
+      const extantAuthPwd = auth && auth.password;
+      const extantPassword = extantAuthPwd || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
       const submittedPassword = this.decodeMd5(this.decodeBase64(password));
       if (submittedPassword === extantPassword) {
         const access_token = this.jwtService.sign({ data: APP_CONFIG.AUTH.data });
