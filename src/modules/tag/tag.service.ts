@@ -62,7 +62,7 @@ export class TagService {
     const matchState = { state: EPublishState.Published, public: EPublicState.Public };
     return this.tagModel.paginate(querys, options).then(tags => {
       return this.tagModel.aggregate([
-        { $match: isAuthenticated ? null : matchState },
+        { $match: isAuthenticated ? {} : matchState },
         { $unwind: '$tag' },
         { $group: { _id: '$tag', num_tutorial: { $sum: 1 }}},
       ]).exec().then(counts => {
@@ -80,7 +80,7 @@ export class TagService {
   public create(newTag: Tag): Promise<Tag> {
     return this.tagModel.find({ slug: newTag.slug }).exec().then(existedTags => {
       return existedTags.length
-        ? Promise.reject('slug 已被占用')
+        ? Promise.reject('别名已被占用')
         : new this.tagModel(newTag).save().then(tag => {
             this.baiduSeoService.push(this.buildSeoUrl(tag.slug));
             this.sitemapService.updateCache();
@@ -99,7 +99,7 @@ export class TagService {
   public update(tagId: Types.ObjectId, newTag: Tag): Promise<Tag> {
     return this.tagModel.findOne({ slug: newTag.slug }).exec().then(existedTag => {
       return existedTag && String(existedTag._id) !== String(tagId)
-        ? Promise.reject('slug 已被占用')
+        ? Promise.reject('别名已被占用')
         : this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).exec().then(tag => {
             this.baiduSeoService.push(this.buildSeoUrl(tag.slug));
             this.sitemapService.updateCache();

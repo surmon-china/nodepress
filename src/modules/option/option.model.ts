@@ -19,17 +19,17 @@ class Meta {
 export class Blacklist {
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String, validate: /\S+/ })
+  @arrayProp({ items: String })
   ips: string[];
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String, validate: /\S+/ })
+  @arrayProp({ items: String })
   mails: string[];
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String, validate: /\S+/ })
+  @arrayProp({ items: String })
   keywords: string[];
 }
 
@@ -62,7 +62,7 @@ export class Option extends Typegoose {
 
   // 站点地址
   @IsString()
-  @prop({ required: true, validate: /\S+/ })
+  @prop({ required: true })
   site_url: string;
 
   // 网站官邮
@@ -78,7 +78,7 @@ export class Option extends Typegoose {
   // 搜索引擎 ping
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String, validate: /\S+/ })
+  @arrayProp({ items: String })
   ping_sites: string[];
 
   // 黑名单

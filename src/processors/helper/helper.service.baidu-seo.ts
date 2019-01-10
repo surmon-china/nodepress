@@ -46,8 +46,8 @@ export class BaiduSeoService {
       return response;
     }).catch(error => {
       const message = (error.response && error.response.data) || error;
-      console.warn(`${action} 操作失败：`, message);
-      return Promise.reject(message);
+      console.warn(`${action}操作失败：`, message);
+      // return Promise.reject(message);
     });
   }
 
@@ -57,16 +57,16 @@ export class BaiduSeoService {
 
   // 提交记录
   push(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Push, action: '百度推送' });
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Push, action: '百度[推送]' });
   }
 
   // 更新记录
   update(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Update, action: '百度更新' });
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Update, action: '百度[更新]' });
   }
 
   // 删除记录
   delete(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Delete, action: '百度删除' });
+    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Delete, action: '百度[删除]' });
   }
 }

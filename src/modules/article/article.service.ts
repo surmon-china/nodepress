@@ -114,6 +114,7 @@ export class ArticleService {
 
   // 创建文章
   public create(newArticle: Article): Promise<Article> {
+    newArticle = Object.assign({ meta: { likes: 0, views: 0, comments: 0 }}, newArticle);
     return new this.articleModel(newArticle).save().then(article => {
       this.baiduSeoService.push(this.buildSeoUrl(article.id));
       this.sitemapService.updateCache();

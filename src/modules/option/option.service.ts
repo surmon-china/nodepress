@@ -16,7 +16,7 @@ export class OptionService {
 
   // 请求设置
   public getOption(): Promise<Option> {
-    return this.optionModel.findOne().exec();
+    return this.optionModel.findOne(null, '-_id').exec();
   }
 
   // 修改设置
@@ -26,7 +26,7 @@ export class OptionService {
     Reflect.deleteProperty(option, '_id');
     Reflect.deleteProperty(option, 'meta');
 
-    return this.optionModel.findOne(null, '-_id').exec().then(extantOption => {
+    return this.optionModel.findOne().exec().then(extantOption => {
       return extantOption
         ? Object.assign(extantOption, option).save()
         : new this.optionModel(option).save();
