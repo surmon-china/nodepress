@@ -76,10 +76,10 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
 
   // 字段转换配置（字符串则代表启用，对象则代表默认值）
   const transformConfig: IQueryParamsConfig = {
-    page: 1,
-    per_page: true,
-    paramsId: 'id',
-    sort: true,
+    [EQueryParamsField.Page]: 1,
+    [EQueryParamsField.PerPage]: true,
+    [EQueryParamsField.ParamsId]: 'id',
+    [EQueryParamsField.Sort]: true,
   };
 
   // 合并配置
@@ -94,7 +94,7 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     });
   }
 
-  console.log('------------transformConfig', transformConfig);
+  console.log('--------------------------------- transformConfig\n', transformConfig);
 
   // 查询参数
   const querys: IQueryParamsConfig = {};
@@ -143,9 +143,11 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
       isAllowed: lodash.isUndefined(sort) || [ESortType.Asc, ESortType.Desc, ESortType.Hot].includes(sort),
       isIllegal: false,
       setValue() {
-        if (sort != null) {
-          options.sort = { _id: sort };
-        }
+        options.sort = {
+          _id: sort != null
+            ? sort
+            : ESortType.Desc,
+        };
       },
     },
     {
@@ -194,8 +196,8 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
           : [EPublishState.Published, EPublishState.Draft, EPublishState.Recycle].includes(state)
         ),
       isIllegal:
-        state != null &&
         !isAuthenticated &&
+        state != null &&
         state !== (
           transformConfig[EQueryParamsField.CommentState]
             ? ECommentState.Published
@@ -308,7 +310,9 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     isAuthenticated,
   };
 
-  console.log('------------\nqueryParams', request.queryParams, '\norigin::', request.query, '\nvisitors::', result.visitors);
+  console.log('--------------------------------- queryParams\n', request.queryParams);
+  console.log('--------------------------------- origin\n', request.query);
+  console.log('--------------------------------- visitors\n', result.visitors, '\n---------------------------------');
 
   return result;
 });
