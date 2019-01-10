@@ -17,7 +17,7 @@ export enum EAkismetActionType {
 }
 
 // 验证体数据结构
-export interface TContent {
+export interface IContent {
   user_ip: string;
   user_agent: string;
   referrer: string;
@@ -66,7 +66,7 @@ export class AkismetService {
 
   // 构造检查器
   private buildInterceptor(handleType: EAkismetActionType) {
-    return (content: TContent): Promise<any> => {
+    return (content: IContent): Promise<any> => {
       return new Promise((resolve, reject) => {
         this.verifyClient().then(_ => {
           console.info(`Akismet ${handleType} 操作中...`, new Date());
@@ -94,17 +94,17 @@ export class AkismetService {
   }
 
   // 检查 SPAM
-  public checkSpam(content: TContent): Promise<any> {
+  public checkSpam(content: IContent): Promise<any> {
     return this.buildInterceptor(EAkismetActionType.CheckSpam)(content);
   }
 
   // 提交 SPAM
-  public submitSpam(content: TContent): Promise<any> {
+  public submitSpam(content: IContent): Promise<any> {
     return this.buildInterceptor(EAkismetActionType.SubmitSpam)(content);
   }
 
   // 提交 HAM
-  public submitHam(content: TContent): Promise<any> {
+  public submitHam(content: IContent): Promise<any> {
     return this.buildInterceptor(EAkismetActionType.SubmitHam)(content);
   }
 }

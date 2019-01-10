@@ -41,7 +41,7 @@ export class EmailService {
     return this.transporter.verify((error, success) => {
       if (error) {
         this.clientIsValid = false;
-        setTimeout(this.verifyClient, 1000 * 60 * 60);
+        setTimeout(this.verifyClient.bind(this), 1000 * 60 * 60);
         setTimeout(() => console.warn('邮件客户端初始化连接失败，将在一小时后重试', error.message), 0);
       } else {
         this.clientIsValid = true;
