@@ -76,7 +76,7 @@ export const success = (message: TMessage, statusCode?: HttpStatus): MethodDecor
  * @function handle
  * @description 两种用法
  * @example @HttpProcessor.handle('获取某项数据')
- * @example @HttpProcessor.handle({ message: '操作', err: error, success: 200, usePaginate: true })
+ * @example @HttpProcessor.handle({ message: '操作', error: error, success: 200, usePaginate: true })
  */
 export function handle(args: THandleOption): MethodDecorator;
 export function handle(...args) {

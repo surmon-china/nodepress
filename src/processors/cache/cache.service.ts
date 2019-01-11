@@ -8,14 +8,21 @@
 import * as schedule from 'node-schedule';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 
-export type TCacheKey = string;
-export type TCacheResult<T> = Promise<T>;
-
 // Cache 客户端管理器
 export interface ICacheManager {
   store: any;
   get(key: TCacheKey): any;
   set(key: TCacheKey, value: string, options?: { ttl: number }): any;
+}
+
+// 获取器
+export type TCacheKey = string;
+export type TCacheResult<T> = Promise<T>;
+
+// IO 模式通用返回结构
+export interface ICacheIoResult<T> {
+  get(): TCacheResult<T>;
+  update(): TCacheResult<T>;
 }
 
 // Promise 模式参数
@@ -27,12 +34,6 @@ export interface ICachePromiseOption<T> {
 // Promise & IO 模式参数
 export interface ICachePromiseIoOption<T> extends ICachePromiseOption<T> {
   ioMode?: boolean;
-}
-
-// Promise & IO 模式返回结构
-export interface TCachePromiseIoResult<T> {
-  get(): TCacheResult<T>;
-  update(): TCacheResult<T>;
 }
 
 // Interval & Timeout 超时模式参数
@@ -56,7 +57,12 @@ export interface ICacheIntervalOption<T> {
 }
 
 // Interval 模式返回类型
-export type ICacheIntervalResult<T> = () => TCacheResult<T>;
+export type TCacheIntervalResult<T> = () => TCacheResult<T>;
+
+// Interval & IO 模式参数
+export interface ICacheIntervalIOOption<T> extends ICacheIntervalOption<T> {
+  ioMode?: boolean;
+}
 
 /**
  * @class CacheService
@@ -102,13 +108,13 @@ export class CacheService {
    * @example CacheService.promise({ key: CacheKey, promise(), ioMode: true }) -> { get: promise(), update: promise() }
    */
   promise<T>(options: ICachePromiseOption<T>): TCacheResult<T>;
-  promise<T>(options: ICachePromiseIoOption<T>): TCachePromiseIoResult<T>;
+  promise<T>(options: ICachePromiseIoOption<T>): ICacheIoResult<T>;
   promise(options) {
 
     const { key, promise, ioMode = false } = options;
 
-    // 执行任务
-    const doPromise = (resolve, reject) => {
+    // 包装任务
+    const promiseTask = (resolve, reject) => {
       return promise().then(data => {
         this.set(key, data);
         resolve(data);
@@ -120,7 +126,7 @@ export class CacheService {
       return new Promise((resolve, reject) => {
         this.get(key).then(value => {
           const isValidValue = value !== null && value !== undefined;
-          isValidValue ? resolve(value) : doPromise(resolve, reject);
+          isValidValue ? resolve(value) : promiseTask(resolve, reject);
         }).catch(reject);
       });
     };
@@ -128,7 +134,7 @@ export class CacheService {
     // 双向同步模式（返回获取器和更新器）
     const handleIoMode = () => ({
       get: handlePromiseMode,
-      update: () => new Promise(doPromise),
+      update: () => new Promise(promiseTask),
     });
 
     return ioMode ? handleIoMode() : handlePromiseMode();
@@ -140,40 +146,60 @@ export class CacheService {
    * @example CacheService.interval({ key: CacheKey, promise(), timeout: {} }) -> promise()
    * @example CacheService.interval({ key: CacheKey, promise(), timing: {} }) -> promise()
    */
-  public interval<T>(options: ICacheIntervalOption<T>): ICacheIntervalResult<T> {
+  public interval<T>(options: ICacheIntervalOption<T>): TCacheIntervalResult<T>;
+  public interval<T>(options: ICacheIntervalIOOption<T>): ICacheIoResult<T>;
+  public interval<T>(options) {
 
-    const { key, promise, timeout, timing } = options;
+    const { key, promise, timeout, timing, ioMode = false } = options;
+
+    // 包装任务
+    const promiseTask = (): Promise<T> => {
+      return promise().then(data => {
+        this.set(key, data);
+        return Promise.resolve(data);
+      });
+    };
 
     // 超时任务
     if (timeout) {
-      const promiseTask = () => {
-        promise().then(data => {
-          this.set(key, data);
-          setTimeout(promiseTask, timeout.success);
-        }).catch(error => {
-          const time = timeout.error || timeout.success;
-          setTimeout(promiseTask, time);
-          console.warn(`Redis 超时任务执行失败，${time} 后重试：${error}`);
-        });
+      const doPromise = () => {
+        promiseTask()
+          .then(_ => {
+            setTimeout(doPromise, timeout.success);
+          })
+          .catch(error => {
+            const time = timeout.error || timeout.success;
+            setTimeout(doPromise, time);
+            console.warn(`Redis 超时任务执行失败，${time}s 后重试：${error}`);
+          });
       };
-      promiseTask();
+      doPromise();
     }
 
     // 定时任务
     if (timing) {
-      const promiseTask = () => {
-        promise()
-          .then(data => this.set(key, data))
+      const doPromise = () => {
+        promiseTask()
+          .then(data => data)
           .catch(error => {
-            console.warn(`Redis 定时任务执行失败，${timing.error} 后重试：${error}`);
-            setTimeout(promiseTask, timing.error);
+            console.warn(`Redis 定时任务执行失败，${timing.error}s 后重试：${error}`);
+            setTimeout(doPromise, timing.error);
           });
       };
-      promiseTask();
-      schedule.scheduleJob(timing.schedule, promiseTask);
+      doPromise();
+      schedule.scheduleJob(timing.schedule, doPromise);
     }
 
+    // 获取器
+    const getKeyCache = () => this.get(key);
+
+    // 双向同步模式（返回获取器和更新器）
+    const handleIoMode = () => ({
+      get: getKeyCache,
+      update: promiseTask,
+    });
+
     // 返回 Redis 获取器
-    return () => this.get(key);
+    return ioMode ? handleIoMode() : getKeyCache;
   }
 }

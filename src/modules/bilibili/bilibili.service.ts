@@ -9,7 +9,7 @@ import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { Injectable, HttpService } from '@nestjs/common';
-import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
+import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 
 // B 站视频列表格式
 export interface IBilibiliVideoList {
@@ -25,10 +25,11 @@ export class BilibiliService {
   private keyword = 'vlog';
   private defaultPageSize = 66;
   private defaultPage = 1;
-  private videoListCache: ICacheIntervalResult<IBilibiliVideoList>;
+  private videoListCache: ICacheIoResult<IBilibiliVideoList>;
 
   constructor(private readonly httpService: HttpService, private readonly cacheService: CacheService) {
     this.videoListCache = this.cacheService.interval({
+      ioMode: true,
       key: CACHE_KEY.BILIBILI_LIST,
       promise: () => this.getVideoList(this.defaultPageSize, this.defaultPage),
       timeout: {
@@ -47,7 +48,12 @@ export class BilibiliService {
 
   // 获取缓存
   public getVideoListCache(): Promise<IBilibiliVideoList> {
-    return this.videoListCache();
+    return this.videoListCache.get();
+  }
+
+  // 更新缓存
+  public updateVideoListCache(): Promise<IBilibiliVideoList> {
+    return this.videoListCache.update();
   }
 
   // 获取项目列表

@@ -8,14 +8,14 @@
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as WonderfulBingWallpaper from 'wonderful-bing-wallpaper';
 import { Injectable } from '@nestjs/common';
-import { CacheService, ICacheIntervalResult, ICacheIntervalTimingOption } from '@app/processors/cache/cache.service';
+import { CacheService, TCacheIntervalResult, ICacheIntervalTimingOption } from '@app/processors/cache/cache.service';
 
 @Injectable()
 export class WallpaperService {
 
   private wbw: WonderfulBingWallpaper;
-  private storyCache: ICacheIntervalResult<any>;
-  private wallpapersCache: ICacheIntervalResult<any>;
+  private storyCache: TCacheIntervalResult<any>;
+  private wallpapersCache: TCacheIntervalResult<any>;
 
   // 通用定时配置
   private commonTimingConfig: ICacheIntervalTimingOption = {
