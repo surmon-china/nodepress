@@ -5,10 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, Query } from '@nestjs/common';
+import { UseGuards, Controller, Get, Patch } from '@nestjs/common';
+import { QueryParams } from '@app/decorators/query-params.decorator';
 import { HttpProcessor } from '@app/decorators/http.decorator';
+import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { BilibiliService, IBilibiliVideoList } from './bilibili.service';
-import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
 
 @Controller('bilibili')
 export class BilibiliController {
@@ -21,5 +22,12 @@ export class BilibiliController {
     return this.bilibiliService.isRequestDefaultList(limit, page)
       ? this.bilibiliService.getVideoListCache()
       : this.bilibiliService.getVideoList(limit, page);
+  }
+
+  @Patch('list')
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('更新视频列表缓存')
+  updateBilibiliVideosCache(): Promise<IBilibiliVideoList> {
+    return this.bilibiliService.updateVideoListCache();
   }
 }

@@ -12,7 +12,7 @@ import { InjectModel } from 'nestjs-typegoose';
 import { Injectable } from '@nestjs/common';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
-import { CacheService, TCachePromiseIoResult } from '@app/processors/cache/cache.service';
+import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
 import { Tag } from './tag.model';
@@ -21,7 +21,7 @@ import { Tag } from './tag.model';
 export class TagService {
 
   // 为非鉴权用户所用
-  private tagListCache: TCachePromiseIoResult<PaginateResult<Tag>>;
+  private tagListCache: ICacheIoResult<PaginateResult<Tag>>;
 
   constructor(
     private readonly cacheService: CacheService,

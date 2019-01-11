@@ -14,7 +14,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublishState, EPublicState } from '@app/interfaces/state.interface';
-import { CacheService, TCachePromiseIoResult } from '@app/processors/cache/cache.service';
+import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 import { Category } from '@app/modules/category/category.model';
 import { Article } from '@app/modules/article/article.model';
 import { Tag } from '@app/modules/tag/tag.model';
@@ -37,7 +37,7 @@ export class SitemapService {
   ];
 
   private sitemap: sitemap;
-  private sitemapCache: TCachePromiseIoResult<any>;
+  private sitemapCache: ICacheIoResult<any>;
 
   constructor(
     private readonly cacheService: CacheService,
