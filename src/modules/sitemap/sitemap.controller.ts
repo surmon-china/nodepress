@@ -5,7 +5,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get } from '@nestjs/common';
+import { UseGuards, Controller, Get, Patch } from '@nestjs/common';
+import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { SitemapService } from './sitemap.service';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 
@@ -18,5 +19,12 @@ export class SitemapController {
   @HttpProcessor.handle('获取网站地图')
   getSitemap(): Promise<any> {
     return this.sitemapService.getCache();
+  }
+
+  @Patch()
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('更新网站地图')
+  updateSitemap(): Promise<any> {
+    return this.sitemapService.updateCache();
   }
 }

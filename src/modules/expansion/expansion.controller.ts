@@ -6,7 +6,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { GithubService, IGithubRepositorie } from './expansion.service.github';
 import { StatisticService, ITodayStatistic } from './expansion.service.statistic';
 import { QiniuService, IUpToken } from './expansion.service.qiniu';
@@ -42,6 +42,13 @@ export class ExpansionController {
   @HttpProcessor.handle('获取项目列表')
   getGithubRepositories(): Promise<IGithubRepositorie[]> {
     return this.githubService.getRepositoriesCache();
+  }
+
+  @Patch('github')
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('更新项目列表缓存')
+  updateGithubRepositories(): Promise<IGithubRepositorie[]> {
+    return this.githubService.updateRepositoriesCache();
   }
 
   @Get('uptoken')

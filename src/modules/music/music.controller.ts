@@ -5,15 +5,23 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, Param } from '@nestjs/common';
-import { HttpProcessor } from '@app/decorators/http.decorator';
+import { UseGuards, Controller, Get, Patch, Param } from '@nestjs/common';
 import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
+import { HttpProcessor } from '@app/decorators/http.decorator';
+import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { MusicService } from './music.service';
 
 @Controller('music')
 export class MusicController {
 
   constructor(private readonly musicService: MusicService) {}
+
+  @Patch('list')
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('更新播放列表缓存')
+  updateMusicPlaylistCache(): Promise<any> {
+    return this.musicService.updateListCache();
+  }
 
   @Get('list/:list_id')
   @HttpProcessor.handle('获取播放列表')

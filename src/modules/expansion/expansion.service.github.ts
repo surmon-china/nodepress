@@ -8,7 +8,7 @@
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { Injectable, HttpService } from '@nestjs/common';
-import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
+import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 
 export interface IGithubRepositorie {
   html_url: string;
@@ -31,10 +31,11 @@ export interface IGithubOriginRepositorie {
 export class GithubService {
 
   // 项目列表缓存
-  private repositoriesCache: ICacheIntervalResult<IGithubRepositorie[]>;
+  private repositoriesCache: ICacheIoResult<IGithubRepositorie[]>;
 
   constructor(private readonly httpService: HttpService, private readonly cacheService: CacheService) {
     this.repositoriesCache = this.cacheService.interval({
+      ioMode: true,
       key: CACHE_KEY.GITHUB_REPOSITORIES,
       promise: this.getRepositories.bind(this),
       timeout: {
@@ -46,7 +47,12 @@ export class GithubService {
 
   // 获取缓存
   public getRepositoriesCache(): Promise<IGithubRepositorie[]> {
-    return this.repositoriesCache();
+    return this.repositoriesCache.get();
+  }
+
+  // 更新缓存
+  public updateRepositoriesCache(): Promise<IGithubRepositorie[]> {
+    return this.repositoriesCache.update();
   }
 
   // 获取项目列表
