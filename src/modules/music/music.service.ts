@@ -9,7 +9,7 @@ import * as lodash from 'lodash';
 import * as NeteseMusic from 'simple-netease-cloud-music';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { Injectable } from '@nestjs/common';
-import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
+import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 
 @Injectable()
 export class MusicService {
@@ -20,13 +20,14 @@ export class MusicService {
 
   // 音乐服务
   private neteseMusic: NeteseMusic;
-  private listCache: ICacheIntervalResult<any>;
+  private listCache: ICacheIoResult<any>;
 
   constructor(private readonly cacheService: CacheService) {
     // 音乐服务实例
     this.neteseMusic = new NeteseMusic();
     // 音乐列表缓存器
     this.listCache = this.cacheService.interval({
+      ioMode: true,
       key: CACHE_KEY.MUSIC_LIST_PREFIX + this.defaultListId,
       promise: () => this.getList(this.defaultListId, this.defaultListLimit),
       timeout: {
@@ -44,8 +45,13 @@ export class MusicService {
   }
 
   // 获取播放列表缓存
-  public getListCache() {
-    return this.listCache();
+  public getListCache(): Promise<any> {
+    return this.listCache.get();
+  }
+
+  // 更新播放列表缓存
+  public updateListCache(): Promise<any> {
+    return this.listCache.update();
   }
 
   // 获取歌单列表

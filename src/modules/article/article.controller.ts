@@ -6,7 +6,7 @@
  */
 
 import { PaginateResult } from 'mongoose';
-import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
@@ -96,7 +96,7 @@ export class ArticleController {
 
   @Get(':id')
   @UseGuards(HumanizedJwtAuthGuard)
-  @HttpProcessor.handle('获取文章详情')
+  @HttpProcessor.handle({ message: '获取文章详情', error: HttpStatus.NOT_FOUND })
   getArticle(@QueryParams() { params, isAuthenticated }): Promise<Article> {
     const isMongoId = isNaN(Number(params.id));
     return isAuthenticated && isMongoId

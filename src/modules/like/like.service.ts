@@ -38,6 +38,7 @@ export class LikeService {
   }
 
   // 喜欢文章
+  // todo -> 1. 客户端能否用 objid 2，方法不对
   public likeArticle(articleId: Types.ObjectId): Promise<Article> {
     return this.articleModel.findOne(articleId).exec().then(article => {
       article.meta.likes++;

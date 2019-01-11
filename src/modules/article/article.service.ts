@@ -13,7 +13,7 @@ import { InjectModel } from 'nestjs-typegoose';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { TagService } from '@app/modules/tag/tag.service';
-import { CacheService, ICacheIntervalResult } from '@app/processors/cache/cache.service';
+import { CacheService, TCacheIntervalResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
 import { Article } from './article.model';
@@ -22,7 +22,7 @@ import { Article } from './article.model';
 export class ArticleService {
 
   // 热门文章列表缓存
-  private hotArticleListCache: ICacheIntervalResult<PaginateResult<Article>>;
+  private hotArticleListCache: TCacheIntervalResult<PaginateResult<Article>>;
 
   constructor(
     private readonly tagService: TagService,
@@ -97,6 +97,10 @@ export class ArticleService {
       .populate('tag')
       .exec()
       .then(article => {
+        // 如果文章不存在，返回 404
+        if (!article) {
+          return Promise.reject('文章不存在');
+        }
         // 增加浏览量
         article.meta.views++;
         article.save();
