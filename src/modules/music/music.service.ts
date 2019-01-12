@@ -39,7 +39,7 @@ export class MusicService {
 
   // 是否获取默认列表
   public isRequestDefaultList(listId, listLimit): boolean {
-    const isHitDefaultListId = listId === this.defaultListId;
+    const isHitDefaultListId = String(listId) === this.defaultListId;
     const isHitDefaultListLimit = listLimit === this.defaultListLimit || lodash.isUndefined(listLimit);
     return isHitDefaultListId && isHitDefaultListLimit;
   }
