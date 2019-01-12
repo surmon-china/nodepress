@@ -5,12 +5,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Types } from 'mongoose';
 import { Controller, Patch, Body } from '@nestjs/common';
 import { HttpProcessor } from '@app/decorators/http.decorator';
-import { Option } from '@app/modules/option/option.model';
-import { Article } from '@app/modules/article/article.model';
-import { Comment } from '@app/modules/comment/comment.model';
 import { LikeService } from './like.service';
 
 @Controller('like')
@@ -19,19 +15,19 @@ export class LikeController {
 
   @Patch('site')
   @HttpProcessor.handle('爱你么么扎！喜欢主站')
-  likeSite(): Promise<Option> {
+  likeSite(): Promise<boolean> {
     return this.likeService.likeSite();
   }
 
   @Patch('comment')
   @HttpProcessor.handle('爱你么么扎！点赞评论')
-  likeComment(@Body('id') commentId: Types.ObjectId): Promise<Comment> {
+  likeComment(@Body('id') commentId: number): Promise<boolean> {
     return this.likeService.likeComment(commentId);
   }
 
   @Patch('article')
   @HttpProcessor.handle('爱你么么扎！点赞文章')
-  likeArticle(@Body('id') articleId: Types.ObjectId): Promise<Article> {
+  likeArticle(@Body('id') articleId: number): Promise<boolean> {
     return this.likeService.likeArticle(articleId);
   }
 }

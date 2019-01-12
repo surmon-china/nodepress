@@ -35,7 +35,7 @@ export class ArticleController {
 
     // 如果是请求热门文章，则判断如何处理（注：前后台都会请求热门文章）
     if (Number(origin.sort) === ESortType.Hot) {
-      // 先真的热门排序
+      // 设置热排参数
       options.sort = this.articleService.getHotSortOption();
       // 前台缓存请求，则忽略一切后续处理
       if (!isAuthenticated && querys.cache) {
@@ -100,8 +100,8 @@ export class ArticleController {
   getArticle(@QueryParams() { params, isAuthenticated }): Promise<Article> {
     const isMongoId = isNaN(Number(params.id));
     return isAuthenticated && isMongoId
-      ? this.articleService.getDetailForAdmin(params.id)
-      : this.articleService.getDetailForUser(params.id);
+      ? this.articleService.getDetailByObjectId(params.id)
+      : this.articleService.getFullDetailForUser(params.id);
   }
 
   @Put(':id')

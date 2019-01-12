@@ -7,9 +7,10 @@
 
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
-import { Injectable } from '@nestjs/common';
+import { InstanceType } from 'typegoose';
 import { PaginateResult, Types } from 'mongoose';
 import { InjectModel } from 'nestjs-typegoose';
+import { Injectable } from '@nestjs/common';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { TagService } from '@app/modules/tag/tag.service';
@@ -83,19 +84,24 @@ export class ArticleService {
     return this.articleModel.paginate(querys, options);
   }
 
-  // 获取文章详情（管理员用）
-  public getDetailForAdmin(articleId: Types.ObjectId): Promise<Article> {
+  // 获取文章详情（使用 ObjectId）
+  public getDetailByObjectId(articleId: Types.ObjectId): Promise<Article> {
     return this.articleModel.findById(articleId).exec();
   }
 
-  // 获取文章详情（用户用）
-  public getDetailForUser(articleId: number): Promise<Article> {
+  // 获取文章详情（使用数字 ID）
+  public getDetailByNumberId(articleId: number): Promise<InstanceType<Article>> {
     return this.articleModel
       .findOne({ id: articleId, state: EPublishState.Published, public: EPublicState.Public })
       .select('-password')
       .populate('category')
       .populate('tag')
-      .exec()
+      .exec();
+  }
+
+  // 获取全面的文章详情（用户用）
+  public getFullDetailForUser(articleId: number): Promise<Article> {
+    return this.getDetailByNumberId(articleId)
       .then(article => {
         // 如果文章不存在，返回 404
         if (!article) {
