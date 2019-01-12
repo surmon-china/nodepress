@@ -6,19 +6,14 @@
  */
 
 import { Module } from '@nestjs/common';
-import { TypegooseModule } from 'nestjs-typegoose';
 import { LikeController } from './like.controller';
 import { LikeService } from './like.service';
-import { Option } from '@app/modules/option/option.model';
-import { Article } from '@app/modules/article/article.model';
-import { Comment } from '@app/modules/comment/comment.model';
+import { OptionModule } from '@app/modules/option/option.module';
+import { ArticleModule } from '@app/modules/article/article.module';
+import { CommentModule } from '@app/modules/comment/comment.module';
 
 @Module({
-  imports: [
-    TypegooseModule.forFeature(Option),
-    TypegooseModule.forFeature(Article),
-    TypegooseModule.forFeature(Comment),
-  ],
+  imports: [OptionModule, ArticleModule, CommentModule],
   controllers: [LikeController],
   providers: [LikeService],
   exports: [LikeService],

@@ -238,6 +238,11 @@ export class CommentService {
     return this.commentModel.findById(commentId).exec();
   }
 
+  // 获取单个评论详情（使用数字 ID）
+  public getDetailByNumberId(commentId: number): Promise<Comment> {
+    return this.commentModel.findOne({ id: commentId }).exec();
+  }
+
   // 修改评论
   public update(commentId: Types.ObjectId, newComment: Comment, referer: string): Promise<Comment> {
     return this.commentModel
