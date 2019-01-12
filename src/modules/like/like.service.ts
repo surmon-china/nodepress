@@ -5,44 +5,45 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Types } from 'mongoose';
+import { InstanceType } from 'typegoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from 'nestjs-typegoose';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { Option } from '@app/modules/option/option.model';
-import { Article } from '@app/modules/article/article.model';
 import { Comment } from '@app/modules/comment/comment.model';
+import { OptionService } from '@app/modules/option/option.service';
+import { ArticleService } from '@app/modules/article/article.service';
+import { CommentService } from '@app/modules/comment/comment.service';
 
 @Injectable()
 export class LikeService {
   constructor(
-    @InjectModel(Option) private readonly optionModel: TMongooseModel<Option>,
-    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
-    @InjectModel(Comment) private readonly commentModel: TMongooseModel<Comment>,
+    private readonly optionService: OptionService,
+    private readonly articleService: ArticleService,
+    private readonly commentService: CommentService,
   ) {}
 
   // 喜欢主站
-  public likeSite(): Promise<Option> {
-    return this.optionModel.findOne().exec().then(option => {
+  public likeSite(): Promise<boolean> {
+    return this.optionService.getOption().then((option: InstanceType<Option>) => {
       option.meta.likes++;
-      return option.save();
+      return option.save().then(_ => true);
     });
   }
 
   // 喜欢评论
-  public likeComment(commentId: Types.ObjectId): Promise<Comment> {
-    return this.commentModel.findOne(commentId).exec().then(comment => {
-      comment.likes++;
-      return comment.save();
-    });
+  public likeComment(commentId: number): Promise<boolean> {
+    return this.commentService
+      .getDetailByNumberId(commentId)
+      .then((comment: InstanceType<Comment>) => {
+        comment.likes++;
+        return comment.save().then(_ => true);
+      });
   }
 
   // 喜欢文章
-  // todo -> 1. 客户端能否用 objid 2，方法不对
-  public likeArticle(articleId: Types.ObjectId): Promise<Article> {
-    return this.articleModel.findOne(articleId).exec().then(article => {
+  public likeArticle(articleId: number): Promise<boolean> {
+    return this.articleService.getDetailByNumberId(articleId).then(article => {
       article.meta.likes++;
-      return article.save();
+      return article.save().then(_ => true);
     });
   }
 }

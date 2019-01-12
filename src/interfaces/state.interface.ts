@@ -50,9 +50,3 @@ export enum ESortType {
   Desc = -1, // 降序
   Hot = 2, // 最热
 }
-
-// 喜欢类型
-export enum ELikeType {
-  Comment = 1, // 评论
-  Page = 2, // 页面
-}
