@@ -16,7 +16,7 @@ export class OptionService {
 
   // 请求设置
   public getOption(): Promise<Option> {
-    return this.optionModel.findOne(null, '-_id').exec();
+    return this.optionModel.findOne().exec();
   }
 
   // 修改设置

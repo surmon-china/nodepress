@@ -8,6 +8,22 @@
 import { Controller, Patch, Body } from '@nestjs/common';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { LikeService } from './like.service';
+import { prop, Typegoose } from 'typegoose';
+import { IsInt, IsDefined } from 'class-validator';
+
+export class LikeComment extends Typegoose {
+  @IsDefined()
+  @IsInt()
+  @prop({ required: true })
+  comment_id: number;
+}
+
+export class LikeArticle extends Typegoose {
+  @IsDefined()
+  @IsInt()
+  @prop({ required: true })
+  article_id: number;
+}
 
 @Controller('like')
 export class LikeController {
@@ -21,13 +37,13 @@ export class LikeController {
 
   @Patch('comment')
   @HttpProcessor.handle('爱你么么扎！点赞评论')
-  likeComment(@Body('id') commentId: number): Promise<boolean> {
-    return this.likeService.likeComment(commentId);
+  likeComment(@Body() likeComment: LikeComment): Promise<boolean> {
+    return this.likeService.likeComment(likeComment.comment_id);
   }
 
   @Patch('article')
   @HttpProcessor.handle('爱你么么扎！点赞文章')
-  likeArticle(@Body('id') articleId: number): Promise<boolean> {
-    return this.likeService.likeArticle(articleId);
+  likeArticle(@Body() likeArticle: LikeArticle): Promise<boolean> {
+    return this.likeService.likeArticle(likeArticle.article_id);
   }
 }
