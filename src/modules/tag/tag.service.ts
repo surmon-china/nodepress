@@ -15,6 +15,7 @@ import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
+import { Article } from '@app/modules/article/article.model';
 import { Tag } from './tag.model';
 
 @Injectable()
@@ -28,12 +29,14 @@ export class TagService {
     private readonly sitemapService: SitemapService,
     private readonly baiduSeoService: BaiduSeoService,
     @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
+    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
   ) {
     this.tagListCache = this.cacheService.promise({
       ioMode: true,
       key: CACHE_KEY.TAGS,
       promise: this.getListCacheTask.bind(this),
     });
+    this.updateListCache();
   }
 
   // 构造链接
@@ -61,11 +64,12 @@ export class TagService {
   public getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
     const matchState = { state: EPublishState.Published, public: EPublicState.Public };
     return this.tagModel.paginate(querys, options).then(tags => {
-      return this.tagModel.aggregate([
+      return this.articleModel.aggregate([
         { $match: isAuthenticated ? {} : matchState },
         { $unwind: '$tag' },
         { $group: { _id: '$tag', num_tutorial: { $sum: 1 }}},
-      ]).exec().then(counts => {
+      ]).then(counts => {
+        tags = JSON.parse(JSON.stringify(tags));
         return Object.assign(tags, {
           docs: tags.docs.map(tag => {
             const finded = counts.find(count => String(count._id) === String(tag._id));

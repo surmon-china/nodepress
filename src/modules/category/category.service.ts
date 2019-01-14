@@ -13,6 +13,7 @@ import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
 import { EPublicState, EPublishState } from '@app/interfaces/state.interface';
+import { Article } from '@app/modules/article/article.model';
 import { Category } from './category.model';
 
 @Injectable()
@@ -20,6 +21,7 @@ export class CategoryService {
   constructor(
     private readonly sitemapService: SitemapService,
     private readonly baiduSeoService: BaiduSeoService,
+    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
     @InjectModel(Category) private readonly categoryModel: TMongooseModel<Category>,
   ) {}
 
@@ -32,11 +34,12 @@ export class CategoryService {
   public getList(querys, options, isAuthenticated): Promise<PaginateResult<Category>> {
     const matchState = { state: EPublishState.Published, public: EPublicState.Public };
     return this.categoryModel.paginate(querys, options).then(categories => {
-      return this.categoryModel.aggregate([
+      return this.articleModel.aggregate([
         { $match: isAuthenticated ? {} : matchState },
         { $unwind: '$category' },
         { $group: { _id: '$category', num_tutorial: { $sum: 1 }}},
       ]).then(counts => {
+        categories = JSON.parse(JSON.stringify(categories));
         return Object.assign(categories, {
           docs: categories.docs.map(category => {
             const finded = counts.find(count => String(count._id) === String(category._id));
