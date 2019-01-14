@@ -50,6 +50,7 @@ export class SitemapService {
       key: CACHE_KEY.SITEMAP,
       promise: this.queryAndWriteToFile.bind(this),
     });
+    this.updateCache();
   }
 
   // 获取并将地图写入文件

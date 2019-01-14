@@ -37,7 +37,7 @@ export class ArticleService {
         success: 1000 * 60 * 30, // 成功后 30 分钟更新一次数据
         error: 1000 * 60 * 5, // 失败后 5 分钟更新一次数据
       },
-      key: CACHE_KEY.TAGS,
+      key: CACHE_KEY.HOT_ARTICLES,
       promise: () => {
         const options = { limit: 10, sort: this.getHotSortOption() };
         return this.getList.bind(this)(null, options, false);
