@@ -43,7 +43,6 @@ export class CommentController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('添加评论')
   createComment(@Body() comment: Comment, @QueryParams() { visitors }): Promise<Comment> {
     return this.commentService.create(comment, visitors);

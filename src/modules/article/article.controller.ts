@@ -56,21 +56,34 @@ export class ArticleController {
     // 分类别名查询
     type TSlugService = (slug: string) => Promise<any>;
     const slugParams = [
-      { field: 'tag_slug', name: 'tag', service: this.tagService.getDetailBySlug as TSlugService},
-      { field: 'category_slug', name: 'category', service: this.categoryService.getDetailBySlug as TSlugService},
+      {
+        name: 'tag',
+        field: 'tag_slug',
+        service: this.tagService.getDetailBySlug.bind(this.tagService) as TSlugService,
+      },
+      {
+        name: 'category',
+        field: 'category_slug',
+        service: this.categoryService.getDetailBySlug.bind(this.categoryService) as TSlugService,
+      },
     ];
 
     const matchedParam = slugParams.find(item => querys[item.field]);
-    const matchedSlug = matchedParam && querys[matchedParam.field];
-    return !matchedParam
+    const matchedField = matchedParam && matchedParam.field;
+    const matchedSlug = matchedField && querys[matchedField];
+    return !matchedSlug
       ? this.articleService.getList(querys, options)
       : matchedParam.service(matchedSlug).then(param => {
         const paramField = matchedParam.name;
         const paramId = param && param._id;
-        return paramId
-          ? this.articleService.getList(Object.assign(querys, { [paramField]: paramId }), options)
-          : Promise.reject(`标签 ${querys.tag_slug}不存在`);
-        });
+        if (paramId) {
+          querys = Object.assign(querys, { [paramField]: paramId });
+          Reflect.deleteProperty(querys, matchedField);
+          return this.articleService.getList(querys, options);
+        } else {
+          return Promise.reject(`条件 ${matchedField} -> ${matchedSlug} 不存在`);
+        }
+      });
   }
 
   @Post()
