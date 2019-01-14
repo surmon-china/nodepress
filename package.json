@@ -68,7 +68,7 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
-    "simple-netease-cloud-music": "^0.4.0",
+    "simple-netease-cloud-music": "^0.4.2",
     "sitemap": "^2.1.0",
     "typegoose": "^5.4.1",
     "typeorm": "^0.2.9",
