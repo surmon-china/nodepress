@@ -29,20 +29,8 @@ export class Author {
   site: string;
 }
 
-@pre<Comment>('findOneAndUpdate', function(next) {
-  this.findOneAndUpdate({}, { update_at: Date.now() });
-  next();
-})
-
-@plugin(mongoosePaginate)
-@plugin(mongooseAutoIncrement.plugin, {
-  model: Comment.name,
-  field: 'id',
-  startAt: 1,
-  incrementBy: 1,
-})
-
-export class Comment extends Typegoose {
+// 创建评论的基数据
+export class CreateCommentBase extends Typegoose {
 
   // 评论所在的文章 Id
   @IsNotEmpty({ message: '文章 Id？' })
@@ -60,6 +48,30 @@ export class Comment extends Typegoose {
   @prop({ required: true, validate: /\S+/ })
   content: string;
 
+  // 用户 UA
+  @prop({ validate: /\S+/ })
+  agent?: string;
+
+  // 评论作者
+  @prop()
+  author: Author;
+}
+
+@pre<Comment>('findOneAndUpdate', function(next) {
+  this.findOneAndUpdate({}, { update_at: Date.now() });
+  next();
+})
+
+@plugin(mongoosePaginate)
+@plugin(mongooseAutoIncrement.plugin, {
+  model: Comment.name,
+  field: 'id',
+  startAt: 1,
+  incrementBy: 1,
+})
+
+export class Comment extends CreateCommentBase {
+
   // 评论发布状态
   @IsIn([ECommentState.Auditing, ECommentState.Deleted, ECommentState.Published, ECommentState.Spam])
   @IsInt()
@@ -76,10 +88,6 @@ export class Comment extends Typegoose {
   @prop({ default: 0 })
   likes: number;
 
-  // 评论作者
-  @prop()
-  author: Author;
-
   // IP 地址
   @prop()
   ip?: string;
@@ -87,10 +95,6 @@ export class Comment extends Typegoose {
   // IP物理地址
   @prop()
   ip_location?: any;
-
-  // 用户 UA
-  @prop({ validate: /\S+/ })
-  agent?: string;
 
   @prop({ default: Date.now })
   create_at?: Date;
