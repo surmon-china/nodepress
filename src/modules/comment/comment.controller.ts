@@ -11,7 +11,7 @@ import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams, EQueryParamsField } from '@app/decorators/query-params.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
-import { Comment, DelComments, PatchComments } from './comment.model';
+import { Comment, CreateCommentBase, DelComments, PatchComments } from './comment.model';
 import { CommentService } from './comment.service';
 import { ESortType } from '@app/interfaces/state.interface';
 
@@ -44,7 +44,7 @@ export class CommentController {
 
   @Post()
   @HttpProcessor.handle('添加评论')
-  createComment(@Body() comment: Comment, @QueryParams() { visitors }): Promise<Comment> {
+  createComment(@Body() comment: CreateCommentBase, @QueryParams() { visitors }): Promise<Comment> {
     return this.commentService.create(comment, visitors);
   }
 

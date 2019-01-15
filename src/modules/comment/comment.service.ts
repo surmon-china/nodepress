@@ -18,7 +18,7 @@ import { AkismetService, EAkismetActionType } from '@app/processors/helper/helpe
 import { ECommentPostType, ECommentState } from '@app/interfaces/state.interface';
 import { Option, Blacklist } from '@app/modules/option/option.model';
 import { Article } from '@app/modules/article/article.model';
-import { Comment, PatchComments } from './comment.model';
+import { Comment, CreateCommentBase, PatchComments } from './comment.model';
 import { isDevMode } from '@app/app.environment';
 
 @Injectable()
@@ -102,12 +102,12 @@ export class CommentService {
     ])
     .then(counts => {
       if (!counts || !counts.length) {
-        this.articleModel.updateOne({ id: postIds[0] }, { $set: { 'meta.comments': 0 }});
+        this.articleModel.updateOne({ id: postIds[0] }, { $set: { 'meta.comments': 0 }}).exec();
           // .then(info => console.info('评论聚合更新成功', info))
           // .catch(error => console.warn('评论聚合更新失败', error));
       } else {
         counts.forEach(count => {
-          this.articleModel.updateOne({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }});
+          this.articleModel.updateOne({ id: count._id }, { $set: { 'meta.comments': count.num_tutorial }}).exec();
             // .then(info => console.info('评论聚合更新成功', info))
             // .catch(error => console.warn('评论聚合更新失败', error));
         });
@@ -182,37 +182,39 @@ export class CommentService {
   }
 
   // 创建评论
-  public create(comment: Comment, { ip, ua, referer }): Promise<Comment> {
+  public create(comment: CreateCommentBase, { ip, ua, referer }): Promise<Comment> {
 
     // 修正基础数据
-    comment = Object.assign(comment, {
+    const newComment: Comment = Object.assign(comment, {
       ip,
       likes: 0,
       is_top: false,
+      pid: Number(comment.pid),
+      post_id: Number(comment.post_id),
+      state: ECommentState.Published,
       agent: ua || comment.agent,
     });
 
     // 永久链接
     const linkPrefix = APP_CONFIG.APP.URL + '/';
-    const linkPath = comment.post_id === ECommentPostType.Guestbook ? 'guestbook' : `article/${comment.post_id}`;
+    const linkPath = newComment.post_id === ECommentPostType.Guestbook ? 'guestbook' : `article/${newComment.post_id}`;
     const permalink = linkPrefix + linkPath;
 
     return Promise.all([
       // 检验评论垃圾性质
-      this.validateCommentByBlacklist(comment),
-      this.validateCommentByAkismet(comment, permalink, referer),
+      this.validateCommentByBlacklist(newComment),
+      this.validateCommentByAkismet(newComment, permalink, referer),
     ]).then(_ => {
       // 查询物理 IP 位置
       return this.ipService.query(ip);
-    }).then(ipLocation => {
+    }).then(ip_location => {
       // 设置查询物理 IP 位置 + 保存评论
-      comment.ip_location = ipLocation;
-      return new this.commentModel(comment).save();
-    }).then(newComment => {
+      return new this.commentModel(Object.assign(newComment, { ip_location })).save();
+    }).then(succcessComment => {
       // 发布成功后，向网站主及被回复者发送邮件提醒，更新文章聚合数据
-      this.sendMailToAdminAndTargetUser(newComment, permalink);
-      this.updateCommentCountWithArticle([newComment.post_id]);
-      return comment;
+      this.sendMailToAdminAndTargetUser(succcessComment, permalink);
+      this.updateCommentCountWithArticle([succcessComment.post_id]);
+      return succcessComment;
     });
   }
 
@@ -224,11 +226,13 @@ export class CommentService {
       .exec()
       .then(result => {
         this.updateCommentCountWithArticle(postIds);
-        this.commentModel.find({ _id: { $in: commentIds }}).then(todoComments => {
-          this.updateCommentsStateWithBlacklist(todoComments, state, referer);
-        }).catch(error => {
-          console.warn(`对评论进行改变状态 ${state} 时，出现查询错误！`, error);
-        });
+        this.commentModel.find({ _id: { $in: commentIds }})
+          .then(todoComments => {
+            this.updateCommentsStateWithBlacklist(todoComments, state, referer);
+          })
+          .catch(error => {
+            console.warn(`对评论进行改变状态 ${state} 时，出现查询错误！`, error);
+          });
         return result;
       });
   }
