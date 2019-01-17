@@ -30,6 +30,7 @@ export class SitemapService {
 
   private pagesMap = [
     { url: '', changefreq: 'always', priority: 1 },
+    { url: '/vlog', changefreq: 'monthly', priority: 1 },
     { url: '/about', changefreq: 'monthly', priority: 1 },
     { url: '/project', changefreq: 'monthly', priority: 1 },
     { url: '/sitemap', changefreq: 'always', priority: 1 },
