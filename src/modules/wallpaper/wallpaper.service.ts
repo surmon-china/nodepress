@@ -20,7 +20,7 @@ export class WallpaperService {
   // 通用定时配置
   private commonTimingConfig: ICacheIntervalTimingOption = {
     schedule: '10 0 0 * * *', // 默认每天的 0:00:10 获取数据
-    error: 1000 * 60, // 如果获取失败则一分钟后重新获取一次
+    error: 100 * 24 * 60 * 60 * 1000, // 如果获取失败则一分钟后重新获取一次（都挂了，那就先一个月一次吧）
   };
 
   constructor(private readonly cacheService: CacheService) {
