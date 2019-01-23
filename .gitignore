@@ -1,3 +1,6 @@
+# compiled output
+/dist
+/tmp
 
 *.pydevproject
 .project
