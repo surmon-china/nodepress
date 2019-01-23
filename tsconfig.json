@@ -5,7 +5,7 @@
     "declaration": true,
     "noImplicitAny": false,
     "removeComments": true,
-    "lib": ["es2015", "es2016", "es2017"],
+    "lib": ["dom", "es2015", "es2016", "es2017"],
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -14,10 +14,10 @@
     "target": "es6",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "@app": ["./src"],
-      "@app/*": ["./src/*"]
+      "@app": ["./"],
+      "@app/*": ["./*"]
     }
   },
   "typeAcquisition": {
@@ -29,11 +29,9 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules",
-    // "*/*.spec.ts"
+    "node_modules"
   ],
   "typeRoots": [
-    "node_modules/@types",
-    "consola/types/consola"
+    "node_modules/@types"
   ]
 }
