@@ -94,7 +94,7 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     });
   }
 
-  console.log('--------------------------------- transformConfig\n', transformConfig);
+  // console.log('--------------------------------- transformConfig\n', transformConfig);
 
   // 查询参数
   const querys: IQueryParamsConfig = {};
@@ -310,9 +310,9 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     isAuthenticated,
   };
 
-  console.log('--------------------------------- queryParams\n', request.queryParams);
-  console.log('--------------------------------- origin\n', request.query);
-  console.log('--------------------------------- visitors\n', result.visitors, '\n---------------------------------');
+  // console.log('--------------------------------- queryParams\n', request.queryParams);
+  // console.log('--------------------------------- origin\n', request.query);
+  // console.log('--------------------------------- visitors\n', result.visitors, '\n---------------------------------');
 
   return result;
 });
