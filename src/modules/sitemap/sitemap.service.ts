@@ -63,7 +63,7 @@ export class SitemapService {
             console.warn('生成网站地图 XML 时发生错误', error);
             return reject(error);
           } else {
-            fs.writeFileSync(this.xmlFilePath, sitemap.toString());
+            fs.writeFileSync(this.xmlFilePath, this.sitemap.toString());
             return resolve(xml);
           }
         });
