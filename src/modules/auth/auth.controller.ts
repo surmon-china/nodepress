@@ -43,7 +43,7 @@ export class AuthController {
     return this.authService.createToken(body.password).then(token => {
       this.ipService.query(ip).then(ipLocation => {
         const subject = '博客有新的登陆行为';
-        const content = `来源 IP：${ip}，地理位置为：${ipLocation || '未知'}`;
+        const content = `来源 IP：${ip}，地理位置为：${ipLocation.country}-${ipLocation.city}`;
         this.emailService.sendMail({
           subject,
           to: APP_CONFIG.EMAIL.admin,
