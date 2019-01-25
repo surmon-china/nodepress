@@ -1,5 +1,7 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="blank">
+    <img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" />
+  </a>
   <span>&nbsp;&nbsp;&nbsp;</span>
   <img src="https://raw.githubusercontent.com/surmon-china/angular-admin/master/src/assets/img/logo.png" width="100" alt="Nest Logo" />
 </p>
