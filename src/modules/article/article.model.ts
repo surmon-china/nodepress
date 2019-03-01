@@ -6,9 +6,9 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, post, Typegoose, Ref } from 'typegoose';
+import { prop, arrayProp, plugin, pre, Typegoose, Ref } from 'typegoose';
 import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import { mongoose, mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { EPublishState, EPublicState, EOriginState } from '@app/interfaces/state.interface';
 import { Category } from '@app/modules/category/category.model';
 import { Extend } from '@app/models/extend.model';
