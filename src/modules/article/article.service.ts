@@ -5,6 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { InstanceType } from 'typegoose';
@@ -64,7 +65,7 @@ export class ArticleService {
         tag: { $in: article.tag.map(t => (t as any)._id) },
         category: { $in: article.category.map(c => (c as any)._id) },
       },
-      'id title description thumb -_id',
+      'id title description thumb meta create_at update_at -_id',
     ).exec();
   }
 
@@ -117,7 +118,7 @@ export class ArticleService {
         // 获取相关文章
         const resultArticle = article.toObject();
         return this.getRelatedArticles(resultArticle).then(articles => {
-          return Object.assign(resultArticle, { related: articles });
+          return Object.assign(resultArticle, { related: lodash.sampleSize(articles, 12) });
         });
       });
   }
