@@ -20,13 +20,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = host.switchToHttp().getRequest();
     const response = host.switchToHttp().getResponse();
     const status = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
-    const errorOption: TExceptionOption = exception.message as TExceptionOption;
+    const errorOption: TExceptionOption = exception.getResponse() as TExceptionOption;
     const isString = (value): value is TMessage => lodash.isString(value);
     const errMessage = isString(errorOption) ? errorOption : errorOption.message;
     const errorInfo = isString(errorOption) ? null : errorOption.error;
     const parentErrorInfo = errorInfo ? String(errorInfo) : null;
-    const isChildrenError = errorInfo.status && errorInfo.message;
-    const resultError = isChildrenError ? errorInfo.message : parentErrorInfo;
+    const isChildrenError = errorInfo && errorInfo.status && errorInfo.message;
+    const resultError = isChildrenError && errorInfo.message || parentErrorInfo;
     const resultStatus = isChildrenError ? errorInfo.status : status;
     const data: THttpErrorResponse = {
       status: EHttpStatus.Error,
@@ -35,7 +35,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       debug: isDevMode ? exception.stack : null,
     };
     // 对默认的 404 进行特殊处理
-    if (status === HttpStatus.NOT_FOUND && data.error === 'Not Found') {
+    if (status === HttpStatus.NOT_FOUND) {
       data.error = `资源不存在`;
       data.message = `接口 ${request.method} -> ${request.url} 无效`;
     }
