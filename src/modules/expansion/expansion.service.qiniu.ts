@@ -21,8 +21,8 @@ export class QiniuService {
 
   constructor() {
     const { bucket, accessKey, secretKey } = APP_CONFIG.QINIU;
-    this.mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
-    this.putPolicy = new qiniu.rs.PutPolicy({ scope: bucket });
+    this.mac = new qiniu.auth.digest.Mac(accessKey as string, secretKey as string);
+    this.putPolicy = new qiniu.rs.PutPolicy({ scope: bucket as string });
   }
 
   public getToken(): IUpToken {

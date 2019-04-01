@@ -7,7 +7,7 @@
 
 import * as lodash from 'lodash';
 import * as META from '@app/constants/meta.constant';
-import { ReflectMetadata, CacheKey } from '@nestjs/common';
+import { SetMetadata, CacheKey } from '@nestjs/common';
 
 // 缓存器配置
 interface ICacheOption {
@@ -32,10 +32,10 @@ export function HttpCache(...args) {
   return (_, __, descriptor: PropertyDescriptor) => {
     if (key) {
       CacheKey(key)(descriptor.value);
-      // ReflectMetadata(META.HTTP_CACHE_KEY_METADATA, key)(descriptor.value);
+      // SetMetadata(META.HTTP_CACHE_KEY_METADATA, key)(descriptor.value);
     }
     if (ttl) {
-      ReflectMetadata(META.HTTP_CACHE_TTL_METADATA, ttl)(descriptor.value);
+      SetMetadata(META.HTTP_CACHE_TTL_METADATA, ttl)(descriptor.value);
     }
     return descriptor;
   };

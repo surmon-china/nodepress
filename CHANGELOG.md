@@ -15,6 +15,15 @@
 - ~~集成 [Analytics Reporting API](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/web-js?hl=zh-cn) 供管理员使用~~
 - ~~sitemap，tags CUD 时进行缓存更新，使用 redis.promise~~
 
+### v3.1.0
+
+- Update nestjs to v6.0
+- 修正邮件服务文案错误
+- 修复更新密码覆盖问题
+- 修正缓存请求服务的问题
+- 修正配置读取类型错误问题
+- 升级 Wallpaper 业务
+
 ### v3.0.0
 
 - 使用 [Nest](https://github.com/nestjs/nest) 进行重构

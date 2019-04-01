@@ -51,6 +51,9 @@ export class AuthService {
     const password = this.decodeBase64(auth.password);
     const new_password = this.decodeBase64(auth.new_password);
     const rel_new_password = this.decodeBase64(auth.rel_new_password);
+    Reflect.deleteProperty(auth, 'password');
+    Reflect.deleteProperty(auth, 'new_password');
+    Reflect.deleteProperty(auth, 'rel_new_password');
 
     return new Promise((resolve, reject) => {
       // 验证密码
@@ -84,8 +87,6 @@ export class AuthService {
           return Promise.reject('原密码不正确');
         } else {
           auth.password = this.decodeMd5(rel_new_password);
-          Reflect.deleteProperty(auth, 'new_password');
-          Reflect.deleteProperty(auth, 'rel_new_password');
         }
       }
 
@@ -104,7 +105,10 @@ export class AuthService {
       const submittedPassword = this.decodeMd5(this.decodeBase64(password));
       if (submittedPassword === extantPassword) {
         const access_token = this.jwtService.sign({ data: APP_CONFIG.AUTH.data });
-        return Promise.resolve({ access_token, expires_in: APP_CONFIG.AUTH.expiresIn });
+        return Promise.resolve({
+          access_token,
+          expires_in: APP_CONFIG.AUTH.expiresIn as number,
+        });
       } else {
         return Promise.reject('密码不匹配');
       }

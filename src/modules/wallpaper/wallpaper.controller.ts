@@ -19,10 +19,4 @@ export class WallpaperController {
   getWallpapers(): Promise<any> {
     return this.wallpaperService.getWallpapersCache();
   }
-
-  @Get('story')
-  @HttpProcessor.handle('获取今日壁纸故事')
-  getWallpaperStory(): Promise<any> {
-    return this.wallpaperService.getStoryCache();
-  }
 }
