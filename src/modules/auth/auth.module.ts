@@ -13,6 +13,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { Auth } from './auth.model';
+import * as jwt from 'jsonwebtoken';
 import * as APP_CONFIG from '@app/app.config';
 
 @Module({
@@ -20,8 +21,10 @@ import * as APP_CONFIG from '@app/app.config';
     TypegooseModule.forFeature(Auth),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secretOrPrivateKey: APP_CONFIG.AUTH.jwtTokenSecret,
-      signOptions: { expiresIn: APP_CONFIG.AUTH.expiresIn },
+      secretOrPrivateKey: APP_CONFIG.AUTH.jwtTokenSecret as jwt.Secret,
+      signOptions: {
+        expiresIn: APP_CONFIG.AUTH.expiresIn as number,
+      },
     }),
   ],
   controllers: [AuthController],

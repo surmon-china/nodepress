@@ -47,7 +47,7 @@ export class CommentService {
   // 邮件通知网站主及目标对象
   private sendMailToAdminAndTargetUser(comment: Comment, permalink: string) {
     const commentHtml = marked(comment.content);
-    const commentType = comment.post_id === ECommentPostType.Guestbook ? '评论' : '留言';
+    const commentType = comment.post_id === ECommentPostType.Guestbook ? '留言' : '评论';
     const getContextPrefix = isReply => `来自 ${comment.author.name} 的${commentType}${isReply ? '回复' : ''}：`;
     const sendMailText = contentPrefix => `${contentPrefix}${comment.content}`;
     const sendMailHtml = contentPrefix => `
