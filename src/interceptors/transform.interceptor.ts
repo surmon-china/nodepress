@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Reflector } from '@nestjs/core';
 import { PaginateResult } from 'mongoose';
-import { Injectable, NestInterceptor, ExecutionContext } from '@nestjs/common';
+import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common';
 import { THttpSuccessResponse, IHttpResultPaginate, EHttpStatus } from '@app/interfaces/http.interface';
 import { TMessage } from '@app/interfaces/http.interface';
 import * as META from '@app/constants/meta.constant';
@@ -36,7 +36,8 @@ export function transformDataToPaginate<T>(data: PaginateResult<T>, request?: an
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, THttpSuccessResponse<T>> {
   constructor(private readonly reflector: Reflector) {}
-  intercept(context: ExecutionContext, call$: Observable<T>): Observable<THttpSuccessResponse<T>> {
+  intercept(context: ExecutionContext, next: CallHandler<T>): Observable<THttpSuccessResponse<T>> {
+    const call$ = next.handle();
     const target = context.getHandler();
     const request = context.switchToHttp().getRequest();
     const message = this.reflector.get<TMessage>(META.HTTP_SUCCESS_MESSAGE, target) || TEXT.HTTP_DEFAULT_SUCCESS_TEXT;

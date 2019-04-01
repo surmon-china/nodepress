@@ -7,7 +7,7 @@
 
 import { tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { CacheInterceptor, ExecutionContext, Injectable, RequestMethod } from '@nestjs/common';
+import { CacheInterceptor, ExecutionContext, CallHandler, Injectable, RequestMethod } from '@nestjs/common';
 import * as META from '@app/constants/meta.constant';
 import * as APP_CONFIG from '@app/app.config';
 
@@ -19,7 +19,8 @@ import * as APP_CONFIG from '@app/app.config';
 export class HttpCacheInterceptor extends CacheInterceptor {
 
   // 自定义装饰器，修饰 ttl 参数
-  async intercept(context: ExecutionContext, call$: Observable<any>): Promise<Observable<any>> {
+  async intercept(context: ExecutionContext, next: CallHandler<any>): Promise<Observable<any>> {
+    const call$ = next.handle();
     // 如果想彻底禁用缓存服务，还是直接返回数据吧
     // return call$;
     const key = this.trackBy(context);
@@ -47,7 +48,7 @@ export class HttpCacheInterceptor extends CacheInterceptor {
    */
   trackBy(context: ExecutionContext): string | undefined {
     const request = context.switchToHttp().getRequest();
-    const httpServer = this.applicationRefHost.applicationRef;
+    const httpServer = this.httpAdapterHost.httpAdapter;
     const isHttpApp = httpServer && !!httpServer.getRequestMethod;
     const isGetRequest = isHttpApp && httpServer.getRequestMethod(request) === RequestMethod[RequestMethod.GET];
     const requestUrl = httpServer.getRequestUrl(request);

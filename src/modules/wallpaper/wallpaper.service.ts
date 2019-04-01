@@ -7,42 +7,34 @@
 
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as WonderfulBingWallpaper from 'wonderful-bing-wallpaper';
-import { Injectable } from '@nestjs/common';
 import { CacheService, TCacheIntervalResult, ICacheIntervalTimingOption } from '@app/processors/cache/cache.service';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class WallpaperService {
 
   private wbw: WonderfulBingWallpaper;
-  private storyCache: TCacheIntervalResult<any>;
   private wallpapersCache: TCacheIntervalResult<any>;
 
   // 通用定时配置
   private commonTimingConfig: ICacheIntervalTimingOption = {
     schedule: '10 0 0 * * *', // 默认每天的 0:00:10 获取数据
-    error: 10 * 60 * 1000, // 如果获取失败则 30 分钟后重新获取一次
+    error: 10 * 60 * 1000, // 如果获取失败则 10 分钟后重新获取一次
   };
 
   constructor(private readonly cacheService: CacheService) {
     // 壁纸服务实例
-    this.wbw = new WonderfulBingWallpaper({ local: 'zh-CN', host: 'cn.bing.com' });
+    this.wbw = new WonderfulBingWallpaper({
+      local: 'zh-CN',
+      host: 'cn.bing.com',
+      ensearch: 1,
+    });
     // 今日壁纸缓存器
     this.wallpapersCache = this.cacheService.interval({
       key: CACHE_KEY.WALLPAPERS,
       timing: this.commonTimingConfig,
       promise: this.getWallpapers.bind(this),
     });
-    // 今日壁纸故事缓存器
-    this.storyCache = this.cacheService.interval({
-      key: CACHE_KEY.WALLPAPER_STORY,
-      timing: this.commonTimingConfig,
-      promise: this.wbw.getTodayWallpaperStory.bind(this.wbw),
-    });
-  }
-
-  // 今日壁纸故事缓存
-  public getStoryCache(): Promise<any> {
-    return this.storyCache();
   }
 
   // 今日壁纸缓存

@@ -32,7 +32,7 @@ export class AuthController {
 
   @Put('admin')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle({ message: '修改管理员信息', error: HttpStatus.BAD_REQUEST })
+  @HttpProcessor.handle('修改管理员信息')
   putAdminInfo(@Body() auth: Auth): Promise<Auth> {
     return this.authService.putAdminInfo(auth);
   }
@@ -43,7 +43,9 @@ export class AuthController {
     return this.authService.createToken(body.password).then(token => {
       this.ipService.query(ip).then(ipLocation => {
         const subject = '博客有新的登陆行为';
-        const content = `来源 IP：${ip}，地理位置为：${ipLocation.country}-${ipLocation.city}`;
+        const city = ipLocation && ipLocation.city || '未知城市';
+        const country = ipLocation && ipLocation.country || '未知国家';
+        const content = `来源 IP：${ip}，地理位置为：${country} - ${city}`;
         this.emailService.sendMail({
           subject,
           to: APP_CONFIG.EMAIL.admin,
