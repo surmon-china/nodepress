@@ -52,7 +52,7 @@
     * `error`：一般会返回错误发生节点的 error；在 `status` 为 `error` 的时候必须返回，方便调试
     * `debug`：开发模式下为发生错误的堆栈，生产模式不返回
     * `result`：在 `status` 为 `success` 的时候必须返回
-        * 列表数据：一般返回`{ pagenation: {...}, data: {..} }`
+        * 列表数据：一般返回`{ pagination: {...}, data: {..} }`
         * 具体数据：例如文章，则包含直接数据如`{ title: '', content: ... }`
 
 ## 数据结构
@@ -71,7 +71,7 @@
     * 数据库真实存在数据
     * 业务计算出的数据，非存储数据，如：统计数据
     * Mongoose 支持的 virtual 虚拟数据
-    * 第三方模块提供数据，如：Gtihub、Bilibbili
+    * 第三方模块提供数据，如：GitHub、Bilibili
 
 ## 应用结构
 
@@ -148,7 +148,7 @@
   * [网站地图](https://github.com/surmon-china/nodepress/blob/master/src/modules/sitemap/sitemap.service.ts)：负责网站地图 xml 生成，抽象出的对象。包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
   * 壁纸：主站每日壁纸模块业务
   * 扩展模块
-    + Github：Github 项目列表业务
+    + GitHub：GitHub 项目列表业务
     + 统计：简单的统计业务
     + 七牛：生成七牛上传 Token
 
