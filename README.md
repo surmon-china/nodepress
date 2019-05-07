@@ -19,7 +19,7 @@
 
 #### RESTful API server application for my blog.
 
-- Maintained by [me](mailto://surmon@foxmail.com)
+- Maintained by [Surmon](mailto://surmon@foxmail.com)
 - Online site: https://surmon.me
 - SRE service: [sre.surmon.me](https://github.com/surmon-china/sre.surmon.me)
 - Web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By Nuxt.js(Vue)
