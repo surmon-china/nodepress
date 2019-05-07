@@ -73,7 +73,7 @@ export class AkismetService {
           this.client[handleType](content).then(result => {
             // 如果是检查 spam 且检查结果为 true
             if (handleType === EAkismetActionType.CheckSpam && result) {
-              console.warn('Akismet ${handleType} 操作失败!', new Date());
+              console.warn(`Akismet ${handleType} 操作失败!`, new Date());
               reject(new Error('spam!'));
             } else {
               console.info(`Akismet ${handleType} 操作成功!`);
