@@ -16,8 +16,8 @@ import { Category } from './category.model';
 @Module({
   imports: [
     SitemapModule,
-    TypegooseModule.forFeature(Article),
-    TypegooseModule.forFeature(Category),
+    TypegooseModule.forFeature([Article, Category]),
+    // TypegooseModule.forFeature([Category]),
   ],
   controllers: [CategoryController],
   providers: [CategoryService],
