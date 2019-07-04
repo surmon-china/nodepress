@@ -18,7 +18,6 @@ export const databaseProvider = {
       useCreateIndex: true,
       useNewUrlParser: true,
       useFindAndModify: false,
-      promiseLibrary: global.Promise,
     });
 
     // 连接错误

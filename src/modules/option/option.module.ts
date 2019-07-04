@@ -12,7 +12,9 @@ import { OptionService } from './option.service';
 import { Option } from './option.model';
 
 @Module({
-  imports: [TypegooseModule.forFeature(Option)],
+  imports: [
+    TypegooseModule.forFeature([Option]),
+  ],
   controllers: [OptionController],
   providers: [OptionService],
   exports: [OptionService],

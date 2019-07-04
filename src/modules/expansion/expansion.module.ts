@@ -17,8 +17,8 @@ import { Comment } from '@app/modules/comment/comment.model';
 @Module({
   imports: [
     HttpModule,
-    TypegooseModule.forFeature(Article),
-    TypegooseModule.forFeature(Comment),
+    TypegooseModule.forFeature([Article, Comment]),
+    // TypegooseModule.forFeature(Comment),
   ],
   controllers: [ExpansionController],
   providers: [GithubService, QiniuService, StatisticService],
