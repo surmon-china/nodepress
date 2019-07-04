@@ -7,9 +7,9 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import * as sitemap from 'sitemap';
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
+import sitemap, { Sitemap, EnumChangefreq } from 'sitemap';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
@@ -29,15 +29,15 @@ export class SitemapService {
   });
 
   private pagesMap = [
-    { url: '', changefreq: 'always', priority: 1 },
-    { url: '/vlog', changefreq: 'monthly', priority: 1 },
-    { url: '/about', changefreq: 'monthly', priority: 1 },
-    { url: '/project', changefreq: 'monthly', priority: 1 },
-    { url: '/sitemap', changefreq: 'always', priority: 1 },
-    { url: '/guestbook', changefreq: 'always', priority: 1 },
+    { url: '', changefreq: EnumChangefreq.ALWAYS, priority: 1 },
+    { url: '/vlog', changefreq: EnumChangefreq.MONTHLY, priority: 1 },
+    { url: '/about', changefreq: EnumChangefreq.MONTHLY, priority: 1 },
+    { url: '/project', changefreq: EnumChangefreq.MONTHLY, priority: 1 },
+    { url: '/sitemap', changefreq: EnumChangefreq.ALWAYS, priority: 1 },
+    { url: '/guestbook', changefreq: EnumChangefreq.ALWAYS, priority: 1 },
   ];
 
-  private sitemap: sitemap;
+  private sitemap: Sitemap;
   private sitemapCache: ICacheIoResult<any>;
 
   constructor(
@@ -55,7 +55,7 @@ export class SitemapService {
   }
 
   // 获取并将地图写入文件
-  private queryAndWriteToFile(): Promise<sitemap> {
+  private queryAndWriteToFile(): Promise<any> {
     return this.reBuild().then(_ => {
       return new Promise((resolve, reject) => {
         this.sitemap.toXML((error, xml) => {
@@ -72,13 +72,17 @@ export class SitemapService {
   }
 
   // 构建地图
-  private reBuild(): Promise<sitemap> {
+  private reBuild(): Promise<Sitemap> {
     this.sitemap = sitemap.createSitemap({
       cacheTime: 666666,
       urls: [...this.pagesMap],
       hostname: APP_CONFIG.APP.URL,
     });
-    return Promise.all([this.addTagsMap(), this.addCategoriesMap(), this.addArticlesMap()])
+    return Promise.all([
+      this.addTagsMap(),
+      this.addCategoriesMap(),
+      this.addArticlesMap(),
+    ])
       .then(_ => Promise.resolve(this.sitemap))
       .catch(error => {
         console.warn('生成网站地图前获取数据库发生错误', error);
@@ -87,29 +91,37 @@ export class SitemapService {
   }
 
   private addTagsMap(): Promise<Tag[]> {
-    return this.tagModel.find().sort({ _id: ESortType.Desc }).exec().then(tags => {
-      tags.forEach(tag => {
-        this.sitemap.add({
-          priority: 0.6,
-          changefreq: 'daily',
-          url: `/tag/${tag.slug}`,
+    return this.tagModel
+      .find()
+      .sort({ _id: ESortType.Desc })
+      .exec()
+      .then(tags => {
+        tags.forEach(tag => {
+          this.sitemap.add({
+            priority: 0.6,
+            changefreq: EnumChangefreq.DAILY,
+            url: `/tag/${tag.slug}`,
+          });
         });
+        return tags;
       });
-      return tags;
-    });
   }
 
   private addCategoriesMap(): Promise<Category[]> {
-    return this.categoryModel.find().sort({ _id: ESortType.Desc }).exec().then(categories => {
-      categories.forEach(category => {
-        this.sitemap.add({
-          priority: 0.6,
-          changefreq: 'daily',
-          url: `/category/${category.slug}`,
+    return this.categoryModel
+      .find()
+      .sort({ _id: ESortType.Desc })
+      .exec()
+      .then(categories => {
+        categories.forEach(category => {
+          this.sitemap.add({
+            priority: 0.6,
+            changefreq: EnumChangefreq.DAILY,
+            url: `/category/${category.slug}`,
+          });
         });
+        return categories;
       });
-      return categories;
-    });
   }
 
   private addArticlesMap(): Promise<Article[]> {
@@ -121,7 +133,7 @@ export class SitemapService {
         articles.forEach(article => {
           this.sitemap.add({
             priority: 0.8,
-            changefreq: 'daily',
+            changefreq: EnumChangefreq.DAILY,
             url: `/article/${article.id}`,
             lastmodISO: article.create_at.toISOString(),
           });

@@ -15,9 +15,9 @@ import { Tag } from '@app/modules/tag/tag.model';
 
 @Module({
   imports: [
-    TypegooseModule.forFeature(Tag),
-    TypegooseModule.forFeature(Article),
-    TypegooseModule.forFeature(Category),
+    TypegooseModule.forFeature([Tag, Article, Category]),
+    // TypegooseModule.forFeature(Article),
+    // TypegooseModule.forFeature(Category),
   ],
   controllers: [SitemapController],
   providers: [SitemapService],

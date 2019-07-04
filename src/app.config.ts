@@ -7,7 +7,6 @@
 
 import * as path from 'path';
 import { argv } from 'yargs';
-import { environment } from '@app/app.environment';
 import { packageJson } from '@app/transforms/module.transform';
 
 export const APP = {
@@ -16,7 +15,6 @@ export const APP = {
   ROOT_PATH: __dirname,
   NAME: 'Surmon.me',
   URL: 'https://surmon.me',
-  ENVIRONMENT: environment,
   FRONT_END_PATH: path.join(__dirname, '..', '..', 'surmon.me'),
 };
 
