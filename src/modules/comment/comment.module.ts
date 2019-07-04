@@ -16,9 +16,9 @@ import { Article } from '@app/modules/article/article.model';
 
 @Module({
   imports: [
-    TypegooseModule.forFeature(Option),
-    TypegooseModule.forFeature(Article),
-    TypegooseModule.forFeature(Comment),
+    TypegooseModule.forFeature([Option, Article, Comment]),
+    // TypegooseModule.forFeature([Article]),
+    // TypegooseModule.forFeature([Comment]),
     SitemapModule,
   ],
   controllers: [CommentController],

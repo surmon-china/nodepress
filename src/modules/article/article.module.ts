@@ -19,12 +19,12 @@ import { Article } from './article.model';
     TagModule,
     CategoryModule,
     SitemapModule,
-    TypegooseModule.forFeature({
+    TypegooseModule.forFeature([{
       typegooseClass: Article,
       schemaOptions: {
         toObject: { getters: true },
       },
-    }),
+    }]),
   ],
   controllers: [ArticleController],
   providers: [ArticleService],
