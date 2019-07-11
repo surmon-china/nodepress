@@ -58,17 +58,21 @@ export class BilibiliService {
 
   // 获取项目列表
   public getVideoList(pageSize?: string | number, page?: string | number): Promise<IBilibiliVideoList> {
+
     page = page || this.defaultPage;
     pageSize = pageSize || this.defaultPageSize;
-    return this.httpService.axiosRef.request<IBilibiliVideoList>({
-      headers: { 'User-Agent': APP_CONFIG.INFO.name },
-      url: `https://space.bilibili.com/ajax/member/getSubmitVideos?mid=${this.uid}&pagesize=${pageSize}&page=${page}&keyword=${this.keyword}&order=pubdate`,
-    }).then(videosResult => {
-      if (videosResult.data.status) {
-        return Promise.resolve(videosResult.data.data);
-      } else {
-        return Promise.reject(videosResult.status + videosResult.statusText);
-      }
-    });
+
+    return this.httpService.axiosRef
+      .request<IBilibiliVideoList>({
+        headers: { 'User-Agent': APP_CONFIG.INFO.name },
+        url: `https://space.bilibili.com/ajax/member/getSubmitVideos?mid=${this.uid}&pagesize=${pageSize}&page=${page}&keyword=${this.keyword}&order=pubdate`,
+      })
+      .then(videosResult => {
+        if (videosResult.data.status) {
+          return Promise.resolve(videosResult.data.data);
+        } else {
+          return Promise.reject(videosResult.status + videosResult.statusText);
+        }
+      });
   }
 }

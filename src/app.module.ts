@@ -7,8 +7,6 @@
 
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-
-// 控制器
 import { AppController } from '@app/app.controller';
 
 // 拦截器
@@ -19,8 +17,8 @@ import { CorsMiddleware } from '@app/middlewares/cors.middleware';
 import { OriginMiddleware } from '@app/middlewares/origin.middleware';
 
 // 公共模块
-import { CacheModule } from '@app/processors/cache/cache.module';
 import { DatabaseModule } from '@app/processors/database/database.module';
+import { CacheModule } from '@app/processors/cache/cache.module';
 import { HelperModule } from '@app/processors/helper/helper.module';
 
 // 业务模块（辅助）
@@ -32,32 +30,36 @@ import { WallpaperModule } from '@app/modules/wallpaper/wallpaper.module';
 
 // 业务模块（核心）
 import { AuthModule } from '@app/modules/auth/auth.module';
-import { AnnouncementModule } from '@app/modules/announcement/announcement.module';
-import { ArticleModule } from '@app/modules/article/article.module';
-import { CategoryModule } from '@app/modules/category/category.module';
-import { CommentModule } from '@app/modules/comment/comment.module';
-import { TagModule } from '@app/modules/tag/tag.module';
-import { LikeModule } from '@app/modules/like/like.module';
 import { OptionModule } from '@app/modules/option/option.module';
+import { AnnouncementModule } from '@app/modules/announcement/announcement.module';
+import { TagModule } from '@app/modules/tag/tag.module';
+import { CategoryModule } from '@app/modules/category/category.module';
+import { ArticleModule } from '@app/modules/article/article.module';
+import { CommentModule } from '@app/modules/comment/comment.module';
+import { LikeModule } from '@app/modules/like/like.module';
+
+import * as APP_CONFIG from '@app/app.config';
 
 @Module({
   imports: [
+    HelperModule,
     DatabaseModule,
     CacheModule,
-    HelperModule,
+
     AuthModule,
-    AnnouncementModule,
-    ArticleModule,
-    CategoryModule,
-    CommentModule,
-    TagModule,
-    LikeModule,
     OptionModule,
-    SitemapModule,
+    AnnouncementModule,
+    TagModule,
+    CategoryModule,
+    ArticleModule,
+    CommentModule,
+    LikeModule,
+
     ExpansionModule,
     MusicModule,
     BilibiliModule,
     WallpaperModule,
+    SitemapModule,
   ],
   controllers: [AppController],
   providers: [

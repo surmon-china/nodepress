@@ -6,7 +6,7 @@
  */
 
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from 'nestjs-typegoose';
+import { InjectModel } from '@app/transforms/model.transform';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { Option } from './option.model';
 
@@ -26,10 +26,13 @@ export class OptionService {
     Reflect.deleteProperty(option, '_id');
     Reflect.deleteProperty(option, 'meta');
 
-    return this.optionModel.findOne().exec().then(extantOption => {
-      return extantOption
-        ? Object.assign(extantOption, option).save()
-        : new this.optionModel(option).save();
-    });
+    return this.optionModel
+      .findOne()
+      .exec()
+      .then(extantOption => {
+        return extantOption
+          ? Object.assign(extantOption, option).save()
+          : new this.optionModel(option).save();
+      });
   }
 }

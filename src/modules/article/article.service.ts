@@ -10,15 +10,15 @@ import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { InstanceType } from 'typegoose';
 import { PaginateResult, Types } from 'mongoose';
-import { InjectModel } from 'nestjs-typegoose';
 import { Injectable } from '@nestjs/common';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { InjectModel } from '@app/transforms/model.transform';
+import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
+import { CacheService, TCacheIntervalResult } from '@app/processors/cache/cache.service';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { TagService } from '@app/modules/tag/tag.service';
-import { CacheService, TCacheIntervalResult } from '@app/processors/cache/cache.service';
+import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
-import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
-import { Article } from './article.model';
+import { Article, getDefaultMeta } from './article.model';
 
 @Injectable()
 export class ArticleService {
@@ -40,7 +40,10 @@ export class ArticleService {
       },
       key: CACHE_KEY.HOT_ARTICLES,
       promise: () => {
-        const options = { limit: 10, sort: this.getHotSortOption() };
+        const options = {
+          limit: 10,
+          sort: this.getHotSortOption(),
+        };
         return this.getList.bind(this)(null, options, false);
       },
     });
@@ -93,7 +96,11 @@ export class ArticleService {
   // 获取文章详情（使用数字 ID）
   public getDetailByNumberId(articleId: number): Promise<InstanceType<Article>> {
     return this.articleModel
-      .findOne({ id: articleId, state: EPublishState.Published, public: EPublicState.Public })
+      .findOne({
+        id: articleId,
+        state: EPublishState.Published,
+        public: EPublicState.Public,
+      })
       .select('-password')
       .populate('category')
       .populate('tag')
@@ -102,36 +109,48 @@ export class ArticleService {
 
   // 获取全面的文章详情（用户用）
   public getFullDetailForUser(articleId: number): Promise<Article> {
-    return this.getDetailByNumberId(articleId)
+    return this
+      .getDetailByNumberId(articleId)
       .then(article => {
+
         // 如果文章不存在，返回 404
         if (!article) {
           return Promise.reject('文章不存在');
         }
+
         // 增加浏览量
         article.meta.views++;
         article.save();
+
         // 更新今日浏览缓存
-        this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS).then(views => {
-          this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
-        });
+        this.cacheService
+          .get<number>(CACHE_KEY.TODAY_VIEWS)
+          .then(views => {
+            this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
+          });
+
         // 获取相关文章
         const resultArticle = article.toObject();
-        return this.getRelatedArticles(resultArticle).then(articles => {
-          return Object.assign(resultArticle, { related: lodash.sampleSize(articles, 12) });
-        });
+        return this
+          .getRelatedArticles(resultArticle)
+          .then(articles => Object.assign(
+            resultArticle,
+            { related: lodash.sampleSize(articles, 12) },
+          ));
       });
   }
 
   // 创建文章
   public create(newArticle: Article): Promise<Article> {
-    newArticle = Object.assign({ meta: { likes: 0, views: 0, comments: 0 }}, newArticle);
-    return new this.articleModel(newArticle).save().then(article => {
-      this.baiduSeoService.push(this.buildSeoUrl(article.id));
-      this.sitemapService.updateCache();
-      this.tagService.updateListCache();
-      return article;
-    });
+    Object.assign(newArticle, { meta: getDefaultMeta() });
+    return new this.articleModel(newArticle)
+      .save()
+      .then(article => {
+        this.baiduSeoService.push(this.buildSeoUrl(article.id));
+        this.sitemapService.updateCache();
+        this.tagService.updateListCache();
+        return article;
+      });
   }
 
   // 修改文章
@@ -140,6 +159,7 @@ export class ArticleService {
     Reflect.deleteProperty(newArticle, 'meta');
     Reflect.deleteProperty(newArticle, 'create_at');
     Reflect.deleteProperty(newArticle, 'update_at');
+
     return this.articleModel
       .findByIdAndUpdate(articleId, newArticle, { new: true })
       .exec()
@@ -153,12 +173,15 @@ export class ArticleService {
 
   // 删除单个文章
   public delete(articleId: Types.ObjectId): Promise<Article> {
-    return this.articleModel.findByIdAndRemove(articleId).exec().then(article => {
-      this.baiduSeoService.delete(this.buildSeoUrl(article.id));
-      this.sitemapService.updateCache();
-      this.tagService.updateListCache();
-      return article;
-    });
+    return this.articleModel
+      .findByIdAndRemove(articleId)
+      .exec()
+      .then(article => {
+        this.baiduSeoService.delete(this.buildSeoUrl(article.id));
+        this.sitemapService.updateCache();
+        this.tagService.updateListCache();
+        return article;
+      });
   }
 
   // 批量更新状态
@@ -175,13 +198,20 @@ export class ArticleService {
 
   // 批量删除文章
   public batchDelete(articleIds: Types.ObjectId[]): Promise<any> {
-    return this.articleModel.find({ _id: { $in: articleIds }}).exec().then(articles => {
-      this.baiduSeoService.delete(articles.map(article => this.buildSeoUrl(article.id)));
-      return this.articleModel.deleteMany({ _id: { $in: articleIds }}).then(result => {
-        this.sitemapService.updateCache();
-        this.tagService.updateListCache();
-        return result;
+    return this.articleModel
+      .find({ _id: { $in: articleIds }})
+      .exec()
+      .then(articles => {
+        this.baiduSeoService.delete(
+          articles.map(article => this.buildSeoUrl(article.id)),
+        );
+        return this.articleModel
+          .deleteMany({ _id: { $in: articleIds }})
+          .then(result => {
+            this.sitemapService.updateCache();
+            this.tagService.updateListCache();
+            return result;
+          });
       });
-    });
   }
 }

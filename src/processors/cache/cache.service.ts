@@ -6,11 +6,14 @@
  */
 
 import * as schedule from 'node-schedule';
+import { RedisClient } from 'redis';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 
 // Cache 客户端管理器
 export interface ICacheManager {
-  store: any;
+  store: {
+    getClient(): RedisClient;
+  };
   get(key: TCacheKey): any;
   set(key: TCacheKey, value: string, options?: { ttl: number }): any;
 }
@@ -79,24 +82,30 @@ export class CacheService {
 
   constructor(@Inject(CACHE_MANAGER) cache: ICacheManager) {
     this.cache = cache;
+    this.redisClient.on('ready', () => {
+      console.info('Reids 已准备好！');
+    });
+  }
+
+  private get redisClient(): RedisClient {
+    return this.cache.store.getClient();
   }
 
   // 客户端是否可用
   private get checkCacheServiceAvailable(): boolean {
-    const client = this.cache.store.getClient();
-    return client.connected && client.ready;
+    return this.redisClient.connected;
   }
 
   public get<T>(key: TCacheKey): TCacheResult<T> {
     if (!this.checkCacheServiceAvailable) {
-      return Promise.reject('缓存客户端没准备好');
+      return Promise.reject('缓存客户端没准备好！');
     }
     return this.cache.get(key);
   }
 
   public set<T>(key: TCacheKey, value: any, options?: { ttl: number }): TCacheResult<T> {
     if (!this.checkCacheServiceAvailable) {
-      return Promise.reject('缓存客户端没准备好');
+      return Promise.reject('缓存客户端没准备好！');
     }
     return this.cache.set(key, value, options);
   }
@@ -115,19 +124,25 @@ export class CacheService {
 
     // 包装任务
     const promiseTask = (resolve, reject) => {
-      return promise().then(data => {
-        this.set(key, data);
-        resolve(data);
-      }).catch(reject);
+      return promise()
+        .then(data => {
+          this.set(key, data);
+          resolve(data);
+        })
+        .catch(reject);
     };
 
     // Promise 拦截模式（返回死数据）
     const handlePromiseMode = () => {
       return new Promise((resolve, reject) => {
-        this.get(key).then(value => {
-          const isValidValue = value !== null && value !== undefined;
-          isValidValue ? resolve(value) : promiseTask(resolve, reject);
-        }).catch(reject);
+        this
+          .get(key)
+          .then(value => {
+            value !== null && value !== undefined
+              ? resolve(value)
+              : promiseTask(resolve, reject);
+          })
+          .catch(reject);
       });
     };
 

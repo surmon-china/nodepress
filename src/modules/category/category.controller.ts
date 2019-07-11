@@ -7,10 +7,10 @@
 
 import { PaginateResult } from 'mongoose';
 import { Controller, UseGuards, Get, Put, Post, Delete, Body, Param } from '@nestjs/common';
+import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams } from '@app/decorators/query-params.decorator';
-import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { Category, DelCategories } from './category.model';
 import { CategoryService } from './category.service';
 

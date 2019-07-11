@@ -7,8 +7,8 @@
 
 import { UseGuards, Response, Controller, Get, Patch } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
-import { SitemapService } from './sitemap.service';
 import { HttpProcessor } from '@app/decorators/http.decorator';
+import { SitemapService } from './sitemap.service';
 
 @Controller('sitemap')
 export class SitemapController {

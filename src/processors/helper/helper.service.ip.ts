@@ -21,16 +21,18 @@ export class IpService {
 
   // 通过阿里云服务查询
   private queryIpByAliyun(ip: IP): Promise<IIPDetail> {
-    return this.httpService.axiosRef.request({
-      headers: { Authorization: `APPCODE ${APP_CONFIG.ALIYUN.ip}` },
-      url: `https://api01.aliyun.venuscn.com/ip?ip=${ip}`,
-    }).then(response => {
-      if (response.data && response.data.ret === 200) {
-        return Promise.resolve(response.data.data);
-      } else {
-        return Promise.reject(response.data);
-      }
-    });
+    return this.httpService.axiosRef
+      .request({
+        headers: { Authorization: `APPCODE ${APP_CONFIG.ALIYUN.ip}` },
+        url: `https://api01.aliyun.venuscn.com/ip?ip=${ip}`,
+      })
+      .then(response => {
+        if (response.data && response.data.ret === 200) {
+          return Promise.resolve(response.data.data);
+        } else {
+          return Promise.reject(response.data);
+        }
+      });
   }
 
   // 通过 GEO 库查询

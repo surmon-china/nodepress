@@ -6,8 +6,8 @@
  */
 
 import { Controller, Get } from '@nestjs/common';
-import { WallpaperService } from './wallpaper.service';
 import { HttpProcessor } from '@app/decorators/http.decorator';
+import { WallpaperService } from './wallpaper.service';
 
 @Controller('wallpaper')
 export class WallpaperController {
