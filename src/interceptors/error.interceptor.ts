@@ -20,7 +20,9 @@ import * as TEXT from '@app/constants/text.constant';
  */
 @Injectable()
 export class ErrorInterceptor implements NestInterceptor {
+
   constructor(private readonly reflector: Reflector) {}
+
   intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
     const call$ = next.handle();
     const target = context.getHandler();

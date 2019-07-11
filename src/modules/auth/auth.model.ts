@@ -7,6 +7,7 @@
 
 import { prop, Typegoose } from 'typegoose';
 import { IsString, IsDefined, IsNotEmpty } from 'class-validator';
+import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 
 export class Auth extends Typegoose {
 
@@ -25,11 +26,11 @@ export class Auth extends Typegoose {
   @prop({ default: '' })
   gravatar: string;
 
+  @IsString()
   @prop()
   password?: string;
 
   new_password?: string;
-  rel_new_password?: string;
 }
 
 export class AuthLogin extends Typegoose {
@@ -39,3 +40,6 @@ export class AuthLogin extends Typegoose {
   @IsString({ message: '字符串？' })
   password: string;
 }
+
+export const AuthModel = getModelBySchema(Auth);
+export const AuthProvider = getProviderByModel(AuthModel);

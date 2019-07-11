@@ -14,7 +14,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square)](https://github.com/surmon-china/nodepress)
 
-**v3.0.0 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
+**v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构。
 之前的 nodejs 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/nodejs)。**
 
 #### RESTful API server application for my blog.
@@ -30,7 +30,7 @@
 
 更新记录：[在这里](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
 
-## v3.0.0 架构说明
+## v3.x 架构说明
 
 ## 接口概述
 
@@ -165,12 +165,16 @@
     + [邮件服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
     + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
 
+## Issues
+
+Nest can't resolve dependencies of the xxxModel (?). Please make sure that the argument at index [0] is available in the TypegooseModule context.
+
 ## 开发命令
 
 ### Installation
 
 ```bash
-$ npm install
+$ npm ci
 ```
 
 ### Running the app

@@ -8,10 +8,11 @@
 import { Module, Global, HttpModule } from '@nestjs/common';
 import { AkismetService } from './helper.service.akismet';
 import { BaiduSeoService } from './helper.service.baidu-seo';
+import { QiniuService } from './helper.service.qiniu';
 import { EmailService } from './helper.service.email';
 import { IpService } from './helper.service.ip';
 
-const services = [AkismetService, BaiduSeoService, EmailService, IpService];
+const services = [AkismetService, BaiduSeoService, QiniuService, EmailService, IpService];
 
 @Global()
 @Module({

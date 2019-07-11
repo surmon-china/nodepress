@@ -6,23 +6,22 @@
  */
 
 import { Module } from '@nestjs/common';
-import { TypegooseModule } from 'nestjs-typegoose';
 import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
+import { OptionProvider } from '@app/modules/option/option.model';
+import { ArticleProvider } from '@app/modules/article/article.model';
 import { CommentController } from './comment.controller';
+import { CommentProvider } from './comment.model';
 import { CommentService } from './comment.service';
-import { Comment } from './comment.model';
-import { Option } from '@app/modules/option/option.model';
-import { Article } from '@app/modules/article/article.model';
 
 @Module({
-  imports: [
-    TypegooseModule.forFeature([Option, Article, Comment]),
-    // TypegooseModule.forFeature([Article]),
-    // TypegooseModule.forFeature([Comment]),
-    SitemapModule,
-  ],
+  imports: [SitemapModule],
   controllers: [CommentController],
-  providers: [CommentService],
+  providers: [
+    CommentProvider,
+    ArticleProvider,
+    OptionProvider,
+    CommentService,
+  ],
   exports: [CommentService],
 })
 export class CommentModule {}

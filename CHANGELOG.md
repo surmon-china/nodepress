@@ -1,7 +1,7 @@
 
 ## CHANGELOG
 
-###  TODO
+### TODO
 
 - 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
 - 删除一条存在子级评论的评论时，子级评论的 PID 需要置空
@@ -16,7 +16,10 @@
 ### v3.2.0
 
 - 更新所有依赖
+- 去除对 nestjs-typegoose 模块的依赖
+- 增加模型构造器、Provider 构造器、模型注入器
 - 更新 sitemap 模块及进行优化
+- 更新缓存及数据库模块
 
 ### v3.1.0
 
@@ -51,8 +54,8 @@
 
 - 优化编码风格
 - 完善项目信息
-- 完善 JsDoc 信息
-- Music 控制器增加 Limit 参数
+- 完善 Js Doc 信息
+- Music 控制器增加 limit 参数
 - Github 控制器优化数据
 - 增加 bing-wallpaper API 服务
 - 使用更友好的 consola 日志模块
@@ -89,7 +92,7 @@
 
 ### v1.0.0
 
-- 驱动搜索引擎 ping 接口 文章发布后自动ping给搜索引擎  xml
+- 驱动搜索引擎 ping 接口 文章发布后自动ping给搜索引擎 xml
 - 增加评论功能+黑名单，评论可自动校验spam，及黑名单（ip、邮箱、关键字的校验）
 - 使用 helmet + 手动优化，优化程序安全性
 - 优化 mongoose 实例

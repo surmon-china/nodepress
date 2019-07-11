@@ -5,21 +5,21 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as marked from 'marked';
 import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
+import { isDevMode } from '@app/app.environment';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from 'nestjs-typegoose';
+import { InjectModel } from '@app/transforms/model.transform';
+import { parseMarkdownToHtml } from '@app/transforms/markdown.transform';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { ECommentPostType, ECommentState } from '@app/interfaces/state.interface';
 import { IpService } from '@app/processors/helper/helper.service.ip';
 import { EmailService } from '@app/processors/helper/helper.service.email';
 import { AkismetService, EAkismetActionType } from '@app/processors/helper/helper.service.akismet';
-import { ECommentPostType, ECommentState } from '@app/interfaces/state.interface';
 import { Option, Blacklist } from '@app/modules/option/option.model';
 import { Article } from '@app/modules/article/article.model';
 import { Comment, CreateCommentBase, PatchComments } from './comment.model';
-import { isDevMode } from '@app/app.environment';
 
 @Injectable()
 export class CommentService {
@@ -31,22 +31,11 @@ export class CommentService {
     @InjectModel(Option) private readonly optionModel: TMongooseModel<Option>,
     @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
     @InjectModel(Comment) private readonly commentModel: TMongooseModel<Comment>,
-  ) {
-    marked.setOptions({
-      renderer: new marked.Renderer(),
-      gfm: true,
-      tables: true,
-      breaks: false,
-      pedantic: false,
-      sanitize: true,
-      smartLists: true,
-      smartypants: false,
-    });
-  }
+  ) {}
 
   // 邮件通知网站主及目标对象
   private sendMailToAdminAndTargetUser(comment: Comment, permalink: string) {
-    const commentHtml = marked(comment.content);
+    const commentHtml = parseMarkdownToHtml(comment.content);
     const commentType = comment.post_id === ECommentPostType.Guestbook ? '留言' : '评论';
     const getContextPrefix = isReply => `来自 ${comment.author.name} 的${commentType}${isReply ? '回复' : ''}：`;
     const sendMailText = contentPrefix => `${contentPrefix}${comment.content}`;
@@ -54,21 +43,25 @@ export class CommentService {
       <p>${contentPrefix}${commentHtml}</p><br>
       <a href="${permalink}" target="_blank">[ 点击查看 ]</a>
     `;
+
     this.emailService.sendMail({
       to: APP_CONFIG.EMAIL.admin,
       subject: `博客有新的${commentType}`,
       text: sendMailText(getContextPrefix(false)),
       html: sendMailHtml(getContextPrefix(false)),
     });
+
     if (comment.pid) {
-      this.commentModel.findOne({ id: comment.pid }).then(parentComment => {
-        this.emailService.sendMail({
-          to: parentComment.author.email,
-          subject: `你在 ${APP_CONFIG.APP.NAME} 有新的${commentType}回复`,
-          text: sendMailText(getContextPrefix(true)),
-          html: sendMailHtml(getContextPrefix(true)),
+      this.commentModel
+        .findOne({ id: comment.pid })
+        .then(parentComment => {
+          this.emailService.sendMail({
+            to: parentComment.author.email,
+            subject: `你在 ${APP_CONFIG.APP.NAME} 有新的${commentType}回复`,
+            text: sendMailText(getContextPrefix(true)),
+            html: sendMailHtml(getContextPrefix(true)),
+          });
         });
-      });
     }
   }
 
@@ -90,13 +83,17 @@ export class CommentService {
 
   // 更新当前所受影响的文章的评论聚合数据
   private updateCommentCountWithArticle(postIds: number[]) {
+
     // 过滤无效 post_id 及留言板 ID/0
     postIds = postIds || [];
     postIds = postIds.map(Number).filter(Boolean);
+
     if (!postIds.length) {
       return false;
     }
-    this.commentModel.aggregate([
+
+    this.commentModel
+    .aggregate([
       { $match: { state: ECommentState.Published, post_id: { $in: postIds }}},
       { $group: { _id: '$post_id', num_tutorial: { $sum: 1 }}},
     ])
@@ -118,52 +115,59 @@ export class CommentService {
 
   // 根据操作状态处理评论转移 处理评论状态转移，如果是将评论状态标记为垃圾邮件，则同时加入黑名单，以及 submitSpam
   private updateCommentsStateWithBlacklist(comments: Comment[], state: ECommentState, referrer: string) {
-    this.optionModel.findOne().then(option => {
+    this.optionModel
+      .findOne()
+      .then(option => {
 
-      // 预期行为
-      const isSpam = state === ECommentState.Spam;
-      const action = isSpam ? EAkismetActionType.SubmitSpam : EAkismetActionType.SubmitHam;
+        // 预期行为
+        const isSpam = state === ECommentState.Spam;
+        const action = isSpam ? EAkismetActionType.SubmitSpam : EAkismetActionType.SubmitHam;
 
-      // 系统黑名单处理，目前不再处理关键词
-      const todoFields: ({ [P in keyof Blacklist]?: (comment: Comment) => string }) = {
-        mails: (comment) => comment.author.email,
-        ips: (comment) => comment.ip,
-      };
-      // 如果是将评论状态标记为垃圾邮件，则加入黑名单，以及 submitSpam
-      // 如果是将评论状态标记为误标邮件，则移出黑名单，以及 submitHam
-      Object.keys(todoFields).forEach(field => {
-        const data = option.blacklist[field];
-        const getCommentField = todoFields[field];
-        option.blacklist[field] = isSpam
-          ? lodash.uniq([...data, ...comments.map(getCommentField)])
-          : data.filter(value => !comments.some(comment => getCommentField(comment) === value));
-      });
+        // 系统黑名单处理，目前不再处理关键词
+        const todoFields: ({ [P in keyof Blacklist]?: (comment: Comment) => string }) = {
+          mails: (comment) => comment.author.email,
+          ips: (comment) => comment.ip,
+        };
 
-      // akismet 处理
-      comments.forEach(comment => {
-        this.submitCommentAkismet(action, comment, null, referrer);
-      });
+        // 如果是将评论状态标记为垃圾邮件，则加入黑名单，以及 submitSpam
+        // 如果是将评论状态标记为误标邮件，则移出黑名单，以及 submitHam
+        Object.keys(todoFields).forEach(field => {
+          const data = option.blacklist[field];
+          const getCommentField = todoFields[field];
+          option.blacklist[field] = isSpam
+            ? lodash.uniq([...data, ...comments.map(getCommentField)])
+            : data.filter(value => !comments.some(comment => getCommentField(comment) === value));
+        });
 
-      // 更新黑名单
-      option.save()
-        .then(_ => console.info('评论状态转移后 -> 黑名单更新成功'))
-        .catch(error => console.warn('评论状态转移后 -> 黑名单更新失败', error));
+        // akismet 处理
+        comments.forEach(comment => {
+          this.submitCommentAkismet(action, comment, null, referrer);
+        });
 
-    }).catch(error => console.warn(`处理评论状态转移之前 -> 获取系统黑名单失败`, error));
+        // 更新黑名单
+        option.save()
+          .then(_ => console.info('评论状态转移后 -> 黑名单更新成功'))
+          .catch(error => console.warn('评论状态转移后 -> 黑名单更新失败', error));
+
+      })
+      .catch(error => console.warn(`处理评论状态转移之前 -> 获取系统黑名单失败`, error));
   }
 
   // 检查评论是否匹配系统的黑名单规则（使用设置的黑名单 IP/邮箱/关键词 过滤）
   private validateCommentByBlacklist(comment: Comment): Promise<string | void> {
-    return this.optionModel.findOne().exec().then(({ blacklist }) => {
-      const { keywords, mails, ips } = blacklist;
-      const blockIp = ips.includes(comment.ip);
-      const blockEmail = mails.includes(comment.author.email);
-      const blockKeyword = keywords.length && new RegExp(`${keywords.join('|')}`, 'ig').test(comment.content);
-      const isBlocked = blockIp || blockEmail || blockKeyword;
-      return isBlocked
-        ? Promise.reject('内容 || IP || 邮箱 -> 不合法')
-        : Promise.resolve();
-    });
+    return this.optionModel
+      .findOne()
+      .exec()
+      .then(({ blacklist }) => {
+        const { keywords, mails, ips } = blacklist;
+        const blockIp = ips.includes(comment.ip);
+        const blockEmail = mails.includes(comment.author.email);
+        const blockKeyword = keywords.length && new RegExp(`${keywords.join('|')}`, 'ig').test(comment.content);
+        const isBlocked = blockIp || blockEmail || blockKeyword;
+        return isBlocked
+          ? Promise.reject('内容 || IP || 邮箱 -> 不合法')
+          : Promise.resolve();
+      });
   }
 
   // 检查评论是否匹配 akismet 的黑名单规则
@@ -196,9 +200,10 @@ export class CommentService {
     });
 
     // 永久链接
-    const linkPrefix = APP_CONFIG.APP.URL + '/';
-    const linkPath = newComment.post_id === ECommentPostType.Guestbook ? 'guestbook' : `article/${newComment.post_id}`;
-    const permalink = linkPrefix + linkPath;
+    const linkPath = newComment.post_id === ECommentPostType.Guestbook
+      ? 'guestbook'
+      : `article/${newComment.post_id}`;
+    const permalink = APP_CONFIG.APP.URL + '/' + linkPath;
 
     return Promise.all([
       // 检验评论垃圾性质
@@ -226,7 +231,8 @@ export class CommentService {
       .exec()
       .then(result => {
         this.updateCommentCountWithArticle(postIds);
-        this.commentModel.find({ _id: { $in: commentIds }})
+        this.commentModel
+          .find({ _id: { $in: commentIds }})
           .then(todoComments => {
             this.updateCommentsStateWithBlacklist(todoComments, state, referer);
           })
@@ -261,17 +267,23 @@ export class CommentService {
 
   // 删除单个评论
   public delete(commentId: Types.ObjectId): Promise<Comment> {
-    return this.commentModel.findByIdAndRemove(commentId).exec().then(comment => {
-      this.updateCommentCountWithArticle([comment.post_id]);
-      return comment;
-    });
+    return this.commentModel
+      .findByIdAndRemove(commentId)
+      .exec()
+      .then(comment => {
+        this.updateCommentCountWithArticle([comment.post_id]);
+        return comment;
+      });
   }
 
   // 批量删除评论
   public batchDelete(commentIds: Types.ObjectId[], postIds: number[]): Promise<any> {
-    return this.commentModel.deleteMany({ _id: { $in: commentIds }}).exec().then(result => {
-      this.updateCommentCountWithArticle(postIds);
-      return result;
-    });
+    return this.commentModel
+      .deleteMany({ _id: { $in: commentIds }})
+      .exec()
+      .then(result => {
+        this.updateCommentCountWithArticle(postIds);
+        return result;
+      });
   }
 }

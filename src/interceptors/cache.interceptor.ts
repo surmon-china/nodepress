@@ -7,37 +7,46 @@
 
 import { tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { CacheInterceptor, ExecutionContext, CallHandler, Injectable, RequestMethod } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { HttpAdapterHost, NestInterceptor, ExecutionContext, CallHandler, Inject,  Injectable, RequestMethod } from '@nestjs/common';
+import { CacheService } from '@app/processors/cache/cache.service';
+import * as SYSYTEM from '@app/constants/system.constant';
 import * as META from '@app/constants/meta.constant';
 import * as APP_CONFIG from '@app/app.config';
 
 /**
  * @class HttpCacheInterceptor
- * @classdesc 自定义这个拦截器是是要弥补框架不支持 ttl 参数的缺陷
+ * @classdesc 弥补框架不支持单独定义 ttl 参数以及单请求应用的缺陷
  */
 @Injectable()
-export class HttpCacheInterceptor extends CacheInterceptor {
+export class HttpCacheInterceptor implements NestInterceptor {
+
+  constructor(
+    private readonly cacheManager: CacheService,
+    @Inject(SYSYTEM.REFLECTOR) private readonly reflector: Reflector,
+    @Inject(SYSYTEM.HTTP_ADAPTER_HOST) private readonly httpAdapterHost: HttpAdapterHost,
+  ) {}
 
   // 自定义装饰器，修饰 ttl 参数
   async intercept(context: ExecutionContext, next: CallHandler<any>): Promise<Observable<any>> {
+    // 如果想彻底禁用缓存服务，则直接返回 -> return call$;
     const call$ = next.handle();
-    // 如果想彻底禁用缓存服务，还是直接返回数据吧
-    // return call$;
     const key = this.trackBy(context);
-    const target = context.getHandler();
-    const metaTTL = this.reflector.get(META.HTTP_CACHE_TTL_METADATA, target);
-    const ttl = metaTTL || APP_CONFIG.REDIS.defaultCacheTTL;
-    // console.log('HttpCacheInterceptor intercept', key, ttl);
+
     if (!key) {
       return call$;
     }
+
+    const target = context.getHandler();
+    const metaTTL = this.reflector.get(META.HTTP_CACHE_TTL_METADATA, target);
+    const ttl = metaTTL || APP_CONFIG.REDIS.defaultCacheTTL;
+
     try {
       const value = await this.cacheManager.get(key);
       return value ? of(value) : call$.pipe(
         tap(response => this.cacheManager.set(key, response, { ttl })),
       );
-    }
-    catch (error) {
+    } catch (error) {
       return call$;
     }
   }

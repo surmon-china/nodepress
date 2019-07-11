@@ -7,11 +7,10 @@
 
 import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
-import { Base64 } from 'js-base64';
-import { createHash } from 'crypto';
-import { InjectModel } from 'nestjs-typegoose';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectModel } from '@app/transforms/model.transform';
+import { decodeBase64, decodeMd5 } from '@app/transforms/codec.transform';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { ITokenResult } from './auth.interface';
 import { Auth } from './auth.model';
@@ -23,14 +22,17 @@ export class AuthService {
     @InjectModel(Auth) private readonly authModel: TMongooseModel<Auth>,
   ) {}
 
-  // 密码编码
-  private decodeBase64(password) {
-    return password ? Base64.decode(password) : password;
+  // 签发 Token
+  private createToken(): ITokenResult {
+    return {
+      access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
+      expires_in: APP_CONFIG.AUTH.expiresIn as number,
+    };
   }
 
-  // md5 编码
-  private decodeMd5(password) {
-    return createHash('md5').update(password).digest('hex');
+  // 获取已有密码
+  private getExtantPassword(auth: Auth): string {
+    return auth && auth.password || decodeMd5(APP_CONFIG.AUTH.defaultPassword as string);
   }
 
   // 验证 Auth 数据
@@ -48,70 +50,64 @@ export class AuthService {
   public putAdminInfo(auth: Auth): Promise<Auth> {
 
     // 密码解码
-    const password = this.decodeBase64(auth.password);
-    const new_password = this.decodeBase64(auth.new_password);
-    const rel_new_password = this.decodeBase64(auth.rel_new_password);
+    const password = decodeBase64(auth.password);
+    const new_password = decodeBase64(auth.new_password);
+
     Reflect.deleteProperty(auth, 'password');
     Reflect.deleteProperty(auth, 'new_password');
-    Reflect.deleteProperty(auth, 'rel_new_password');
 
-    return new Promise((resolve, reject) => {
-      // 验证密码
-      if (password || new_password || rel_new_password) {
-        const isLackConfirmPassword = !new_password || !rel_new_password;
-        const isDissimilarityConfirmPassword = new_password !== rel_new_password;
-        const isIncludeOldPassword = [new_password, rel_new_password].includes(password);
-        // 判定密码逻辑
-        if (isLackConfirmPassword || isDissimilarityConfirmPassword) {
-          return reject('密码不一致或无效');
-        }
-        if (isIncludeOldPassword) {
-          return reject('新旧密码不可一致');
-        }
+    // 验证密码
+    if (password || new_password) {
+      if (!password || !new_password) {
+        return Promise.reject('密码不完整或无效');
       }
-      return resolve();
-    }).then(_ => {
-
-      // 修改前查询验证
-      return this.authModel.findOne().exec();
-    }).then(extantAuth => {
-
-      // 核对已存在密码
-      const isExistedAuth = extantAuth && !!extantAuth._id;
-      const extantAuthPwd = extantAuth && extantAuth.password;
-      const extantPassword = extantAuthPwd || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
-
-      // 修改密码 -> 判断旧密码是否一致
-      if (password) {
-        if (extantPassword !== this.decodeMd5(password)) {
-          return Promise.reject('原密码不正确');
-        } else {
-          auth.password = this.decodeMd5(rel_new_password);
-        }
+      if (password === new_password) {
+        return Promise.reject('新旧密码不可一致');
       }
+    }
 
-      // 新建数据或保存已有
-      return isExistedAuth
-        ? Object.assign(extantAuth, auth).save()
-        : new this.authModel(auth).save();
-    });
+    return this.authModel
+      .findOne()
+      .exec()
+      .then(extantAuth => {
+
+        // 修改密码 -> 核对已存在密码
+        if (password) {
+          const oldPassword = decodeMd5(password);
+          const extantPassword = this.getExtantPassword(extantAuth);
+          if (oldPassword !== extantPassword) {
+            return Promise.reject('原密码不正确');
+          } else {
+            auth.password = decodeMd5(new_password);
+          }
+        }
+
+        // 更新数据
+        const action = extantAuth && !!extantAuth._id
+          ? Object.assign(extantAuth, auth).save()
+          : new this.authModel(auth).save();
+
+        return action.then(data => {
+          data = data.toObject();
+          Reflect.deleteProperty(data, 'password');
+          return data;
+        });
+      });
   }
 
-  // 登陆/创建 Token
-  public createToken(password: string): Promise<ITokenResult> {
-    return this.authModel.findOne(null, 'password').exec().then(auth => {
-      const extantAuthPwd = auth && auth.password;
-      const extantPassword = extantAuthPwd || this.decodeMd5(APP_CONFIG.AUTH.defaultPassword);
-      const submittedPassword = this.decodeMd5(this.decodeBase64(password));
-      if (submittedPassword === extantPassword) {
-        const access_token = this.jwtService.sign({ data: APP_CONFIG.AUTH.data });
-        return Promise.resolve({
-          access_token,
-          expires_in: APP_CONFIG.AUTH.expiresIn as number,
-        });
-      } else {
-        return Promise.reject('密码不匹配');
-      }
-    });
+  // 登陆
+  public adminLogin(password: string): Promise<ITokenResult> {
+    return this.authModel
+      .findOne(null, 'password')
+      .exec()
+      .then(auth => {
+        const extantPassword = this.getExtantPassword(auth);
+        const loginPassword = decodeMd5(decodeBase64(password));
+        if (loginPassword === extantPassword) {
+          return Promise.resolve(this.createToken());
+        } else {
+          return Promise.reject('密码不匹配');
+        }
+      });
   }
 }

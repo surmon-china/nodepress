@@ -6,21 +6,20 @@
  */
 
 import { Module } from '@nestjs/common';
-import { TypegooseModule } from 'nestjs-typegoose';
+import { CategoryProvider } from '@app/modules/category/category.model';
+import { ArticleProvider } from '@app/modules/article/article.model';
+import { TagProvider } from '@app/modules/tag/tag.model';
 import { SitemapController } from './sitemap.controller';
 import { SitemapService } from './sitemap.service';
-import { Category } from '@app/modules/category/category.model';
-import { Article } from '@app/modules/article/article.model';
-import { Tag } from '@app/modules/tag/tag.model';
 
 @Module({
-  imports: [
-    TypegooseModule.forFeature([Tag, Article, Category]),
-    // TypegooseModule.forFeature(Article),
-    // TypegooseModule.forFeature(Category),
-  ],
   controllers: [SitemapController],
-  providers: [SitemapService],
+  providers: [
+    TagProvider,
+    CategoryProvider,
+    ArticleProvider,
+    SitemapService,
+  ],
   exports: [SitemapService],
 })
 export class SitemapModule {}

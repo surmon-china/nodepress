@@ -11,10 +11,10 @@ import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import sitemap, { Sitemap, EnumChangefreq } from 'sitemap';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from 'nestjs-typegoose';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
-import { ESortType, EPublishState, EPublicState } from '@app/interfaces/state.interface';
+import { InjectModel } from '@app/transforms/model.transform';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
+import { ESortType, EPublishState, EPublicState } from '@app/interfaces/state.interface';
+import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { Category } from '@app/modules/category/category.model';
 import { Article } from '@app/modules/article/article.model';
 import { Tag } from '@app/modules/tag/tag.model';
@@ -135,7 +135,7 @@ export class SitemapService {
             priority: 0.8,
             changefreq: EnumChangefreq.DAILY,
             url: `/article/${article.id}`,
-            lastmodISO: article.create_at.toISOString(),
+            lastmodISO: article.update_at.toISOString(),
           });
         });
         return articles;

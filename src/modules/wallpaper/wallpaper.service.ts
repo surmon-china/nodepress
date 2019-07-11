@@ -7,8 +7,8 @@
 
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as WonderfulBingWallpaper from 'wonderful-bing-wallpaper';
-import { CacheService, TCacheIntervalResult, ICacheIntervalTimingOption } from '@app/processors/cache/cache.service';
 import { Injectable } from '@nestjs/common';
+import { CacheService, TCacheIntervalResult, ICacheIntervalTimingOption } from '@app/processors/cache/cache.service';
 
 @Injectable()
 export class WallpaperService {
@@ -44,16 +44,20 @@ export class WallpaperService {
 
   // 获取今日壁纸
   public getWallpapers(): Promise<any> {
-    return this.wbw.getWallpapers({ size: 8 }).then(wallpaperJSON => {
-      try {
-        const wallpapers = this.wbw.humanizeWallpapers(wallpaperJSON);
-        return Promise.resolve(wallpapers);
-      } catch (error) {
-        return Promise.reject('wallpaper 控制器解析 JSON 失败' + error);
-      }
-    }).catch(error => {
-      console.warn('获取今日壁纸出现了问题', error);
-      return Promise.reject(error);
-    });
+    return this.wbw
+      .getWallpapers({ size: 8 })
+      .then(wallpaperJSON => {
+        try {
+          return Promise.resolve(
+            this.wbw.humanizeWallpapers(wallpaperJSON),
+          );
+        } catch (error) {
+          return Promise.reject('wallpaper 控制器解析 JSON 失败' + error);
+        }
+      })
+      .catch(error => {
+        console.warn('获取今日壁纸出现了问题', error);
+        return Promise.reject(error);
+      });
   }
 }

@@ -9,6 +9,7 @@ import { Types } from 'mongoose';
 import { prop, plugin, pre, Typegoose } from 'typegoose';
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 import { EPublishState } from '@app/interfaces/state.interface';
 
 @pre<Announcement>('findOneAndUpdate', function(next) {
@@ -51,3 +52,5 @@ export class DelAnnouncements extends Typegoose {
   @ArrayUnique()
   announcement_ids: Types.ObjectId[];
 }
+export const AnnouncementModel = getModelBySchema(Announcement);
+export const AnnouncementProvider = getProviderByModel(AnnouncementModel);

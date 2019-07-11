@@ -7,6 +7,7 @@
 
 import { prop, arrayProp, pre, Typegoose } from 'typegoose';
 import { IsString, IsInt, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator';
+import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 
 // 元信息
 class Meta {
@@ -92,3 +93,6 @@ export class Option extends Typegoose {
   @prop({ default: Date.now })
   update_at?: Date;
 }
+
+export const OptionModel = getModelBySchema(Option);
+export const OptionProvider = getProviderByModel(OptionModel);

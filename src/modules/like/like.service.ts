@@ -23,10 +23,12 @@ export class LikeService {
 
   // 喜欢主站
   public likeSite(): Promise<boolean> {
-    return this.optionService.getOption().then((option: InstanceType<Option>) => {
-      option.meta.likes++;
-      return option.save().then(_ => true);
-    });
+    return this.optionService
+      .getOption()
+      .then((option: InstanceType<Option>) => {
+        option.meta.likes++;
+        return option.save().then(_ => true);
+      });
   }
 
   // 喜欢评论
@@ -41,9 +43,11 @@ export class LikeService {
 
   // 喜欢文章
   public likeArticle(articleId: number): Promise<boolean> {
-    return this.articleService.getDetailByNumberId(articleId).then(article => {
-      article.meta.likes++;
-      return article.save().then(_ => true);
-    });
+    return this.articleService
+      .getDetailByNumberId(articleId)
+      .then(article => {
+        article.meta.likes++;
+        return article.save().then(_ => true);
+      });
   }
 }
