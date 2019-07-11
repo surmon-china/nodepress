@@ -34,14 +34,15 @@ export class CacheConfigService implements CacheOptionsFactory {
     this.sendAlarmMail(String(options.error));
 
     if (options.error && options.error.code === 'ECONNREFUSED') {
-      return new Error('Redis 服务器拒绝连接');
+      return new Error('Redis 服务器拒绝连接！');
     }
     if (options.total_retry_time > 1000 * 60) {
-      return new Error('重试时间已用完');
+      return new Error('Redis 重试时间已用完！');
     }
     if (options.attempt > 6) {
-      return new Error('尝试次数已达极限');
+      return new Error('Redis 尝试次数已达极限！');
     }
+
     return Math.min(options.attempt * 100, 3000);
   }
 
