@@ -150,7 +150,6 @@
   * 扩展模块
     + GitHub：GitHub 项目列表业务
     + 统计：简单的统计业务
-    + 七牛：生成七牛上传 Token
 
 - 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
   * [数据库](https://github.com/surmon-china/nodepress/blob/master/src/processors/database)
@@ -164,6 +163,7 @@
     + [评论过滤服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.akismet.ts)：使用 akismet 过滤 spam；暴露三个方法：校验 spam、提交 spam、提交 ham
     + [邮件服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
     + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
+    + 七牛：生成七牛上传 Token
 
 
 ## 开发命令
