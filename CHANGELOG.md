@@ -12,6 +12,7 @@
 - ~~文章删改时需要更新 tag 的聚合数据，Category 也是同样的操作~~
 - ~~集成 [Analytics Reporting API](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/web-js?hl=zh-cn) 供管理员使用~~
 - ~~sitemap，tags CUD 时进行缓存更新，使用 redis.promise~~
+- 模型构造器日志注释、入口 log 定时器
 
 ### v3.2.0
 
