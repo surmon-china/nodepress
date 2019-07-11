@@ -1,6 +1,6 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank">
-    <img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" />
+    <img src="https://nestjs.com/img/logo_text.svg" height="100" alt="Nest Logo" />
   </a>
   <span>&nbsp;&nbsp;&nbsp;</span>
   <img src="https://raw.githubusercontent.com/surmon-china/angular-admin/master/src/assets/img/logo.png" width="100" alt="Nest Logo" />
@@ -19,12 +19,12 @@
 
 #### RESTful API server application for my blog.
 
-- Maintained by [Surmon](mailto://surmon@foxmail.com)
-- Online site: https://surmon.me
+- maintained by [Surmon](mailto://surmon@foxmail.com)
+- online site: https://surmon.me
 - SRE service: [sre.surmon.me](https://github.com/surmon-china/sre.surmon.me)
-- Web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By Nuxt.js(Vue)
-- Web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by Angular + Bootstrap4
-- Native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by React native
+- web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By [Nuxt.js](https://github.com/nuxt/nuxt.js)
+- web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by [Angular](https://github.com/angular/angular) + [Bootstrap](https://github.com/twbs/bootstrap)
+- native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by [react-native](https://github.com/facebook/react-native)
 
 所有依赖：[在这里](https://github.com/surmon-china/nodepress/blob/master/package.json)
 
@@ -165,9 +165,6 @@
     + [邮件服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
     + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
 
-## Issues
-
-Nest can't resolve dependencies of the xxxModel (?). Please make sure that the argument at index [0] is available in the TypegooseModule context.
 
 ## 开发命令
 
