@@ -5,11 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { prop, Typegoose } from 'typegoose';
+import { IsInt, IsDefined } from 'class-validator';
 import { Controller, Patch, Body } from '@nestjs/common';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { LikeService } from './like.service';
-import { prop, Typegoose } from 'typegoose';
-import { IsInt, IsDefined } from 'class-validator';
 
 export class LikeComment extends Typegoose {
   @IsDefined()

@@ -9,6 +9,7 @@ import { Types } from 'mongoose';
 import { prop, arrayProp, plugin, pre, Typegoose } from 'typegoose';
 import { IsString, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 import { Extend } from '@app/models/extend.model';
 
 @pre<Tag>('findOneAndUpdate', function(next) {
@@ -39,16 +40,16 @@ export class Tag extends Typegoose {
   @prop()
   description: string;
 
+  @IsArray()
+  @ArrayUnique()
+  @arrayProp({ items: Extend })
+  extends: Extend[];
+
   @prop({ default: Date.now })
   create_at?: Date;
 
   @prop({ default: Date.now })
   update_at?: Date;
-
-  @IsArray()
-  @ArrayUnique()
-  @arrayProp({ items: Extend })
-  extends: Extend[];
 
   _id?: Types.ObjectId;
   count?: number;
@@ -61,3 +62,6 @@ export class DelTags extends Typegoose {
   @ArrayUnique()
   tag_ids: Types.ObjectId[];
 }
+
+export const TagModel = getModelBySchema(Tag);
+export const TagProvider = getProviderByModel(TagModel);

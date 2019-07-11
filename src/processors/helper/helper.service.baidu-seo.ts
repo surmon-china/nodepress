@@ -36,19 +36,22 @@ export class BaiduSeoService {
   // POST 服务
   private baiduRequest(option: IBaiduSeoRequestOption): Promise<any> {
     const { urlKey, urls, action } = option;
-    return this.httpService.axiosRef.request({
-      method: 'post',
-      data: urls.join('\n'),
-      headers: { 'Content-Type': 'text/plain' },
-      url: `http://data.zz.baidu.com/${urlKey}?site=${APP_CONFIG.BAIDU.site}&token=${APP_CONFIG.BAIDU.token}`,
-    }).then(response => {
-      console.info(`${action} 操作：`, urls, response);
-      return response;
-    }).catch(error => {
-      const message = (error.response && error.response.data) || error;
-      console.warn(`${action}操作失败：`, message);
-      // return Promise.reject(message);
-    });
+    return this.httpService.axiosRef
+      .request({
+        method: 'post',
+        data: urls.join('\n'),
+        headers: { 'Content-Type': 'text/plain' },
+        url: `http://data.zz.baidu.com/${urlKey}?site=${APP_CONFIG.BAIDU.site}&token=${APP_CONFIG.BAIDU.token}`,
+      })
+      .then(response => {
+        console.info(`${action} 操作：`, urls, response);
+        return response;
+      })
+      .catch(error => {
+        const message = (error.response && error.response.data) || error;
+        console.warn(`${action}操作失败：`, message);
+        // return Promise.reject(message);
+      });
   }
 
   private humanizedUrl(url: THumanizedUrl): TUrl[] {
@@ -57,16 +60,28 @@ export class BaiduSeoService {
 
   // 提交记录
   push(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Push, action: '百度[推送]' });
+    this.baiduRequest({
+      urls: this.humanizedUrl(url),
+      urlKey: EUrlKey.Push,
+      action: '百度[推送]',
+    });
   }
 
   // 更新记录
   update(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Update, action: '百度[更新]' });
+    this.baiduRequest({
+      urls: this.humanizedUrl(url),
+      urlKey: EUrlKey.Update,
+      action: '百度[更新]',
+    });
   }
 
   // 删除记录
   delete(url: THumanizedUrl) {
-    this.baiduRequest({ urls: this.humanizedUrl(url), urlKey: EUrlKey.Delete, action: '百度[删除]' });
+    this.baiduRequest({
+      urls: this.humanizedUrl(url),
+      urlKey: EUrlKey.Delete,
+      action: '百度[删除]',
+    });
   }
 }

@@ -69,7 +69,7 @@ interface IValidateError {
  * @example @QueryParams([EQPFields.State, EQPFields.Date, { [EQPFields.Page]: 1 }])
  * @example @QueryParams(['custom_query_params', { test_params: true, [EQueryParamsField.Sort]: false }])
  */
-export const QueryParams = createParamDecorator((customConfig: TTransformConfig[], request): IQueryParamsResult => {
+export const QueryParams = createParamDecorator((customConfig: TTransformConfig[], request: any): IQueryParamsResult => {
 
   // 是否已验证权限
   const isAuthenticated = request.isAuthenticated();
@@ -310,9 +310,9 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
     isAuthenticated,
   };
 
-  // console.log('--------------------------------- queryParams\n', request.queryParams);
-  // console.log('--------------------------------- origin\n', request.query);
-  // console.log('--------------------------------- visitors\n', result.visitors, '\n---------------------------------');
+  // console.log('queryParams\n', request.queryParams);
+  // console.log('origin\n', request.query);
+  // console.log('visitors\n', result.visitors);
 
   return result;
 });

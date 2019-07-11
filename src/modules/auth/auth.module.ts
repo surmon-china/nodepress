@@ -10,15 +10,13 @@ import * as jwt from 'jsonwebtoken';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { TypegooseModule } from 'nestjs-typegoose';
 import { AuthController } from './auth.controller';
+import { AuthProvider } from './auth.model';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
-import { Auth } from './auth.model';
 
 @Module({
   imports: [
-    TypegooseModule.forFeature([Auth]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secretOrPrivateKey: APP_CONFIG.AUTH.jwtTokenSecret as jwt.Secret,
@@ -28,7 +26,7 @@ import { Auth } from './auth.model';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthProvider, AuthService, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

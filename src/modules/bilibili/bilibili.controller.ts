@@ -6,9 +6,9 @@
  */
 
 import { UseGuards, Controller, Get, Patch } from '@nestjs/common';
+import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { QueryParams } from '@app/decorators/query-params.decorator';
 import { HttpProcessor } from '@app/decorators/http.decorator';
-import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { BilibiliService, IBilibiliVideoList } from './bilibili.service';
 
 @Controller('bilibili')

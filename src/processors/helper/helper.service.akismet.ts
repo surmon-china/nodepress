@@ -37,6 +37,7 @@ export class AkismetService {
   private clientIsValid: boolean;
 
   constructor() {
+    this.clientIsValid = false;
     this.client = akismet.client({
       key: APP_CONFIG.AKISMET.key,
       blog: APP_CONFIG.AKISMET.blog,
@@ -46,49 +47,56 @@ export class AkismetService {
 
   // 初始化验证
   private initVerify(): void {
-    this.verifyClient().then(_ => {
-      this.clientIsValid = true;
-      setTimeout(() => console.info('Akismet key 有效，已准备好工作'), 0);
-    }).catch(error => {
-      this.clientIsValid = false;
-      setTimeout(() => console.warn('Akismet 初始化连接失败，无法工作：', error), 0);
-    });
+    this.verifyClient()
+      .then(_ => {
+        this.clientIsValid = true;
+        setTimeout(() => console.info('Akismet key 有效，已准备好工作'));
+      })
+      .catch(error => {
+        this.clientIsValid = false;
+        setTimeout(() => console.warn('Akismet 初始化连接失败，无法工作：', error));
+      });
   }
 
   // 验证有效性
   private verifyClient(): Promise<boolean> {
-    return this.client.verifyKey().then(valid => {
-      return valid
+    return this.client.verifyKey()
+      .then(valid => valid
         ? Promise.resolve(true)
-        : Promise.reject(`Akismet key 无效`);
-    }).catch(error => Promise.reject(error.message || error));
+        : Promise.reject(`Akismet key 无效`),
+      )
+      .catch(error => Promise.reject(error.message || error));
   }
 
   // 构造检查器
   private buildInterceptor(handleType: EAkismetActionType) {
     return (content: IContent): Promise<any> => {
       return new Promise((resolve, reject) => {
-        this.verifyClient().then(_ => {
-          console.info(`Akismet ${handleType} 操作中...`, new Date());
-          this.client[handleType](content).then(result => {
-            // 如果是检查 spam 且检查结果为 true
-            if (handleType === EAkismetActionType.CheckSpam && result) {
-              console.warn(`Akismet ${handleType} 操作失败!`, new Date());
-              reject(new Error('spam!'));
-            } else {
-              console.info(`Akismet ${handleType} 操作成功!`);
-              resolve(result);
-            }
-          }).catch(error => {
-            const message = `Akismet ${handleType} 操作失败!`;
-            console.warn(message, error);
-            reject(message);
+        this.verifyClient()
+          .then(_ => {
+            console.info(`Akismet ${handleType} 操作中...`, new Date());
+            this.client[handleType](content)
+              .then(result => {
+                // 如果是检查 spam 且检查结果为 true
+                if (handleType === EAkismetActionType.CheckSpam && result) {
+                  console.warn(`Akismet ${handleType} 操作失败!`, new Date());
+                  reject(new Error('spam!'));
+                } else {
+                  console.info(`Akismet ${handleType} 操作成功!`);
+                  resolve(result);
+                }
+              })
+              .catch(error => {
+                const message = `Akismet ${handleType} 操作失败!`;
+                console.warn(message, error);
+                reject(message);
+              });
+          })
+          .catch(_ => {
+            const message = 'Akismet 未初始化成功，放弃操作';
+            console.warn(message);
+            resolve(message);
           });
-        }).catch(_ => {
-          const message = 'Akismet 未初始化成功，放弃操作';
-          console.warn(message);
-          resolve(message);
-        });
       });
     };
   }

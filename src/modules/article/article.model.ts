@@ -9,10 +9,19 @@ import { Types } from 'mongoose';
 import { prop, arrayProp, plugin, pre, Typegoose, Ref } from 'typegoose';
 import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 import { EPublishState, EPublicState, EOriginState } from '@app/interfaces/state.interface';
 import { Category } from '@app/modules/category/category.model';
 import { Extend } from '@app/models/extend.model';
 import { Tag } from '@app/modules/tag/tag.model';
+
+export function getDefaultMeta(): Meta {
+  return {
+    likes: 0,
+    views: 0,
+    comments: 0,
+  };
+}
 
 // 元信息
 export class Meta {
@@ -145,3 +154,10 @@ export class PatchArticles extends DelArticles {
   @prop({ default: EPublishState.Published })
   state: EPublishState;
 }
+
+export const ArticleModel = getModelBySchema(Article, {
+  schemaOptions: {
+    toObject: { getters: true },
+  },
+});
+export const ArticleProvider = getProviderByModel(ArticleModel);

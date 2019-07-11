@@ -6,9 +6,9 @@
  */
 
 import { UseGuards, Controller, Get, Patch, Param } from '@nestjs/common';
-import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
-import { HttpProcessor } from '@app/decorators/http.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
+import { HttpProcessor } from '@app/decorators/http.decorator';
+import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
 import { MusicService } from './music.service';
 
 @Controller('music')

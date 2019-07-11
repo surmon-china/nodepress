@@ -5,11 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { CROSS_DOMAIN } from '@app/app.config';
-import { isProdMode } from '@app/app.environment';
-import { THttpErrorResponse, EHttpStatus } from '@app/interfaces/http.interface';
-import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common';
+import { THttpErrorResponse, EHttpStatus } from '@app/interfaces/http.interface';
+import { isProdMode } from '@app/app.environment';
+import { CROSS_DOMAIN } from '@app/app.config';
 import * as TEXT from '@app/constants/text.constant';
 
 /**

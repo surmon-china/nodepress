@@ -7,10 +7,10 @@
 
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams } from '@app/decorators/query-params.decorator';
-import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { Tag, DelTags } from './tag.model';
 import { TagService } from './tag.service';
 
@@ -23,6 +23,7 @@ export class TagController {
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取标签')
   getTags(@QueryParams(['cache']) { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Tag>> {
+
     if (origin.keyword) {
       const keywordRegExp = new RegExp(origin.keyword);
       querys.$or = [
@@ -31,6 +32,7 @@ export class TagController {
         { description: keywordRegExp },
       ];
     }
+
     return !isAuthenticated && querys.cache
       ? this.tagService.getListCache()
       : this.tagService.getList(querys, options, isAuthenticated);
