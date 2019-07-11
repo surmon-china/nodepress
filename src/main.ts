@@ -9,7 +9,7 @@ import * as APP_CONFIG from '@app/app.config';
 import * as helmet from 'helmet';
 import * as bodyParser from 'body-parser';
 import * as compression from 'compression';
-import ExpressRateLimiter from 'express-rate-limit';
+import * as rateLimit from 'express-rate-limit';
 import { AppModule } from '@app/app.module';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe } from '@app/pipes/validation.pipe';
@@ -25,11 +25,11 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 // 替换 console 为更统一友好的
 const { log, warn, info } = console;
 const color = c => isDevMode ? c : '';
-global.console = Object.assign(console, {
-  log: (...args) => log('[log]', ...args),
-  warn: (...args) => warn(color('\x1b[33m%s\x1b[0m'), '[warn]', '[nodepress]', ...args),
-  info: (...args) => info(color('\x1b[34m%s\x1b[0m'), '[info]', '[nodepress]', ...args),
-  error: (...args) => info(color('\x1b[31m%s\x1b[0m'), '[error]', '[nodepress]', ...args),
+Object.assign(global.console, {
+  log: (...args) => setTimeout(() => log('[log]', ...args), 888),
+  warn: (...args) => setTimeout(() => warn(color('\x1b[33m%s\x1b[0m'), '[warn]', '[nodepress]', ...args), 888),
+  info: (...args) => setTimeout(() => info(color('\x1b[34m%s\x1b[0m'), '[info]', '[nodepress]', ...args), 888),
+  error: (...args) => setTimeout(() => info(color('\x1b[31m%s\x1b[0m'), '[error]', '[nodepress]', ...args), 888),
 });
 
 async function bootstrap() {
@@ -41,7 +41,7 @@ async function bootstrap() {
   app.use(compression());
   app.use(bodyParser.json({ limit: '1mb' }));
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(ExpressRateLimiter({ max: 1000, windowMs: 15 * 60 * 1000 }));
+  app.use(rateLimit({ max: 1000, windowMs: 15 * 60 * 1000 }));
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(

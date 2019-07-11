@@ -7,13 +7,13 @@
 
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams, EQueryParamsField } from '@app/decorators/query-params.decorator';
-import { JwtAuthGuard } from '@app/guards/auth.guard';
+import { ESortType } from '@app/interfaces/state.interface';
 import { Comment, CreateCommentBase, DelComments, PatchComments } from './comment.model';
 import { CommentService } from './comment.service';
-import { ESortType } from '@app/interfaces/state.interface';
 
 @Controller('comment')
 export class CommentController {
@@ -24,12 +24,18 @@ export class CommentController {
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取评论列表')
   getComments(
-    @QueryParams([EQueryParamsField.State, EQueryParamsField.CommentState, 'post_id']) { querys, options, origin },
+    @QueryParams([
+      EQueryParamsField.State,
+      EQueryParamsField.CommentState,
+      'post_id',
+    ]) { querys, options, origin },
   ): Promise<PaginateResult<Comment>> {
+
     // 热门排序
     if (Number(origin.sort) === ESortType.Hot) {
       options.sort = { likes: ESortType.Desc };
     }
+
     // 关键词搜索
     if (origin.keyword) {
       const keywordRegExp = new RegExp(origin.keyword);
@@ -39,6 +45,7 @@ export class CommentController {
         { 'author.email': keywordRegExp },
       ];
     }
+
     return this.commentService.getList(querys, options);
   }
 

@@ -7,10 +7,10 @@
 
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
-import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
-import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
-import { HttpProcessor } from '@app/decorators/http.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
+import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
+import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
+import { HttpProcessor } from '@app/decorators/http.decorator';
 import { Announcement, DelAnnouncements } from './announcement.model';
 import { AnnouncementService } from './announcement.service';
 

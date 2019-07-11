@@ -9,6 +9,7 @@ import { Types } from 'mongoose';
 import { prop, arrayProp, plugin, pre, Typegoose } from 'typegoose';
 import { IsString, IsIn, IsInt, IsBoolean, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 import { ECommentParentType, ECommentState } from '@app/interfaces/state.interface';
 import { Extend } from '@app/models/extend.model';
 
@@ -125,3 +126,6 @@ export class PatchComments extends DelComments {
   @prop({ default: ECommentState.Published })
   state: ECommentState;
 }
+
+export const CommentModel = getModelBySchema(Comment);
+export const CommentProvider = getProviderByModel(CommentModel);

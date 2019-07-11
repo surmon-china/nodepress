@@ -8,14 +8,14 @@
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';
-import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
+import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard';
+import { ESortType } from '@app/interfaces/state.interface';
 import { TagService } from '@app/modules/tag/tag.service';
 import { CategoryService } from '@app/modules/category/category.service';
 import { Article, DelArticles, PatchArticles } from './article.model';
 import { ArticleService } from './article.service';
-import { ESortType } from '@app/interfaces/state.interface';
 
 @Controller('article')
 export class ArticleController {
@@ -30,7 +30,8 @@ export class ArticleController {
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取文章')
   getArticles(@QueryParams([
-    QueryField.Date, QueryField.State, QueryField.Public, QueryField.Origin, 'cache', 'tag', 'category', 'tag_slug', 'category_slug',
+    QueryField.Date, QueryField.State, QueryField.Public, QueryField.Origin,
+    'cache', 'tag', 'category', 'tag_slug', 'category_slug',
   ]) { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Article>> {
 
     // 如果是请求热门文章，则判断如何处理（注：前后台都会请求热门文章）
@@ -73,17 +74,19 @@ export class ArticleController {
     const matchedSlug = matchedField && querys[matchedField];
     return !matchedSlug
       ? this.articleService.getList(querys, options)
-      : matchedParam.service(matchedSlug).then(param => {
-        const paramField = matchedParam.name;
-        const paramId = param && param._id;
-        if (paramId) {
-          querys = Object.assign(querys, { [paramField]: paramId });
-          Reflect.deleteProperty(querys, matchedField);
-          return this.articleService.getList(querys, options);
-        } else {
-          return Promise.reject(`条件 ${matchedField} -> ${matchedSlug} 不存在`);
-        }
-      });
+      : matchedParam
+        .service(matchedSlug)
+        .then(param => {
+          const paramField = matchedParam.name;
+          const paramId = param && param._id;
+          if (paramId) {
+            querys = Object.assign(querys, { [paramField]: paramId });
+            Reflect.deleteProperty(querys, matchedField);
+            return this.articleService.getList(querys, options);
+          } else {
+            return Promise.reject(`条件 ${matchedField} -> ${matchedSlug} 不存在`);
+          }
+        });
   }
 
   @Post()
@@ -111,8 +114,8 @@ export class ArticleController {
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.handle({ message: '获取文章详情', error: HttpStatus.NOT_FOUND })
   getArticle(@QueryParams() { params, isAuthenticated }): Promise<Article> {
-    const isMongoId = isNaN(Number(params.id));
-    return isAuthenticated && isMongoId
+    const isObjectId = isNaN(Number(params.id));
+    return isAuthenticated && isObjectId
       ? this.articleService.getDetailByObjectId(params.id)
       : this.articleService.getFullDetailForUser(params.id);
   }

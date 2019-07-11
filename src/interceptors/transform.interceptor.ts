@@ -7,8 +7,8 @@
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Reflector } from '@nestjs/core';
 import { PaginateResult } from 'mongoose';
+import { Reflector } from '@nestjs/core';
 import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common';
 import { THttpSuccessResponse, IHttpResultPaginate, EHttpStatus } from '@app/interfaces/http.interface';
 import { TMessage } from '@app/interfaces/http.interface';
@@ -35,7 +35,9 @@ export function transformDataToPaginate<T>(data: PaginateResult<T>, request?: an
  */
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, THttpSuccessResponse<T>> {
+
   constructor(private readonly reflector: Reflector) {}
+
   intercept(context: ExecutionContext, next: CallHandler<T>): Observable<THttpSuccessResponse<T>> {
     const call$ = next.handle();
     const target = context.getHandler();

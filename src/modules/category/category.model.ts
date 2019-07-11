@@ -9,6 +9,7 @@ import { Types } from 'mongoose';
 import { prop, arrayProp, plugin, pre, Typegoose } from 'typegoose';
 import { IsString, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
+import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 import { Extend } from '@app/models/extend.model';
 
 @pre<Category>('findOneAndUpdate', function(next) {
@@ -63,3 +64,6 @@ export class DelCategories extends Typegoose {
   @ArrayUnique()
   categorie_ids: Types.ObjectId[];
 }
+
+export const CategoryModel = getModelBySchema(Category);
+export const CategoryProvider = getProviderByModel(CategoryModel);
