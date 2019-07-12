@@ -25,9 +25,9 @@ v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 node
 - web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by [Angular](https://github.com/angular/angular) + [Bootstrap](https://github.com/twbs/bootstrap)
 - native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by [react-native](https://github.com/facebook/react-native)
 
-#### 相关资料：
-  - 更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
-  - 接口文档：[API_DOC.md](https://github.com/surmon-china/nodepress/blob/master/API_DOC.md)
+**更新记录**：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
+
+**接口文档**：[API_DOC.md](https://github.com/surmon-china/nodepress/blob/master/API_DOC.md)
 
 ## v3.x 架构说明
 
