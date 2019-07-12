@@ -14,7 +14,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square)](https://github.com/surmon-china/nodepress)
 
-**RESTful API service for my blog.**
+**RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog.**
 
 **适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务；
 v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 nodejs 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/nodejs)。**
