@@ -30,6 +30,7 @@
     "test:watch": "NODE_ENV=test jest --watch",
     "test:cov": "NODE_ENV=test jest --coverage",
     "test:e2e": "NODE_ENV=test jest --config ./test/jest-e2e.json",
+    "compodoc": "npx compodoc -p tsconfig.json -s",
     "updategeodb": "node ./node_modules/geoip-lite/scripts/updatedb.js"
   },
   "dependencies": {
@@ -80,6 +81,7 @@
     "yargs": "^13.2.4"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.10",
     "@nestjs/testing": "^6.5.2",
     "@types/express": "^4.17.0",
     "@types/jest": "^24.0.15",
