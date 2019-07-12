@@ -4,14 +4,16 @@
 语法释义：
 
 ```ts
-Get '/path/:id' @xxxAuth ({ param? }): <DataType>
+@JwtAuth
+
+Get '/path/:id' ({ param? }): <ResultDataType>
 ```
 
 - `Get` method, 请求类型
 - `'/path/:id'` route param, 路由及路由参数
-- `@xxxAuth` auth type, 鉴权类型（默认为普通用户的鉴权/无鉴权，显式声明即为特殊鉴权）
 - `({ param? })` query params | body, 请求参数或提交数据体，两者互斥
-- `<DataType>` result data type, 请求返回的数据类型
+- `<ResultDataType>` result data type, 请求返回的数据类型
+- `@JwtAuth` required auth, 是否需要鉴权（默认为普通用户/无需鉴权，显式声明即为需要鉴权通过才可访问）
 
 ---
 
@@ -20,46 +22,60 @@ Get '/path/:id' @xxxAuth ({ param? }): <DataType>
   Get (): <APP_INFO>
   ```
 
-#### Auth
+#### Auth (auth)
   ```ts
   Get '/admin' (): <Auth>
   ```
   ```ts
-  Put '/admin' @AdminAuth (Auth): <Auth>
+  @JwtAuth
+  
+  Put '/admin' (Auth): <Auth>
   ```
   ```ts
   Post '/login' (AuthLogin): <ITokenResult>
   ```
   ```ts
-  Post '/check' @AdminAuth (): <void>
+  @JwtAuth
+  
+  Post '/check' (): <void>
   ```
 
-#### Option
+#### Option (option)
   ```ts
   Get (): <Option>
   ```
   ```ts
-  Put @AdminAuth (Option): <Option>
+  @JwtAuth
+  
+  Put (Option): <Option>
   ```
 
-#### Announcement
+#### Announcement (announcement)
   ```ts
   Get ({ <common>?, state?, keyword? }): <Announcement[]>
   ```
   ```ts
-  Post @AdminAuth (Announcement): <Announcement>
+  @JwtAuth
+  
+  Post (Announcement): <Announcement>
   ```
   ```ts
-  Delete @AdminAuth (DelAnnouncements): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete (DelAnnouncements): <MongooseOpResult>
   ```
   ```ts
-  Put '/:id' @AdminAuth (Announcement): <Announcement>
+  @JwtAuth
+  
+  Put '/:id' (Announcement): <Announcement>
   ```
   ```ts
-  Delete '/:id' @AdminAuth (): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete '/:id' (): <MongooseOpResult>
   ```
 
-#### Article
+#### Article (article)
   ```ts
   Get ({ <common>?, date?, public?, origin?, cache?, tag?, category?, keyword?, tag_slug?, category_slug? }): <Article[]>
   ```
@@ -67,22 +83,32 @@ Get '/path/:id' @xxxAuth ({ param? }): <DataType>
   Get '/:id' (): <Article>
   ```
   ```ts
-  Put '/:id' @AdminAuth (Article): <Article>
+  @JwtAuth
+  
+  Put '/:id' (Article): <Article>
   ```
   ```ts
-  Delete '/:id' @AdminAuth (): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete '/:id' (): <MongooseOpResult>
   ```
   ```ts
-  Post @AdminAuth (Article): <Article>
+  @JwtAuth
+  
+  Post (Article): <Article>
   ```
   ```ts
-  Patch @AdminAuth (PatchArticles): <MongooseOpResult>
+  @JwtAuth
+  
+  Patch (PatchArticles): <MongooseOpResult>
   ```
   ```ts
-  Delete @AdminAuth (DelArticles): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete (DelArticles): <MongooseOpResult>
   ```
 
-#### Category
+#### Category (category)
   ```ts
   Get ({ <common>? }): <Category[]>
   ```
@@ -90,67 +116,95 @@ Get '/path/:id' @xxxAuth ({ param? }): <DataType>
   Get '/:id' (): <Category[]>
   ```
   ```ts
-  Put '/:id' @AdminAuth (Category): <Category>
+  @JwtAuth
+  
+  Put '/:id' (Category): <Category>
   ```
   ```ts
-  Delete '/:id' @AdminAuth (): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete '/:id' (): <MongooseOpResult>
   ```
   ```ts
-  Post @AdminAuth (Category): <Category>
+  @JwtAuth
+  
+  Post (Category): <Category>
   ```
   ```ts
-  Delete @AdminAuth (DelCategories): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete (DelCategories): <MongooseOpResult>
   ```
 
-#### Tag
+#### Tag (tag)
   ```ts
   Get ({ <common>?, cache?, keyword? }): <Tag[]>
   ```
   ```ts
-  Post @AdminAuth (Tag): <Tag>
+  @JwtAuth
+  
+  Post (Tag): <Tag>
   ```
   ```ts
-  Put '/:id' @AdminAuth (Tag): <Tag>
+  @JwtAuth
+  
+  Put '/:id' (Tag): <Tag>
   ```
   ```ts
-  Delete '/:id' @AdminAuth (): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete '/:id' (): <MongooseOpResult>
   ```
   ```ts
-  Delete @AdminAuth (DelTags): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete (DelTags): <MongooseOpResult>
   ```
 
-#### Comment
+#### Comment (comment)
   ```ts
-  Get ({ <common>?, state<CommentState>?, post_id?, keyword? }): <Comment[]>
+  Get ({ <common>?, state?, post_id?, keyword? }): <Comment[]>
   ```
   ```ts
   Post (CreateCommentBase): <Comment>
   ```
   ```ts
-  Patch @AdminAuth (PatchComments): <MongooseOpResult>
+  @JwtAuth
+  
+  Patch (PatchComments): <MongooseOpResult>
   ```
   ```ts
-  Delete @AdminAuth (DelComments): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete (DelComments): <MongooseOpResult>
   ```
   ```ts
-  Get '/:id' @AdminAuth (): <Comment>
+  @JwtAuth
+  
+  Get '/:id' (): <Comment>
   ```
   ```ts
-  Put '/:id' @AdminAuth (Comment): <Comment>
+  @JwtAuth
+  
+  Put '/:id' (Comment): <Comment>
   ```
   ```ts
-  Delete '/:id' @AdminAuth (): <MongooseOpResult>
+  @JwtAuth
+  
+  Delete '/:id' (): <MongooseOpResult>
   ```
 
-#### Sitemap
+#### Sitemap (sitemap)
   ```ts
   Get (): <SitemapXML>
   ```
   ```ts
-  Patch @AdminAuth (): <void>
+  @JwtAuth
+  
+  Patch (): <void>
   ```
 
-#### Like
+#### Like (like)
   ```ts
   Patch '/site' (): <boolean>
   ```
@@ -161,7 +215,7 @@ Get '/path/:id' @xxxAuth ({ param? }): <DataType>
   Patch '/article' (LikeArticle): <boolean>
   ```
 
-#### Expansion
+#### Expansion (expansion)
   ```ts
   Get '/constant' (): <object>
   ```
@@ -172,26 +226,32 @@ Get '/path/:id' @xxxAuth ({ param? }): <DataType>
   Get '/github' (): <IGithubRepositorie[]>
   ```
   ```ts
-  Patch '/github' @AdminAuth (): <IGithubRepositorie[]>
+  @JwtAuth
+  
+  Patch '/github' (): <IGithubRepositorie[]>
   ```
   ```ts
-  Get '/uptoken' @AdminAuth (): <IUpToken>
+  @JwtAuth
+  
+  Get '/uptoken' (): <IUpToken>
   ```
 
-#### Wallpaper
+#### Wallpaper (wallpaper)
   ```ts
   Get '/list' (): <unknow>
   ```
 
-#### Bilibili
+#### Bilibili (bilibili)
   ```ts
   Get '/list' ({ page?, limit? }): <IBilibiliVideoList>
   ```
   ```ts
-  Patch '/list' @AdminAuth (): <IBilibiliVideoList>
+  @JwtAuth
+  
+  Patch '/list' (): <IBilibiliVideoList>
   ```
 
-#### Music
+#### Music (music)
   ```ts
   Get '/list/:id' ({ limit? }): <unknow>
   ```
@@ -208,5 +268,7 @@ Get '/path/:id' @xxxAuth ({ param? }): <DataType>
   Get '/picture/:id' (): <unknow>
   ```
   ```ts
-  Patch '/list' @AdminAuth (): <void>
+  @JwtAuth
+  
+  Patch '/list' (): <void>
   ```
