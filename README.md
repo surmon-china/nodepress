@@ -29,6 +29,8 @@ v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 node
 
 更新记录：[在这里](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
 
+接口文档：[在这里](https://github.com/surmon-china/nodepress/blob/master/API_DOC.md)
+
 ## v3.x 架构说明
 
 ## 接口概述
@@ -117,7 +119,7 @@ v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 node
   * [数据流异常拦截器](https://github.com/surmon-china/nodepress/blob/master/src/interceptors/error.interceptor.ts)：当控制器所需的 Promise service 发生错误时，错误将在此被捕获
   * [日志拦截器](https://github.com/surmon-china/nodepress/blob/master/src/interceptors/logging.interceptor.ts)：代替默认的全局日志
 
-- 装饰器 [decorators](https://github.com/surmon-china/nodepress/tree/nest/src/decorators)
+- 装饰器扩展 [decorators](https://github.com/surmon-china/nodepress/tree/nest/src/decorators)
   * [缓存装饰器](https://github.com/surmon-china/nodepress/blob/master/src/decorators/cache.decorator.ts)：用于配置 `cache key / cache ttl`
   * [控制器响应装饰器](https://github.com/surmon-china/nodepress/blob/master/src/decorators/http.decorator.ts)：用于输出规范化的信息，如 `message` 和 翻页参数数据
   * [请求参数提取器](https://github.com/surmon-china/nodepress/blob/master/src/decorators/query-params.decorator.ts)：用户自动校验和格式化请求参数，包括 `query/params/辅助信息`
@@ -131,7 +133,7 @@ v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 node
   * [Origin 中间件](https://github.com/surmon-china/nodepress/blob/master/src/middlewares/origin.middleware.ts)，用于拦截各路不明请求
 
 - 管道 [pipes](https://github.com/surmon-china/nodepress/tree/nest/src/pipes)
-  * 用于验证所有基于 class-validate 的验证类
+  * validation.pipe 用于验证所有基于 class-validate 的验证类
 
 - 业务模块 [modules](https://github.com/surmon-china/nodepress/tree/nest/src/modules)
   * 公告
