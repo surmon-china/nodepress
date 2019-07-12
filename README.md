@@ -26,7 +26,6 @@ v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 node
 - native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by [react-native](https://github.com/facebook/react-native)
 
 #### 相关资料：
-  - 所有依赖：[dependencies](https://github.com/surmon-china/nodepress/blob/master/package.json)
   - 更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
   - 接口文档：[API_DOC.md](https://github.com/surmon-china/nodepress/blob/master/API_DOC.md)
 
