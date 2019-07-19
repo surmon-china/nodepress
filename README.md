@@ -1,8 +1,4 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank">
-    <img src="https://nestjs.com/img/logo_text.svg" height="90" alt="Nest Logo" />
-  </a>
-  <span>💖</span>
   <a href="https://github.com/surmon-china/nodepress" target="blank">
     <img src="https://raw.githubusercontent.com/surmon-china/nodepress/master/logo.png" height="90" alt="nodepress Logo" />
   </a>
@@ -10,6 +6,7 @@
 
 # NodePress
 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress)
@@ -165,7 +162,7 @@
     + 扩展的 [Promise 工作模式](https://github.com/surmon-china/nodepress/blob/master/src/processors/cache/cache.service.ts#L99)（双向同步/被动更新）
     + 扩展的 [Interval 工作模式](https://github.com/surmon-china/nodepress/blob/master/src/processors/cache/cache.service.ts#L138)（超时更新/定时更新）
   * [辅助 / Helper](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper)
-    + [搜索引擎实时更新服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.seo.ts)：根据入参主动提交搜索引擎收录；目前只有百度服务；分别会在文章、分类、标签、进行 CUD 的时候调用对应方法
+    + [搜索引擎实时更新服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.seo.ts)：根据入参主动提交搜索引擎收录，支持百度、Google 服务；分别会在动态数据 进行 CUD 的时候调用对应方法
     + [评论过滤服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.akismet.ts)：使用 akismet 过滤 spam；暴露三个方法：校验 spam、提交 spam、提交 ham
     + [邮件服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
     + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
