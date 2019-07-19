@@ -7,6 +7,7 @@
 
 import { Injectable, HttpService } from '@nestjs/common';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
+import { getMessageFromAxiosError } from '@app/transforms/error.transform';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as APP_CONFIG from '@app/app.config';
 
@@ -79,12 +80,12 @@ export class GithubService {
             } as IGithubRepositorie;
           });
         } catch (error) {
-          return Promise.reject('Giithub 控制器解析为 JSON 失败' + error);
+          return Promise.reject('Giithub 控制器解析 JSON 失败' + error);
         }
       })
       .catch(error => {
-        const message = (error.response && error.response.data) || error;
-        console.warn('项目列表获取失败：', message);
+        const message = getMessageFromAxiosError(error);
+        console.warn('Giithub 项目列表获取失败：', message);
         return Promise.reject(message);
       });
   }

@@ -1,7 +1,5 @@
 
-## CHANGELOG
-
-### TODO
+## TODO
 
 - 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
 - 删除一条存在子级评论的评论时，子级评论的 PID 需要置空
@@ -12,17 +10,26 @@
 - ~~文章删改时需要更新 tag 的聚合数据，Category 也是同样的操作~~
 - ~~集成 [Analytics Reporting API](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/web-js?hl=zh-cn) 供管理员使用~~
 - ~~sitemap，tags CUD 时进行缓存更新，使用 redis.promise~~
-- 模型构造器日志注释、入口 log 定时器
+- ~~模型构造器日志注释、入口 log 定时器~~
+
+## CHANGELOG
 
 ### v3.2.0
 
-- 更新所有依赖
-- 去除对 nestjs-typegoose 模块的依赖
-- 增加模型构造器、Provider 构造器、模型注入器
+- 更新 所有依赖
 - 更新 sitemap 模块及进行优化
-- 更新缓存及数据库模块、在核心节点增加告警服务
-- 优化鉴权业务
+- 更新 缓存及数据库模块、在核心节点增加告警服务
+- 更新 SEO ping 服务
+- 去除 对 nestjs-typegoose 模块的依赖
+- 增加 API 文档
+- 增加 logo 资源
+- 增加 模型构造器、Provider 构造器、模型注入器
+- 增加 Google 证书服务
 - 增加 compodoc 文档构建器，但不实用
+- 优化 验证模型
+- 优化 鉴权业务
+- 优化 helper 模块
+- 优化 设置表
 
 ### v3.1.0
 

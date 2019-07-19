@@ -5,14 +5,14 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as APP_CONFIG from '@app/app.config';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
+import { getCategoryUrl } from '@app/transforms/urlmap.transform';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
-import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
+import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { Article } from '@app/modules/article/article.model';
 import { Category } from './category.model';
 
@@ -20,15 +20,10 @@ import { Category } from './category.model';
 export class CategoryService {
   constructor(
     private readonly sitemapService: SitemapService,
-    private readonly baiduSeoService: BaiduSeoService,
+    private readonly seoService: SeoService,
     @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
     @InjectModel(Category) private readonly categoryModel: TMongooseModel<Category>,
   ) {}
-
-  // 构造链接
-  private buildSeoUrl(slug: string): string {
-    return `${APP_CONFIG.APP.URL}/category/${slug}`;
-  }
 
   // 请求分类列表（及聚和数据）
   public getList(querys, options, isAuthenticated): Promise<PaginateResult<Category>> {
@@ -72,7 +67,7 @@ export class CategoryService {
         return categories.length
           ? Promise.reject('别名已被占用')
           : new this.categoryModel(newCategory).save().then(category => {
-              this.baiduSeoService.push(this.buildSeoUrl(category.slug));
+              this.seoService.push(getCategoryUrl(category.slug));
               this.sitemapService.updateCache();
               return category;
             });
@@ -120,7 +115,7 @@ export class CategoryService {
           : this.categoryModel
               .findByIdAndUpdate(categoryId, newCategory, { new: true })
               .then(category => {
-                this.baiduSeoService.push(this.buildSeoUrl(category.slug));
+                this.seoService.push(getCategoryUrl(category.slug));
                 this.sitemapService.updateCache();
                 return category;
               });
@@ -135,7 +130,7 @@ export class CategoryService {
       .then(category => {
         // 更新网站地图
         this.sitemapService.updateCache();
-        this.baiduSeoService.delete(this.buildSeoUrl(category.slug));
+        this.seoService.delete(getCategoryUrl(category.slug));
         return this.categoryModel
           .find({ pid: categoryId })
           .exec()
@@ -160,8 +155,8 @@ export class CategoryService {
       .find({ _id: { $in: categoryIds }})
       .exec()
       .then(categories => {
-        this.baiduSeoService.delete(
-          categories.map(category => this.buildSeoUrl(category.slug)),
+        this.seoService.delete(
+          categories.map(category => getCategoryUrl(category.slug)),
         );
         return this.categoryModel
           .deleteMany({ _id: { $in: categoryIds }})

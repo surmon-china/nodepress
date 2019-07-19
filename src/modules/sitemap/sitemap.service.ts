@@ -9,6 +9,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
+import * as urlMap from '@app/transforms/urlmap.transform';
 import sitemap, { Sitemap, EnumChangefreq } from 'sitemap';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
@@ -29,12 +30,12 @@ export class SitemapService {
   });
 
   private pagesMap = [
-    { url: '', changefreq: EnumChangefreq.ALWAYS, priority: 1 },
-    { url: '/vlog', changefreq: EnumChangefreq.MONTHLY, priority: 1 },
-    { url: '/about', changefreq: EnumChangefreq.MONTHLY, priority: 1 },
-    { url: '/project', changefreq: EnumChangefreq.MONTHLY, priority: 1 },
-    { url: '/sitemap', changefreq: EnumChangefreq.ALWAYS, priority: 1 },
-    { url: '/guestbook', changefreq: EnumChangefreq.ALWAYS, priority: 1 },
+    { url: APP_CONFIG.APP.URL, changefreq: EnumChangefreq.ALWAYS, priority: 1 },
+    { url: urlMap.getVlogPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
+    { url: urlMap.getAboutPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
+    { url: urlMap.getProjectPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
+    { url: urlMap.getSitemapPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
+    { url: urlMap.getGuestbookPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
   ];
 
   private sitemap: Sitemap;
@@ -76,7 +77,7 @@ export class SitemapService {
     this.sitemap = sitemap.createSitemap({
       cacheTime: 666666,
       urls: [...this.pagesMap],
-      hostname: APP_CONFIG.APP.URL,
+      // hostname: APP_CONFIG.APP.URL,
     });
     return Promise.all([
       this.addTagsMap(),
@@ -100,7 +101,7 @@ export class SitemapService {
           this.sitemap.add({
             priority: 0.6,
             changefreq: EnumChangefreq.DAILY,
-            url: `/tag/${tag.slug}`,
+            url: urlMap.getTagUrl(tag.slug),
           });
         });
         return tags;
@@ -117,7 +118,7 @@ export class SitemapService {
           this.sitemap.add({
             priority: 0.6,
             changefreq: EnumChangefreq.DAILY,
-            url: `/category/${category.slug}`,
+            url: urlMap.getCategoryUrl(category.slug),
           });
         });
         return categories;
@@ -134,7 +135,7 @@ export class SitemapService {
           this.sitemap.add({
             priority: 0.8,
             changefreq: EnumChangefreq.DAILY,
-            url: `/article/${article.id}`,
+            url: urlMap.getArticleUrl(article.id),
             lastmodISO: article.update_at.toISOString(),
           });
         });

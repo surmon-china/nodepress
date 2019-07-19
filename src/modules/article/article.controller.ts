@@ -38,6 +38,7 @@ export class ArticleController {
     if (Number(origin.sort) === ESortType.Hot) {
       // 设置热排参数
       options.sort = this.articleService.getHotSortOption();
+
       // 前台缓存请求，则忽略一切后续处理
       if (!isAuthenticated && querys.cache) {
         return this.articleService.getHotListCache();

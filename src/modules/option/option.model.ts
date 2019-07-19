@@ -6,7 +6,7 @@
  */
 
 import { prop, arrayProp, pre, Typegoose } from 'typegoose';
-import { IsString, IsInt, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator';
+import { IsString, IsInt, IsUrl, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator';
 import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 
 // 元信息
@@ -52,9 +52,10 @@ export class Option extends Typegoose {
   sub_title: string;
 
   // 关键字
-  @IsString()
-  @prop()
-  keywords: string;
+  @IsArray()
+  @ArrayUnique()
+  @arrayProp({ items: String })
+  keywords: string[];
 
   // 网站描述
   @IsString()
@@ -63,6 +64,7 @@ export class Option extends Typegoose {
 
   // 站点地址
   @IsString()
+  @IsUrl()
   @prop({ required: true })
   site_url: string;
 
@@ -75,12 +77,6 @@ export class Option extends Typegoose {
   @IsString()
   @prop({ required: true })
   site_icp: string;
-
-  // 搜索引擎 ping
-  @IsArray()
-  @ArrayUnique()
-  @arrayProp({ items: String })
-  ping_sites: string[];
 
   // 黑名单
   @prop()
