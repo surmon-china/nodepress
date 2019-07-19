@@ -235,6 +235,11 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   
   Get '/uptoken' (): <IUpToken>
   ```
+  ```ts
+  @JwtAuth
+  
+  Get '/google-token' (): <Credentials>
+  ```
 
 #### Wallpaper (wallpaper)
   ```ts

@@ -6,13 +6,13 @@
  */
 
 import * as lodash from 'lodash';
-import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { InstanceType } from 'typegoose';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
-import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
+import { getArticleUrl } from '@app/transforms/urlmap.transform';
+import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { CacheService, TCacheIntervalResult } from '@app/processors/cache/cache.service';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { TagService } from '@app/modules/tag/tag.service';
@@ -30,7 +30,7 @@ export class ArticleService {
     private readonly tagService: TagService,
     private readonly cacheService: CacheService,
     private readonly sitemapService: SitemapService,
-    private readonly baiduSeoService: BaiduSeoService,
+    private readonly seoService: SeoService,
     @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
   ) {
     this.hotArticleListCache = this.cacheService.interval({
@@ -44,14 +44,9 @@ export class ArticleService {
           limit: 10,
           sort: this.getHotSortOption(),
         };
-        return this.getList.bind(this)(null, options, false);
+        return this.getList.bind(this)(null, options);
       },
     });
-  }
-
-  // 构造链接
-  private buildSeoUrl(id: string | number): string {
-    return `${APP_CONFIG.APP.URL}/article/${id}`;
   }
 
   // 热门文章列表缓存
@@ -82,7 +77,6 @@ export class ArticleService {
 
   // 请求文章列表
   public getList(querys, options): Promise<PaginateResult<Article>> {
-    // 隐藏机密信息
     options.populate = ['category', 'tag'];
     options.select = '-password -content';
     return this.articleModel.paginate(querys, options);
@@ -146,7 +140,7 @@ export class ArticleService {
     return new this.articleModel(newArticle)
       .save()
       .then(article => {
-        this.baiduSeoService.push(this.buildSeoUrl(article.id));
+        this.seoService.push(getArticleUrl(article.id));
         this.sitemapService.updateCache();
         this.tagService.updateListCache();
         return article;
@@ -164,7 +158,7 @@ export class ArticleService {
       .findByIdAndUpdate(articleId, newArticle, { new: true })
       .exec()
       .then(article => {
-        this.baiduSeoService.update(this.buildSeoUrl(article.id));
+        this.seoService.update(getArticleUrl(article.id));
         this.sitemapService.updateCache();
         this.tagService.updateListCache();
         return article;
@@ -177,7 +171,7 @@ export class ArticleService {
       .findByIdAndRemove(articleId)
       .exec()
       .then(article => {
-        this.baiduSeoService.delete(this.buildSeoUrl(article.id));
+        this.seoService.delete(getArticleUrl(article.id));
         this.sitemapService.updateCache();
         this.tagService.updateListCache();
         return article;
@@ -202,8 +196,8 @@ export class ArticleService {
       .find({ _id: { $in: articleIds }})
       .exec()
       .then(articles => {
-        this.baiduSeoService.delete(
-          articles.map(article => this.buildSeoUrl(article.id)),
+        this.seoService.delete(
+          articles.map(article => getArticleUrl(article.id)),
         );
         return this.articleModel
           .deleteMany({ _id: { $in: articleIds }})

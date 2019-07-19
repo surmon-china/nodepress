@@ -7,7 +7,6 @@
 
 import * as schedule from 'node-schedule';
 import * as CACHE_KEY from '@app/constants/cache.constant';
-import { PaginateResult } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
@@ -35,6 +34,7 @@ export class StatisticService {
 
   constructor(
     private readonly cacheService: CacheService,
+    @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
     @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
     @InjectModel(Comment) private readonly commentModel: TMongooseModel<Comment>,
   ) {
@@ -44,17 +44,17 @@ export class StatisticService {
     });
   }
 
-  private getTagsCount(): Promise<number> {
-    return this.cacheService.get<PaginateResult<Tag>>(CACHE_KEY.TAGS).then(tags => {
-      this.resultData.tags = tags.total;
-      return tags.total;
-    });
-  }
-
   private getViewsCount(): Promise<number> {
     return this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS).then(views => {
       this.resultData.views = views || 0;
       return views;
+    });
+  }
+
+  private getTagsCount(): Promise<number> {
+    return this.tagModel.countDocuments().exec().then(count => {
+      this.resultData.tags = count;
+      return count;
     });
   }
 

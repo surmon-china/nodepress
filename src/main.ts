@@ -26,10 +26,10 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const { log, warn, info } = console;
 const color = c => isDevMode ? c : '';
 Object.assign(global.console, {
-  log: (...args) => setTimeout(() => log('[log]', ...args), 888),
-  warn: (...args) => setTimeout(() => warn(color('\x1b[33m%s\x1b[0m'), '[warn]', '[nodepress]', ...args), 888),
-  info: (...args) => setTimeout(() => info(color('\x1b[34m%s\x1b[0m'), '[info]', '[nodepress]', ...args), 888),
-  error: (...args) => setTimeout(() => info(color('\x1b[31m%s\x1b[0m'), '[error]', '[nodepress]', ...args), 888),
+  log: (...args) => log('[log]', ...args),
+  warn: (...args) => warn(color('\x1b[33m%s\x1b[0m'), '[warn]', '[nodepress]', ...args),
+  info: (...args) => info(color('\x1b[34m%s\x1b[0m'), '[info]', '[nodepress]', ...args),
+  error: (...args) => info(color('\x1b[31m%s\x1b[0m'), '[error]', '[nodepress]', ...args),
 });
 
 async function bootstrap() {

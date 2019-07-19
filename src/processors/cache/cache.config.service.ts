@@ -55,6 +55,7 @@ export class CacheConfigService implements CacheOptionsFactory {
     };
     return {
       store: redisStore,
+      ttl: APP_CONFIG.REDIS.ttl,
       ...redisOptions,
     };
   }
