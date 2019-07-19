@@ -35,7 +35,7 @@
 
 ## v3.x 架构说明
 
-## 接口概述
+### 接口概述
 
   - HTTP 状态码（详见 [errors](https://github.com/surmon-china/nodepress/tree/nest/src/errors) ）
     * `400` 请求的业务被拒绝
@@ -58,7 +58,7 @@
         * 列表数据：一般返回`{ pagination: {...}, data: {..} }`
         * 具体数据：例如文章，则包含直接数据如`{ title: '', content: ... }`
 
-## 数据结构
+### 数据模型
 
   - 通用
     * `extend` 为通用扩展（[模型在此](https://github.com/surmon-china/nodepress/blob/master/src/models/extend.model.ts)）
@@ -76,7 +76,7 @@
     * Mongoose 支持的 virtual 虚拟数据
     * 第三方模块提供数据，如：GitHub、Bilibili
 
-## 应用结构
+### 应用结构
 
 - 入口
 
@@ -172,17 +172,17 @@
 
 ## Special issues
 
-### Google Indexing API
+#### Google Indexing API
 
 - [完整的配置流程文档](https://developers.google.com/search/apis/indexing-api/v3/quickstart)
 - 「 统计用户的所有者角色 」添加页面 [在这里](https://www.google.com/webmasters/verification/details?hl=zh-CN&domain=<xxx.com>)，而非 [新版的](https://search.google.com/search-console/users?resource_id=<xxx.com>)
 
-### Google Auth
+#### Google Auth
 
 - OAuth 2.0 客户端 ID、服务帐号密钥 都是 OAuth 授权类型
 - [Auth 申请及管理页面](https://console.developers.google.com/apis/credentials)
 
-### Google Analytics Embed API
+#### Google Analytics Embed API
 
 - [完整文档](https://developers.google.com/analytics/devguides/reporting/embed/v1/)
 - [完整示例](https://ga-dev-tools.appspot.com/embed-api/)
