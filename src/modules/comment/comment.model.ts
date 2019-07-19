@@ -7,7 +7,7 @@
 
 import { Types } from 'mongoose';
 import { prop, arrayProp, plugin, pre, Typegoose } from 'typegoose';
-import { IsString, IsIn, IsInt, IsBoolean, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
+import { IsString, MaxLength, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsBoolean, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 import { ECommentParentType, ECommentState } from '@app/interfaces/state.interface';
@@ -17,15 +17,18 @@ import { Extend } from '@app/models/extend.model';
 export class Author {
   @IsNotEmpty({ message: '作者名称？' })
   @IsString()
+  @MaxLength(20)
   @prop({ required: true, validate: /\S+/ })
   name: string;
 
   @IsNotEmpty({ message: '作者邮箱？' })
   @IsString()
-  @prop({ required: true, validate: /\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/ })
+  @IsEmail()
+  @prop({ required: true })
   email: string;
 
   @IsString()
+  @IsUrl()
   @prop({ validate: /^((https|http):\/\/)+[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/ })
   site: string;
 }
@@ -46,6 +49,7 @@ export class CreateCommentBase extends Typegoose {
 
   @IsNotEmpty({ message: '评论内容？' })
   @IsString({ message: '字符串？' })
+  @MaxLength(3000)
   @prop({ required: true, validate: /\S+/ })
   content: string;
 
@@ -90,6 +94,7 @@ export class Comment extends CreateCommentBase {
   likes: number;
 
   // IP 地址
+  @IsIP()
   @prop()
   ip?: string;
 

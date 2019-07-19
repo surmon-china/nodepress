@@ -5,13 +5,13 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
+import { getTagUrl } from '@app/transforms/urlmap.transform';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
-import { BaiduSeoService } from '@app/processors/helper/helper.service.baidu-seo';
+import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
@@ -27,7 +27,7 @@ export class TagService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly sitemapService: SitemapService,
-    private readonly baiduSeoService: BaiduSeoService,
+    private readonly seoService: SeoService,
     @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
     @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
   ) {
@@ -39,16 +39,11 @@ export class TagService {
     this.updateListCache();
   }
 
-  // 构造链接
-  private buildSeoUrl(slug: string): string {
-    return `${APP_CONFIG.APP.URL}/tag/${slug}`;
-  }
-
   // 缓存任务
   private getListCacheTask(): Promise<PaginateResult<Tag>> {
     const options = {
       page: 1,
-      limit: 166,
+      limit: 888,
       sort: { _id: ESortType.Desc },
     };
     return this.getList(null, options, false);
@@ -102,7 +97,7 @@ export class TagService {
           : new this.tagModel(newTag)
             .save()
             .then(tag => {
-              this.baiduSeoService.push(this.buildSeoUrl(tag.slug));
+              this.seoService.push(getTagUrl(tag.slug));
               this.sitemapService.updateCache();
               this.updateListCache();
               return tag;
@@ -127,7 +122,7 @@ export class TagService {
             .findByIdAndUpdate(tagId, newTag, { new: true })
             .exec()
             .then(tag => {
-              this.baiduSeoService.push(this.buildSeoUrl(tag.slug));
+              this.seoService.push(getTagUrl(tag.slug));
               this.sitemapService.updateCache();
               this.updateListCache();
               return tag;
@@ -141,7 +136,7 @@ export class TagService {
       .findByIdAndRemove(tagId)
       .exec()
       .then(tag => {
-        this.baiduSeoService.delete(this.buildSeoUrl(tag.slug));
+        this.seoService.delete(getTagUrl(tag.slug));
         this.sitemapService.updateCache();
         this.updateListCache();
         return tag;
@@ -154,7 +149,7 @@ export class TagService {
       .find({ _id: { $in: tagIds }})
       .exec()
       .then(tags => {
-        this.baiduSeoService.delete(tags.map(tag => this.buildSeoUrl(tag.slug)));
+        this.seoService.delete(tags.map(tag => getTagUrl(tag.slug)));
         return this.tagModel
           .deleteMany({ _id: { $in: tagIds }})
           .exec()

@@ -7,7 +7,7 @@
 
 import { Types } from 'mongoose';
 import { prop, arrayProp, plugin, pre, Typegoose } from 'typegoose';
-import { IsString, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
+import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
 import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
 import { Extend } from '@app/models/extend.model';
@@ -34,6 +34,8 @@ export class Category extends Typegoose {
 
   @IsNotEmpty({ message: '分类别名？' })
   @IsString({ message: '字符串？' })
+  @IsAlphanumeric({ message: 'slug 只允许字母和数字' })
+  @MaxLength(30)
   @prop({ required: true, validate: /\S+/ })
   slug: string;
 

@@ -171,7 +171,7 @@ export class CacheService {
     const promiseTask = (): Promise<T> => {
       return promise().then(data => {
         this.set(key, data);
-        return Promise.resolve(data);
+        return data;
       });
     };
 
