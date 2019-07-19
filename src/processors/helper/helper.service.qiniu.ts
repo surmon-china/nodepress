@@ -26,7 +26,9 @@ export class QiniuService {
   }
 
   public getToken(): IUpToken {
-    return { up_token: this.putPolicy.uploadToken(this.mac) };
+    return {
+      up_token: this.putPolicy.uploadToken(this.mac),
+    };
   }
 
   // 上传文件

@@ -22,7 +22,6 @@ export function getModelBySchema<T extends Typegoose>(
   typegooseClass: TypegooseClass<T>,
   schemaOptions: GetModelForClassOptions = {},
 ): ModelType<T> {
-  console.log('getModelBySchema 实例！', typegooseClass.name);
   return new typegooseClass().getModelForClass(typegooseClass, schemaOptions);
 }
 

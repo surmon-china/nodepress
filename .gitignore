@@ -2,6 +2,10 @@
 /dist
 /tmp
 
+# gitkeep
+/classified/*
+!/classified/.gitkeep
+
 *.pydevproject
 .project
 .metadata

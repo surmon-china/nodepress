@@ -11,6 +11,7 @@ import { isDevMode } from '@app/app.environment';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
+import { getGuestbookPageUrl, getArticleUrl } from '@app/transforms/urlmap.transform';
 import { parseMarkdownToHtml } from '@app/transforms/markdown.transform';
 import { TMongooseModel } from '@app/interfaces/mongoose.interface';
 import { ECommentPostType, ECommentState } from '@app/interfaces/state.interface';
@@ -200,10 +201,9 @@ export class CommentService {
     });
 
     // 永久链接
-    const linkPath = newComment.post_id === ECommentPostType.Guestbook
-      ? 'guestbook'
-      : `article/${newComment.post_id}`;
-    const permalink = APP_CONFIG.APP.URL + '/' + linkPath;
+    const permalink = newComment.post_id === ECommentPostType.Guestbook
+      ? getGuestbookPageUrl()
+      : getArticleUrl(newComment.post_id);
 
     return Promise.all([
       // 检验评论垃圾性质

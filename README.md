@@ -1,33 +1,40 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank">
-    <img src="https://nestjs.com/img/logo_text.svg" height="100" alt="Nest Logo" />
+    <img src="https://nestjs.com/img/logo_text.svg" height="90" alt="Nest Logo" />
   </a>
-  <span>&nbsp;&nbsp;&nbsp;</span>
-  <img src="https://raw.githubusercontent.com/surmon-china/angular-admin/master/src/assets/img/logo.png" width="100" alt="Nest Logo" />
+  <span>💖</span>
+  <a href="https://github.com/surmon-china/nodepress" target="blank">
+    <img src="https://raw.githubusercontent.com/surmon-china/nodepress/master/logo.png" height="90" alt="nodepress Logo" />
+  </a>
 </p>
 
-## NodePress
+# NodePress
 
-[![](https://badge.juejin.im/entry/58a5f22c8d6d810057c8f0a5/likes.svg?style=flat-square)](https://juejin.im/entry/58a5f22c8d6d810057c8f0a5/detail)
-[![GitHub issues](https://img.shields.io/github/issues/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/issues)
-[![GitHub forks](https://img.shields.io/github/forks/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/network)
-[![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=flat-square)](https://github.com/surmon-china/nodepress/stargazers)
-[![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square)](https://github.com/surmon-china/nodepress)
+[![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress)
+[![GitHub license](https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress)
+[![Twitter](https://img.shields.io/twitter/url/https/github.com/surmon-china/nodepress.svg?style=for-the-badge)](https://twitter.com/intent/tweet?url=https://github.com/surmon-china/nodepress)
 
-**RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog.**
+## Introduction
 
-**适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务；
-v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 nodejs 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/nodejs)。**
+**RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [nestjs](https://github.com/nestjs/nest).** 
 
-#### 其他相关项目：
-- SRE service: [sre.surmon.me](https://github.com/surmon-china/sre.surmon.me)
-- web client for user: [surmon.me](https://github.com/surmon-china/surmon.me) By [Nuxt.js](https://github.com/nuxt/nuxt.js)
-- web client for admin: [angular-admin](https://github.com/surmon-china/angular-admin) powered by [Angular](https://github.com/angular/angular) + [Bootstrap](https://github.com/twbs/bootstrap)
-- native app client: [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by [react-native](https://github.com/facebook/react-native)
+**适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务；v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 nodejs 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/nodejs)。**
 
-更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md)
 
-接口文档：[API_DOC.md](https://github.com/surmon-china/nodepress/blob/master/API_DOC.md)
+**其他相关项目：**
+- **web client for user:** [surmon.me](https://github.com/surmon-china/surmon.me) powered by [Nuxt.js](https://github.com/nuxt/nuxt.js)
+- **web client for admin:** [angular-admin](https://github.com/surmon-china/angular-admin) powered by [Angular](https://github.com/angular/angular) & [Bootstrap](https://github.com/twbs/bootstrap)
+- **native app client:** [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by [react-native](https://github.com/facebook/react-native)
+- **SRE service:** [sre.surmon.me](https://github.com/surmon-china/sre.surmon.me)
+
+
+**更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/master/CHANGELOG.md#changelog)**
+
+**接口文档：[API_DOC.md](https://github.com/surmon-china/nodepress/blob/master/API_DOC.md)**
+
+---
 
 ## v3.x 架构说明
 
@@ -148,7 +155,7 @@ v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 node
   * 壁纸：主站每日壁纸模块业务
   * 扩展模块
     + GitHub：GitHub 项目列表业务
-    + 统计：简单的统计业务
+    + 统计：业务数据统计业务
 
 - 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
   * [数据库](https://github.com/surmon-china/nodepress/blob/master/src/processors/database)
@@ -158,46 +165,56 @@ v3.x 使用 [Nest](https://github.com/nestjs/nest) 进行重构，之前的 node
     + 扩展的 [Promise 工作模式](https://github.com/surmon-china/nodepress/blob/master/src/processors/cache/cache.service.ts#L99)（双向同步/被动更新）
     + 扩展的 [Interval 工作模式](https://github.com/surmon-china/nodepress/blob/master/src/processors/cache/cache.service.ts#L138)（超时更新/定时更新）
   * [辅助 / Helper](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper)
-    + [百度实时更新服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.baidu-seo.ts)：根据入参主动提交搜索引擎收录；目前只有百度；分别会在文章、分类、标签、进行 CUD 的时候调用对应方法
+    + [搜索引擎实时更新服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.seo.ts)：根据入参主动提交搜索引擎收录；目前只有百度服务；分别会在文章、分类、标签、进行 CUD 的时候调用对应方法
     + [评论过滤服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.akismet.ts)：使用 akismet 过滤 spam；暴露三个方法：校验 spam、提交 spam、提交 ham
     + [邮件服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
     + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
-    + 七牛：生成七牛上传 Token
+    + [七牛存储服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.qiniu.ts)：生成七牛上传 Token，后期可以添加对七牛 SDK 的更多支持，比如管理文件
+    + Google 证书（鉴权）服务：用于生成各 Google 应用的服务端证书
 
 
-## 开发命令
+## Special issues
 
-### Installation
+### Google Indexing API
+
+- [完整的配置流程文档](https://developers.google.com/search/apis/indexing-api/v3/quickstart)
+- 「 统计用户的所有者角色 」添加页面 [在这里](https://www.google.com/webmasters/verification/details?hl=zh-CN&domain=<xxx.com>)，而非 [新版的](https://search.google.com/search-console/users?resource_id=<xxx.com>)
+
+### Google Auth
+
+- OAuth 2.0 客户端 ID、服务帐号密钥 都是 OAuth 授权类型
+- [Auth 申请及管理页面](https://console.developers.google.com/apis/credentials)
+
+### Google Analytics Embed API
+
+- [完整文档](https://developers.google.com/analytics/devguides/reporting/embed/v1/)
+- [完整示例](https://ga-dev-tools.appspot.com/embed-api/)
+- [服务端签发 token 鉴权示例](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/)
+- [客户端 API 文档](https://developers.google.com/analytics/devguides/reporting/embed/v1/core-methods-reference)
+- [将服务账户添加为 GA 的数据阅读者操作页面](https://marketingplatform.google.com/home/accounts)
+
+## Development Setup
 
 ```bash
+# 安装
 $ npm ci
-```
 
-### Running the app
-
-```bash
 # 开发
 $ npm run start:dev
 
-# 构建
-$ npm run build
-
-# 更新 GEO IP 库数据
-$ npm run updategeodb
-
-# 生产环境运行
-$ npm run start:prod
-```
-
-### Test
-
-```bash
-# 语法检查
-$ npm run lint
-
 # 测试
+$ npm run lint
 $ npm run test
 $ npm run test:e2e
 $ npm run test:cov
 $ npm run test:watch
+
+# 构建
+$ npm run build
+
+# 生产环境运行
+$ npm run start:prod
+
+# 更新 GEO IP 库数据
+$ npm run updategeodb
 ```

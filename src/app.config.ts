@@ -68,6 +68,10 @@ export const BAIDU = {
   token: argv.baidu_token || 'your baidu seo push token',
 };
 
+export const GOOGLE = {
+  serverAccountFilePath: path.resolve(__dirname, '..', 'classified', 'google_service_account.json'),
+};
+
 export const QINIU = {
   accessKey: argv.qn_accessKey || 'your access key',
   secretKey: argv.qn_secretKey || 'your secret key',

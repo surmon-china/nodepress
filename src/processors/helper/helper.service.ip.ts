@@ -8,6 +8,7 @@
 import * as geoip from 'geoip-lite';
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable, HttpService } from '@nestjs/common';
+import { getMessageFromAxiosError } from '@app/transforms/error.transform';
 
 export type IP = string;
 export interface IIPDetail {
@@ -32,6 +33,11 @@ export class IpService {
         } else {
           return Promise.reject(response.data);
         }
+      })
+      .catch(error => {
+        const message = getMessageFromAxiosError(error);
+        console.warn('Aliyun 查询 IP 信息失败！', message);
+        return Promise.reject(message);
       });
   }
 
@@ -41,9 +47,9 @@ export class IpService {
   }
 
   // 查询 IP 地址
-  query(ip: IP): Promise<IIPDetail> {
+  public query(ip: IP): Promise<IIPDetail> {
     return this.queryIpByAliyun(ip)
       .then(({ city, country }) => ({ city, country }))
-      .catch(error => Promise.resolve(this.queryIpByGeo(ip)));
+      .catch(() => Promise.resolve(this.queryIpByGeo(ip)));
   }
 }

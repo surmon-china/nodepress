@@ -8,6 +8,7 @@
 import * as nodemailer from 'nodemailer';
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable } from '@nestjs/common';
+import { getMessageFromNormalError } from '@app/transforms/error.transform';
 
 // 邮件格式
 export interface IEmailOptions {
@@ -41,11 +42,11 @@ export class EmailService {
     return this.transporter.verify((error, success) => {
       if (error) {
         this.clientIsValid = false;
-        setTimeout(this.verifyClient.bind(this), 1000 * 60 * 60);
-        setTimeout(() => console.warn('邮件客户端初始化连接失败，将在一小时后重试', error.message), 0);
+        setTimeout(this.verifyClient.bind(this), 1000 * 60 *  30);
+        console.warn('邮件客户端初始化连接失败！将在半小时后重试：', getMessageFromNormalError(error));
       } else {
         this.clientIsValid = true;
-        setTimeout(() => console.info('邮件客户端初始化连接成功，随时可发送邮件'), 0);
+        console.info('邮件客户端初始化连接成功！随时可发送邮件');
       }
     });
   }
@@ -53,13 +54,13 @@ export class EmailService {
   // 发邮件
   public sendMail(mailOptions: IEmailOptions) {
     if (!this.clientIsValid) {
-      console.warn('由于未初始化成功，邮件客户端发送被拒绝');
+      console.warn('由于未初始化成功，邮件客户端发送被拒绝！');
       return false;
     }
     const options = Object.assign(mailOptions, { from: APP_CONFIG.EMAIL.from });
     this.transporter.sendMail(options, (error, info) => {
       if (error) {
-        console.warn('邮件发送失败', error);
+        console.warn('邮件发送失败！', getMessageFromNormalError(error));
       } else {
         console.info('邮件发送成功', info.messageId, info.response);
       }
