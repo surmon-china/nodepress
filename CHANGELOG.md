@@ -20,7 +20,6 @@
 - 更新 sitemap 模块及进行优化
 - 更新 缓存及数据库模块、在核心节点增加告警服务
 - 更新 SEO ping 服务
-- 去除 对 nestjs-typegoose 模块的依赖
 - 增加 API 文档
 - 增加 logo 资源
 - 增加 模型构造器、Provider 构造器、模型注入器
@@ -30,6 +29,8 @@
 - 优化 鉴权业务
 - 优化 helper 模块
 - 优化 设置表
+- 去除 对 nestjs-typegoose 模块的依赖
+- 废弃 枚举常量接口
 
 ### v3.1.0
 

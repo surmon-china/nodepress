@@ -217,9 +217,6 @@ Get '/path/:id' ({ param? }): <ResultDataType>
 
 #### Expansion (expansion)
   ```ts
-  Get '/constant' (): <object>
-  ```
-  ```ts
   Get '/statistic' (): <ITodayStatistic>
   ```
   ```ts

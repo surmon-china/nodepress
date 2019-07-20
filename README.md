@@ -153,6 +153,7 @@
   * 扩展模块
     + GitHub：GitHub 项目列表业务
     + 统计：业务数据统计业务
+    + 其他：其他第三方 token 等服务
 
 - 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
   * [数据库](https://github.com/surmon-china/nodepress/blob/master/src/processors/database)

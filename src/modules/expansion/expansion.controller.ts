@@ -6,13 +6,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as CACHE_KEY from '@app/constants/cache.constant';
-import * as STATE_CONSTANTS from '@app/interfaces/state.interface';
 import { Credentials } from 'google-auth-library';
 import { Controller, Get, Patch, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { HttpProcessor } from '@app/decorators/http.decorator';
-import { HttpCache } from '@app/decorators/cache.decorator';
 import { QiniuService, IUpToken } from '@app/processors/helper/helper.service.qiniu';
 import { GoogleService } from '@app/processors/helper/helper.service.google';
 import { GithubService, IGithubRepositorie } from './expansion.service.github';
@@ -27,13 +24,6 @@ export class ExpansionController {
     private readonly googleService: GoogleService,
     private readonly statisticService: StatisticService,
   ) {}
-
-  @Get('constant')
-  @HttpCache(CACHE_KEY.CONSTANTS, 60 * 60)
-  @HttpProcessor.handle('获取配置常量')
-  getSystemConstants(): object {
-    return STATE_CONSTANTS;
-  }
 
   @Get('statistic')
   @HttpProcessor.handle('获取统计概览')
