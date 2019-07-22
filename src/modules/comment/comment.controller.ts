@@ -5,6 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import * as lodash from 'lodash';
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
@@ -37,8 +38,9 @@ export class CommentController {
     }
 
     // 关键词搜索
-    if (origin.keyword) {
-      const keywordRegExp = new RegExp(origin.keyword);
+    const keyword = lodash.trim(origin.keyword);
+    if (keyword) {
+      const keywordRegExp = new RegExp(keyword, 'i');
       querys.$or = [
         { content: keywordRegExp },
         { 'author.name': keywordRegExp },

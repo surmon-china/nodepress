@@ -73,10 +73,10 @@ export const GOOGLE = {
 };
 
 export const QINIU = {
-  accessKey: argv.qn_accessKey || 'your access key',
-  secretKey: argv.qn_secretKey || 'your secret key',
-  bucket: argv.qn_bucket || 'nodepress',
-  origin: argv.qn_origin || 'http://nodepress.u.qiniudn.com',
+  accessKey: argv.qn_accessKey || 'qiniu access key',
+  secretKey: argv.qn_secretKey || 'qiniu secret key',
+  bucket: argv.qn_bucket || 'qiniu bucket name',
+  origin: argv.qn_origin || 'qiniu origin url',
   uploadURL: argv.qn_uploadURL || 'http://up.qiniu.com/',
 };
 

@@ -5,6 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import * as lodash from 'lodash';
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
@@ -23,9 +24,11 @@ export class AnnouncementController {
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取公告')
   getAnnouncements(@QueryParams([QueryField.State]) { querys, options, origin }): Promise<PaginateResult<Announcement>> {
-    if (origin.keyword) {
-      querys.content = new RegExp(origin.keyword);
+    const keyword = lodash.trim(origin.keyword);
+    if (keyword) {
+      querys.content = new RegExp(keyword, 'i');
     }
+
     return this.announcementService.getList(querys, options);
   }
 
