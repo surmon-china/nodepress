@@ -5,6 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import * as lodash from 'lodash';
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
@@ -24,8 +25,9 @@ export class TagController {
   @HttpProcessor.handle('获取标签')
   getTags(@QueryParams(['cache']) { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Tag>> {
 
-    if (origin.keyword) {
-      const keywordRegExp = new RegExp(origin.keyword);
+    const keyword = lodash.trim(origin.keyword);
+    if (keyword) {
+      const keywordRegExp = new RegExp(keyword, 'i');
       querys.$or = [
         { name: keywordRegExp },
         { slug: keywordRegExp },
