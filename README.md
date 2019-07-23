@@ -11,7 +11,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress)
 [![GitHub license](https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress)
-[![Twitter](https://img.shields.io/twitter/url/https/github.com/surmon-china/nodepress.svg?style=for-the-badge)](https://twitter.com/intent/tweet?url=https://github.com/surmon-china/nodepress)
 
 ## Introduction
 
