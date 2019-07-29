@@ -6,7 +6,7 @@
 
 # NodePress
 
-[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress)
