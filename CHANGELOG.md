@@ -14,6 +14,12 @@
 
 ## CHANGELOG
 
+### v3.2.2
+
+- Add datebase backup service
+- Add actions
+- Update global console method
+
 ### v3.2.0
 
 - 更新 所有依赖

@@ -1,7 +1,7 @@
 /**
  * Expansion controller.
  * @file 扩展模块控制器
- * @description 分发 -> 统计/常量/七牛/github
+ * @description 分发 -> 统计/常量/七牛/github/数据库备份
  * @module module/expansion/controller
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -14,6 +14,7 @@ import { QiniuService, IUpToken } from '@app/processors/helper/helper.service.qi
 import { GoogleService } from '@app/processors/helper/helper.service.google';
 import { GithubService, IGithubRepositorie } from './expansion.service.github';
 import { StatisticService, ITodayStatistic } from './expansion.service.statistic';
+import { DBBackupcService } from './expansion.service.dbbackup';
 
 @Controller('expansion')
 export class ExpansionController {
@@ -23,6 +24,7 @@ export class ExpansionController {
     private readonly qiniuService: QiniuService,
     private readonly googleService: GoogleService,
     private readonly statisticService: StatisticService,
+    private readonly dbBackupcService: DBBackupcService,
   ) {}
 
   @Get('statistic')
@@ -49,6 +51,13 @@ export class ExpansionController {
   @HttpProcessor.handle('获取上传 Token')
   getQiniuUpToken(): IUpToken {
     return this.qiniuService.getToken();
+  }
+
+  @Patch('database-backup')
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('更新数据库备份')
+  updateDatabaseBackup(): Promise<void> {
+    return this.dbBackupcService.backup();
   }
 
   @Get('google-token')
