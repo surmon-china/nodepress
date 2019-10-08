@@ -154,6 +154,7 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
   * 扩展模块
     + GitHub：GitHub 项目列表业务
     + 统计：业务数据统计业务
+    + 备份：数据库备份业务（定时、手动）
     + 其他：其他第三方 token 等服务
 
 - 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
