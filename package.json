@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "3.2.0",
+  "version": "3.2.2",
   "description": "RESTful API service for Surmon.me blog",
   "author": {
     "name": "Surmon",
@@ -72,6 +72,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^2.6.3",
     "rxjs": "^6.5.2",
+    "shelljs": "^0.8.3",
     "simple-netease-cloud-music": "^0.4.4",
     "sitemap": "^3.2.2",
     "typegoose": "^5.8.1",

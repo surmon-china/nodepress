@@ -12,8 +12,9 @@ import { CommentProvider } from '@app/modules/comment/comment.model';
 import { ExpansionController } from './expansion.controller';
 import { GithubService } from './expansion.service.github';
 import { StatisticService } from './expansion.service.statistic';
+import { DBBackupcService } from './expansion.service.dbbackup';
 
-const services = [GithubService, StatisticService];
+const services = [GithubService, StatisticService, DBBackupcService];
 
 @Module({
   imports: [HttpModule],

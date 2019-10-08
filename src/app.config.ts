@@ -80,6 +80,14 @@ export const QINIU = {
   uploadURL: argv.qn_uploadURL || 'http://up.qiniu.com/',
 };
 
+export const DB_BACKUP = {
+  accessKey: argv.db_backup_qn_accessKey as string || 'dbbackup qiniu access key',
+  secretKey: argv.db_backup_qn_secretKey as string || 'dbbackup qiniu secret key',
+  bucket: argv.db_backup_qn_bucket as string || 'dbbackup qiniu bucket name',
+  backupShellPath: argv.db_backup_shell_path as string || '/example/path/to/xxx/dbbackup.sh',
+  backupFilePath: argv.db_backup_file_path as string || '/example/path/to/xxx/dbbackups/',
+};
+
 export const INFO = {
   name: packageJson.name,
   version: packageJson.version,

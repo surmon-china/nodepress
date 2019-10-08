@@ -26,7 +26,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const { log, warn, info } = console;
 const color = c => isDevMode ? c : '';
 Object.assign(global.console, {
-  log: (...args) => log('[log]', ...args),
+  log: (...args) => log('[log]', '[nodepress]', ...args),
   warn: (...args) => warn(color('\x1b[33m%s\x1b[0m'), '[warn]', '[nodepress]', ...args),
   info: (...args) => info(color('\x1b[34m%s\x1b[0m'), '[info]', '[nodepress]', ...args),
   error: (...args) => info(color('\x1b[31m%s\x1b[0m'), '[error]', '[nodepress]', ...args),
