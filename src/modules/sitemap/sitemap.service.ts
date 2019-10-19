@@ -33,7 +33,6 @@ export class SitemapService {
     { url: APP_CONFIG.APP.URL, changefreq: EnumChangefreq.ALWAYS, priority: 1 },
     { url: urlMap.getVlogPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
     { url: urlMap.getAboutPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
-    { url: urlMap.getProjectPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
     { url: urlMap.getSitemapPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
     { url: urlMap.getGuestbookPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
   ];
