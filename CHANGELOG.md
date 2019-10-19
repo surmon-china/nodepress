@@ -14,6 +14,10 @@
 
 ## CHANGELOG
 
+### v3.2.3
+
+- Remove project page with sitemap
+
 ### v3.2.2
 
 - Add datebase backup service
