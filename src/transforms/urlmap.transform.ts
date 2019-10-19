@@ -13,7 +13,6 @@ const ARTICLE_PATH = 'article';
 const GUESTBOOK_PAGE_PATH = 'guestbook';
 const VLOG_PAGE_PATH = 'vlog';
 const ABOUT_PAGE_PATH = 'about';
-const PROJECT_PAGE_PATH = 'project';
 const SITEMAP_PAGE_PATH = 'sitemap';
 
 export function getTagUrl(tagSlug: string): string {
@@ -38,10 +37,6 @@ export function getVlogPageUrl(): string {
 
 export function getAboutPageUrl(): string {
   return `${APP_CONFIG.APP.URL}/${ABOUT_PAGE_PATH}`;
-}
-
-export function getProjectPageUrl(): string {
-  return `${APP_CONFIG.APP.URL}/${PROJECT_PAGE_PATH}`;
 }
 
 export function getSitemapPageUrl(): string {
