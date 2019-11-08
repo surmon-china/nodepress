@@ -72,18 +72,15 @@ export const GOOGLE = {
   serverAccountFilePath: path.resolve(__dirname, '..', 'classified', 'google_service_account.json'),
 };
 
-export const QINIU = {
-  accessKey: argv.qn_accessKey || 'qiniu access key',
-  secretKey: argv.qn_secretKey || 'qiniu secret key',
-  bucket: argv.qn_bucket || 'qiniu bucket name',
-  origin: argv.qn_origin || 'qiniu origin url',
-  uploadURL: argv.qn_uploadURL || 'http://up.qiniu.com/',
+export const CLOUD_STORAGE = {
+  accessKey: argv.cs_access_key as string || 'cloudstorage access key for cloud storage',
+  secretKey: argv.cs_secret_key as string || 'cloudstorage secret key for cloud storage',
+  aliyunAcsARN: argv.cs_aliyun_acs as string || 'aliyun Acs ARN, like: acs:ram::xxx:role/xxx',
 };
 
 export const DB_BACKUP = {
-  accessKey: argv.db_backup_qn_accessKey as string || 'dbbackup qiniu access key',
-  secretKey: argv.db_backup_qn_secretKey as string || 'dbbackup qiniu secret key',
-  bucket: argv.db_backup_qn_bucket as string || 'dbbackup qiniu bucket name',
+  bucket: argv.db_backup_bucket as string || 'cloudstorage bucket name for dbbackup',
+  region: argv.db_backup_region as string || 'cloudstorage region for dbbackup, like: oss-cn-hangzhou',
   backupShellPath: argv.db_backup_shell_path as string || '/example/path/to/xxx/dbbackup.sh',
   backupFilePath: argv.db_backup_file_path as string || '/example/path/to/xxx/dbbackups/',
 };
@@ -96,5 +93,5 @@ export const INFO = {
   github: 'https://github.com/surmon-china',
   homepage: packageJson.homepage,
   issues: packageJson.bugs.url,
-  powered: ['Vue', 'Nuxt.js', 'nestjs', 'ReactNative', 'Angular', 'Bootstrap', 'Nodejs', 'MongoDB', 'Express', 'Nginx'],
+  powered: ['Vue', 'Nuxt.js', 'nestjs', 'ReactNative', 'Angular', 'Bootstrap', 'Nodejs', 'MongoDB', 'Express', 'Nginx', 'Redis'],
 };

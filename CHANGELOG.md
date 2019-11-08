@@ -14,6 +14,11 @@
 
 ## CHANGELOG
 
+### v3.2.4
+
+- Replace QINIU to Aliyun OSS
+- Update uptoken and dbbackup module
+
 ### v3.2.3
 
 - Remove project page with sitemap
