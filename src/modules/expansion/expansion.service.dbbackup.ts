@@ -50,7 +50,7 @@ export class DBBackupcService {
         console.info('DB Backup 文件源位置: ' + BACKUP_DATA_PATH);
 
         // 上传文件
-        this.cloudStorageService.updateFile(
+        this.cloudStorageService.uploadFile(
           fileName,
           BACKUP_DATA_PATH,
           APP_CONFIG.DB_BACKUP.bucket,
