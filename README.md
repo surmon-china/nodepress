@@ -169,7 +169,7 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
     + [评论过滤服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.akismet.ts)：使用 akismet 过滤 spam；暴露三个方法：校验 spam、提交 spam、提交 ham
     + [邮件服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
     + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
-    + [七牛存储服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.qiniu.ts)：生成七牛上传 Token，后期可以添加对七牛 SDK 的更多支持，比如管理文件
+    + [第三方云存储服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.oss.ts)：生成云存储上传 Token（目前服务为 Aliyun OSS），后期可以添加 SDK 的更多支持，比如管理文件
     + Google 证书（鉴权）服务：用于生成各 Google 应用的服务端证书
 
 
