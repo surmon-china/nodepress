@@ -53,15 +53,15 @@ export class DBBackupcService {
         this.cloudStorageService.uploadFile(
           fileName,
           BACKUP_DATA_PATH,
-          APP_CONFIG.DB_BACKUP.bucket,
           APP_CONFIG.DB_BACKUP.region,
+          APP_CONFIG.DB_BACKUP.bucket,
         )
         .then(result => {
           console.info('DB Backup 备份数据上传成功!', result);
           return resolve();
         })
         .catch(error => {
-          console.warn('DB Backup 备份数据上传状态响应异常!', error);
+          console.warn('DB Backup 备份数据失败!', error);
           reject(JSON.stringify(error.message));
         });
       });
