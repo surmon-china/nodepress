@@ -16,7 +16,7 @@
 
 **RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [nestjs](https://github.com/nestjs/nest), required [mongoDB](https://www.mongodb.com/) & [Redis](https://redis.io/).** 
 
-**适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务；基于 nestjs | nodejs；
+**适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务；基于 [nestjs](https://github.com/nestjs/nest) (nodejs)；
 需安装 [mongoDB](https://www.mongodb.com/) 和 [Redis](https://redis.io/) 方可完整运行。**
 
 v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 nodejs 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/nodejs)。
