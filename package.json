@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "3.2.4",
+  "version": "3.2.6",
   "description": "RESTful API service for Surmon.me blog",
   "author": {
     "name": "Surmon",
@@ -89,7 +89,7 @@
     "@types/lodash": "^4.14.136",
     "@types/marked": "0.6.5",
     "@types/mongodb": "^3.1.28",
-    "@types/mongoose": "^5.5.9",
+    "@types/mongoose": "^5.5.38",
     "@types/mongoose-paginate": "^5.0.6",
     "@types/node": "^12.6.8",
     "@types/node-schedule": "^1.2.3",

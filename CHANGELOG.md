@@ -14,23 +14,24 @@
 
 ## CHANGELOG
 
-### v3.2.4
+### v3.2.6
+- Upgrade mongoose
+- Update README.md
+- Update FUNDING.yml
 
+### v3.2.4
 - Replace QINIU to Aliyun OSS
 - Update uptoken and dbbackup module
 
 ### v3.2.3
-
 - Remove project page with sitemap
 
 ### v3.2.2
-
 - Add datebase backup service
 - Add actions
 - Update global console method
 
 ### v3.2.0
-
 - 更新 所有依赖
 - 更新 sitemap 模块及进行优化
 - 更新 缓存及数据库模块、在核心节点增加告警服务
@@ -49,7 +50,6 @@
 - 废弃 枚举常量接口
 
 ### v3.1.0
-
 - Update nestjs to v6.0
 - 修正邮件服务文案错误
 - 修复更新密码覆盖问题
@@ -58,27 +58,22 @@
 - 升级 Wallpaper 业务
 
 ### v3.0.0
-
 - 使用 [Nest](https://github.com/nestjs/nest) 进行重构
 - 增加 Bilibili Vlog 业务模块
 
 ### v2.2.0
-
 - opeitime logic
 - add constants api
 
 ### v2.1.4
-
 - 增加统计数据接口
 - 优化密码更新机制
 
 ### v2.1.2
-
 - 升级完善全站缓存机制
 - 增加时间定点任务库
 
 ### v2.1.0
-
 - 优化编码风格
 - 完善项目信息
 - 完善 Js Doc 信息
@@ -89,7 +84,6 @@
 - 为控制器和 Model 抽象出单独的状态常量
 
 ### v2.0.0
-
 - 文章增加原创、转载字段
 - 优化评论系统的业务
   * submitSpam 与移至黑名单功能映射
@@ -110,15 +104,12 @@
 - 增加检查 Token 有效性接口
 
 ### v1.2.0
-
 - 重构了播放器 API
 
 ### v1.1.0
-
 - 修复了评论数 bug
 
 ### v1.0.0
-
 - 驱动搜索引擎 ping 接口 文章发布后自动ping给搜索引擎 xml
 - 增加评论功能+黑名单，评论可自动校验spam，及黑名单（ip、邮箱、关键字的校验）
 - 使用 helmet + 手动优化，优化程序安全性
