@@ -19,16 +19,16 @@ git checkout master
 # sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
 
 echo "[deploy] Install dependencies..."
-npm ci
+yarn
 
 echo "[deploy] Stop service..."
 pm2 stop nodepress
 
 echo "[deploy] Remove old dist..."
-rm -r ./dist/*
+yarn prebuild
 
 echo "[deploy] Building..."
-npm run build
+yarn build
 
 echo "[deploy] Restarting..."
 pm2 restart nodepress

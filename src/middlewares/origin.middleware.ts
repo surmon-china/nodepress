@@ -19,7 +19,6 @@ import * as TEXT from '@app/constants/text.constant';
 @Injectable()
 export class OriginMiddleware implements NestMiddleware {
   use(request: Request, response: Response, next) {
-
     // 如果是生产环境，需要验证用户来源渠道，防止非正常请求
     if (isProdMode) {
       const { origin, referer } = request.headers;

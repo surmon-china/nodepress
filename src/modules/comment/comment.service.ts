@@ -13,9 +13,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
 import { getGuestbookPageUrl, getArticleUrl } from '@app/transforms/urlmap.transform';
 import { parseMarkdownToHtml } from '@app/transforms/markdown.transform';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ECommentPostType, ECommentState } from '@app/interfaces/state.interface';
-import { IpService } from '@app/processors/helper/helper.service.ip';
+import { IPService } from '@app/processors/helper/helper.service.ip';
 import { EmailService } from '@app/processors/helper/helper.service.email';
 import { AkismetService, EAkismetActionType } from '@app/processors/helper/helper.service.akismet';
 import { Option, Blacklist } from '@app/modules/option/option.model';
@@ -26,12 +26,12 @@ import { Comment, CreateCommentBase, PatchComments } from './comment.model';
 export class CommentService {
 
   constructor(
-    private readonly ipService: IpService,
+    private readonly ipService: IPService,
     private readonly emailService: EmailService,
     private readonly akismetService: AkismetService,
-    @InjectModel(Option) private readonly optionModel: TMongooseModel<Option>,
-    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
-    @InjectModel(Comment) private readonly commentModel: TMongooseModel<Comment>,
+    @InjectModel(Option) private readonly optionModel: MongooseModel<Option>,
+    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
+    @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>,
   ) {}
 
   // 邮件通知网站主及目标对象
@@ -147,7 +147,7 @@ export class CommentService {
 
         // 更新黑名单
         option.save()
-          .then(_ => console.info('评论状态转移后 -> 黑名单更新成功'))
+          .then(() => console.info('评论状态转移后 -> 黑名单更新成功'))
           .catch(error => console.warn('评论状态转移后 -> 黑名单更新失败', error));
 
       })
@@ -188,7 +188,6 @@ export class CommentService {
 
   // 创建评论
   public create(comment: CreateCommentBase, { ip, ua, referer }): Promise<Comment> {
-
     // 修正基础数据
     const newComment: Comment = Object.assign(comment, {
       ip,
@@ -209,12 +208,12 @@ export class CommentService {
       // 检验评论垃圾性质
       this.validateCommentByBlacklist(newComment),
       this.validateCommentByAkismet(newComment, permalink, referer),
-    ]).then(_ => {
+    ]).then(() => {
       // 查询物理 IP 位置
       return this.ipService.query(ip);
     }).then(ip_location => {
-      // 设置查询物理 IP 位置 + 保存评论
-      return new this.commentModel(Object.assign(newComment, { ip_location })).save();
+      // 保存评论
+      return this.commentModel.create({ ...newComment, ip_location });
     }).then(succcessComment => {
       // 发布成功后，向网站主及被回复者发送邮件提醒，更新文章聚合数据
       this.sendMailToAdminAndTargetUser(succcessComment, permalink);

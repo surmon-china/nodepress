@@ -90,8 +90,6 @@ export const INFO = {
   version: packageJson.version,
   author: packageJson.author,
   site: APP.URL,
-  github: 'https://github.com/surmon-china',
   homepage: packageJson.homepage,
-  issues: packageJson.bugs.url,
-  powered: ['Vue', 'Nuxt.js', 'nestjs', 'ReactNative', 'Angular', 'Bootstrap', 'Nodejs', 'MongoDB', 'Express', 'Nginx', 'Redis'],
+  issues: packageJson.bugs.url
 };

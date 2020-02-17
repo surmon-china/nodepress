@@ -38,6 +38,7 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   @JwtAuth
   
   Post '/check' (): <void>
+  Post '/renewal' (): <ITokenResult>
   ```
 
 #### Option (option)

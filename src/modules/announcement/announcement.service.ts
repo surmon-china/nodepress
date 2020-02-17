@@ -8,12 +8,12 @@
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { Announcement } from './announcement.model';
 
 @Injectable()
 export class AnnouncementService {
-  constructor(@InjectModel(Announcement) private readonly announcementModel: TMongooseModel<Announcement>) {}
+  constructor(@InjectModel(Announcement) private readonly announcementModel: MongooseModel<Announcement>) {}
 
   // 请求公告列表
   public getList(querys, options): Promise<PaginateResult<Announcement>> {
@@ -22,7 +22,7 @@ export class AnnouncementService {
 
   // 创建公告
   public create(announcement: Announcement): Promise<Announcement> {
-    return new this.announcementModel(announcement).save();
+    return this.announcementModel.create(announcement);
   }
 
   // 修改单个公告

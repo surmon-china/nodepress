@@ -9,7 +9,7 @@ import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
 import { getCategoryUrl } from '@app/transforms/urlmap.transform';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { SeoService } from '@app/processors/helper/helper.service.seo';
@@ -21,8 +21,8 @@ export class CategoryService {
   constructor(
     private readonly sitemapService: SitemapService,
     private readonly seoService: SeoService,
-    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
-    @InjectModel(Category) private readonly categoryModel: TMongooseModel<Category>,
+    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
+    @InjectModel(Category) private readonly categoryModel: MongooseModel<Category>,
   ) {}
 
   // 请求分类列表（及聚和数据）
@@ -66,7 +66,7 @@ export class CategoryService {
       .then(categories => {
         return categories.length
           ? Promise.reject('别名已被占用')
-          : new this.categoryModel(newCategory).save().then(category => {
+          : this.categoryModel.create(newCategory).then(category => {
               this.seoService.push(getCategoryUrl(category.slug));
               this.sitemapService.updateCache();
               return category;
@@ -144,7 +144,7 @@ export class CategoryService {
             bulk
               .find({ _id: { $in: Array.from(categories, c => c._id) }})
               .update({ $set: { pid: category.pid || null }});
-            return bulk.execute().then(_ => category);
+            return bulk.execute().then(() => category);
           });
       });
   }

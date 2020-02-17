@@ -6,10 +6,10 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, Typegoose } from 'typegoose';
+import { prop, arrayProp, plugin, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
-import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
+import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
 import { Extend } from '@app/models/extend.model';
 
 @pre<Tag>('findOneAndUpdate', function(next) {
@@ -25,7 +25,7 @@ import { Extend } from '@app/models/extend.model';
   incrementBy: 1,
 })
 
-export class Tag extends Typegoose {
+export class Tag extends defaultClasses.Base {
   @IsNotEmpty({ message: '标签名称？' })
   @IsString({ message: '字符串？' })
   @prop({ required: true, validate: /\S+/ })
@@ -33,7 +33,7 @@ export class Tag extends Typegoose {
 
   @IsNotEmpty({ message: '标签别名？' })
   @IsString({ message: '字符串？' })
-  @IsAlphanumeric({ message: 'slug 只允许字母和数字' })
+  @IsAlphanumeric('en-US', { message: 'slug 只允许字母和数字' })
   @MaxLength(30)
   @prop({ required: true, validate: /\S+/ })
   slug: string;
@@ -53,17 +53,14 @@ export class Tag extends Typegoose {
   @prop({ default: Date.now })
   update_at?: Date;
 
-  _id?: Types.ObjectId;
   count?: number;
 }
 
-export class DelTags extends Typegoose {
-
+export class DelTags {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
   tag_ids: Types.ObjectId[];
 }
 
-export const TagModel = getModelBySchema(Tag);
-export const TagProvider = getProviderByModel(TagModel);
+export const TagProvider = getProviderByTypegooseClass(Tag);
