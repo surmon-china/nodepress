@@ -38,8 +38,6 @@ import { ArticleModule } from '@app/modules/article/article.module';
 import { CommentModule } from '@app/modules/comment/comment.module';
 import { LikeModule } from '@app/modules/like/like.module';
 
-import * as APP_CONFIG from '@app/app.config';
-
 @Module({
   imports: [
     HelperModule,

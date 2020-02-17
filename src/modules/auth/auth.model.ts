@@ -5,12 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { prop, Typegoose } from 'typegoose';
+import { prop } from '@typegoose/typegoose';
 import { IsString, IsDefined, IsNotEmpty } from 'class-validator';
-import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
+import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
 
-export class Auth extends Typegoose {
-
+export class Auth {
   @IsDefined()
   @IsString({ message: '名字？' })
   @prop({ default: '' })
@@ -33,7 +32,7 @@ export class Auth extends Typegoose {
   new_password?: string;
 }
 
-export class AuthLogin extends Typegoose {
+export class AuthLogin {
 
   @IsDefined()
   @IsNotEmpty({ message: '密码？' })
@@ -41,5 +40,4 @@ export class AuthLogin extends Typegoose {
   password: string;
 }
 
-export const AuthModel = getModelBySchema(Auth);
-export const AuthProvider = getProviderByModel(AuthModel);
+export const AuthProvider = getProviderByTypegooseClass(Auth);

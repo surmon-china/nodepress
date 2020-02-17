@@ -9,7 +9,7 @@ import * as schedule from 'node-schedule';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { CacheService } from '@app/processors/cache/cache.service';
 import { Article } from '@app/modules/article/article.model';
 import { Comment } from '@app/modules/comment/comment.model';
@@ -34,9 +34,9 @@ export class StatisticService {
 
   constructor(
     private readonly cacheService: CacheService,
-    @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
-    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
-    @InjectModel(Comment) private readonly commentModel: TMongooseModel<Comment>,
+    @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>,
+    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
+    @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>,
   ) {
     // 每天 0 点数据清零
     schedule.scheduleJob('1 0 0 * * *', () => {
@@ -80,7 +80,7 @@ export class StatisticService {
       this.getArticlesCount(),
       this.getCommentsCount(),
     ])
-    .then(_ => Promise.resolve(this.resultData))
-    .catch(_ => Promise.resolve(this.resultData));
+    .then(() => Promise.resolve(this.resultData))
+    .catch(() => Promise.resolve(this.resultData));
   }
 }

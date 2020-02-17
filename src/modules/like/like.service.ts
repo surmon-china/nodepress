@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { InstanceType } from 'typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { Injectable } from '@nestjs/common';
 import { Option } from '@app/modules/option/option.model';
 import { Comment } from '@app/modules/comment/comment.model';
@@ -25,9 +25,9 @@ export class LikeService {
   public likeSite(): Promise<boolean> {
     return this.optionService
       .getOption()
-      .then((option: InstanceType<Option>) => {
+      .then((option: DocumentType<Option>) => {
         option.meta.likes++;
-        return option.save().then(_ => true);
+        return option.save().then(() => true);
       });
   }
 
@@ -35,9 +35,9 @@ export class LikeService {
   public likeComment(commentId: number): Promise<boolean> {
     return this.commentService
       .getDetailByNumberId(commentId)
-      .then((comment: InstanceType<Comment>) => {
+      .then((comment: DocumentType<Comment>) => {
         comment.likes++;
-        return comment.save().then(_ => true);
+        return comment.save().then(() => true);
       });
   }
 
@@ -47,7 +47,7 @@ export class LikeService {
       .getDetailByNumberId(articleId)
       .then(article => {
         article.meta.likes++;
-        return article.save().then(_ => true);
+        return article.save().then(() => true);
       });
   }
 }

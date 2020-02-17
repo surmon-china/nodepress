@@ -12,7 +12,7 @@ import { InjectModel } from '@app/transforms/model.transform';
 import { getTagUrl } from '@app/transforms/urlmap.transform';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 import { SeoService } from '@app/processors/helper/helper.service.seo';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { Article } from '@app/modules/article/article.model';
@@ -28,8 +28,8 @@ export class TagService {
     private readonly cacheService: CacheService,
     private readonly sitemapService: SitemapService,
     private readonly seoService: SeoService,
-    @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
-    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
+    @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>,
+    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
   ) {
     this.tagListCache = this.cacheService.promise({
       ioMode: true,
@@ -61,7 +61,6 @@ export class TagService {
 
   // 请求标签列表（及聚和数据）
   public getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
-
     const matchState = {
       state: EPublishState.Published,
       public: EPublicState.Public,
@@ -94,9 +93,7 @@ export class TagService {
       .then(existedTags => {
         return existedTags.length
           ? Promise.reject('别名已被占用')
-          : new this.tagModel(newTag)
-            .save()
-            .then(tag => {
+          : this.tagModel.create(newTag).then(tag => {
               this.seoService.push(getTagUrl(tag.slug));
               this.sitemapService.updateCache();
               this.updateListCache();

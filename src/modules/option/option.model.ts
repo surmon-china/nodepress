@@ -5,9 +5,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { prop, arrayProp, pre, Typegoose } from 'typegoose';
+import { prop, arrayProp, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, IsInt, IsUrl, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator';
-import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
+import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
 
 // 元信息
 class Meta {
@@ -39,8 +39,7 @@ export class Blacklist {
   next();
 })
 
-export class Option extends Typegoose {
-
+export class Option extends defaultClasses.Base {
   @IsNotEmpty({ message: '标题？' })
   @IsString()
   @prop({ required: true, validate: /\S+/ })
@@ -90,5 +89,4 @@ export class Option extends Typegoose {
   update_at?: Date;
 }
 
-export const OptionModel = getModelBySchema(Option);
-export const OptionProvider = getProviderByModel(OptionModel);
+export const OptionProvider = getProviderByTypegooseClass(Option);

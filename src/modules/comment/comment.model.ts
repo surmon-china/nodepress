@@ -6,10 +6,10 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, Typegoose } from 'typegoose';
+import { prop, arrayProp, plugin, pre, index, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsBoolean, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
-import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
+import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
 import { ECommentParentType, ECommentState } from '@app/interfaces/state.interface';
 import { Extend } from '@app/models/extend.model';
 
@@ -34,8 +34,7 @@ export class Author {
 }
 
 // 创建评论的基数据
-export class CreateCommentBase extends Typegoose {
-
+export class CreateCommentBase extends defaultClasses.Base {
   // 评论所在的文章 Id
   @IsNotEmpty({ message: '文章 Id？' })
   @IsInt()
@@ -75,8 +74,8 @@ export class CreateCommentBase extends Typegoose {
   incrementBy: 1,
 })
 
+@index({ post_id: 1 })
 export class Comment extends CreateCommentBase {
-
   // 评论发布状态
   @IsIn([ECommentState.Auditing, ECommentState.Deleted, ECommentState.Published, ECommentState.Spam])
   @IsInt()
@@ -114,7 +113,7 @@ export class Comment extends CreateCommentBase {
   extends?: Extend[];
 }
 
-export class DelComments extends Typegoose {
+export class DelComments {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
@@ -132,5 +131,4 @@ export class PatchComments extends DelComments {
   state: ECommentState;
 }
 
-export const CommentModel = getModelBySchema(Comment);
-export const CommentProvider = getProviderByModel(CommentModel);
+export const CommentProvider = getProviderByTypegooseClass(Comment);
