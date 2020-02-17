@@ -38,7 +38,6 @@ export class Blacklist {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
-
 export class Option extends defaultClasses.Base {
   @IsNotEmpty({ message: '标题？' })
   @IsString()
