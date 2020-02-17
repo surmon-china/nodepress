@@ -42,7 +42,6 @@ export class Meta {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
-
 @plugin(mongoosePaginate)
 @plugin(mongooseAutoIncrement.plugin, {
   model: Article.name,
@@ -50,7 +49,6 @@ export class Meta {
   startAt: 1,
   incrementBy: 1,
 })
-
 @modelOptions({
   schemaOptions: {
     toObject: { getters: true },
