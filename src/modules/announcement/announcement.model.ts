@@ -16,7 +16,6 @@ import { EPublishState } from '@app/interfaces/state.interface';
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
-
 @plugin(mongoosePaginate)
 @plugin(mongooseAutoIncrement.plugin, {
   model: Announcement.name,
@@ -24,7 +23,6 @@ import { EPublishState } from '@app/interfaces/state.interface';
   startAt: 1,
   incrementBy: 1,
 })
-
 export class Announcement extends defaultClasses.Base {
   @IsNotEmpty({ message: '内容？' })
   @IsString({ message: '字符串？' })
@@ -50,4 +48,5 @@ export class DelAnnouncements {
   @ArrayUnique()
   announcement_ids: Types.ObjectId[];
 }
+
 export const AnnouncementProvider = getProviderByTypegooseClass(Announcement);

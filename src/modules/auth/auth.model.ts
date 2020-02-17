@@ -33,7 +33,6 @@ export class Auth {
 }
 
 export class AuthLogin {
-
   @IsDefined()
   @IsNotEmpty({ message: '密码？' })
   @IsString({ message: '字符串？' })

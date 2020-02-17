@@ -65,7 +65,6 @@ export class CreateCommentBase extends defaultClasses.Base {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
-
 @plugin(mongoosePaginate)
 @plugin(mongooseAutoIncrement.plugin, {
   model: Comment.name,
@@ -73,7 +72,6 @@ export class CreateCommentBase extends defaultClasses.Base {
   startAt: 1,
   incrementBy: 1,
 })
-
 @index({ post_id: 1 })
 export class Comment extends CreateCommentBase {
   // 评论发布状态

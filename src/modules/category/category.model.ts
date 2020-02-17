@@ -16,7 +16,6 @@ import { Extend } from '@app/models/extend.model';
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
-
 @plugin(mongoosePaginate)
 @plugin(mongooseAutoIncrement.plugin, {
   model: Category.name,
@@ -24,7 +23,6 @@ import { Extend } from '@app/models/extend.model';
   startAt: 1,
   incrementBy: 1,
 })
-
 export class Category extends defaultClasses.Base {
   @IsNotEmpty({ message: '分类名称？' })
   @IsString({ message: '字符串？' })
