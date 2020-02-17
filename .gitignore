@@ -1,22 +1,50 @@
-# compiled output
-/dist
-/tmp
 
 # gitkeep
 /classified/*
 !/classified/.gitkeep
+dump.rdb
+ecosystem.config.js
+
+# compiled output
+/dist
+/tmp
+/node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 *.pydevproject
 .project
 .metadata
-/node_modules
-node_modules
 *.tmp
 *.bak
 *.swp
 .DS_Store
-# dump.rdb
-ecosystem.config.js
 
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*

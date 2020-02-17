@@ -8,7 +8,7 @@
 import * as APP_CONFIG from '@app/app.config';
 import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
-import { IpService } from '@app/processors/helper/helper.service.ip';
+import { IPService } from '@app/processors/helper/helper.service.ip';
 import { EmailService } from '@app/processors/helper/helper.service.email';
 import { HttpProcessor } from '@app/decorators/http.decorator';
 import { QueryParams } from '@app/decorators/query-params.decorator';
@@ -19,7 +19,7 @@ import { Auth, AuthLogin } from './auth.model';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly ipService: IpService,
+    private readonly ipService: IPService,
     private readonly emailService: EmailService,
     private readonly authService: AuthService,
   ) {}
@@ -39,24 +39,22 @@ export class AuthController {
 
   @Post('login')
   @HttpProcessor.handle({ message: '登陆', error: HttpStatus.BAD_REQUEST })
-  createToken(@QueryParams() { visitors: { ip }}, @Body() body: AuthLogin): Promise<ITokenResult> {
+  login(@QueryParams() { visitors: { ip }}, @Body() body: AuthLogin): Promise<ITokenResult> {
     return this.authService
       .adminLogin(body.password)
       .then(token => {
-        this.ipService
-          .query(ip)
-          .then(ipLocation => {
-            const subject = '博客有新的登陆行为';
-            const city = ipLocation && ipLocation.city || '未知城市';
-            const country = ipLocation && ipLocation.country || '未知国家';
-            const content = `来源 IP：${ip}，地理位置为：${country} - ${city}`;
-            this.emailService.sendMail({
-              subject,
-              to: APP_CONFIG.EMAIL.admin,
-              text: `${subject}，${content}`,
-              html: `${subject}，${content}`,
-            });
+        this.ipService.query(ip).then(ipLocation => {
+          const subject = '博客有新的登陆行为';
+          const city = ipLocation && ipLocation.city || '未知城市';
+          const country = ipLocation && ipLocation.country || '未知国家';
+          const content = `来源 IP：${ip}，地理位置为：${country} - ${city}`;
+          this.emailService.sendMail({
+            subject,
+            to: APP_CONFIG.EMAIL.admin,
+            text: `${subject}，${content}`,
+            html: `${subject}，${content}`,
           });
+        });
         return token;
       });
   }
@@ -67,5 +65,13 @@ export class AuthController {
   @HttpProcessor.handle('检测 Token')
   checkToken(): string {
     return 'ok';
+  }
+
+  // Token 续期，拿旧 Token 换新 Token
+  @Post('renewal')
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('Token 续签')
+  renewalToken(): ITokenResult {
+    return this.authService.createToken();
   }
 }

@@ -1,7 +1,5 @@
 
 ## TODO
-
-- 集成 [RSS](https://github.com/dylang/node-rss) 订阅接口
 - 删除一条存在子级评论的评论时，子级评论的 PID 需要置空
 - ~~service 的命名需要规范~~
 - ~~非 Exec 之前得到的是非标准的 Promise~~
@@ -13,6 +11,18 @@
 - ~~模型构造器日志注释、入口 log 定时器~~
 
 ## CHANGELOG
+
+### v3.3.0
+- Add renewal API with Auth module
+- Improve akismet module
+- Improve sitemap module
+- Remove geo-ip service
+- Upgrade Nest
+- Upgrade Mongoose (remove MongoDB's autoConnect)
+- Upgrade RedisStore (workaround `is_cacheable_value` option)
+- Upgrade typegoose (Remove `getModelForSchema`)
+- Upgrade all dependencies
+- Replace ESLint with TSLint
 
 ### v3.2.6
 - Upgrade mongoose

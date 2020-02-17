@@ -6,10 +6,10 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, plugin, pre, Typegoose } from 'typegoose';
+import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
-import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
+import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
 import { EPublishState } from '@app/interfaces/state.interface';
 
 @pre<Announcement>('findOneAndUpdate', function(next) {
@@ -25,8 +25,7 @@ import { EPublishState } from '@app/interfaces/state.interface';
   incrementBy: 1,
 })
 
-export class Announcement extends Typegoose {
-
+export class Announcement extends defaultClasses.Base {
   @IsNotEmpty({ message: '内容？' })
   @IsString({ message: '字符串？' })
   @prop({ required: true, validate: /\S+/ })
@@ -45,12 +44,10 @@ export class Announcement extends Typegoose {
   update_at?: Date;
 }
 
-export class DelAnnouncements extends Typegoose {
-
+export class DelAnnouncements {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
   announcement_ids: Types.ObjectId[];
 }
-export const AnnouncementModel = getModelBySchema(Announcement);
-export const AnnouncementProvider = getProviderByModel(AnnouncementModel);
+export const AnnouncementProvider = getProviderByTypegooseClass(Announcement);

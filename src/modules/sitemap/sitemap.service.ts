@@ -10,12 +10,12 @@ import * as path from 'path';
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as urlMap from '@app/transforms/urlmap.transform';
-import sitemap, { Sitemap, EnumChangefreq } from 'sitemap';
+import { Sitemap, EnumChangefreq } from 'sitemap';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublishState, EPublicState } from '@app/interfaces/state.interface';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { Category } from '@app/modules/category/category.model';
 import { Article } from '@app/modules/article/article.model';
 import { Tag } from '@app/modules/tag/tag.model';
@@ -37,118 +37,93 @@ export class SitemapService {
     { url: urlMap.getGuestbookPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
   ];
 
-  private sitemap: Sitemap;
-  private sitemapCache: ICacheIoResult<any>;
+  private sitemapCache: ICacheIoResult<string>;
 
   constructor(
     private readonly cacheService: CacheService,
-    @InjectModel(Tag) private readonly tagModel: TMongooseModel<Tag>,
-    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
-    @InjectModel(Category) private readonly categoryModel: TMongooseModel<Category>,
+    @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>,
+    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
+    @InjectModel(Category) private readonly categoryModel: MongooseModel<Category>,
   ) {
     this.sitemapCache = this.cacheService.promise({
       ioMode: true,
       key: CACHE_KEY.SITEMAP,
-      promise: this.queryAndWriteToFile.bind(this),
+      promise: this.getMapXML.bind(this),
     });
     this.updateCache();
   }
 
-  // 获取并将地图写入文件
-  private queryAndWriteToFile(): Promise<any> {
-    return this.reBuild().then(_ => {
-      return new Promise((resolve, reject) => {
-        this.sitemap.toXML((error, xml) => {
-          if (error) {
-            console.warn('生成网站地图 XML 时发生错误', error);
-            return reject(error);
-          } else {
-            fs.writeFileSync(this.xmlFilePath, this.sitemap.toString());
-            return resolve(xml);
-          }
-        });
-      });
-    });
-  }
-
-  // 构建地图
-  private reBuild(): Promise<Sitemap> {
-    this.sitemap = sitemap.createSitemap({
-      cacheTime: 666666,
-      urls: [...this.pagesMap],
-      // hostname: APP_CONFIG.APP.URL,
-    });
-    return Promise.all([
-      this.addTagsMap(),
-      this.addCategoriesMap(),
-      this.addArticlesMap(),
-    ])
-      .then(_ => Promise.resolve(this.sitemap))
-      .catch(error => {
-        console.warn('生成网站地图前获取数据库发生错误', error);
-        return Promise.resolve(this.sitemap);
-      });
-  }
-
-  private addTagsMap(): Promise<Tag[]> {
+  private getAllTags(): Promise<Tag[]> {
     return this.tagModel
       .find()
       .sort({ _id: ESortType.Desc })
-      .exec()
-      .then(tags => {
-        tags.forEach(tag => {
-          this.sitemap.add({
-            priority: 0.6,
-            changefreq: EnumChangefreq.DAILY,
-            url: urlMap.getTagUrl(tag.slug),
-          });
-        });
-        return tags;
-      });
+      .exec();
   }
 
-  private addCategoriesMap(): Promise<Category[]> {
+  private getAllCategories(): Promise<Category[]> {
     return this.categoryModel
       .find()
       .sort({ _id: ESortType.Desc })
+      .exec();
+  }
+
+  private addAllArticles(): Promise<Article[]> {
+    return this.articleModel
+      .find({ state: EPublishState.Published, public: EPublicState.Public })
+      .sort({ _id: ESortType.Desc })
       .exec()
-      .then(categories => {
+  }
+
+  // 构建地图
+  private getMapXML(): Promise<string> {
+    const sitemap = new Sitemap({
+      cacheTime: 666666,
+      urls: [...this.pagesMap]
+    });
+    return Promise.all([
+      this.getAllCategories().then(categories => {
         categories.forEach(category => {
-          this.sitemap.add({
+          sitemap.add({
             priority: 0.6,
             changefreq: EnumChangefreq.DAILY,
             url: urlMap.getCategoryUrl(category.slug),
           });
         });
-        return categories;
-      });
-  }
-
-  private addArticlesMap(): Promise<Article[]> {
-    return this.articleModel
-      .find({ state: EPublishState.Published, public: EPublicState.Public })
-      .sort({ _id: ESortType.Desc })
-      .exec()
-      .then(articles => {
+      }),
+      this.getAllTags().then(tags => {
+        tags.forEach(tag => {
+          sitemap.add({
+            priority: 0.6,
+            changefreq: EnumChangefreq.DAILY,
+            url: urlMap.getTagUrl(tag.slug),
+          });
+        });
+      }),
+      this.addAllArticles().then(articles => {
         articles.forEach(article => {
-          this.sitemap.add({
+          sitemap.add({
             priority: 0.8,
             changefreq: EnumChangefreq.DAILY,
             url: urlMap.getArticleUrl(article.id),
             lastmodISO: article.update_at.toISOString(),
           });
         });
-        return articles;
-      });
+      })
+    ])
+      .catch(error => console.warn('生成网站地图前获取数据发生错误：', error))
+      .then(() => sitemap.toString(true))
   }
 
   // 获取地图缓存
-  public getCache(): Promise<any> {
+  public getCache() {
     return this.sitemapCache.get();
   }
 
-  // 更新地图缓存
-  public updateCache(): Promise<any> {
-    return this.sitemapCache.update();
+  // 更新地图缓存（内部首次实例化，外部主动调用）
+  public updateCache() {
+    return this.sitemapCache.update().then(xml => {
+      // 每次缓存被更新时，都重新写入文件
+      fs.writeFileSync(this.xmlFilePath, xml)
+    });
   }
 }

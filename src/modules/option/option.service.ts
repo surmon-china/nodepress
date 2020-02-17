@@ -7,12 +7,12 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { Option } from './option.model';
 
 @Injectable()
 export class OptionService {
-  constructor(@InjectModel(Option) private readonly optionModel: TMongooseModel<Option>) {}
+  constructor(@InjectModel(Option) private readonly optionModel: MongooseModel<Option>) {}
 
   // 请求设置
   public getOption(): Promise<Option> {
@@ -31,8 +31,8 @@ export class OptionService {
       .exec()
       .then(extantOption => {
         return extantOption
-          ? Object.assign(extantOption, option).save()
-          : new this.optionModel(option).save();
+          ? Object.assign(extantOption, option).save().then(() => extantOption)
+          : this.optionModel.create(option);
       });
   }
 }

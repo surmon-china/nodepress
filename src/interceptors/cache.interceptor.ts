@@ -60,9 +60,9 @@ export class HttpCacheInterceptor implements NestInterceptor {
     const httpServer = this.httpAdapterHost.httpAdapter;
     const isHttpApp = httpServer && !!httpServer.getRequestMethod;
     const isGetRequest = isHttpApp && httpServer.getRequestMethod(request) === RequestMethod[RequestMethod.GET];
-    const requestUrl = httpServer.getRequestUrl(request);
     const cacheKey = this.reflector.get(META.HTTP_CACHE_KEY_METADATA, context.getHandler());
     const isMatchedCache = isHttpApp && isGetRequest && cacheKey;
+    // const requestUrl = httpServer.getRequestUrl(request);
     // console.log('isMatchedCache', isMatchedCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);
     // 缓存命中策略 -> http -> GET -> cachekey -> url -> undefined
     return isMatchedCache ? cacheKey : undefined;

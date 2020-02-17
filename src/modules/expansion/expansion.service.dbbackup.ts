@@ -41,11 +41,10 @@ export class DBBackupcService {
         return reject('DB Backup shell 脚本不存在');
       }
 
-      shell.exec(`sh ${BACKUP_SHELL_PATH}`, (code, stdout, stderr) => {
-
+      shell.exec(`sh ${BACKUP_SHELL_PATH}`, (code, out) => {
         const fileDate = moment(new Date()).format('YYYY-MM-DD-HH:mm');
         const fileName = `nodepress-db-backup-${fileDate}${BACKUP_FILE_EXT}`;
-        console.info('DB Backup shell 执行完成！', code);
+        console.info('DB Backup shell 执行完成！', code, out);
         console.info('DB Backup 上传文件: ' + fileName);
         console.info('DB Backup 文件源位置: ' + BACKUP_DATA_PATH);
 
