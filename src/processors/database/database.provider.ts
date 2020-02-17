@@ -5,7 +5,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
 import * as APP_CONFIG from '@app/app.config';
 import { mongoose } from '@app/transforms/mongoose.transform';
 import { EmailService } from '@app/processors/helper/helper.service.email';
@@ -16,27 +15,28 @@ export const databaseProvider = {
   provide: DB_CONNECTION_TOKEN,
   useFactory: async (emailService: EmailService) => {
 
+    let reConnectionTask = null;
     const RECONNET_INTERVAL = 6000;
 
-    // 发送告警邮件（18 秒节流）
-    const sendAlarmMail = lodash.throttle((error: string) => {
+    // 发送告警邮件（当发送邮件时，数据库已达到万劫不复之地）
+    const sendAlarmMail = (error: string) => {
       emailService.sendMail({
         to: APP_CONFIG.EMAIL.admin,
         subject: `${APP_CONFIG.APP.NAME} 数据库发生异常！`,
         text: error,
         html: `<pre><code>${error}</code></pre>`,
       });
-    }, RECONNET_INTERVAL * 3);
+    };
 
     // 连接数据库
     function connection() {
       return mongoose.connect(APP_CONFIG.MONGODB.uri, {
+        useUnifiedTopology: true,
         useCreateIndex: true,
         useNewUrlParser: true,
         useFindAndModify: false,
-        autoReconnect: true,
-        reconnectInterval: RECONNET_INTERVAL,
-      }, error => {});
+        promiseLibrary: global.Promise
+      });
     }
 
     mongoose.connection.on('connecting', () => {
@@ -45,11 +45,13 @@ export const databaseProvider = {
 
     mongoose.connection.on('open', () => {
       console.info('数据库连接成功！');
+      clearTimeout(reConnectionTask);
+      reConnectionTask = null;
     });
 
     mongoose.connection.on('disconnected', () => {
       console.error(`数据库失去连接！尝试 ${RECONNET_INTERVAL / 1000}s 后重连`);
-      setTimeout(connection, RECONNET_INTERVAL);
+      reConnectionTask = setTimeout(connection, RECONNET_INTERVAL);
     });
 
     mongoose.connection.on('error', error => {

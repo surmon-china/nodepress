@@ -55,6 +55,6 @@ marked.setOptions({
       最终选定方案 1，使用 escapeHtml 对 text、html、tag 进行 escape，对 link、image 进行 cleanLink
 */
 
-export function parseMarkdownToHtml(value: string, sanitize: boolean = true): string {
+export function parseMarkdownToHtml(value: string, sanitize = true): string {
   return marked(value, { sanitize });
 }

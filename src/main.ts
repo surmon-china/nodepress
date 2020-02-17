@@ -52,6 +52,6 @@ async function bootstrap() {
   return await app.listen(APP_CONFIG.APP.PORT);
 }
 
-bootstrap().then(_ => {
+bootstrap().then(() => {
   console.info(`NodePress Run！port at ${APP_CONFIG.APP.PORT}, env: ${environment}`);
 });

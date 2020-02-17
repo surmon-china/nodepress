@@ -39,7 +39,7 @@ export class EmailService {
 
   // 验证有效性
   private verifyClient(): void {
-    return this.transporter.verify((error, success) => {
+    return this.transporter.verify((error) => {
       if (error) {
         this.clientIsValid = false;
         setTimeout(this.verifyClient.bind(this), 1000 * 60 *  30);

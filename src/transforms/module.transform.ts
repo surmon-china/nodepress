@@ -8,7 +8,6 @@
 
 import * as path from 'path';
 export const packageJson = require(path.resolve(__dirname, '..', '..', 'package.json'));
-
 export default {
   packageJson,
 };

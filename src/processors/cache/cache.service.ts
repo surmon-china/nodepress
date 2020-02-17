@@ -123,33 +123,26 @@ export class CacheService {
     const { key, promise, ioMode = false } = options;
 
     // 包装任务
-    const promiseTask = (resolve, reject) => {
-      return promise()
-        .then(data => {
-          this.set(key, data);
-          resolve(data);
-        })
-        .catch(reject);
+    const doPromiseTask = () => {
+      return promise().then(data => {
+        this.set(key, data);
+        return data;
+      })
     };
 
     // Promise 拦截模式（返回死数据）
     const handlePromiseMode = () => {
-      return new Promise((resolve, reject) => {
-        this
-          .get(key)
-          .then(value => {
-            value !== null && value !== undefined
-              ? resolve(value)
-              : promiseTask(resolve, reject);
-          })
-          .catch(reject);
-      });
+      return this.get(key).then(value => {
+        return value !== null && value !== undefined
+          ? value
+          : doPromiseTask();
+      })
     };
 
     // 双向同步模式（返回获取器和更新器）
     const handleIoMode = () => ({
       get: handlePromiseMode,
-      update: () => new Promise(promiseTask),
+      update: doPromiseTask
     });
 
     return ioMode ? handleIoMode() : handlePromiseMode();
@@ -179,7 +172,7 @@ export class CacheService {
     if (timeout) {
       const doPromise = () => {
         promiseTask()
-          .then(_ => {
+          .then(() => {
             setTimeout(doPromise, timeout.success);
           })
           .catch(error => {

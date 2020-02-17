@@ -11,9 +11,9 @@ import { AkismetService } from './helper.service.akismet';
 import { CloudStorageService } from './helper.service.cs';
 import { EmailService } from './helper.service.email';
 import { SeoService } from './helper.service.seo';
-import { IpService } from './helper.service.ip';
+import { IPService } from './helper.service.ip';
 
-const services = [GoogleService, AkismetService, CloudStorageService, EmailService, SeoService, IpService];
+const services = [GoogleService, AkismetService, CloudStorageService, EmailService, SeoService, IPService];
 
 @Global()
 @Module({

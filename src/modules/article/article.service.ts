@@ -7,7 +7,7 @@
 
 import * as lodash from 'lodash';
 import * as CACHE_KEY from '@app/constants/cache.constant';
-import { InstanceType } from 'typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transforms/model.transform';
@@ -16,7 +16,7 @@ import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { CacheService, TCacheIntervalResult } from '@app/processors/cache/cache.service';
 import { SitemapService } from '@app/modules/sitemap/sitemap.service';
 import { TagService } from '@app/modules/tag/tag.service';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { Article, getDefaultMeta } from './article.model';
 
@@ -31,7 +31,7 @@ export class ArticleService {
     private readonly cacheService: CacheService,
     private readonly sitemapService: SitemapService,
     private readonly seoService: SeoService,
-    @InjectModel(Article) private readonly articleModel: TMongooseModel<Article>,
+    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
   ) {
     this.hotArticleListCache = this.cacheService.interval({
       timeout: {
@@ -88,7 +88,7 @@ export class ArticleService {
   }
 
   // 获取文章详情（使用数字 ID）
-  public getDetailByNumberId(articleId: number): Promise<InstanceType<Article>> {
+  public getDetailByNumberId(articleId: number): Promise<DocumentType<Article>> {
     return this.articleModel
       .findOne({
         id: articleId,
@@ -136,9 +136,10 @@ export class ArticleService {
 
   // 创建文章
   public create(newArticle: Article): Promise<Article> {
-    Object.assign(newArticle, { meta: getDefaultMeta() });
-    return new this.articleModel(newArticle)
-      .save()
+    return this.articleModel.create({
+      ...newArticle,
+      meta: getDefaultMeta()
+    })
       .then(article => {
         this.seoService.push(getArticleUrl(article.id));
         this.sitemapService.updateCache();

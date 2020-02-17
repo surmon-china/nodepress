@@ -11,7 +11,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@app/transforms/model.transform';
 import { decodeBase64, decodeMd5 } from '@app/transforms/codec.transform';
-import { TMongooseModel } from '@app/interfaces/mongoose.interface';
+import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ITokenResult } from './auth.interface';
 import { Auth } from './auth.model';
 
@@ -19,20 +19,20 @@ import { Auth } from './auth.model';
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    @InjectModel(Auth) private readonly authModel: TMongooseModel<Auth>,
+    @InjectModel(Auth) private readonly authModel: MongooseModel<Auth>,
   ) {}
-
-  // 签发 Token
-  private createToken(): ITokenResult {
-    return {
-      access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
-      expires_in: APP_CONFIG.AUTH.expiresIn as number,
-    };
-  }
 
   // 获取已有密码
   private getExtantPassword(auth: Auth): string {
     return auth && auth.password || decodeMd5(APP_CONFIG.AUTH.defaultPassword as string);
+  }
+
+  // 签发 Token
+  public createToken(): ITokenResult {
+    return {
+      access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
+      expires_in: APP_CONFIG.AUTH.expiresIn as number,
+    };
   }
 
   // 验证 Auth 数据
@@ -85,7 +85,7 @@ export class AuthService {
         // 更新数据
         const action = extantAuth && !!extantAuth._id
           ? Object.assign(extantAuth, auth).save()
-          : new this.authModel(auth).save();
+          : this.authModel.create(auth);
 
         return action.then(data => {
           data = data.toObject();

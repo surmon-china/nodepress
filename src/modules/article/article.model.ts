@@ -6,10 +6,10 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, Typegoose, Ref } from 'typegoose';
+import { prop, arrayProp, plugin, pre, Ref, defaultClasses, modelOptions } from '@typegoose/typegoose';
 import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
-import { getModelBySchema, getProviderByModel } from '@app/transforms/model.transform';
+import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
 import { EPublishState, EPublicState, EOriginState } from '@app/interfaces/state.interface';
 import { Category } from '@app/modules/category/category.model';
 import { Extend } from '@app/models/extend.model';
@@ -51,7 +51,13 @@ export class Meta {
   incrementBy: 1,
 })
 
-export class Article extends Typegoose {
+@modelOptions({
+  schemaOptions: {
+    toObject: { getters: true },
+  }
+})
+export class Article extends defaultClasses.Base {
+  id: number
 
   @IsNotEmpty({ message: '文章标题？' })
   @IsString({ message: '字符串？' })
@@ -64,7 +70,6 @@ export class Article extends Typegoose {
   content: string;
 
   // 列表时用的文章内容虚拟属性
-  @prop()
   get t_content() {
     const content = this.content;
     return content ? content.substring(0, 130) : content;
@@ -140,7 +145,7 @@ export class Article extends Typegoose {
   related?: Article[];
 }
 
-export class DelArticles extends Typegoose {
+export class DelArticles {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
@@ -155,9 +160,4 @@ export class PatchArticles extends DelArticles {
   state: EPublishState;
 }
 
-export const ArticleModel = getModelBySchema(Article, {
-  schemaOptions: {
-    toObject: { getters: true },
-  },
-});
-export const ArticleProvider = getProviderByModel(ArticleModel);
+export const ArticleProvider = getProviderByTypegooseClass(Article);
