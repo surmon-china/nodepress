@@ -197,26 +197,26 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
 
 ```bash
 # 安装
-$ npm ci
+$ yarn
 
 # 开发
-$ npm run start:dev
+$ yarn start:dev
 
 # 测试
-$ npm run lint
-$ npm run test
-$ npm run test:e2e
-$ npm run test:cov
-$ npm run test:watch
+$ yarn lint
+$ yarn test
+$ yarn test:e2e
+$ yarn test:cov
+$ yarn test:watch
 
 # 构建
-$ npm run build
+$ yarn build
 
 # 生产环境运行
-$ npm run start:prod
+$ yarn start:prod
 
 # 更新 GEO IP 库数据
-$ npm run updategeodb
+$ yarn updategeodb
 ```
 
 ## Actions setup
