@@ -13,9 +13,10 @@
 ## CHANGELOG
 
 ### v3.3.0
+- Rename Sitemap module to Syndication module
+- Add RSS service with Syndication module
 - Add renewal API with Auth module
 - Improve akismet module
-- Improve sitemap module
 - Remove geo-ip service
 - Upgrade Nest
 - Upgrade Mongoose (remove MongoDB's autoConnect)

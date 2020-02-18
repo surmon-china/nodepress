@@ -6,7 +6,7 @@
  */
 
 import { Module } from '@nestjs/common';
-import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
+import { SyndicationModule } from '@app/modules/syndication/syndication.module';
 import { CategoryModule } from '@app/modules/category/category.module';
 import { TagModule } from '@app/modules/tag/tag.module';
 import { ArticleController } from './article.controller';
@@ -17,7 +17,7 @@ import { ArticleService } from './article.service';
   imports: [
     TagModule,
     CategoryModule,
-    SitemapModule,
+    SyndicationModule,
   ],
   controllers: [ArticleController],
   providers: [ArticleProvider, ArticleService],

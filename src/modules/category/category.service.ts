@@ -11,7 +11,7 @@ import { InjectModel } from '@app/transforms/model.transform';
 import { getCategoryUrl } from '@app/transforms/urlmap.transform';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { EPublicState, EPublishState } from '@app/interfaces/state.interface';
-import { SitemapService } from '@app/modules/sitemap/sitemap.service';
+import { SyndicationService } from '@app/modules/syndication/syndication.service';
 import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { Article } from '@app/modules/article/article.model';
 import { Category } from './category.model';
@@ -19,7 +19,7 @@ import { Category } from './category.model';
 @Injectable()
 export class CategoryService {
   constructor(
-    private readonly sitemapService: SitemapService,
+    private readonly syndicationService: SyndicationService,
     private readonly seoService: SeoService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
     @InjectModel(Category) private readonly categoryModel: MongooseModel<Category>,
@@ -68,7 +68,7 @@ export class CategoryService {
           ? Promise.reject('别名已被占用')
           : this.categoryModel.create(newCategory).then(category => {
               this.seoService.push(getCategoryUrl(category.slug));
-              this.sitemapService.updateCache();
+              this.syndicationService.updateCache();
               return category;
             });
       });
@@ -116,7 +116,7 @@ export class CategoryService {
               .findByIdAndUpdate(categoryId, newCategory, { new: true })
               .then(category => {
                 this.seoService.push(getCategoryUrl(category.slug));
-                this.sitemapService.updateCache();
+                this.syndicationService.updateCache();
                 return category;
               });
       });
@@ -129,7 +129,7 @@ export class CategoryService {
       .exec()
       .then(category => {
         // 更新网站地图
-        this.sitemapService.updateCache();
+        this.syndicationService.updateCache();
         this.seoService.delete(getCategoryUrl(category.slug));
         return this.categoryModel
           .find({ pid: categoryId })
@@ -162,7 +162,7 @@ export class CategoryService {
           .deleteMany({ _id: { $in: categoryIds }})
           .exec()
           .then(result => {
-            this.sitemapService.updateCache();
+            this.syndicationService.updateCache();
             return result;
           });
       });

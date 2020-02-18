@@ -1,7 +1,7 @@
 /**
- * Sitemap module.
- * @file Sitemap 模块
- * @module module/sitemap/module
+ * Syndication module.
+ * @file Syndication 模块
+ * @module module/syndication/module
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -9,17 +9,17 @@ import { Module } from '@nestjs/common';
 import { CategoryProvider } from '@app/modules/category/category.model';
 import { ArticleProvider } from '@app/modules/article/article.model';
 import { TagProvider } from '@app/modules/tag/tag.model';
-import { SitemapController } from './sitemap.controller';
-import { SitemapService } from './sitemap.service';
+import { SyndicationController } from './syndication.controller';
+import { SyndicationService } from './syndication.service';
 
 @Module({
-  controllers: [SitemapController],
+  controllers: [SyndicationController],
   providers: [
     TagProvider,
     CategoryProvider,
     ArticleProvider,
-    SitemapService,
+    SyndicationService,
   ],
-  exports: [SitemapService],
+  exports: [SyndicationService],
 })
-export class SitemapModule {}
+export class SyndicationModule {}
