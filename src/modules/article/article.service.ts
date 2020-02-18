@@ -14,7 +14,7 @@ import { InjectModel } from '@app/transforms/model.transform';
 import { getArticleUrl } from '@app/transforms/urlmap.transform';
 import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { CacheService, TCacheIntervalResult } from '@app/processors/cache/cache.service';
-import { SitemapService } from '@app/modules/sitemap/sitemap.service';
+import { SyndicationService } from '@app/modules/syndication/syndication.service';
 import { TagService } from '@app/modules/tag/tag.service';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
@@ -29,7 +29,7 @@ export class ArticleService {
   constructor(
     private readonly tagService: TagService,
     private readonly cacheService: CacheService,
-    private readonly sitemapService: SitemapService,
+    private readonly syndicationService: SyndicationService,
     private readonly seoService: SeoService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
   ) {
@@ -142,7 +142,7 @@ export class ArticleService {
     })
       .then(article => {
         this.seoService.push(getArticleUrl(article.id));
-        this.sitemapService.updateCache();
+        this.syndicationService.updateCache();
         this.tagService.updateListCache();
         return article;
       });
@@ -160,7 +160,7 @@ export class ArticleService {
       .exec()
       .then(article => {
         this.seoService.update(getArticleUrl(article.id));
-        this.sitemapService.updateCache();
+        this.syndicationService.updateCache();
         this.tagService.updateListCache();
         return article;
       });
@@ -173,7 +173,7 @@ export class ArticleService {
       .exec()
       .then(article => {
         this.seoService.delete(getArticleUrl(article.id));
-        this.sitemapService.updateCache();
+        this.syndicationService.updateCache();
         this.tagService.updateListCache();
         return article;
       });
@@ -185,7 +185,7 @@ export class ArticleService {
       .updateMany({ _id: { $in: articls }}, { $set: { state }}, { multi: true })
       .exec()
       .then(result => {
-        this.sitemapService.updateCache();
+        this.syndicationService.updateCache();
         this.tagService.updateListCache();
         return result;
       });
@@ -203,7 +203,7 @@ export class ArticleService {
         return this.articleModel
           .deleteMany({ _id: { $in: articleIds }})
           .then(result => {
-            this.sitemapService.updateCache();
+            this.syndicationService.updateCache();
             this.tagService.updateListCache();
             return result;
           });

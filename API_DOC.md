@@ -195,9 +195,12 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   Delete '/:id' (): <MongooseOpResult>
   ```
 
-#### Sitemap (sitemap)
+#### Syndication (syndication)
   ```ts
-  Get (): <SitemapXML>
+  Get '/sitemap' (): <SitemapXML>
+  ```
+  ```ts
+  Get '/rss' (): <RSSXML>
   ```
   ```ts
   @JwtAuth

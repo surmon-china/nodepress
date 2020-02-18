@@ -13,6 +13,7 @@ export const APP = {
   LIMIT: 16,
   PORT: 8000,
   ROOT_PATH: __dirname,
+  MASTER: 'Surmon',
   NAME: 'Surmon.me',
   URL: 'https://surmon.me',
   FRONT_END_PATH: path.join(__dirname, '..', '..', 'surmon.me'),
