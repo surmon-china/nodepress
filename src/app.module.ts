@@ -22,7 +22,7 @@ import { CacheModule } from '@app/processors/cache/cache.module';
 import { HelperModule } from '@app/processors/helper/helper.module';
 
 // 业务模块（辅助）
-import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
+import { SyndicationModule } from '@app/modules/syndication/syndication.module';
 import { ExpansionModule } from '@app/modules/expansion/expansion.module';
 import { MusicModule } from '@app/modules/music/music.module';
 import { BilibiliModule } from '@app/modules/bilibili/bilibili.module';
@@ -57,7 +57,7 @@ import { LikeModule } from '@app/modules/like/like.module';
     MusicModule,
     BilibiliModule,
     WallpaperModule,
-    SitemapModule,
+    SyndicationModule,
   ],
   controllers: [AppController],
   providers: [

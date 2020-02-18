@@ -6,7 +6,7 @@
  */
 
 import { Module } from '@nestjs/common';
-import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
+import { SyndicationModule } from '@app/modules/syndication/syndication.module';
 import { OptionProvider } from '@app/modules/option/option.model';
 import { ArticleProvider } from '@app/modules/article/article.model';
 import { CommentController } from './comment.controller';
@@ -14,7 +14,7 @@ import { CommentProvider } from './comment.model';
 import { CommentService } from './comment.service';
 
 @Module({
-  imports: [SitemapModule],
+  imports: [SyndicationModule],
   controllers: [CommentController],
   providers: [
     CommentProvider,

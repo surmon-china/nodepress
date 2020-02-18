@@ -149,7 +149,7 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
   * 鉴权/登陆：全局鉴权业务和 Token 业务
   * 点赞：点赞评论、文章、主站
   * 音乐：播放器音乐数据业务
-  * [网站地图](https://github.com/surmon-china/nodepress/blob/master/src/modules/sitemap/sitemap.service.ts)：负责网站地图 xml 生成，抽象出的对象。包含 Tag、Article、Category 及一些死数据（页面）的集合，生成 xml 并写入本地
+  * [聚合供稿](https://github.com/surmon-china/nodepress/blob/master/src/modules/syndication/syndication.service.ts)：负责聚和信息的输出和写入，如 Sitemap、RSSXML
   * 壁纸：主站每日壁纸模块业务
   * 扩展模块
     + GitHub：GitHub 项目列表业务
@@ -168,7 +168,7 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
     + [搜索引擎实时更新服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.seo.ts)：根据入参主动提交搜索引擎收录，支持百度、Google 服务；分别会在动态数据 进行 CUD 的时候调用对应方法
     + [评论过滤服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.akismet.ts)：使用 akismet 过滤 spam；暴露三个方法：校验 spam、提交 spam、提交 ham
     + [邮件服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
-    + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，使用本地 GEO 库查询
+    + [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，~~使用本地 GEO 库查询~~，使用 ip.cn 等备用方案
     + [第三方云存储服务](https://github.com/surmon-china/nodepress/blob/master/src/processors/helper/helper.service.oss.ts)：生成云存储上传 Token（目前服务为 Aliyun OSS），后期可以添加 SDK 的更多支持，比如管理文件
     + Google 证书（鉴权）服务：用于生成各 Google 应用的服务端证书
 
