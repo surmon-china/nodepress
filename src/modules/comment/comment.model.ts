@@ -8,8 +8,8 @@
 import { Types } from 'mongoose';
 import { prop, arrayProp, plugin, pre, index, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsBoolean, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
-import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
+import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 import { ECommentParentType, ECommentState } from '@app/interfaces/state.interface';
 import { Extend } from '@app/models/extend.model';
 

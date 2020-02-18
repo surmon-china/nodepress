@@ -7,7 +7,7 @@
 
 import { Injectable, HttpService } from '@nestjs/common';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
-import { getMessageFromAxiosError } from '@app/transforms/error.transform';
+import { getMessageFromAxiosError } from '@app/transformers/error.transformer';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import * as APP_CONFIG from '@app/app.config';
 

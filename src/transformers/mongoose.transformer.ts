@@ -1,7 +1,7 @@
 /**
  * Mongoose transform.
  * @file Mongoose 模块转换器
- * @module transform/mongoose
+ * @module transformer/mongoose
  * @author Surmon <https://github.com/surmon-china>
  */
 

@@ -2,7 +2,7 @@
  * Markdown transform.
  * @file Markdown 转换器
  * @description Markdown 相关处理器
- * @module transform/markdown
+ * @module transformer/markdown
  * @author Surmon <https://github.com/surmon-china>
  */
 

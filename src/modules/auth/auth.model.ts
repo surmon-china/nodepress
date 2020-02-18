@@ -7,7 +7,7 @@
 
 import { prop } from '@typegoose/typegoose';
 import { IsString, IsDefined, IsNotEmpty } from 'class-validator';
-import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 
 export class Auth {
   @IsDefined()
