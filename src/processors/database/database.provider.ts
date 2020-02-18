@@ -6,7 +6,7 @@
  */
 
 import * as APP_CONFIG from '@app/app.config';
-import { mongoose } from '@app/transforms/mongoose.transform';
+import { mongoose } from '@app/transformers/mongoose.transformer';
 import { EmailService } from '@app/processors/helper/helper.service.email';
 import { DB_CONNECTION_TOKEN } from '@app/constants/system.constant';
 

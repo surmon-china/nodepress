@@ -8,7 +8,7 @@
 import * as schedule from 'node-schedule';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@app/transforms/model.transform';
+import { InjectModel } from '@app/transformers/model.transformer';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { CacheService } from '@app/processors/cache/cache.service';
 import { Article } from '@app/modules/article/article.model';

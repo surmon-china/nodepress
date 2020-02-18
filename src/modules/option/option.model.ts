@@ -7,7 +7,7 @@
 
 import { prop, arrayProp, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, IsInt, IsUrl, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator';
-import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 
 // 元信息
 class Meta {

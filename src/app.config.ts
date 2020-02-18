@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import { argv } from 'yargs';
-import { packageJson } from '@app/transforms/module.transform';
+import { packageJson } from '@app/transformers/module.transformer';
 
 export const APP = {
   LIMIT: 16,
