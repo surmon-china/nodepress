@@ -6,14 +6,14 @@
  */
 
 import { Module } from '@nestjs/common';
-import { SitemapModule } from '@app/modules/sitemap/sitemap.module';
+import { SyndicationModule } from '@app/modules/syndication/syndication.module';
 import { ArticleProvider } from '@app/modules/article/article.model';
 import { TagController } from './tag.controller';
 import { TagProvider } from './tag.model';
 import { TagService } from './tag.service';
 
 @Module({
-  imports: [SitemapModule],
+  imports: [SyndicationModule],
   controllers: [TagController],
   providers: [ArticleProvider, TagProvider, TagService],
   exports: [TagService],

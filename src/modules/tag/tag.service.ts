@@ -14,7 +14,7 @@ import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.servic
 import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
-import { SitemapService } from '@app/modules/sitemap/sitemap.service';
+import { SyndicationService } from '@app/modules/syndication/syndication.service';
 import { Article } from '@app/modules/article/article.model';
 import { Tag } from './tag.model';
 
@@ -26,7 +26,7 @@ export class TagService {
 
   constructor(
     private readonly cacheService: CacheService,
-    private readonly sitemapService: SitemapService,
+    private readonly syndicationService: SyndicationService,
     private readonly seoService: SeoService,
     @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
@@ -95,7 +95,7 @@ export class TagService {
           ? Promise.reject('别名已被占用')
           : this.tagModel.create(newTag).then(tag => {
               this.seoService.push(getTagUrl(tag.slug));
-              this.sitemapService.updateCache();
+              this.syndicationService.updateCache();
               this.updateListCache();
               return tag;
             });
@@ -120,7 +120,7 @@ export class TagService {
             .exec()
             .then(tag => {
               this.seoService.push(getTagUrl(tag.slug));
-              this.sitemapService.updateCache();
+              this.syndicationService.updateCache();
               this.updateListCache();
               return tag;
             });
@@ -134,7 +134,7 @@ export class TagService {
       .exec()
       .then(tag => {
         this.seoService.delete(getTagUrl(tag.slug));
-        this.sitemapService.updateCache();
+        this.syndicationService.updateCache();
         this.updateListCache();
         return tag;
       });
@@ -151,7 +151,7 @@ export class TagService {
           .deleteMany({ _id: { $in: tagIds }})
           .exec()
           .then(result => {
-            this.sitemapService.updateCache();
+            this.syndicationService.updateCache();
             this.updateListCache();
             return result;
           });
