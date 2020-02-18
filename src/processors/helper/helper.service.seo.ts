@@ -7,7 +7,7 @@
 
 import * as APP_CONFIG from '@app/app.config';
 import { Injectable, HttpService } from '@nestjs/common';
-import { getMessageFromAxiosError } from '@app/transforms/error.transform';
+import { getMessageFromAxiosError } from '@app/transformers/error.transformer';
 import { GoogleService } from './helper.service.google';
 
 // 提交器支持的操作行为

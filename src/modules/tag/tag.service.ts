@@ -8,8 +8,8 @@
 import * as CACHE_KEY from '@app/constants/cache.constant';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@app/transforms/model.transform';
-import { getTagUrl } from '@app/transforms/urlmap.transform';
+import { InjectModel } from '@app/transformers/model.transformer';
+import { getTagUrl } from '@app/transformers/urlmap.transformer';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
 import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';

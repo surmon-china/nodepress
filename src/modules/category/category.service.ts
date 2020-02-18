@@ -7,8 +7,8 @@
 
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@app/transforms/model.transform';
-import { getCategoryUrl } from '@app/transforms/urlmap.transform';
+import { InjectModel } from '@app/transformers/model.transformer';
+import { getCategoryUrl } from '@app/transformers/urlmap.transformer';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { SyndicationService } from '@app/modules/syndication/syndication.service';
