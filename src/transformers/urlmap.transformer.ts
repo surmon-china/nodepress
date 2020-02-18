@@ -1,7 +1,7 @@
 /**
  * @file 链接构造器
  * @description 构造各种链接
- * @module transform/link
+ * @module transformer/link
  * @author Surmon <https://github.com/surmon-china>
  */
 

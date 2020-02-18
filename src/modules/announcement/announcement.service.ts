@@ -7,7 +7,7 @@
 
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@app/transforms/model.transform';
+import { InjectModel } from '@app/transformers/model.transformer';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { Announcement } from './announcement.model';
 

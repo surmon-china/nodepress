@@ -2,7 +2,7 @@
  * Error transform.
  * @file 错误转换器
  * @description 抓换各种特定格式的错误数据
- * @module transform/error
+ * @module transformer/error
  * @author Surmon <https://github.com/surmon-china>
  */
 

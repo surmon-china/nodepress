@@ -8,8 +8,8 @@
 import { Types } from 'mongoose';
 import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import { mongoosePaginate, mongooseAutoIncrement } from '@app/transforms/mongoose.transform';
-import { getProviderByTypegooseClass } from '@app/transforms/model.transform';
+import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 import { EPublishState } from '@app/interfaces/state.interface';
 
 @pre<Announcement>('findOneAndUpdate', function(next) {
