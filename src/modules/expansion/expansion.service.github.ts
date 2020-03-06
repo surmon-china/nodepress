@@ -40,7 +40,7 @@ export class GithubService {
       key: CACHE_KEY.GITHUB_REPOSITORIES,
       promise: this.getRepositories.bind(this),
       timeout: {
-        success: 1000 * 60 * 60 * 2, // 成功后 1 小时更新一次数据
+        success: 1000 * 60 * 60 * 2, // 成功后 2 小时更新一次数据
         error: 1000 * 60 * 10, // 失败后 10 分钟更新一次数据
       },
     });
