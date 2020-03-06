@@ -39,13 +39,13 @@ export interface ICachePromiseIoOption<T> extends ICachePromiseOption<T> {
   ioMode?: boolean;
 }
 
-// Interval & Timeout 超时模式参数
+// Interval & Timeout 超时模式参数（毫秒）
 export interface ICacheIntervalTimeoutOption {
   error?: number;
   success?: number;
 }
 
-// Interval & Timing 定时模式参数
+// Interval & Timing 定时模式参数（毫秒）
 export interface ICacheIntervalTimingOption {
   error: number;
   schedule: any;
@@ -178,7 +178,7 @@ export class CacheService {
           .catch(error => {
             const time = timeout.error || timeout.success;
             setTimeout(doPromise, time);
-            console.warn(`Redis 超时任务执行失败，${time}s 后重试：${error}`);
+            console.warn(`Redis 超时任务执行失败，${time / 1000}s 后重试：${error}`);
           });
       };
       doPromise();
@@ -190,7 +190,7 @@ export class CacheService {
         promiseTask()
           .then(data => data)
           .catch(error => {
-            console.warn(`Redis 定时任务执行失败，${timing.error}s 后重试：${error}`);
+            console.warn(`Redis 定时任务执行失败，${timing.error / 1000}s 后重试：${error}`);
             setTimeout(doPromise, timing.error);
           });
       };
