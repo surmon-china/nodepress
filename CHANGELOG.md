@@ -6,6 +6,8 @@
 
 ### v3.3.2
 - Fix article/hotList `query.state`
+- Upgrade TypeScript deep
+- Update `Optional Chaining`
 
 ### v3.3.0
 - Rename Sitemap module to Syndication module

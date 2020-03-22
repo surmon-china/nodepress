@@ -73,7 +73,7 @@ export class ArticleController {
     ];
 
     const matchedParam = slugParams.find(item => querys[item.field]);
-    const matchedField = matchedParam && matchedParam.field;
+    const matchedField = matchedParam?.field;
     const matchedSlug = matchedField && querys[matchedField];
     return !matchedSlug
       ? this.articleService.getList(querys, options)
@@ -81,7 +81,7 @@ export class ArticleController {
         .service(matchedSlug)
         .then(param => {
           const paramField = matchedParam.name;
-          const paramId = param && param._id;
+          const paramId = param?._id;
           if (paramId) {
             querys = Object.assign(querys, { [paramField]: paramId });
             Reflect.deleteProperty(querys, matchedField);

@@ -80,7 +80,7 @@
     "simple-netease-cloud-music": "^0.4.4",
     "sitemap": "^5.1.0",
     "typeorm": "^0.2.22",
-    "typescript": "^3.7.5",
+    "typescript": "^3.8.0",
     "wonderful-bing-wallpaper": "^0.2.1",
     "yargs": "^15.1.0"
   },

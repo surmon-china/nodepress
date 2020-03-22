@@ -24,7 +24,7 @@ export class AuthService {
 
   // 获取已有密码
   private getExtantPassword(auth: Auth): string {
-    return auth && auth.password || decodeMd5(APP_CONFIG.AUTH.defaultPassword as string);
+    return auth?.password || decodeMd5(APP_CONFIG.AUTH.defaultPassword as string);
   }
 
   // 签发 Token

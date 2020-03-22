@@ -28,7 +28,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (authInfo && !error && !errInfo) {
       return authInfo;
     } else {
-      throw error || new HttpUnauthorizedError(null, errInfo && errInfo.message);
+      throw error || new HttpUnauthorizedError(null, errInfo?.message);
     }
   }
 }
