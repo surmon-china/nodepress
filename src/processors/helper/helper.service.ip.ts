@@ -37,7 +37,7 @@ export class IPService {
         url: `https://api01.aliyun.venuscn.com/ip?ip=${ip}`,
       })
       .then(response => {
-        if (response.data && response.data.ret === 200) {
+        if (response?.data?.ret === 200) {
           return Promise.resolve(response.data.data);
         } else {
           return Promise.reject(response.data);

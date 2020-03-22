@@ -33,7 +33,7 @@ export class CacheConfigService implements CacheOptionsFactory {
     console.error('Reids 发生异常！', options.error);
     this.sendAlarmMail(String(options.error));
 
-    if (options.error && options.error.code === 'ECONNREFUSED') {
+    if (options?.error?.code === 'ECONNREFUSED') {
       return new Error('Redis 服务器拒绝连接！');
     }
     if (options.total_retry_time > 1000 * 60) {

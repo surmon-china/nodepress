@@ -26,11 +26,12 @@ export class HumanizedJwtAuthGuard extends AuthGuard('jwt') {
    */
   handleRequest(error, authInfo, errInfo) {
     const okToken = !!authInfo;
-    const noToken = !authInfo && errInfo && errInfo.message === 'No auth token';
+    // MARK: https://github.com/mikenicholson/passport-jwt/issues/174
+    const noToken = !authInfo && errInfo?.message === 'No auth token';
     if (!error && (okToken || noToken)) {
       return authInfo;
     } else {
-      throw error || new HttpUnauthorizedError(null, errInfo && errInfo.message);
+      throw error || new HttpUnauthorizedError(null, errInfo?.message);
     }
   }
 }
