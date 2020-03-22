@@ -42,7 +42,7 @@ export class ArticleController {
 
       // 前台缓存请求，则忽略一切后续处理
       if (!isAuthenticated && querys.cache) {
-        return this.articleService.getHotListCache();
+        return this.articleService.getUserHotListCache();
       }
     }
 

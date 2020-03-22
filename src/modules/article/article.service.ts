@@ -20,6 +20,11 @@ import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { Article, getDefaultMeta } from './article.model';
 
+export const COMMON_USER_QUERY_PARAMS = Object.freeze({
+  state: EPublishState.Published,
+  public: EPublicState.Public
+})
+
 @Injectable()
 export class ArticleService {
 
@@ -40,17 +45,19 @@ export class ArticleService {
       },
       key: CACHE_KEY.HOT_ARTICLES,
       promise: () => {
-        const options = {
-          limit: 10,
-          sort: this.getHotSortOption(),
-        };
-        return this.getList.bind(this)(null, options);
+        return this.getList.bind(this)(
+          COMMON_USER_QUERY_PARAMS,
+          {
+            limit: 10,
+            sort: this.getHotSortOption()
+          }
+        );
       },
     });
   }
 
   // 热门文章列表缓存
-  public getHotListCache(): Promise<PaginateResult<Article>> {
+  public getUserHotListCache(): Promise<PaginateResult<Article>> {
     return this.hotArticleListCache();
   }
 
@@ -58,8 +65,7 @@ export class ArticleService {
   private async getRelatedArticles(article: Article): Promise<Article[]> {
     return this.articleModel.find(
       {
-        state: EPublishState.Published,
-        public: EPublicState.Public,
+        ...COMMON_USER_QUERY_PARAMS,
         tag: { $in: article.tag.map(t => (t as any)._id) },
         category: { $in: article.category.map(c => (c as any)._id) },
       },
@@ -92,8 +98,7 @@ export class ArticleService {
     return this.articleModel
       .findOne({
         id: articleId,
-        state: EPublishState.Published,
-        public: EPublicState.Public,
+        ...COMMON_USER_QUERY_PARAMS
       })
       .select('-password')
       .populate('category')
