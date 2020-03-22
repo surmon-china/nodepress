@@ -19,7 +19,6 @@
 
 v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 nodejs 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/nodejs)。
 
----
 
 **其他相关项目：**
 - **web client for user:** [surmon.me](https://github.com/surmon-china/surmon.me) powered by [Nuxt.js](https://github.com/nuxt/nuxt.js)
