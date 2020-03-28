@@ -5,8 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
-import * as CACHE_KEY from '@app/constants/cache.constant';
+import lodash from 'lodash';
 import { DocumentType } from '@typegoose/typegoose';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
@@ -19,6 +18,7 @@ import { TagService } from '@app/modules/tag/tag.service';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface';
 import { Article, getDefaultMeta } from './article.model';
+import * as CACHE_KEY from '@app/constants/cache.constant';
 
 export const COMMON_USER_QUERY_PARAMS = Object.freeze({
   state: EPublishState.Published,

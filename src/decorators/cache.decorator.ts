@@ -5,9 +5,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
-import * as META from '@app/constants/meta.constant';
+import  lodash from 'lodash';
 import { SetMetadata, CacheKey } from '@nestjs/common';
+import * as META from '@app/constants/meta.constant';
 
 // 缓存器配置
 interface ICacheOption {

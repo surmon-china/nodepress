@@ -5,7 +5,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as APP_CONFIG from '@app/app.config';
 import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';
 import { IPService } from '@app/processors/helper/helper.service.ip';
@@ -15,6 +14,7 @@ import { QueryParams } from '@app/decorators/query-params.decorator';
 import { AuthService } from './auth.service';
 import { ITokenResult } from './auth.interface';
 import { Auth, AuthLogin } from './auth.model';
+import * as APP_CONFIG from '@app/app.config';
 
 @Controller('auth')
 export class AuthController {

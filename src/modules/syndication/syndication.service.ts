@@ -5,12 +5,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as fs from 'fs';
-import * as RSS from 'rss';
-import * as path from 'path';
-import * as APP_CONFIG from '@app/app.config';
-import * as CACHE_KEY from '@app/constants/cache.constant';
-import * as urlMap from '@app/transformers/urlmap.transformer';
+import fs from 'fs';
+import path from 'path';
+import RSS from 'rss';
 import { Sitemap, EnumChangefreq } from 'sitemap';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transformers/model.transformer';
@@ -20,6 +17,9 @@ import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { Category } from '@app/modules/category/category.model';
 import { Article } from '@app/modules/article/article.model';
 import { Tag } from '@app/modules/tag/tag.model';
+import * as APP_CONFIG from '@app/app.config';
+import * as CACHE_KEY from '@app/constants/cache.constant';
+import * as urlMap from '@app/transformers/urlmap.transformer';
 
 @Injectable()
 export class SyndicationService {

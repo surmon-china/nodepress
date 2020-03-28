@@ -5,11 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as APP_CONFIG from '@app/app.config';
 import { google } from 'googleapis';
 import { Credentials, JWT } from 'google-auth-library';
 import { Injectable } from '@nestjs/common';
 import { getMessageFromNormalError } from '@app/transformers/error.transformer';
+import * as APP_CONFIG from '@app/app.config';
 
 @Injectable()
 export class GoogleService {

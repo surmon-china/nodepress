@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "3.3.2",
+  "version": "3.3.3",
   "description": "RESTful API service for Surmon.me blog",
   "author": {
     "name": "Surmon",
@@ -77,11 +77,11 @@
     "rss": "^1.2.2",
     "rxjs": "^6.5.4",
     "shelljs": "^0.8.3",
-    "simple-netease-cloud-music": "^0.4.4",
+    "simple-netease-cloud-music": "^0.5.0",
     "sitemap": "^5.1.0",
     "typeorm": "^0.2.22",
     "typescript": "^3.8.0",
-    "wonderful-bing-wallpaper": "^0.2.1",
+    "wonderful-bing-wallpaper": "^0.3.4",
     "yargs": "^15.1.0"
   },
   "devDependencies": {

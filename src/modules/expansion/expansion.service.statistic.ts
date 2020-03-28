@@ -5,8 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as schedule from 'node-schedule';
-import * as CACHE_KEY from '@app/constants/cache.constant';
+import schedule from 'node-schedule';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transformers/model.transformer';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
@@ -14,6 +13,7 @@ import { CacheService } from '@app/processors/cache/cache.service';
 import { Article } from '@app/modules/article/article.model';
 import { Comment } from '@app/modules/comment/comment.model';
 import { Tag } from '@app/modules/tag/tag.model';
+import * as CACHE_KEY from '@app/constants/cache.constant';
 
 export interface ITodayStatistic {
   tags: number;

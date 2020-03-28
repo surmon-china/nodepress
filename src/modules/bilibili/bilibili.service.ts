@@ -5,11 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
-import * as APP_CONFIG from '@app/app.config';
-import * as CACHE_KEY from '@app/constants/cache.constant';
+import lodash from 'lodash';
 import { Injectable, HttpService } from '@nestjs/common';
 import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
+import * as APP_CONFIG from '@app/app.config';
+import * as CACHE_KEY from '@app/constants/cache.constant';
 
 // B 站视频列表格式
 export interface IBilibiliVideoList {
