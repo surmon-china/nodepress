@@ -5,9 +5,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as OSS from 'ali-oss';
-import * as APP_CONFIG from '@app/app.config';
+import OSS from 'ali-oss';
 import { Injectable } from '@nestjs/common';
+import * as APP_CONFIG from '@app/app.config';
 
 const STS = (OSS as any).STS;
 

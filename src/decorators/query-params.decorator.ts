@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
+import lodash from 'lodash';
 import { Types } from 'mongoose';
 import { createParamDecorator } from '@nestjs/common';
 import { HttpForbiddenError } from '@app/errors/forbidden.error';

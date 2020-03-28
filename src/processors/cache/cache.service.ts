@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as schedule from 'node-schedule';
+import schedule from 'node-schedule';
 import { RedisClient } from 'redis';
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 
