@@ -5,11 +5,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as APP_CONFIG from '@app/app.config';
-import * as helmet from 'helmet';
-import * as bodyParser from 'body-parser';
-import * as compression from 'compression';
-import * as rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
 import { AppModule } from '@app/app.module';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe } from '@app/pipes/validation.pipe';
@@ -18,6 +17,7 @@ import { TransformInterceptor } from '@app/interceptors/transform.interceptor';
 import { LoggingInterceptor } from '@app/interceptors/logging.interceptor';
 import { ErrorInterceptor } from '@app/interceptors/error.interceptor';
 import { environment, isProdMode, isDevMode } from '@app/app.environment';
+import * as APP_CONFIG from '@app/app.config';
 
 // 解决 Nodejs 环境中请求 HTTPS 的证书授信问题
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';

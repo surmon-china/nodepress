@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
+import lodash from 'lodash';
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '@app/guards/auth.guard';

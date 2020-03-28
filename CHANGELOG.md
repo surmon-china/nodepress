@@ -4,6 +4,10 @@
 
 ## CHANGELOG
 
+### v3.3.3
+- Wallpaper module support `en`
+- Enable `esModuleInterop` for `tsconfig`
+
 ### v3.3.2
 - Fix article/hotList `query.state`
 - Upgrade TypeScript deep

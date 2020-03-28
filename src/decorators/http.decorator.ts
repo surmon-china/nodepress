@@ -5,11 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
-import * as META from '@app/constants/meta.constant';
-import * as TEXT from '@app/constants/text.constant';
+import lodash from 'lodash';
 import { SetMetadata, HttpStatus } from '@nestjs/common';
 import { TMessage } from '@app/interfaces/http.interface';
+import * as META from '@app/constants/meta.constant';
+import * as TEXT from '@app/constants/text.constant';
 
 // 构造器参数
 interface IBuildDecoratorOption {

@@ -5,12 +5,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
-import * as APP_CONFIG from '@app/app.config';
-import * as redisStore from 'cache-manager-redis-store';
+import lodash from 'lodash';
+import redisStore from 'cache-manager-redis-store';
 import { ClientOpts, RetryStrategyOptions } from 'redis';
 import { CacheModuleOptions, CacheOptionsFactory, Injectable } from '@nestjs/common';
 import { EmailService } from '@app/processors/helper/helper.service.email';
+import * as APP_CONFIG from '@app/app.config';
 
 @Injectable()
 export class CacheConfigService implements CacheOptionsFactory {

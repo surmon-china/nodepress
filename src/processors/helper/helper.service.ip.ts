@@ -7,10 +7,10 @@
 
 // 内存占用太大（~100+M）暂时移除了
 // import * as geoip from 'geoip-lite';
-import * as shell from 'shelljs';
-import * as APP_CONFIG from '@app/app.config';
+import shell from 'shelljs';
 import { Injectable, HttpService } from '@nestjs/common';
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer';
+import * as APP_CONFIG from '@app/app.config';
 
 export type IP = string;
 export interface IIPDetail {

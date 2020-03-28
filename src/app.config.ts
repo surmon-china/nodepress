@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as path from 'path';
+import path from 'path';
 import { argv } from 'yargs';
 import { packageJson } from '@app/transformers/module.transformer';
 

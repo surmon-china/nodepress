@@ -6,7 +6,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as path from 'path';
+import path from 'path';
 export const packageJson = require(path.resolve(__dirname, '..', '..', 'package.json'));
 export default {
   packageJson,

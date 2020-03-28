@@ -6,8 +6,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as marked from 'marked';
-// import * as escapeHtml from 'escape-html';
+import marked from 'marked';
+// import escapeHtml from 'escape-html';
 
 // const sanitizeRenderer = new marked.Renderer();
 // sanitizeRenderer.html = (html: string): string => {
