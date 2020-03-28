@@ -5,8 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
-import * as APP_CONFIG from '@app/app.config';
+import lodash from 'lodash';
 import { isDevMode } from '@app/app.environment';
 import { PaginateResult, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
@@ -21,6 +20,7 @@ import { AkismetService, EAkismetActionType } from '@app/processors/helper/helpe
 import { Option, Blacklist } from '@app/modules/option/option.model';
 import { Article } from '@app/modules/article/article.model';
 import { Comment, CreateCommentBase, PatchComments } from './comment.model';
+import * as APP_CONFIG from '@app/app.config';
 
 @Injectable()
 export class CommentService {

@@ -5,8 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
-import * as APP_CONFIG from '@app/app.config';
+import lodash from 'lodash';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@app/transformers/model.transformer';
@@ -14,6 +13,7 @@ import { decodeBase64, decodeMd5 } from '@app/transformers/codec.transformer';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { ITokenResult } from './auth.interface';
 import { Auth } from './auth.model';
+import * as APP_CONFIG from '@app/app.config';
 
 @Injectable()
 export class AuthService {

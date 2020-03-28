@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as lodash from 'lodash';
+import lodash from 'lodash';
 import { PaginateResult } from 'mongoose';
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common';
 import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator';

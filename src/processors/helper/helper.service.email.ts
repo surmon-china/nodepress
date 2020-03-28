@@ -5,10 +5,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as nodemailer from 'nodemailer';
-import * as APP_CONFIG from '@app/app.config';
+import nodemailer from 'nodemailer';
 import { Injectable } from '@nestjs/common';
 import { getMessageFromNormalError } from '@app/transformers/error.transformer';
+import * as APP_CONFIG from '@app/app.config';
 
 // 邮件格式
 export interface IEmailOptions {
