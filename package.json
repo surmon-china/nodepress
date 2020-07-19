@@ -61,7 +61,7 @@
     "hiredis": "^0.5.0",
     "js-base64": "^2.5.2",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "marked": "0.6.3",
     "mongoose": "^5.9.1",
     "mongoose-auto-increment": "^5.0.1",
