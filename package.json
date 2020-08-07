@@ -47,7 +47,7 @@
     "body-parser": "^1.19.0",
     "cache-manager": "^2.11.1",
     "cache-manager-redis-store": "^2.0.0",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.11.0",
     "compression": "^1.7.4",
     "cross-env": "^7.0.0",
