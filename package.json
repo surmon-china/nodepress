@@ -62,7 +62,7 @@
     "js-base64": "^2.5.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
-    "marked": "0.6.3",
+    "marked": "0.7.0",
     "mongoose": "^5.9.1",
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-paginate": "https://github.com/surmon-china/mongoose-paginate",
