@@ -24,7 +24,7 @@ export class LikeService {
   // 喜欢主站
   public likeSite(): Promise<boolean> {
     return this.optionService
-      .getOption()
+      .getDBOption()
       .then((option: DocumentType<Option>) => {
         option.meta.likes++;
         return option.save().then(() => true);

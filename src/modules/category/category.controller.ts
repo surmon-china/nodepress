@@ -37,7 +37,7 @@ export class CategoryController {
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除分类')
   delCategories(@Body() body: DelCategories): Promise<any> {
-    return this.categoryService.batchDelete(body.categorie_ids);
+    return this.categoryService.batchDelete(body.category_ids);
   }
 
   @Get(':id')

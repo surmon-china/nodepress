@@ -74,7 +74,7 @@ export class ArticleService {
   }
 
   // 得到热门排序配置
-  public getHotSortOption(): object {
+  public getHotSortOption() {
     return {
       'meta.comments': ESortType.Desc,
       'meta.likes': ESortType.Desc,

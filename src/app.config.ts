@@ -65,7 +65,7 @@ export const ALIYUN = {
 };
 
 export const BAIDU = {
-  site: argv.baidu_site || 'your baidu site domain like : surmon.me',
+  site: argv.baidu_site || 'your baidu site domain. like: surmon.me',
   token: argv.baidu_token || 'your baidu seo push token',
 };
 

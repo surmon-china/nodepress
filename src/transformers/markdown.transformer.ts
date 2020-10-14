@@ -17,10 +17,9 @@ import marked from 'marked';
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
-  tables: true,
+  sanitize: true, // 升级后无法使用内置消毒
   breaks: false,
   pedantic: false,
-  sanitize: true, // 升级后无法使用内置消毒
   smartLists: true,
   smartypants: false,
 });
