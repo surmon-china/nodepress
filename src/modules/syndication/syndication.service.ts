@@ -8,10 +8,11 @@
 import fs from 'fs';
 import path from 'path';
 import RSS from 'rss';
-import { Sitemap, EnumChangefreq } from 'sitemap';
+import { Readable } from 'stream';
+import { SitemapStream, streamToPromise, SitemapItemLoose, EnumChangefreq } from 'sitemap';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@app/transformers/model.transformer';
-import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service';
+import { CacheService, ICacheIoResult, TCacheResult } from '@app/processors/cache/cache.service';
 import { ESortType, EPublishState, EPublicState } from '@app/interfaces/state.interface';
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { Category } from '@app/modules/category/category.model';
@@ -24,9 +25,9 @@ import * as urlMap from '@app/transformers/urlmap.transformer';
 @Injectable()
 export class SyndicationService {
 
-  private pagesMap = [
+  private pagesMap: SitemapItemLoose[] = [
     { url: APP_CONFIG.APP.URL, changefreq: EnumChangefreq.ALWAYS, priority: 1 },
-    { url: urlMap.getVlogPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
+    { url: urlMap.getLensPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
     { url: urlMap.getAboutPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
     { url: urlMap.getSitemapPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
     { url: urlMap.getGuestbookPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
@@ -56,7 +57,7 @@ export class SyndicationService {
 
   private getXmlFilePath(fileName: string): string {
     return path.format({
-      dir: path.join(APP_CONFIG.APP.FRONT_END_PATH, 'static'),
+      dir: path.join(APP_CONFIG.APP.FRONT_END_PATH, 'public'),
       name: fileName,
       ext: '.xml',
     });
@@ -86,14 +87,11 @@ export class SyndicationService {
 
   // 获取地图
   private getMapXML(): Promise<string> {
-    const sitemap = new Sitemap({
-      cacheTime: 666666,
-      urls: [...this.pagesMap]
-    });
+    const sitemapItemList: SitemapItemLoose[] = [];
     return Promise.all([
       this.getAllCategories().then(categories => {
         categories.forEach(category => {
-          sitemap.add({
+          sitemapItemList.push({
             priority: 0.6,
             changefreq: EnumChangefreq.DAILY,
             url: urlMap.getCategoryUrl(category.slug),
@@ -102,7 +100,7 @@ export class SyndicationService {
       }),
       this.getAllTags().then(tags => {
         tags.forEach(tag => {
-          sitemap.add({
+          sitemapItemList.push({
             priority: 0.6,
             changefreq: EnumChangefreq.DAILY,
             url: urlMap.getTagUrl(tag.slug),
@@ -111,7 +109,7 @@ export class SyndicationService {
       }),
       this.getAllArticles().then(articles => {
         articles.forEach(article => {
-          sitemap.add({
+          sitemapItemList.push({
             priority: 0.8,
             changefreq: EnumChangefreq.DAILY,
             url: urlMap.getArticleUrl(article.id),
@@ -121,7 +119,17 @@ export class SyndicationService {
       })
     ])
       .catch(error => console.warn('生成网站地图前获取数据发生错误：', error))
-      .then(() => sitemap.toString(true))
+      .then(() => {
+        const sitemapStream = new SitemapStream({
+          hostname: APP_CONFIG.APP.URL,
+        })
+        return streamToPromise(Readable.from([
+          ...this.pagesMap,
+          ...sitemapItemList
+        ])
+        .pipe(sitemapStream))
+        .then(data => data.toString())
+    })
   }
 
   // 获取 RSS
@@ -161,17 +169,17 @@ export class SyndicationService {
   }
 
   // 获取地图缓存
-  public getSitemapCache() {
+  public getSitemapCache(): TCacheResult<string> {
     return this.sitemapCache.get();
   }
 
   // 获取 RSS 缓存
-  public getRSSCache() {
+  public getRSSCache(): TCacheResult<string> {
     return this.rssCache.get();
   }
 
   // 更新地图缓存（内部首次实例化，外部主动调用）每次缓存被更新时，都重新写入文件
-  public updateCache() {
+  public updateCache(): Promise<any> {
     return Promise.all([
       this.sitemapCache.update().then(xml => {
         fs.writeFileSync(this.getXmlFilePath('sitemap'), xml)

@@ -6,7 +6,7 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, Ref, defaultClasses, modelOptions } from '@typegoose/typegoose';
+import { prop, plugin, pre, Ref, defaultClasses, modelOptions } from '@typegoose/typegoose';
 import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
@@ -68,9 +68,8 @@ export class Article extends defaultClasses.Base {
   content: string;
 
   // 列表时用的文章内容虚拟属性
-  get t_content() {
-    const content = this.content;
-    return content ? content.substring(0, 130) : content;
+  get t_content(): string {
+    return this.content?.substring?.(0, 130);
   }
 
   @IsString({ message: '字符串？' })
@@ -90,7 +89,7 @@ export class Article extends defaultClasses.Base {
   // 文章关键字（SEO）
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String })
+  @prop({ type: () => [String] })
   keywords: string[];
 
   // 文章发布状态
@@ -115,11 +114,15 @@ export class Article extends defaultClasses.Base {
   origin: EOriginState;
 
   // 文章标签
-  @arrayProp({ itemsRef: Tag })
+  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
+  @prop({ ref: () => Tag })
   tag: Ref<Tag>[];
 
   // 文章分类
-  @arrayProp({ itemsRef: Category, required: true })
+  @IsArray()
+  @ArrayNotEmpty({ message: '文章分类？' })
+  @ArrayUnique()
+  @prop({ ref: () => Category, required: true })
   category: Ref<Category>[];
 
   // 其他元信息
@@ -136,7 +139,7 @@ export class Article extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: Extend })
+  @prop({ ref: () => Extend })
   extends: Extend[];
 
   // 相关文章

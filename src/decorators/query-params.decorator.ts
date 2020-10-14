@@ -7,7 +7,7 @@
 
 import lodash from 'lodash';
 import { Types } from 'mongoose';
-import { createParamDecorator } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { HttpForbiddenError } from '@app/errors/forbidden.error';
 import { HttpBadRequestError } from '@app/errors/bad-request.error';
 import { EPublishState, EPublicState, EOriginState, ECommentState, ESortType } from '@app/interfaces/state.interface';
@@ -69,7 +69,10 @@ interface IValidateError {
  * @example @QueryParams([EQPFields.State, EQPFields.Date, { [EQPFields.Page]: 1 }])
  * @example @QueryParams(['custom_query_params', { test_params: true, [EQueryParamsField.Sort]: false }])
  */
-export const QueryParams = createParamDecorator((customConfig: TTransformConfig[], request: any): IQueryParamsResult => {
+export const QueryParams = createParamDecorator((customConfig: TTransformConfig[], context: ExecutionContext): IQueryParamsResult => {
+
+  // context to request
+  const request = context.switchToHttp().getRequest();
 
   // 是否已验证权限
   const isAuthenticated = request.isAuthenticated();

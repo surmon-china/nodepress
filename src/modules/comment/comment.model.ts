@@ -6,7 +6,7 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, index, defaultClasses } from '@typegoose/typegoose';
+import { prop, plugin, pre, index, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsBoolean, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
@@ -107,7 +107,7 @@ export class Comment extends CreateCommentBase {
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: Extend })
+  @prop({ ref: () => Extend })
   extends?: Extend[];
 }
 

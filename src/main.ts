@@ -20,7 +20,7 @@ import { environment, isProdMode, isDevMode } from '@app/app.environment';
 import * as APP_CONFIG from '@app/app.config';
 
 // 解决 Nodejs 环境中请求 HTTPS 的证书授信问题
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // 替换 console 为更统一友好的
 const { log, warn, info } = console;

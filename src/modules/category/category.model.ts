@@ -6,7 +6,7 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, defaultClasses } from '@typegoose/typegoose';
+import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
@@ -51,7 +51,7 @@ export class Category extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: Extend })
+  @prop({ ref: () => Extend })
   extends: Extend[];
 
   count?: number;
@@ -61,7 +61,7 @@ export class DelCategories {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
-  categorie_ids: Types.ObjectId[];
+  category_ids: Types.ObjectId[];
 }
 
 export const CategoryProvider = getProviderByTypegooseClass(Category);

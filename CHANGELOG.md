@@ -4,6 +4,11 @@
 
 ## CHANGELOG
 
+### v3.4.0
+- Upgrade deps
+- Fix bilibili video API url
+- Add AD config field (options)
+
 ### v3.3.3
 - Wallpaper module support `en`
 - Enable `esModuleInterop` for `tsconfig`

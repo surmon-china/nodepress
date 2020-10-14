@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { prop, arrayProp, pre, defaultClasses } from '@typegoose/typegoose';
+import { prop, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, IsInt, IsUrl, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 
@@ -20,17 +20,17 @@ class Meta {
 export class Blacklist {
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String })
+  @prop({ type: () => [String] })
   ips: string[];
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String })
+  @prop({ type: () => [String] })
   mails: string[];
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String })
+  @prop({ type: () => [String] })
   keywords: string[];
 }
 
@@ -52,7 +52,7 @@ export class Option extends defaultClasses.Base {
   // 关键字
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String })
+  @prop({ type: () => [String] })
   keywords: string[];
 
   // 网站描述
@@ -83,6 +83,11 @@ export class Option extends defaultClasses.Base {
   // 其他元信息
   @prop()
   meta: Meta;
+
+  // 广告配置
+  @IsString()
+  @prop({ default: '' })
+  ad_config: string;
 
   @prop({ default: Date.now })
   update_at?: Date;

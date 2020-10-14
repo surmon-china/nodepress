@@ -6,7 +6,7 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, defaultClasses } from '@typegoose/typegoose';
+import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
@@ -42,7 +42,7 @@ export class Tag extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: Extend })
+  @prop({ ref: () => Extend })
   extends: Extend[];
 
   @prop({ default: Date.now })
