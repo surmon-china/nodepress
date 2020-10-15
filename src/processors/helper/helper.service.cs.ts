@@ -42,7 +42,7 @@ export class CloudStorageService {
   }
 
   // 上传文件
-  public async uploadFile(name: string, file: any, region: string, bucket: string): Promise<{ name: string, data: object }> {
+  public async uploadFile(name: string, file: any, region: string, bucket: string) {
     return this.getToken().then(token => {
       let client = new OSS({
         region,

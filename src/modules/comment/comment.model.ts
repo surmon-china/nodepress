@@ -77,7 +77,7 @@ export class Comment extends CreateCommentBase {
   // 评论发布状态
   @IsIn([ECommentState.Auditing, ECommentState.Deleted, ECommentState.Published, ECommentState.Spam])
   @IsInt()
-  @prop({ default: ECommentState.Published })
+  @prop({ enum: ECommentState, default: ECommentState.Published })
   state: ECommentState;
 
   // 是否置顶
@@ -107,7 +107,7 @@ export class Comment extends CreateCommentBase {
 
   @IsArray()
   @ArrayUnique()
-  @prop({ ref: () => Extend })
+  @prop({ _id: false, type: () => [Extend] })
   extends?: Extend[];
 }
 
@@ -125,7 +125,7 @@ export class DelComments {
 export class PatchComments extends DelComments {
   @IsIn([ECommentState.Auditing, ECommentState.Deleted, ECommentState.Published, ECommentState.Spam])
   @IsInt()
-  @prop({ default: ECommentState.Published })
+  @prop({ enum: ECommentState, default: ECommentState.Published })
   state: ECommentState;
 }
 

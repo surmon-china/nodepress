@@ -32,7 +32,7 @@ export class Announcement extends defaultClasses.Base {
   @IsDefined()
   @IsIn([EPublishState.Draft, EPublishState.Published])
   @IsInt({ message: '数字？' })
-  @prop({ default: EPublishState.Published })
+  @prop({ enum: EPublishState, default: EPublishState.Published })
   state: EPublishState;
 
   @prop({ default: Date.now })
