@@ -34,7 +34,6 @@ export class SeoService {
 
   // 百度服务
   private pingBaidu(action: ESeoAction, urls: TUrl[]): void {
-
     const urlKeyMap = {
       [ESeoAction.Push]: 'urls',
       [ESeoAction.Update]: 'update',

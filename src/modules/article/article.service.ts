@@ -107,111 +107,95 @@ export class ArticleService {
   }
 
   // 获取全面的文章详情（用户用）
-  public getFullDetailForUser(articleId: number): Promise<Article> {
-    return this
-      .getDetailByNumberId(articleId)
-      .then(article => {
+  public async getFullDetailForUser(articleId: number): Promise<Article> {
+    const article = await this.getDetailByNumberId(articleId);
 
-        // 如果文章不存在，返回 404
-        if (!article) {
-          return Promise.reject('文章不存在');
-        }
+    // 如果文章不存在，返回 404
+    if (!article) {
+      throw '文章不存在';
+    }
 
-        // 增加浏览量
-        article.meta.views++;
-        article.save();
+    // 增加浏览量
+    article.meta.views++;
+    article.save();
 
-        // 更新今日浏览缓存
-        this.cacheService
-          .get<number>(CACHE_KEY.TODAY_VIEWS)
-          .then(views => {
-            this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
-          });
+    // 更新今日浏览缓存
+    this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS).then(views => {
+      this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
+    });
 
-        // 获取相关文章
-        const resultArticle = article.toObject();
-        return this
-          .getRelatedArticles(resultArticle)
-          .then(articles => Object.assign(
-            resultArticle,
-            { related: lodash.sampleSize(articles, 12) },
-          ));
-      });
+    // 获取相关文章
+    const articleObject = article.toObject() as Article;
+    const relatedArticles = await this.getRelatedArticles(articleObject);
+    return Object.assign(
+      articleObject,
+      { related: lodash.sampleSize(relatedArticles, 12) },
+    );
   }
 
   // 创建文章
-  public create(newArticle: Article): Promise<Article> {
-    return this.articleModel.create({
+  public async create(newArticle: Article): Promise<Article> {
+    const article = await this.articleModel.create({
       ...newArticle,
       meta: getDefaultMeta()
-    })
-      .then(article => {
-        this.seoService.push(getArticleUrl(article.id));
-        this.syndicationService.updateCache();
-        this.tagService.updateListCache();
-        return article;
-      });
+    });
+    this.seoService.push(getArticleUrl(article.id));
+    this.syndicationService.updateCache();
+    this.tagService.updateListCache();
+    return article;
   }
 
   // 修改文章
-  public update(articleId: Types.ObjectId, newArticle: Article): Promise<Article> {
+  public async update(articleId: Types.ObjectId, newArticle: Article): Promise<Article> {
     // 修正信息
     Reflect.deleteProperty(newArticle, 'meta');
     Reflect.deleteProperty(newArticle, 'create_at');
     Reflect.deleteProperty(newArticle, 'update_at');
 
-    return this.articleModel
+    const article = await this.articleModel
       .findByIdAndUpdate(articleId, newArticle, { new: true })
-      .exec()
-      .then(article => {
-        this.seoService.update(getArticleUrl(article.id));
-        this.syndicationService.updateCache();
-        this.tagService.updateListCache();
-        return article;
-      });
+      .exec();
+    this.seoService.update(getArticleUrl(article.id));
+    this.syndicationService.updateCache();
+    this.tagService.updateListCache();
+    return article;
   }
 
   // 删除单个文章
-  public delete(articleId: Types.ObjectId): Promise<Article> {
-    return this.articleModel
+  public async delete(articleId: Types.ObjectId): Promise<Article> {
+    const article = await this.articleModel
       .findByIdAndRemove(articleId)
-      .exec()
-      .then(article => {
-        this.seoService.delete(getArticleUrl(article.id));
-        this.syndicationService.updateCache();
-        this.tagService.updateListCache();
-        return article;
-      });
+      .exec();
+    this.seoService.delete(getArticleUrl(article.id));
+    this.syndicationService.updateCache();
+    this.tagService.updateListCache();
+    return article;
   }
 
   // 批量更新状态
-  public batchPatchState(articls: Types.ObjectId[], state: EPublishState): Promise<any> {
-    return this.articleModel
-      .updateMany({ _id: { $in: articls }}, { $set: { state }}, { multi: true })
-      .exec()
-      .then(result => {
-        this.syndicationService.updateCache();
-        this.tagService.updateListCache();
-        return result;
-      });
+  public async batchPatchState(articleIds: Types.ObjectId[], state: EPublishState) {
+    const actionResult = await this.articleModel.updateMany(
+      { _id: { $in: articleIds }},
+      { $set: { state }},
+      { multi: true }
+    ).exec();
+    this.syndicationService.updateCache();
+    this.tagService.updateListCache();
+    return actionResult;
   }
 
   // 批量删除文章
-  public batchDelete(articleIds: Types.ObjectId[]): Promise<any> {
-    return this.articleModel
+  public async batchDelete(articleIds: Types.ObjectId[]) {
+    const articles = await this.articleModel
       .find({ _id: { $in: articleIds }})
-      .exec()
-      .then(articles => {
-        this.seoService.delete(
-          articles.map(article => getArticleUrl(article.id)),
-        );
-        return this.articleModel
-          .deleteMany({ _id: { $in: articleIds }})
-          .then(result => {
-            this.syndicationService.updateCache();
-            this.tagService.updateListCache();
-            return result;
-          });
-      });
+      .exec();
+    this.seoService.delete(
+      articles.map(article => getArticleUrl(article.id))
+    );
+
+    const artionResult = await this.articleModel.deleteMany({ _id: { $in: articleIds }});
+    this.syndicationService.updateCache();
+    this.tagService.updateListCache();
+    return artionResult;
   }
 }

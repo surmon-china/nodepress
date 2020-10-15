@@ -5,10 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { DocumentType } from '@typegoose/typegoose';
 import { Injectable } from '@nestjs/common';
-import { Option } from '@app/modules/option/option.model';
-import { Comment } from '@app/modules/comment/comment.model';
 import { OptionService } from '@app/modules/option/option.service';
 import { ArticleService } from '@app/modules/article/article.service';
 import { CommentService } from '@app/modules/comment/comment.service';
@@ -22,32 +19,26 @@ export class LikeService {
   ) {}
 
   // 喜欢主站
-  public likeSite(): Promise<boolean> {
-    return this.optionService
-      .getDBOption()
-      .then((option: DocumentType<Option>) => {
-        option.meta.likes++;
-        return option.save().then(() => true);
-      });
+  public async likeSite(): Promise<boolean> {
+    const option = await this.optionService.getDBOption();
+    option.meta.likes++;
+    await option.save();
+    return true;
   }
 
   // 喜欢评论
-  public likeComment(commentId: number): Promise<boolean> {
-    return this.commentService
-      .getDetailByNumberId(commentId)
-      .then((comment: DocumentType<Comment>) => {
-        comment.likes++;
-        return comment.save().then(() => true);
-      });
+  public async likeComment(commentId: number): Promise<boolean> {
+    const comment = await this.commentService.getDetailByNumberId(commentId);
+    comment.likes++;
+    await comment.save();
+    return true;
   }
 
   // 喜欢文章
-  public likeArticle(articleId: number): Promise<boolean> {
-    return this.articleService
-      .getDetailByNumberId(articleId)
-      .then(article => {
-        article.meta.likes++;
-        return article.save().then(() => true);
-      });
+  public async likeArticle(articleId: number): Promise<boolean> {
+    const article = await this.articleService.getDetailByNumberId(articleId);
+    article.meta.likes++;
+    await article.save();
+    return true;
   }
 }

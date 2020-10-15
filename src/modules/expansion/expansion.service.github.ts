@@ -57,36 +57,30 @@ export class GithubService {
   }
 
   // 获取项目列表
-  public getRepositories(): Promise<IGithubRepositorie[]> {
-    return this.httpService.axiosRef
-      .request({
+  public async getRepositories(): Promise<IGithubRepositorie[]> {
+    try {
+      const response = await this.httpService.axiosRef.request({
         headers: { 'User-Agent': APP_CONFIG.INFO.name },
         url: `http://api.github.com/users/${APP_CONFIG.GITHUB.username}/repos?per_page=1000`,
-      })
-      .then(response => {
-        try {
-          return response.data.map(rep => {
-            return {
-              html_url: rep.html_url,
-              name: rep.name || ' ',
-              fork: rep.fork,
-              forks: rep.forks,
-              forks_count: rep.forks_count,
-              description: rep.description || ' ',
-              open_issues_count: rep.open_issues_count,
-              stargazers_count: rep.stargazers_count,
-              created_at: rep.created_at,
-              language: rep.language,
-            } as IGithubRepositorie;
-          });
-        } catch (error) {
-          return Promise.reject('Giithub 控制器解析 JSON 失败' + error);
-        }
-      })
-      .catch(error => {
-        const message = getMessageFromAxiosError(error);
-        console.warn('Giithub 项目列表获取失败：', message);
-        return Promise.reject(message);
       });
+      return response.data.map(rep => {
+        return {
+          html_url: rep.html_url,
+          name: rep.name || ' ',
+          fork: rep.fork,
+          forks: rep.forks,
+          forks_count: rep.forks_count,
+          description: rep.description || ' ',
+          open_issues_count: rep.open_issues_count,
+          stargazers_count: rep.stargazers_count,
+          created_at: rep.created_at,
+          language: rep.language,
+        } as IGithubRepositorie;
+      });
+    } catch (error) {
+      const message = getMessageFromAxiosError(error);
+      console.warn('GiitHub 项目列表获取或解析 JSON 失败：', message);
+      throw message;
+    }
   }
 }

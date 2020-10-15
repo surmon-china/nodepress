@@ -67,7 +67,7 @@ export class CommentController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除评论')
-  delComments(@Body() body: DelComments): Promise<any> {
+  delComments(@Body() body: DelComments) {
     return this.commentService.batchDelete(body.comment_ids, body.post_ids);
   }
 
@@ -88,7 +88,7 @@ export class CommentController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('删除单个评论')
-  delComment(@QueryParams() { params }): Promise<any> {
+  delComment(@QueryParams() { params }) {
     return this.commentService.delete(params.id);
   }
 }

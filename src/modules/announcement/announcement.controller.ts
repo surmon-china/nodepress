@@ -42,7 +42,7 @@ export class AnnouncementController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除公告')
-  delAnnouncements(@Body() body: DelAnnouncements): Promise<any> {
+  delAnnouncements(@Body() body: DelAnnouncements) {
     return this.announcementService.batchDelete(body.announcement_ids);
   }
 

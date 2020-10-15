@@ -6,24 +6,23 @@
  */
 
 import { Types } from 'mongoose';
+import { AutoIncrementID } from '@typegoose/auto-increment';
 import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
+import { mongoosePaginate } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 import { EPublishState } from '@app/interfaces/state.interface';
 
-@pre<Announcement>('findOneAndUpdate', function(next) {
+@pre<Announcement>('findOneAndUpdate', function (next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
 @plugin(mongoosePaginate)
-@plugin(mongooseAutoIncrement.plugin, {
-  model: Announcement.name,
-  field: 'id',
-  startAt: 1,
-  incrementBy: 1,
-})
+@plugin(AutoIncrementID, { field: 'id', startAt: 1 })
 export class Announcement extends defaultClasses.Base {
+  @prop({ unique: true })
+  id: number;
+
   @IsNotEmpty({ message: '内容？' })
   @IsString({ message: '字符串？' })
   @prop({ required: true, validate: /\S+/ })
@@ -32,7 +31,7 @@ export class Announcement extends defaultClasses.Base {
   @IsDefined()
   @IsIn([EPublishState.Draft, EPublishState.Published])
   @IsInt({ message: '数字？' })
-  @prop({ enum: EPublishState, default: EPublishState.Published })
+  @prop({ enum: EPublishState, default: EPublishState.Published, index: true })
   state: EPublishState;
 
   @prop({ default: Date.now })

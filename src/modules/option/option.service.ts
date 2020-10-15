@@ -30,32 +30,32 @@ export class OptionService {
     this.optionCache.update()
   }
 
-  public getDBOption(): Promise<Option> {
+  public getDBOption() {
     return this.optionModel.findOne().exec();
   }
+
   public getOption(): TCacheResult<Option> {
     return this.optionCache.get();
   }
 
-  private putDBOption(option: Option): Promise<Option> {
+  private async putDBOption(option: Option): Promise<Option> {
     // 置空 _id、likes 字段
     Reflect.deleteProperty(option, '_id');
     Reflect.deleteProperty(option, 'meta');
 
-    return this.optionModel
-      .findOne()
-      .exec()
-      .then(extantOption => {
-        return extantOption
-          ? Object.assign(extantOption, option).save().then(() => extantOption)
-          : this.optionModel.create(option);
-      });
+    const extantOption = await this.getDBOption();
+    if (extantOption) {
+      await Object.assign(extantOption, option).save();
+      return extantOption;
+    } else {
+      this.optionModel.create(option);
+    }
   }
-  public putOption(option: Option): Promise<Option> {
-    return this.putDBOption(option).then(response => {
-      // 配置表发生更改后一定更新缓存
-      this.optionCache.update();
-      return response;
-    });
+
+  public async putOption(option: Option): Promise<Option> {
+    const newOption = await this.putDBOption(option);
+    // 配置表发生更改后一定更新缓存
+    this.optionCache.update();
+    return newOption;
   }
 }

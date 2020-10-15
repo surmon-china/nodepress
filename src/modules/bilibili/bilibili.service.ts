@@ -62,21 +62,18 @@ export class BilibiliService {
   }
 
   // 获取项目列表
-  public getVideoList(pageSize?: string | number, page?: string | number): Promise<IBilibiliVideoData> {
+  public async getVideoList(pageSize?: string | number, page?: string | number): Promise<IBilibiliVideoData> {
     page = page || this.defaultPage;
     pageSize = pageSize || this.defaultPageSize;
 
-    return this.httpService.axiosRef
-      .request<IBilibiliVideoResult>({
-        headers: { 'User-Agent': APP_CONFIG.INFO.name },
-        url: `https://api.bilibili.com/x/space/arc/search?mid=${this.uid}&ps=${pageSize}&tid=0&pn=${page}&keyword=${this.keyword}&order=pubdate&jsonp=jsonp`,
-      })
-      .then(videosResult => {
-        if (videosResult.data.code === 0) {
-          return Promise.resolve(videosResult.data.data);
-        } else {
-          return Promise.reject(videosResult.status + videosResult.statusText);
-        }
-      });
+    const videosResult = await this.httpService.axiosRef.request<IBilibiliVideoResult>({
+      headers: { 'User-Agent': APP_CONFIG.INFO.name },
+      url: `https://api.bilibili.com/x/space/arc/search?mid=${this.uid}&ps=${pageSize}&tid=0&pn=${page}&keyword=${this.keyword}&order=pubdate&jsonp=jsonp`,
+    })
+    if (videosResult.data.code === 0) {
+      return videosResult.data.data;
+    } else {
+      throw String(videosResult.status + videosResult.statusText);
+    }
   }
 }
