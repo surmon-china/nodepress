@@ -13,7 +13,7 @@ import { getMessageFromAxiosError } from '@app/transformers/error.transformer';
 import * as APP_CONFIG from '@app/app.config';
 
 export type IP = string;
-export interface IIPDetail {
+export interface IPLocation {
   city: string;
   country: string;
 }
@@ -30,7 +30,7 @@ export class IPService {
   */
 
   // 通过阿里云服务查询
-  private queryIPByAliyun(ip: IP): Promise<IIPDetail> {
+  private queryIPByAliyun(ip: IP): Promise<IPLocation> {
     return this.httpService.axiosRef
       .request({
         headers: { Authorization: `APPCODE ${APP_CONFIG.ALIYUN.ip}` },
@@ -51,7 +51,7 @@ export class IPService {
   }
 
   // 通过 ip.cn 查询
-  private queryIPByIPCN(ip: IP): Promise<IIPDetail> {
+  private queryIPByIPCN(ip: IP): Promise<IPLocation> {
     return new Promise((resolve, reject) => {
       shell.exec(`curl https://ip.cn/index.php?ip=${ip}`, (code, out, outError) => {
         try {
@@ -65,7 +65,7 @@ export class IPService {
   }
 
   // 查询 IP 地址
-  public query(ip: IP): Promise<IIPDetail> {
+  public query(ip: IP): Promise<IPLocation> {
     return this.queryIPByAliyun(ip)
       .then(({ city, country }) => ({ city, country }))
       .catch(() => this.queryIPByIPCN(ip))
