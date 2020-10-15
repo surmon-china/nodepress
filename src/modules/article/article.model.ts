@@ -55,6 +55,7 @@ export class Meta {
   }
 })
 export class Article extends defaultClasses.Base {
+  @prop({ unique: true })
   id: number
 
   @IsNotEmpty({ message: '文章标题？' })
@@ -95,26 +96,25 @@ export class Article extends defaultClasses.Base {
   // 文章发布状态
   @IsDefined()
   @IsIn([EPublishState.Draft, EPublishState.Published, EPublishState.Recycle])
-  @IsInt({ message: '有效状态？' })
-  @prop({ default: EPublishState.Published })
+  @IsInt({ message: '发布状态？' })
+  @prop({ enum: EPublishState, default: EPublishState.Published })
   state: EPublishState;
 
   // 文章公开状态
   @IsDefined()
   @IsIn([EPublicState.Public, EPublicState.Secret, EPublicState.Password])
-  @IsInt({ message: '有效状态？' })
-  @prop({ default: EPublicState.Public })
+  @IsInt({ message: '公开状态？' })
+  @prop({ enum: EPublicState, default: EPublicState.Public })
   public: EPublicState;
 
   // 文章转载状态
   @IsDefined()
   @IsIn([EOriginState.Hybrid, EOriginState.Original, EOriginState.Reprint])
-  @IsInt({ message: '有效状态？' })
-  @prop({ default: EOriginState.Original })
+  @IsInt({ message: '转载状态？' })
+  @prop({ enum: EOriginState, default: EOriginState.Original })
   origin: EOriginState;
 
-  // 文章标签
-  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
+  // 文章标签 https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
   @prop({ ref: () => Tag })
   tag: Ref<Tag>[];
 
@@ -126,7 +126,7 @@ export class Article extends defaultClasses.Base {
   category: Ref<Category>[];
 
   // 其他元信息
-  @prop()
+  @prop({ _id: false })
   meta: Meta;
 
   // 发布日期
@@ -139,7 +139,7 @@ export class Article extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @prop({ ref: () => Extend })
+  @prop({ _id: false, type: () => [Extend] })
   extends: Extend[];
 
   // 相关文章
@@ -157,7 +157,7 @@ export class PatchArticles extends DelArticles {
   @IsDefined()
   @IsIn([EPublishState.Draft, EPublishState.Published, EPublishState.Recycle])
   @IsInt({ message: '有效状态？' })
-  @prop({ default: EPublishState.Published })
+  @prop({ enum: EPublishState, default: EPublishState.Published })
   state: EPublishState;
 }
 

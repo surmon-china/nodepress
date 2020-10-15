@@ -42,7 +42,7 @@ export class Tag extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @prop({ ref: () => Extend })
+  @prop({ _id: false, type: () => [Extend] })
   extends: Extend[];
 
   @prop({ default: Date.now })

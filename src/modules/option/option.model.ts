@@ -77,11 +77,11 @@ export class Option extends defaultClasses.Base {
   site_icp: string;
 
   // 黑名单
-  @prop()
+  @prop({ _id: false })
   blacklist: Blacklist;
 
   // 其他元信息
-  @prop()
+  @prop({ _id: false })
   meta: Meta;
 
   // 广告配置

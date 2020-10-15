@@ -51,7 +51,7 @@ export class Category extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @prop({ ref: () => Extend })
+  @prop({ _id: false, type: () => [Extend] })
   extends: Extend[];
 
   count?: number;

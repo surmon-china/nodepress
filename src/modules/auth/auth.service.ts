@@ -2,7 +2,6 @@
  * Auth service.
  * @file 权限与管理员模块服务
  * @module module/auth/service
- * @author Surmon <https://github.com/surmon-china>
  */
 
 import lodash from 'lodash';
@@ -43,7 +42,7 @@ export class AuthService {
 
   // 获取管理员信息
   public getAdminInfo(): Promise<Auth> {
-    return this.authModel.findOne(null, '-_id name slogan gravatar').exec();
+    return this.authModel.findOne().exec();
   }
 
   // 修改管理员信息
@@ -67,10 +66,9 @@ export class AuthService {
     }
 
     return this.authModel
-      .findOne()
+      .findOne(null, '+password')
       .exec()
       .then(extantAuth => {
-
         // 修改密码 -> 核对已存在密码
         if (password) {
           const oldPassword = decodeMd5(password);
@@ -98,7 +96,7 @@ export class AuthService {
   // 登陆
   public adminLogin(password: string): Promise<ITokenResult> {
     return this.authModel
-      .findOne(null, 'password')
+      .findOne(null, '+password')
       .exec()
       .then(auth => {
         const extantPassword = this.getExtantPassword(auth);
