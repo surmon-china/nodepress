@@ -8,6 +8,10 @@
 - Upgrade deps
 - Fix bilibili video API url
 - Add AD config field (options)
+- [Add documents id field to unique index](https://typegoose.github.io/typegoose/docs/api/decorators/prop#unique)
+- [Improve sub documents `_id: false` option](https://typegoose.github.io/typegoose/docs/api/decorators/prop#_id)
+- [Improve documents `enum` option](https://typegoose.github.io/typegoose/docs/api/decorators/prop#enum)
+
 
 ### v3.3.3
 - Wallpaper module support `en`
