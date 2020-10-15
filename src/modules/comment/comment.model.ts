@@ -7,7 +7,7 @@
 
 import { Types } from 'mongoose';
 import { AutoIncrementID } from '@typegoose/auto-increment';
-import { prop, plugin, pre, index, defaultClasses } from '@typegoose/typegoose';
+import { prop, plugin, pre, modelOptions, defaultClasses, Severity } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsBoolean, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
 import { mongoosePaginate } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
@@ -68,6 +68,8 @@ export class CreateCommentBase extends defaultClasses.Base {
 })
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, { field: 'id', startAt: 1 })
+// https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
+@modelOptions({ options: { allowMixed: Severity.ALLOW }})
 export class Comment extends CreateCommentBase {
   @prop({ unique: true })
   id?: number;
@@ -94,8 +96,8 @@ export class Comment extends CreateCommentBase {
   ip?: string;
 
   // IP物理地址
-  @prop()
-  ip_location?: any;
+  @prop({ default: {}, type: Object })
+  ip_location?: Record<string, any>;
 
   @prop({ default: Date.now })
   create_at?: Date;
