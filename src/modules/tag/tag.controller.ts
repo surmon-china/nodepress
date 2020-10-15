@@ -50,7 +50,7 @@ export class TagController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除标签')
-  delTags(@Body() body: DelTags): Promise<any> {
+  delTags(@Body() body: DelTags) {
     return this.tagService.batchDelete(body.tag_ids);
   }
 

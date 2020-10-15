@@ -316,6 +316,5 @@ export const QueryParams = createParamDecorator((customConfig: TTransformConfig[
   // console.log('queryParams\n', request.queryParams);
   // console.log('origin\n', request.query);
   // console.log('visitors\n', result.visitors);
-
   return result;
 });

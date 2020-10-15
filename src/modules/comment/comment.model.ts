@@ -6,9 +6,10 @@
  */
 
 import { Types } from 'mongoose';
+import { AutoIncrementID } from '@typegoose/auto-increment';
 import { prop, plugin, pre, index, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsBoolean, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
+import { mongoosePaginate } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 import { ECommentParentType, ECommentState } from '@app/interfaces/state.interface';
 import { Extend } from '@app/models/extend.model';
@@ -38,12 +39,12 @@ export class CreateCommentBase extends defaultClasses.Base {
   // 评论所在的文章 Id
   @IsNotEmpty({ message: '文章 Id？' })
   @IsInt()
-  @prop({ required: true })
+  @prop({ required: true, index: true })
   post_id: number;
 
   // 父级评论 Id
   @IsInt()
-  @prop({ default: ECommentParentType.Self })
+  @prop({ default: ECommentParentType.Self, index: true })
   pid: number;
 
   @IsNotEmpty({ message: '评论内容？' })
@@ -57,7 +58,7 @@ export class CreateCommentBase extends defaultClasses.Base {
   agent?: string;
 
   // 评论作者
-  @prop()
+  @prop({ _id: false })
   author: Author;
 }
 
@@ -66,18 +67,15 @@ export class CreateCommentBase extends defaultClasses.Base {
   next();
 })
 @plugin(mongoosePaginate)
-@plugin(mongooseAutoIncrement.plugin, {
-  model: Comment.name,
-  field: 'id',
-  startAt: 1,
-  incrementBy: 1,
-})
-@index({ post_id: 1 })
+@plugin(AutoIncrementID, { field: 'id', startAt: 1 })
 export class Comment extends CreateCommentBase {
+  @prop({ unique: true })
+  id?: number;
+
   // 评论发布状态
   @IsIn([ECommentState.Auditing, ECommentState.Deleted, ECommentState.Published, ECommentState.Spam])
   @IsInt()
-  @prop({ enum: ECommentState, default: ECommentState.Published })
+  @prop({ enum: ECommentState, default: ECommentState.Published, index: true })
   state: ECommentState;
 
   // 是否置顶
@@ -87,7 +85,7 @@ export class Comment extends CreateCommentBase {
 
   // 被赞数
   @IsInt()
-  @prop({ default: 0 })
+  @prop({ default: 0, index: true })
   likes: number;
 
   // IP 地址

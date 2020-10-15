@@ -77,9 +77,7 @@ export class ArticleController {
     const matchedSlug = matchedField && querys[matchedField];
     return !matchedSlug
       ? this.articleService.getList(querys, options)
-      : matchedParam
-        .service(matchedSlug)
-        .then(param => {
+      : matchedParam.service(matchedSlug).then(param => {
           const paramField = matchedParam.name;
           const paramId = param?._id;
           if (paramId) {
@@ -102,14 +100,14 @@ export class ArticleController {
   @Patch()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量更新文章')
-  patchArticles(@Body() body: PatchArticles): Promise<any> {
+  patchArticles(@Body() body: PatchArticles) {
     return this.articleService.batchPatchState(body.article_ids, body.state);
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除文章')
-  delArticles(@Body() body: DelArticles): Promise<any> {
+  delArticles(@Body() body: DelArticles) {
     return this.articleService.batchDelete(body.article_ids);
   }
 
