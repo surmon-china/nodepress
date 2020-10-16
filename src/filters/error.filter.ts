@@ -25,7 +25,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const errMessage = isString(errorOption) ? errorOption : errorOption.message;
     const errorInfo = isString(errorOption) ? null : errorOption.error;
     const parentErrorInfo = errorInfo ? String(errorInfo) : null;
-    const isChildrenError = errorInfo && errorInfo.status && errorInfo.message;
+    const isChildrenError = errorInfo?.status && errorInfo?.message;
     const resultError = isChildrenError && errorInfo.message || parentErrorInfo;
     const resultStatus = isChildrenError ? errorInfo.status : status;
     const data: THttpErrorResponse = {
