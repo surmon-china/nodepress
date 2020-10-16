@@ -60,8 +60,9 @@ export const GITHUB = {
   username: 'surmon-china',
 };
 
-export const ALIYUN = {
-  ip: argv.aliyun_ip_auth,
+export const COMMON_SERVICE = {
+  aliyunIPAuth: argv.aliyun_ip_auth,
+  juheIPAuth: argv.juhe_ip_auth,
 };
 
 export const BAIDU = {

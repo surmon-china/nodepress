@@ -41,17 +41,16 @@ export class AuthController {
   @HttpProcessor.handle({ message: '登陆', error: HttpStatus.BAD_REQUEST })
   async login(@QueryParams() { visitors: { ip }}, @Body() body: AuthLogin): Promise<ITokenResult> {
     const token = await this.authService.adminLogin(body.password);
-    this.ipService.query(ip).then(ipLocation => {
-      const subject = '博客有新的登陆行为';
-      const city = ipLocation && ipLocation.city || '未知城市';
-      const country = ipLocation && ipLocation.country || '未知国家';
-      const content = `来源 IP：${ip}，地理位置为：${country} - ${city}`;
-      this.emailService.sendMail({
-        subject,
-        to: APP_CONFIG.EMAIL.admin,
-        text: `${subject}，${content}`,
-        html: `${subject}，${content}`,
-      });
+    const ipLocation = await this.ipService.query(ip);
+    const subject = '博客有新的登陆行为';
+    const city = ipLocation?.city || '未知城市';
+    const country = ipLocation?.country || '未知国家';
+    const content = `来源 IP：${ip}，地理位置为：${country} - ${city}`;
+    this.emailService.sendMail({
+      subject,
+      to: APP_CONFIG.EMAIL.admin,
+      text: `${subject}，${content}`,
+      html: `${subject}，${content}`,
     });
     return token;
   }

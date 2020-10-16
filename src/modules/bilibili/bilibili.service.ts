@@ -12,15 +12,8 @@ import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 
 export interface IBilibiliVideoData {
-  page: any;
-  list: {
-    tlist: any;
-    vlist: any[];
-  };
-}
-export interface IBilibiliVideoResult {
-  code: number;
-  data: IBilibiliVideoData;
+  count: number;
+  vlist: any[];
 }
 
 @Injectable()
@@ -66,12 +59,23 @@ export class BilibiliService {
     page = page || this.defaultPage;
     pageSize = pageSize || this.defaultPageSize;
 
-    const videosResult = await this.httpService.axiosRef.request<IBilibiliVideoResult>({
+    const videosResult = await this.httpService.axiosRef.request<any>({
       headers: { 'User-Agent': APP_CONFIG.INFO.name },
       url: `https://api.bilibili.com/x/space/arc/search?mid=${this.uid}&ps=${pageSize}&tid=0&pn=${page}&keyword=${this.keyword}&order=pubdate&jsonp=jsonp`,
     })
     if (videosResult.data.code === 0) {
-      return videosResult.data.data;
+      const resultData: IBilibiliVideoData = {
+        count: videosResult.data.data.page.count,
+        vlist: videosResult.data.data.list.vlist,
+      };
+      // TODO: 兼容代码，FE 上线后删掉
+      return {
+        ...resultData,
+        tlist: [],
+        pages: 2,
+      } as any;
+
+      return resultData;
     } else {
       throw String(videosResult.status + videosResult.statusText);
     }
