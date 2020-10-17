@@ -57,7 +57,9 @@ export class SyndicationService {
 
   private getXmlFilePath(fileName: string): string {
     return path.format({
-      dir: path.join(APP_CONFIG.APP.FRONT_END_PATH, 'public'),
+      // TODO: FE 上线后迁移
+      // dir: path.join(APP_CONFIG.APP.FRONT_END_PATH, 'public'),
+      dir: path.join(APP_CONFIG.APP.FRONT_END_PATH, 'static'),
       name: fileName,
       ext: '.xml',
     });
