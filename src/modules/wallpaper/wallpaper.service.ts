@@ -30,25 +30,21 @@ export class WallpaperService {
     this.zhWallpapersCache = this.cacheService.interval({
       key: CACHE_KEY.WALLPAPERS + 'ZH',
       timing: this.commonTimingConfig,
-      promise: () => {
-        return this.getWallpapers({
-          local: 'zh-CN',
-          host: 'cn.bing.com',
-          ensearch: 0
-        })
-      }
+      promise: () => this.getWallpapers({
+        local: 'zh-CN',
+        host: 'cn.bing.com',
+        ensearch: 0
+      })
     });
     // 今日壁纸缓存器（EN）
     this.enWallpapersCache = this.cacheService.interval({
       key: CACHE_KEY.WALLPAPERS + 'EN',
       timing: this.commonTimingConfig,
-      promise: () => {
-        return this.getWallpapers({
-          local: 'en-US',
-          host: 'bing.com',
-          ensearch: 1
-        })
-      }
+      promise: () => this.getWallpapers({
+        local: 'en-US',
+        host: 'bing.com',
+        ensearch: 1
+      })
     });
   }
 
@@ -63,21 +59,18 @@ export class WallpaperService {
   }
 
   // 获取今日壁纸
-  public getWallpapers(params?: WonderfulBingWallpaperOption): Promise<any> {
-    return this.wbw
-      .getWallpapers({ ...params, size: 8 })
-      .then(wallpaperJSON => {
-        try {
-          return Promise.resolve(
-            this.wbw.humanizeWallpapers(wallpaperJSON),
-          );
-        } catch (error) {
-          return Promise.reject('wallpaper 控制器解析 JSON 失败' + error);
-        }
-      })
-      .catch(error => {
-        console.warn('获取今日壁纸出现了问题', error);
-        return Promise.reject(error);
-      });
+  public async getWallpapers(params?: WonderfulBingWallpaperOption): Promise<any> {
+    try {
+      const wallpaperJSON = await this.wbw.getWallpapers({ ...params, size: 8 });
+      try {
+        return this.wbw.humanizeWallpapers(wallpaperJSON);
+      } catch (error) {
+        throw 'wallpaper 控制器解析 JSON 失败' + error;
+      }
+    } catch (error) {
+      const message = '获取今日壁纸出现了问题：' + error;
+      console.warn(message);
+      throw message;
+    }
   }
 }

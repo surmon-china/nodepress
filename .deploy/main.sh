@@ -5,7 +5,7 @@ WEB_PATH=$(dirname $0)
 # WEB_USERGROUP='root'
 
 echo "[deploy] Start deployment..."
- 
+
 echo "[deploy] Fetch and rebuilding..."
 cd $WEB_PATH
 cd ..
@@ -19,7 +19,7 @@ git checkout master
 # sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
 
 echo "[deploy] Install dependencies..."
-yarn
+yarn install --frozen-lockfile
 
 echo "[deploy] Stop service..."
 pm2 stop nodepress

@@ -58,7 +58,7 @@ export class HttpCacheInterceptor implements NestInterceptor {
   trackBy(context: ExecutionContext): string | undefined {
     const request = context.switchToHttp().getRequest();
     const httpServer = this.httpAdapterHost.httpAdapter;
-    const isHttpApp = !!(httpServer?.getRequestMethod);
+    const isHttpApp = Boolean(httpServer?.getRequestMethod);
     const isGetRequest = isHttpApp && httpServer.getRequestMethod(request) === RequestMethod[RequestMethod.GET];
     const cacheKey = this.reflector.get(META.HTTP_CACHE_KEY_METADATA, context.getHandler());
     const isMatchedCache = isHttpApp && isGetRequest && cacheKey;

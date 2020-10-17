@@ -15,7 +15,7 @@ export const databaseProvider = {
   provide: DB_CONNECTION_TOKEN,
   useFactory: async (emailService: EmailService) => {
 
-    let reConnectionTask = null;
+    let reconnectionTask = null;
     const RECONNET_INTERVAL = 6000;
 
     // 发送告警邮件（当发送邮件时，数据库已达到万劫不复之地）
@@ -45,13 +45,13 @@ export const databaseProvider = {
 
     mongoose.connection.on('open', () => {
       console.info('数据库连接成功！');
-      clearTimeout(reConnectionTask);
-      reConnectionTask = null;
+      clearTimeout(reconnectionTask);
+      reconnectionTask = null;
     });
 
     mongoose.connection.on('disconnected', () => {
       console.error(`数据库失去连接！尝试 ${RECONNET_INTERVAL / 1000}s 后重连`);
-      reConnectionTask = setTimeout(connection, RECONNET_INTERVAL);
+      reconnectionTask = setTimeout(connection, RECONNET_INTERVAL);
     });
 
     mongoose.connection.on('error', error => {

@@ -2,7 +2,6 @@
  * Auth service.
  * @file 权限与管理员模块服务
  * @module module/auth/service
- * @author Surmon <https://github.com/surmon-china>
  */
 
 import lodash from 'lodash';
@@ -43,71 +42,61 @@ export class AuthService {
 
   // 获取管理员信息
   public getAdminInfo(): Promise<Auth> {
-    return this.authModel.findOne(null, '-_id name slogan gravatar').exec();
+    return this.authModel.findOne().exec();
   }
 
   // 修改管理员信息
-  public putAdminInfo(auth: Auth): Promise<Auth> {
-
+  public async putAdminInfo(auth: Auth): Promise<Auth> {
     // 密码解码
     const password = decodeBase64(auth.password);
     const new_password = decodeBase64(auth.new_password);
-
     Reflect.deleteProperty(auth, 'password');
     Reflect.deleteProperty(auth, 'new_password');
 
     // 验证密码
     if (password || new_password) {
       if (!password || !new_password) {
-        return Promise.reject('密码不完整或无效');
+        throw '密码不完整或无效';
       }
       if (password === new_password) {
-        return Promise.reject('新旧密码不可一致');
+        throw '新旧密码不可一致';
       }
     }
 
-    return this.authModel
-      .findOne()
-      .exec()
-      .then(extantAuth => {
+    // 获取现存 Auth
+    const extantAuth = await this.authModel.findOne(null, '+password').exec();
 
-        // 修改密码 -> 核对已存在密码
-        if (password) {
-          const oldPassword = decodeMd5(password);
-          const extantPassword = this.getExtantPassword(extantAuth);
-          if (oldPassword !== extantPassword) {
-            return Promise.reject('原密码不正确');
-          } else {
-            auth.password = decodeMd5(new_password);
-          }
-        }
+    // 修改密码 -> 核对已存在密码
+    if (password) {
+      const oldPassword = decodeMd5(password);
+      const extantPassword = this.getExtantPassword(extantAuth);
+      if (oldPassword !== extantPassword) {
+        throw '原密码不正确';
+      } else {
+        auth.password = decodeMd5(new_password);
+      }
+    }
 
-        // 更新数据
-        const action = extantAuth && !!extantAuth._id
-          ? Object.assign(extantAuth, auth).save()
-          : this.authModel.create(auth);
-
-        return action.then(data => {
-          data = data.toObject();
-          Reflect.deleteProperty(data, 'password');
-          return data;
-        });
-      });
+    // 更新或新建数据
+    const newAuthData = await (extantAuth && !!extantAuth._id
+      ? Object.assign(extantAuth, auth).save()
+      : this.authModel.create(auth)
+    );
+    const authData = newAuthData.toObject() as Auth;
+    Reflect.deleteProperty(authData, 'password');
+    return authData;
   }
 
   // 登陆
-  public adminLogin(password: string): Promise<ITokenResult> {
-    return this.authModel
-      .findOne(null, 'password')
-      .exec()
-      .then(auth => {
-        const extantPassword = this.getExtantPassword(auth);
-        const loginPassword = decodeMd5(decodeBase64(password));
-        if (loginPassword === extantPassword) {
-          return Promise.resolve(this.createToken());
-        } else {
-          return Promise.reject('密码不匹配');
-        }
-      });
+  public async adminLogin(password: string): Promise<ITokenResult> {
+    const auth = await this.authModel.findOne(null, '+password').exec();
+    const extantPassword = this.getExtantPassword(auth);
+    const loginPassword = decodeMd5(decodeBase64(password));
+
+    if (loginPassword === extantPassword) {
+      return this.createToken();
+    } else {
+      throw '密码不匹配';
+    }
   }
 }

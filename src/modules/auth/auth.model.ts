@@ -26,7 +26,7 @@ export class Auth {
   gravatar: string;
 
   @IsString()
-  @prop()
+  @prop({ select: false })
   password?: string;
 
   new_password?: string;

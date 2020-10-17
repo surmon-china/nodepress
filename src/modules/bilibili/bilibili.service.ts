@@ -11,10 +11,8 @@ import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.servic
 import * as APP_CONFIG from '@app/app.config';
 import * as CACHE_KEY from '@app/constants/cache.constant';
 
-// B 站视频列表格式
-export interface IBilibiliVideoList {
-  status: boolean;
-  data: any;
+export interface IBilibiliVideoData {
+  count: number;
   vlist: any[];
 }
 
@@ -25,7 +23,7 @@ export class BilibiliService {
   private keyword = 'vlog';
   private defaultPageSize = 66;
   private defaultPage = 1;
-  private videoListCache: ICacheIoResult<IBilibiliVideoList>;
+  private videoListCache: ICacheIoResult<IBilibiliVideoData>;
 
   constructor(private readonly httpService: HttpService, private readonly cacheService: CacheService) {
     this.videoListCache = this.cacheService.interval({
@@ -47,32 +45,39 @@ export class BilibiliService {
   }
 
   // 获取缓存
-  public getVideoListCache(): Promise<IBilibiliVideoList> {
+  public getVideoListCache(): Promise<IBilibiliVideoData> {
     return this.videoListCache.get();
   }
 
   // 更新缓存
-  public updateVideoListCache(): Promise<IBilibiliVideoList> {
+  public updateVideoListCache(): Promise<IBilibiliVideoData> {
     return this.videoListCache.update();
   }
 
   // 获取项目列表
-  public getVideoList(pageSize?: string | number, page?: string | number): Promise<IBilibiliVideoList> {
-
+  public async getVideoList(pageSize?: string | number, page?: string | number): Promise<IBilibiliVideoData> {
     page = page || this.defaultPage;
     pageSize = pageSize || this.defaultPageSize;
 
-    return this.httpService.axiosRef
-      .request<IBilibiliVideoList>({
-        headers: { 'User-Agent': APP_CONFIG.INFO.name },
-        url: `https://space.bilibili.com/ajax/member/getSubmitVideos?mid=${this.uid}&pagesize=${pageSize}&page=${page}&keyword=${this.keyword}&order=pubdate`,
-      })
-      .then(videosResult => {
-        if (videosResult.data.status) {
-          return Promise.resolve(videosResult.data.data);
-        } else {
-          return Promise.reject(videosResult.status + videosResult.statusText);
-        }
-      });
+    const videosResult = await this.httpService.axiosRef.request<any>({
+      headers: { 'User-Agent': APP_CONFIG.INFO.name },
+      url: `https://api.bilibili.com/x/space/arc/search?mid=${this.uid}&ps=${pageSize}&tid=0&pn=${page}&keyword=${this.keyword}&order=pubdate&jsonp=jsonp`,
+    })
+    if (videosResult.data.code === 0) {
+      const resultData: IBilibiliVideoData = {
+        count: videosResult.data.data.page.count,
+        vlist: videosResult.data.data.list.vlist,
+      };
+      // TODO: 兼容代码，FE 上线后删掉
+      return {
+        ...resultData,
+        tlist: [],
+        pages: 2,
+      } as any;
+
+      return resultData;
+    } else {
+      throw String(videosResult.status + videosResult.statusText);
+    }
   }
 }

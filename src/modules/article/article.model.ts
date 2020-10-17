@@ -6,9 +6,10 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, Ref, defaultClasses, modelOptions } from '@typegoose/typegoose';
+import { AutoIncrementID } from '@typegoose/auto-increment';
+import { prop, index, plugin, pre, Ref, defaultClasses, modelOptions } from '@typegoose/typegoose';
 import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
+import { mongoosePaginate } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 import { EPublishState, EPublicState, EOriginState } from '@app/interfaces/state.interface';
 import { Category } from '@app/modules/category/category.model';
@@ -38,43 +39,46 @@ export class Meta {
   comments: number;
 }
 
-@pre<Article>('findOneAndUpdate', function(next) {
+@pre<Article>('findOneAndUpdate', function (next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
 @plugin(mongoosePaginate)
-@plugin(mongooseAutoIncrement.plugin, {
-  model: Article.name,
-  field: 'id',
-  startAt: 1,
-  incrementBy: 1,
-})
+@plugin(AutoIncrementID, { field: 'id', startAt: 1 })
 @modelOptions({
   schemaOptions: {
     toObject: { getters: true },
   }
 })
+@index(
+  { title: 'text', content: 'text', description: 'text' },
+  { name: 'SearchIndex', weights: {
+    title: 10,
+    content: 3,
+    description: 18
+  }}
+)
 export class Article extends defaultClasses.Base {
-  id: number
+  @prop({ unique: true })
+  id: number;
 
   @IsNotEmpty({ message: '文章标题？' })
   @IsString({ message: '字符串？' })
-  @prop({ required: true, validate: /\S+/ })
+  @prop({ required: true, validate: /\S+/, text: true })
   title: string;
 
   @IsNotEmpty({ message: '文章内容？' })
   @IsString({ message: '字符串？' })
-  @prop({ required: true, validate: /\S+/ })
+  @prop({ required: true, validate: /\S+/, text: true })
   content: string;
 
   // 列表时用的文章内容虚拟属性
-  get t_content() {
-    const content = this.content;
-    return content ? content.substring(0, 130) : content;
+  get t_content(): string {
+    return this.content?.substring?.(0, 130);
   }
 
   @IsString({ message: '字符串？' })
-  @prop()
+  @prop({ text: true })
   description: string;
 
   // 缩略图
@@ -90,44 +94,47 @@ export class Article extends defaultClasses.Base {
   // 文章关键字（SEO）
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: String })
+  @prop({ type: () => [String] })
   keywords: string[];
 
   // 文章发布状态
   @IsDefined()
   @IsIn([EPublishState.Draft, EPublishState.Published, EPublishState.Recycle])
-  @IsInt({ message: '有效状态？' })
-  @prop({ default: EPublishState.Published })
+  @IsInt({ message: '发布状态？' })
+  @prop({ enum: EPublishState, default: EPublishState.Published, index: true })
   state: EPublishState;
 
   // 文章公开状态
   @IsDefined()
   @IsIn([EPublicState.Public, EPublicState.Secret, EPublicState.Password])
-  @IsInt({ message: '有效状态？' })
-  @prop({ default: EPublicState.Public })
+  @IsInt({ message: '公开状态？' })
+  @prop({ enum: EPublicState, default: EPublicState.Public, index: true })
   public: EPublicState;
 
   // 文章转载状态
   @IsDefined()
   @IsIn([EOriginState.Hybrid, EOriginState.Original, EOriginState.Reprint])
-  @IsInt({ message: '有效状态？' })
-  @prop({ default: EOriginState.Original })
+  @IsInt({ message: '转载状态？' })
+  @prop({ enum: EOriginState, default: EOriginState.Original, index: true })
   origin: EOriginState;
 
-  // 文章标签
-  @arrayProp({ itemsRef: Tag })
+  // 文章标签 https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
+  @prop({ ref: () => Tag, index: true })
   tag: Ref<Tag>[];
 
   // 文章分类
-  @arrayProp({ itemsRef: Category, required: true })
+  @IsArray()
+  @ArrayNotEmpty({ message: '文章分类？' })
+  @ArrayUnique()
+  @prop({ ref: () => Category, required: true, index: true })
   category: Ref<Category>[];
 
   // 其他元信息
-  @prop()
+  @prop({ _id: false })
   meta: Meta;
 
   // 发布日期
-  @prop({ default: Date.now })
+  @prop({ default: Date.now, index: true })
   create_at?: Date;
 
   // 最后修改日期
@@ -136,7 +143,7 @@ export class Article extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: Extend })
+  @prop({ _id: false, type: () => [Extend] })
   extends: Extend[];
 
   // 相关文章
@@ -154,7 +161,7 @@ export class PatchArticles extends DelArticles {
   @IsDefined()
   @IsIn([EPublishState.Draft, EPublishState.Published, EPublishState.Recycle])
   @IsInt({ message: '有效状态？' })
-  @prop({ default: EPublishState.Published })
+  @prop({ enum: EPublishState, default: EPublishState.Published })
   state: EPublishState;
 }
 

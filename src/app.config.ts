@@ -60,12 +60,13 @@ export const GITHUB = {
   username: 'surmon-china',
 };
 
-export const ALIYUN = {
-  ip: argv.aliyun_ip_auth,
+export const COMMON_SERVICE = {
+  aliyunIPAuth: argv.aliyun_ip_auth,
+  juheIPAuth: argv.juhe_ip_auth,
 };
 
 export const BAIDU = {
-  site: argv.baidu_site || 'your baidu site domain like : surmon.me',
+  site: argv.baidu_site || 'your baidu site domain. like: surmon.me',
   token: argv.baidu_token || 'your baidu seo push token',
 };
 

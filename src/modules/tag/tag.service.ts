@@ -60,46 +60,45 @@ export class TagService {
   }
 
   // 请求标签列表（及聚和数据）
-  public getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
+  public async getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
     const matchState = {
       state: EPublishState.Published,
       public: EPublicState.Public,
     };
 
-    return this.tagModel
-      .paginate(querys, options)
-      .then(tags => {
-        return this.articleModel.aggregate([
-          { $match: isAuthenticated ? {} : matchState },
-          { $unwind: '$tag' },
-          { $group: { _id: '$tag', num_tutorial: { $sum: 1 }}},
-        ]).then(counts => {
-          tags = JSON.parse(JSON.stringify(tags));
-          return Object.assign(tags, {
-            docs: tags.docs.map(tag => {
-              const finded = counts.find(count => String(count._id) === String(tag._id));
-              return Object.assign(tag, { count: finded ? finded.num_tutorial : 0 });
-            }),
-          });
-        });
-      });
+    const tags = await this.tagModel.paginate(querys, options);
+    const counts = await this.articleModel.aggregate([
+      { $match: isAuthenticated ? {} : matchState },
+      { $unwind: '$tag' },
+      { $group: { _id: '$tag', num_tutorial: { $sum: 1 }}},
+    ]);
+
+    const tagsObject = JSON.parse(JSON.stringify(tags));
+    const newDocs = tagsObject.docs.map(tag => {
+      const finded = counts.find(count => (
+        String(count._id) === String(tag._id)
+      ));
+      return {
+        ...tag,
+        count: finded ? finded.num_tutorial : 0
+      };
+    });
+
+    return { ...tagsObject, docs: newDocs };
   }
 
   // 创建标签
-  public create(newTag: Tag): Promise<Tag> {
-    return this.tagModel
-      .find({ slug: newTag.slug })
-      .exec()
-      .then(existedTags => {
-        return existedTags.length
-          ? Promise.reject('别名已被占用')
-          : this.tagModel.create(newTag).then(tag => {
-              this.seoService.push(getTagUrl(tag.slug));
-              this.syndicationService.updateCache();
-              this.updateListCache();
-              return tag;
-            });
-      });
+  public async create(newTag: Tag): Promise<Tag> {
+    const existedTags = await this.tagModel.find({ slug: newTag.slug }).exec();
+    if (existedTags.length) {
+      throw '别名已被占用';
+    }
+
+    const tag = await this.tagModel.create(newTag);
+    this.seoService.push(getTagUrl(tag.slug));
+    this.syndicationService.updateCache();
+    this.updateListCache();
+    return tag;
   }
 
   // 获取标签详情
@@ -108,53 +107,40 @@ export class TagService {
   }
 
   // 修改标签
-  public update(tagId: Types.ObjectId, newTag: Tag): Promise<Tag> {
-    return this.tagModel
-      .findOne({ slug: newTag.slug })
-      .exec()
-      .then(existedTag => {
-        return existedTag && String(existedTag._id) !== String(tagId)
-          ? Promise.reject('别名已被占用')
-          : this.tagModel
-            .findByIdAndUpdate(tagId, newTag, { new: true })
-            .exec()
-            .then(tag => {
-              this.seoService.push(getTagUrl(tag.slug));
-              this.syndicationService.updateCache();
-              this.updateListCache();
-              return tag;
-            });
-    });
+  public async update(tagId: Types.ObjectId, newTag: Tag): Promise<Tag> {
+    const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
+    if (existedTag && String(existedTag._id) !== String(tagId)) {
+      throw '别名已被占用';
+    }
+
+    const tag = await this.tagModel
+      .findByIdAndUpdate(tagId, newTag, { new: true })
+      .exec();
+    this.seoService.push(getTagUrl(tag.slug));
+    this.syndicationService.updateCache();
+    this.updateListCache();
+    return tag;
   }
 
   // 删除单个标签
-  public delete(tagId: Types.ObjectId): Promise<Tag> {
-    return this.tagModel
-      .findByIdAndRemove(tagId)
-      .exec()
-      .then(tag => {
-        this.seoService.delete(getTagUrl(tag.slug));
-        this.syndicationService.updateCache();
-        this.updateListCache();
-        return tag;
-      });
+  public async delete(tagId: Types.ObjectId): Promise<Tag> {
+    const tag = await this.tagModel.findByIdAndRemove(tagId).exec();
+    this.seoService.delete(getTagUrl(tag.slug));
+    this.syndicationService.updateCache();
+    this.updateListCache();
+    return tag;
   }
 
   // 批量删除标签
-  public batchDelete(tagIds: Types.ObjectId[]): Promise<any> {
-    return this.tagModel
-      .find({ _id: { $in: tagIds }})
-      .exec()
-      .then(tags => {
-        this.seoService.delete(tags.map(tag => getTagUrl(tag.slug)));
-        return this.tagModel
-          .deleteMany({ _id: { $in: tagIds }})
-          .exec()
-          .then(result => {
-            this.syndicationService.updateCache();
-            this.updateListCache();
-            return result;
-          });
-      });
+  public async batchDelete(tagIds: Types.ObjectId[]) {
+    const tags = await this.tagModel.find({ _id: { $in: tagIds }}).exec();
+    this.seoService.delete(tags.map(tag => getTagUrl(tag.slug)));
+
+    const actionResult = await this.tagModel
+      .deleteMany({ _id: { $in: tagIds }})
+      .exec();
+    this.syndicationService.updateCache();
+    this.updateListCache();
+    return actionResult;
   }
 }

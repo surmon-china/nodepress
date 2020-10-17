@@ -8,6 +8,7 @@
 
 export const CACHE_PERFIX = '__nodepress_cache_';
 export const INFO = CACHE_PERFIX + 'info';
+export const OPTION = CACHE_PERFIX + 'option';
 export const TAGS = CACHE_PERFIX + 'tags';
 export const HOT_ARTICLES = CACHE_PERFIX + 'hot-articles';
 export const SITEMAP = CACHE_PERFIX + 'sitemap';

@@ -79,22 +79,20 @@ export class AkismetService {
         }
 
         console.info(`Akismet ${handleType} 操作中...`, new Date());
-        this.client[handleType](content)
-          .then(result => {
-            // 如果是检查 spam 且检查结果为 true
-            if (handleType === EAkismetActionType.CheckSpam && result) {
-              console.warn(`Akismet ${handleType} 检测到 SPAM！`, new Date(), content);
-              reject(new Error('SPAM!'));
-            } else {
-              console.info(`Akismet ${handleType} 操作成功！`);
-              resolve(result);
-            }
-          })
-          .catch(error => {
-            const message = `Akismet ${handleType} 操作失败！`;
-            console.warn(message, error);
-            reject(message);
-          });
+        this.client[handleType](content).then(result => {
+          // 如果是检查 spam 且检查结果为 true
+          if (handleType === EAkismetActionType.CheckSpam && result) {
+            console.warn(`Akismet ${handleType} 检测到 SPAM！`, new Date(), content);
+            reject(new Error('SPAM!'));
+          } else {
+            console.info(`Akismet ${handleType} 操作成功！`);
+            resolve(result);
+          }
+        }).catch(error => {
+          const message = `Akismet ${handleType} 操作失败！`;
+          console.warn(message, error);
+          reject(message);
+        });
       });
     };
   }
