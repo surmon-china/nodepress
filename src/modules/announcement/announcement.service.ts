@@ -36,7 +36,7 @@ export class AnnouncementService {
   }
 
   // 批量删除公告
-  public batchDelete(announcementIds: Types.ObjectId[]): Promise<any> {
+  public batchDelete(announcementIds: Types.ObjectId[]) {
     return this.announcementModel.deleteMany({ _id: { $in: announcementIds }}).exec();
   }
 }

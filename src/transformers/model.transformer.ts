@@ -33,6 +33,6 @@ export function getProviderByTypegooseClass(typegooseClass: TypegooseClass): Pro
 }
 
 // Model 注入器
-export function InjectModel<T>(model: TypegooseClass) {
+export function InjectModel(model: TypegooseClass) {
   return Inject(getModelToken(model.name));
 }

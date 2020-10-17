@@ -55,12 +55,11 @@ export class MusicService {
   }
 
   // 获取歌单列表
-  public getList(listId, listLimit) {
-    return this.neteseMusic._playlist(listId).then(({ playlist }) => {
-      Reflect.deleteProperty(playlist, 'trackIds');
-      playlist.tracks = playlist.tracks.slice(0, listLimit);
-      return playlist;
-    });
+  public async getList(listId, listLimit) {
+    const { playlist } = await this.neteseMusic._playlist(listId);
+    Reflect.deleteProperty(playlist, 'trackIds');
+    playlist.tracks = playlist.tracks.slice(0, listLimit);
+    return playlist;
   }
 
   public getSong(songId): Promise<any> {

@@ -44,32 +44,28 @@ export class StatisticService {
     });
   }
 
-  private getViewsCount(): Promise<number> {
-    return this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS).then(views => {
-      this.resultData.views = views || 0;
-      return views;
-    });
+  private async getViewsCount(): Promise<number> {
+    const views = await this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS);
+    this.resultData.views = views || 0;
+    return views;
   }
 
-  private getTagsCount(): Promise<number> {
-    return this.tagModel.countDocuments().exec().then(count => {
-      this.resultData.tags = count;
-      return count;
-    });
+  private async getTagsCount(): Promise<number> {
+    const count = await this.tagModel.countDocuments().exec();
+    this.resultData.tags = count;
+    return count;
   }
 
-  private getArticlesCount(): Promise<number> {
-    return this.articleModel.countDocuments().exec().then(count => {
-      this.resultData.articles = count;
-      return count;
-    });
+  private async getArticlesCount(): Promise<number> {
+    const count = await this.articleModel.countDocuments().exec();
+    this.resultData.articles = count;
+    return count;
   }
 
-  private getCommentsCount(): Promise<number> {
-    return this.commentModel.countDocuments().exec().then(count => {
-      this.resultData.comments = count;
-      return count;
-    });
+  private async getCommentsCount(): Promise<number> {
+    const count = await this.commentModel.countDocuments().exec();
+    this.resultData.comments = count;
+    return count;
   }
 
   // 获取统计数据

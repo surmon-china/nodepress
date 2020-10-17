@@ -6,24 +6,23 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, defaultClasses } from '@typegoose/typegoose';
+import { AutoIncrementID } from '@typegoose/auto-increment';
+import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
+import { mongoosePaginate } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 import { Extend } from '@app/models/extend.model';
 
-@pre<Category>('findOneAndUpdate', function(next) {
+@pre<Category>('findOneAndUpdate', function (next) {
   this.findOneAndUpdate({}, { update_at: Date.now() });
   next();
 })
 @plugin(mongoosePaginate)
-@plugin(mongooseAutoIncrement.plugin, {
-  model: Category.name,
-  field: 'id',
-  startAt: 1,
-  incrementBy: 1,
-})
+@plugin(AutoIncrementID, { field: 'id', startAt: 1 })
 export class Category extends defaultClasses.Base {
+  @prop({ unique: true })
+  id: number;
+
   @IsNotEmpty({ message: '分类名称？' })
   @IsString({ message: '字符串？' })
   @prop({ required: true, validate: /\S+/ })
@@ -51,7 +50,7 @@ export class Category extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: Extend })
+  @prop({ _id: false, type: () => [Extend] })
   extends: Extend[];
 
   count?: number;
@@ -61,7 +60,7 @@ export class DelCategories {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
-  categorie_ids: Types.ObjectId[];
+  category_ids: Types.ObjectId[];
 }
 
 export const CategoryProvider = getProviderByTypegooseClass(Category);

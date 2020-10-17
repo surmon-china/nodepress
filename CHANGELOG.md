@@ -4,6 +4,18 @@
 
 ## CHANGELOG
 
+### v3.4.0
+- Upgrade deps
+- Fix bilibili video API url
+- Add AD config field (options)
+- `Promise` to `async await`
+- `mongoose-auto-increment` to [`auto-increment`](https://github.com/typegoose/auto-increment/)
+- ~~`mongoose-paginate` to [`mongoose-paginate-v2`](https://github.com/aravindnc/mongoose-paginate-v2#readme)~~
+- [Add documents id field to unique index](https://typegoose.github.io/typegoose/docs/api/decorators/prop#unique)
+- [Improve sub documents `_id: false` option](https://typegoose.github.io/typegoose/docs/api/decorators/prop#_id)
+- [Improve documents `enum` option](https://typegoose.github.io/typegoose/docs/api/decorators/prop#enum)
+
+
 ### v3.3.3
 - Wallpaper module support `en`
 - Enable `esModuleInterop` for `tsconfig`

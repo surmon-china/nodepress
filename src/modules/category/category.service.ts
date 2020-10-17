@@ -26,57 +26,51 @@ export class CategoryService {
   ) {}
 
   // 请求分类列表（及聚和数据）
-  public getList(querys, options, isAuthenticated): Promise<PaginateResult<Category>> {
-
+  public async getList(querys, options, isAuthenticated): Promise<PaginateResult<Category>> {
     const matchState = {
       state: EPublishState.Published,
       public: EPublicState.Public,
     };
 
-    return this.categoryModel
-      .paginate(querys, options)
-      .then(categories => {
-        return this.articleModel
-          .aggregate([
-            { $match: isAuthenticated ? {} : matchState },
-            { $unwind: '$category' },
-            { $group: { _id: '$category', num_tutorial: { $sum: 1 }}},
-          ])
-          .then(counts => {
-            categories = JSON.parse(JSON.stringify(categories));
-            return Object.assign(categories, {
-              docs: categories.docs.map(category => {
-                const finded = counts.find(
-                  count => String(count._id) === String(category._id),
-                );
-                return Object.assign(category, {
-                  count: finded ? finded.num_tutorial : 0,
-                });
-              }),
-            });
-          });
-      });
+    const categories = await this.categoryModel.paginate(querys, options);
+    const counts = await this.articleModel.aggregate([
+      { $match: isAuthenticated ? {} : matchState },
+      { $unwind: '$category' },
+      { $group: { _id: '$category', num_tutorial: { $sum: 1 }}},
+    ]);
+
+    const categoriesObject = JSON.parse(JSON.stringify(categories));
+    const newDocs = categoriesObject.docs.map(category => {
+      const finded = counts.find(count => (
+        String(count._id) === String(category._id)
+      ));
+      return {
+        ...category,
+        count: finded ? finded.num_tutorial : 0
+      };
+    });
+
+    return { ...categoriesObject, docs: newDocs };
   }
 
   // 创建分类
-  public create(newCategory: Category): Promise<Category> {
-    return this.categoryModel
+  public async create(newCategory: Category): Promise<Category> {
+    // 检测 slug 重复
+    const categories = await this.categoryModel
       .find({ slug: newCategory.slug })
-      .exec()
-      .then(categories => {
-        return categories.length
-          ? Promise.reject('别名已被占用')
-          : this.categoryModel.create(newCategory).then(category => {
-              this.seoService.push(getCategoryUrl(category.slug));
-              this.syndicationService.updateCache();
-              return category;
-            });
-      });
+      .exec();
+    if (categories.length) {
+      throw '别名已被占用';
+    };
+
+    const category = await this.categoryModel.create(newCategory);
+    this.seoService.push(getCategoryUrl(category.slug));
+    this.syndicationService.updateCache();
+    return category;
   }
 
   // 获取分类族谱
   public getGenealogyById(categoryId: Types.ObjectId): Promise<Category[]> {
-
     const categories = [];
     const findById = this.categoryModel.findById.bind(this.categoryModel);
 
@@ -105,66 +99,66 @@ export class CategoryService {
   }
 
   // 修改分类
-  public update(categoryId: Types.ObjectId, newCategory: Category): Promise<Category> {
-    return this.categoryModel
+  public async update(categoryId: Types.ObjectId, newCategory: Category): Promise<Category> {
+    // 检测 slug 重复
+    const existedCategory = await this.categoryModel
       .findOne({ slug: newCategory.slug })
-      .exec()
-      .then(existedCategory => {
-        return existedCategory && String(existedCategory._id) !== String(categoryId)
-          ? Promise.reject('别名已被占用')
-          : this.categoryModel
-              .findByIdAndUpdate(categoryId, newCategory, { new: true })
-              .then(category => {
-                this.seoService.push(getCategoryUrl(category.slug));
-                this.syndicationService.updateCache();
-                return category;
-              });
-      });
+      .exec();
+    if (existedCategory && String(existedCategory._id) !== String(categoryId)) {
+      throw '别名已被占用';
+    };
+
+    const category = await this.categoryModel.findByIdAndUpdate(
+      categoryId,
+      newCategory,
+      { new: true }
+    );
+    this.seoService.push(getCategoryUrl(category.slug));
+    this.syndicationService.updateCache();
+    return category;
   }
 
   // 删除单个分类
-  public delete(categoryId: Types.ObjectId): Promise<Category> {
-    return this.categoryModel
+  public async delete(categoryId: Types.ObjectId) {
+    const category = await this.categoryModel
       .findByIdAndRemove(categoryId)
-      .exec()
-      .then(category => {
-        // 更新网站地图
-        this.syndicationService.updateCache();
-        this.seoService.delete(getCategoryUrl(category.slug));
-        return this.categoryModel
-          .find({ pid: categoryId })
-          .exec()
-          .then(categories => {
-            // 如果没有此分类的父分类，则删除 { pid: target.id } -> ok
-            if (!categories.length) {
-              return Promise.resolve(category);
-            }
-            // 否则递归更改 -> { pid: target.id } -> { pid: target.pid || null }
-            const bulk = this.categoryModel.collection.initializeOrderedBulkOp();
-            bulk
-              .find({ _id: { $in: Array.from(categories, c => c._id) }})
-              .update({ $set: { pid: category.pid || null }});
-            return bulk.execute().then(() => category);
-          });
-      });
+      .exec();
+    // 更新网站地图
+    this.syndicationService.updateCache();
+    this.seoService.delete(getCategoryUrl(category.slug));
+
+    // 处理子分类
+    const categories = await this.categoryModel
+      .find({ pid: categoryId })
+      .exec();
+    // 如果没有此分类的父分类，则删除 { pid: target.id } -> ok
+    if (!categories.length) {
+      return category;
+    }
+    // 否则递归更改 -> { pid: target.id } -> { pid: target.pid || null }
+    await this.categoryModel.collection.initializeOrderedBulkOp()
+      .find({ _id: { $in: Array.from(categories, c => c._id) }})
+      .update({ $set: { pid: category.pid || null }})
+      .execute();
+
+    return category;
   }
 
-  // 批量删除分类
-  public batchDelete(categoryIds: Types.ObjectId[]): Promise<any> {
-    return this.categoryModel
+  // 批量删除分类（有顺序要求）
+  public async batchDelete(categoryIds: Types.ObjectId[]) {
+    // 先删缓存
+    const categories = await this.categoryModel
       .find({ _id: { $in: categoryIds }})
-      .exec()
-      .then(categories => {
-        this.seoService.delete(
-          categories.map(category => getCategoryUrl(category.slug)),
-        );
-        return this.categoryModel
-          .deleteMany({ _id: { $in: categoryIds }})
-          .exec()
-          .then(result => {
-            this.syndicationService.updateCache();
-            return result;
-          });
-      });
+      .exec();
+    this.seoService.delete(
+      categories.map(category => getCategoryUrl(category.slug))
+    );
+
+    // 再物理删除
+    const actionResult = await this.categoryModel
+      .deleteMany({ _id: { $in: categoryIds }})
+      .exec();
+    this.syndicationService.updateCache();
+    return actionResult;
   }
 }

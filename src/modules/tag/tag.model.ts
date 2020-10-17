@@ -6,9 +6,10 @@
  */
 
 import { Types } from 'mongoose';
-import { prop, arrayProp, plugin, pre, defaultClasses } from '@typegoose/typegoose';
+import { AutoIncrementID } from '@typegoose/auto-increment';
+import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose';
 import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator';
-import { mongoosePaginate, mongooseAutoIncrement } from '@app/transformers/mongoose.transformer';
+import { mongoosePaginate } from '@app/transformers/mongoose.transformer';
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer';
 import { Extend } from '@app/models/extend.model';
 
@@ -17,13 +18,11 @@ import { Extend } from '@app/models/extend.model';
   next();
 })
 @plugin(mongoosePaginate)
-@plugin(mongooseAutoIncrement.plugin, {
-  model: Tag.name,
-  field: 'id',
-  startAt: 1,
-  incrementBy: 1,
-})
+@plugin(AutoIncrementID, { field: 'id', startAt: 1 })
 export class Tag extends defaultClasses.Base {
+  @prop({ unique: true })
+  id: number;
+
   @IsNotEmpty({ message: '标签名称？' })
   @IsString({ message: '字符串？' })
   @prop({ required: true, validate: /\S+/ })
@@ -42,7 +41,7 @@ export class Tag extends defaultClasses.Base {
 
   @IsArray()
   @ArrayUnique()
-  @arrayProp({ items: Extend })
+  @prop({ _id: false, type: () => [Extend] })
   extends: Extend[];
 
   @prop({ default: Date.now })
