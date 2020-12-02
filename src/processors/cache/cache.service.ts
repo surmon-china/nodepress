@@ -83,7 +83,7 @@ export class CacheService {
   constructor(@Inject(CACHE_MANAGER) cache: ICacheManager) {
     this.cache = cache;
     this.redisClient.on('ready', () => {
-      console.info('Reids 已准备好！');
+      console.info('Redis 已准备好！');
     });
   }
 
