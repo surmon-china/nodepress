@@ -33,6 +33,7 @@ export const MONGODB = {
 export const REDIS = {
   host: argv.redis_host || 'localhost',
   port: argv.redis_port || 6379,
+  password: (argv.redis_password || null) as string,
   ttl: null,
   defaultCacheTTL: 60 * 60 * 24,
 };
