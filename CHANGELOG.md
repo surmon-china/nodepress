@@ -4,6 +4,18 @@
 
 ## CHANGELOG
 
+### v3.4.1
+
+**Chore**
+- Upgrade all deps
+
+**Feature**
+- support redis `password` config
+
+**Breaking Change**
+- add fe public path
+- remove legacy folder file path for syndication
+
 ### v3.4.0
 - Upgrade deps
 - Fix bilibili video API url
