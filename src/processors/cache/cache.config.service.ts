@@ -30,7 +30,7 @@ export class CacheConfigService implements CacheOptionsFactory {
   // 重试策略
   public retryStrategy(options: RetryStrategyOptions) {
 
-    console.error('Reids 发生异常！', options.error);
+    console.error('Redis 发生异常！', options.error);
     this.sendAlarmMail(String(options.error));
 
     if (options?.error?.code === 'ECONNREFUSED') {
