@@ -9,6 +9,8 @@ import path from 'path';
 import { argv } from 'yargs';
 import { packageJson } from '@app/transformers/module.transformer';
 
+const FE_PATH = path.join(__dirname, '..', '..', 'surmon.me')
+
 export const APP = {
   LIMIT: 16,
   PORT: 8000,
@@ -16,7 +18,8 @@ export const APP = {
   MASTER: 'Surmon',
   NAME: 'Surmon.me',
   URL: 'https://surmon.me',
-  FRONT_END_PATH: path.join(__dirname, '..', '..', 'surmon.me'),
+  FRONT_END_PATH: FE_PATH,
+  FRONT_END_PUBLIC_PATH: path.join(FE_PATH, 'public'),
 };
 
 export const CROSS_DOMAIN = {
@@ -33,6 +36,7 @@ export const MONGODB = {
 export const REDIS = {
   host: argv.redis_host || 'localhost',
   port: argv.redis_port || 6379,
+  password: (argv.redis_password || null) as string,
   ttl: null,
   defaultCacheTTL: 60 * 60 * 24,
 };

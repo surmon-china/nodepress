@@ -55,10 +55,9 @@ export class SyndicationService {
     this.updateCache();
   }
 
-  // TODO: FE 上线后迁移 static -> public
-  private getXmlFilePath(fileName: string, foldName: string): string {
+  private getXmlFilePath(fileName: string): string {
     return path.format({
-      dir: path.join(APP_CONFIG.APP.FRONT_END_PATH, foldName),
+      dir: APP_CONFIG.APP.FRONT_END_PUBLIC_PATH,
       name: fileName,
       ext: '.xml',
     });
@@ -185,12 +184,10 @@ export class SyndicationService {
   public updateCache(): Promise<any> {
     return Promise.all([
       this.sitemapCache.update().then(xml => {
-        fs.writeFileSync(this.getXmlFilePath('sitemap', 'static'), xml)
-        fs.writeFileSync(this.getXmlFilePath('sitemap', 'public'), xml)
+        fs.writeFileSync(this.getXmlFilePath('sitemap'), xml)
       }),
       this.rssCache.update().then(xml => {
-        fs.writeFileSync(this.getXmlFilePath('rss', 'static'), xml)
-        fs.writeFileSync(this.getXmlFilePath('rss', 'public'), xml)
+        fs.writeFileSync(this.getXmlFilePath('rss'), xml)
       }),
     ])
   }

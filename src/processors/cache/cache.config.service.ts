@@ -53,6 +53,9 @@ export class CacheConfigService implements CacheOptionsFactory {
       port: APP_CONFIG.REDIS.port as number,
       retry_strategy: this.retryStrategy.bind(this),
     };
+    if (APP_CONFIG.REDIS.password) {
+      redisOptions.password = APP_CONFIG.REDIS.password
+    }
     return {
       store: redisStore,
       ttl: APP_CONFIG.REDIS.ttl,
