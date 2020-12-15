@@ -4,6 +4,15 @@
 
 ## CHANGELOG
 
+### v3.4.2
+
+**Chore**
+- Upgrade all deps
+
+**Breaking Change**
+- comment content HTML -> markdown text
+- remove marked module
+
 ### v3.4.1
 
 **Chore**
