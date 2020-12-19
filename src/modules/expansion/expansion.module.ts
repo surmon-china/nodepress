@@ -10,11 +10,10 @@ import { TagProvider } from '@app/modules/tag/tag.model';
 import { ArticleProvider } from '@app/modules/article/article.model';
 import { CommentProvider } from '@app/modules/comment/comment.model';
 import { ExpansionController } from './expansion.controller';
-import { GithubService } from './expansion.service.github';
 import { StatisticService } from './expansion.service.statistic';
-import { DBBackupcService } from './expansion.service.dbbackup';
+import { DBBackupService } from './expansion.service.dbbackup';
 
-const services = [GithubService, StatisticService, DBBackupcService];
+const services = [StatisticService, DBBackupService];
 
 @Module({
   imports: [HttpModule],

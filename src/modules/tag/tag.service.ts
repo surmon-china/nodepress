@@ -75,12 +75,12 @@ export class TagService {
 
     const tagsObject = JSON.parse(JSON.stringify(tags));
     const newDocs = tagsObject.docs.map(tag => {
-      const finded = counts.find(count => (
+      const found = counts.find(count => (
         String(count._id) === String(tag._id)
       ));
       return {
         ...tag,
-        count: finded ? finded.num_tutorial : 0
+        count: found ? found.num_tutorial : 0
       };
     });
 

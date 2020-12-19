@@ -16,7 +16,7 @@ export const databaseProvider = {
   useFactory: async (emailService: EmailService) => {
 
     let reconnectionTask = null;
-    const RECONNET_INTERVAL = 6000;
+    const RECONNECT_INTERVAL = 6000;
 
     // 发送告警邮件（当发送邮件时，数据库已达到万劫不复之地）
     const sendAlarmMail = (error: string) => {
@@ -30,7 +30,7 @@ export const databaseProvider = {
 
     // 连接数据库
     function connection() {
-      return mongoose.connect(APP_CONFIG.MONGODB.uri, {
+      return mongoose.connect(APP_CONFIG.MONGO_DB.uri, {
         useUnifiedTopology: true,
         useCreateIndex: true,
         useNewUrlParser: true,
@@ -50,8 +50,8 @@ export const databaseProvider = {
     });
 
     mongoose.connection.on('disconnected', () => {
-      console.error(`数据库失去连接！尝试 ${RECONNET_INTERVAL / 1000}s 后重连`);
-      reconnectionTask = setTimeout(connection, RECONNET_INTERVAL);
+      console.error(`数据库失去连接！尝试 ${RECONNECT_INTERVAL / 1000}s 后重连`);
+      reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL);
     });
 
     mongoose.connection.on('error', error => {

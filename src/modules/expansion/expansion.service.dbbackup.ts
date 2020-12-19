@@ -15,7 +15,7 @@ import { CloudStorageService } from '@app/processors/helper/helper.service.cs';
 import * as APP_CONFIG from '@app/app.config';
 
 // Configs
-const UPFAILE_TIMEOUT = 1000 * 60 * 5;
+const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
 const UPLOAD_INTERVAL = '0 0 3 * * *';
 
 const BACKUP_FILE_EXT = '.tar.gz';
@@ -23,13 +23,13 @@ const BACKUP_SHELL_PATH = path.normalize(APP_CONFIG.DB_BACKUP.backupShellPath);
 const BACKUP_DATA_PATH = path.resolve(APP_CONFIG.DB_BACKUP.backupFilePath, `nodepress${BACKUP_FILE_EXT}`);
 
 @Injectable()
-export class DBBackupcService {
+export class DBBackupService {
 
   constructor(private readonly cloudStorageService: CloudStorageService) {
     console.log('DB Backup 开始执行定时数据备份任务！');
     schedule.scheduleJob(UPLOAD_INTERVAL, () => {
       this.backup().catch(() => {
-        setTimeout(this.backup, UPFAILE_TIMEOUT);
+        setTimeout(this.backup, UP_FAILED_TIMEOUT);
       });
     });
   }
