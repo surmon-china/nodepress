@@ -26,9 +26,10 @@ import * as urlMap from '@app/transformers/urlmap.transformer';
 export class SyndicationService {
 
   private pagesMap: SitemapItemLoose[] = [
+    // MARK: 不要与前端业务有耦合，所以 JOB LENS 等页面都不再加入 map
     { url: APP_CONFIG.APP.URL, changefreq: EnumChangefreq.ALWAYS, priority: 1 },
-    { url: urlMap.getLensPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
-    { url: urlMap.getAboutPageUrl(), changefreq: EnumChangefreq.MONTHLY, priority: 1 },
+    { url: urlMap.getAboutPageUrl(), changefreq: EnumChangefreq.YEARLY, priority: 1 },
+    { url: urlMap.getArchivePageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
     { url: urlMap.getSitemapPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
     { url: urlMap.getGuestbookPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
   ];
