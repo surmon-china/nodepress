@@ -143,14 +143,10 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
   * 标签
   * 评论
   * 配置
-  * bilibili：Vlog 业务的请求
   * 鉴权/登陆：全局鉴权业务和 Token 业务
   * 点赞：点赞评论、文章、主站
-  * 音乐：播放器音乐数据业务
   * [聚合供稿](https://github.com/surmon-china/nodepress/blob/master/src/modules/syndication/syndication.service.ts)：负责聚和信息的输出和写入，如 Sitemap、RSSXML
-  * 壁纸：主站每日壁纸模块业务
   * 扩展模块
-    + GitHub：GitHub 项目列表业务
     + 统计：业务数据统计业务
     + 备份：数据库备份业务（定时、手动）
     + 其他：其他第三方 token 等服务
@@ -214,7 +210,7 @@ $ yarn build
 $ yarn start:prod
 
 # 更新 GEO IP 库数据
-$ yarn updategeodb
+$ yarn update-geo-db
 ```
 
 ## Actions setup

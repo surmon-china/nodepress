@@ -28,7 +28,7 @@ export class OriginMiddleware implements NestMiddleware {
       if (!isVerifiedOrigin && !isVerifiedReferer) {
         return response.status(HttpStatus.UNAUTHORIZED).jsonp({
           status: EHttpStatus.Error,
-          message: TEXT.HTTP_ANONYMOUSE_TEXT,
+          message: TEXT.HTTP_ANONYMOUS_TEXT,
           error: null,
         } as THttpErrorResponse);
       }

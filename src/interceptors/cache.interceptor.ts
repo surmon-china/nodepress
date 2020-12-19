@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { HttpAdapterHost, NestInterceptor, ExecutionContext, CallHandler, Inject,  Injectable, RequestMethod } from '@nestjs/common';
 import { CacheService } from '@app/processors/cache/cache.service';
-import * as SYSYTEM from '@app/constants/system.constant';
+import * as SYSTEM from '@app/constants/system.constant';
 import * as META from '@app/constants/meta.constant';
 import * as APP_CONFIG from '@app/app.config';
 
@@ -23,8 +23,8 @@ export class HttpCacheInterceptor implements NestInterceptor {
 
   constructor(
     private readonly cacheManager: CacheService,
-    @Inject(SYSYTEM.REFLECTOR) private readonly reflector: Reflector,
-    @Inject(SYSYTEM.HTTP_ADAPTER_HOST) private readonly httpAdapterHost: HttpAdapterHost,
+    @Inject(SYSTEM.REFLECTOR) private readonly reflector: Reflector,
+    @Inject(SYSTEM.HTTP_ADAPTER_HOST) private readonly httpAdapterHost: HttpAdapterHost,
   ) {}
 
   // 自定义装饰器，修饰 ttl 参数

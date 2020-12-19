@@ -49,7 +49,7 @@ export class SyndicationService {
     });
     this.rssCache = this.cacheService.promise({
       ioMode: true,
-      key: CACHE_KEY.RSSXML,
+      key: CACHE_KEY.RSS_XML,
       promise: this.getRSSXML.bind(this),
     });
     this.updateCache();

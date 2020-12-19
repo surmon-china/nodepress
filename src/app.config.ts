@@ -27,7 +27,7 @@ export const CROSS_DOMAIN = {
   allowedReferer: 'surmon.me',
 };
 
-export const MONGODB = {
+export const MONGO_DB = {
   uri: `mongodb://127.0.0.1:${argv.dbport || '27017'}/NodePress`,
   username: argv.db_username || 'DB_username',
   password: argv.db_password || 'DB_password',
@@ -58,10 +58,6 @@ export const EMAIL = {
 export const AKISMET = {
   key: argv.akismet_key || 'your akismet Key',
   blog: argv.akismet_blog || 'your akismet blog site, like: https://surmon.me',
-};
-
-export const GITHUB = {
-  username: 'surmon-china',
 };
 
 export const COMMON_SERVICE = {
