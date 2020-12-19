@@ -30,7 +30,6 @@ export class SyndicationService {
     { url: APP_CONFIG.APP.URL, changefreq: EnumChangefreq.ALWAYS, priority: 1 },
     { url: urlMap.getAboutPageUrl(), changefreq: EnumChangefreq.YEARLY, priority: 1 },
     { url: urlMap.getArchivePageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
-    { url: urlMap.getSitemapPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
     { url: urlMap.getGuestbookPageUrl(), changefreq: EnumChangefreq.ALWAYS, priority: 1 },
   ];
 

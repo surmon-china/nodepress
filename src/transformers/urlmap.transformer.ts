@@ -30,7 +30,3 @@ export function getAboutPageUrl(): string {
 export function getArchivePageUrl(): string {
   return `${APP_CONFIG.APP.URL}/archive`;
 }
-
-export function getSitemapPageUrl(): string {
-  return `${APP_CONFIG.APP.URL}/sitemap`;
-}
