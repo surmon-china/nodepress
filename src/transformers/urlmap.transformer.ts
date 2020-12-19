@@ -23,12 +23,12 @@ export function getGuestbookPageUrl(): string {
   return `${APP_CONFIG.APP.URL}/guestbook`;
 }
 
-export function getLensPageUrl(): string {
-  return `${APP_CONFIG.APP.URL}/lens`;
-}
-
 export function getAboutPageUrl(): string {
   return `${APP_CONFIG.APP.URL}/about`;
+}
+
+export function getArchivePageUrl(): string {
+  return `${APP_CONFIG.APP.URL}/archive`;
 }
 
 export function getSitemapPageUrl(): string {
