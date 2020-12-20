@@ -18,4 +18,4 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASSWORD }}
-          script: sh ${{ secrets.WWW_PATH }}/nodepress/.deploy/main.sh
+          script: sh ${{ secrets.WWW_PATH }}/nodepress/scripts/deploy.sh

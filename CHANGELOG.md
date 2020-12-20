@@ -2,6 +2,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+### v3.4.4
+
+**Feature**
+- DB backup shell & path
+- Support patch API to backup DB & recover DB
+
 ### v3.4.3
 
 **Chore**

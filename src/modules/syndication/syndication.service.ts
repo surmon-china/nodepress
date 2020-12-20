@@ -149,7 +149,7 @@ export class SyndicationService {
       image_url: `${APP_CONFIG.APP.URL}/icon.png`,
       managingEditor: APP_CONFIG.APP.MASTER,
       webMaster: APP_CONFIG.APP.MASTER,
-      generator: `${APP_CONFIG.INFO.name} ${APP_CONFIG.INFO.version}`,
+      generator: `${APP_CONFIG.PROJECT.name} ${APP_CONFIG.PROJECT.version}`,
       categories: categories.map(category => category.slug),
       copyright: `${new Date().getFullYear()} ${APP_CONFIG.APP.NAME}`,
       language: 'zh',
