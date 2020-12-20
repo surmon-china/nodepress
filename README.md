@@ -63,7 +63,6 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
     * `extend` 为通用扩展（[模型在此](https://github.com/surmon-china/nodepress/blob/master/src/models/extend.model.ts)）
     * 文章、分类、Tag 表都包含 extend 字段，用于在后台管理中自定义扩展，类似于 Wordpress 中的自定义字段功能，目前用来实现前台 icon 图标的 class 或者其他功能
 
-
   - 各表重要字段
     * `_id`：mongodb 生成的 id，一般用于后台执行 CRUD 操作
     * `id`：插件生成的自增数字 id，类似 mysql 中的 id，具有唯一性，用于前台获取数据

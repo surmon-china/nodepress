@@ -8,7 +8,8 @@
     "AKISMET",
     "aliyun",
     "nestjs",
-    "prebuild"
+    "prebuild",
+    "middlewares"
   ],
   "flagWords": []
 }
