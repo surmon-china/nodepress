@@ -72,7 +72,6 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
     * 数据库真实存在数据
     * 业务计算出的数据，非存储数据，如：统计数据
     * Mongoose 支持的 virtual 虚拟数据
-    * 第三方模块提供数据，如：GitHub、Bilibili
 
 ### 应用结构
 
