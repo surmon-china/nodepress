@@ -36,8 +36,11 @@ export class CommentService {
 
   // 邮件通知网站主及目标对象
   private sendMailToAdminAndTargetUser(comment: Comment, permalink: string) {
-    const commentType = comment.post_id === ECommentPostType.Guestbook ? '留言' : '评论';
-    const getContextPrefix = isReply => `来自 ${comment.author.name} 的${commentType}${isReply ? '回复' : ''}：`;
+    const commentTypeText = comment.post_id === ECommentPostType.Guestbook ? '留言' : '评论';
+    const getContextPrefix = isReply => {
+      const replyText = isReply ? '回复' : '';
+      return `来自 ${comment.author.name} 的${commentTypeText}${replyText}：`
+    };
     const sendMailText = contentPrefix => `${contentPrefix}${comment.content}`;
     const sendMailHtml = contentPrefix => `
       <p>${contentPrefix}${comment.content}</p><br>
@@ -46,7 +49,7 @@ export class CommentService {
 
     this.emailService.sendMail({
       to: APP_CONFIG.EMAIL.admin,
-      subject: `博客有新的${commentType}`,
+      subject: `博客有新的${commentTypeText}`,
       text: sendMailText(getContextPrefix(false)),
       html: sendMailHtml(getContextPrefix(false)),
     });
@@ -57,7 +60,7 @@ export class CommentService {
         .then(parentComment => {
           this.emailService.sendMail({
             to: parentComment.author.email,
-            subject: `你在 ${APP_CONFIG.APP.NAME} 有新的${commentType}回复`,
+            subject: `你在 ${APP_CONFIG.APP.NAME} 有新的${commentTypeText}回复`,
             text: sendMailText(getContextPrefix(true)),
             html: sendMailHtml(getContextPrefix(true)),
           });

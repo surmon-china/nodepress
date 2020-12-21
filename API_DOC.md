@@ -28,7 +28,7 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Put '/admin' (Auth): <Auth>
   ```
   ```ts
@@ -36,7 +36,7 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Post '/check' (): <void>
   Post '/renewal' (): <ITokenResult>
   ```
@@ -47,7 +47,7 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Put (Option): <Option>
   ```
 
@@ -57,22 +57,22 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Post (Announcement): <Announcement>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete (DelAnnouncements): <MongooseOpResult>
   ```
   ```ts
   @JwtAuth
-  
+
   Put '/:id' (Announcement): <Announcement>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete '/:id' (): <MongooseOpResult>
   ```
 
@@ -85,27 +85,27 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Put '/:id' (Article): <Article>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete '/:id' (): <MongooseOpResult>
   ```
   ```ts
   @JwtAuth
-  
+
   Post (Article): <Article>
   ```
   ```ts
   @JwtAuth
-  
+
   Patch (PatchArticles): <MongooseOpResult>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete (DelArticles): <MongooseOpResult>
   ```
 
@@ -118,22 +118,22 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Put '/:id' (Category): <Category>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete '/:id' (): <MongooseOpResult>
   ```
   ```ts
   @JwtAuth
-  
+
   Post (Category): <Category>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete (DelCategories): <MongooseOpResult>
   ```
 
@@ -143,22 +143,22 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Post (Tag): <Tag>
   ```
   ```ts
   @JwtAuth
-  
+
   Put '/:id' (Tag): <Tag>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete '/:id' (): <MongooseOpResult>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete (DelTags): <MongooseOpResult>
   ```
 
@@ -171,27 +171,27 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Patch (PatchComments): <MongooseOpResult>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete (DelComments): <MongooseOpResult>
   ```
   ```ts
   @JwtAuth
-  
+
   Get '/:id' (): <Comment>
   ```
   ```ts
   @JwtAuth
-  
+
   Put '/:id' (Comment): <Comment>
   ```
   ```ts
   @JwtAuth
-  
+
   Delete '/:id' (): <MongooseOpResult>
   ```
 
@@ -204,7 +204,7 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   ```
   ```ts
   @JwtAuth
-  
+
   Patch (): <void>
   ```
 
@@ -224,57 +224,17 @@ Get '/path/:id' ({ param? }): <ResultDataType>
   Get '/statistic' (): <ITodayStatistic>
   ```
   ```ts
-  Get '/github' (): <IGithubRepositorie[]>
-  ```
-  ```ts
   @JwtAuth
-  
-  Patch '/github' (): <IGithubRepositorie[]>
-  ```
-  ```ts
-  @JwtAuth
-  
+
   Get '/uptoken' (): <IUpToken>
   ```
   ```ts
   @JwtAuth
-  
+
   Get '/google-token' (): <Credentials>
   ```
-
-#### Wallpaper (wallpaper)
-  ```ts
-  Get '/list' (): <unknow>
-  ```
-
-#### Bilibili (bilibili)
-  ```ts
-  Get '/list' ({ page?, limit? }): <IBilibiliVideoList>
-  ```
   ```ts
   @JwtAuth
-  
-  Patch '/list' (): <IBilibiliVideoList>
-  ```
 
-#### Music (music)
-  ```ts
-  Get '/list/:id' ({ limit? }): <unknow>
-  ```
-  ```ts
-  Get '/song/:id' (): <unknow>
-  ```
-  ```ts
-  Get '/url/:id' (): <unknow>
-  ```
-  ```ts
-  Get '/lrc/:id' (): <unknow>
-  ```
-  ```ts
-  Get '/picture/:id' (): <unknow>
-  ```
-  ```ts
-  @JwtAuth
-  
-  Patch '/list' (): <void>
+  Patch '/database-backup' (): <void>
   ```

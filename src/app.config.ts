@@ -7,19 +7,32 @@
 
 import path from 'path';
 import { argv } from 'yargs';
-import { packageJson } from '@app/transformers/module.transformer';
 
-const FE_PATH = path.join(__dirname, '..', '..', 'surmon.me')
+const APP_ROOT_PATH = __dirname;
+const PROJECT_ROOT_PATH = path.join(APP_ROOT_PATH, '..');
+const FE_PATH = path.join(PROJECT_ROOT_PATH, '..', 'surmon.me');
+const FE_PUBLIC_PATH = path.join(FE_PATH, 'public');
+const packageJSON = require(path.resolve(PROJECT_ROOT_PATH, 'package.json'));
 
 export const APP = {
   LIMIT: 16,
   PORT: 8000,
-  ROOT_PATH: __dirname,
   MASTER: 'Surmon',
   NAME: 'Surmon.me',
   URL: 'https://surmon.me',
   FRONT_END_PATH: FE_PATH,
-  FRONT_END_PUBLIC_PATH: path.join(FE_PATH, 'public'),
+  FRONT_END_PUBLIC_PATH: FE_PUBLIC_PATH,
+  ROOT_PATH: APP_ROOT_PATH,
+  PROJECT_ROOT_PATH
+};
+
+export const PROJECT = {
+  name: packageJSON.name,
+  version: packageJSON.version,
+  author: packageJSON.author,
+  site: APP.URL,
+  homepage: packageJSON.homepage,
+  issues: packageJSON.bugs.url
 };
 
 export const CROSS_DOMAIN = {
@@ -27,7 +40,7 @@ export const CROSS_DOMAIN = {
   allowedReferer: 'surmon.me',
 };
 
-export const MONGODB = {
+export const MONGO_DB = {
   uri: `mongodb://127.0.0.1:${argv.dbport || '27017'}/NodePress`,
   username: argv.db_username || 'DB_username',
   password: argv.db_password || 'DB_password',
@@ -49,7 +62,7 @@ export const AUTH = {
 };
 
 export const EMAIL = {
-  account: argv.email_account || 'your email address like : i@surmon.me',
+  account: argv.email_account || 'your email address, e.g. i@surmon.me',
   password: argv.email_password || 'your email password',
   from: '"Surmon" <i@surmon.me>',
   admin: 'surmon@foxmail.com',
@@ -57,11 +70,7 @@ export const EMAIL = {
 
 export const AKISMET = {
   key: argv.akismet_key || 'your akismet Key',
-  blog: argv.akismet_blog || 'your akismet blog site, like: https://surmon.me',
-};
-
-export const GITHUB = {
-  username: 'surmon-china',
+  blog: argv.akismet_blog || 'your akismet blog site, e.g. https://surmon.me',
 };
 
 export const COMMON_SERVICE = {
@@ -70,7 +79,7 @@ export const COMMON_SERVICE = {
 };
 
 export const BAIDU = {
-  site: argv.baidu_site || 'your baidu site domain. like: surmon.me',
+  site: argv.baidu_site || 'your baidu site domain. e.g. surmon.me',
   token: argv.baidu_token || 'your baidu seo push token',
 };
 
@@ -81,21 +90,10 @@ export const GOOGLE = {
 export const CLOUD_STORAGE = {
   accessKey: argv.cs_access_key as string || 'cloudstorage access key for cloud storage',
   secretKey: argv.cs_secret_key as string || 'cloudstorage secret key for cloud storage',
-  aliyunAcsARN: argv.cs_aliyun_acs as string || 'aliyun Acs ARN, like: acs:ram::xxx:role/xxx',
+  aliyunAcsARN: argv.cs_aliyun_acs as string || 'aliyun Acs ARN, e.g. acs:ram::xxx:role/xxx',
 };
 
 export const DB_BACKUP = {
   bucket: argv.db_backup_bucket as string || 'cloudstorage bucket name for dbbackup',
-  region: argv.db_backup_region as string || 'cloudstorage region for dbbackup, like: oss-cn-hangzhou',
-  backupShellPath: argv.db_backup_shell_path as string || '/example/path/to/xxx/dbbackup.sh',
-  backupFilePath: argv.db_backup_file_path as string || '/example/path/to/xxx/dbbackups/',
-};
-
-export const INFO = {
-  name: packageJson.name,
-  version: packageJson.version,
-  author: packageJson.author,
-  site: APP.URL,
-  homepage: packageJson.homepage,
-  issues: packageJson.bugs.url
+  region: argv.db_backup_region as string || 'cloudstorage region for dbbackup, e.g. oss-cn-hangzhou',
 };

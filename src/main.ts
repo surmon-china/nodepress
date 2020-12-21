@@ -1,5 +1,5 @@
 /**
- * App entry.
+ * App entry
  * @file Index 入口文件
  * @module app/main
  * @author Surmon <https://github.com/surmon-china>
