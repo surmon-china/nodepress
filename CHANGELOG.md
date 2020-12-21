@@ -1,8 +1,24 @@
 
-## TODO
-- 删除一条存在子级评论的评论时，子级评论的 PID 需要置空
+# Changelog
+All notable changes to this project will be documented in this file.
 
-## CHANGELOG
+### v3.4.4
+
+**Feature**
+- DB backup shell & path
+- Support patch API to backup DB & recover DB
+
+### v3.4.3
+
+**Chore**
+- Upgrade all deps
+- Remove unused deps
+- Update API Document
+- Fix typos
+- Add `cspell.json`
+
+**Breaking Change**
+- Remove `Vlog` `Music` `GitHub` modules to BFF server
 
 ### v3.4.2
 

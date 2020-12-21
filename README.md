@@ -63,7 +63,6 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
     * `extend` 为通用扩展（[模型在此](https://github.com/surmon-china/nodepress/blob/master/src/models/extend.model.ts)）
     * 文章、分类、Tag 表都包含 extend 字段，用于在后台管理中自定义扩展，类似于 Wordpress 中的自定义字段功能，目前用来实现前台 icon 图标的 class 或者其他功能
 
-
   - 各表重要字段
     * `_id`：mongodb 生成的 id，一般用于后台执行 CRUD 操作
     * `id`：插件生成的自增数字 id，类似 mysql 中的 id，具有唯一性，用于前台获取数据
@@ -73,7 +72,6 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
     * 数据库真实存在数据
     * 业务计算出的数据，非存储数据，如：统计数据
     * Mongoose 支持的 virtual 虚拟数据
-    * 第三方模块提供数据，如：GitHub、Bilibili
 
 ### 应用结构
 
@@ -143,14 +141,10 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
   * 标签
   * 评论
   * 配置
-  * bilibili：Vlog 业务的请求
   * 鉴权/登陆：全局鉴权业务和 Token 业务
   * 点赞：点赞评论、文章、主站
-  * 音乐：播放器音乐数据业务
   * [聚合供稿](https://github.com/surmon-china/nodepress/blob/master/src/modules/syndication/syndication.service.ts)：负责聚和信息的输出和写入，如 Sitemap、RSSXML
-  * 壁纸：主站每日壁纸模块业务
   * 扩展模块
-    + GitHub：GitHub 项目列表业务
     + 统计：业务数据统计业务
     + 备份：数据库备份业务（定时、手动）
     + 其他：其他第三方 token 等服务
@@ -214,7 +208,7 @@ $ yarn build
 $ yarn start:prod
 
 # 更新 GEO IP 库数据
-$ yarn updategeodb
+$ yarn update-geo-db
 ```
 
 ## Actions setup

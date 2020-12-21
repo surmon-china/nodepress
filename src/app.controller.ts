@@ -13,6 +13,6 @@ export class AppController {
 
   @Get()
   root(): any {
-   return APP_CONFIG.INFO;
+   return APP_CONFIG.PROJECT;
   }
 }

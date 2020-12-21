@@ -193,9 +193,9 @@ export class ArticleService {
       articles.map(article => getArticleUrl(article.id))
     );
 
-    const artionResult = await this.articleModel.deleteMany({ _id: { $in: articleIds }});
+    const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIds }});
     this.syndicationService.updateCache();
     this.tagService.updateListCache();
-    return artionResult;
+    return actionResult;
   }
 }
