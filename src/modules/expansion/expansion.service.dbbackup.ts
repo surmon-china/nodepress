@@ -59,7 +59,10 @@ export class DBBackupService {
           APP_CONFIG.DB_BACKUP.bucket,
         )
         .then(result => {
-          console.info('DB Backup 备份数据上传成功!', result);
+          console.info('DB Backup 备份数据上传成功!', {
+            name: result.name,
+            url: result.url
+          });
           return resolve();
         })
         .catch(error => {
