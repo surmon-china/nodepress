@@ -59,7 +59,7 @@
     "helmet": "^4.2.0",
     "js-base64": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "mongoose": "5.10.18",
     "mongoose-paginate": "https://github.com/surmon-china/mongoose-paginate",
     "node-schedule": "^1.3.2",
