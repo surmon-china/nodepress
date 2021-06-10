@@ -5,6 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+// https://docs.nestjs.com/security/authentication#implementing-passport-jwt
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
