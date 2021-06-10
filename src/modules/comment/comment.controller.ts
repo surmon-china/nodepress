@@ -60,7 +60,7 @@ export class CommentController {
   @Patch()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量修改评论')
-  patchComments(@QueryParams() { visitors }, @Body() body: PatchComments): Promise<Comment> {
+  patchComments(@QueryParams() { visitors }, @Body() body: PatchComments) {
     return this.commentService.batchPatchState(body, visitors.referer);
   }
 
