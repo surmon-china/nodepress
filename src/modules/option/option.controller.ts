@@ -5,11 +5,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, Put, Body, UseGuards } from '@nestjs/common';
-import { HttpProcessor } from '@app/decorators/http.decorator';
-import { JwtAuthGuard } from '@app/guards/auth.guard';
-import { OptionService } from './option.service';
-import { Option } from './option.model';
+import { Controller, Get, Put, Body, UseGuards } from '@nestjs/common'
+import { HttpProcessor } from '@app/decorators/http.decorator'
+import { JwtAuthGuard } from '@app/guards/auth.guard'
+import { OptionService } from './option.service'
+import { Option } from './option.model'
 
 @Controller('option')
 export class OptionController {
@@ -18,13 +18,13 @@ export class OptionController {
   @Get()
   @HttpProcessor.handle('获取设置')
   getOption(): Promise<Option> {
-    return this.optionService.getOption();
+    return this.optionService.getOption()
   }
 
   @Put()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('修改设置')
   putOption(@Body() option: Option): Promise<Option> {
-    return this.optionService.putOption(option);
+    return this.optionService.putOption(option)
   }
 }

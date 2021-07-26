@@ -5,22 +5,22 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
+import { Test, TestingModule } from '@nestjs/testing'
+import { AppController } from './app.controller'
 
 describe('AppController', () => {
-  let app: TestingModule;
+  let app: TestingModule
 
   beforeAll(async () => {
-   app = await Test.createTestingModule({
-    controllers: [AppController],
-   }).compile();
-  });
+    app = await Test.createTestingModule({
+      controllers: [AppController],
+    }).compile()
+  })
 
   describe('root', () => {
-   it('should return "object"', () => {
-    const appController = app.get<AppController>(AppController);
-    expect(typeof appController.root()).toBe('object');
-   });
-  });
-});
+    it('should return "object"', () => {
+      const appController = app.get<AppController>(AppController)
+      expect(typeof appController.root()).toBe('object')
+    })
+  })
+})

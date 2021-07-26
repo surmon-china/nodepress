@@ -5,8 +5,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as TEXT from '@app/constants/text.constant';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import * as TEXT from '@app/constants/text.constant'
+import { HttpException, HttpStatus } from '@nestjs/common'
 
 /**
  * @class HttpBadRequestError
@@ -16,6 +16,6 @@ import { HttpException, HttpStatus } from '@nestjs/common';
  */
 export class HttpBadRequestError extends HttpException {
   constructor(error?: any) {
-    super(error || TEXT.HTTP_BAD_REQUEST_TEXT_DEFAULT, HttpStatus.BAD_REQUEST);
+    super(error || TEXT.HTTP_BAD_REQUEST_TEXT_DEFAULT, HttpStatus.BAD_REQUEST)
   }
 }

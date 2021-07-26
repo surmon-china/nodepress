@@ -6,15 +6,15 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Base64 } from 'js-base64';
-import { createHash } from 'crypto';
+import { Base64 } from 'js-base64'
+import { createHash } from 'crypto'
 
 // Base64 编码
 export function decodeBase64(value: string): string {
-  return value ? Base64.decode(value) : value;
+  return value ? Base64.decode(value) : value
 }
 
 // md5 编码
 export function decodeMd5(value: string): string {
-  return createHash('md5').update(value).digest('hex');
+  return createHash('md5').update(value).digest('hex')
 }

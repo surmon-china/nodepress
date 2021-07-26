@@ -5,8 +5,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as TEXT from '@app/constants/text.constant';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import * as TEXT from '@app/constants/text.constant'
+import { HttpException, HttpStatus } from '@nestjs/common'
 
 /**
  * @class HttpForbiddenError
@@ -16,6 +16,6 @@ import { HttpException, HttpStatus } from '@nestjs/common';
  */
 export class HttpForbiddenError extends HttpException {
   constructor(error?: any) {
-    super(error || TEXT.HTTP_PARAMS_PERMISSION_ERROR_DEFAULT, HttpStatus.FORBIDDEN);
+    super(error || TEXT.HTTP_PARAMS_PERMISSION_ERROR_DEFAULT, HttpStatus.FORBIDDEN)
   }
 }
