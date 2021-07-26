@@ -31,7 +31,8 @@
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
     "test:debug": "cross-env NODE_ENV=test node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json",
-    "update-geo-db": "node ./node_modules/geoip-lite/scripts/updatedb.js"
+    "update-geo-db": "node ./node_modules/geoip-lite/scripts/updatedb.js",
+    "release": ". ./scripts/release.sh"
   },
   "dependencies": {
     "@nestjs/common": "^7.6.17",
