@@ -18,14 +18,14 @@
     "url": "https://github.com/surmon-china/nodepress.git"
   },
   "scripts": {
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "prebuild": "rimraf dist",
     "build": "cross-env NODE_ENV=production nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "cross-env NODE_ENV=development nest start",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "cross-env NODE_ENV=development nest start --debug --watch",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
-    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
@@ -96,17 +96,18 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
-    "typescript": "^4.3.5",
     "eslint": "^7.31.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
     "jest": "^27.0.4",
     "prettier": "^2.3.2",
     "supertest": "^6.1.4",
     "ts-jest": "27.0.3",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.10.1"
+    "tsconfig-paths": "^3.10.1",
+    "typescript": "^4.3.5"
   },
   "jest": {
     "moduleFileExtensions": [

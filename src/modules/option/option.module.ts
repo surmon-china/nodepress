@@ -5,10 +5,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Module } from '@nestjs/common';
-import { OptionController } from './option.controller';
-import { OptionProvider } from './option.model';
-import { OptionService } from './option.service';
+import { Module } from '@nestjs/common'
+import { OptionController } from './option.controller'
+import { OptionProvider } from './option.model'
+import { OptionService } from './option.service'
 
 @Module({
   controllers: [OptionController],

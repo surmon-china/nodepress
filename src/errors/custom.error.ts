@@ -5,8 +5,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { TExceptionOption } from '@app/interfaces/http.interface';
+import { HttpException, HttpStatus } from '@nestjs/common'
+import { TExceptionOption } from '@app/interfaces/http.interface'
 
 /**
  * @class CustomError
@@ -16,6 +16,6 @@ import { TExceptionOption } from '@app/interfaces/http.interface';
  */
 export class CustomError extends HttpException {
   constructor(options: TExceptionOption, statusCode?: HttpStatus) {
-    super(options, statusCode || HttpStatus.INTERNAL_SERVER_ERROR);
+    super(options, statusCode || HttpStatus.INTERNAL_SERVER_ERROR)
   }
 }

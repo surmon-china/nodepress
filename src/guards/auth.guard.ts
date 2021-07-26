@@ -5,9 +5,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { AuthGuard } from '@nestjs/passport';
-import { ExecutionContext, Injectable } from '@nestjs/common';
-import { HttpUnauthorizedError } from '@app/errors/unauthorized.error';
+import { AuthGuard } from '@nestjs/passport'
+import { ExecutionContext, Injectable } from '@nestjs/common'
+import { HttpUnauthorizedError } from '@app/errors/unauthorized.error'
 
 /**
  * @class JwtAuthGuard
@@ -17,7 +17,7 @@ import { HttpUnauthorizedError } from '@app/errors/unauthorized.error';
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
-    return super.canActivate(context);
+    return super.canActivate(context)
   }
 
   /**
@@ -26,9 +26,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    */
   handleRequest(error, authInfo, errInfo) {
     if (authInfo && !error && !errInfo) {
-      return authInfo;
+      return authInfo
     } else {
-      throw error || new HttpUnauthorizedError(null, errInfo?.message);
+      throw error || new HttpUnauthorizedError(null, errInfo?.message)
     }
   }
 }
