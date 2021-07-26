@@ -21,9 +21,9 @@ v3.x 使用 [nestjs](https://github.com/nestjs/nest) 进行重构，之前的 no
 
 
 **其他相关项目：**
-- **SSR Blog:** [surmon.me](https://github.com/surmon-china/surmon.me) powered by [Vue (3)](https://vuejs.org)
-- **Blog admin:** [veact-admin](https://github.com/surmon-china/veact-admin) powered by [Veact](https://github.com/veactjs/veact) & React.
-- **Blog native app:** [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by [react-native](https://github.com/facebook/react-native)
+- **SSR Blog:** [surmon.me](https://github.com/surmon-china/surmon.me) powered by Vue (3)
+- **Blog admin:** [veact-admin](https://github.com/surmon-china/veact-admin) powered by React & [Veact](https://github.com/veactjs/veact)
+- **Blog native app:** [surmon.me.native](https://github.com/surmon-china/surmon.me.native) powered by react-native
 
 
 **更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/main/CHANGELOG.md#changelog)**
