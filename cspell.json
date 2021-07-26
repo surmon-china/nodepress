@@ -1,15 +1,16 @@
 {
-  "version": "0.1",
-  "language": "en",
-  "words": [
-    "nodepress",
-    "surmon",
-    "typegoose",
-    "AKISMET",
-    "aliyun",
-    "nestjs",
-    "prebuild",
-    "middlewares"
-  ],
-  "flagWords": []
+    "version": "0.1",
+    "language": "en",
+    "words": [
+        "AKISMET",
+        "aliyun",
+        "appleboy",
+        "middlewares",
+        "nestjs",
+        "nodepress",
+        "prebuild",
+        "surmon",
+        "typegoose"
+    ],
+    "flagWords": []
 }
