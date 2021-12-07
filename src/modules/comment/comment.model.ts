@@ -21,7 +21,8 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
 } from 'class-validator'
-import { mongoosePaginate } from '@app/transformers/mongoose.transformer'
+import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
+import { mongoosePaginate } from '@app/utils/paginate'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { CommentParentID, CommentState } from '@app/interfaces/biz.interface'
 import { Extend } from '@app/models/extend.model'
@@ -77,9 +78,9 @@ export class CreateCommentBase {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, { field: 'id', startAt: 1 })
-// https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
+@plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
+  // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
     timestamps: {

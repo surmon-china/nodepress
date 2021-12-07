@@ -4,18 +4,19 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as CACHE_KEY from '@app/constants/cache.constant'
-import { PaginateResult, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getTagUrl } from '@app/transformers/urlmap.transformer'
 import { CacheService, CacheIOResult } from '@app/processors/cache/cache.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { SortType, PublicState, PublishState } from '@app/interfaces/biz.interface'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { Article } from '@app/modules/article/article.model'
 import { Tag } from './tag.model'
+import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
 
 @Injectable()
@@ -42,9 +43,9 @@ export class TagService {
 
   // 缓存任务
   private getListCacheTask(): Promise<PaginateResult<Tag>> {
-    const options = {
+    const options: PaginateOptions = {
       page: 1,
-      limit: 888,
+      perPage: 888,
       sort: { _id: SortType.Desc },
     }
     return this.getList(null, options, false)
@@ -61,7 +62,7 @@ export class TagService {
   }
 
   // 请求标签列表（及聚和数据）
-  public async getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
+  public async getList(querys, options: PaginateOptions, isAuthenticated): Promise<PaginateResult<Tag>> {
     const matchState = {
       state: PublishState.Published,
       public: PublicState.Public,

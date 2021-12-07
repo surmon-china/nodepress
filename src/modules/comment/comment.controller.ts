@@ -5,11 +5,11 @@
  */
 
 import lodash from 'lodash'
-import { PaginateResult } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
 import { HttpProcessor } from '@app/decorators/http.decorator'
+import { PaginateResult } from '@app/utils/paginate'
 import { QueryParams, QueryParamsField } from '@app/decorators/query-params.decorator'
 import { SortType } from '@app/interfaces/biz.interface'
 import { Comment, CreateCommentBase, CommentsPayload, CommentsStatePayload } from './comment.model'

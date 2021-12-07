@@ -5,12 +5,12 @@
  */
 
 import lodash from 'lodash'
-import { isDevMode } from '@app/app.environment'
-import { PaginateResult, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getGuestbookPageUrl, getArticleUrl } from '@app/transformers/urlmap.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
 import { IPService } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
@@ -18,6 +18,7 @@ import { AkismetService, EAkismetActionType } from '@app/processors/helper/helpe
 import { OptionService } from '@app/modules/option/option.service'
 import { Blacklist } from '@app/modules/option/option.model'
 import { Article } from '@app/modules/article/article.model'
+import { isDevMode } from '@app/app.environment'
 import { Comment, CreateCommentBase, CommentsStatePayload } from './comment.model'
 import logger from '@app/utils/logger'
 import * as APP_CONFIG from '@app/app.config'
@@ -194,7 +195,7 @@ export class CommentService {
   }
 
   // 请求评论列表
-  public getList(querys, options): Promise<PaginateResult<Comment>> {
+  public getList(querys, options: PaginateOptions): Promise<PaginateResult<Comment>> {
     return this.commentModel.paginate(querys, options)
   }
 

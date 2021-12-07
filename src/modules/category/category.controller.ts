@@ -4,12 +4,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { PaginateResult } from 'mongoose'
 import { Controller, UseGuards, Get, Put, Post, Delete, Body, Param } from '@nestjs/common'
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
 import { HttpProcessor } from '@app/decorators/http.decorator'
 import { QueryParams } from '@app/decorators/query-params.decorator'
+import { PaginateResult } from '@app/utils/paginate'
 import { Category, CategoriesPayload } from './category.model'
 import { CategoryService } from './category.service'
 

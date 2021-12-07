@@ -5,8 +5,8 @@
  */
 
 import lodash from 'lodash'
+import { Types } from 'mongoose'
 import { DocumentType } from '@typegoose/typegoose'
-import { PaginateResult, Types } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
@@ -15,10 +15,10 @@ import { CacheService, CacheIntervalResult } from '@app/processors/cache/cache.s
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { SortType, PublicState, PublishState } from '@app/interfaces/biz.interface'
 import { Article, getDefaultMeta } from './article.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
-import logger from '@app/utils/logger'
 
 export const COMMON_USER_QUERY_PARAMS = Object.freeze({
   state: PublishState.Published,
@@ -45,7 +45,7 @@ export class ArticleService {
       key: CACHE_KEY.HOT_ARTICLES,
       promise: () => {
         return this.getList.bind(this)(COMMON_USER_QUERY_PARAMS, {
-          limit: 10,
+          perPage: 10,
           sort: this.getHotSortOption(),
         })
       },
@@ -80,10 +80,12 @@ export class ArticleService {
   }
 
   // 请求文章列表
-  public getList(querys, options): Promise<PaginateResult<Article>> {
-    options.populate = ['category', 'tag']
-    options.select = '-password -content'
-    return this.articleModel.paginate(querys, options)
+  public getList(querys, options: PaginateOptions): Promise<PaginateResult<Article>> {
+    return this.articleModel.paginate(querys, {
+      populate: ['category', 'tag'],
+      select: '-password -content',
+      ...options,
+    })
   }
 
   // 获取文章详情（使用 ObjectId）
@@ -149,7 +151,6 @@ export class ArticleService {
     Reflect.deleteProperty(newArticle, 'update_at')
 
     const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle as any, { new: true }).exec()
-    logger.info('----修改文章后', article)
     this.seoService.update(getArticleUrl(article.id))
     this.archiveService.updateCache()
     this.tagService.updateListCache()
