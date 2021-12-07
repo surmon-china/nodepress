@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### v3.6.2 (2021-12-07)
+
+**Feature**
+
+- Remove `mongoose-paginate`
+- Remove `APP.LIMIT` config
+- Improve `AutoIncrementID.Config`
+- Improve global paginate config
+
 ### v3.6.0 (2021-12-06)
 
 **Feature**

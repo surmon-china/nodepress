@@ -5,12 +5,12 @@
  */
 
 import lodash from 'lodash'
-import { PaginateResult } from 'mongoose'
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
 import { HttpProcessor } from '@app/decorators/http.decorator'
 import { QueryParams } from '@app/decorators/query-params.decorator'
+import { PaginateResult } from '@app/utils/paginate'
 import { Tag, TagsPayload } from './tag.model'
 import { TagService } from './tag.service'
 

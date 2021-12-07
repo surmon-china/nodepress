@@ -5,7 +5,6 @@
  */
 
 import lodash from 'lodash'
-import { PaginateResult } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common'
 import { QueryParams, QueryParamsField as QueryField } from '@app/decorators/query-params.decorator'
 import { HttpProcessor } from '@app/decorators/http.decorator'
@@ -14,6 +13,7 @@ import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
 import { SortType } from '@app/interfaces/biz.interface'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
+import { PaginateResult } from '@app/utils/paginate'
 import { Article, ArticlesPayload, ArticlesStatePayload } from './article.model'
 import { ArticleService } from './article.service'
 

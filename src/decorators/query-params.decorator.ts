@@ -10,6 +10,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 import { HttpForbiddenError } from '@app/errors/forbidden.error'
 import { HttpBadRequestError } from '@app/errors/bad-request.error'
 import { PublishState, PublicState, OriginState, CommentState, SortType } from '@app/interfaces/biz.interface'
+import { PaginateOptions } from '@app/utils/paginate'
 
 // 预置转换器可选字段
 export enum QueryParamsField {
@@ -26,7 +27,7 @@ export enum QueryParamsField {
 }
 
 // 内部参数类型
-export interface QueryParamsConfig {
+export interface QueryParamsConfig extends Omit<PaginateOptions, 'populate' | 'select'> {
   [key: string]: string | number | boolean | Types.ObjectId | Date | RegExp | QueryParamsConfig
 }
 
@@ -165,11 +166,13 @@ export const QueryParams = createParamDecorator(
       {
         name: '每页数量/per_page',
         field: QueryParamsField.PerPage,
-        isAllowed: lodash.isUndefined(per_page) || (lodash.isInteger(per_page) && Number(per_page) > 0),
+        isAllowed:
+          lodash.isUndefined(per_page) ||
+          (lodash.isInteger(per_page) && Number(per_page) > 0 && Number(per_page) <= 50),
         isIllegal: false,
         setValue() {
           if (per_page != null) {
-            options.limit = per_page
+            options.perPage = per_page
           }
         },
       },

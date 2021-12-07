@@ -4,10 +4,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { PaginateResult, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { Announcement } from './announcement.model'
 
 @Injectable()
@@ -18,7 +19,7 @@ export class AnnouncementService {
   ) {}
 
   // 请求公告列表
-  public getList(querys, options): Promise<PaginateResult<Announcement>> {
+  public getList(querys, options: PaginateOptions): Promise<PaginateResult<Announcement>> {
     return this.announcementModel.paginate(querys, options)
   }
 

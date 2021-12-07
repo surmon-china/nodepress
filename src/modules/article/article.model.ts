@@ -8,8 +8,9 @@ import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, index, plugin, Ref, modelOptions } from '@typegoose/typegoose'
 import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { mongoosePaginate } from '@app/transformers/mongoose.transformer'
+import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
+import { mongoosePaginate } from '@app/utils/paginate'
 import { PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface'
 import { Category } from '@app/modules/category/category.model'
 import { Extend } from '@app/models/extend.model'
@@ -39,7 +40,7 @@ export class Meta {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, { field: 'id', startAt: 1 })
+@plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
   schemaOptions: {
     toObject: { getters: true },

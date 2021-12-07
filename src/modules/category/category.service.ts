@@ -4,11 +4,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { PaginateResult, Types } from 'mongoose'
+import { Types } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getCategoryUrl } from '@app/transformers/urlmap.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { PublicState, PublishState } from '@app/interfaces/biz.interface'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
@@ -26,7 +27,7 @@ export class CategoryService {
   ) {}
 
   // 请求分类列表（及聚和数据）
-  public async getList(querys, options, isAuthenticated): Promise<PaginateResult<Category>> {
+  public async getList(querys, options: PaginateOptions, isAuthenticated): Promise<PaginateResult<Category>> {
     const matchState = {
       state: PublishState.Published,
       public: PublicState.Public,

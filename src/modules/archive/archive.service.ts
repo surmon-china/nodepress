@@ -51,11 +51,10 @@ export class ArchiveService {
     return this.categoryModel.find().sort({ _id: SortType.Desc }).exec()
   }
 
-  private getAllArticles(limit?: number): Promise<Article[]> {
+  private getAllArticles(): Promise<Article[]> {
     return this.articleModel
       .find({ state: PublishState.Published, public: PublicState.Public })
       .sort({ _id: SortType.Desc })
-      .limit(limit)
       .exec()
   }
 

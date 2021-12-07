@@ -8,12 +8,13 @@ import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions } from '@typegoose/typegoose'
 import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { mongoosePaginate } from '@app/transformers/mongoose.transformer'
+import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
+import { mongoosePaginate } from '@app/utils/paginate'
 import { Extend } from '@app/models/extend.model'
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, { field: 'id', startAt: 1 })
+@plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
   schemaOptions: {
     timestamps: {

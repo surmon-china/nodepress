@@ -11,7 +11,6 @@ const ROOT_PATH = path.join(__dirname, '..')
 const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 
 export const APP = {
-  LIMIT: 16,
   PORT: 8000,
   MASTER: 'Surmon',
   NAME: 'Surmon.me',

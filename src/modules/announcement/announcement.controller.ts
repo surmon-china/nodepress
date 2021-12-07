@@ -5,12 +5,12 @@
  */
 
 import lodash from 'lodash'
-import { PaginateResult } from 'mongoose'
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
-import { QueryParams, QueryParamsField as QueryField } from '@app/decorators/query-params.decorator'
+import { QueryParams, QueryParamsField } from '@app/decorators/query-params.decorator'
 import { HttpProcessor } from '@app/decorators/http.decorator'
+import { PaginateResult } from '@app/utils/paginate'
 import { Announcement, AnnouncementsPayload } from './announcement.model'
 import { AnnouncementService } from './announcement.service'
 
@@ -23,7 +23,7 @@ export class AnnouncementController {
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取公告')
   getAnnouncements(
-    @QueryParams([QueryField.State]) { querys, options, origin }
+    @QueryParams([QueryParamsField.State]) { querys, options, origin }
   ): Promise<PaginateResult<Announcement>> {
     const keyword = lodash.trim(origin.keyword)
     if (keyword) {
