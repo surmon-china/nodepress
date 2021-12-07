@@ -15,9 +15,9 @@ All notable changes to this project will be documented in this file.
 
 - Upgrade deps
 
-  - Redis > v4
-  - nest > v8
-  - mongoose > v6
+  - `Redis` > v4
+  - `nest` > v8
+  - `mongoose` > v6
 
 ### v3.5.2 (2021-07-27)
 
