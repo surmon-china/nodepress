@@ -1,6 +1,5 @@
 /**
- * Codec transform.
- * @file 编解码转换器
+ * @file Codec transform
  * @description 编解码各种特定格式数据
  * @module transformer/codec
  * @author Surmon <https://github.com/surmon-china>

@@ -1,13 +1,12 @@
 /**
- * Comment model.
- * @file 评论模块数据模型
+ * @file Comment model
  * @module module/comment/model
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, plugin, pre, modelOptions, defaultClasses, Severity } from '@typegoose/typegoose'
+import { prop, plugin, modelOptions, Severity } from '@typegoose/typegoose'
 import {
   IsString,
   MaxLength,
@@ -24,7 +23,7 @@ import {
 } from 'class-validator'
 import { mongoosePaginate } from '@app/transformers/mongoose.transformer'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
-import { ECommentParentType, ECommentState } from '@app/interfaces/state.interface'
+import { CommentParentID, CommentState } from '@app/interfaces/biz.interface'
 import { Extend } from '@app/models/extend.model'
 
 // 评论作者
@@ -50,7 +49,7 @@ export class Author {
 }
 
 // 创建评论的基数据
-export class CreateCommentBase extends defaultClasses.Base {
+export class CreateCommentBase {
   // 评论所在的文章 Id
   @IsNotEmpty({ message: '文章 Id？' })
   @IsInt()
@@ -59,7 +58,7 @@ export class CreateCommentBase extends defaultClasses.Base {
 
   // 父级评论 Id
   @IsInt()
-  @prop({ default: ECommentParentType.Self, index: true })
+  @prop({ default: CommentParentID.Self, index: true })
   pid: number
 
   @IsNotEmpty({ message: '评论内容？' })
@@ -77,23 +76,27 @@ export class CreateCommentBase extends defaultClasses.Base {
   author: Author
 }
 
-@pre<Comment>('findOneAndUpdate', function (next) {
-  this.findOneAndUpdate({}, { update_at: Date.now() })
-  next()
-})
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, { field: 'id', startAt: 1 })
 // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
-@modelOptions({ options: { allowMixed: Severity.ALLOW } })
+@modelOptions({
+  options: { allowMixed: Severity.ALLOW },
+  schemaOptions: {
+    timestamps: {
+      createdAt: 'create_at',
+      updatedAt: 'update_at',
+    },
+  },
+})
 export class Comment extends CreateCommentBase {
   @prop({ unique: true })
   id?: number
 
   // 评论发布状态
-  @IsIn([ECommentState.Auditing, ECommentState.Deleted, ECommentState.Published, ECommentState.Spam])
+  @IsIn([CommentState.Auditing, CommentState.Deleted, CommentState.Published, CommentState.Spam])
   @IsInt()
-  @prop({ enum: ECommentState, default: ECommentState.Published, index: true })
-  state: ECommentState
+  @prop({ enum: CommentState, default: CommentState.Published, index: true })
+  state: CommentState
 
   // 是否置顶
   @IsBoolean()
@@ -114,7 +117,7 @@ export class Comment extends CreateCommentBase {
   @prop({ default: {}, type: Object })
   ip_location?: Record<string, any>
 
-  @prop({ default: Date.now })
+  @prop({ default: Date.now, immutable: true })
   create_at?: Date
 
   @prop({ default: Date.now })
@@ -126,7 +129,7 @@ export class Comment extends CreateCommentBase {
   extends?: Extend[]
 }
 
-export class DelComments {
+export class CommentsPayload {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
@@ -137,11 +140,11 @@ export class DelComments {
   post_ids: number[]
 }
 
-export class PatchComments extends DelComments {
-  @IsIn([ECommentState.Auditing, ECommentState.Deleted, ECommentState.Published, ECommentState.Spam])
+export class CommentsStatePayload extends CommentsPayload {
+  @IsIn([CommentState.Auditing, CommentState.Deleted, CommentState.Published, CommentState.Spam])
   @IsInt()
-  @prop({ enum: ECommentState, default: ECommentState.Published })
-  state: ECommentState
+  @prop({ enum: CommentState, default: CommentState.Published })
+  state: CommentState
 }
 
 export const CommentProvider = getProviderByTypegooseClass(Comment)

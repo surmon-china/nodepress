@@ -1,6 +1,5 @@
 /**
- * Helper Akismet service.
- * @file Helper Akismet 评论反垃圾服务
+ * @file Helper Akismet service
  * @module processor/helper/akismet.service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -9,6 +8,7 @@ import akismet from 'akismet-api'
 import { Injectable } from '@nestjs/common'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
+import logger from '@app/utils/logger'
 
 // 验证器支持的操作行为
 export enum EAkismetActionType {
@@ -53,14 +53,14 @@ export class AkismetService {
   private initVerify(): void {
     this.client
       .verifyKey()
-      .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Akismet Key 无效！')))
+      .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Akismet Key 无效')))
       .then(() => {
         this.clientIsValid = true
-        console.info('Akismet key 有效，已准备好工作！')
+        logger.info('[Akismet]', 'key 有效，已准备好工作！')
       })
       .catch((error) => {
         this.clientIsValid = false
-        console.warn('Akismet 验证失败！无法工作，原因：', getMessageFromNormalError(error))
+        logger.error('[Akismet]', '验证失败！无法工作', getMessageFromNormalError(error))
       })
   }
 
@@ -70,27 +70,27 @@ export class AkismetService {
       return new Promise((resolve, reject) => {
         // 确定验证失败的情况下才会拦截验证，未认证或验证通过都继续操作
         if (this.clientIsValid === false) {
-          const message = `Akismet verifyKey 失败，放弃 ${handleType} 操作！`
-          console.warn(message)
-          return resolve(message)
+          const message = [`[Akismet]`, `verifyKey 失败，放弃 ${handleType} 操作！`]
+          logger.warn(...(message as [any]))
+          return resolve(message.join(''))
         }
 
-        console.info(`Akismet ${handleType} 操作中...`, new Date())
+        logger.info(`[Akismet]`, `${handleType} 操作中...`, new Date())
         this.client[handleType](content)
           .then((result) => {
             // 如果是检查 spam 且检查结果为 true
             if (handleType === EAkismetActionType.CheckSpam && result) {
-              console.warn(`Akismet ${handleType} 检测到 SPAM！`, new Date(), content)
+              logger.warn(`[Akismet]`, `${handleType} 检测到 SPAM！`, new Date(), content)
               reject(new Error('SPAM!'))
             } else {
-              console.info(`Akismet ${handleType} 操作成功！`)
+              logger.info(`[Akismet]`, `${handleType} 操作成功！`)
               resolve(result)
             }
           })
           .catch((error) => {
-            const message = `Akismet ${handleType} 操作失败！`
-            console.warn(message, error)
-            reject(message)
+            const message = [`[Akismet]`, `${handleType} 操作失败！`]
+            logger.error(...(message as [any]), error)
+            reject(message.join(''))
           })
       })
     }

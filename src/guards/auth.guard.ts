@@ -1,6 +1,5 @@
 /**
- * JwtAuth guard.
- * @file 鉴权卫士
+ * @file JwtAuth guard
  * @module guard/auth
  * @author Surmon <https://github.com/surmon-china>
  */

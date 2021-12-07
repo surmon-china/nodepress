@@ -1,6 +1,5 @@
 /**
- * Article controller.
- * @file 文章模块控制器
+ * @file Article controller
  * @module module/article/controller
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -8,14 +7,14 @@
 import lodash from 'lodash'
 import { PaginateResult } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common'
-import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator'
+import { QueryParams, QueryParamsField as QueryField } from '@app/decorators/query-params.decorator'
 import { HttpProcessor } from '@app/decorators/http.decorator'
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
-import { ESortType } from '@app/interfaces/state.interface'
+import { SortType } from '@app/interfaces/biz.interface'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
-import { Article, DelArticles, PatchArticles } from './article.model'
+import { Article, ArticlesPayload, ArticlesStatePayload } from './article.model'
 import { ArticleService } from './article.service'
 
 @Controller('article')
@@ -45,7 +44,7 @@ export class ArticleController {
     { querys, options, origin, isAuthenticated }
   ): Promise<PaginateResult<Article>> {
     // 如果是请求热门文章，则判断如何处理（注：前后台都会请求热门文章）
-    if (Number(origin.sort) === ESortType.Hot) {
+    if (Number(origin.sort) === SortType.Hot) {
       // 设置热排参数
       options.sort = this.articleService.getHotSortOption()
 
@@ -105,14 +104,14 @@ export class ArticleController {
   @Patch()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量更新文章')
-  patchArticles(@Body() body: PatchArticles) {
+  patchArticles(@Body() body: ArticlesStatePayload) {
     return this.articleService.batchPatchState(body.article_ids, body.state)
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除文章')
-  delArticles(@Body() body: DelArticles) {
+  delArticles(@Body() body: ArticlesPayload) {
     return this.articleService.batchDelete(body.article_ids)
   }
 

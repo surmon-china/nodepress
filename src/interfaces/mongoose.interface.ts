@@ -1,6 +1,5 @@
 /**
- * Mongoose model interface.
- * @file Mongoose 和 Paginate 模型的兼容
+ * @file Mongoose & Model & Paginate interface
  * @module interface/mongoose
  * @author Surmon <https://github.com/surmon-china>
  */

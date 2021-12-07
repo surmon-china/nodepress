@@ -1,6 +1,5 @@
 /**
- * Tag controller.
- * @file 标签模块控制器
+ * @file Tag controller
  * @module module/tag/controller
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -12,7 +11,7 @@ import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
 import { HttpProcessor } from '@app/decorators/http.decorator'
 import { QueryParams } from '@app/decorators/query-params.decorator'
-import { Tag, DelTags } from './tag.model'
+import { Tag, TagsPayload } from './tag.model'
 import { TagService } from './tag.service'
 
 @Controller('tag')
@@ -45,7 +44,7 @@ export class TagController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除标签')
-  delTags(@Body() body: DelTags) {
+  delTags(@Body() body: TagsPayload) {
     return this.tagService.batchDelete(body.tag_ids)
   }
 

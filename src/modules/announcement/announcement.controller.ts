@@ -1,6 +1,5 @@
 /**
- * Announcement controller.
- * @file 公告模块控制器
+ * @file Announcement controller
  * @module module/announcement/controller
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -10,9 +9,9 @@ import { PaginateResult } from 'mongoose'
 import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common'
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
-import { QueryParams, EQueryParamsField as QueryField } from '@app/decorators/query-params.decorator'
+import { QueryParams, QueryParamsField as QueryField } from '@app/decorators/query-params.decorator'
 import { HttpProcessor } from '@app/decorators/http.decorator'
-import { Announcement, DelAnnouncements } from './announcement.model'
+import { Announcement, AnnouncementsPayload } from './announcement.model'
 import { AnnouncementService } from './announcement.service'
 
 @Controller('announcement')
@@ -44,7 +43,7 @@ export class AnnouncementController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除公告')
-  delAnnouncements(@Body() body: DelAnnouncements) {
+  delAnnouncements(@Body() body: AnnouncementsPayload) {
     return this.announcementService.batchDelete(body.announcement_ids)
   }
 

@@ -150,9 +150,9 @@
   - 标签
   - 评论
   - 配置
-  - 鉴权/登陆：全局鉴权业务和 Token 业务
-  - 点赞：点赞评论、文章、主站
-  - [聚合供稿](https://github.com/surmon-china/nodepress/blob/main/src/modules/syndication/syndication.service.ts)：负责聚和信息的输出和写入，如 Sitemap、RSSXML
+  - Auth：全局鉴权、Token、用户（Admin）
+  - Like：点赞评论、文章、主站
+  - Archive：全站数据缓存
   - 扩展模块
     - 统计：业务数据统计业务
     - 备份：数据库备份业务（定时、手动）

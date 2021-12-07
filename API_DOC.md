@@ -1,4 +1,3 @@
-
 ## API Document
 
 语法释义：
@@ -18,223 +17,266 @@ Get '/path/:id' ({ param? }): <ResultDataType>
 ---
 
 #### Root
-  ```ts
-  Get (): <APP_INFO>
-  ```
+
+```ts
+Get (): <APP_INFO>
+```
 
 #### Auth (auth)
-  ```ts
-  Get '/admin' (): <Auth>
-  ```
-  ```ts
-  @JwtAuth
 
-  Put '/admin' (Auth): <Auth>
-  ```
-  ```ts
-  Post '/login' (AuthLogin): <ITokenResult>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get '/admin' (): <Auth>
+```
 
-  Post '/check' (): <void>
-  Post '/renewal' (): <ITokenResult>
-  ```
+```ts
+@JwtAuth
+
+Put '/admin' (Auth): <Auth>
+```
+
+```ts
+Post '/login' (AuthLogin): <ITokenResult>
+```
+
+```ts
+@JwtAuth
+
+Post '/check' (): <void>
+Post '/renewal' (): <ITokenResult>
+```
 
 #### Option (option)
-  ```ts
-  Get (): <Option>
-  ```
-  ```ts
-  @JwtAuth
 
-  Put (Option): <Option>
-  ```
+```ts
+Get (): <Option>
+```
+
+```ts
+@JwtAuth
+
+Put (Option): <Option>
+```
 
 #### Announcement (announcement)
-  ```ts
-  Get ({ <common>?, state?, keyword? }): <Announcement[]>
-  ```
-  ```ts
-  @JwtAuth
 
-  Post (Announcement): <Announcement>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get ({ <common>?, state?, keyword? }): <Announcement[]>
+```
 
-  Delete (DelAnnouncements): <MongooseOpResult>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+@JwtAuth
 
-  Put '/:id' (Announcement): <Announcement>
-  ```
-  ```ts
-  @JwtAuth
+Post (Announcement): <Announcement>
+```
 
-  Delete '/:id' (): <MongooseOpResult>
-  ```
+```ts
+@JwtAuth
+
+Delete (DelAnnouncements): <MongooseOpResult>
+```
+
+```ts
+@JwtAuth
+
+Put '/:id' (Announcement): <Announcement>
+```
+
+```ts
+@JwtAuth
+
+Delete '/:id' (): <MongooseOpResult>
+```
 
 #### Article (article)
-  ```ts
-  Get ({ <common>?, date?, public?, origin?, cache?, tag?, category?, keyword?, tag_slug?, category_slug? }): <Article[]>
-  ```
-  ```ts
-  Get '/:id' (): <Article>
-  ```
-  ```ts
-  @JwtAuth
 
-  Put '/:id' (Article): <Article>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get ({ <common>?, date?, public?, origin?, cache?, tag?, category?, keyword?, tag_slug?, category_slug? }): <Article[]>
+```
 
-  Delete '/:id' (): <MongooseOpResult>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get '/:id' (): <Article>
+```
 
-  Post (Article): <Article>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+@JwtAuth
 
-  Patch (PatchArticles): <MongooseOpResult>
-  ```
-  ```ts
-  @JwtAuth
+Put '/:id' (Article): <Article>
+```
 
-  Delete (DelArticles): <MongooseOpResult>
-  ```
+```ts
+@JwtAuth
+
+Delete '/:id' (): <MongooseOpResult>
+```
+
+```ts
+@JwtAuth
+
+Post (Article): <Article>
+```
+
+```ts
+@JwtAuth
+
+Patch (PatchArticles): <MongooseOpResult>
+```
+
+```ts
+@JwtAuth
+
+Delete (DelArticles): <MongooseOpResult>
+```
 
 #### Category (category)
-  ```ts
-  Get ({ <common>? }): <Category[]>
-  ```
-  ```ts
-  Get '/:id' (): <Category[]>
-  ```
-  ```ts
-  @JwtAuth
 
-  Put '/:id' (Category): <Category>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get ({ <common>? }): <Category[]>
+```
 
-  Delete '/:id' (): <MongooseOpResult>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get '/:id' (): <Category[]>
+```
 
-  Post (Category): <Category>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+@JwtAuth
 
-  Delete (DelCategories): <MongooseOpResult>
-  ```
+Put '/:id' (Category): <Category>
+```
+
+```ts
+@JwtAuth
+
+Delete '/:id' (): <MongooseOpResult>
+```
+
+```ts
+@JwtAuth
+
+Post (Category): <Category>
+```
+
+```ts
+@JwtAuth
+
+Delete (DelCategories): <MongooseOpResult>
+```
 
 #### Tag (tag)
-  ```ts
-  Get ({ <common>?, cache?, keyword? }): <Tag[]>
-  ```
-  ```ts
-  @JwtAuth
 
-  Post (Tag): <Tag>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get ({ <common>?, cache?, keyword? }): <Tag[]>
+```
 
-  Put '/:id' (Tag): <Tag>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+@JwtAuth
 
-  Delete '/:id' (): <MongooseOpResult>
-  ```
-  ```ts
-  @JwtAuth
+Post (Tag): <Tag>
+```
 
-  Delete (DelTags): <MongooseOpResult>
-  ```
+```ts
+@JwtAuth
+
+Put '/:id' (Tag): <Tag>
+```
+
+```ts
+@JwtAuth
+
+Delete '/:id' (): <MongooseOpResult>
+```
+
+```ts
+@JwtAuth
+
+Delete (DelTags): <MongooseOpResult>
+```
 
 #### Comment (comment)
-  ```ts
-  Get ({ <common>?, state?, post_id?, keyword? }): <Comment[]>
-  ```
-  ```ts
-  Post (CreateCommentBase): <Comment>
-  ```
-  ```ts
-  @JwtAuth
 
-  Patch (PatchComments): <MongooseOpResult>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get ({ <common>?, state?, post_id?, keyword? }): <Comment[]>
+```
 
-  Delete (DelComments): <MongooseOpResult>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Post (CreateCommentBase): <Comment>
+```
 
-  Get '/:id' (): <Comment>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+@JwtAuth
 
-  Put '/:id' (Comment): <Comment>
-  ```
-  ```ts
-  @JwtAuth
+Patch (PatchComments): <MongooseOpResult>
+```
 
-  Delete '/:id' (): <MongooseOpResult>
-  ```
+```ts
+@JwtAuth
 
-#### Syndication (syndication)
-  ```ts
-  Get '/sitemap' (): <SitemapXML>
-  ```
-  ```ts
-  Get '/rss' (): <RSSXML>
-  ```
-  ```ts
-  @JwtAuth
+Delete (DelComments): <MongooseOpResult>
+```
 
-  Patch (): <void>
-  ```
+```ts
+@JwtAuth
+
+Get '/:id' (): <Comment>
+```
+
+```ts
+@JwtAuth
+
+Put '/:id' (Comment): <Comment>
+```
+
+```ts
+@JwtAuth
+
+Delete '/:id' (): <MongooseOpResult>
+```
+
+#### Archive (archive)
+
+```ts
+Get (): <ArchiveData>
+```
+
+```ts
+@JwtAuth
+
+Patch (): <void>
+```
 
 #### Like (like)
-  ```ts
-  Patch '/site' (): <boolean>
-  ```
-  ```ts
-  Patch '/comment' (LikeComment): <boolean>
-  ```
-  ```ts
-  Patch '/article' (LikeArticle): <boolean>
-  ```
+
+```ts
+Patch '/site' (): <boolean>
+```
+
+```ts
+Patch '/comment' (LikeComment): <boolean>
+```
+
+```ts
+Patch '/article' (LikeArticle): <boolean>
+```
 
 #### Expansion (expansion)
-  ```ts
-  Get '/statistic' (): <ITodayStatistic>
-  ```
-  ```ts
-  @JwtAuth
 
-  Get '/uptoken' (): <IUpToken>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+Get '/statistic' (): <ITodayStatistic>
+```
 
-  Get '/google-token' (): <Credentials>
-  ```
-  ```ts
-  @JwtAuth
+```ts
+@JwtAuth
 
-  Patch '/database-backup' (): <void>
-  ```
+Get '/uptoken' (): <IUpToken>
+```
+
+```ts
+@JwtAuth
+
+Get '/google-token' (): <Credentials>
+```
+
+```ts
+@JwtAuth
+
+Patch '/database-backup' (): <void>
+```

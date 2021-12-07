@@ -1,69 +1,60 @@
 /**
- * Cache service.
- * @file Cache 缓存模块服务
+ * @file Cache enhancer service
  * @module processor/cache/service
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import schedule from 'node-schedule'
-import { RedisClient } from 'redis'
+import { Cache } from 'cache-manager'
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common'
+import { RedisCacheStore } from './cache.store'
+import logger from '@app/utils/logger'
 
-// Cache 客户端管理器
-export interface ICacheManager {
-  store: {
-    getClient(): RedisClient
-  }
-  get(key: TCacheKey): any
-  set(key: TCacheKey, value: string, options?: { ttl: number }): any
-}
-
-// 获取器
-export type TCacheKey = string
-export type TCacheResult<T> = Promise<T>
+export type CacheKey = string
+export type CacheResult<T> = Promise<T>
 
 // IO 模式通用返回结构
-export interface ICacheIoResult<T> {
-  get(): TCacheResult<T>
-  update(): TCacheResult<T>
+export interface CacheIOResult<T> {
+  get(): CacheResult<T>
+  update(): CacheResult<T>
 }
 
 // Promise 模式参数
-export interface ICachePromiseOption<T> {
-  key: TCacheKey
-  promise(): TCacheResult<T>
+export interface CachePromiseOption<T> {
+  key: CacheKey
+  promise(): CacheResult<T>
 }
 
 // Promise & IO 模式参数
-export interface ICachePromiseIoOption<T> extends ICachePromiseOption<T> {
+export interface CachePromiseIOOption<T> extends CachePromiseOption<T> {
   ioMode?: boolean
 }
 
 // Interval & Timeout 超时模式参数（毫秒）
-export interface ICacheIntervalTimeoutOption {
+export interface CacheIntervalTimeoutOption {
   error?: number
   success?: number
 }
 
 // Interval & Timing 定时模式参数（毫秒）
-export interface ICacheIntervalTimingOption {
+export interface CacheIntervalTimingOption {
   error: number
   schedule: any
 }
 
 // Interval 模式参数
-export interface ICacheIntervalOption<T> {
-  key: TCacheKey
-  promise(): TCacheResult<T>
-  timeout?: ICacheIntervalTimeoutOption
-  timing?: ICacheIntervalTimingOption
+export interface CacheIntervalOption<T> {
+  key: CacheKey
+  promise(): CacheResult<T>
+  timeout?: CacheIntervalTimeoutOption
+  timing?: CacheIntervalTimingOption
 }
 
 // Interval 模式返回类型
-export type TCacheIntervalResult<T> = () => TCacheResult<T>
+export type CacheIntervalResult<T> = () => CacheResult<T>
 
 // Interval & IO 模式参数
-export interface ICacheIntervalIOOption<T> extends ICacheIntervalOption<T> {
+export interface CacheIntervalIOOption<T> extends CacheIntervalOption<T> {
   ioMode?: boolean
 }
 
@@ -77,36 +68,46 @@ export interface ICacheIntervalIOOption<T> extends ICacheIntervalOption<T> {
  */
 @Injectable()
 export class CacheService {
-  private cache!: ICacheManager
+  private cacheStore!: RedisCacheStore
+  private isReadied = false
 
-  constructor(@Inject(CACHE_MANAGER) cache: ICacheManager) {
-    this.cache = cache
-    this.redisClient.on('ready', () => {
-      console.info('Redis 已准备好！')
+  constructor(@Inject(CACHE_MANAGER) cacheManager: Cache) {
+    // https://github.com/redis/node-redis#events
+    this.cacheStore = cacheManager.store as RedisCacheStore
+    this.cacheStore.client.on('connect', () => {
+      logger.info('[Redis]', 'connecting...')
     })
+    this.cacheStore.client.on('reconnecting', () => {
+      logger.warn('[Redis]', 'reconnecting...')
+    })
+    this.cacheStore.client.on('ready', () => {
+      this.isReadied = true
+      logger.info('[Redis]', 'readied!')
+    })
+    this.cacheStore.client.on('end', () => {
+      this.isReadied = false
+      logger.error('[Redis]', 'Client End!')
+    })
+    this.cacheStore.client.on('error', (error) => {
+      this.isReadied = false
+      logger.error('[Redis]', `Client Error!`, error.message)
+    })
+    // connect
+    this.cacheStore.client.connect()
   }
 
-  private get redisClient(): RedisClient {
-    return this.cache.store.getClient()
-  }
-
-  // 客户端是否可用
-  private get checkCacheServiceAvailable(): boolean {
-    return this.redisClient.connected
-  }
-
-  public get<T>(key: TCacheKey): TCacheResult<T> {
-    if (!this.checkCacheServiceAvailable) {
-      return Promise.reject('缓存客户端没准备好！')
+  public get<T>(key: CacheKey): CacheResult<T> {
+    if (!this.isReadied) {
+      return Promise.reject('Redis has not ready!')
     }
-    return this.cache.get(key)
+    return this.cacheStore.get(key)
   }
 
-  public set<T>(key: TCacheKey, value: any, options?: { ttl: number }): TCacheResult<T> {
-    if (!this.checkCacheServiceAvailable) {
-      return Promise.reject('缓存客户端没准备好！')
+  public set(key: CacheKey, value: any, options?: { ttl: number }): CacheResult<void> {
+    if (!this.isReadied) {
+      return Promise.reject('Redis has not ready!')
     }
-    return this.cache.set(key, value, options)
+    return this.cacheStore.set(key, value, options)
   }
 
   /**
@@ -115,24 +116,22 @@ export class CacheService {
    * @example CacheService.promise({ key: CacheKey, promise() }) -> promise()
    * @example CacheService.promise({ key: CacheKey, promise(), ioMode: true }) -> { get: promise(), update: promise() }
    */
-  promise<T>(options: ICachePromiseOption<T>): TCacheResult<T>
-  promise<T>(options: ICachePromiseIoOption<T>): ICacheIoResult<T>
+  promise<T>(options: CachePromiseOption<T>): CacheResult<T>
+  promise<T>(options: CachePromiseIOOption<T>): CacheIOResult<T>
   promise(options) {
     const { key, promise, ioMode = false } = options
 
     // 包装任务
-    const doPromiseTask = () => {
-      return promise().then((data) => {
-        this.set(key, data)
-        return data
-      })
+    const doPromiseTask = async () => {
+      const data = await promise()
+      await this.set(key, data)
+      return data
     }
 
     // Promise 拦截模式（返回死数据）
-    const handlePromiseMode = () => {
-      return this.get(key).then((value) => {
-        return value !== null && value !== undefined ? value : doPromiseTask()
-      })
+    const handlePromiseMode = async () => {
+      const value = await this.get(key)
+      return value !== null && value !== undefined ? value : await doPromiseTask()
     }
 
     // 双向同步模式（返回获取器和更新器）
@@ -150,17 +149,16 @@ export class CacheService {
    * @example CacheService.interval({ key: CacheKey, promise(), timeout: {} }) -> promise()
    * @example CacheService.interval({ key: CacheKey, promise(), timing: {} }) -> promise()
    */
-  public interval<T>(options: ICacheIntervalOption<T>): TCacheIntervalResult<T>
-  public interval<T>(options: ICacheIntervalIOOption<T>): ICacheIoResult<T>
+  public interval<T>(options: CacheIntervalOption<T>): CacheIntervalResult<T>
+  public interval<T>(options: CacheIntervalIOOption<T>): CacheIOResult<T>
   public interval<T>(options) {
     const { key, promise, timeout, timing, ioMode = false } = options
 
     // 包装任务
-    const promiseTask = (): Promise<T> => {
-      return promise().then((data) => {
-        this.set(key, data)
-        return data
-      })
+    const promiseTask = async (): Promise<T> => {
+      const data = await promise()
+      await this.set(key, data)
+      return data
     }
 
     // 超时任务
@@ -173,7 +171,7 @@ export class CacheService {
           .catch((error) => {
             const time = timeout.error || timeout.success
             setTimeout(doPromise, time)
-            console.warn(`Redis 超时任务执行失败，${time / 1000}s 后重试：${error}`)
+            logger.warn('[Redis]', `超时任务执行失败，${time / 1000}s 后重试`, error)
           })
       }
       doPromise()
@@ -185,7 +183,7 @@ export class CacheService {
         promiseTask()
           .then((data) => data)
           .catch((error) => {
-            console.warn(`Redis 定时任务执行失败，${timing.error / 1000}s 后重试：${error}`)
+            logger.warn('[Redis]', `定时任务执行失败，${timing.error / 1000}s 后重试`, error)
             setTimeout(doPromise, timing.error)
           })
       }

@@ -1,6 +1,5 @@
 /**
- * Like service.
- * @file 点赞模块数据服务
+ * @file Like service
  * @module module/like/service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -27,16 +26,16 @@ export class LikeService {
   }
 
   // 喜欢评论
-  public async likeComment(commentId: number): Promise<boolean> {
-    const comment = await this.commentService.getDetailByNumberId(commentId)
+  public async likeComment(commentID: number): Promise<boolean> {
+    const comment = await this.commentService.getDetailByNumberId(commentID)
     comment.likes++
     await comment.save()
     return true
   }
 
   // 喜欢文章
-  public async likeArticle(articleId: number): Promise<boolean> {
-    const article = await this.articleService.getDetailByNumberId(articleId)
+  public async likeArticle(articleID: number): Promise<boolean> {
+    const article = await this.articleService.getDetailByNumberId(articleID)
     article.meta.likes++
     await article.save()
     return true

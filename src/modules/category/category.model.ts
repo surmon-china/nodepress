@@ -1,25 +1,28 @@
 /**
- * Category model.
- * @file 分类模块数据模型
+ * @file Category model
  * @module module/category/model
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose'
+import { prop, plugin, modelOptions } from '@typegoose/typegoose'
 import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { mongoosePaginate } from '@app/transformers/mongoose.transformer'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { Extend } from '@app/models/extend.model'
 
-@pre<Category>('findOneAndUpdate', function (next) {
-  this.findOneAndUpdate({}, { update_at: Date.now() })
-  next()
-})
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, { field: 'id', startAt: 1 })
-export class Category extends defaultClasses.Base {
+@modelOptions({
+  schemaOptions: {
+    timestamps: {
+      createdAt: 'create_at',
+      updatedAt: 'update_at',
+    },
+  },
+})
+export class Category {
   @prop({ unique: true })
   id: number
 
@@ -42,7 +45,7 @@ export class Category extends defaultClasses.Base {
   @prop({ ref: Category, default: null })
   pid: Types.ObjectId
 
-  @prop({ default: Date.now })
+  @prop({ default: Date.now, immutable: true })
   create_at?: Date
 
   @prop({ default: Date.now })
@@ -56,7 +59,7 @@ export class Category extends defaultClasses.Base {
   count?: number
 }
 
-export class DelCategories {
+export class CategoriesPayload {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()

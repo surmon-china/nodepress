@@ -1,13 +1,12 @@
 /**
- * HttpUnauthorized error.
- * @file 401 错误生成器
+ * @file 401 HttpUnauthorized error
  * @module error/unauthorized
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as TEXT from '@app/constants/text.constant'
 import { UnauthorizedException } from '@nestjs/common'
-import { TMessage } from '@app/interfaces/http.interface'
+import { ResponseMessage } from '@app/interfaces/http.interface'
+import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class HttpUnauthorizedError
@@ -16,7 +15,7 @@ import { TMessage } from '@app/interfaces/http.interface'
  * @example new HttpUnauthorizedError('错误信息', new Error())
  */
 export class HttpUnauthorizedError extends UnauthorizedException {
-  constructor(message?: TMessage, error?: any) {
+  constructor(message?: ResponseMessage, error?: any) {
     super(message || TEXT.HTTP_UNAUTHORIZED_TEXT_DEFAULT, error)
   }
 }

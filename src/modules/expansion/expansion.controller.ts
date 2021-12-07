@@ -1,7 +1,6 @@
 /**
- * Expansion controller.
- * @file 扩展模块控制器
- * @description 分发 -> 统计/常量/上传/数据库备份
+ * @file Expansion controller
+ * @description 分发 > 统计/常量/上传/数据库备份
  * @module module/expansion/controller
  * @author Surmon <https://github.com/surmon-china>
  */

@@ -1,6 +1,5 @@
 /**
- * Comment service.
- * @file 评论模块数据服务
+ * @file Comment service
  * @module module/comment/service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -12,14 +11,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getGuestbookPageUrl, getArticleUrl } from '@app/transformers/urlmap.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { ECommentPostType, ECommentState } from '@app/interfaces/state.interface'
+import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
 import { IPService } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import { AkismetService, EAkismetActionType } from '@app/processors/helper/helper.service.akismet'
 import { OptionService } from '@app/modules/option/option.service'
 import { Blacklist } from '@app/modules/option/option.model'
 import { Article } from '@app/modules/article/article.model'
-import { Comment, CreateCommentBase, PatchComments } from './comment.model'
+import { Comment, CreateCommentBase, CommentsStatePayload } from './comment.model'
+import logger from '@app/utils/logger'
 import * as APP_CONFIG from '@app/app.config'
 
 @Injectable()
@@ -35,7 +35,7 @@ export class CommentService {
 
   // 邮件通知网站主及目标对象
   private sendMailToAdminAndTargetUser(comment: Comment, permalink: string) {
-    const commentTypeText = comment.post_id === ECommentPostType.Guestbook ? '留言' : '评论'
+    const commentTypeText = comment.post_id === CommentPostID.Guestbook ? '留言' : '评论'
     const getContextPrefix = (isReply) => {
       const replyText = isReply ? '回复' : ''
       return `来自 ${comment.author.name} 的${commentTypeText}${replyText}：`
@@ -87,19 +87,19 @@ export class CommentService {
   }
 
   // 更新当前所受影响的文章的评论聚合数据
-  private async updateCommentCountWithArticle(postIds: number[]) {
+  private async updateCommentCountWithArticle(postIDs: number[]) {
     // 过滤无效 post_id 及留言板 ID/0
-    postIds = postIds || []
-    postIds = postIds.map(Number).filter(Boolean)
+    postIDs = postIDs || []
+    postIDs = postIDs.map(Number).filter(Boolean)
 
-    if (!postIds.length) {
+    if (!postIDs.length) {
       return false
     }
 
     try {
       const counts = await this.commentModel.aggregate([
         {
-          $match: { state: ECommentState.Published, post_id: { $in: postIds } },
+          $match: { state: CommentState.Published, post_id: { $in: postIDs } },
         },
         { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } },
       ])
@@ -107,7 +107,7 @@ export class CommentService {
       if (!counts || !counts.length) {
         this.articleModel
           .updateOne(
-            { id: postIds[0] },
+            { id: postIDs[0] },
             {
               $set: {
                 'meta.comments': 0,
@@ -115,8 +115,8 @@ export class CommentService {
             }
           )
           .exec()
-        // .then(info => console.info('评论聚合更新成功', info))
-        // .catch(error => console.warn('评论聚合更新失败', error));
+        // .then(info => logger.info('[comment]', '评论聚合更新成功', info))
+        // .catch(error => logger.warn('[comment]', '评论聚合更新失败', error));
       } else {
         counts.forEach((count) => {
           this.articleModel
@@ -129,20 +129,20 @@ export class CommentService {
               }
             )
             .exec()
-          // .then(info => console.info('评论聚合更新成功', info))
-          // .catch(error => console.warn('评论聚合更新失败', error));
+          // .then(info => logger.info('[comment]', '评论聚合更新成功', info))
+          // .catch(error => logger.warn('[comment]', '评论聚合更新失败', error));
         })
       }
     } catch (error) {
-      console.warn('更新评论 count 聚合数据前，查询失败', error)
+      logger.warn('[comment]', '更新评论 count 聚合数据前，查询失败', error)
     }
   }
 
   // 根据操作状态处理评论转移 处理评论状态转移，如果是将评论状态标记为垃圾邮件，则同时加入黑名单，以及 submitSpam
-  private async updateCommentsStateWithBlacklist(comments: Comment[], state: ECommentState, referrer: string) {
+  private async updateCommentsStateWithBlacklist(comments: Comment[], state: CommentState, referrer: string) {
     const option = await this.optionService.getDBOption()
     // 预期行为
-    const isSpam = state === ECommentState.Spam
+    const isSpam = state === CommentState.Spam
     const action = isSpam ? EAkismetActionType.SubmitSpam : EAkismetActionType.SubmitHam
 
     // 系统黑名单处理，目前不再处理关键词
@@ -171,8 +171,8 @@ export class CommentService {
     // 更新黑名单
     option
       .save()
-      .then(() => console.info('评论状态转移后 -> 黑名单更新成功'))
-      .catch((error) => console.warn('评论状态转移后 -> 黑名单更新失败', error))
+      .then(() => logger.info('[comment]', '评论状态转移后 -> 黑名单更新成功'))
+      .catch((error) => logger.warn('[comment]', '评论状态转移后 -> 黑名单更新失败', error))
   }
 
   // 检查评论是否匹配系统的黑名单规则（使用设置的黑名单 IP/邮箱/关键词 过滤）
@@ -207,13 +207,13 @@ export class CommentService {
       is_top: false,
       pid: Number(comment.pid),
       post_id: Number(comment.post_id),
-      state: ECommentState.Published,
+      state: CommentState.Published,
       agent: ua || comment.agent,
     }
 
     // 永久链接
     const permalink =
-      newComment.post_id === ECommentPostType.Guestbook ? getGuestbookPageUrl() : getArticleUrl(newComment.post_id)
+      newComment.post_id === CommentPostID.Guestbook ? getGuestbookPageUrl() : getArticleUrl(newComment.post_id)
 
     // 检验评论垃圾性质
     await Promise.all([
@@ -234,7 +234,7 @@ export class CommentService {
   }
 
   // 批量修改评论
-  public async batchPatchState(action: PatchComments, referer: string) {
+  public async batchPatchState(action: CommentsStatePayload, referer: string) {
     const { comment_ids, post_ids, state } = action
     const actionResult = await this.commentModel
       .updateMany({ _id: { $in: comment_ids } }, { $set: { state } }, { multi: true })
@@ -247,40 +247,40 @@ export class CommentService {
       })
       this.updateCommentsStateWithBlacklist(todoComments, state, referer)
     } catch (error) {
-      console.warn(`对评论进行改变状态 ${state} 时，出现查询错误！`, error)
+      logger.warn('[comment]', `对评论进行改变状态 ${state} 时，出现查询错误！`, error)
     }
     return actionResult
   }
 
   // 获取单个评论详情
-  public getDetail(commentId: Types.ObjectId): Promise<Comment> {
-    return this.commentModel.findById(commentId).exec()
+  public getDetail(commentID: Types.ObjectId): Promise<Comment> {
+    return this.commentModel.findById(commentID).exec()
   }
 
   // 获取单个评论详情（使用数字 ID）
-  public getDetailByNumberId(commentId: number) {
-    return this.commentModel.findOne({ id: commentId }).exec()
+  public getDetailByNumberId(commentID: number) {
+    return this.commentModel.findOne({ id: commentID }).exec()
   }
 
   // 修改评论
-  public async update(commentId: Types.ObjectId, newComment: Comment, referer: string): Promise<Comment> {
-    const comment = await this.commentModel.findByIdAndUpdate(commentId, newComment, { new: true }).exec()
+  public async update(commentID: Types.ObjectId, newComment: Comment, referer: string): Promise<Comment> {
+    const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment as any, { new: true }).exec()
     this.updateCommentCountWithArticle([comment.post_id])
     this.updateCommentsStateWithBlacklist([comment], comment.state, referer)
     return comment
   }
 
   // 删除单个评论
-  public async delete(commentId: Types.ObjectId): Promise<Comment> {
-    const comment = await this.commentModel.findByIdAndRemove(commentId).exec()
+  public async delete(commentID: Types.ObjectId): Promise<Comment> {
+    const comment = await this.commentModel.findByIdAndRemove(commentID).exec()
     this.updateCommentCountWithArticle([comment.post_id])
     return comment
   }
 
   // 批量删除评论
-  public async batchDelete(commentIds: Types.ObjectId[], postIds: number[]) {
-    const result = await this.commentModel.deleteMany({ _id: { $in: commentIds } }).exec()
-    this.updateCommentCountWithArticle(postIds)
+  public async batchDelete(commentIDs: Types.ObjectId[], postIDs: number[]) {
+    const result = await this.commentModel.deleteMany({ _id: { $in: commentIDs } }).exec()
+    this.updateCommentCountWithArticle(postIDs)
     return result
   }
 }

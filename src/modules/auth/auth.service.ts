@@ -1,6 +1,5 @@
 /**
- * Auth service.
- * @file 权限与管理员模块服务
+ * @file Auth service
  * @module module/auth/service
  */
 
@@ -10,7 +9,7 @@ import { JwtService } from '@nestjs/jwt'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { decodeBase64, decodeMd5 } from '@app/transformers/codec.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { ITokenResult } from './auth.interface'
+import { TokenResult } from './auth.interface'
 import { Auth } from './auth.model'
 import * as APP_CONFIG from '@app/app.config'
 
@@ -27,7 +26,7 @@ export class AuthService {
   }
 
   // 签发 Token
-  public createToken(): ITokenResult {
+  public createToken(): TokenResult {
     return {
       access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
       expires_in: APP_CONFIG.AUTH.expiresIn as number,
@@ -87,7 +86,7 @@ export class AuthService {
   }
 
   // 登陆
-  public async adminLogin(password: string): Promise<ITokenResult> {
+  public async adminLogin(password: string): Promise<TokenResult> {
     const auth = await this.authModel.findOne(null, '+password').exec()
     const extantPassword = this.getExtantPassword(auth)
     const loginPassword = decodeMd5(decodeBase64(password))

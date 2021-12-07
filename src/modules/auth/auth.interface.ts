@@ -1,11 +1,10 @@
 /**
- * Auth interface.
- * @file 权限模块公共接口
+ * @file Auth token interface
  * @module module/auth/interface
  * @author Surmon <https://github.com/surmon-china>
  */
 
-export interface ITokenResult {
+export interface TokenResult {
   access_token: string
   expires_in: number
 }

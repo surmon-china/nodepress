@@ -1,15 +1,16 @@
 /**
- * Helper Ip service.
- * @file Helper Ip 模块服务
+ * @file Helper IP location service
  * @module module/helper/ip.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
 // 内存占用太大（~100+M）暂时移除了
 // import * as geoip from 'geoip-lite';
-import { Injectable, HttpService } from '@nestjs/common'
+import { HttpService } from '@nestjs/axios'
+import { Injectable } from '@nestjs/common'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
+import logger from '@app/utils/logger'
 
 export type IP = string
 export interface IPLocation {
@@ -29,7 +30,7 @@ export class IPService {
   // 通过阿里云服务查询
   private queryIPByAliyun(ip: IP): Promise<IPLocation> {
     return this.httpService.axiosRef
-      .request({
+      .request<any>({
         headers: {
           Authorization: `APPCODE ${APP_CONFIG.COMMON_SERVICE.aliyunIPAuth}`,
         },
@@ -44,7 +45,7 @@ export class IPService {
       })
       .catch((error) => {
         const message = getMessageFromAxiosError(error)
-        console.warn('Aliyun 查询 IP 信息失败！', message)
+        logger.warn('[IP Query]', 'Aliyun 查询 IP 信息失败！', message)
         return Promise.reject(message)
       })
   }
@@ -52,7 +53,7 @@ export class IPService {
   // 优先通过 https://dashboard.juhe.cn/data/index/my 查询
   private queryIPByJUHE(ip: IP): Promise<any> {
     return this.httpService.axiosRef
-      .get(`http://apis.juhe.cn/ip/ipNew?ip=${ip}&key=${APP_CONFIG.COMMON_SERVICE.juheIPAuth}`)
+      .get<any>(`http://apis.juhe.cn/ip/ipNew?ip=${ip}&key=${APP_CONFIG.COMMON_SERVICE.juheIPAuth}`)
       .then((response) => {
         if (response?.data?.resultcode === '200') {
           return Promise.resolve(response.data.result)
@@ -62,7 +63,7 @@ export class IPService {
       })
       .catch((error) => {
         const message = getMessageFromAxiosError(error)
-        console.warn('juhe.cn 查询 IP 信息失败！', message)
+        logger.warn('[IP Query]', 'juhe.cn 查询 IP 信息失败！', message)
         return Promise.reject(message)
       })
   }

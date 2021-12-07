@@ -1,6 +1,5 @@
 /**
- * Option service.
- * @file 设置模块数据服务
+ * @file Option service
  * @module module/option/service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -8,14 +7,15 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { CacheService, ICacheIoResult, TCacheResult } from '@app/processors/cache/cache.service'
+import { CacheService, CacheIOResult, CacheResult } from '@app/processors/cache/cache.service'
 import { Option } from './option.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
+import logger from '@app/utils/logger'
 
 @Injectable()
 export class OptionService {
   // 配置表缓存
-  private optionCache: ICacheIoResult<Option>
+  private optionCache: CacheIOResult<Option>
 
   constructor(
     @InjectModel(Option) private readonly optionModel: MongooseModel<Option>,
@@ -26,14 +26,16 @@ export class OptionService {
       key: CACHE_KEY.OPTION,
       promise: this.getDBOption.bind(this),
     })
-    this.optionCache.update()
+    this.optionCache.update().catch((error) => {
+      logger.warn('[option]', 'init getDBOption Error:', error)
+    })
   }
 
   public getDBOption() {
     return this.optionModel.findOne().exec()
   }
 
-  public getOption(): TCacheResult<Option> {
+  public getOption(): CacheResult<Option> {
     return this.optionCache.get()
   }
 
@@ -44,8 +46,8 @@ export class OptionService {
 
     const extantOption = await this.getDBOption()
     if (extantOption) {
-      await Object.assign(extantOption, option).save()
-      return extantOption
+      await extantOption.update(option)
+      return this.getDBOption()
     } else {
       this.optionModel.create(option)
     }

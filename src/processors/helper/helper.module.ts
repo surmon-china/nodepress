@@ -1,11 +1,11 @@
 /**
- * Helper module.
- * @file Helper 全局模块
+ * @file General helper module
  * @module processor/helper/module
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Module, Global, HttpModule } from '@nestjs/common'
+import { Module, Global } from '@nestjs/common'
+import { HttpModule } from '@nestjs/axios'
 import { GoogleService } from './helper.service.google'
 import { AkismetService } from './helper.service.akismet'
 import { CloudStorageService } from './helper.service.cs'

@@ -1,5 +1,5 @@
 /**
- * @file 链接构造器
+ * @file URL transformer
  * @description 构造各种链接
  * @module transformer/link
  * @author Surmon <https://github.com/surmon-china>
@@ -21,12 +21,4 @@ export function getArticleUrl(articleId: string | number): string {
 
 export function getGuestbookPageUrl(): string {
   return `${APP_CONFIG.APP.URL}/guestbook`
-}
-
-export function getAboutPageUrl(): string {
-  return `${APP_CONFIG.APP.URL}/about`
-}
-
-export function getArchivePageUrl(): string {
-  return `${APP_CONFIG.APP.URL}/archive`
 }

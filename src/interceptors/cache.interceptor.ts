@@ -1,6 +1,5 @@
 /**
- * HttpCache interceptor.
- * @file 缓存拦截器
+ * @file HttpCache interceptor
  * @module interceptor/cache
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -29,10 +28,10 @@ import * as APP_CONFIG from '@app/app.config'
 @Injectable()
 export class HttpCacheInterceptor implements NestInterceptor {
   constructor(
-    private readonly cacheManager: CacheService,
     @Inject(SYSTEM.REFLECTOR) private readonly reflector: Reflector,
     @Inject(SYSTEM.HTTP_ADAPTER_HOST)
-    private readonly httpAdapterHost: HttpAdapterHost
+    private readonly httpAdapterHost: HttpAdapterHost,
+    private readonly cacheService: CacheService
   ) {}
 
   // 自定义装饰器，修饰 ttl 参数
@@ -47,11 +46,11 @@ export class HttpCacheInterceptor implements NestInterceptor {
 
     const target = context.getHandler()
     const metaTTL = this.reflector.get(META.HTTP_CACHE_TTL_METADATA, target)
-    const ttl = metaTTL || APP_CONFIG.REDIS.defaultCacheTTL
+    const ttl = metaTTL || APP_CONFIG.APP.DEFAULT_CACHE_TTL
 
     try {
-      const value = await this.cacheManager.get(key)
-      return value ? of(value) : call$.pipe(tap((response) => this.cacheManager.set(key, response, { ttl })))
+      const value = await this.cacheService.get(key)
+      return value ? of(value) : call$.pipe(tap((response) => this.cacheService.set(key, response, { ttl })))
     } catch (error) {
       return call$
     }
@@ -69,7 +68,7 @@ export class HttpCacheInterceptor implements NestInterceptor {
     const cacheKey = this.reflector.get(META.HTTP_CACHE_KEY_METADATA, context.getHandler())
     const isMatchedCache = isHttpApp && isGetRequest && cacheKey
     // const requestUrl = httpServer.getRequestUrl(request);
-    // console.log('isMatchedCache', isMatchedCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);
+    // logger.debug('isMatchedCache', isMatchedCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);
     // 缓存命中策略 -> http -> GET -> cachekey -> url -> undefined
     return isMatchedCache ? cacheKey : undefined
     /*

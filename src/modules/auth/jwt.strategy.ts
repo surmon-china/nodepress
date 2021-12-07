@@ -1,7 +1,6 @@
 /**
- * Auth jwt.strategy.
- * @file 鉴权器
- * @module module/auth/jwt.strategy
+ * @file Auth jwt strategy
+ * @module module/auth/jwt-strategy
  * @author Surmon <https://github.com/surmon-china>
  */
 

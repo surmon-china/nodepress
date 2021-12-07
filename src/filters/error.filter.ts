@@ -1,13 +1,12 @@
 /**
- * HttpException filter.
- * @file 全局异常拦截器
+ * @file HttpException filter
  * @module filter/error
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import lodash from 'lodash'
 import { isDevMode } from '@app/app.environment'
-import { EHttpStatus, THttpErrorResponse, TExceptionOption, TMessage } from '@app/interfaces/http.interface'
+import { ResponseStatus, HttpResponseError, ExceptionOption, ResponseMessage } from '@app/interfaces/http.interface'
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common'
 
 /**
@@ -20,16 +19,16 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = host.switchToHttp().getRequest()
     const response = host.switchToHttp().getResponse()
     const status = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
-    const errorOption: TExceptionOption = exception.getResponse() as TExceptionOption
-    const isString = (value): value is TMessage => lodash.isString(value)
+    const errorOption: ExceptionOption = exception.getResponse() as ExceptionOption
+    const isString = (value): value is ResponseMessage => lodash.isString(value)
     const errMessage = isString(errorOption) ? errorOption : errorOption.message
     const errorInfo = isString(errorOption) ? null : errorOption.error
     const parentErrorInfo = errorInfo ? String(errorInfo) : null
     const isChildrenError = errorInfo?.status && errorInfo?.message
     const resultError = (isChildrenError && errorInfo.message) || parentErrorInfo
     const resultStatus = isChildrenError ? errorInfo.status : status
-    const data: THttpErrorResponse = {
-      status: EHttpStatus.Error,
+    const data: HttpResponseError = {
+      status: ResponseStatus.Error,
       message: errMessage,
       error: resultError,
       debug: isDevMode ? exception.stack : null,

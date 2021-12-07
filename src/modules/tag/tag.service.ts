@@ -1,6 +1,5 @@
 /**
- * Tag service.
- * @file 标签模块数据服务
+ * @file Tag service
  * @module module/tag/service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -10,22 +9,23 @@ import { PaginateResult, Types } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getTagUrl } from '@app/transformers/urlmap.transformer'
-import { CacheService, ICacheIoResult } from '@app/processors/cache/cache.service'
+import { CacheService, CacheIOResult } from '@app/processors/cache/cache.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface'
-import { SyndicationService } from '@app/modules/syndication/syndication.service'
+import { SortType, PublicState, PublishState } from '@app/interfaces/biz.interface'
+import { ArchiveService } from '@app/modules/archive/archive.service'
 import { Article } from '@app/modules/article/article.model'
 import { Tag } from './tag.model'
+import logger from '@app/utils/logger'
 
 @Injectable()
 export class TagService {
   // 为非鉴权用户所用
-  private tagListCache: ICacheIoResult<PaginateResult<Tag>>
+  private tagListCache: CacheIOResult<PaginateResult<Tag>>
 
   constructor(
     private readonly cacheService: CacheService,
-    private readonly syndicationService: SyndicationService,
+    private readonly archiveService: ArchiveService,
     private readonly seoService: SeoService,
     @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
@@ -35,7 +35,9 @@ export class TagService {
       key: CACHE_KEY.TAGS,
       promise: this.getListCacheTask.bind(this),
     })
-    this.updateListCache()
+    this.updateListCache().catch((error) => {
+      logger.warn('[tag]', 'init getListCacheTask Error:', error)
+    })
   }
 
   // 缓存任务
@@ -43,7 +45,7 @@ export class TagService {
     const options = {
       page: 1,
       limit: 888,
-      sort: { _id: ESortType.Desc },
+      sort: { _id: SortType.Desc },
     }
     return this.getList(null, options, false)
   }
@@ -61,8 +63,8 @@ export class TagService {
   // 请求标签列表（及聚和数据）
   public async getList(querys, options, isAuthenticated): Promise<PaginateResult<Tag>> {
     const matchState = {
-      state: EPublishState.Published,
-      public: EPublicState.Public,
+      state: PublishState.Published,
+      public: PublicState.Public,
     }
 
     const tags = await this.tagModel.paginate(querys, options)
@@ -93,7 +95,7 @@ export class TagService {
 
     const tag = await this.tagModel.create(newTag)
     this.seoService.push(getTagUrl(tag.slug))
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.updateListCache()
     return tag
   }
@@ -104,35 +106,35 @@ export class TagService {
   }
 
   // 修改标签
-  public async update(tagId: Types.ObjectId, newTag: Tag): Promise<Tag> {
+  public async update(tagID: Types.ObjectId, newTag: Tag): Promise<Tag> {
     const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec()
-    if (existedTag && String(existedTag._id) !== String(tagId)) {
+    if (existedTag && String(existedTag._id) !== String(tagID)) {
       throw '别名已被占用'
     }
 
-    const tag = await this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).exec()
+    const tag = await this.tagModel.findByIdAndUpdate(tagID, newTag as any, { new: true }).exec()
     this.seoService.push(getTagUrl(tag.slug))
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.updateListCache()
     return tag
   }
 
   // 删除单个标签
-  public async delete(tagId: Types.ObjectId): Promise<Tag> {
-    const tag = await this.tagModel.findByIdAndRemove(tagId).exec()
+  public async delete(tagID: Types.ObjectId): Promise<Tag> {
+    const tag = await this.tagModel.findByIdAndRemove(tagID).exec()
     this.seoService.delete(getTagUrl(tag.slug))
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.updateListCache()
     return tag
   }
 
   // 批量删除标签
-  public async batchDelete(tagIds: Types.ObjectId[]) {
-    const tags = await this.tagModel.find({ _id: { $in: tagIds } }).exec()
+  public async batchDelete(tagIDs: Types.ObjectId[]) {
+    const tags = await this.tagModel.find({ _id: { $in: tagIDs } }).exec()
     this.seoService.delete(tags.map((tag) => getTagUrl(tag.slug)))
 
-    const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIds } }).exec()
-    this.syndicationService.updateCache()
+    const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIDs } }).exec()
+    this.archiveService.updateCache()
     this.updateListCache()
     return actionResult
   }
