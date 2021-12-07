@@ -1,6 +1,5 @@
 /**
- * Like controller.
- * @file 点赞模块控制器
+ * @file Like controller
  * @module module/like/controller
  * @author Surmon <https://github.com/surmon-china>
  */

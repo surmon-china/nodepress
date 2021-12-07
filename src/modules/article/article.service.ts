@@ -1,6 +1,5 @@
 /**
- * Article service.
- * @file 文章模块数据服务
+ * @file Article service
  * @module module/article/service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -12,28 +11,29 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
-import { CacheService, TCacheIntervalResult } from '@app/processors/cache/cache.service'
-import { SyndicationService } from '@app/modules/syndication/syndication.service'
+import { CacheService, CacheIntervalResult } from '@app/processors/cache/cache.service'
+import { ArchiveService } from '@app/modules/archive/archive.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { ESortType, EPublicState, EPublishState } from '@app/interfaces/state.interface'
+import { SortType, PublicState, PublishState } from '@app/interfaces/biz.interface'
 import { Article, getDefaultMeta } from './article.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
+import logger from '@app/utils/logger'
 
 export const COMMON_USER_QUERY_PARAMS = Object.freeze({
-  state: EPublishState.Published,
-  public: EPublicState.Public,
+  state: PublishState.Published,
+  public: PublicState.Public,
 })
 
 @Injectable()
 export class ArticleService {
   // 热门文章列表缓存
-  private hotArticleListCache: TCacheIntervalResult<PaginateResult<Article>>
+  private hotArticleListCache: CacheIntervalResult<PaginateResult<Article>>
 
   constructor(
     private readonly tagService: TagService,
     private readonly cacheService: CacheService,
-    private readonly syndicationService: SyndicationService,
+    private readonly archiveService: ArchiveService,
     private readonly seoService: SeoService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
   ) {
@@ -74,8 +74,8 @@ export class ArticleService {
   // 得到热门排序配置
   public getHotSortOption() {
     return {
-      'meta.comments': ESortType.Desc,
-      'meta.likes': ESortType.Desc,
+      'meta.comments': SortType.Desc,
+      'meta.likes': SortType.Desc,
     }
   }
 
@@ -87,26 +87,25 @@ export class ArticleService {
   }
 
   // 获取文章详情（使用 ObjectId）
-  public getDetailByObjectId(articleId: Types.ObjectId): Promise<Article> {
-    return this.articleModel.findById(articleId).exec()
+  public getDetailByObjectId(articleID: Types.ObjectId): Promise<Article> {
+    return this.articleModel.findById(articleID).exec()
   }
 
   // 获取文章详情（使用数字 ID）
-  public getDetailByNumberId(articleId: number): Promise<DocumentType<Article>> {
+  public getDetailByNumberId(articleID: number): Promise<DocumentType<Article>> {
     return this.articleModel
       .findOne({
-        id: articleId,
+        id: articleID,
         ...COMMON_USER_QUERY_PARAMS,
       })
       .select('-password')
-      .populate('category')
-      .populate('tag')
+      .populate(['category', 'tag'])
       .exec()
   }
 
   // 获取全面的文章详情（用户用）
-  public async getFullDetailForUser(articleId: number): Promise<Article> {
-    const article = await this.getDetailByNumberId(articleId)
+  public async getFullDetailForUser(articleID: number): Promise<Article> {
+    const article = await this.getDetailByNumberId(articleID)
 
     // 如果文章不存在，返回 404
     if (!article) {
@@ -137,53 +136,54 @@ export class ArticleService {
       meta: getDefaultMeta(),
     })
     this.seoService.push(getArticleUrl(article.id))
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.tagService.updateListCache()
     return article
   }
 
   // 修改文章
-  public async update(articleId: Types.ObjectId, newArticle: Article): Promise<Article> {
+  public async update(articleID: Types.ObjectId, newArticle: Article): Promise<Article> {
     // 修正信息
     Reflect.deleteProperty(newArticle, 'meta')
     Reflect.deleteProperty(newArticle, 'create_at')
     Reflect.deleteProperty(newArticle, 'update_at')
 
-    const article = await this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).exec()
+    const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle as any, { new: true }).exec()
+    logger.info('----修改文章后', article)
     this.seoService.update(getArticleUrl(article.id))
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.tagService.updateListCache()
     return article
   }
 
   // 删除单个文章
-  public async delete(articleId: Types.ObjectId): Promise<Article> {
-    const article = await this.articleModel.findByIdAndRemove(articleId).exec()
+  public async delete(articleID: Types.ObjectId): Promise<Article> {
+    const article = await this.articleModel.findByIdAndRemove(articleID).exec()
     this.seoService.delete(getArticleUrl(article.id))
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.tagService.updateListCache()
     return article
   }
 
   // 批量更新状态
-  public async batchPatchState(articleIds: Types.ObjectId[], state: EPublishState) {
+  public async batchPatchState(articleIDs: Types.ObjectId[], state: PublishState) {
     const actionResult = await this.articleModel
-      .updateMany({ _id: { $in: articleIds } }, { $set: { state } }, { multi: true })
+      .updateMany({ _id: { $in: articleIDs } }, { $set: { state } }, { multi: true })
       .exec()
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.tagService.updateListCache()
     return actionResult
   }
 
   // 批量删除文章
-  public async batchDelete(articleIds: Types.ObjectId[]) {
-    const articles = await this.articleModel.find({ _id: { $in: articleIds } }).exec()
+  public async batchDelete(articleIDs: Types.ObjectId[]) {
+    const articles = await this.articleModel.find({ _id: { $in: articleIDs } }).exec()
     this.seoService.delete(articles.map((article) => getArticleUrl(article.id)))
 
     const actionResult = await this.articleModel.deleteMany({
-      _id: { $in: articleIds },
+      _id: { $in: articleIDs },
     })
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.tagService.updateListCache()
     return actionResult
   }

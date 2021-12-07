@@ -1,12 +1,11 @@
 /**
- * Validation error.
- * @file 400 错误生成器
+ * @file 400 Validation error
  * @module error/validation
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as TEXT from '@app/constants/text.constant'
 import { HttpException, HttpStatus } from '@nestjs/common'
+import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class ValidationError

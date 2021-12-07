@@ -1,6 +1,5 @@
 /**
- * Comment controller.
- * @file 评论模块控制器
+ * @file Comment controller
  * @module module/comment/controller
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -11,9 +10,9 @@ import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards } from '@nes
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
 import { HttpProcessor } from '@app/decorators/http.decorator'
-import { QueryParams, EQueryParamsField } from '@app/decorators/query-params.decorator'
-import { ESortType } from '@app/interfaces/state.interface'
-import { Comment, CreateCommentBase, DelComments, PatchComments } from './comment.model'
+import { QueryParams, QueryParamsField } from '@app/decorators/query-params.decorator'
+import { SortType } from '@app/interfaces/biz.interface'
+import { Comment, CreateCommentBase, CommentsPayload, CommentsStatePayload } from './comment.model'
 import { CommentService } from './comment.service'
 
 @Controller('comment')
@@ -25,12 +24,12 @@ export class CommentController {
   @HttpProcessor.paginate()
   @HttpProcessor.handle('获取评论列表')
   getComments(
-    @QueryParams([EQueryParamsField.State, EQueryParamsField.CommentState, 'post_id'])
+    @QueryParams([QueryParamsField.State, QueryParamsField.CommentState, 'post_id'])
     { querys, options, origin }
   ): Promise<PaginateResult<Comment>> {
     // 热门排序
-    if (Number(origin.sort) === ESortType.Hot) {
-      options.sort = { likes: ESortType.Desc }
+    if (Number(origin.sort) === SortType.Hot) {
+      options.sort = { likes: SortType.Desc }
     }
 
     // 关键词搜索
@@ -52,14 +51,14 @@ export class CommentController {
   @Patch()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量修改评论')
-  patchComments(@QueryParams() { visitors }, @Body() body: PatchComments) {
+  patchComments(@QueryParams() { visitors }, @Body() body: CommentsStatePayload) {
     return this.commentService.batchPatchState(body, visitors.referer)
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除评论')
-  delComments(@Body() body: DelComments) {
+  delComments(@Body() body: CommentsPayload) {
     return this.commentService.batchDelete(body.comment_ids, body.post_ids)
   }
 

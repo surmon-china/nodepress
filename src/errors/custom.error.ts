@@ -1,12 +1,11 @@
 /**
- * Custom error.
- * @file 错误定制器
+ * @file Custom error
  * @module error/custom
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { HttpException, HttpStatus } from '@nestjs/common'
-import { TExceptionOption } from '@app/interfaces/http.interface'
+import { ExceptionOption } from '@app/interfaces/http.interface'
 
 /**
  * @class CustomError
@@ -15,7 +14,7 @@ import { TExceptionOption } from '@app/interfaces/http.interface'
  * @example new CustomError({ message: '错误信息', error: new Error(xxx) })
  */
 export class CustomError extends HttpException {
-  constructor(options: TExceptionOption, statusCode?: HttpStatus) {
+  constructor(options: ExceptionOption, statusCode?: HttpStatus) {
     super(options, statusCode || HttpStatus.INTERNAL_SERVER_ERROR)
   }
 }

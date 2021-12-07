@@ -1,11 +1,10 @@
 /**
- * Option model.
- * @file 设置模块数据模型
+ * @file Option model
  * @module module/option/model
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { prop, pre, defaultClasses } from '@typegoose/typegoose'
+import { prop, modelOptions } from '@typegoose/typegoose'
 import { IsString, IsInt, IsUrl, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
@@ -34,11 +33,15 @@ export class Blacklist {
   keywords: string[]
 }
 
-@pre<Option>('findOneAndUpdate', function (next) {
-  this.findOneAndUpdate({}, { update_at: Date.now() })
-  next()
+@modelOptions({
+  schemaOptions: {
+    timestamps: {
+      createdAt: false,
+      updatedAt: 'update_at',
+    },
+  },
 })
-export class Option extends defaultClasses.Base {
+export class Option {
   @IsNotEmpty({ message: '标题？' })
   @IsString()
   @prop({ required: true, validate: /\S+/ })

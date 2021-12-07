@@ -1,6 +1,5 @@
 /**
- * Category controller.
- * @file 分类模块控制器
+ * @file Category controller
  * @module module/category/controller
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -11,7 +10,7 @@ import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
 import { HttpProcessor } from '@app/decorators/http.decorator'
 import { QueryParams } from '@app/decorators/query-params.decorator'
-import { Category, DelCategories } from './category.model'
+import { Category, CategoriesPayload } from './category.model'
 import { CategoryService } from './category.service'
 
 @Controller('category')
@@ -36,14 +35,14 @@ export class CategoryController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('批量删除分类')
-  delCategories(@Body() body: DelCategories) {
+  delCategories(@Body() body: CategoriesPayload) {
     return this.categoryService.batchDelete(body.category_ids)
   }
 
   @Get(':id')
   @HttpProcessor.handle('获取分类族谱')
-  getCategory(@Param('id') categoryId): Promise<Category[]> {
-    return this.categoryService.getGenealogyById(categoryId)
+  getCategory(@Param('id') categoryID): Promise<Category[]> {
+    return this.categoryService.getGenealogyById(categoryID)
   }
 
   @Put(':id')

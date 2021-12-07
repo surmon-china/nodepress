@@ -1,6 +1,5 @@
 /**
- * Database providers.
- * @file Database 模块构造器
+ * @file Database providers > mongoose connection
  * @module processor/database/providers
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -9,6 +8,7 @@ import * as APP_CONFIG from '@app/app.config'
 import { mongoose } from '@app/transformers/mongoose.transformer'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import { DB_CONNECTION_TOKEN } from '@app/constants/system.constant'
+import logger from '@app/utils/logger'
 
 export const databaseProvider = {
   inject: [EmailService],
@@ -29,32 +29,26 @@ export const databaseProvider = {
 
     // 连接数据库
     function connection() {
-      return mongoose.connect(APP_CONFIG.MONGO_DB.uri, {
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        promiseLibrary: global.Promise,
-      })
+      return mongoose.connect(APP_CONFIG.MONGO_DB.uri)
     }
 
     mongoose.connection.on('connecting', () => {
-      console.log('数据库连接中...')
+      logger.info('[MongoDB]', 'connecting...')
     })
 
     mongoose.connection.on('open', () => {
-      console.info('数据库连接成功！')
+      logger.info('[MongoDB]', 'readied!')
       clearTimeout(reconnectionTask)
       reconnectionTask = null
     })
 
     mongoose.connection.on('disconnected', () => {
-      console.error(`数据库失去连接！尝试 ${RECONNECT_INTERVAL / 1000}s 后重连`)
+      logger.error('[MongoDB]', `disconnected! 尝试 ${RECONNECT_INTERVAL / 1000}s 后重连`)
       reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL)
     })
 
     mongoose.connection.on('error', (error) => {
-      console.error('数据库发生异常！', error)
+      logger.error('[MongoDB]', 'error!', error)
       mongoose.disconnect()
       sendAlarmMail(String(error))
     })

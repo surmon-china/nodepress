@@ -1,12 +1,11 @@
 /**
- * HttpForbidden error.
- * @file 403 错误生成器
+ * @file 403 HttpForbidden error
  * @module error/forbidden
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as TEXT from '@app/constants/text.constant'
 import { HttpException, HttpStatus } from '@nestjs/common'
+import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class HttpForbiddenError

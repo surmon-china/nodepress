@@ -1,6 +1,5 @@
 /**
- * App module.
- * @file App 主模块
+ * @file App module
  * @module app/module
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -22,7 +21,6 @@ import { CacheModule } from '@app/processors/cache/cache.module'
 import { HelperModule } from '@app/processors/helper/helper.module'
 
 // 业务模块（辅助）
-import { SyndicationModule } from '@app/modules/syndication/syndication.module'
 import { ExpansionModule } from '@app/modules/expansion/expansion.module'
 
 // 业务模块（核心）
@@ -34,12 +32,14 @@ import { CategoryModule } from '@app/modules/category/category.module'
 import { ArticleModule } from '@app/modules/article/article.module'
 import { CommentModule } from '@app/modules/comment/comment.module'
 import { LikeModule } from '@app/modules/like/like.module'
+import { ArchiveModule } from '@app/modules/archive/archive.module'
 
 @Module({
   imports: [
     HelperModule,
     DatabaseModule,
     CacheModule,
+    ExpansionModule,
 
     AuthModule,
     OptionModule,
@@ -49,9 +49,7 @@ import { LikeModule } from '@app/modules/like/like.module'
     ArticleModule,
     CommentModule,
     LikeModule,
-
-    ExpansionModule,
-    SyndicationModule,
+    ArchiveModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,6 +1,5 @@
 /**
- * Auth controller.
- * @file 权限模块控制器
+ * @file Auth controller
  * @module module/auth/controller
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -12,8 +11,8 @@ import { EmailService } from '@app/processors/helper/helper.service.email'
 import { HttpProcessor } from '@app/decorators/http.decorator'
 import { QueryParams } from '@app/decorators/query-params.decorator'
 import { AuthService } from './auth.service'
-import { ITokenResult } from './auth.interface'
-import { Auth, AuthLogin } from './auth.model'
+import { TokenResult } from './auth.interface'
+import { Auth, AuthPasswordPayload } from './auth.model'
 import * as APP_CONFIG from '@app/app.config'
 
 @Controller('auth')
@@ -39,7 +38,7 @@ export class AuthController {
 
   @Post('login')
   @HttpProcessor.handle({ message: '登陆', error: HttpStatus.BAD_REQUEST })
-  async login(@QueryParams() { visitors: { ip } }, @Body() body: AuthLogin): Promise<ITokenResult> {
+  async login(@QueryParams() { visitors: { ip } }, @Body() body: AuthPasswordPayload): Promise<TokenResult> {
     const token = await this.authService.adminLogin(body.password)
     const ipLocation = await this.ipService.query(ip)
     const subject = '博客有新的登陆行为'
@@ -67,7 +66,7 @@ export class AuthController {
   @Post('renewal')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('Token 续签')
-  renewalToken(): ITokenResult {
+  renewalToken(): TokenResult {
     return this.authService.createToken()
   }
 }

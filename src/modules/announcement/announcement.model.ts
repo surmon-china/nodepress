@@ -1,25 +1,28 @@
 /**
- * Announcement model.
- * @file 公告模块数据模型
+ * @file Announcement model
  * @module module/announcement/model
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, plugin, pre, defaultClasses } from '@typegoose/typegoose'
+import { prop, plugin, modelOptions } from '@typegoose/typegoose'
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { mongoosePaginate } from '@app/transformers/mongoose.transformer'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
-import { EPublishState } from '@app/interfaces/state.interface'
+import { PublishState } from '@app/interfaces/biz.interface'
 
-@pre<Announcement>('findOneAndUpdate', function (next) {
-  this.findOneAndUpdate({}, { update_at: Date.now() })
-  next()
-})
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, { field: 'id', startAt: 1 })
-export class Announcement extends defaultClasses.Base {
+@modelOptions({
+  schemaOptions: {
+    timestamps: {
+      createdAt: 'create_at',
+      updatedAt: 'update_at',
+    },
+  },
+})
+export class Announcement {
   @prop({ unique: true })
   id: number
 
@@ -29,19 +32,19 @@ export class Announcement extends defaultClasses.Base {
   content: string
 
   @IsDefined()
-  @IsIn([EPublishState.Draft, EPublishState.Published])
+  @IsIn([PublishState.Draft, PublishState.Published])
   @IsInt({ message: '数字？' })
-  @prop({ enum: EPublishState, default: EPublishState.Published, index: true })
-  state: EPublishState
+  @prop({ enum: PublishState, default: PublishState.Published, index: true })
+  state: PublishState
 
-  @prop({ default: Date.now })
+  @prop({ default: Date.now, immutable: true })
   create_at?: Date
 
   @prop({ default: Date.now })
   update_at?: Date
 }
 
-export class DelAnnouncements {
+export class AnnouncementsPayload {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()

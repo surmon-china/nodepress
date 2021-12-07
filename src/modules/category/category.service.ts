@@ -1,6 +1,5 @@
 /**
- * Category service.
- * @file 分类模块数据服务
+ * @file Category service
  * @module module/category/service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -10,8 +9,8 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getCategoryUrl } from '@app/transformers/urlmap.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { EPublicState, EPublishState } from '@app/interfaces/state.interface'
-import { SyndicationService } from '@app/modules/syndication/syndication.service'
+import { PublicState, PublishState } from '@app/interfaces/biz.interface'
+import { ArchiveService } from '@app/modules/archive/archive.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
 import { Article } from '@app/modules/article/article.model'
 import { Category } from './category.model'
@@ -19,7 +18,7 @@ import { Category } from './category.model'
 @Injectable()
 export class CategoryService {
   constructor(
-    private readonly syndicationService: SyndicationService,
+    private readonly archiveService: ArchiveService,
     private readonly seoService: SeoService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
     @InjectModel(Category)
@@ -29,8 +28,8 @@ export class CategoryService {
   // 请求分类列表（及聚和数据）
   public async getList(querys, options, isAuthenticated): Promise<PaginateResult<Category>> {
     const matchState = {
-      state: EPublishState.Published,
-      public: EPublicState.Public,
+      state: PublishState.Published,
+      public: PublicState.Public,
     }
 
     const categories = await this.categoryModel.paginate(querys, options)
@@ -62,12 +61,12 @@ export class CategoryService {
 
     const category = await this.categoryModel.create(newCategory)
     this.seoService.push(getCategoryUrl(category.slug))
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     return category
   }
 
   // 获取分类族谱
-  public getGenealogyById(categoryId: Types.ObjectId): Promise<Category[]> {
+  public getGenealogyById(categoryID: Types.ObjectId): Promise<Category[]> {
     const categories = []
     const findById = this.categoryModel.findById.bind(this.categoryModel)
 
@@ -84,7 +83,7 @@ export class CategoryService {
             return hasParent ? findCateItem(parentId) : resolve(categories)
           })
           .catch(reject)
-      })(categoryId)
+      })(categoryID)
     })
   }
 
@@ -94,30 +93,30 @@ export class CategoryService {
   }
 
   // 修改分类
-  public async update(categoryId: Types.ObjectId, newCategory: Category): Promise<Category> {
+  public async update(categoryID: Types.ObjectId, newCategory: Category): Promise<Category> {
     // 检测 slug 重复
     const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
-    if (existedCategory && String(existedCategory._id) !== String(categoryId)) {
+    if (existedCategory && String(existedCategory._id) !== String(categoryID)) {
       throw '别名已被占用'
     }
 
-    const category = await this.categoryModel.findByIdAndUpdate(categoryId, newCategory, {
+    const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory as any, {
       new: true,
     })
     this.seoService.push(getCategoryUrl(category.slug))
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     return category
   }
 
   // 删除单个分类
-  public async delete(categoryId: Types.ObjectId) {
-    const category = await this.categoryModel.findByIdAndRemove(categoryId).exec()
+  public async delete(categoryID: Types.ObjectId) {
+    const category = await this.categoryModel.findByIdAndRemove(categoryID).exec()
     // 更新网站地图
-    this.syndicationService.updateCache()
+    this.archiveService.updateCache()
     this.seoService.delete(getCategoryUrl(category.slug))
 
     // 处理子分类
-    const categories = await this.categoryModel.find({ pid: categoryId }).exec()
+    const categories = await this.categoryModel.find({ pid: categoryID }).exec()
     // 如果没有此分类的父分类，则删除 { pid: target.id } -> ok
     if (!categories.length) {
       return category
@@ -133,14 +132,14 @@ export class CategoryService {
   }
 
   // 批量删除分类（有顺序要求）
-  public async batchDelete(categoryIds: Types.ObjectId[]) {
+  public async batchDelete(categoryIDs: Types.ObjectId[]) {
     // 先删缓存
-    const categories = await this.categoryModel.find({ _id: { $in: categoryIds } }).exec()
+    const categories = await this.categoryModel.find({ _id: { $in: categoryIDs } }).exec()
     this.seoService.delete(categories.map((category) => getCategoryUrl(category.slug)))
 
     // 再物理删除
-    const actionResult = await this.categoryModel.deleteMany({ _id: { $in: categoryIds } }).exec()
-    this.syndicationService.updateCache()
+    const actionResult = await this.categoryModel.deleteMany({ _id: { $in: categoryIDs } }).exec()
+    this.archiveService.updateCache()
     return actionResult
   }
 }

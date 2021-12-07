@@ -1,6 +1,5 @@
 /**
- * Cache module.
- * @file Cache 全局模块
+ * @file Cache module
  * @module processor/cache/module
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -12,6 +11,7 @@ import { CacheService } from './cache.service'
 @Global()
 @Module({
   imports: [
+    // https://docs.nestjs.com/techniques/caching#different-stores
     NestCacheModule.registerAsync({
       useClass: CacheConfigService,
       inject: [CacheConfigService],

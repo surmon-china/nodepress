@@ -1,26 +1,29 @@
 /**
- * HTTP interface.
- * @file HTTP 响应接口模型
+ * @file HTTP interface
  * @module interface/http
  * @author Surmon <https://github.com/surmon-china>
  */
 
-// 响应状态
-export enum EHttpStatus {
+export type ResponseMessage = string
+export enum ResponseStatus {
   Error = 'error',
   Success = 'success',
 }
 
-export type TMessage = string
-export type TExceptionOption =
-  | TMessage
+export interface HttpResponseBase {
+  status: ResponseStatus
+  message: ResponseMessage
+}
+
+export type ExceptionOption =
+  | ResponseMessage
   | {
-      message: TMessage
+      message: ResponseMessage
       error?: any
     }
 
 // 翻页数据
-export interface IHttpResultPaginate<T> {
+export interface HttpPaginateResult<T> {
   data: T
   params: any
   pagination: {
@@ -31,22 +34,16 @@ export interface IHttpResultPaginate<T> {
   }
 }
 
-// HTTP 状态返回
-export interface IHttpResponseBase {
-  status: EHttpStatus
-  message: TMessage
-}
-
 // HTTP error
-export type THttpErrorResponse = IHttpResponseBase & {
+export type HttpResponseError = HttpResponseBase & {
   error: any
   debug?: string
 }
 
-// HTTP success 返回
-export type THttpSuccessResponse<T> = IHttpResponseBase & {
-  result: T | IHttpResultPaginate<T>
+// HTTP success
+export type HttpResponseSuccess<T> = HttpResponseBase & {
+  result: T | HttpPaginateResult<T>
 }
 
 // HTTP Response
-export type THttpResponse<T> = THttpErrorResponse | THttpSuccessResponse<T>
+export type HttpResponse<T> = HttpResponseError | HttpResponseSuccess<T>

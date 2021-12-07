@@ -1,17 +1,16 @@
 /**
- * Article model.
- * @file 文章模块数据模型
+ * @file Article model
  * @module module/article/model
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, index, plugin, pre, Ref, defaultClasses, modelOptions } from '@typegoose/typegoose'
+import { prop, index, plugin, Ref, modelOptions } from '@typegoose/typegoose'
 import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { mongoosePaginate } from '@app/transformers/mongoose.transformer'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
-import { EPublishState, EPublicState, EOriginState } from '@app/interfaces/state.interface'
+import { PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface'
 import { Category } from '@app/modules/category/category.model'
 import { Extend } from '@app/models/extend.model'
 import { Tag } from '@app/modules/tag/tag.model'
@@ -39,15 +38,15 @@ export class Meta {
   comments: number
 }
 
-@pre<Article>('findOneAndUpdate', function (next) {
-  this.findOneAndUpdate({}, { update_at: Date.now() })
-  next()
-})
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, { field: 'id', startAt: 1 })
 @modelOptions({
   schemaOptions: {
     toObject: { getters: true },
+    timestamps: {
+      createdAt: 'create_at',
+      updatedAt: 'update_at',
+    },
   },
 })
 @index(
@@ -61,7 +60,7 @@ export class Meta {
     },
   }
 )
-export class Article extends defaultClasses.Base {
+export class Article {
   @prop({ unique: true })
   id: number
 
@@ -102,24 +101,24 @@ export class Article extends defaultClasses.Base {
 
   // 文章发布状态
   @IsDefined()
-  @IsIn([EPublishState.Draft, EPublishState.Published, EPublishState.Recycle])
+  @IsIn([PublishState.Draft, PublishState.Published, PublishState.Recycle])
   @IsInt({ message: '发布状态？' })
-  @prop({ enum: EPublishState, default: EPublishState.Published, index: true })
-  state: EPublishState
+  @prop({ enum: PublishState, default: PublishState.Published, index: true })
+  state: PublishState
 
   // 文章公开状态
   @IsDefined()
-  @IsIn([EPublicState.Public, EPublicState.Secret, EPublicState.Password])
+  @IsIn([PublicState.Public, PublicState.Secret, PublicState.Password])
   @IsInt({ message: '公开状态？' })
-  @prop({ enum: EPublicState, default: EPublicState.Public, index: true })
-  public: EPublicState
+  @prop({ enum: PublicState, default: PublicState.Public, index: true })
+  public: PublicState
 
   // 文章转载状态
   @IsDefined()
-  @IsIn([EOriginState.Hybrid, EOriginState.Original, EOriginState.Reprint])
+  @IsIn([OriginState.Hybrid, OriginState.Original, OriginState.Reprint])
   @IsInt({ message: '转载状态？' })
-  @prop({ enum: EOriginState, default: EOriginState.Original, index: true })
-  origin: EOriginState
+  @prop({ enum: OriginState, default: OriginState.Original, index: true })
+  origin: OriginState
 
   // 文章标签 https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
   @prop({ ref: () => Tag, index: true })
@@ -137,7 +136,7 @@ export class Article extends defaultClasses.Base {
   meta: Meta
 
   // 发布日期
-  @prop({ default: Date.now, index: true })
+  @prop({ default: Date.now, index: true, immutable: true })
   create_at?: Date
 
   // 最后修改日期
@@ -153,19 +152,19 @@ export class Article extends defaultClasses.Base {
   related?: Article[]
 }
 
-export class DelArticles {
+export class ArticlesPayload {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
   article_ids: Types.ObjectId[]
 }
 
-export class PatchArticles extends DelArticles {
+export class ArticlesStatePayload extends ArticlesPayload {
   @IsDefined()
-  @IsIn([EPublishState.Draft, EPublishState.Published, EPublishState.Recycle])
+  @IsIn([PublishState.Draft, PublishState.Published, PublishState.Recycle])
   @IsInt({ message: '有效状态？' })
-  @prop({ enum: EPublishState, default: EPublishState.Published })
-  state: EPublishState
+  @prop({ enum: PublishState, default: PublishState.Published })
+  state: PublishState
 }
 
 export const ArticleProvider = getProviderByTypegooseClass(Article)

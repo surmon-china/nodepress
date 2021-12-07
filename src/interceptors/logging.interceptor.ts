@@ -1,6 +1,5 @@
 /**
- * Logging interceptor.
- * @file 日志拦截器
+ * @file Dev logging interceptor
  * @module interceptor/logging
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -9,6 +8,7 @@ import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common'
 import { isDevMode } from '@app/app.environment'
+import logger from '@app/utils/logger'
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -19,8 +19,8 @@ export class LoggingInterceptor implements NestInterceptor {
     }
     const request = context.switchToHttp().getRequest()
     const content = request.method + ' -> ' + request.url
-    console.log('+++ 收到请求：', content)
+    logger.debug('+++ 收到请求：', content)
     const now = Date.now()
-    return call$.pipe(tap(() => console.log('--- 响应请求：', content, `${Date.now() - now}ms`)))
+    return call$.pipe(tap(() => logger.debug('--- 响应请求：', content, `${Date.now() - now}ms`)))
   }
 }

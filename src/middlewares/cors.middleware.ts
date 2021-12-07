@@ -1,6 +1,5 @@
 /**
- * Cors middleware.
- * @file CORS 中间件
+ * @file CORS middleware
  * @module middleware/cors
  * @author Surmon <https://github.com/surmon-china>
  */

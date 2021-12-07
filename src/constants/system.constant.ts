@@ -1,6 +1,5 @@
 /**
- * System constant.
- * @file 系统常量
+ * @file System constant
  * @description 用于全局公用的系统常量
  * @module constant/system
  * @author Surmon <https://github.com/surmon-china>

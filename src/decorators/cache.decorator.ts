@@ -1,6 +1,5 @@
 /**
- * Cache decorator.
- * @file 缓存装饰器
+ * @file Cache decorator
  * @module decorator/cache
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -10,7 +9,7 @@ import { SetMetadata, CacheKey } from '@nestjs/common'
 import * as META from '@app/constants/meta.constant'
 
 // 缓存器配置
-interface ICacheOption {
+export interface HttpCacheOption {
   ttl?: number
   key?: string
 }
@@ -19,14 +18,14 @@ interface ICacheOption {
  * 统配构造器
  * @function HttpCache
  * @description 两种用法
- * @example @HttpCache(CACHE_KEY, 60 * 60)
- * @example @HttpCache({ key: CACHE_KEY, ttl: 60 * 60 })
+ * @example `@HttpCache(CACHE_KEY, 60 * 60)`
+ * @example `@HttpCache({ key: CACHE_KEY, ttl: 60 * 60 })`
  */
-export function HttpCache(option: ICacheOption): MethodDecorator
+export function HttpCache(option: HttpCacheOption): MethodDecorator
 export function HttpCache(key: string, ttl?: number): MethodDecorator
 export function HttpCache(...args) {
   const option = args[0]
-  const isOption = (value): value is ICacheOption => lodash.isObject(value)
+  const isOption = (value): value is HttpCacheOption => lodash.isObject(value)
   const key: string = isOption(option) ? option.key : option
   const ttl: number = isOption(option) ? option.ttl : args[1] || null
   return (_, __, descriptor: PropertyDescriptor) => {

@@ -1,6 +1,5 @@
 /**
- * App config.
- * @file 应用运行配置
+ * @file App config
  * @module app/config
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -8,11 +7,8 @@
 import path from 'path'
 import { argv } from 'yargs'
 
-const APP_ROOT_PATH = __dirname
-const PROJECT_ROOT_PATH = path.join(APP_ROOT_PATH, '..')
-const FE_PATH = path.join(PROJECT_ROOT_PATH, '..', 'surmon.me')
-const FE_PUBLIC_PATH = path.join(FE_PATH, 'public')
-const packageJSON = require(path.resolve(PROJECT_ROOT_PATH, 'package.json'))
+const ROOT_PATH = path.join(__dirname, '..')
+const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 
 export const APP = {
   LIMIT: 16,
@@ -20,10 +16,8 @@ export const APP = {
   MASTER: 'Surmon',
   NAME: 'Surmon.me',
   URL: 'https://surmon.me',
-  FRONT_END_PATH: FE_PATH,
-  FRONT_END_PUBLIC_PATH: FE_PUBLIC_PATH,
-  ROOT_PATH: APP_ROOT_PATH,
-  PROJECT_ROOT_PATH,
+  ROOT_PATH,
+  DEFAULT_CACHE_TTL: 60 * 60 * 24,
 }
 
 export const PROJECT = {
@@ -49,9 +43,8 @@ export const MONGO_DB = {
 export const REDIS = {
   host: argv.redis_host || 'localhost',
   port: argv.redis_port || 6379,
+  username: (argv.redis_username || null) as string,
   password: (argv.redis_password || null) as string,
-  ttl: null,
-  defaultCacheTTL: 60 * 60 * 24,
 }
 
 export const AUTH = {
@@ -78,7 +71,8 @@ export const COMMON_SERVICE = {
   juheIPAuth: argv.juhe_ip_auth,
 }
 
-export const BAIDU = {
+// https://ziyuan.baidu.com/linksubmit/index
+export const BAIDU_INDEXED = {
   site: argv.baidu_site || 'your baidu site domain. e.g. surmon.me',
   token: argv.baidu_token || 'your baidu seo push token',
 }
@@ -87,7 +81,7 @@ export const GOOGLE = {
   serverAccountFilePath: path.resolve(__dirname, '..', 'classified', 'google_service_account.json'),
 }
 
-export const CLOUD_STORAGE = {
+export const ALIYUN_CLOUD_STORAGE = {
   accessKey: (argv.cs_access_key as string) || 'cloudstorage access key for cloud storage',
   secretKey: (argv.cs_secret_key as string) || 'cloudstorage secret key for cloud storage',
   aliyunAcsARN: (argv.cs_aliyun_acs as string) || 'aliyun Acs ARN, e.g. acs:ram::xxx:role/xxx',

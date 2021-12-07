@@ -1,6 +1,5 @@
 /**
- * Expansion Statistic service.
- * @file 扩展模块 Statistic 服务
+ * @file Expansion statistic service
  * @module module/expansion/statistic.service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -14,6 +13,7 @@ import { Article } from '@app/modules/article/article.model'
 import { Comment } from '@app/modules/comment/comment.model'
 import { Tag } from '@app/modules/tag/tag.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
+import logger from '@app/utils/logger'
 
 export interface ITodayStatistic {
   tags: number
@@ -39,7 +39,9 @@ export class StatisticService {
   ) {
     // 每天 0 点数据清零
     schedule.scheduleJob('1 0 0 * * *', () => {
-      this.cacheService.set(CACHE_KEY.TODAY_VIEWS, 0)
+      this.cacheService.set(CACHE_KEY.TODAY_VIEWS, 0).catch((error) => {
+        logger.warn('[expansion]', 'statistic set TODAY_VIEWS Error:', error)
+      })
     })
   }
 

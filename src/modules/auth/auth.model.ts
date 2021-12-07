@@ -1,6 +1,5 @@
 /**
- * Auth model.
- * @file 权限和用户数据模型
+ * @file Auth & admin model
  * @module module/auth/model
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -32,7 +31,7 @@ export class Auth {
   new_password?: string
 }
 
-export class AuthLogin {
+export class AuthPasswordPayload {
   @IsDefined()
   @IsNotEmpty({ message: '密码？' })
   @IsString({ message: '字符串？' })

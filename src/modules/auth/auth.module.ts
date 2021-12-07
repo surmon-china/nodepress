@@ -1,6 +1,5 @@
 /**
- * Auth module.
- * @file 权限与管理员模块
+ * @file Auth module
  * @module module/auth/module
  * @author Surmon <https://github.com/surmon-china>
  */

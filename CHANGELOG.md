@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+### v3.6.0 (2021-12-06)
+
+**Feature**
+
+- Remove `syndication` module
+- Add `archve` module
+- Remove `cache-manager-redis-store`
+
+**Chore**
+
+- Upgrade deps
+  - Redis > v4
+  - nestjs > v8
+
 ### v3.5.2 (2021-07-27)
 
 **Chore**

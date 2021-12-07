@@ -1,6 +1,5 @@
 /**
- * Expansion cloud storage service.
- * @file 扩展模块 cloud storage 服务
+ * @file Expansion Aliyun cloud storage service
  * @module module/expansion/cs.service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -24,14 +23,19 @@ export class CloudStorageService {
 
   constructor() {
     this.sts = new STS({
-      accessKeyId: APP_CONFIG.CLOUD_STORAGE.accessKey,
-      accessKeySecret: APP_CONFIG.CLOUD_STORAGE.secretKey,
+      accessKeyId: APP_CONFIG.ALIYUN_CLOUD_STORAGE.accessKey,
+      accessKeySecret: APP_CONFIG.ALIYUN_CLOUD_STORAGE.secretKey,
     })
   }
 
   // 获取临时 Token
   public async getToken(): Promise<IUpToken> {
-    const response = await this.sts.assumeRole(APP_CONFIG.CLOUD_STORAGE.aliyunAcsARN, null, 15 * 60, 'session-name')
+    const response = await this.sts.assumeRole(
+      APP_CONFIG.ALIYUN_CLOUD_STORAGE.aliyunAcsARN,
+      null,
+      15 * 60,
+      'session-name'
+    )
     return response.credentials
   }
 

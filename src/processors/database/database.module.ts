@@ -1,6 +1,5 @@
 /**
- * Database module.
- * @file Database 全局模块
+ * @file Database module
  * @module processor/database/module
  * @author Surmon <https://github.com/surmon-china>
  */
