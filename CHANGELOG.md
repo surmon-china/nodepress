@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### v3.6.3 (2021-12-07)
+
+**Feature**
+
+- Fix archive article query options
+
 ### v3.6.2 (2021-12-07)
 
 **Feature**

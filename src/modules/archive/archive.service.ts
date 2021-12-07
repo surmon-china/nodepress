@@ -53,7 +53,9 @@ export class ArchiveService {
 
   private getAllArticles(): Promise<Article[]> {
     return this.articleModel
-      .find({ state: PublishState.Published, public: PublicState.Public })
+      .find({ state: PublishState.Published, public: PublicState.Public }, null, {
+        select: '-password -content',
+      })
       .sort({ _id: SortType.Desc })
       .exec()
   }
