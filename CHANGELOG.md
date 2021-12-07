@@ -7,8 +7,9 @@ All notable changes to this project will be documented in this file.
 **Feature**
 
 - Remove `syndication` module
-- Add `archve` module
 - Remove `cache-manager-redis-store`
+- Add `archve` module
+- Add global logger
 
 **Chore**
 
