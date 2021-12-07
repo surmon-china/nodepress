@@ -12,9 +12,9 @@
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/surmon-china/nodepress/Deploy?label=deploy&style=for-the-badge)](https://github.com/surmon-china/nodepress/actions?query=workflow:%22Deploy%22)
 [![GitHub license](https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/blob/main/LICENSE)
 
-**RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [`nestjs`](https://github.com/nestjs/nest), required [`mongoDB`](https://www.mongodb.com/) & [`Redis`](https://redis.io/).**
+**RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [`nestjs`](https://github.com/nestjs/nest), required [`MongoDB`](https://www.mongodb.com/) & [`Redis`](https://redis.io/).**
 
-**适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [`nestjs`](https://github.com/nestjs/nest)，需安装 [`mongoDB`](https://www.mongodb.com/) 和 [`Redis`](https://redis.io/) 方可完整运行。**
+**适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [`nestjs`](https://github.com/nestjs/nest)，需安装 [`MongoDB`](https://www.mongodb.com/) 和 [`Redis`](https://redis.io/) 方可完整运行。**
 
 > v3.x 使用 [`nestjs`](https://github.com/nestjs/nest) 进行重构，之前的 nodejs 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/nodejs)。
 
@@ -65,7 +65,7 @@
 
 - 各表重要字段
 
-  - `_id`：mongodb 生成的 id，一般用于后台执行 CRUD 操作
+  - `_id`：MongoDB 生成的 id，一般用于后台执行 CRUD 操作
   - `id`：插件生成的自增数字 id，类似 mysql 中的 id，具有唯一性，用于前台获取数据
   - `pid`：父级 id，用于建立数据表关系，与 id 字段映射
 
