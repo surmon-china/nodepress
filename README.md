@@ -34,7 +34,7 @@
 
 ### 接口概述
 
-- HTTP 状态码（详见 [errors](https://github.com/surmon-china/nodepress/tree/nest/src/errors) ）
+- HTTP 状态码（详见 [`errors`](https://github.com/surmon-china/nodepress/tree/nest/src/errors) ）
 
   - `400` 请求的业务被拒绝
   - `401` 鉴权失败
@@ -45,11 +45,11 @@
   - `200` 正常
   - `201` POST 正常
 
-- 数据特征码（详见 [http.interface.ts](https://github.com/surmon-china/nodepress/blob/main/src/interfaces/http.interface.ts) ）
+- 数据特征码（详见 [`http.interface.ts`](https://github.com/surmon-china/nodepress/blob/main/src/interfaces/http.interface.ts) ）
   - `status`：
     - `success`：正常
     - `error`：异常
-  - `message`：永远返回（由 [http.decorator](https://github.com/surmon-china/nodepress/blob/main/src/decorators/http.decorator.ts) 装饰）
+  - `message`：永远返回（由 [`http.decorator`](https://github.com/surmon-china/nodepress/blob/main/src/decorators/http.decorator.ts) 装饰）
   - `error`：一般会返回错误发生节点的 error；在 `status` 为 `error` 的时候必须返回，方便调试
   - `debug`：开发模式下为发生错误的堆栈，生产模式不返回
   - `result`：在 `status` 为 `success` 的时候必须返回
@@ -60,7 +60,7 @@
 
 - 通用
 
-  - `extend` 为通用扩展（[模型在此](https://github.com/surmon-china/nodepress/blob/main/src/models/extend.model.ts)）
+  - `extend` 为通用扩展（[`Extend Model`](https://github.com/surmon-china/nodepress/blob/main/src/models/extend.model.ts)）
   - 文章、分类、Tag 表都包含 extend 字段，用于在后台管理中自定义扩展，类似于 Wordpress 中的自定义字段功能，目前用来实现前台 icon 图标的 class 或者其他功能
 
 - 各表重要字段
@@ -105,44 +105,44 @@
 
 - 鉴权级别
 
-  - 任何高级操作（CUD）都会校验必须的 Token（代码见 [auth.guard.ts](https://github.com/surmon-china/nodepress/blob/main/src/guards/auth.guard.ts) ）
-  - 涉及表数据读取的 GET 请求会智能校验 Token，无 Token 或 Token 验证生效则通行，否则不通行（代码见 [humanized-auth.guard.ts](https://github.com/surmon-china/nodepress/blob/main/src/guards/humanized-auth.guard.ts) ）
+  - 任何高级操作（CUD）都会校验必须的 Token（代码见 [`auth.guard.ts`](https://github.com/surmon-china/nodepress/blob/main/src/guards/auth.guard.ts) ）
+  - 涉及表数据读取的 GET 请求会智能校验 Token，无 Token 或 Token 验证生效则通行，否则不通行（代码见 [`humanized-auth.guard.ts`](https://github.com/surmon-china/nodepress/blob/main/src/guards/humanized-auth.guard.ts) ）
 
-- 参数校验逻辑（代码见 [query-params.decorator.ts](https://github.com/surmon-china/nodepress/blob/main/src/decorators/query-params.decorator.ts#L198) ）
+- 参数校验逻辑（代码见 [`query-params.decorator.ts`](https://github.com/surmon-china/nodepress/blob/main/src/decorators/query-params.decorator.ts#L198) ）
 
   - 普通用户使用高级查询参数将被视为无权限，返回 403
   - 任何用户的请求参数不合法，将被校验器拦截，返回 400
 
-- 错误过滤器（代码见 [error.filter.ts](https://github.com/surmon-china/nodepress/blob/main/src/filters/error.filter.ts) ）
+- 错误过滤器（代码见 [`error.filter.ts`](https://github.com/surmon-china/nodepress/blob/main/src/filters/error.filter.ts) ）
 
-- 拦截器 [interceptors](https://github.com/surmon-china/nodepress/tree/nest/src/interceptors)
+- 拦截器 [`interceptors`](https://github.com/surmon-china/nodepress/tree/nest/src/interceptors)
 
   - [缓存拦截器](https://github.com/surmon-china/nodepress/blob/main/src/interceptors/cache.interceptor.ts)：自定义这个拦截器是是要弥补框架不支持 ttl 参数的缺陷
   - [数据流转换拦截器](https://github.com/surmon-china/nodepress/blob/main/src/interceptors/transform.interceptor.ts)：当控制器所需的 Promise service 成功响应时，将在此被转换为标准的数据结构
   - [数据流异常拦截器](https://github.com/surmon-china/nodepress/blob/main/src/interceptors/error.interceptor.ts)：当控制器所需的 Promise service 发生错误时，错误将在此被捕获
   - [日志拦截器](https://github.com/surmon-china/nodepress/blob/main/src/interceptors/logging.interceptor.ts)：代替默认的全局日志
 
-- 装饰器扩展 [decorators](https://github.com/surmon-china/nodepress/tree/nest/src/decorators)
+- 装饰器扩展 [`decorators`](https://github.com/surmon-china/nodepress/tree/nest/src/decorators)
 
   - [缓存装饰器](https://github.com/surmon-china/nodepress/blob/main/src/decorators/cache.decorator.ts)：用于配置 `cache key / cache ttl`
   - [控制器响应装饰器](https://github.com/surmon-china/nodepress/blob/main/src/decorators/http.decorator.ts)：用于输出规范化的信息，如 `message` 和 翻页参数数据
   - [请求参数提取器](https://github.com/surmon-china/nodepress/blob/main/src/decorators/query-params.decorator.ts)：用户自动校验和格式化请求参数，包括 `query/params/辅助信息`
 
-- 守卫 [guards](https://github.com/surmon-china/nodepress/tree/nest/src/guards)
+- 守卫 [`guards`](https://github.com/surmon-china/nodepress/tree/nest/src/guards)
 
-  - 默认所有非 GET 请求会使用 [Auth](https://github.com/surmon-china/nodepress/blob/main/src/guards/auth.guard.ts) 守卫鉴权
-  - 所有涉及到多角色请求的 GET 接口会使用 [HumanizedJwtAuthGuard](https://github.com/surmon-china/nodepress/blob/main/src/guards/humanized-auth.guard.ts) 进行鉴权
+  - 默认所有非 GET 请求会使用 [`Auth`](https://github.com/surmon-china/nodepress/blob/main/src/guards/auth.guard.ts) 守卫鉴权
+  - 所有涉及到多角色请求的 GET 接口会使用 [`HumanizedJwtAuthGuard`](https://github.com/surmon-china/nodepress/blob/main/src/guards/humanized-auth.guard.ts) 进行鉴权
 
-- 中间件 [middlewares](https://github.com/surmon-china/nodepress/tree/nest/src/middlewares)
+- 中间件 [`middlewares`](https://github.com/surmon-china/nodepress/tree/nest/src/middlewares)
 
-  - [Cors 中间件](https://github.com/surmon-china/nodepress/blob/main/src/middlewares/cors.middleware.ts)，用于处理跨域访问
+  - [CORS 中间件](https://github.com/surmon-china/nodepress/blob/main/src/middlewares/cors.middleware.ts)，用于处理跨域访问
   - [Origin 中间件](https://github.com/surmon-china/nodepress/blob/main/src/middlewares/origin.middleware.ts)，用于拦截各路不明请求
 
-- 管道 [pipes](https://github.com/surmon-china/nodepress/tree/nest/src/pipes)
+- 管道 [`pipes`](https://github.com/surmon-china/nodepress/tree/nest/src/pipes)
 
   - validation.pipe 用于验证所有基于 class-validate 的验证类
 
-- 业务模块 [modules](https://github.com/surmon-china/nodepress/tree/nest/src/modules)
+- 业务模块 [`modules`](https://github.com/surmon-china/nodepress/tree/nest/src/modules)
 
   - 公告
   - 文章
@@ -158,19 +158,19 @@
     - 备份：数据库备份业务（定时、手动）
     - 其他：其他第三方 token 等服务
 
-- 核心辅助模块 [processors](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
+- 核心辅助模块 [`processors`](https://github.com/surmon-china/nodepress/tree/nest/src/processors)
   - [数据库](https://github.com/surmon-china/nodepress/blob/main/src/processors/database)
     - 连接数据库和异常自动重试
   - [缓存 / Redis](https://github.com/surmon-china/nodepress/blob/main/src/processors/cache)
     - 基本的缓存数据 Set、Get
-    - 扩展的 [Promise 工作模式](https://github.com/surmon-china/nodepress/blob/main/src/processors/cache/cache.service.ts#L99)（双向同步/被动更新）
-    - 扩展的 [Interval 工作模式](https://github.com/surmon-china/nodepress/blob/main/src/processors/cache/cache.service.ts#L138)（超时更新/定时更新）
-  - [辅助 / Helper](https://github.com/surmon-china/nodepress/blob/main/src/processors/helper)
+    - 扩展的 [`Promise` 工作模式](https://github.com/surmon-china/nodepress/blob/main/src/processors/cache/cache.service.ts#L114)（双向同步/被动更新）
+    - 扩展的 [`Interval` 工作模式](https://github.com/surmon-china/nodepress/blob/main/src/processors/cache/cache.service.ts#L147)（超时更新/定时更新）
+  - [辅助 / `Helper`](https://github.com/surmon-china/nodepress/blob/main/src/processors/helper)
     - [搜索引擎实时更新服务](https://github.com/surmon-china/nodepress/blob/main/src/processors/helper/helper.service.seo.ts)：根据入参主动提交搜索引擎收录，支持百度、Google 服务；分别会在动态数据 进行 CUD 的时候调用对应方法
     - [评论过滤服务](https://github.com/surmon-china/nodepress/blob/main/src/processors/helper/helper.service.akismet.ts)：使用 akismet 过滤 spam；暴露三个方法：校验 spam、提交 spam、提交 ham
     - [邮件服务](https://github.com/surmon-china/nodepress/blob/main/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
     - [IP 地理查询服务](https://github.com/surmon-china/nodepress/blob/main/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；控制器内优先使用阿里云 IP 查询服务，当服务无效，~~使用本地 GEO 库查询~~，使用 ip.cn 等备用方案
-    - [第三方云存储服务](https://github.com/surmon-china/nodepress/blob/main/src/processors/helper/helper.service.oss.ts)：生成云存储上传 Token（目前服务为 Aliyun OSS），后期可以添加 SDK 的更多支持，比如管理文件
+    - [第三方云存储服务](https://github.com/surmon-china/nodepress/blob/main/src/processors/helper/helper.service.cs.ts)：生成云存储上传 Token（目前服务为 Aliyun OSS），后期可以添加 SDK 的更多支持，比如管理文件
     - Google 证书（鉴权）服务：用于生成各 Google 应用的服务端证书
 
 ## Special issues
