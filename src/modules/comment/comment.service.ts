@@ -180,10 +180,10 @@ export class CommentService {
   private async validateCommentByBlacklist(comment: Comment) {
     const { blacklist } = await this.optionService.getDBOption()
     const { keywords, mails, ips } = blacklist
-    const blockIp = ips.includes(comment.ip)
+    const blockIP = ips.includes(comment.ip)
     const blockEmail = mails.includes(comment.author.email)
     const blockKeyword = keywords.length && new RegExp(`${keywords.join('|')}`, 'ig').test(comment.content)
-    const isBlocked = blockIp || blockEmail || blockKeyword
+    const isBlocked = blockIP || blockEmail || blockKeyword
     if (isBlocked) {
       throw '内容 || IP || 邮箱 -> 不合法'
     }
