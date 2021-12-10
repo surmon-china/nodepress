@@ -61,7 +61,17 @@ export class TagService {
     return this.tagListCache.update()
   }
 
-  // 请求标签列表（及聚和数据）
+  // 请求聚合数据
+  public async getCounts(matchQuerys = {}) {
+    const counts = await this.articleModel.aggregate<{ _id: Types.ObjectId; num_tutorial: number }>([
+      { $match: matchQuerys },
+      { $unwind: '$tag' },
+      { $group: { _id: '$tag', num_tutorial: { $sum: 1 } } },
+    ])
+    return counts
+  }
+
+  // 请求标签列表
   public async getList(querys, options: PaginateOptions, isAuthenticated): Promise<PaginateResult<Tag>> {
     const matchState = {
       state: PublishState.Published,
@@ -69,12 +79,7 @@ export class TagService {
     }
 
     const tags = await this.tagModel.paginate(querys, options)
-    const counts = await this.articleModel.aggregate([
-      { $match: isAuthenticated ? {} : matchState },
-      { $unwind: '$tag' },
-      { $group: { _id: '$tag', num_tutorial: { $sum: 1 } } },
-    ])
-
+    const counts = await this.getCounts(isAuthenticated ? {} : matchState)
     const tagsObject = JSON.parse(JSON.stringify(tags))
     const newDocs = tagsObject.docs.map((tag) => {
       const found = counts.find((count) => String(count._id) === String(tag._id))
