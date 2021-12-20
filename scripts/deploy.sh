@@ -1,39 +1,32 @@
 #!/bin/bash
 
 WEB_PATH=$(dirname $0)
-# WEB_USER='root'
-# WEB_USERGROUP='root'
 
-echo "[deploy] Start deployment..."
-echo "[deploy] Fetch and rebuilding..."
 cd $WEB_PATH
 cd ..
 
+echo "[deploy] start deployment..."
+
+echo "[deploy] fetching..."
 echo "[deploy] path:" $(pwd)
 echo "[deploy] pulling source code..."
-
 git fetch --all && git reset --hard origin/main && git pull
 git checkout main
-# echo "changing permissions..."
-# chown -R $WEB_USER:$WEB_USERGROUP $WEB_PATH
-# chmod -R 777 $WEB_PATH
-# sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
 
-echo "[deploy] Install dependencies..."
+echo "[deploy] yarn install..."
 yarn install --frozen-lockfile
 
-echo "[deploy] Stop service..."
+echo "[deploy] stop service..."
 pm2 stop nodepress
 
-echo "[deploy] Remove old dist..."
-yarn prebuild
+echo "[deploy] fetching release code..."
+rm -rf dist
+mkdir dist
+cd dist
+git clone -b release git@github.com:surmon-china/nodepress.git .
+rm -rf .git
 
-echo "[deploy] Building..."
-# Fix for JavaScript heap out of memory
-export NODE_OPTIONS=--max_old_space_size=4096
-yarn build
-
-echo "[deploy] Restarting..."
+echo "[deploy] restarting..."
 pm2 restart nodepress
 
-echo "[deploy] Finished."
+echo "[deploy] finished."
