@@ -18,7 +18,7 @@ pm2 stop nodepress
 pm2 delete nodepress
 
 echo "[deploy] yarn install..."
-yarn install --frozen-lockfile
+yarn install --frozen-lockfile --production
 
 echo "[deploy] fetching release code..."
 rm -rf dist

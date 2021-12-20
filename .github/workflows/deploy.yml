@@ -19,7 +19,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --production
+        run: yarn install --frozen-lockfile
 
       - name: Lint
         run: yarn lint
