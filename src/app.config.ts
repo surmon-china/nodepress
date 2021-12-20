@@ -77,7 +77,7 @@ export const BAIDU_INDEXED = {
 }
 
 export const GOOGLE = {
-  serverAccountFilePath: path.resolve(__dirname, '..', 'classified', 'google_service_account.json'),
+  serverAccountFilePath: path.resolve(ROOT_PATH, 'classified', 'google_service_account.json'),
 }
 
 export const ALIYUN_CLOUD_STORAGE = {
