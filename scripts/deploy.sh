@@ -15,7 +15,6 @@ git checkout main
 
 echo "[deploy] stop service..."
 pm2 stop nodepress
-pm2 delete nodepress
 
 echo "[deploy] yarn install..."
 yarn install --frozen-lockfile --production
@@ -29,6 +28,6 @@ rm -rf .git
 cd ..
 
 echo "[deploy] restarting..."
-pm2 start ecosystem.config.js
+pm2 restart nodepress
 
 echo "[deploy] finished."
