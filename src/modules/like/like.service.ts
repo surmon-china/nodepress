@@ -22,6 +22,7 @@ export class LikeService {
     const option = await this.optionService.getDBOption()
     option.meta.likes++
     await option.save()
+    await this.optionService.updateCache()
     return true
   }
 
