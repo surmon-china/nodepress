@@ -31,6 +31,10 @@ export class OptionService {
     })
   }
 
+  public updateCache() {
+    return this.optionCache.update()
+  }
+
   public getDBOption() {
     return this.optionModel.findOne().exec()
   }
@@ -56,7 +60,7 @@ export class OptionService {
   public async putOption(option: Option): Promise<Option> {
     const newOption = await this.putDBOption(option)
     // 配置表发生更改后一定更新缓存
-    this.optionCache.update()
+    this.updateCache()
     return newOption
   }
 }
