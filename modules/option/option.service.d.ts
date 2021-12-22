@@ -7,6 +7,7 @@ export declare class OptionService {
     private readonly cacheService;
     private optionCache;
     constructor(optionModel: MongooseModel<Option>, cacheService: CacheService);
+    updateCache(): CacheResult<Option>;
     getDBOption(): Promise<import("mongoose").Document<any, import("@typegoose/typegoose/lib/types").BeAnObject, any> & Option & import("@typegoose/typegoose/lib/types").IObjectWithTypegooseFunction & {
         _id: any;
     }>;

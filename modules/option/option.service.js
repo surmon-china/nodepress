@@ -55,6 +55,9 @@ let OptionService = class OptionService {
             logger_1.default.warn('[option]', 'init getDBOption Error:', error);
         });
     }
+    updateCache() {
+        return this.optionCache.update();
+    }
     getDBOption() {
         return this.optionModel.findOne().exec();
     }
@@ -75,7 +78,7 @@ let OptionService = class OptionService {
     }
     async putOption(option) {
         const newOption = await this.putDBOption(option);
-        this.optionCache.update();
+        this.updateCache();
         return newOption;
     }
 };
