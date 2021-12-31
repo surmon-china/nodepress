@@ -37,7 +37,6 @@ const comment_service_1 = require("../comment/comment.service");
 const biz_interface_1 = require("../../interfaces/biz.interface");
 const app_config_1 = require("../../app.config");
 const disqus_1 = require("../../utils/disqus");
-const app_environment_1 = require("../../app.environment");
 const extend_transformer_1 = require("../../transformers/extend.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const disqus_service_private_1 = require("./disqus.service.private");
@@ -117,7 +116,6 @@ let DisqusPublicService = class DisqusPublicService {
             body.author_email = comment.author.email;
             body.author_name = comment.author.name;
             body.author_url = comment.author.site;
-            body.ip_address = app_environment_1.isProdEnv ? comment.ip : null;
         }
         return (this.disqus
             .request('posts/create', body, !accessToken)
