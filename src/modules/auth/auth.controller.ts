@@ -35,8 +35,8 @@ export class AuthController {
     this.emailService.sendMail({
       subject,
       to: EMAIL.admin,
-      text: `${subject}，${content}`,
-      html: `${subject}，${content}`,
+      text: `${subject}, ${content}`,
+      html: `${subject}, ${content}`,
     })
     return token
   }
