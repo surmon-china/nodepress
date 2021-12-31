@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - [Like] rename `Like` module to `Vote`
 - [Disqus] add Disqus comment module
+- [Auth] rename `gravatar` to `avatar`
 - [Article] add `disabled_comment` field
 - [Article] remove `t_content` field
 - [Option] remove `icp` field
