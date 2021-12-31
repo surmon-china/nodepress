@@ -9,42 +9,54 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthProvider = exports.AuthPasswordPayload = exports.Auth = void 0;
+exports.AuthProvider = exports.AuthPasswordPayload = exports.Auth = exports.DEFAULT_AUTH = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
 const model_transformer_1 = require("../../transformers/model.transformer");
-class Auth {
-}
+exports.DEFAULT_AUTH = Object.freeze({
+    name: '',
+    slogan: '',
+    avatar: '',
+});
+let Auth = class Auth {
+};
 __decorate([
     (0, class_validator_1.IsDefined)(),
-    (0, class_validator_1.IsString)({ message: '名字？' }),
-    (0, typegoose_1.prop)({ default: '' }),
+    (0, class_validator_1.IsString)({ message: "what's your name?" }),
+    (0, typegoose_1.prop)({ required: true }),
     __metadata("design:type", String)
 ], Auth.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsDefined)(),
-    (0, class_validator_1.IsString)({ message: '你的口号呢？' }),
-    (0, typegoose_1.prop)({ default: '' }),
+    (0, class_validator_1.IsString)({ message: 'slogan?' }),
+    (0, typegoose_1.prop)({ required: true }),
     __metadata("design:type", String)
 ], Auth.prototype, "slogan", void 0);
 __decorate([
-    (0, class_validator_1.IsDefined)(),
-    (0, class_validator_1.IsString)({ message: '头像？' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
     (0, typegoose_1.prop)({ default: '' }),
     __metadata("design:type", String)
-], Auth.prototype, "gravatar", void 0);
+], Auth.prototype, "avatar", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, typegoose_1.prop)({ select: false }),
     __metadata("design:type", String)
 ], Auth.prototype, "password", void 0);
+Auth = __decorate([
+    (0, typegoose_1.modelOptions)({
+        schemaOptions: {
+            versionKey: false,
+        },
+    })
+], Auth);
 exports.Auth = Auth;
 class AuthPasswordPayload {
 }
 __decorate([
     (0, class_validator_1.IsDefined)(),
-    (0, class_validator_1.IsNotEmpty)({ message: '密码？' }),
-    (0, class_validator_1.IsString)({ message: '字符串？' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'password?' }),
+    (0, class_validator_1.IsString)({ message: 'password must be string type' }),
     __metadata("design:type", String)
 ], AuthPasswordPayload.prototype, "password", void 0);
 exports.AuthPasswordPayload = AuthPasswordPayload;

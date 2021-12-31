@@ -24,15 +24,15 @@ __decorate([
     __metadata("design:type", Number)
 ], Announcement.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)({ message: '内容？' }),
-    (0, class_validator_1.IsString)({ message: '字符串？' }),
+    (0, class_validator_1.IsNotEmpty)({ message: 'content?' }),
+    (0, class_validator_1.IsString)({ message: 'string?' }),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Announcement.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsDefined)(),
     (0, class_validator_1.IsIn)([biz_interface_1.PublishState.Draft, biz_interface_1.PublishState.Published]),
-    (0, class_validator_1.IsInt)({ message: '数字？' }),
+    (0, class_validator_1.IsInt)({ message: 'PublishState?' }),
     (0, typegoose_1.prop)({ enum: biz_interface_1.PublishState, default: biz_interface_1.PublishState.Published, index: true }),
     __metadata("design:type", Number)
 ], Announcement.prototype, "state", void 0);

@@ -50,8 +50,10 @@ exports.databaseProvider = {
         });
         mongoose_1.default.connection.on('open', () => {
             logger_1.default.info('[MongoDB]', 'readied!');
-            clearTimeout(reconnectionTask);
-            reconnectionTask = null;
+            if (reconnectionTask) {
+                clearTimeout(reconnectionTask);
+                reconnectionTask = null;
+            }
         });
         mongoose_1.default.connection.on('disconnected', () => {
             logger_1.default.error('[MongoDB]', `disconnected! 尝试 ${RECONNECT_INTERVAL / 1000}s 后重连`);

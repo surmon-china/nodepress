@@ -33,7 +33,7 @@ const app_config_1 = require("../app.config");
 const TEXT = __importStar(require("../constants/text.constant"));
 let OriginMiddleware = class OriginMiddleware {
     use(request, response, next) {
-        if (app_environment_1.isProdMode) {
+        if (app_environment_1.isProdEnv) {
             const { origin, referer } = request.headers;
             const checkHeader = (field) => !field || field.includes(app_config_1.CROSS_DOMAIN.allowedReferer);
             const isVerifiedOrigin = checkHeader(origin);

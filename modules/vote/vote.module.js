@@ -6,22 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LikeModule = void 0;
+exports.VoteModule = void 0;
 const common_1 = require("@nestjs/common");
 const option_module_1 = require("../option/option.module");
 const article_module_1 = require("../article/article.module");
 const comment_module_1 = require("../comment/comment.module");
-const like_controller_1 = require("./like.controller");
-const like_service_1 = require("./like.service");
-let LikeModule = class LikeModule {
+const disqus_module_1 = require("../disqus/disqus.module");
+const vote_controller_1 = require("./vote.controller");
+let VoteModule = class VoteModule {
 };
-LikeModule = __decorate([
+VoteModule = __decorate([
     (0, common_1.Module)({
-        imports: [option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule],
-        controllers: [like_controller_1.LikeController],
-        providers: [like_service_1.LikeService],
-        exports: [like_service_1.LikeService],
+        imports: [option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule, disqus_module_1.DisqusModule],
+        controllers: [vote_controller_1.VoteController],
     })
-], LikeModule);
-exports.LikeModule = LikeModule;
-//# sourceMappingURL=like.module.js.map
+], VoteModule);
+exports.VoteModule = VoteModule;
+//# sourceMappingURL=vote.module.js.map

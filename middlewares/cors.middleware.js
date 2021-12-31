@@ -56,9 +56,10 @@ let CorsMiddleware = class CorsMiddleware {
             'Content-Type',
             'X-E4M-With',
         ];
-        if (!origin || allowedOrigins.includes(origin) || app_environment_1.isDevMode) {
+        if (!origin || allowedOrigins.includes(origin) || app_environment_1.isDevEnv) {
             response.setHeader('Access-Control-Allow-Origin', origin || '*');
         }
+        response.header('Access-Control-Allow-Credentials', 'true');
         response.header('Access-Control-Allow-Headers', allowedHeaders.join(','));
         response.header('Access-Control-Allow-Methods', allowedMethods.map(getMethod).join(','));
         response.header('Access-Control-Max-Age', '1728000');

@@ -11,10 +11,10 @@ export declare class CategoryService {
     private readonly articleModel;
     private readonly categoryModel;
     constructor(archiveService: ArchiveService, seoService: SeoService, articleModel: MongooseModel<Article>, categoryModel: MongooseModel<Category>);
-    getList(querys: any, options: PaginateOptions, isAuthenticated: any): Promise<PaginateResult<Category>>;
+    paginater(querys: any, options: PaginateOptions, publicOnly: boolean): Promise<PaginateResult<Category>>;
+    getDetailBySlug(slug: string): Promise<Category>;
     create(newCategory: Category): Promise<Category>;
     getGenealogyById(categoryID: Types.ObjectId): Promise<Category[]>;
-    getDetailBySlug(slug: string): Promise<Category>;
     update(categoryID: Types.ObjectId, newCategory: Category): Promise<Category>;
     delete(categoryID: Types.ObjectId): Promise<import("mongoose").Document<any, import("@typegoose/typegoose/lib/types").BeAnObject, any> & Category & import("@typegoose/typegoose/lib/types").IObjectWithTypegooseFunction & {
         _id: any;

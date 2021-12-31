@@ -22,7 +22,6 @@ const auth_guard_1 = require("../../guards/auth.guard");
 const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
 const http_decorator_1 = require("../../decorators/http.decorator");
 const query_params_decorator_1 = require("../../decorators/query-params.decorator");
-const paginate_1 = require("../../utils/paginate");
 const tag_model_1 = require("./tag.model");
 const tag_service_1 = require("./tag.service");
 let TagController = class TagController {
@@ -36,8 +35,8 @@ let TagController = class TagController {
             querys.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }];
         }
         return !isAuthenticated && querys.cache
-            ? this.tagService.getListCache()
-            : this.tagService.getList(querys, options, isAuthenticated);
+            ? this.tagService.getPaginateCache()
+            : this.tagService.paginater(querys, options, !isAuthenticated);
     }
     createTag(tag) {
         return this.tagService.create(tag);
@@ -56,7 +55,7 @@ __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
     http_decorator_1.HttpProcessor.paginate(),
-    http_decorator_1.HttpProcessor.handle('获取标签'),
+    http_decorator_1.HttpProcessor.handle('Get tags'),
     __param(0, (0, query_params_decorator_1.QueryParams)(['cache'])),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -65,7 +64,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('添加标签'),
+    http_decorator_1.HttpProcessor.handle('Create tag'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [tag_model_1.Tag]),
@@ -74,7 +73,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('批量删除标签'),
+    http_decorator_1.HttpProcessor.handle('Delete tags'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [tag_model_1.TagsPayload]),
@@ -83,7 +82,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('修改标签'),
+    http_decorator_1.HttpProcessor.handle('Update Tag'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -93,7 +92,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('删除单个标签'),
+    http_decorator_1.HttpProcessor.handle('Delete tag'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

@@ -1,10 +1,12 @@
 import { Types } from 'mongoose';
 import { CommentState } from '@app/interfaces/biz.interface';
+import { IPLocation } from '@app/processors/helper/helper.service.ip';
 import { Extend } from '@app/models/extend.model';
 export declare class Author {
     name: string;
-    email: string;
-    site: string;
+    email?: string;
+    site?: string;
+    get email_hash(): string | null;
 }
 export declare class CreateCommentBase {
     post_id: number;
@@ -16,13 +18,15 @@ export declare class CreateCommentBase {
 export declare class Comment extends CreateCommentBase {
     id?: number;
     state: CommentState;
-    is_top: boolean;
     likes: number;
+    dislikes: number;
     ip?: string;
-    ip_location?: Record<string, any>;
+    ip_location: null | (Partial<IPLocation> & {
+        [key: string]: any;
+    });
     create_at?: Date;
     update_at?: Date;
-    extends?: Extend[];
+    extends: Extend[];
 }
 export declare class CommentsPayload {
     comment_ids: Types.ObjectId[];

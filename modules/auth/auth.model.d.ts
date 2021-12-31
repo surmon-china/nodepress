@@ -1,7 +1,8 @@
+export declare const DEFAULT_AUTH: Readonly<Auth>;
 export declare class Auth {
     name: string;
     slogan: string;
-    gravatar: string;
+    avatar: string;
     password?: string;
     new_password?: string;
 }

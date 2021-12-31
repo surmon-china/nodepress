@@ -18,7 +18,6 @@ const auth_guard_1 = require("../../guards/auth.guard");
 const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
 const http_decorator_1 = require("../../decorators/http.decorator");
 const query_params_decorator_1 = require("../../decorators/query-params.decorator");
-const paginate_1 = require("../../utils/paginate");
 const category_model_1 = require("./category.model");
 const category_service_1 = require("./category.service");
 let CategoryController = class CategoryController {
@@ -26,7 +25,7 @@ let CategoryController = class CategoryController {
         this.categoryService = categoryService;
     }
     getCategories({ querys, options, isAuthenticated }) {
-        return this.categoryService.getList(querys, options, isAuthenticated);
+        return this.categoryService.paginater(querys, options, !isAuthenticated);
     }
     createCategory(category) {
         return this.categoryService.create(category);
@@ -48,7 +47,7 @@ __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
     http_decorator_1.HttpProcessor.paginate(),
-    http_decorator_1.HttpProcessor.handle('获取分类列表'),
+    http_decorator_1.HttpProcessor.handle('Get categories'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -57,7 +56,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('添加分类'),
+    http_decorator_1.HttpProcessor.handle('Create category'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [category_model_1.Category]),
@@ -66,7 +65,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('批量删除分类'),
+    http_decorator_1.HttpProcessor.handle('Delete categories'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [category_model_1.CategoriesPayload]),
@@ -74,7 +73,7 @@ __decorate([
 ], CategoryController.prototype, "delCategories", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    http_decorator_1.HttpProcessor.handle('获取分类族谱'),
+    http_decorator_1.HttpProcessor.handle('Get categories tree'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -83,7 +82,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('修改单个分类'),
+    http_decorator_1.HttpProcessor.handle('Update category'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -93,7 +92,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('删除单个分类'),
+    http_decorator_1.HttpProcessor.handle('Delete category'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

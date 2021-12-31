@@ -24,8 +24,9 @@ const tag_module_1 = require("./modules/tag/tag.module");
 const category_module_1 = require("./modules/category/category.module");
 const article_module_1 = require("./modules/article/article.module");
 const comment_module_1 = require("./modules/comment/comment.module");
-const like_module_1 = require("./modules/like/like.module");
+const disqus_module_1 = require("./modules/disqus/disqus.module");
 const archive_module_1 = require("./modules/archive/archive.module");
+const vote_module_1 = require("./modules/vote/vote.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(cors_middleware_1.CorsMiddleware, origin_middleware_1.OriginMiddleware).forRoutes('*');
@@ -45,8 +46,9 @@ AppModule = __decorate([
             category_module_1.CategoryModule,
             article_module_1.ArticleModule,
             comment_module_1.CommentModule,
-            like_module_1.LikeModule,
+            disqus_module_1.DisqusModule,
             archive_module_1.ArchiveModule,
+            vote_module_1.VoteModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

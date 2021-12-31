@@ -31,21 +31,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AkismetService = exports.EAkismetActionType = void 0;
+exports.AkismetService = exports.AkismetActionType = void 0;
 const akismet_api_1 = __importDefault(require("akismet-api"));
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
-var EAkismetActionType;
-(function (EAkismetActionType) {
-    EAkismetActionType["CheckSpam"] = "checkSpam";
-    EAkismetActionType["SubmitSpam"] = "submitSpam";
-    EAkismetActionType["SubmitHam"] = "submitHam";
-})(EAkismetActionType = exports.EAkismetActionType || (exports.EAkismetActionType = {}));
+var AkismetActionType;
+(function (AkismetActionType) {
+    AkismetActionType["CheckSpam"] = "checkSpam";
+    AkismetActionType["SubmitSpam"] = "submitSpam";
+    AkismetActionType["SubmitHam"] = "submitHam";
+})(AkismetActionType = exports.AkismetActionType || (exports.AkismetActionType = {}));
 let AkismetService = class AkismetService {
     constructor() {
-        this.clientIsValid = null;
+        this.clientIsValid = false;
         this.initClient();
         this.initVerify();
     }
@@ -68,7 +68,7 @@ let AkismetService = class AkismetService {
             logger_1.default.error('[Akismet]', '验证失败！无法工作', (0, error_transformer_1.getMessageFromNormalError)(error));
         });
     }
-    buildInterceptor(handleType) {
+    makeInterceptor(handleType) {
         return (content) => {
             return new Promise((resolve, reject) => {
                 if (this.clientIsValid === false) {
@@ -79,9 +79,9 @@ let AkismetService = class AkismetService {
                 logger_1.default.info(`[Akismet]`, `${handleType} 操作中...`, new Date());
                 this.client[handleType](content)
                     .then((result) => {
-                    if (handleType === EAkismetActionType.CheckSpam && result) {
+                    if (handleType === AkismetActionType.CheckSpam && result) {
                         logger_1.default.warn(`[Akismet]`, `${handleType} 检测到 SPAM！`, new Date(), content);
-                        reject(new Error('SPAM!'));
+                        reject('SPAM!');
                     }
                     else {
                         logger_1.default.info(`[Akismet]`, `${handleType} 操作成功！`);
@@ -96,14 +96,14 @@ let AkismetService = class AkismetService {
             });
         };
     }
-    checkSpam(content) {
-        return this.buildInterceptor(EAkismetActionType.CheckSpam)(content);
+    checkSpam(payload) {
+        return this.makeInterceptor(AkismetActionType.CheckSpam)(payload);
     }
-    submitSpam(content) {
-        return this.buildInterceptor(EAkismetActionType.SubmitSpam)(content);
+    submitSpam(payload) {
+        return this.makeInterceptor(AkismetActionType.SubmitSpam)(payload);
     }
-    submitHam(content) {
-        return this.buildInterceptor(EAkismetActionType.SubmitHam)(content);
+    submitHam(payload) {
+        return this.makeInterceptor(AkismetActionType.SubmitHam)(payload);
     }
 };
 AkismetService = __decorate([

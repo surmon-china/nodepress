@@ -9,5 +9,5 @@ export declare class EmailService {
     private clientIsValid;
     constructor();
     private verifyClient;
-    sendMail(mailOptions: IEmailOptions): boolean;
+    sendMail(mailOptions: IEmailOptions): false | undefined;
 }

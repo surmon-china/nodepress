@@ -38,7 +38,6 @@ exports.StatisticService = void 0;
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const mongoose_interface_1 = require("../../interfaces/mongoose.interface");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const article_model_1 = require("../article/article.model");
 const comment_model_1 = require("../comment/comment.model");
@@ -66,22 +65,18 @@ let StatisticService = class StatisticService {
     async getViewsCount() {
         const views = await this.cacheService.get(CACHE_KEY.TODAY_VIEWS);
         this.resultData.views = views || 0;
-        return views;
     }
     async getTagsCount() {
         const count = await this.tagModel.countDocuments().exec();
         this.resultData.tags = count;
-        return count;
     }
     async getArticlesCount() {
         const count = await this.articleModel.countDocuments().exec();
         this.resultData.articles = count;
-        return count;
     }
     async getCommentsCount() {
         const count = await this.commentModel.countDocuments().exec();
         this.resultData.comments = count;
-        return count;
     }
     getStatistic() {
         return Promise.all([this.getTagsCount(), this.getViewsCount(), this.getArticlesCount(), this.getCommentsCount()])

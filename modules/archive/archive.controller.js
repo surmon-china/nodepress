@@ -27,7 +27,7 @@ let ArchiveController = class ArchiveController {
 };
 __decorate([
     (0, common_1.Get)(),
-    http_decorator_1.HttpProcessor.handle('获取数据档案'),
+    http_decorator_1.HttpProcessor.handle('Get archive'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -35,7 +35,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('更新数据档案'),
+    http_decorator_1.HttpProcessor.handle('Update archive cache'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

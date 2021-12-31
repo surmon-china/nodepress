@@ -33,7 +33,6 @@ const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
 const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
-const http_interface_1 = require("../interfaces/http.interface");
 const custom_error_1 = require("../errors/custom.error");
 const META = __importStar(require("../constants/meta.constant"));
 const TEXT = __importStar(require("../constants/text.constant"));
@@ -45,8 +44,10 @@ let ErrorInterceptor = class ErrorInterceptor {
         const call$ = next.handle();
         const target = context.getHandler();
         const statusCode = this.reflector.get(META.HTTP_ERROR_CODE, target);
-        const message = this.reflector.get(META.HTTP_ERROR_MESSAGE, target) || TEXT.HTTP_DEFAULT_ERROR_TEXT;
-        return call$.pipe((0, operators_1.catchError)((error) => (0, rxjs_1.throwError)(() => new custom_error_1.CustomError({ message, error }, statusCode))));
+        const message = this.reflector.get(META.HTTP_ERROR_MESSAGE, target);
+        return call$.pipe((0, operators_1.catchError)((error) => {
+            return (0, rxjs_1.throwError)(() => new custom_error_1.CustomError({ message: message || TEXT.HTTP_DEFAULT_ERROR_TEXT, error }, statusCode));
+        }));
     }
 };
 ErrorInterceptor = __decorate([

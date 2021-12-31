@@ -22,7 +22,6 @@ const auth_guard_1 = require("../../guards/auth.guard");
 const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
 const query_params_decorator_1 = require("../../decorators/query-params.decorator");
 const http_decorator_1 = require("../../decorators/http.decorator");
-const paginate_1 = require("../../utils/paginate");
 const announcement_model_1 = require("./announcement.model");
 const announcement_service_1 = require("./announcement.service");
 let AnnouncementController = class AnnouncementController {
@@ -34,7 +33,7 @@ let AnnouncementController = class AnnouncementController {
         if (keyword) {
             querys.content = new RegExp(keyword, 'i');
         }
-        return this.announcementService.getList(querys, options);
+        return this.announcementService.paginater(querys, options);
     }
     createAnnouncement(announcement) {
         return this.announcementService.create(announcement);
@@ -53,7 +52,7 @@ __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
     http_decorator_1.HttpProcessor.paginate(),
-    http_decorator_1.HttpProcessor.handle('获取公告'),
+    http_decorator_1.HttpProcessor.handle('Get announcements'),
     __param(0, (0, query_params_decorator_1.QueryParams)([query_params_decorator_1.QueryParamsField.State])),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -62,16 +61,16 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('添加公告'),
+    http_decorator_1.HttpProcessor.handle('Create announcement'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_model_1.Announcement]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], AnnouncementController.prototype, "createAnnouncement", null);
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('批量删除公告'),
+    http_decorator_1.HttpProcessor.handle('Delete announcements'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_model_1.AnnouncementsPayload]),
@@ -80,21 +79,21 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('修改公告'),
+    http_decorator_1.HttpProcessor.handle('Update announcement'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, announcement_model_1.Announcement]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], AnnouncementController.prototype, "putAnnouncement", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('删除单个公告'),
+    http_decorator_1.HttpProcessor.handle('Delete announcement'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], AnnouncementController.prototype, "delAnnouncement", null);
 AnnouncementController = __decorate([
     (0, common_1.Controller)('announcement'),

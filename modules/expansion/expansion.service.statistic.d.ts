@@ -4,10 +4,10 @@ import { Article } from '@app/modules/article/article.model';
 import { Comment } from '@app/modules/comment/comment.model';
 import { Tag } from '@app/modules/tag/tag.model';
 export interface ITodayStatistic {
-    tags: number;
-    views: number;
-    articles: number;
-    comments: number;
+    tags: number | null;
+    views: number | null;
+    articles: number | null;
+    comments: number | null;
 }
 export declare class StatisticService {
     private readonly cacheService;

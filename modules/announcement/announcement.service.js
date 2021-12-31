@@ -15,24 +15,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnnouncementService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const mongoose_interface_1 = require("../../interfaces/mongoose.interface");
-const paginate_1 = require("../../utils/paginate");
 const announcement_model_1 = require("./announcement.model");
 let AnnouncementService = class AnnouncementService {
     constructor(announcementModel) {
         this.announcementModel = announcementModel;
     }
-    getList(querys, options) {
+    paginater(querys, options) {
         return this.announcementModel.paginate(querys, options);
     }
     create(announcement) {
         return this.announcementModel.create(announcement);
     }
     update(announcementID, announcement) {
-        return this.announcementModel.findByIdAndUpdate(announcementID, announcement, { new: true }).exec();
+        return this.announcementModel
+            .findByIdAndUpdate(announcementID, announcement, { new: true })
+            .exec()
+            .then((result) => result || Promise.reject(`Announcement "${announcementID}" not found`));
     }
     delete(announcementID) {
-        return this.announcementModel.findByIdAndRemove(announcementID).exec();
+        return this.announcementModel
+            .findByIdAndRemove(announcementID)
+            .exec()
+            .then((result) => result || Promise.reject(`Announcement "${announcementID}" not found`));
     }
     batchDelete(announcementIDs) {
         return this.announcementModel.deleteMany({ _id: { $in: announcementIDs } }).exec();

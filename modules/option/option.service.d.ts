@@ -1,17 +1,21 @@
-/// <reference types="mongoose" />
 import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { CacheService, CacheResult } from '@app/processors/cache/cache.service';
-import { Option } from './option.model';
+import { Option, Blocklist } from './option.model';
 export declare class OptionService {
     private readonly optionModel;
     private readonly cacheService;
     private optionCache;
     constructor(optionModel: MongooseModel<Option>, cacheService: CacheService);
-    updateCache(): CacheResult<Option>;
-    getDBOption(): Promise<import("mongoose").Document<any, import("@typegoose/typegoose/lib/types").BeAnObject, any> & Option & import("@typegoose/typegoose/lib/types").IObjectWithTypegooseFunction & {
-        _id: any;
-    }>;
-    getOption(): CacheResult<Option>;
-    private putDBOption;
+    getAppOption(): Promise<Option>;
+    getOptionUserCache(): CacheResult<Option>;
     putOption(option: Option): Promise<Option>;
+    appendToBlocklist(payload: {
+        ips: string[];
+        emails: string[];
+    }): Promise<Blocklist>;
+    removeFromBlocklist(payload: {
+        ips: string[];
+        emails: string[];
+    }): Promise<Blocklist>;
+    likeSite(): Promise<number>;
 }

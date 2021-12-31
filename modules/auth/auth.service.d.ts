@@ -6,7 +6,7 @@ export declare class AuthService {
     private readonly jwtService;
     private readonly authModel;
     constructor(jwtService: JwtService, authModel: MongooseModel<Auth>);
-    private getExtantPassword;
+    private getExistedPassword;
     createToken(): TokenResult;
     validateAuthData(payload: any): Promise<any>;
     getAdminInfo(): Promise<Auth>;

@@ -12,18 +12,13 @@ export declare class TagService {
     private readonly seoService;
     private readonly tagModel;
     private readonly articleModel;
-    private tagListCache;
+    private tagPaginateCache;
     constructor(cacheService: CacheService, archiveService: ArchiveService, seoService: SeoService, tagModel: MongooseModel<Tag>, articleModel: MongooseModel<Article>);
-    private getListCacheTask;
-    getListCache(): Promise<PaginateResult<Tag>>;
-    updateListCache(): Promise<PaginateResult<Tag>>;
-    getCounts(matchQuerys?: {}): Promise<{
-        _id: Types.ObjectId;
-        num_tutorial: number;
-    }[]>;
-    getList(querys: any, options: PaginateOptions, isAuthenticated: any): Promise<PaginateResult<Tag>>;
-    create(newTag: Tag): Promise<Tag>;
+    getPaginateCache(): Promise<PaginateResult<Tag>>;
+    updatePaginateCache(): Promise<PaginateResult<Tag>>;
+    paginater(querys: any, options: Partial<PaginateOptions>, publicOnly: boolean): Promise<PaginateResult<Tag>>;
     getDetailBySlug(slug: string): Promise<Tag>;
+    create(newTag: Tag): Promise<Tag>;
     update(tagID: Types.ObjectId, newTag: Tag): Promise<Tag>;
     delete(tagID: Types.ObjectId): Promise<Tag>;
     batchDelete(tagIDs: Types.ObjectId[]): Promise<import("mongodb").DeleteResult>;

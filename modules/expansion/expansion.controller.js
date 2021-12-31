@@ -39,7 +39,7 @@ let ExpansionController = class ExpansionController {
 };
 __decorate([
     (0, common_1.Get)('statistic'),
-    http_decorator_1.HttpProcessor.handle('获取统计概览'),
+    http_decorator_1.HttpProcessor.handle('Get statistic'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -47,7 +47,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('uptoken'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('获取上传 Token '),
+    http_decorator_1.HttpProcessor.handle('Get CS upload token'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -55,7 +55,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('google-token'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('获取 Google Token '),
+    http_decorator_1.HttpProcessor.handle('Get Google credentials'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -63,7 +63,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)('database-backup'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('更新数据库备份'),
+    http_decorator_1.HttpProcessor.handle('Update database backup'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

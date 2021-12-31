@@ -3,6 +3,8 @@ export declare const APP: {
     MASTER: string;
     NAME: string;
     URL: string;
+    FE_NAME: string;
+    FE_URL: string;
     ROOT_PATH: string;
     DEFAULT_CACHE_TTL: number;
 };
@@ -10,7 +12,6 @@ export declare const PROJECT: {
     name: any;
     version: any;
     author: any;
-    site: string;
     homepage: any;
     issues: any;
 };
@@ -41,13 +42,16 @@ export declare const EMAIL: {
     from: string;
     admin: string;
 };
+export declare const DISQUS: {
+    adminAccessToken: string;
+    adminUsername: string;
+    forum: string;
+    publicKey: string;
+    secretKey: string;
+};
 export declare const AKISMET: {
     key: unknown;
     blog: unknown;
-};
-export declare const COMMON_SERVICE: {
-    aliyunIPAuth: unknown;
-    juheIPAuth: unknown;
 };
 export declare const BAIDU_INDEXED: {
     site: unknown;

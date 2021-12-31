@@ -14,14 +14,13 @@ const comment_model_1 = require("../comment/comment.model");
 const expansion_controller_1 = require("./expansion.controller");
 const expansion_service_statistic_1 = require("./expansion.service.statistic");
 const expansion_service_dbbackup_1 = require("./expansion.service.dbbackup");
-const services = [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService];
 let ExpansionModule = class ExpansionModule {
 };
 ExpansionModule = __decorate([
     (0, common_1.Module)({
         controllers: [expansion_controller_1.ExpansionController],
-        providers: [tag_model_1.TagProvider, article_model_1.ArticleProvider, comment_model_1.CommentProvider, ...services],
-        exports: services,
+        providers: [tag_model_1.TagProvider, article_model_1.ArticleProvider, comment_model_1.CommentProvider, expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService],
+        exports: [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService],
     })
 ], ExpansionModule);
 exports.ExpansionModule = ExpansionModule;

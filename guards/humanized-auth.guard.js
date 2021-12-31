@@ -10,18 +10,19 @@ exports.HumanizedJwtAuthGuard = void 0;
 const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
 const unauthorized_error_1 = require("../errors/unauthorized.error");
+const value_constant_1 = require("../constants/value.constant");
 let HumanizedJwtAuthGuard = class HumanizedJwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
     canActivate(context) {
         return super.canActivate(context);
     }
     handleRequest(error, authInfo, errInfo) {
-        const okToken = Boolean(authInfo);
-        const noToken = !authInfo && (errInfo === null || errInfo === void 0 ? void 0 : errInfo.message) === 'No auth token';
-        if (!error && (okToken || noToken)) {
+        const validToken = Boolean(authInfo);
+        const emptyToken = !authInfo && (errInfo === null || errInfo === void 0 ? void 0 : errInfo.message) === 'No auth token';
+        if (!error && (validToken || emptyToken)) {
             return authInfo;
         }
         else {
-            throw error || new unauthorized_error_1.HttpUnauthorizedError(null, errInfo === null || errInfo === void 0 ? void 0 : errInfo.message);
+            throw error || new unauthorized_error_1.HttpUnauthorizedError(value_constant_1.UNDEFINED, errInfo === null || errInfo === void 0 ? void 0 : errInfo.message);
         }
     }
 };

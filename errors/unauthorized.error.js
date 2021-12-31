@@ -21,7 +21,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpUnauthorizedError = void 0;
 const common_1 = require("@nestjs/common");
-const http_interface_1 = require("../interfaces/http.interface");
 const TEXT = __importStar(require("../constants/text.constant"));
 class HttpUnauthorizedError extends common_1.UnauthorizedException {
     constructor(message, error) {

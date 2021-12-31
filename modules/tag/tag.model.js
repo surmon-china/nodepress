@@ -24,28 +24,28 @@ __decorate([
     __metadata("design:type", Number)
 ], Tag.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)({ message: '标签名称？' }),
-    (0, class_validator_1.IsString)({ message: '字符串？' }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Tag.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)({ message: '标签别名？' }),
-    (0, class_validator_1.IsString)({ message: '字符串？' }),
-    (0, class_validator_1.IsAlphanumeric)('en-US', { message: 'slug 只允许字母和数字' }),
+    (0, class_validator_1.Matches)(/^[a-zA-Z0-9-_]+$/),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.MaxLength)(30),
-    (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
+    (0, typegoose_1.prop)({ required: true, validate: /^[a-zA-Z0-9-_]+$/, unique: true }),
     __metadata("design:type", String)
 ], Tag.prototype, "slug", void 0);
 __decorate([
-    (0, class_validator_1.IsString)({ message: '字符串？' }),
+    (0, class_validator_1.IsString)({ message: 'description must be string type' }),
     (0, typegoose_1.prop)(),
     __metadata("design:type", String)
 ], Tag.prototype, "description", void 0);
 __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayUnique)(),
-    (0, typegoose_1.prop)({ _id: false, type: () => [extend_model_1.Extend] }),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.Extend] }),
     __metadata("design:type", Array)
 ], Tag.prototype, "extends", void 0);
 __decorate([

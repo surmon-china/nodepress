@@ -25,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpProcessor = exports.paginate = exports.handle = exports.success = exports.error = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
-const http_interface_1 = require("../interfaces/http.interface");
+const value_constant_1 = require("../constants/value.constant");
 const META = __importStar(require("../constants/meta.constant"));
 const TEXT = __importStar(require("../constants/text.constant"));
 const buildHttpDecorator = (options) => {
@@ -66,9 +66,9 @@ function handle(...args) {
     const message = isOption(option) ? option.message : option;
     const errMessage = message + TEXT.HTTP_ERROR_SUFFIX;
     const successMessage = message + TEXT.HTTP_SUCCESS_SUFFIX;
-    const errCode = isOption(option) ? option.error : null;
-    const successCode = isOption(option) ? option.success : null;
-    const usePaginate = isOption(option) ? option.usePaginate : null;
+    const errCode = isOption(option) ? option.error : value_constant_1.UNDEFINED;
+    const successCode = isOption(option) ? option.success : value_constant_1.UNDEFINED;
+    const usePaginate = isOption(option) ? option.usePaginate : false;
     return buildHttpDecorator({
         errCode,
         successCode,

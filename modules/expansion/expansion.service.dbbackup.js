@@ -72,14 +72,14 @@ let DBBackupService = class DBBackupService {
                 this.cloudStorageService
                     .uploadFile(fileName, BACKUP_DATA_PATH, APP_CONFIG.DB_BACKUP.region, APP_CONFIG.DB_BACKUP.bucket)
                     .then((result) => {
-                    logger_1.default.info('[expansion]', 'DB Backup 备份数据上传成功!', {
+                    logger_1.default.info('[expansion]', 'DB Backup succeed!', {
                         name: result.name,
                         url: result.url,
                     });
                     return resolve();
                 })
                     .catch((error) => {
-                    logger_1.default.warn('[expansion]', 'DB Backup 备份数据失败!', error);
+                    logger_1.default.warn('[expansion]', 'DB Backup failed!', error);
                     reject(JSON.stringify(error.message));
                 });
             });

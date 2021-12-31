@@ -33,13 +33,11 @@ const operators_1 = require("rxjs/operators");
 const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
 const http_interface_1 = require("../interfaces/http.interface");
-const http_interface_2 = require("../interfaces/http.interface");
-const paginate_1 = require("../utils/paginate");
 const META = __importStar(require("../constants/meta.constant"));
 const TEXT = __importStar(require("../constants/text.constant"));
 function transformDataToPaginate(data, request) {
     return {
-        data: data.docs,
+        data: data.documents,
         params: (request === null || request === void 0 ? void 0 : request.queryParams) || null,
         pagination: {
             total: data.total,

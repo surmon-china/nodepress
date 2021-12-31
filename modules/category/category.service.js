@@ -16,8 +16,6 @@ exports.CategoryService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
-const mongoose_interface_1 = require("../../interfaces/mongoose.interface");
-const paginate_1 = require("../../utils/paginate");
 const biz_interface_1 = require("../../interfaces/biz.interface");
 const archive_service_1 = require("../archive/archive.service");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
@@ -30,28 +28,33 @@ let CategoryService = class CategoryService {
         this.articleModel = articleModel;
         this.categoryModel = categoryModel;
     }
-    async getList(querys, options, isAuthenticated) {
+    async paginater(querys, options, publicOnly) {
         const matchState = {
             state: biz_interface_1.PublishState.Published,
             public: biz_interface_1.PublicState.Public,
         };
-        const categories = await this.categoryModel.paginate(querys, options);
+        const categories = await this.categoryModel.paginate(querys, Object.assign(Object.assign({}, options), { lean: true }));
         const counts = await this.articleModel.aggregate([
-            { $match: isAuthenticated ? {} : matchState },
+            { $match: publicOnly ? matchState : {} },
             { $unwind: '$category' },
             { $group: { _id: '$category', num_tutorial: { $sum: 1 } } },
         ]);
-        const categoriesObject = JSON.parse(JSON.stringify(categories));
-        const newDocs = categoriesObject.docs.map((category) => {
+        const hydratedDocs = categories.documents.map((category) => {
             const finded = counts.find((count) => String(count._id) === String(category._id));
             return Object.assign(Object.assign({}, category), { count: finded ? finded.num_tutorial : 0 });
         });
-        return Object.assign(Object.assign({}, categoriesObject), { docs: newDocs });
+        return Object.assign(Object.assign({}, categories), { documents: hydratedDocs });
+    }
+    getDetailBySlug(slug) {
+        return this.categoryModel
+            .findOne({ slug })
+            .exec()
+            .then((result) => result || Promise.reject(`Category "${slug}" not found`));
     }
     async create(newCategory) {
-        const categories = await this.categoryModel.find({ slug: newCategory.slug }).exec();
-        if (categories.length) {
-            throw '别名已被占用';
+        const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
+        if (existedCategory) {
+            throw `Category slug "${newCategory.slug}" is existed`;
         }
         const category = await this.categoryModel.create(newCategory);
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
@@ -60,7 +63,7 @@ let CategoryService = class CategoryService {
     }
     getGenealogyById(categoryID) {
         const categories = [];
-        const findById = this.categoryModel.findById.bind(this.categoryModel);
+        const findById = (id) => this.categoryModel.findById(id).exec();
         return new Promise((resolve, reject) => {
             ;
             (function findCateItem(id) {
@@ -78,23 +81,24 @@ let CategoryService = class CategoryService {
             })(categoryID);
         });
     }
-    getDetailBySlug(slug) {
-        return this.categoryModel.findOne({ slug }).exec();
-    }
     async update(categoryID, newCategory) {
         const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
         if (existedCategory && String(existedCategory._id) !== String(categoryID)) {
-            throw '别名已被占用';
+            throw `Category slug "${newCategory.slug}" is existed`;
         }
-        const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory, {
-            new: true,
-        });
+        const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory, { new: true }).exec();
+        if (!category) {
+            throw `Category "${categoryID}" not found`;
+        }
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
         this.archiveService.updateCache();
         return category;
     }
     async delete(categoryID) {
         const category = await this.categoryModel.findByIdAndRemove(categoryID).exec();
+        if (!category) {
+            throw `Category "${categoryID}" not found`;
+        }
         this.archiveService.updateCache();
         this.seoService.delete((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
         const categories = await this.categoryModel.find({ pid: categoryID }).exec();

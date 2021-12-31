@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentModule = void 0;
 const common_1 = require("@nestjs/common");
 const option_module_1 = require("../option/option.module");
-const article_model_1 = require("../article/article.model");
+const article_module_1 = require("../article/article.module");
 const comment_controller_1 = require("./comment.controller");
 const comment_model_1 = require("./comment.model");
 const comment_service_1 = require("./comment.service");
@@ -17,9 +17,9 @@ let CommentModule = class CommentModule {
 };
 CommentModule = __decorate([
     (0, common_1.Module)({
-        imports: [option_module_1.OptionModule],
+        imports: [option_module_1.OptionModule, article_module_1.ArticleModule],
         controllers: [comment_controller_1.CommentController],
-        providers: [comment_model_1.CommentProvider, article_model_1.ArticleProvider, comment_service_1.CommentService],
+        providers: [comment_model_1.CommentProvider, comment_service_1.CommentService],
         exports: [comment_service_1.CommentService],
     })
 ], CommentModule);

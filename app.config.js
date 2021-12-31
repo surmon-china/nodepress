@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DB_BACKUP = exports.ALIYUN_CLOUD_STORAGE = exports.GOOGLE = exports.BAIDU_INDEXED = exports.COMMON_SERVICE = exports.AKISMET = exports.EMAIL = exports.AUTH = exports.REDIS = exports.MONGO_DB = exports.CROSS_DOMAIN = exports.PROJECT = exports.APP = void 0;
+exports.DB_BACKUP = exports.ALIYUN_CLOUD_STORAGE = exports.GOOGLE = exports.BAIDU_INDEXED = exports.AKISMET = exports.DISQUS = exports.EMAIL = exports.AUTH = exports.REDIS = exports.MONGO_DB = exports.CROSS_DOMAIN = exports.PROJECT = exports.APP = void 0;
 const path_1 = __importDefault(require("path"));
 const yargs_1 = require("yargs");
 const ROOT_PATH = path_1.default.join(__dirname, '..');
@@ -11,8 +11,10 @@ const packageJSON = require(path_1.default.resolve(ROOT_PATH, 'package.json'));
 exports.APP = {
     PORT: 8000,
     MASTER: 'Surmon',
-    NAME: 'Surmon.me',
-    URL: 'https://surmon.me',
+    NAME: 'Nodepress',
+    URL: 'https://api.surmon.me',
+    FE_NAME: 'Surmon.me',
+    FE_URL: 'https://surmon.me',
     ROOT_PATH,
     DEFAULT_CACHE_TTL: 60 * 60 * 24,
 };
@@ -20,7 +22,6 @@ exports.PROJECT = {
     name: packageJSON.name,
     version: packageJSON.version,
     author: packageJSON.author,
-    site: exports.APP.URL,
     homepage: packageJSON.homepage,
     issues: packageJSON.bugs.url,
 };
@@ -51,13 +52,16 @@ exports.EMAIL = {
     from: '"Surmon" <i@surmon.me>',
     admin: 'surmon@foxmail.com',
 };
+exports.DISQUS = {
+    adminAccessToken: yargs_1.argv.disqus_admin_access_token || 'disqus admin access_token',
+    adminUsername: yargs_1.argv.disqus_admin_username || 'disqus admin username',
+    forum: yargs_1.argv.disqus_forum_shortname || 'disqus forum shortname',
+    publicKey: yargs_1.argv.disqus_public_key || 'disqus application public_key',
+    secretKey: yargs_1.argv.disqus_secret_key || 'disqus application secret_key',
+};
 exports.AKISMET = {
     key: yargs_1.argv.akismet_key || 'your akismet Key',
     blog: yargs_1.argv.akismet_blog || 'your akismet blog site, e.g. https://surmon.me',
-};
-exports.COMMON_SERVICE = {
-    aliyunIPAuth: yargs_1.argv.aliyun_ip_auth,
-    juheIPAuth: yargs_1.argv.juhe_ip_auth,
 };
 exports.BAIDU_INDEXED = {
     site: yargs_1.argv.baidu_site || 'your baidu site domain. e.g. surmon.me',

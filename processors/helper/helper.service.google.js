@@ -35,6 +35,7 @@ exports.GoogleService = void 0;
 const googleapis_1 = require("googleapis");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
+const value_constant_1 = require("../../constants/value.constant");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 let GoogleService = class GoogleService {
@@ -45,10 +46,10 @@ let GoogleService = class GoogleService {
     initClient() {
         try {
             const key = require(APP_CONFIG.GOOGLE.serverAccountFilePath);
-            this.jwtClient = new googleapis_1.google.auth.JWT(key.client_email, null, key.private_key, [
+            this.jwtClient = new googleapis_1.google.auth.JWT(key.client_email, value_constant_1.UNDEFINED, key.private_key, [
                 'https://www.googleapis.com/auth/indexing',
                 'https://www.googleapis.com/auth/analytics.readonly',
-            ], null);
+            ], value_constant_1.UNDEFINED);
         }
         catch (error) {
             logger_1.default.warn('[GoogleAPI]', '服务初始化时读取配置文件失败！');

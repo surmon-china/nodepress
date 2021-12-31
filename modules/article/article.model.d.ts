@@ -12,18 +12,19 @@ export declare class Meta {
 }
 export declare class Article {
     id: number;
+    slug: string;
     title: string;
     content: string;
-    get t_content(): string;
     description: string;
+    keywords: string[];
     thumb: string;
     password: string;
-    keywords: string[];
+    disabled_comment: boolean;
     state: PublishState;
     public: PublicState;
     origin: OriginState;
-    tag: Ref<Tag>[];
     category: Ref<Category>[];
+    tag: Ref<Tag>[];
     meta: Meta;
     create_at?: Date;
     update_at?: Date;

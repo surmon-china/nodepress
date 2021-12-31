@@ -21,16 +21,15 @@ const common_1 = require("@nestjs/common");
 const auth_guard_1 = require("../../guards/auth.guard");
 const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
 const http_decorator_1 = require("../../decorators/http.decorator");
-const paginate_1 = require("../../utils/paginate");
 const query_params_decorator_1 = require("../../decorators/query-params.decorator");
 const biz_interface_1 = require("../../interfaces/biz.interface");
-const comment_model_1 = require("./comment.model");
 const comment_service_1 = require("./comment.service");
+const comment_model_1 = require("./comment.model");
 let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
     }
-    getComments({ querys, options, origin }) {
+    getComments({ querys, options, origin, isAuthenticated }) {
         if (Number(origin.sort) === biz_interface_1.SortType.Hot) {
             options.sort = { likes: biz_interface_1.SortType.Desc };
         }
@@ -39,22 +38,24 @@ let CommentController = class CommentController {
             const keywordRegExp = new RegExp(keyword, 'i');
             querys.$or = [{ content: keywordRegExp }, { 'author.name': keywordRegExp }, { 'author.email': keywordRegExp }];
         }
-        return this.commentService.getList(querys, options);
+        return this.commentService.paginater(querys, options, !isAuthenticated);
     }
-    createComment(comment, { visitors }) {
-        return this.commentService.create(comment, visitors);
+    createComment(comment, { visitor }) {
+        return this.commentService.createFormClient(comment, visitor);
     }
-    patchComments({ visitors }, body) {
-        return this.commentService.batchPatchState(body, visitors.referer);
+    patchComments({ visitor }, body) {
+        return this.commentService.batchPatchState(body, visitor.referer);
     }
     delComments(body) {
         return this.commentService.batchDelete(body.comment_ids, body.post_ids);
     }
     getComment({ params }) {
-        return this.commentService.getDetailByNumberId(params.id);
+        return this.commentService.getDetailByNumberID(params.id).then((comment) => {
+            return comment ? comment : Promise.reject('Comment not found');
+        });
     }
-    putComment({ params, visitors }, comment) {
-        return this.commentService.update(params.id, comment, visitors.referer);
+    putComment({ params, visitor }, comment) {
+        return this.commentService.update(params.id, comment, visitor.referer);
     }
     delComment({ params }) {
         return this.commentService.delete(params.id);
@@ -64,7 +65,7 @@ __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
     http_decorator_1.HttpProcessor.paginate(),
-    http_decorator_1.HttpProcessor.handle('获取评论列表'),
+    http_decorator_1.HttpProcessor.handle('Get comment list'),
     __param(0, (0, query_params_decorator_1.QueryParams)([query_params_decorator_1.QueryParamsField.State, query_params_decorator_1.QueryParamsField.CommentState, 'post_id'])),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -72,7 +73,7 @@ __decorate([
 ], CommentController.prototype, "getComments", null);
 __decorate([
     (0, common_1.Post)(),
-    http_decorator_1.HttpProcessor.handle('添加评论'),
+    http_decorator_1.HttpProcessor.handle('Create comment'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
@@ -82,7 +83,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('批量修改评论'),
+    http_decorator_1.HttpProcessor.handle('Update comments'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -92,7 +93,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('批量删除评论'),
+    http_decorator_1.HttpProcessor.handle('Delete comments'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [comment_model_1.CommentsPayload]),
@@ -101,7 +102,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('获取单个评论详情'),
+    http_decorator_1.HttpProcessor.handle({ message: 'Get comment detail', error: common_1.HttpStatus.NOT_FOUND }),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -110,7 +111,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('修改单个评论'),
+    http_decorator_1.HttpProcessor.handle('Update comment'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -120,7 +121,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('删除单个评论'),
+    http_decorator_1.HttpProcessor.handle('Delete comment'),
     __param(0, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

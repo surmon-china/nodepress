@@ -40,8 +40,6 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
-const mongoose_interface_1 = require("../../interfaces/mongoose.interface");
-const paginate_1 = require("../../utils/paginate");
 const biz_interface_1 = require("../../interfaces/biz.interface");
 const archive_service_1 = require("../archive/archive.service");
 const article_model_1 = require("../article/article.model");
@@ -55,81 +53,84 @@ let TagService = class TagService {
         this.seoService = seoService;
         this.tagModel = tagModel;
         this.articleModel = articleModel;
-        this.tagListCache = this.cacheService.promise({
+        this.tagPaginateCache = this.cacheService.promise({
             ioMode: true,
             key: CACHE_KEY.TAGS,
-            promise: this.getListCacheTask.bind(this),
+            promise: () => {
+                const options = {
+                    page: 1,
+                    perPage: 168,
+                    sort: { _id: biz_interface_1.SortType.Desc },
+                };
+                return this.paginater(null, options, true);
+            },
         });
-        this.updateListCache().catch((error) => {
-            logger_1.default.warn('[tag]', 'init getListCacheTask Error:', error);
+        this.updatePaginateCache().catch((error) => {
+            logger_1.default.warn('[tag]', 'init tagPaginateCache', error);
         });
     }
-    getListCacheTask() {
-        const options = {
-            page: 1,
-            perPage: 888,
-            sort: { _id: biz_interface_1.SortType.Desc },
-        };
-        return this.getList(null, options, false);
+    getPaginateCache() {
+        return this.tagPaginateCache.get();
     }
-    getListCache() {
-        return this.tagListCache.get();
+    updatePaginateCache() {
+        return this.tagPaginateCache.update();
     }
-    updateListCache() {
-        return this.tagListCache.update();
-    }
-    async getCounts(matchQuerys = {}) {
-        const counts = await this.articleModel.aggregate([
-            { $match: matchQuerys },
-            { $unwind: '$tag' },
-            { $group: { _id: '$tag', num_tutorial: { $sum: 1 } } },
-        ]);
-        return counts;
-    }
-    async getList(querys, options, isAuthenticated) {
+    async paginater(querys, options, publicOnly) {
         const matchState = {
             state: biz_interface_1.PublishState.Published,
             public: biz_interface_1.PublicState.Public,
         };
-        const tags = await this.tagModel.paginate(querys, options);
-        const counts = await this.getCounts(isAuthenticated ? {} : matchState);
-        const tagsObject = JSON.parse(JSON.stringify(tags));
-        const newDocs = tagsObject.docs.map((tag) => {
+        const tags = await this.tagModel.paginate(querys, Object.assign(Object.assign({}, options), { lean: true }));
+        const counts = await this.articleModel.aggregate([
+            { $match: publicOnly ? matchState : {} },
+            { $unwind: '$tag' },
+            { $group: { _id: '$tag', num_tutorial: { $sum: 1 } } },
+        ]);
+        const hydratedDocs = tags.documents.map((tag) => {
             const found = counts.find((count) => String(count._id) === String(tag._id));
             return Object.assign(Object.assign({}, tag), { count: found ? found.num_tutorial : 0 });
         });
-        return Object.assign(Object.assign({}, tagsObject), { docs: newDocs });
+        return Object.assign(Object.assign({}, tags), { documents: hydratedDocs });
+    }
+    getDetailBySlug(slug) {
+        return this.tagModel
+            .findOne({ slug })
+            .exec()
+            .then((result) => result || Promise.reject(`Tag "${slug}" not found`));
     }
     async create(newTag) {
-        const existedTags = await this.tagModel.find({ slug: newTag.slug }).exec();
-        if (existedTags.length) {
-            throw '别名已被占用';
+        const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
+        if (existedTag) {
+            throw `Tag slug "${newTag.slug}" is existed`;
         }
         const tag = await this.tagModel.create(newTag);
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
-        this.updateListCache();
+        this.updatePaginateCache();
         return tag;
-    }
-    getDetailBySlug(slug) {
-        return this.tagModel.findOne({ slug }).exec();
     }
     async update(tagID, newTag) {
         const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
         if (existedTag && String(existedTag._id) !== String(tagID)) {
-            throw '别名已被占用';
+            throw `Tag slug "${newTag.slug}" is existed`;
         }
         const tag = await this.tagModel.findByIdAndUpdate(tagID, newTag, { new: true }).exec();
+        if (!tag) {
+            throw `Tag "${tagID}" not found`;
+        }
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
-        this.updateListCache();
+        this.updatePaginateCache();
         return tag;
     }
     async delete(tagID) {
         const tag = await this.tagModel.findByIdAndRemove(tagID).exec();
+        if (!tag) {
+            throw `Tag "${tagID}" not found`;
+        }
         this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
-        this.updateListCache();
+        this.updatePaginateCache();
         return tag;
     }
     async batchDelete(tagIDs) {
@@ -137,7 +138,7 @@ let TagService = class TagService {
         this.seoService.delete(tags.map((tag) => (0, urlmap_transformer_1.getTagUrl)(tag.slug)));
         const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIDs } }).exec();
         this.archiveService.updateCache();
-        this.updateListCache();
+        this.updatePaginateCache();
         return actionResult;
     }
 };

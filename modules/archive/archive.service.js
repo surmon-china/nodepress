@@ -39,7 +39,6 @@ const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const biz_interface_1 = require("../../interfaces/biz.interface");
-const mongoose_interface_1 = require("../../interfaces/mongoose.interface");
 const category_model_1 = require("../category/category.model");
 const article_model_1 = require("../article/article.model");
 const tag_model_1 = require("../tag/tag.model");

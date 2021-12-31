@@ -19,22 +19,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGuestbookPageUrl = exports.getArticleUrl = exports.getCategoryUrl = exports.getTagUrl = void 0;
+exports.getPermalinkByID = exports.getGuestbookPageUrl = exports.getArticleUrl = exports.getCategoryUrl = exports.getTagUrl = void 0;
+const biz_interface_1 = require("../interfaces/biz.interface");
 const APP_CONFIG = __importStar(require("../app.config"));
 function getTagUrl(tagSlug) {
-    return `${APP_CONFIG.APP.URL}/tag/${tagSlug}`;
+    return `${APP_CONFIG.APP.FE_URL}/tag/${tagSlug}`;
 }
 exports.getTagUrl = getTagUrl;
 function getCategoryUrl(categorySlug) {
-    return `${APP_CONFIG.APP.URL}/category/${categorySlug}`;
+    return `${APP_CONFIG.APP.FE_URL}/category/${categorySlug}`;
 }
 exports.getCategoryUrl = getCategoryUrl;
 function getArticleUrl(articleId) {
-    return `${APP_CONFIG.APP.URL}/article/${articleId}`;
+    return `${APP_CONFIG.APP.FE_URL}/article/${articleId}`;
 }
 exports.getArticleUrl = getArticleUrl;
 function getGuestbookPageUrl() {
-    return `${APP_CONFIG.APP.URL}/guestbook`;
+    return `${APP_CONFIG.APP.FE_URL}/guestbook`;
 }
 exports.getGuestbookPageUrl = getGuestbookPageUrl;
+function getPermalinkByID(id) {
+    return id === biz_interface_1.CommentPostID.Guestbook ? getGuestbookPageUrl() : getArticleUrl(id);
+}
+exports.getPermalinkByID = getPermalinkByID;
 //# sourceMappingURL=urlmap.transformer.js.map

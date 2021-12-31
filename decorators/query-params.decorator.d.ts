@@ -13,19 +13,24 @@ export declare enum QueryParamsField {
     CommentState = "commentState"
 }
 export interface QueryParamsConfig extends Omit<PaginateOptions, 'populate' | 'select'> {
-    [key: string]: string | number | boolean | Types.ObjectId | Date | RegExp | QueryParamsConfig;
+    [key: string]: void | string | number | boolean | Types.ObjectId | Date | RegExp | QueryParamsConfig | any;
+}
+export interface QueryVisitor {
+    ip: string;
+    ua: string;
+    referer: string;
+}
+export interface cookies {
+    [key: string]: string;
 }
 export interface QueryParamsResult {
-    querys: QueryParamsConfig;
-    options: QueryParamsConfig;
-    params: QueryParamsConfig;
-    origin: QueryParamsConfig;
+    querys: Partial<QueryParamsConfig>;
+    options: Partial<QueryParamsConfig>;
+    params: Partial<QueryParamsConfig>;
+    origin: Partial<QueryParamsConfig>;
     request: any;
-    visitors: {
-        ip: string;
-        ua: string;
-        referer: string;
-    };
+    visitor: QueryVisitor;
+    cookies: cookies;
     isAuthenticated: boolean;
 }
 interface TransformConfigObject {

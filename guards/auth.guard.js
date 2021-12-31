@@ -10,6 +10,7 @@ exports.JwtAuthGuard = void 0;
 const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
 const unauthorized_error_1 = require("../errors/unauthorized.error");
+const value_constant_1 = require("../constants/value.constant");
 let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
     canActivate(context) {
         return super.canActivate(context);
@@ -19,7 +20,7 @@ let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
             return authInfo;
         }
         else {
-            throw error || new unauthorized_error_1.HttpUnauthorizedError(null, errInfo === null || errInfo === void 0 ? void 0 : errInfo.message);
+            throw error || new unauthorized_error_1.HttpUnauthorizedError(value_constant_1.UNDEFINED, errInfo === null || errInfo === void 0 ? void 0 : errInfo.message);
         }
     }
 };

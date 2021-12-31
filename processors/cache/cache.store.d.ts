@@ -9,7 +9,7 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
     set: <T>(key: string, value: T, options?: CacheStoreSetOptions<T>) => Promise<void>;
     get: <T_1>(key: string) => Promise<T_1>;
     del: (key: string) => Promise<void>;
-    client: import("@node-redis/client/dist/lib/client").RedisClientType<{
+    client: import("redis").RedisClientType<{
         json: {
             ARRAPPEND: typeof import("@node-redis/json/dist/commands/ARRAPPEND");
             arrAppend: typeof import("@node-redis/json/dist/commands/ARRAPPEND");
@@ -55,6 +55,8 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
         ft: {
             _LIST: typeof import("@node-redis/search/dist/commands/_LIST");
             _list: typeof import("@node-redis/search/dist/commands/_LIST");
+            ALTER: typeof import("@node-redis/search/dist/commands/ALTER");
+            alter: typeof import("@node-redis/search/dist/commands/ALTER");
             AGGREGATE: typeof import("@node-redis/search/dist/commands/AGGREGATE");
             aggregate: typeof import("@node-redis/search/dist/commands/AGGREGATE");
             ALIASADD: typeof import("@node-redis/search/dist/commands/ALIASADD");
@@ -83,6 +85,10 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
             explainCli: typeof import("@node-redis/search/dist/commands/EXPLAINCLI");
             INFO: typeof import("@node-redis/search/dist/commands/INFO");
             info: typeof import("@node-redis/search/dist/commands/INFO");
+            PROFILESEARCH: typeof import("@node-redis/search/dist/commands/PROFILE_SEARCH");
+            profileSearch: typeof import("@node-redis/search/dist/commands/PROFILE_SEARCH");
+            PROFILEAGGREGATE: typeof import("@node-redis/search/dist/commands/PROFILE_AGGREGATE");
+            profileAggregate: typeof import("@node-redis/search/dist/commands/PROFILE_AGGREGATE");
             SEARCH: typeof import("@node-redis/search/dist/commands/SEARCH");
             search: typeof import("@node-redis/search/dist/commands/SEARCH");
             SPELLCHECK: typeof import("@node-redis/search/dist/commands/SPELLCHECK");
@@ -108,7 +114,7 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
             TAGVALS: typeof import("@node-redis/search/dist/commands/TAGVALS");
             tagVals: typeof import("@node-redis/search/dist/commands/TAGVALS");
         };
-    }, import("@node-redis/client/dist/lib/commands").RedisScripts>;
+    }, import("redis").RedisScripts>;
 };
 declare const redisStoreFactory: CacheStoreFactory;
 export default redisStoreFactory;

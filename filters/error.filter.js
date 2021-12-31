@@ -11,9 +11,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpExceptionFilter = void 0;
 const lodash_1 = __importDefault(require("lodash"));
-const app_environment_1 = require("../app.environment");
-const http_interface_1 = require("../interfaces/http.interface");
 const common_1 = require("@nestjs/common");
+const http_interface_1 = require("../interfaces/http.interface");
+const value_constant_1 = require("../constants/value.constant");
+const app_environment_1 = require("../app.environment");
 let HttpExceptionFilter = class HttpExceptionFilter {
     catch(exception, host) {
         const request = host.switchToHttp().getRequest();
@@ -21,23 +22,18 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         const status = exception.getStatus() || common_1.HttpStatus.INTERNAL_SERVER_ERROR;
         const errorOption = exception.getResponse();
         const isString = (value) => lodash_1.default.isString(value);
-        const errMessage = isString(errorOption) ? errorOption : errorOption.message;
         const errorInfo = isString(errorOption) ? null : errorOption.error;
-        const parentErrorInfo = errorInfo ? String(errorInfo) : null;
-        const isChildrenError = (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.status) && (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.message);
-        const resultError = (isChildrenError && errorInfo.message) || parentErrorInfo;
-        const resultStatus = isChildrenError ? errorInfo.status : status;
         const data = {
             status: http_interface_1.ResponseStatus.Error,
-            message: errMessage,
-            error: resultError,
-            debug: app_environment_1.isDevMode ? exception.stack : null,
+            message: isString(errorOption) ? errorOption : errorOption.message,
+            error: errorInfo.message || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
+            debug: app_environment_1.isDevEnv ? exception.stack : value_constant_1.UNDEFINED,
         };
         if (status === common_1.HttpStatus.NOT_FOUND) {
-            data.error = `资源不存在`;
-            data.message = `接口 ${request.method} -> ${request.url} 无效`;
+            data.error = data.error || `Not found`;
+            data.message = data.message || `Invalid API: ${request.method} > ${request.url}`;
         }
-        return response.status(resultStatus).jsonp(data);
+        return response.status(errorInfo.status || status).jsonp(data);
     }
 };
 HttpExceptionFilter = __decorate([

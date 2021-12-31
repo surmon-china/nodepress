@@ -35,72 +35,67 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentService = void 0;
-const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
-const mongoose_interface_1 = require("../../interfaces/mongoose.interface");
-const paginate_1 = require("../../utils/paginate");
 const biz_interface_1 = require("../../interfaces/biz.interface");
+const article_service_1 = require("../article/article.service");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
 const helper_service_akismet_1 = require("../../processors/helper/helper.service.akismet");
 const option_service_1 = require("../option/option.service");
-const option_model_1 = require("../option/option.model");
-const article_model_1 = require("../article/article.model");
-const app_environment_1 = require("../../app.environment");
+const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const comment_model_1 = require("./comment.model");
+const app_environment_1 = require("../../app.environment");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const APP_CONFIG = __importStar(require("../../app.config"));
 let CommentService = class CommentService {
-    constructor(ipService, emailService, akismetService, optionService, articleModel, commentModel) {
+    constructor(ipService, emailService, akismetService, optionService, articleService, commentModel) {
         this.ipService = ipService;
         this.emailService = emailService;
         this.akismetService = akismetService;
         this.optionService = optionService;
-        this.articleModel = articleModel;
+        this.articleService = articleService;
         this.commentModel = commentModel;
     }
-    sendMailToAdminAndTargetUser(comment, permalink) {
-        const commentTypeText = comment.post_id === biz_interface_1.CommentPostID.Guestbook ? '留言' : '评论';
-        const getContextPrefix = (isReply) => {
-            const replyText = isReply ? '回复' : '';
-            return `来自 ${comment.author.name} 的${commentTypeText}${replyText}：`;
-        };
-        const sendMailText = (contentPrefix) => `${contentPrefix}${comment.content}`;
-        const sendMailHtml = (contentPrefix) => `
+    emailToAdminAndTargetAuthor(comment) {
+        const isGuestbook = comment.post_id === biz_interface_1.CommentPostID.Guestbook;
+        const commentTypeText = isGuestbook ? 'Guestbook comment' : 'Article comment';
+        const contextPrefix = `${commentTypeText} by ${comment.author.name}`;
+        const getMailText = (contentPrefix) => `${contentPrefix} ${comment.content}`;
+        const getMailHtml = (contentPrefix) => `
       <p>${contentPrefix}${comment.content}</p><br>
-      <a href="${permalink}" target="_blank">[ 点击查看 ]</a>
+      <a href="${(0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)}" target="_blank">[ Read more ]</a>
     `;
         this.emailService.sendMail({
             to: APP_CONFIG.EMAIL.admin,
-            subject: `博客有新的${commentTypeText}`,
-            text: sendMailText(getContextPrefix(false)),
-            html: sendMailHtml(getContextPrefix(false)),
+            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${commentTypeText}`,
+            text: getMailText(contextPrefix),
+            html: getMailHtml(contextPrefix),
         });
         if (comment.pid) {
             this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
-                this.emailService.sendMail({
-                    to: parentComment.author.email,
-                    subject: `你在 ${APP_CONFIG.APP.NAME} 有新的${commentTypeText}回复`,
-                    text: sendMailText(getContextPrefix(true)),
-                    html: sendMailHtml(getContextPrefix(true)),
-                });
+                if (parentComment === null || parentComment === void 0 ? void 0 : parentComment.author.email) {
+                    this.emailService.sendMail({
+                        to: parentComment.author.email,
+                        subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${commentTypeText} reply`,
+                        text: getMailText(`${contextPrefix} (reply)`),
+                        html: getMailHtml(`${contextPrefix} (reply)`),
+                    });
+                }
             });
         }
     }
-    submitCommentAkismet(action, comment, permalink, referer) {
+    submitCommentAkismet(action, comment, referer) {
         return this.akismetService[action]({
-            permalink,
             user_ip: comment.ip,
             user_agent: comment.agent,
-            referrer: referer,
-            comment_type: 'comment',
+            referrer: referer || '',
+            permalink: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
+            comment_type: comment.pid ? 'reply' : 'comment',
             comment_author: comment.author.name,
             comment_author_email: comment.author.email,
             comment_author_url: comment.author.site,
             comment_content: comment.content,
-            is_test: app_environment_1.isDevMode,
         });
     }
     async updateCommentCountWithArticle(postIDs) {
@@ -111,88 +106,123 @@ let CommentService = class CommentService {
         }
         try {
             const counts = await this.commentModel.aggregate([
-                {
-                    $match: { state: biz_interface_1.CommentState.Published, post_id: { $in: postIDs } },
-                },
+                { $match: { state: biz_interface_1.CommentState.Published, post_id: { $in: postIDs } } },
                 { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } },
             ]);
             if (!counts || !counts.length) {
-                this.articleModel
-                    .updateOne({ id: postIDs[0] }, {
-                    $set: {
-                        'meta.comments': 0,
-                    },
-                })
-                    .exec();
+                await this.articleService.updateMetaComments(postIDs[0], 0);
             }
             else {
-                counts.forEach((count) => {
-                    this.articleModel
-                        .updateOne({ id: count._id }, {
-                        $set: {
-                            'meta.comments': count.num_tutorial,
-                        },
-                    })
-                        .exec();
-                });
+                await Promise.all(counts.map((count) => this.articleService.updateMetaComments(count._id, count.num_tutorial)));
             }
         }
         catch (error) {
-            logger_1.default.warn('[comment]', '更新评论 count 聚合数据前，查询失败', error);
+            logger_1.default.warn('[comment]', 'updateCommentCountWithArticle failed!', error);
         }
     }
-    async updateCommentsStateWithBlacklist(comments, state, referrer) {
-        const option = await this.optionService.getDBOption();
-        const isSpam = state === biz_interface_1.CommentState.Spam;
-        const action = isSpam ? helper_service_akismet_1.EAkismetActionType.SubmitSpam : helper_service_akismet_1.EAkismetActionType.SubmitHam;
-        const todoFields = {
-            mails: (comment) => comment.author.email,
-            ips: (comment) => comment.ip,
-        };
-        Object.keys(todoFields).forEach((field) => {
-            const data = option.blacklist[field];
-            const getCommentField = todoFields[field];
-            option.blacklist[field] = isSpam
-                ? lodash_1.default.uniq([...data, ...comments.map(getCommentField)])
-                : data.filter((value) => !comments.some((comment) => getCommentField(comment) === value));
-        });
-        comments.forEach((comment) => {
-            this.submitCommentAkismet(action, comment, null, referrer);
-        });
-        option
-            .save()
-            .then(() => logger_1.default.info('[comment]', '评论状态转移后 -> 黑名单更新成功'))
-            .catch((error) => logger_1.default.warn('[comment]', '评论状态转移后 -> 黑名单更新失败', error));
+    updateBlocklistAkismetWithComment(comments, state, referrer) {
+        const isSPAM = state === biz_interface_1.CommentState.Spam;
+        const action = isSPAM ? helper_service_akismet_1.AkismetActionType.SubmitSpam : helper_service_akismet_1.AkismetActionType.SubmitHam;
+        comments.forEach((comment) => this.submitCommentAkismet(action, comment, referrer));
+        const ips = comments.map((comment) => comment.ip).filter(Boolean);
+        const emails = comments.map((comment) => comment.author.email).filter(Boolean);
+        const blocklistAction = isSPAM
+            ? this.optionService.appendToBlocklist({ ips, emails })
+            : this.optionService.removeFromBlocklist({ ips, emails });
+        blocklistAction
+            .then(() => logger_1.default.info('[comment]', 'updateBlocklistAkismetWithComment.blocklistAction > succeed'))
+            .catch((error) => logger_1.default.warn('[comment]', 'updateBlocklistAkismetWithComment.blocklistAction > failed', error));
     }
-    async validateCommentByBlacklist(comment) {
-        const { blacklist } = await this.optionService.getDBOption();
-        const { keywords, mails, ips } = blacklist;
+    async isNotBlocklisted(comment) {
+        const { blocklist } = await this.optionService.getAppOption();
+        const { keywords, mails, ips } = blocklist;
         const blockIP = ips.includes(comment.ip);
         const blockEmail = mails.includes(comment.author.email);
         const blockKeyword = keywords.length && new RegExp(`${keywords.join('|')}`, 'ig').test(comment.content);
         const isBlocked = blockIP || blockEmail || blockKeyword;
         if (isBlocked) {
-            throw '内容 || IP || 邮箱 -> 不合法';
+            return Promise.reject('content | email | IP > blocked');
         }
     }
-    validateCommentByAkismet(comment, permalink, referer) {
-        return this.submitCommentAkismet(helper_service_akismet_1.EAkismetActionType.CheckSpam, comment, permalink, referer);
+    async isCommentableTarget(targetPostID) {
+        if (targetPostID !== biz_interface_1.CommentPostID.Guestbook) {
+            const isCommentable = await this.articleService.isCommentableArticle(targetPostID);
+            if (!isCommentable) {
+                return Promise.reject(`Comment target ${targetPostID} was disabled comment`);
+            }
+        }
     }
-    getList(querys, options) {
-        return this.commentModel.paginate(querys, options);
+    getAll() {
+        return this.commentModel.find().exec();
     }
-    async create(comment, { ip, ua, referer }) {
-        const newComment = Object.assign(Object.assign({}, comment), { ip, likes: 0, is_top: false, pid: Number(comment.pid), post_id: Number(comment.post_id), state: biz_interface_1.CommentState.Published, agent: ua || comment.agent });
-        const permalink = newComment.post_id === biz_interface_1.CommentPostID.Guestbook ? (0, urlmap_transformer_1.getGuestbookPageUrl)() : (0, urlmap_transformer_1.getArticleUrl)(newComment.post_id);
-        await Promise.all([
-            this.validateCommentByBlacklist(newComment),
-            this.validateCommentByAkismet(newComment, permalink, referer),
-        ]);
-        const ip_location = await this.ipService.query(ip);
-        const succeedComment = await this.commentModel.create(Object.assign(Object.assign({}, newComment), { ip_location }));
-        this.sendMailToAdminAndTargetUser(succeedComment, permalink);
+    async paginater(querys, options, hideIPEmail = false) {
+        const result = await this.commentModel.paginate(querys, options);
+        if (!hideIPEmail) {
+            return result;
+        }
+        return Object.assign(Object.assign({}, result), { documents: result.documents.map((item) => {
+                const data = item.toJSON();
+                Reflect.deleteProperty(data, 'ip');
+                Reflect.deleteProperty(data.author, 'email');
+                return data;
+            }) });
+    }
+    normalizeNewComment(comment, visitor) {
+        return Object.assign(Object.assign({}, comment), { pid: Number(comment.pid), post_id: Number(comment.post_id), state: biz_interface_1.CommentState.Published, likes: 0, dislikes: 0, ip: visitor.ip, ip_location: {}, agent: visitor.ua || comment.agent, extends: [] });
+    }
+    async create(comment) {
+        const ip_location = app_environment_1.isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null;
+        const succeedComment = await this.commentModel.create(Object.assign(Object.assign({}, comment), { ip_location }));
         this.updateCommentCountWithArticle([succeedComment.post_id]);
+        this.emailToAdminAndTargetAuthor(succeedComment);
         return succeedComment;
+    }
+    async createFormClient(comment, visitor) {
+        const newComment = this.normalizeNewComment(comment, visitor);
+        await this.isCommentableTarget(newComment.post_id);
+        await Promise.all([
+            this.isNotBlocklisted(newComment),
+            this.submitCommentAkismet(helper_service_akismet_1.AkismetActionType.CheckSpam, newComment, visitor.referer),
+        ]);
+        return this.create(newComment);
+    }
+    getDetailByObjectID(commentID) {
+        return this.commentModel
+            .findById(commentID)
+            .exec()
+            .then((result) => result || Promise.reject(`Comment "${commentID}" not found`));
+    }
+    getDetailByNumberID(commentID) {
+        return this.commentModel
+            .findOne({ id: commentID })
+            .exec()
+            .then((result) => result || Promise.reject(`Comment "${commentID}" not found`));
+    }
+    async vote(commentID, isLike) {
+        const comment = await this.getDetailByNumberID(commentID);
+        isLike ? comment.likes++ : comment.dislikes++;
+        await comment.save();
+        return {
+            likes: comment.likes,
+            dislikes: comment.dislikes,
+        };
+    }
+    async update(commentID, newComment, referer) {
+        const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment, { new: true }).exec();
+        if (!comment) {
+            throw `Comment "${commentID}" not found`;
+        }
+        this.updateCommentCountWithArticle([comment.post_id]);
+        this.updateBlocklistAkismetWithComment([comment], comment.state, referer);
+        return comment;
+    }
+    async delete(commentID) {
+        const comment = await this.commentModel.findByIdAndRemove(commentID).exec();
+        if (!comment) {
+            throw `Comment "${commentID}" not found`;
+        }
+        this.updateCommentCountWithArticle([comment.post_id]);
+        return comment;
     }
     async batchPatchState(action, referer) {
         const { comment_ids, post_ids, state } = action;
@@ -201,32 +231,13 @@ let CommentService = class CommentService {
             .exec();
         this.updateCommentCountWithArticle(post_ids);
         try {
-            const todoComments = await this.commentModel.find({
-                _id: { $in: comment_ids },
-            });
-            this.updateCommentsStateWithBlacklist(todoComments, state, referer);
+            const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } });
+            this.updateBlocklistAkismetWithComment(todoComments, state, referer);
         }
         catch (error) {
             logger_1.default.warn('[comment]', `对评论进行改变状态 ${state} 时，出现查询错误！`, error);
         }
         return actionResult;
-    }
-    getDetail(commentID) {
-        return this.commentModel.findById(commentID).exec();
-    }
-    getDetailByNumberId(commentID) {
-        return this.commentModel.findOne({ id: commentID }).exec();
-    }
-    async update(commentID, newComment, referer) {
-        const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment, { new: true }).exec();
-        this.updateCommentCountWithArticle([comment.post_id]);
-        this.updateCommentsStateWithBlacklist([comment], comment.state, referer);
-        return comment;
-    }
-    async delete(commentID) {
-        const comment = await this.commentModel.findByIdAndRemove(commentID).exec();
-        this.updateCommentCountWithArticle([comment.post_id]);
-        return comment;
     }
     async batchDelete(commentIDs, postIDs) {
         const result = await this.commentModel.deleteMany({ _id: { $in: commentIDs } }).exec();
@@ -236,12 +247,12 @@ let CommentService = class CommentService {
 };
 CommentService = __decorate([
     (0, common_1.Injectable)(),
-    __param(4, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
     __param(5, (0, model_transformer_1.InjectModel)(comment_model_1.Comment)),
     __metadata("design:paramtypes", [helper_service_ip_1.IPService,
         helper_service_email_1.EmailService,
         helper_service_akismet_1.AkismetService,
-        option_service_1.OptionService, Object, Object])
+        option_service_1.OptionService,
+        article_service_1.ArticleService, Object])
 ], CommentService);
 exports.CommentService = CommentService;
 //# sourceMappingURL=comment.service.js.map

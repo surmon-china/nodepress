@@ -30,6 +30,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -38,9 +49,9 @@ exports.AuthService = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const value_constant_1 = require("../../constants/value.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
-const mongoose_interface_1 = require("../../interfaces/mongoose.interface");
 const auth_model_1 = require("./auth.model");
 const APP_CONFIG = __importStar(require("../../app.config"));
 let AuthService = class AuthService {
@@ -48,8 +59,9 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
         this.authModel = authModel;
     }
-    getExtantPassword(auth) {
-        return (auth === null || auth === void 0 ? void 0 : auth.password) || (0, codec_transformer_1.decodeMd5)(APP_CONFIG.AUTH.defaultPassword);
+    async getExistedPassword() {
+        const auth = await this.authModel.findOne(value_constant_1.UNDEFINED, '+password').exec();
+        return (auth === null || auth === void 0 ? void 0 : auth.password) || (0, codec_transformer_1.decodeMD5)(APP_CONFIG.AUTH.defaultPassword);
     }
     createToken() {
         return {
@@ -61,49 +73,50 @@ let AuthService = class AuthService {
         const isVerified = lodash_1.default.isEqual(payload.data, APP_CONFIG.AUTH.data);
         return isVerified ? payload.data : null;
     }
-    getAdminInfo() {
-        return this.authModel.findOne().exec();
+    async getAdminInfo() {
+        const adminInfo = await this.authModel.findOne(value_constant_1.UNDEFINED, '-_id').exec();
+        return adminInfo ? adminInfo.toObject() : auth_model_1.DEFAULT_AUTH;
     }
     async putAdminInfo(auth) {
-        const password = (0, codec_transformer_1.decodeBase64)(auth.password);
-        const new_password = (0, codec_transformer_1.decodeBase64)(auth.new_password);
-        Reflect.deleteProperty(auth, 'password');
-        Reflect.deleteProperty(auth, 'new_password');
+        const { password, new_password } = auth, restAuth = __rest(auth, ["password", "new_password"]);
+        let newPassword;
         if (password || new_password) {
             if (!password || !new_password) {
-                throw '密码不完整或无效';
+                throw 'Incomplete passwords';
             }
             if (password === new_password) {
-                throw '新旧密码不可一致';
+                throw 'Old password and new password cannot be same';
             }
-        }
-        const extantAuth = await this.authModel.findOne(null, '+password').exec();
-        if (password) {
-            const oldPassword = (0, codec_transformer_1.decodeMd5)(password);
-            const extantPassword = this.getExtantPassword(extantAuth);
-            if (oldPassword !== extantPassword) {
-                throw '原密码不正确';
+            const oldPassword = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(password));
+            const existedPassword = await this.getExistedPassword();
+            if (oldPassword !== existedPassword) {
+                throw 'Old password incorrect';
             }
             else {
-                auth.password = (0, codec_transformer_1.decodeMd5)(new_password);
+                newPassword = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(new_password));
             }
         }
-        const newAuthData = await (extantAuth && !!extantAuth._id
-            ? Object.assign(extantAuth, auth).save()
-            : this.authModel.create(auth));
-        const authData = newAuthData.toObject();
-        Reflect.deleteProperty(authData, 'password');
-        return authData;
+        const targetAuthData = Object.assign({}, restAuth);
+        if (newPassword) {
+            targetAuthData.password = newPassword;
+        }
+        const existedAuth = await this.authModel.findOne(value_constant_1.UNDEFINED, '+password').exec();
+        if (existedAuth) {
+            await Object.assign(existedAuth, targetAuthData).save();
+        }
+        else {
+            await this.authModel.create(targetAuthData);
+        }
+        return this.getAdminInfo();
     }
     async adminLogin(password) {
-        const auth = await this.authModel.findOne(null, '+password').exec();
-        const extantPassword = this.getExtantPassword(auth);
-        const loginPassword = (0, codec_transformer_1.decodeMd5)((0, codec_transformer_1.decodeBase64)(password));
-        if (loginPassword === extantPassword) {
+        const existedPassword = await this.getExistedPassword();
+        const loginPassword = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(password));
+        if (loginPassword === existedPassword) {
             return this.createToken();
         }
         else {
-            throw '密码不匹配';
+            throw 'Password incorrect';
         }
     }
 };

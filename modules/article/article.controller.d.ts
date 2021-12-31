@@ -14,17 +14,17 @@ export declare class ArticleController {
         origin: any;
         isAuthenticated: any;
     }): Promise<PaginateResult<Article>>;
-    createArticle(article: Article): Promise<Article>;
-    patchArticles(body: ArticlesStatePayload): Promise<import("mongodb").UpdateResult>;
-    delArticles(body: ArticlesPayload): Promise<import("mongodb").DeleteResult>;
     getArticle({ params, isAuthenticated }: {
         params: any;
         isAuthenticated: any;
     }): Promise<Article>;
+    createArticle(article: Article): Promise<Article>;
     putArticle({ params }: {
         params: any;
     }, article: Article): Promise<Article>;
     delArticle({ params }: {
         params: any;
     }): Promise<Article>;
+    patchArticles(body: ArticlesStatePayload): Promise<import("mongodb").UpdateResult>;
+    delArticles(body: ArticlesPayload): Promise<import("mongodb").DeleteResult>;
 }

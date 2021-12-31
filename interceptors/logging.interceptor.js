@@ -17,14 +17,14 @@ const logger_1 = __importDefault(require("../utils/logger"));
 let LoggingInterceptor = class LoggingInterceptor {
     intercept(context, next) {
         const call$ = next.handle();
-        if (!app_environment_1.isDevMode) {
+        if (!app_environment_1.isDevEnv) {
             return call$;
         }
         const request = context.switchToHttp().getRequest();
         const content = request.method + ' -> ' + request.url;
-        logger_1.default.debug('+++ 收到请求：', content);
+        logger_1.default.debug('+++ req：', content);
         const now = Date.now();
-        return call$.pipe((0, operators_1.tap)(() => logger_1.default.debug('--- 响应请求：', content, `${Date.now() - now}ms`)));
+        return call$.pipe((0, operators_1.tap)(() => logger_1.default.debug('--- res：', content, `${Date.now() - now}ms`)));
     }
 };
 LoggingInterceptor = __decorate([
