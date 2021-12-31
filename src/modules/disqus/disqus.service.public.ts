@@ -11,7 +11,6 @@ import { QueryVisitor } from '@app/decorators/query-params.decorator'
 import { CommentState } from '@app/interfaces/biz.interface'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
-import { isProdEnv } from '@app/app.environment'
 import { getExtendsObject, getExtendValue } from '@app/transformers/extend.transformer'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { DisqusPrivateService } from './disqus.service.private'
@@ -113,7 +112,6 @@ export class DisqusPublicService {
       body.author_email = comment.author.email
       body.author_name = comment.author.name
       body.author_url = comment.author.site
-      body.ip_address = isProdEnv ? comment.ip : null
     }
 
     return (
