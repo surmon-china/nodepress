@@ -12,7 +12,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "downlevelIteration": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",

@@ -14,7 +14,7 @@ export const databaseProvider = {
   inject: [EmailService],
   provide: DB_CONNECTION_TOKEN,
   useFactory: async (emailService: EmailService) => {
-    let reconnectionTask = null
+    let reconnectionTask: NodeJS.Timeout | null = null
     const RECONNECT_INTERVAL = 6000
 
     // 发送告警邮件（当发送邮件时，数据库已达到万劫不复之地）
@@ -38,8 +38,10 @@ export const databaseProvider = {
 
     mongoose.connection.on('open', () => {
       logger.info('[MongoDB]', 'readied!')
-      clearTimeout(reconnectionTask)
-      reconnectionTask = null
+      if (reconnectionTask) {
+        clearTimeout(reconnectionTask)
+        reconnectionTask = null
+      }
     })
 
     mongoose.connection.on('disconnected', () => {

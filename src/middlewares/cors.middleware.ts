@@ -6,7 +6,7 @@
 
 import { Request, Response } from 'express'
 import { Injectable, NestMiddleware, HttpStatus, RequestMethod } from '@nestjs/common'
-import { isDevMode } from '@app/app.environment'
+import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
 
 /**
@@ -44,11 +44,12 @@ export class CorsMiddleware implements NestMiddleware {
     ]
 
     // Allow Origin
-    if (!origin || allowedOrigins.includes(origin) || isDevMode) {
+    if (!origin || allowedOrigins.includes(origin) || isDevEnv) {
       response.setHeader('Access-Control-Allow-Origin', origin || '*')
     }
 
     // Headers
+    response.header('Access-Control-Allow-Credentials', 'true')
     response.header('Access-Control-Allow-Headers', allowedHeaders.join(','))
     response.header('Access-Control-Allow-Methods', allowedMethods.map(getMethod).join(','))
     response.header('Access-Control-Max-Age', '1728000')

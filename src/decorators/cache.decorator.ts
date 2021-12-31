@@ -8,7 +8,6 @@ import lodash from 'lodash'
 import { SetMetadata, CacheKey } from '@nestjs/common'
 import * as META from '@app/constants/meta.constant'
 
-// 缓存器配置
 export interface HttpCacheOption {
   ttl?: number
   key?: string
@@ -17,7 +16,6 @@ export interface HttpCacheOption {
 /**
  * 统配构造器
  * @function HttpCache
- * @description 两种用法
  * @example `@HttpCache(CACHE_KEY, 60 * 60)`
  * @example `@HttpCache({ key: CACHE_KEY, ttl: 60 * 60 })`
  */

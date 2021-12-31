@@ -7,7 +7,7 @@
 import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions } from '@typegoose/typegoose'
-import { IsString, MaxLength, IsAlphanumeric, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -27,19 +27,19 @@ export class Category {
   @prop({ unique: true })
   id: number
 
-  @IsNotEmpty({ message: '分类名称？' })
-  @IsString({ message: '字符串？' })
+  @IsNotEmpty()
+  @IsString()
   @prop({ required: true, validate: /\S+/ })
   name: string
 
-  @IsNotEmpty({ message: '分类别名？' })
-  @IsString({ message: '字符串？' })
-  @IsAlphanumeric('en-US', { message: 'slug 只允许字母和数字' })
+  @Matches(/^[a-zA-Z0-9-_]+$/)
+  @IsNotEmpty({ message: 'slug?' })
+  @IsString()
   @MaxLength(30)
-  @prop({ required: true, validate: /\S+/ })
+  @prop({ required: true, validate: /^[a-zA-Z0-9-_]+$/, unique: true })
   slug: string
 
-  @IsString({ message: '字符串？' })
+  @IsString({ message: 'description must be string type' })
   @prop()
   description: string
 
@@ -54,9 +54,10 @@ export class Category {
 
   @IsArray()
   @ArrayUnique()
-  @prop({ _id: false, type: () => [Extend] })
+  @prop({ _id: false, default: [], type: () => [Extend] })
   extends: Extend[]
 
+  // for article aggregate
   count?: number
 }
 

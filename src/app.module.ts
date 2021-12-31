@@ -31,8 +31,9 @@ import { TagModule } from '@app/modules/tag/tag.module'
 import { CategoryModule } from '@app/modules/category/category.module'
 import { ArticleModule } from '@app/modules/article/article.module'
 import { CommentModule } from '@app/modules/comment/comment.module'
-import { LikeModule } from '@app/modules/like/like.module'
+import { DisqusModule } from '@app/modules/disqus/disqus.module'
 import { ArchiveModule } from '@app/modules/archive/archive.module'
+import { VoteModule } from '@app/modules/vote/vote.module'
 
 @Module({
   imports: [
@@ -48,8 +49,9 @@ import { ArchiveModule } from '@app/modules/archive/archive.module'
     CategoryModule,
     ArticleModule,
     CommentModule,
-    LikeModule,
+    DisqusModule,
     ArchiveModule,
+    VoteModule,
   ],
   controllers: [AppController],
   providers: [

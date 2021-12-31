@@ -27,14 +27,14 @@ export class Announcement {
   @prop({ unique: true })
   id: number
 
-  @IsNotEmpty({ message: '内容？' })
-  @IsString({ message: '字符串？' })
+  @IsNotEmpty({ message: 'content?' })
+  @IsString({ message: 'string?' })
   @prop({ required: true, validate: /\S+/ })
   content: string
 
   @IsDefined()
   @IsIn([PublishState.Draft, PublishState.Published])
-  @IsInt({ message: '数字？' })
+  @IsInt({ message: 'PublishState?' })
   @prop({ enum: PublishState, default: PublishState.Published, index: true })
   state: PublishState
 

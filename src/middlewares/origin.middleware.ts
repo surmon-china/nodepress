@@ -7,7 +7,7 @@
 import { Request, Response } from 'express'
 import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common'
 import { HttpResponseError, ResponseStatus } from '@app/interfaces/http.interface'
-import { isProdMode } from '@app/app.environment'
+import { isProdEnv } from '@app/app.environment'
 import { CROSS_DOMAIN } from '@app/app.config'
 import * as TEXT from '@app/constants/text.constant'
 
@@ -18,8 +18,8 @@ import * as TEXT from '@app/constants/text.constant'
 @Injectable()
 export class OriginMiddleware implements NestMiddleware {
   use(request: Request, response: Response, next) {
-    // 如果是生产环境，需要验证用户来源渠道，防止非正常请求
-    if (isProdMode) {
+    // referer when production
+    if (isProdEnv) {
       const { origin, referer } = request.headers
       const checkHeader = (field) => !field || field.includes(CROSS_DOMAIN.allowedReferer)
       const isVerifiedOrigin = checkHeader(origin)
@@ -33,7 +33,6 @@ export class OriginMiddleware implements NestMiddleware {
       }
     }
 
-    // 其他通行
     return next()
   }
 }

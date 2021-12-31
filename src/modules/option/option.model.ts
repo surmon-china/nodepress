@@ -5,31 +5,61 @@
  */
 
 import { prop, modelOptions } from '@typegoose/typegoose'
-import { IsString, IsInt, IsUrl, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator'
+import { Type } from 'class-transformer'
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsInt,
+  IsObject,
+  IsUrl,
+  IsNotEmpty,
+  IsArray,
+  ValidateNested,
+  ArrayUnique,
+} from 'class-validator'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
-// 元信息
+export const DEFAULT_OPTION = Object.freeze<Option>({
+  title: '',
+  sub_title: '',
+  description: '',
+  keywords: [],
+  site_url: '',
+  site_email: '',
+  blocklist: {
+    ips: [],
+    mails: [],
+    keywords: [],
+  },
+  meta: { likes: 0 },
+  ad_config: '',
+})
+
 class Meta {
   @IsInt()
   @prop({ default: 0 })
   likes: number
 }
 
-// 黑名单
-export class Blacklist {
+// user block list
+export class Blocklist {
   @IsArray()
   @ArrayUnique()
-  @prop({ type: () => [String] })
+  @IsOptional()
+  @prop({ type: () => [String], default: [] })
   ips: string[]
 
   @IsArray()
   @ArrayUnique()
-  @prop({ type: () => [String] })
+  @IsOptional()
+  @prop({ type: () => [String], default: [] })
   mails: string[]
 
   @IsArray()
   @ArrayUnique()
-  @prop({ type: () => [String] })
+  @IsOptional()
+  @prop({ type: () => [String], default: [] })
   keywords: string[]
 }
 
@@ -42,53 +72,54 @@ export class Blacklist {
   },
 })
 export class Option {
-  @IsNotEmpty({ message: '标题？' })
+  @IsNotEmpty({ message: 'title?' })
   @IsString()
   @prop({ required: true, validate: /\S+/ })
   title: string
 
-  @IsNotEmpty({ message: '副标题？' })
+  @IsNotEmpty({ message: 'sub title?' })
   @IsString()
   @prop({ required: true, validate: /\S+/ })
   sub_title: string
 
-  // 关键字
-  @IsArray()
-  @ArrayUnique()
-  @prop({ type: () => [String] })
-  keywords: string[]
-
-  // 网站描述
+  @IsNotEmpty()
   @IsString()
-  @prop()
+  @prop({ required: true })
   description: string
 
-  // 站点地址
+  @IsArray()
+  @ArrayUnique()
+  @IsOptional()
+  @prop({ type: () => [String], default: [] })
+  keywords: string[]
+
+  @IsNotEmpty()
   @IsString()
-  @IsUrl()
+  @IsUrl({ require_protocol: true })
   @prop({ required: true })
   site_url: string
 
-  // 网站官邮
+  @IsEmail()
   @IsString()
+  @IsNotEmpty()
   @prop({ required: true })
   site_email: string
 
-  // 备案号
-  @IsString()
-  @prop({ required: true })
-  site_icp: string
-
-  // 黑名单
-  @prop({ _id: false })
-  blacklist: Blacklist
-
-  // 其他元信息
+  // site meta info
   @prop({ _id: false })
   meta: Meta
 
-  // 广告配置
+  // site user block list
+  @Type(() => Blocklist)
+  @ValidateNested()
+  @IsObject()
+  @IsOptional()
+  @prop({ _id: false })
+  blocklist: Blocklist
+
+  // ad config
   @IsString()
+  @IsOptional()
   @prop({ default: '' })
   ad_config: string
 

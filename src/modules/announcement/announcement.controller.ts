@@ -21,7 +21,7 @@ export class AnnouncementController {
   @Get()
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
-  @HttpProcessor.handle('获取公告')
+  @HttpProcessor.handle('Get announcements')
   getAnnouncements(
     @QueryParams([QueryParamsField.State]) { querys, options, origin }
   ): Promise<PaginateResult<Announcement>> {
@@ -30,34 +30,34 @@ export class AnnouncementController {
       querys.content = new RegExp(keyword, 'i')
     }
 
-    return this.announcementService.getList(querys, options)
+    return this.announcementService.paginater(querys, options)
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('添加公告')
-  createAnnouncement(@Body() announcement: Announcement): Promise<Announcement> {
+  @HttpProcessor.handle('Create announcement')
+  createAnnouncement(@Body() announcement: Announcement) {
     return this.announcementService.create(announcement)
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('批量删除公告')
+  @HttpProcessor.handle('Delete announcements')
   delAnnouncements(@Body() body: AnnouncementsPayload) {
     return this.announcementService.batchDelete(body.announcement_ids)
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('修改公告')
-  putAnnouncement(@QueryParams() { params }, @Body() announcement: Announcement): Promise<Announcement> {
+  @HttpProcessor.handle('Update announcement')
+  putAnnouncement(@QueryParams() { params }, @Body() announcement: Announcement) {
     return this.announcementService.update(params.id, announcement)
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('删除单个公告')
-  delAnnouncement(@QueryParams() { params }): Promise<Announcement> {
+  @HttpProcessor.handle('Delete announcement')
+  delAnnouncement(@QueryParams() { params }) {
     return this.announcementService.delete(params.id)
   }
 }

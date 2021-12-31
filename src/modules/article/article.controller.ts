@@ -5,6 +5,7 @@
  */
 
 import lodash from 'lodash'
+import { isValidObjectId } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common'
 import { QueryParams, QueryParamsField as QueryField } from '@app/decorators/query-params.decorator'
 import { HttpProcessor } from '@app/decorators/http.decorator'
@@ -15,7 +16,7 @@ import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { PaginateResult } from '@app/utils/paginate'
 import { Article, ArticlesPayload, ArticlesStatePayload } from './article.model'
-import { ArticleService } from './article.service'
+import { ArticleService, COMMON_HOT_SORT_PARAMS } from './article.service'
 
 @Controller('article')
 export class ArticleController {
@@ -28,7 +29,7 @@ export class ArticleController {
   @Get()
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
-  @HttpProcessor.handle('获取文章')
+  @HttpProcessor.handle('Get articles')
   getArticles(
     @QueryParams([
       QueryField.Date,
@@ -46,9 +47,8 @@ export class ArticleController {
     // 如果是请求热门文章，则判断如何处理（注：前后台都会请求热门文章）
     if (Number(origin.sort) === SortType.Hot) {
       // 设置热排参数
-      options.sort = this.articleService.getHotSortOption()
-
-      // 前台缓存请求，则忽略一切后续处理
+      options.sort = COMMON_HOT_SORT_PARAMS
+      // request cache from user
       if (!isAuthenticated && querys.cache) {
         return this.articleService.getUserHotListCache()
       }
@@ -80,65 +80,64 @@ export class ArticleController {
     const matchedField = matchedParam?.field
     const matchedSlug = matchedField && querys[matchedField]
     return !matchedSlug
-      ? this.articleService.getList(querys, options)
+      ? this.articleService.paginater(querys, options)
       : matchedParam.service(matchedSlug).then((param) => {
           const paramField = matchedParam.name
           const paramId = param?._id
           if (paramId) {
             querys = Object.assign(querys, { [paramField]: paramId })
             Reflect.deleteProperty(querys, matchedField)
-            return this.articleService.getList(querys, options)
+            return this.articleService.paginater(querys, options)
           } else {
-            return Promise.reject(`条件 ${matchedField} -> ${matchedSlug} 不存在`)
+            return Promise.reject(`条件 ${matchedField} > ${matchedSlug} 不存在`)
           }
         })
-  }
-
-  @Post()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('添加文章')
-  createArticle(@Body() article: Article): Promise<Article> {
-    return this.articleService.create(article)
-  }
-
-  @Patch()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('批量更新文章')
-  patchArticles(@Body() body: ArticlesStatePayload) {
-    return this.articleService.batchPatchState(body.article_ids, body.state)
-  }
-
-  @Delete()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('批量删除文章')
-  delArticles(@Body() body: ArticlesPayload) {
-    return this.articleService.batchDelete(body.article_ids)
   }
 
   @Get(':id')
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.handle({
-    message: '获取文章详情',
+    message: 'Get article detail',
     error: HttpStatus.NOT_FOUND,
   })
   getArticle(@QueryParams() { params, isAuthenticated }): Promise<Article> {
-    const isObjectId = isNaN(Number(params.id))
-    return isAuthenticated && isObjectId
-      ? this.articleService.getDetailByObjectId(params.id)
-      : this.articleService.getFullDetailForUser(params.id)
+    return isAuthenticated && isValidObjectId(params.id)
+      ? this.articleService.getDetailByObjectID(params.id)
+      : this.articleService.getFullDetailForUser(isNaN(params.id) ? String(params.id) : Number(params.id))
+  }
+
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('Create article')
+  createArticle(@Body() article: Article): Promise<Article> {
+    return this.articleService.create(article)
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('修改文章')
+  @HttpProcessor.handle('Update article')
   putArticle(@QueryParams() { params }, @Body() article: Article): Promise<Article> {
     return this.articleService.update(params.id, article)
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('删除单个文章')
+  @HttpProcessor.handle('Delete article')
   delArticle(@QueryParams() { params }): Promise<Article> {
     return this.articleService.delete(params.id)
+  }
+
+  @Patch()
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('Update articles')
+  patchArticles(@Body() body: ArticlesStatePayload) {
+    return this.articleService.batchPatchState(body.article_ids, body.state)
+  }
+
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('Delete articles')
+  delArticles(@Body() body: ArticlesPayload) {
+    return this.articleService.batchDelete(body.article_ids)
   }
 }

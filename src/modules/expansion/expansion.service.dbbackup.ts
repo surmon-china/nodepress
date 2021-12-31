@@ -14,7 +14,6 @@ import { CloudStorageService } from '@app/processors/helper/helper.service.cs'
 import logger from '@app/utils/logger'
 import * as APP_CONFIG from '@app/app.config'
 
-// Config
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5
 const UPLOAD_INTERVAL = '0 0 3 * * *'
 const BACKUP_FILE_NAME = 'nodepress.tar.gz'
@@ -54,14 +53,14 @@ export class DBBackupService {
         this.cloudStorageService
           .uploadFile(fileName, BACKUP_DATA_PATH, APP_CONFIG.DB_BACKUP.region, APP_CONFIG.DB_BACKUP.bucket)
           .then((result) => {
-            logger.info('[expansion]', 'DB Backup 备份数据上传成功!', {
+            logger.info('[expansion]', 'DB Backup succeed!', {
               name: result.name,
               url: result.url,
             })
             return resolve()
           })
           .catch((error) => {
-            logger.warn('[expansion]', 'DB Backup 备份数据失败!', error)
+            logger.warn('[expansion]', 'DB Backup failed!', error)
             reject(JSON.stringify(error.message))
           })
       })

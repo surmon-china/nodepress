@@ -6,15 +6,15 @@
 
 import { Module } from '@nestjs/common'
 import { OptionModule } from '@app/modules/option/option.module'
-import { ArticleProvider } from '@app/modules/article/article.model'
+import { ArticleModule } from '@app/modules/article/article.module'
 import { CommentController } from './comment.controller'
 import { CommentProvider } from './comment.model'
 import { CommentService } from './comment.service'
 
 @Module({
-  imports: [OptionModule],
+  imports: [OptionModule, ArticleModule],
   controllers: [CommentController],
-  providers: [CommentProvider, ArticleProvider, CommentService],
+  providers: [CommentProvider, CommentService],
   exports: [CommentService],
 })
 export class CommentModule {}

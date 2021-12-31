@@ -7,6 +7,7 @@
 import { AuthGuard } from '@nestjs/passport'
 import { ExecutionContext, Injectable } from '@nestjs/common'
 import { HttpUnauthorizedError } from '@app/errors/unauthorized.error'
+import { UNDEFINED } from '@app/constants/value.constant'
 
 /**
  * @class HumanizedJwtAuthGuard
@@ -24,13 +25,13 @@ export class HumanizedJwtAuthGuard extends AuthGuard('jwt') {
    * @description 如果 Token 不存在或 Token 存在并有效，都是通行
    */
   handleRequest(error, authInfo, errInfo) {
-    const okToken = Boolean(authInfo)
+    const validToken = Boolean(authInfo)
     // MARK: https://github.com/mikenicholson/passport-jwt/issues/174
-    const noToken = !authInfo && errInfo?.message === 'No auth token'
-    if (!error && (okToken || noToken)) {
+    const emptyToken = !authInfo && errInfo?.message === 'No auth token'
+    if (!error && (validToken || emptyToken)) {
       return authInfo
     } else {
-      throw error || new HttpUnauthorizedError(null, errInfo?.message)
+      throw error || new HttpUnauthorizedError(UNDEFINED, errInfo?.message)
     }
   }
 }

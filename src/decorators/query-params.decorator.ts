@@ -5,11 +5,12 @@
  */
 
 import lodash from 'lodash'
-import { Types } from 'mongoose'
+import { Types, isValidObjectId } from 'mongoose'
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
+import { VALIDATION_ERROR_DEFAULT, HTTP_PARAMS_PERMISSION_ERROR_DEFAULT } from '@app/constants/text.constant'
+import { PublishState, PublicState, OriginState, CommentState, SortType } from '@app/interfaces/biz.interface'
 import { HttpForbiddenError } from '@app/errors/forbidden.error'
 import { HttpBadRequestError } from '@app/errors/bad-request.error'
-import { PublishState, PublicState, OriginState, CommentState, SortType } from '@app/interfaces/biz.interface'
 import { PaginateOptions } from '@app/utils/paginate'
 
 // 预置转换器可选字段
@@ -28,22 +29,27 @@ export enum QueryParamsField {
 
 // 内部参数类型
 export interface QueryParamsConfig extends Omit<PaginateOptions, 'populate' | 'select'> {
-  [key: string]: string | number | boolean | Types.ObjectId | Date | RegExp | QueryParamsConfig
+  [key: string]: void | string | number | boolean | Types.ObjectId | Date | RegExp | QueryParamsConfig | any
 }
 
-// 导出结构
+export interface QueryVisitor {
+  ip: string
+  ua: string
+  referer: string
+}
+
+export interface cookies {
+  [key: string]: string
+}
+
 export interface QueryParamsResult {
-  querys: QueryParamsConfig // 用于 paginate 的查询参数
-  options: QueryParamsConfig // 用于 paginate 的查询配置参数
-  params: QueryParamsConfig // 路由参数
-  origin: QueryParamsConfig // 原味的 querys 参数
+  querys: Partial<QueryParamsConfig> // 用于 paginate 的查询参数
+  options: Partial<QueryParamsConfig> // 用于 paginate 的查询配置参数
+  params: Partial<QueryParamsConfig> // 路由参数
+  origin: Partial<QueryParamsConfig> // 原味的 querys 参数
   request: any // 用于 request 的对象
-  visitors: {
-    // 访客信息
-    ip: string // 真实 IP
-    ua: string // 用户 UA
-    referer: string // 跳转来源
-  }
+  visitor: QueryVisitor
+  cookies: cookies
   isAuthenticated: boolean // 是否鉴权
 }
 
@@ -72,7 +78,6 @@ interface ValidateError {
  */
 export const QueryParams = createParamDecorator(
   (customConfig: TransformConfig[], context: ExecutionContext): QueryParamsResult => {
-    // context to request
     const request = context.switchToHttp().getRequest()
 
     // from passport middleware
@@ -81,7 +86,7 @@ export const QueryParams = createParamDecorator(
     const isAuthenticated = request.isAuthenticated()
 
     // 字段转换配置（字符串则代表启用，对象则代表默认值）
-    const transformConfig: QueryParamsConfig = {
+    const transformConfig: Partial<QueryParamsConfig> = {
       [QueryParamsField.Page]: 1,
       [QueryParamsField.PerPage]: true,
       [QueryParamsField.ParamsId]: 'id',
@@ -101,10 +106,10 @@ export const QueryParams = createParamDecorator(
     }
 
     // 查询参数
-    const querys: QueryParamsConfig = {}
+    const querys: Partial<QueryParamsConfig> = {}
 
     // 过滤条件
-    const options: QueryParamsConfig = {}
+    const options: Partial<QueryParamsConfig> = {}
 
     // 路径参数
     const params: QueryParamsConfig = lodash.merge({ url: request.url }, request.params)
@@ -123,26 +128,31 @@ export const QueryParams = createParamDecorator(
 
     // 参数提取验证规则
     // 1. field 用于校验这个字段是否被允许用做参数
-    // 2. isAllowed 请求参数是否在允许规则之内 -> 400
-    // 3. isIllegal 请求参数是否不合法地调用了管理员权限参数 -> 403
+    // 2. isAllowed 请求参数是否在允许规则之内 > 400
+    // 3. isIllegal 请求参数是否不合法地调用了管理员权限参数 > 403
     // 任一条件返回错误；否则，设置或重置参数
     const validates: ValidateError[] = [
       {
-        name: '路由/ID',
+        name: 'params.id',
         field: QueryParamsField.ParamsId,
         isAllowed: true,
-        isIllegal: paramsId != null && !isAuthenticated && isNaN(paramsId),
+        isIllegal: paramsId != null && !isAuthenticated && isValidObjectId(paramsId),
         setValue() {
-          // 如果用户传了 ID，则转为数字或 ObjectId
           if (paramsId != null) {
-            params[transformConfig.paramsId as string] = isNaN(paramsId)
-              ? new Types.ObjectId(paramsId)
-              : Number(paramsId)
+            params[transformConfig.paramsId as string] =
+              // ObjectId
+              isValidObjectId(paramsId)
+                ? new Types.ObjectId(paramsId)
+                : isNaN(paramsId)
+                ? // slug
+                  String(paramsId)
+                : // number ID
+                  Number(paramsId)
           }
         },
       },
       {
-        name: '排序/sort',
+        name: 'query.sort',
         field: QueryParamsField.Sort,
         isAllowed: lodash.isUndefined(sort) || [SortType.Asc, SortType.Desc, SortType.Hot].includes(sort),
         isIllegal: false,
@@ -153,7 +163,7 @@ export const QueryParams = createParamDecorator(
         },
       },
       {
-        name: '目标页/page',
+        name: 'query.page',
         field: QueryParamsField.Page,
         isAllowed: lodash.isUndefined(page) || (lodash.isInteger(page) && Number(page) > 0),
         isIllegal: false,
@@ -164,7 +174,7 @@ export const QueryParams = createParamDecorator(
         },
       },
       {
-        name: '每页数量/per_page',
+        name: 'query.per_page',
         field: QueryParamsField.PerPage,
         isAllowed:
           lodash.isUndefined(per_page) ||
@@ -177,7 +187,7 @@ export const QueryParams = createParamDecorator(
         },
       },
       {
-        name: '日期查询/date',
+        name: 'query.date',
         field: QueryParamsField.Date,
         isAllowed: lodash.isUndefined(date) || new Date(date).toString() !== 'Invalid Date',
         isIllegal: false,
@@ -192,7 +202,8 @@ export const QueryParams = createParamDecorator(
         },
       },
       {
-        name: '发布状态/state', // 评论或其他数据
+        // comment or article BIZ
+        name: 'query.state',
         field: QueryParamsField.State,
         isAllowed:
           lodash.isUndefined(state) ||
@@ -205,12 +216,12 @@ export const QueryParams = createParamDecorator(
           state !==
             (transformConfig[QueryParamsField.CommentState] ? CommentState.Published : PublishState.Published),
         setValue() {
-          // 管理员/任意状态 || 普通用户/已发布
+          // admin/any || user/Published
           if (state != null) {
             querys.state = state
             return false
           }
-          // 普通用户/未设置
+          // user
           if (!isAuthenticated) {
             querys.state = transformConfig[QueryParamsField.CommentState]
               ? CommentState.Published
@@ -219,26 +230,26 @@ export const QueryParams = createParamDecorator(
         },
       },
       {
-        name: '公开状态/public',
+        name: 'query.public',
         field: QueryParamsField.Public,
         isAllowed:
           lodash.isUndefined(ppublic) ||
           [PublicState.Public, PublicState.Password, PublicState.Secret].includes(ppublic),
         isIllegal: ppublic != null && !isAuthenticated && ppublic !== PublicState.Public,
         setValue() {
-          // 管理员/任意状态 || 普通用户/公开
+          // admin/any || user/Public
           if (ppublic != null) {
             querys.public = ppublic
             return false
           }
-          // 普通用户/未设置
+          // user
           if (!isAuthenticated) {
             querys.public = PublicState.Public
           }
         },
       },
       {
-        name: '来源状态/origin',
+        name: 'query.origin',
         field: QueryParamsField.Origin,
         isAllowed:
           lodash.isUndefined(origin) ||
@@ -253,18 +264,18 @@ export const QueryParams = createParamDecorator(
     ]
 
     // 验证字段是否被允许
-    const isEnableField = (field) => field != null && field !== false
+    const isEnabledField = (field) => field != null && field !== false
 
     // 验证参数及生成参数
     validates.forEach((validate) => {
-      if (!isEnableField(transformConfig[validate.field])) {
+      if (!isEnabledField(transformConfig[validate.field])) {
         return false
       }
       if (!validate.isAllowed) {
-        throw new HttpBadRequestError('参数不合法：' + validate.name)
+        throw new HttpBadRequestError(`${VALIDATION_ERROR_DEFAULT}: ${validate.name}`)
       }
       if (validate.isIllegal) {
-        throw new HttpForbiddenError('权限与参数匹配不合法：' + validate.name)
+        throw new HttpForbiddenError(`${HTTP_PARAMS_PERMISSION_ERROR_DEFAULT}: ${validate.name}`)
       }
       validate.setValue()
     })
@@ -292,29 +303,27 @@ export const QueryParams = createParamDecorator(
     request.queryParams = { querys, options, params, isAuthenticated }
 
     // 来源 IP
-    const ip = (
+    const ip =
       request.headers['x-forwarded-for'] ||
       request.headers['x-real-ip'] ||
       request.connection.remoteAddress ||
       request.socket.remoteAddress ||
-      request.connection.socket.remoteAddress ||
       request.ip ||
       request.ips[0]
-    ).replace('::ffff:', '')
 
-    // 用户标识
-    const ua = request.headers['user-agent']
-
-    const result = {
+    return {
+      isAuthenticated,
       querys,
       options,
       params,
       request,
       origin: request.query,
-      visitors: { ip, ua, referer: request.referer },
-      isAuthenticated,
+      cookies: request.cookies,
+      visitor: {
+        ip: ip.replace('::ffff:', '').replace('::1', ''),
+        ua: request.headers['user-agent'],
+        referer: request.referer,
+      },
     }
-
-    return result
   }
 )

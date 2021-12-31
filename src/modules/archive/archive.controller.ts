@@ -14,14 +14,14 @@ export class ArchiveController {
   constructor(private readonly archiveService: ArchiveService) {}
 
   @Get()
-  @HttpProcessor.handle('获取数据档案')
+  @HttpProcessor.handle('Get archive')
   getArchive(): Promise<ArchiveData> {
     return this.archiveService.getCache()
   }
 
   @Patch()
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('更新数据档案')
+  @HttpProcessor.handle('Update archive cache')
   updateArchive(): Promise<any> {
     return this.archiveService.updateCache()
   }

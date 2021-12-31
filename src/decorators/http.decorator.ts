@@ -7,6 +7,7 @@
 import lodash from 'lodash'
 import { SetMetadata, HttpStatus } from '@nestjs/common'
 import { ResponseMessage } from '@app/interfaces/http.interface'
+import { UNDEFINED } from '@app/constants/value.constant'
 import * as META from '@app/constants/meta.constant'
 import * as TEXT from '@app/constants/text.constant'
 
@@ -87,9 +88,9 @@ export function handle(...args) {
   const message: ResponseMessage = isOption(option) ? option.message : option
   const errMessage: ResponseMessage = message + TEXT.HTTP_ERROR_SUFFIX
   const successMessage: ResponseMessage = message + TEXT.HTTP_SUCCESS_SUFFIX
-  const errCode: HttpStatus = isOption(option) ? option.error : null
-  const successCode: HttpStatus = isOption(option) ? option.success : null
-  const usePaginate: boolean = isOption(option) ? option.usePaginate : null
+  const errCode = isOption(option) ? option.error : UNDEFINED
+  const successCode = isOption(option) ? option.success : UNDEFINED
+  const usePaginate = isOption(option) ? option.usePaginate : false
   return buildHttpDecorator({
     errCode,
     successCode,

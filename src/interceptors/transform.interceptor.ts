@@ -17,7 +17,7 @@ import * as TEXT from '@app/constants/text.constant'
 // 转换为标准的数据结构
 export function transformDataToPaginate<T>(data: PaginateResult<T>, request?: any): HttpPaginateResult<T[]> {
   return {
-    data: data.docs,
+    data: data.documents,
     params: request?.queryParams || null,
     pagination: {
       total: data.total,

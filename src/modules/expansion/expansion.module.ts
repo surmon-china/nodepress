@@ -12,11 +12,9 @@ import { ExpansionController } from './expansion.controller'
 import { StatisticService } from './expansion.service.statistic'
 import { DBBackupService } from './expansion.service.dbbackup'
 
-const services = [StatisticService, DBBackupService]
-
 @Module({
   controllers: [ExpansionController],
-  providers: [TagProvider, ArticleProvider, CommentProvider, ...services],
-  exports: services,
+  providers: [TagProvider, ArticleProvider, CommentProvider, StatisticService, DBBackupService],
+  exports: [StatisticService, DBBackupService],
 })
 export class ExpansionModule {}

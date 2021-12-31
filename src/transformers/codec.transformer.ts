@@ -8,12 +8,12 @@
 import { Base64 } from 'js-base64'
 import { createHash } from 'crypto'
 
-// Base64 编码
+// Base64
 export function decodeBase64(value: string): string {
   return value ? Base64.decode(value) : value
 }
 
-// md5 编码
-export function decodeMd5(value: string): string {
+// md5
+export function decodeMD5(value: string): string {
   return createHash('md5').update(value).digest('hex')
 }

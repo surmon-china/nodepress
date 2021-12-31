@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+### v3.7.0 (2021-12-31)
+
+**Feature**
+
+- [Like] rename `Like` module to `Vote`
+- [Disqus] add Disqus comment module
+- [Article] add `disabled_comment` field
+- [Article] remove `t_content` field
+- [Option] remove `icp` field
+- [Option] rename `blacklist` to `blocklist`
+- [Comment] remove `is_top` field
+- [Comment] add `dislikes` field
+- [Comment] hidden `ip`, `email` fields
+- [Comment] add `email_hash` virtual field
+- [Helper] IP location services to `ip-api.com` & `ipapi.co`
+
+**Chore**
+
+- Upgrade deps
+- Remove `geoip-lite` dep
+
 ### v3.6.4 (2021-12-21)
 
 **Chore**
