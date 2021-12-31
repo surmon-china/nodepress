@@ -13,7 +13,7 @@ const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 export const APP = {
   PORT: 8000,
   MASTER: 'Surmon',
-  NAME: 'Nodepress',
+  NAME: 'NodePress',
   URL: 'https://api.surmon.me',
   FE_NAME: 'Surmon.me',
   FE_URL: 'https://surmon.me',
