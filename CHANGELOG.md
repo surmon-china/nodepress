@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.2（2021-12-31）
+
+**Chore**
+
+- email text
+
 ### v3.7.0 (2021-12-31)
 
 **Feature**

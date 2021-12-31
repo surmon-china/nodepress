@@ -36,11 +36,11 @@ export class CommentService {
 
   private emailToAdminAndTargetAuthor(comment: Comment) {
     const isGuestbook = comment.post_id === CommentPostID.Guestbook
-    const commentTypeText = isGuestbook ? 'Guestbook comment' : 'Article comment'
+    const commentTypeText = isGuestbook ? 'guestbook comment' : 'article comment'
     const contextPrefix = `${commentTypeText} by ${comment.author.name}`
-    const getMailText = (contentPrefix) => `${contentPrefix} ${comment.content}`
+    const getMailText = (contentPrefix) => `${contentPrefix}: ${comment.content}`
     const getMailHtml = (contentPrefix) => `
-      <p>${contentPrefix}${comment.content}</p><br>
+      <p>${getMailText(contentPrefix)}</p><br>
       <a href="${getPermalinkByID(comment.post_id)}" target="_blank">[ Read more ]</a>
     `
 
