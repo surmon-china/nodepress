@@ -156,14 +156,6 @@ export class DisqusPrivateService {
 
     // 3. make XML data
     const treeList = Array.from(treeMap.values()).filter((item) => Boolean(item.article))
-
-    let count = 0
-    Array.from(treeList.values()).forEach((i) => {
-      count += i.comments.length
-    })
-
-    // console.log('articles', articles.length)
-    // console.log('all comments', count, guestbook.length, count + guestbook.length)
     return getDisqusXML(treeList, guestbook)
   }
 
@@ -177,7 +169,7 @@ export class DisqusPrivateService {
       attributeNamePrefix: '@',
     })
     const object = parser.parse(xml)
-    const threads: any[] = object.disqus.thread
+    // const threads: any[] = object.disqus.thread
     const posts: any[] = object.disqus.post
     // filter new data
     const filtered = posts.filter((post) => Boolean(post.id))
