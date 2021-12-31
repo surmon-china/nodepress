@@ -38,8 +38,8 @@ let AuthController = class AuthController {
         this.emailService.sendMail({
             subject,
             to: app_config_1.EMAIL.admin,
-            text: `${subject}，${content}`,
-            html: `${subject}，${content}`,
+            text: `${subject}, ${content}`,
+            html: `${subject}, ${content}`,
         });
         return token;
     }
