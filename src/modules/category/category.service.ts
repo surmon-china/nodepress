@@ -26,38 +26,40 @@ export class CategoryService {
     private readonly categoryModel: MongooseModel<Category>
   ) {}
 
-  // 请求分类列表（及聚和数据）
-  public async getList(querys, options: PaginateOptions, isAuthenticated): Promise<PaginateResult<Category>> {
+  public async paginater(querys, options: PaginateOptions, publicOnly: boolean): Promise<PaginateResult<Category>> {
     const matchState = {
       state: PublishState.Published,
       public: PublicState.Public,
     }
 
-    const categories = await this.categoryModel.paginate(querys, options)
+    const categories = await this.categoryModel.paginate(querys, { ...options, lean: true })
     const counts = await this.articleModel.aggregate([
-      { $match: isAuthenticated ? {} : matchState },
+      { $match: publicOnly ? matchState : {} },
       { $unwind: '$category' },
       { $group: { _id: '$category', num_tutorial: { $sum: 1 } } },
     ])
 
-    const categoriesObject = JSON.parse(JSON.stringify(categories))
-    const newDocs = categoriesObject.docs.map((category) => {
+    const hydratedDocs = categories.documents.map((category) => {
       const finded = counts.find((count) => String(count._id) === String(category._id))
-      return {
-        ...category,
-        count: finded ? finded.num_tutorial : 0,
-      }
+      return { ...category, count: finded ? finded.num_tutorial : 0 }
     })
 
-    return { ...categoriesObject, docs: newDocs }
+    return { ...categories, documents: hydratedDocs }
   }
 
-  // 创建分类
+  // get detail by slug
+  public getDetailBySlug(slug: string): Promise<Category> {
+    return this.categoryModel
+      .findOne({ slug })
+      .exec()
+      .then((result) => result || Promise.reject(`Category "${slug}" not found`))
+  }
+
+  // create category
   public async create(newCategory: Category): Promise<Category> {
-    // 检测 slug 重复
-    const categories = await this.categoryModel.find({ slug: newCategory.slug }).exec()
-    if (categories.length) {
-      throw '别名已被占用'
+    const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
+    if (existedCategory) {
+      throw `Category slug "${newCategory.slug}" is existed`
     }
 
     const category = await this.categoryModel.create(newCategory)
@@ -66,10 +68,10 @@ export class CategoryService {
     return category
   }
 
-  // 获取分类族谱
+  // get categories genealogy
   public getGenealogyById(categoryID: Types.ObjectId): Promise<Category[]> {
-    const categories = []
-    const findById = this.categoryModel.findById.bind(this.categoryModel)
+    const categories: Category[] = []
+    const findById = (id: Types.ObjectId) => this.categoryModel.findById(id).exec()
 
     return new Promise((resolve, reject) => {
       ;(function findCateItem(id) {
@@ -88,34 +90,32 @@ export class CategoryService {
     })
   }
 
-  // 获取标签详情（使用别名）
-  public getDetailBySlug(slug: string): Promise<Category> {
-    return this.categoryModel.findOne({ slug }).exec()
-  }
-
-  // 修改分类
+  // update category
   public async update(categoryID: Types.ObjectId, newCategory: Category): Promise<Category> {
-    // 检测 slug 重复
     const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
     if (existedCategory && String(existedCategory._id) !== String(categoryID)) {
-      throw '别名已被占用'
+      throw `Category slug "${newCategory.slug}" is existed`
     }
 
-    const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory as any, {
-      new: true,
-    })
+    const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory, { new: true }).exec()
+    if (!category) {
+      throw `Category "${categoryID}" not found`
+    }
     this.seoService.push(getCategoryUrl(category.slug))
     this.archiveService.updateCache()
     return category
   }
 
-  // 删除单个分类
+  // delete category
   public async delete(categoryID: Types.ObjectId) {
     const category = await this.categoryModel.findByIdAndRemove(categoryID).exec()
-    // 更新网站地图
+    if (!category) {
+      throw `Category "${categoryID}" not found`
+    }
+
+    // cache
     this.archiveService.updateCache()
     this.seoService.delete(getCategoryUrl(category.slug))
-
     // 处理子分类
     const categories = await this.categoryModel.find({ pid: categoryID }).exec()
     // 如果没有此分类的父分类，则删除 { pid: target.id } -> ok
@@ -132,13 +132,11 @@ export class CategoryService {
     return category
   }
 
-  // 批量删除分类（有顺序要求）
   public async batchDelete(categoryIDs: Types.ObjectId[]) {
-    // 先删缓存
+    // SEO remove
     const categories = await this.categoryModel.find({ _id: { $in: categoryIDs } }).exec()
     this.seoService.delete(categories.map((category) => getCategoryUrl(category.slug)))
-
-    // 再物理删除
+    // DB remove
     const actionResult = await this.categoryModel.deleteMany({ _id: { $in: categoryIDs } }).exec()
     this.archiveService.updateCache()
     return actionResult

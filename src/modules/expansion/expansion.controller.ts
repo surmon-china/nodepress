@@ -24,28 +24,28 @@ export class ExpansionController {
   ) {}
 
   @Get('statistic')
-  @HttpProcessor.handle('获取统计概览')
+  @HttpProcessor.handle('Get statistic')
   getSystemStatistics(): Promise<ITodayStatistic> {
     return this.statisticService.getStatistic()
   }
 
   @Get('uptoken')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('获取上传 Token ')
+  @HttpProcessor.handle('Get CS upload token')
   getCloudStorageUpToken(): Promise<IUpToken> {
     return this.cloudStorageService.getToken()
   }
 
   @Get('google-token')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('获取 Google Token ')
+  @HttpProcessor.handle('Get Google credentials')
   getGoogleToken(): Promise<Credentials> {
     return this.googleService.getCredentials()
   }
 
   @Patch('database-backup')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('更新数据库备份')
+  @HttpProcessor.handle('Update database backup')
   updateDatabaseBackup(): Promise<void> {
     return this.dbBackupService.backup()
   }

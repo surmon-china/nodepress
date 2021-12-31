@@ -4,22 +4,22 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
 import { Types } from 'mongoose'
+import { DocumentType } from '@typegoose/typegoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { getGuestbookPageUrl, getArticleUrl } from '@app/transformers/urlmap.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
+import { ArticleService } from '@app/modules/article/article.service'
 import { IPService } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
-import { AkismetService, EAkismetActionType } from '@app/processors/helper/helper.service.akismet'
+import { AkismetService, AkismetActionType } from '@app/processors/helper/helper.service.akismet'
+import { QueryVisitor } from '@app/decorators/query-params.decorator'
 import { OptionService } from '@app/modules/option/option.service'
-import { Blacklist } from '@app/modules/option/option.model'
-import { Article } from '@app/modules/article/article.model'
-import { isDevMode } from '@app/app.environment'
+import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { Comment, CreateCommentBase, CommentsStatePayload } from './comment.model'
+import { isProdEnv } from '@app/app.environment'
 import logger from '@app/utils/logger'
 import * as APP_CONFIG from '@app/app.config'
 
@@ -30,211 +30,242 @@ export class CommentService {
     private readonly emailService: EmailService,
     private readonly akismetService: AkismetService,
     private readonly optionService: OptionService,
-    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
+    private readonly articleService: ArticleService,
     @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>
   ) {}
 
-  // 邮件通知网站主及目标对象
-  private sendMailToAdminAndTargetUser(comment: Comment, permalink: string) {
-    const commentTypeText = comment.post_id === CommentPostID.Guestbook ? '留言' : '评论'
-    const getContextPrefix = (isReply) => {
-      const replyText = isReply ? '回复' : ''
-      return `来自 ${comment.author.name} 的${commentTypeText}${replyText}：`
-    }
-    const sendMailText = (contentPrefix) => `${contentPrefix}${comment.content}`
-    const sendMailHtml = (contentPrefix) => `
+  private emailToAdminAndTargetAuthor(comment: Comment) {
+    const isGuestbook = comment.post_id === CommentPostID.Guestbook
+    const commentTypeText = isGuestbook ? 'Guestbook comment' : 'Article comment'
+    const contextPrefix = `${commentTypeText} by ${comment.author.name}`
+    const getMailText = (contentPrefix) => `${contentPrefix} ${comment.content}`
+    const getMailHtml = (contentPrefix) => `
       <p>${contentPrefix}${comment.content}</p><br>
-      <a href="${permalink}" target="_blank">[ 点击查看 ]</a>
+      <a href="${getPermalinkByID(comment.post_id)}" target="_blank">[ Read more ]</a>
     `
 
+    // email to admin
     this.emailService.sendMail({
       to: APP_CONFIG.EMAIL.admin,
-      subject: `博客有新的${commentTypeText}`,
-      text: sendMailText(getContextPrefix(false)),
-      html: sendMailHtml(getContextPrefix(false)),
+      subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${commentTypeText}`,
+      text: getMailText(contextPrefix),
+      html: getMailHtml(contextPrefix),
     })
 
+    // email to parent comment author
     if (comment.pid) {
       this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
-        this.emailService.sendMail({
-          to: parentComment.author.email,
-          subject: `你在 ${APP_CONFIG.APP.NAME} 有新的${commentTypeText}回复`,
-          text: sendMailText(getContextPrefix(true)),
-          html: sendMailHtml(getContextPrefix(true)),
-        })
+        if (parentComment?.author.email) {
+          this.emailService.sendMail({
+            to: parentComment.author.email,
+            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${commentTypeText} reply`,
+            text: getMailText(`${contextPrefix} (reply)`),
+            html: getMailHtml(`${contextPrefix} (reply)`),
+          })
+        }
       })
     }
   }
 
-  // 使用 akismet 进行操作
-  private submitCommentAkismet(
-    action: EAkismetActionType,
-    comment: Comment,
-    permalink?: string,
-    referer?: string
-  ): Promise<void> {
+  private submitCommentAkismet(action: AkismetActionType, comment: Comment, referer?: string): Promise<void> {
     return this.akismetService[action]({
-      permalink,
-      user_ip: comment.ip,
-      user_agent: comment.agent,
-      referrer: referer,
-      comment_type: 'comment',
+      user_ip: comment.ip!,
+      user_agent: comment.agent!,
+      referrer: referer || '',
+      permalink: getPermalinkByID(comment.post_id),
+      comment_type: comment.pid ? 'reply' : 'comment',
       comment_author: comment.author.name,
       comment_author_email: comment.author.email,
       comment_author_url: comment.author.site,
       comment_content: comment.content,
-      is_test: isDevMode,
     })
   }
 
   // 更新当前所受影响的文章的评论聚合数据
   private async updateCommentCountWithArticle(postIDs: number[]) {
-    // 过滤无效 post_id 及留言板 ID/0
+    // filter invalid post_id & guestbook
     postIDs = postIDs || []
     postIDs = postIDs.map(Number).filter(Boolean)
-
     if (!postIDs.length) {
       return false
     }
 
     try {
       const counts = await this.commentModel.aggregate([
-        {
-          $match: { state: CommentState.Published, post_id: { $in: postIDs } },
-        },
+        { $match: { state: CommentState.Published, post_id: { $in: postIDs } } },
         { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } },
       ])
-
       if (!counts || !counts.length) {
-        this.articleModel
-          .updateOne(
-            { id: postIDs[0] },
-            {
-              $set: {
-                'meta.comments': 0,
-              },
-            }
-          )
-          .exec()
-        // .then(info => logger.info('[comment]', '评论聚合更新成功', info))
-        // .catch(error => logger.warn('[comment]', '评论聚合更新失败', error));
+        await this.articleService.updateMetaComments(postIDs[0], 0)
       } else {
-        counts.forEach((count) => {
-          this.articleModel
-            .updateOne(
-              { id: count._id },
-              {
-                $set: {
-                  'meta.comments': count.num_tutorial,
-                },
-              }
-            )
-            .exec()
-          // .then(info => logger.info('[comment]', '评论聚合更新成功', info))
-          // .catch(error => logger.warn('[comment]', '评论聚合更新失败', error));
-        })
+        await Promise.all(
+          counts.map((count) => this.articleService.updateMetaComments(count._id, count.num_tutorial))
+        )
       }
     } catch (error) {
-      logger.warn('[comment]', '更新评论 count 聚合数据前，查询失败', error)
+      logger.warn('[comment]', 'updateCommentCountWithArticle failed!', error)
     }
   }
 
-  // 根据操作状态处理评论转移 处理评论状态转移，如果是将评论状态标记为垃圾邮件，则同时加入黑名单，以及 submitSpam
-  private async updateCommentsStateWithBlacklist(comments: Comment[], state: CommentState, referrer: string) {
-    const option = await this.optionService.getDBOption()
-    // 预期行为
-    const isSpam = state === CommentState.Spam
-    const action = isSpam ? EAkismetActionType.SubmitSpam : EAkismetActionType.SubmitHam
-
-    // 系统黑名单处理，目前不再处理关键词
-    const todoFields: {
-      [P in keyof Blacklist]?: (comment: Comment) => string
-    } = {
-      mails: (comment) => comment.author.email,
-      ips: (comment) => comment.ip,
-    }
-
-    // 如果是将评论状态标记为垃圾邮件，则加入黑名单，以及 submitSpam
-    // 如果是将评论状态标记为误标邮件，则移出黑名单，以及 submitHam
-    Object.keys(todoFields).forEach((field) => {
-      const data = option.blacklist[field]
-      const getCommentField = todoFields[field]
-      option.blacklist[field] = isSpam
-        ? lodash.uniq([...data, ...comments.map(getCommentField)])
-        : data.filter((value) => !comments.some((comment) => getCommentField(comment) === value))
-    })
-
-    // akismet 处理
-    comments.forEach((comment) => {
-      this.submitCommentAkismet(action, comment, null, referrer)
-    })
-
-    // 更新黑名单
-    option
-      .save()
-      .then(() => logger.info('[comment]', '评论状态转移后 -> 黑名单更新成功'))
-      .catch((error) => logger.warn('[comment]', '评论状态转移后 -> 黑名单更新失败', error))
+  // 根据操作状态处理评论转移，处理评论状态转移
+  private updateBlocklistAkismetWithComment(comments: Comment[], state: CommentState, referrer?: string) {
+    const isSPAM = state === CommentState.Spam
+    const action = isSPAM ? AkismetActionType.SubmitSpam : AkismetActionType.SubmitHam
+    //  SPAM > append to blocklist & submitSpam
+    //  HAM > remove from blocklist & submitHAM
+    // akismet
+    comments.forEach((comment) => this.submitCommentAkismet(action, comment, referrer))
+    // block list
+    const ips: string[] = comments.map((comment) => comment.ip!).filter(Boolean)
+    const emails: string[] = comments.map((comment) => comment.author.email!).filter(Boolean)
+    const blocklistAction = isSPAM
+      ? this.optionService.appendToBlocklist({ ips, emails })
+      : this.optionService.removeFromBlocklist({ ips, emails })
+    blocklistAction
+      .then(() => logger.info('[comment]', 'updateBlocklistAkismetWithComment.blocklistAction > succeed'))
+      .catch((error) => logger.warn('[comment]', 'updateBlocklistAkismetWithComment.blocklistAction > failed', error))
   }
 
-  // 检查评论是否匹配系统的黑名单规则（使用设置的黑名单 IP/邮箱/关键词 过滤）
-  private async validateCommentByBlacklist(comment: Comment) {
-    const { blacklist } = await this.optionService.getDBOption()
-    const { keywords, mails, ips } = blacklist
-    const blockIP = ips.includes(comment.ip)
-    const blockEmail = mails.includes(comment.author.email)
+  // validate comment by NodePress IP/email/keywords
+  public async isNotBlocklisted(comment: Comment): Promise<void> {
+    const { blocklist } = await this.optionService.getAppOption()
+    const { keywords, mails, ips } = blocklist
+    const blockIP = ips.includes(comment.ip!)
+    const blockEmail = mails.includes(comment.author.email!)
     const blockKeyword = keywords.length && new RegExp(`${keywords.join('|')}`, 'ig').test(comment.content)
     const isBlocked = blockIP || blockEmail || blockKeyword
     if (isBlocked) {
-      throw '内容 || IP || 邮箱 -> 不合法'
+      return Promise.reject('content | email | IP > blocked')
     }
   }
 
-  // 检查评论是否匹配 akismet 的黑名单规则
-  private validateCommentByAkismet(comment: Comment, permalink: string, referer: string): Promise<void> {
-    return this.submitCommentAkismet(EAkismetActionType.CheckSpam, comment, permalink, referer)
+  // validate comment target commentable
+  public async isCommentableTarget(targetPostID: number): Promise<void> {
+    if (targetPostID !== CommentPostID.Guestbook) {
+      const isCommentable = await this.articleService.isCommentableArticle(targetPostID)
+      if (!isCommentable) {
+        return Promise.reject(`Comment target ${targetPostID} was disabled comment`)
+      }
+    }
   }
 
-  // 请求评论列表
-  public getList(querys, options: PaginateOptions): Promise<PaginateResult<Comment>> {
-    return this.commentModel.paginate(querys, options)
+  public getAll(): Promise<Array<Comment>> {
+    return this.commentModel.find().exec()
   }
 
-  // 创建评论
-  public async create(comment: CreateCommentBase, { ip, ua, referer }): Promise<Comment> {
-    const newComment: Comment = {
+  // get comment list for client user
+  public async paginater(querys, options: PaginateOptions, hideIPEmail = false): Promise<PaginateResult<Comment>> {
+    // MARK: can't use 'lean' with virtual 'email_hash'
+    // MARK: can't use select('-email') with virtual 'email_hash'
+    // https://github.com/Automattic/mongoose/issues/3130#issuecomment-395750197
+    const result = await this.commentModel.paginate(querys, options)
+    if (!hideIPEmail) {
+      return result
+    }
+
+    return {
+      ...result,
+      documents: result.documents.map((item) => {
+        const data = item.toJSON()
+        Reflect.deleteProperty(data, 'ip')
+        Reflect.deleteProperty(data.author, 'email')
+        return data as Comment
+      }),
+    }
+  }
+
+  public normalizeNewComment(comment: CreateCommentBase, visitor: QueryVisitor): Comment {
+    return {
       ...comment,
-      ip,
-      likes: 0,
-      is_top: false,
       pid: Number(comment.pid),
       post_id: Number(comment.post_id),
       state: CommentState.Published,
-      agent: ua || comment.agent,
+      likes: 0,
+      dislikes: 0,
+      ip: visitor.ip,
+      ip_location: {},
+      agent: visitor.ua || comment.agent,
+      extends: [],
     }
+  }
 
-    // 永久链接
-    const permalink =
-      newComment.post_id === CommentPostID.Guestbook ? getGuestbookPageUrl() : getArticleUrl(newComment.post_id)
-
-    // 检验评论垃圾性质
-    await Promise.all([
-      this.validateCommentByBlacklist(newComment),
-      this.validateCommentByAkismet(newComment, permalink, referer),
-    ])
-    // 查询物理 IP 位置
-    const ip_location = await this.ipService.query(ip)
-    // 保存评论
+  // create comment
+  public async create(comment: Comment): Promise<Comment> {
+    const ip_location = isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null
     const succeedComment = await this.commentModel.create({
-      ...newComment,
+      ...comment,
       ip_location,
     })
-    // 发布成功后，向网站主及被回复者发送邮件提醒，更新文章聚合数据
-    this.sendMailToAdminAndTargetUser(succeedComment, permalink)
+    // update aggregate & email notification
     this.updateCommentCountWithArticle([succeedComment.post_id])
+    this.emailToAdminAndTargetAuthor(succeedComment)
     return succeedComment
   }
 
-  // 批量修改评论
+  // create comment from client
+  public async createFormClient(comment: CreateCommentBase, visitor: QueryVisitor): Promise<Comment> {
+    const newComment = this.normalizeNewComment(comment, visitor)
+    // 1. check commentable
+    await this.isCommentableTarget(newComment.post_id)
+    // 2. block list | akismet
+    await Promise.all([
+      this.isNotBlocklisted(newComment),
+      this.submitCommentAkismet(AkismetActionType.CheckSpam, newComment, visitor.referer),
+    ])
+    // 3. create
+    return this.create(newComment)
+  }
+
+  // get comment detail by ObjectID
+  public getDetailByObjectID(commentID: Types.ObjectId): Promise<Comment> {
+    return this.commentModel
+      .findById(commentID)
+      .exec()
+      .then((result) => result || Promise.reject(`Comment "${commentID}" not found`))
+  }
+
+  // get comment detail by number ID
+  public getDetailByNumberID(commentID: number): Promise<DocumentType<Comment>> {
+    return this.commentModel
+      .findOne({ id: commentID })
+      .exec()
+      .then((result) => result || Promise.reject(`Comment "${commentID}" not found`))
+  }
+
+  // vote comment
+  public async vote(commentID: number, isLike: boolean) {
+    const comment = await this.getDetailByNumberID(commentID)
+    isLike ? comment.likes++ : comment.dislikes++
+    await comment.save()
+    return {
+      likes: comment.likes,
+      dislikes: comment.dislikes,
+    }
+  }
+
+  // update comment
+  public async update(commentID: Types.ObjectId, newComment: Partial<Comment>, referer?: string): Promise<Comment> {
+    const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment, { new: true }).exec()
+    if (!comment) {
+      throw `Comment "${commentID}" not found`
+    }
+
+    this.updateCommentCountWithArticle([comment.post_id])
+    this.updateBlocklistAkismetWithComment([comment], comment.state, referer)
+    return comment
+  }
+
+  // delete comment
+  public async delete(commentID: Types.ObjectId): Promise<Comment> {
+    const comment = await this.commentModel.findByIdAndRemove(commentID).exec()
+    if (!comment) {
+      throw `Comment "${commentID}" not found`
+    }
+
+    this.updateCommentCountWithArticle([comment.post_id])
+    return comment
+  }
+
   public async batchPatchState(action: CommentsStatePayload, referer: string) {
     const { comment_ids, post_ids, state } = action
     const actionResult = await this.commentModel
@@ -243,42 +274,14 @@ export class CommentService {
     // 更新关联数据
     this.updateCommentCountWithArticle(post_ids)
     try {
-      const todoComments = await this.commentModel.find({
-        _id: { $in: comment_ids },
-      })
-      this.updateCommentsStateWithBlacklist(todoComments, state, referer)
+      const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } })
+      this.updateBlocklistAkismetWithComment(todoComments, state, referer)
     } catch (error) {
       logger.warn('[comment]', `对评论进行改变状态 ${state} 时，出现查询错误！`, error)
     }
     return actionResult
   }
 
-  // 获取单个评论详情
-  public getDetail(commentID: Types.ObjectId): Promise<Comment> {
-    return this.commentModel.findById(commentID).exec()
-  }
-
-  // 获取单个评论详情（使用数字 ID）
-  public getDetailByNumberId(commentID: number) {
-    return this.commentModel.findOne({ id: commentID }).exec()
-  }
-
-  // 修改评论
-  public async update(commentID: Types.ObjectId, newComment: Comment, referer: string): Promise<Comment> {
-    const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment as any, { new: true }).exec()
-    this.updateCommentCountWithArticle([comment.post_id])
-    this.updateCommentsStateWithBlacklist([comment], comment.state, referer)
-    return comment
-  }
-
-  // 删除单个评论
-  public async delete(commentID: Types.ObjectId): Promise<Comment> {
-    const comment = await this.commentModel.findByIdAndRemove(commentID).exec()
-    this.updateCommentCountWithArticle([comment.post_id])
-    return comment
-  }
-
-  // 批量删除评论
   public async batchDelete(commentIDs: Types.ObjectId[], postIDs: number[]) {
     const result = await this.commentModel.deleteMany({ _id: { $in: commentIDs } }).exec()
     this.updateCommentCountWithArticle(postIDs)

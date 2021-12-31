@@ -7,7 +7,20 @@
 import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, index, plugin, Ref, modelOptions } from '@typegoose/typegoose'
-import { IsString, IsNotEmpty, IsArray, IsDefined, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import {
+  IsString,
+  IsBoolean,
+  IsNotEmpty,
+  IsArray,
+  IsOptional,
+  IsDefined,
+  IsIn,
+  IsInt,
+  MaxLength,
+  Matches,
+  ArrayNotEmpty,
+  ArrayUnique,
+} from 'class-validator'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -24,7 +37,6 @@ export function getDefaultMeta(): Meta {
   }
 }
 
-// 元信息
 export class Meta {
   @IsInt()
   @prop({ default: 0 })
@@ -65,91 +77,97 @@ export class Article {
   @prop({ unique: true })
   id: number
 
-  @IsNotEmpty({ message: '文章标题？' })
-  @IsString({ message: '字符串？' })
+  @Matches(/^[a-zA-Z0-9-_]+$/)
+  @IsString()
+  @MaxLength(50)
+  @IsOptional()
+  @prop({ default: null, validate: /^[a-zA-Z0-9-_]+$/, index: true })
+  slug: string
+
+  @IsNotEmpty({ message: 'title?' })
+  @IsString({ message: 'string?' })
   @prop({ required: true, validate: /\S+/, text: true })
   title: string
 
-  @IsNotEmpty({ message: '文章内容？' })
-  @IsString({ message: '字符串？' })
+  @IsNotEmpty({ message: 'content?' })
+  @IsString({ message: 'string?' })
   @prop({ required: true, validate: /\S+/, text: true })
   content: string
 
-  // 列表时用的文章内容虚拟属性
-  get t_content(): string {
-    return this.content?.substring?.(0, 130)
-  }
-
-  @IsString({ message: '字符串？' })
+  @IsString()
   @prop({ text: true })
   description: string
 
-  // 缩略图
-  @IsString({ message: '字符串？' })
-  @prop()
-  thumb: string
-
-  // 文章密码 -> 密码状态生效
-  @IsString({ message: '字符串？' })
-  @prop({ default: '' })
-  password: string
-
-  // 文章关键字（SEO）
+  @IsDefined()
   @IsArray()
   @ArrayUnique()
   @prop({ type: () => [String] })
   keywords: string[]
 
-  // 文章发布状态
+  @IsString()
+  @IsOptional()
+  @prop()
+  thumb: string
+
+  // password
+  @IsString({ message: 'string?' })
+  @IsOptional()
+  @prop({ default: '' })
+  password: string
+
+  // disabled comment
+  @IsBoolean()
+  @prop({ default: false })
+  disabled_comment: boolean
+
+  // publish state
   @IsDefined()
   @IsIn([PublishState.Draft, PublishState.Published, PublishState.Recycle])
-  @IsInt({ message: '发布状态？' })
+  @IsInt({ message: 'PublishState?' })
   @prop({ enum: PublishState, default: PublishState.Published, index: true })
   state: PublishState
 
-  // 文章公开状态
+  // public state
   @IsDefined()
   @IsIn([PublicState.Public, PublicState.Secret, PublicState.Password])
-  @IsInt({ message: '公开状态？' })
+  @IsInt({ message: 'PublicState?' })
   @prop({ enum: PublicState, default: PublicState.Public, index: true })
   public: PublicState
 
-  // 文章转载状态
+  // origin state
   @IsDefined()
   @IsIn([OriginState.Hybrid, OriginState.Original, OriginState.Reprint])
-  @IsInt({ message: '转载状态？' })
+  @IsInt()
   @prop({ enum: OriginState, default: OriginState.Original, index: true })
   origin: OriginState
 
-  // 文章标签 https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
-  @prop({ ref: () => Tag, index: true })
-  tag: Ref<Tag>[]
-
-  // 文章分类
+  // category
   @IsArray()
-  @ArrayNotEmpty({ message: '文章分类？' })
+  @ArrayNotEmpty()
   @ArrayUnique()
   @prop({ ref: () => Category, required: true, index: true })
   category: Ref<Category>[]
 
-  // 其他元信息
+  // tag
+  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
+  @prop({ ref: () => Tag, index: true })
+  tag: Ref<Tag>[]
+
   @prop({ _id: false })
   meta: Meta
 
-  // 发布日期
   @prop({ default: Date.now, index: true, immutable: true })
   create_at?: Date
 
-  // 最后修改日期
   @prop({ default: Date.now })
   update_at?: Date
 
   @IsArray()
   @ArrayUnique()
-  @prop({ _id: false, type: () => [Extend] })
+  @prop({ _id: false, default: [], type: () => [Extend] })
   extends: Extend[]
 
-  // 相关文章
+  // releted articles
   related?: Article[]
 }
 
@@ -163,7 +181,7 @@ export class ArticlesPayload {
 export class ArticlesStatePayload extends ArticlesPayload {
   @IsDefined()
   @IsIn([PublishState.Draft, PublishState.Published, PublishState.Recycle])
-  @IsInt({ message: '有效状态？' })
+  @IsInt({ message: 'PublishState?' })
   @prop({ enum: PublishState, default: PublishState.Published })
   state: PublishState
 }

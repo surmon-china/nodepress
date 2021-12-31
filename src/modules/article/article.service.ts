@@ -20,6 +20,11 @@ import { SortType, PublicState, PublishState } from '@app/interfaces/biz.interfa
 import { Article, getDefaultMeta } from './article.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 
+export const COMMON_HOT_SORT_PARAMS = {
+  'meta.comments': SortType.Desc,
+  'meta.likes': SortType.Desc,
+}
+
 export const COMMON_USER_QUERY_PARAMS = Object.freeze({
   state: PublishState.Published,
   public: PublicState.Public,
@@ -27,7 +32,6 @@ export const COMMON_USER_QUERY_PARAMS = Object.freeze({
 
 @Injectable()
 export class ArticleService {
-  // 热门文章列表缓存
   private hotArticleListCache: CacheIntervalResult<PaginateResult<Article>>
 
   constructor(
@@ -44,139 +48,156 @@ export class ArticleService {
       },
       key: CACHE_KEY.HOT_ARTICLES,
       promise: () => {
-        return this.getList.bind(this)(COMMON_USER_QUERY_PARAMS, {
+        return this.paginater.bind(this)(COMMON_USER_QUERY_PARAMS, {
           perPage: 10,
-          sort: this.getHotSortOption(),
+          sort: COMMON_HOT_SORT_PARAMS,
         })
       },
     })
   }
 
-  // 热门文章列表缓存
   public getUserHotListCache(): Promise<PaginateResult<Article>> {
     return this.hotArticleListCache()
   }
 
-  // 获取目标文章的相关文章
+  // get releted articles
   private async getRelatedArticles(article: Article): Promise<Article[]> {
-    return this.articleModel
-      .find(
-        {
-          ...COMMON_USER_QUERY_PARAMS,
-          tag: { $in: article.tag.map((t) => (t as any)._id) },
-          category: { $in: article.category.map((c) => (c as any)._id) },
-        },
-        'id title description thumb meta create_at update_at -_id'
-      )
-      .exec()
-  }
-
-  // 得到热门排序配置
-  public getHotSortOption() {
-    return {
-      'meta.comments': SortType.Desc,
-      'meta.likes': SortType.Desc,
+    const findParams = {
+      ...COMMON_USER_QUERY_PARAMS,
+      tag: { $in: article.tag.map((t) => (t as any)._id) },
+      category: { $in: article.category.map((c) => (c as any)._id) },
     }
+    return this.articleModel.find(findParams, 'id title description thumb meta create_at update_at -_id').exec()
   }
 
-  // 请求文章列表
-  public getList(querys, options: PaginateOptions): Promise<PaginateResult<Article>> {
+  // get paginate articles
+  public paginater(querys, options: PaginateOptions): Promise<PaginateResult<Article>> {
     return this.articleModel.paginate(querys, {
+      ...options,
       populate: ['category', 'tag'],
       select: '-password -content',
-      ...options,
     })
   }
 
-  // 获取文章详情（使用 ObjectId）
-  public getDetailByObjectId(articleID: Types.ObjectId): Promise<Article> {
-    return this.articleModel.findById(articleID).exec()
+  // get articles by ids
+  public getList(articleIDs: number[]): Promise<Array<Article>> {
+    return this.articleModel.find({ id: { $in: articleIDs } }).exec()
   }
 
-  // 获取文章详情（使用数字 ID）
-  public getDetailByNumberId(articleID: number): Promise<DocumentType<Article>> {
+  // get article by ObjectId
+  public getDetailByObjectID(articleID: Types.ObjectId): Promise<Article> {
     return this.articleModel
-      .findOne({
-        id: articleID,
-        ...COMMON_USER_QUERY_PARAMS,
-      })
+      .findById(articleID)
+      .exec()
+      .then((result) => result || Promise.reject(`Article "${articleID}" not found`))
+  }
+
+  // get article by number id (for client)
+  public getDetailByNumberIDOrSlug(target: number | string): Promise<DocumentType<Article>> {
+    const params: any = { ...COMMON_USER_QUERY_PARAMS }
+    if (typeof target === 'string') {
+      params.slug = target
+    } else {
+      params.id = target
+    }
+
+    return this.articleModel
+      .findOne(params)
       .select('-password')
       .populate(['category', 'tag'])
       .exec()
+      .then((result) => result || Promise.reject(`Article "${target}" not found`))
   }
 
-  // 获取全面的文章详情（用户用）
-  public async getFullDetailForUser(articleID: number): Promise<Article> {
-    const article = await this.getDetailByNumberId(articleID)
+  // get article detail for user
+  public async getFullDetailForUser(target: number | string): Promise<Article> {
+    const article = await this.getDetailByNumberIDOrSlug(target)
 
-    // 如果文章不存在，返回 404
-    if (!article) {
-      throw '文章不存在'
-    }
-
-    // 增加浏览量
+    // article views
     article.meta.views++
     article.save()
 
-    // 更新今日浏览缓存
+    // global today views
     this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS).then((views) => {
       this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1)
     })
 
-    // 获取相关文章
-    const articleObject = article.toObject() as Article
+    // releted articles
+    const articleObject = article.toObject()
     const relatedArticles = await this.getRelatedArticles(articleObject)
-    return Object.assign(articleObject, {
+    return {
+      ...articleObject,
       related: lodash.sampleSize(relatedArticles, 12),
-    })
+    }
   }
 
-  // 创建文章
+  public async like(articleID: number) {
+    const article = await this.getDetailByNumberIDOrSlug(articleID)
+    article.meta.likes++
+    await article.save()
+    return article.meta.likes
+  }
+
   public async create(newArticle: Article): Promise<Article> {
+    if (newArticle.slug) {
+      const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec()
+      if (existedArticle) {
+        throw `Article slug "${newArticle.slug}" is existed`
+      }
+    }
+
     const article = await this.articleModel.create({
       ...newArticle,
       meta: getDefaultMeta(),
     })
     this.seoService.push(getArticleUrl(article.id))
+    this.tagService.updatePaginateCache()
     this.archiveService.updateCache()
-    this.tagService.updateListCache()
     return article
   }
 
-  // 修改文章
   public async update(articleID: Types.ObjectId, newArticle: Article): Promise<Article> {
-    // 修正信息
+    if (newArticle.slug) {
+      const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec()
+      if (existedArticle && String(existedArticle._id) !== String(articleID)) {
+        throw `Article slug "${newArticle.slug}" is existed`
+      }
+    }
+
     Reflect.deleteProperty(newArticle, 'meta')
     Reflect.deleteProperty(newArticle, 'create_at')
     Reflect.deleteProperty(newArticle, 'update_at')
 
-    const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle as any, { new: true }).exec()
+    const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle, { new: true }).exec()
+    if (!article) {
+      throw `Article "${articleID}" not found`
+    }
     this.seoService.update(getArticleUrl(article.id))
+    this.tagService.updatePaginateCache()
     this.archiveService.updateCache()
-    this.tagService.updateListCache()
     return article
   }
 
-  // 删除单个文章
   public async delete(articleID: Types.ObjectId): Promise<Article> {
     const article = await this.articleModel.findByIdAndRemove(articleID).exec()
+    if (!article) {
+      throw `Article "${articleID}" not found`
+    }
     this.seoService.delete(getArticleUrl(article.id))
+    this.tagService.updatePaginateCache()
     this.archiveService.updateCache()
-    this.tagService.updateListCache()
     return article
   }
 
-  // 批量更新状态
   public async batchPatchState(articleIDs: Types.ObjectId[], state: PublishState) {
     const actionResult = await this.articleModel
       .updateMany({ _id: { $in: articleIDs } }, { $set: { state } }, { multi: true })
       .exec()
+    this.tagService.updatePaginateCache()
     this.archiveService.updateCache()
-    this.tagService.updateListCache()
     return actionResult
   }
 
-  // 批量删除文章
   public async batchDelete(articleIDs: Types.ObjectId[]) {
     const articles = await this.articleModel.find({ _id: { $in: articleIDs } }).exec()
     this.seoService.delete(articles.map((article) => getArticleUrl(article.id)))
@@ -184,8 +205,21 @@ export class ArticleService {
     const actionResult = await this.articleModel.deleteMany({
       _id: { $in: articleIDs },
     })
+    this.tagService.updatePaginateCache()
     this.archiveService.updateCache()
-    this.tagService.updateListCache()
     return actionResult
+  }
+
+  // article commentable state
+  public async isCommentableArticle(articleID: number): Promise<boolean> {
+    const article = await this.articleModel.findOne({ id: articleID }).exec()
+    return Boolean(article && !article.disabled_comment)
+  }
+
+  // update article comments count
+  public async updateMetaComments(articleID: number, commentCount: number) {
+    const findParams = { id: articleID }
+    const patchParams = { $set: { 'meta.comments': commentCount } }
+    return this.articleModel.updateOne(findParams, patchParams).exec()
   }
 }

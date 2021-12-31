@@ -15,7 +15,7 @@ import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class ErrorInterceptor
- * @classdesc 当控制器所需的 Promise service 发生错误时，错误将在此被捕获
+ * @classdesc catch error when controller Promise rejected
  */
 @Injectable()
 export class ErrorInterceptor implements NestInterceptor {
@@ -25,8 +25,13 @@ export class ErrorInterceptor implements NestInterceptor {
     const call$ = next.handle()
     const target = context.getHandler()
     const statusCode = this.reflector.get<HttpStatus>(META.HTTP_ERROR_CODE, target)
-    const message =
-      this.reflector.get<ResponseMessage>(META.HTTP_ERROR_MESSAGE, target) || TEXT.HTTP_DEFAULT_ERROR_TEXT
-    return call$.pipe(catchError((error) => throwError(() => new CustomError({ message, error }, statusCode))))
+    const message = this.reflector.get<ResponseMessage>(META.HTTP_ERROR_MESSAGE, target)
+    return call$.pipe(
+      catchError((error) => {
+        return throwError(
+          () => new CustomError({ message: message || TEXT.HTTP_DEFAULT_ERROR_TEXT, error }, statusCode)
+        )
+      })
+    )
   }
 }

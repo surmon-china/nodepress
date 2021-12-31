@@ -16,10 +16,10 @@ import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
 
 export interface ITodayStatistic {
-  tags: number
-  views: number
-  articles: number
-  comments: number
+  tags: number | null
+  views: number | null
+  articles: number | null
+  comments: number | null
 }
 
 @Injectable()
@@ -45,31 +45,26 @@ export class StatisticService {
     })
   }
 
-  private async getViewsCount(): Promise<number> {
+  private async getViewsCount() {
     const views = await this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS)
     this.resultData.views = views || 0
-    return views
   }
 
-  private async getTagsCount(): Promise<number> {
+  private async getTagsCount() {
     const count = await this.tagModel.countDocuments().exec()
     this.resultData.tags = count
-    return count
   }
 
-  private async getArticlesCount(): Promise<number> {
+  private async getArticlesCount() {
     const count = await this.articleModel.countDocuments().exec()
     this.resultData.articles = count
-    return count
   }
 
-  private async getCommentsCount(): Promise<number> {
+  private async getCommentsCount() {
     const count = await this.commentModel.countDocuments().exec()
     this.resultData.comments = count
-    return count
   }
 
-  // 获取统计数据
   public getStatistic() {
     return Promise.all([this.getTagsCount(), this.getViewsCount(), this.getArticlesCount(), this.getCommentsCount()])
       .then(() => Promise.resolve(this.resultData))

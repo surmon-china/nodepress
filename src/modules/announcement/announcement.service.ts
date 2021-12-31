@@ -19,7 +19,7 @@ export class AnnouncementService {
   ) {}
 
   // 请求公告列表
-  public getList(querys, options: PaginateOptions): Promise<PaginateResult<Announcement>> {
+  public paginater(querys, options: PaginateOptions): Promise<PaginateResult<Announcement>> {
     return this.announcementModel.paginate(querys, options)
   }
 
@@ -29,13 +29,19 @@ export class AnnouncementService {
   }
 
   // 修改单个公告
-  public update(announcementID: Types.ObjectId, announcement: Announcement) {
-    return this.announcementModel.findByIdAndUpdate(announcementID, announcement as any, { new: true }).exec()
+  public update(announcementID: Types.ObjectId, announcement: Announcement): Promise<Announcement> {
+    return this.announcementModel
+      .findByIdAndUpdate(announcementID, announcement as any, { new: true })
+      .exec()
+      .then((result) => result || Promise.reject(`Announcement "${announcementID}" not found`))
   }
 
   // 删除单个公告
   public delete(announcementID: Types.ObjectId): Promise<Announcement> {
-    return this.announcementModel.findByIdAndRemove(announcementID).exec()
+    return this.announcementModel
+      .findByIdAndRemove(announcementID)
+      .exec()
+      .then((result) => result || Promise.reject(`Announcement "${announcementID}" not found`))
   }
 
   // 批量删除公告

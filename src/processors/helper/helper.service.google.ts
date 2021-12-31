@@ -9,12 +9,13 @@ import { google } from 'googleapis'
 import { Credentials, JWT } from 'google-auth-library'
 import { Injectable } from '@nestjs/common'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
+import { UNDEFINED } from '@app/constants/value.constant'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
 @Injectable()
 export class GoogleService {
-  private jwtClient: JWT = null
+  private jwtClient: JWT | null = null
 
   constructor() {
     this.initClient()
@@ -25,13 +26,13 @@ export class GoogleService {
       const key = require(APP_CONFIG.GOOGLE.serverAccountFilePath)
       this.jwtClient = new google.auth.JWT(
         key.client_email,
-        null,
+        UNDEFINED,
         key.private_key,
         [
           'https://www.googleapis.com/auth/indexing', // ping 服务
           'https://www.googleapis.com/auth/analytics.readonly', // GA 服务
         ],
-        null
+        UNDEFINED
       )
     } catch (error) {
       logger.warn('[GoogleAPI]', '服务初始化时读取配置文件失败！')

@@ -13,8 +13,10 @@ const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 export const APP = {
   PORT: 8000,
   MASTER: 'Surmon',
-  NAME: 'Surmon.me',
-  URL: 'https://surmon.me',
+  NAME: 'Nodepress',
+  URL: 'https://api.surmon.me',
+  FE_NAME: 'Surmon.me',
+  FE_URL: 'https://surmon.me',
   ROOT_PATH,
   DEFAULT_CACHE_TTL: 60 * 60 * 24,
 }
@@ -23,7 +25,6 @@ export const PROJECT = {
   name: packageJSON.name,
   version: packageJSON.version,
   author: packageJSON.author,
-  site: APP.URL,
   homepage: packageJSON.homepage,
   issues: packageJSON.bugs.url,
 }
@@ -60,14 +61,19 @@ export const EMAIL = {
   admin: 'surmon@foxmail.com',
 }
 
+export const DISQUS = {
+  // https://disqus.com/api/applications/<app_id> & Keep permissions: <Read, Write, Manage Forums>
+  adminAccessToken: (argv.disqus_admin_access_token as string) || 'disqus admin access_token',
+  adminUsername: (argv.disqus_admin_username as string) || 'disqus admin username',
+  forum: (argv.disqus_forum_shortname as string) || 'disqus forum shortname',
+  // https://disqus.com/api/applications/
+  publicKey: (argv.disqus_public_key as string) || 'disqus application public_key',
+  secretKey: (argv.disqus_secret_key as string) || 'disqus application secret_key',
+}
+
 export const AKISMET = {
   key: argv.akismet_key || 'your akismet Key',
   blog: argv.akismet_blog || 'your akismet blog site, e.g. https://surmon.me',
-}
-
-export const COMMON_SERVICE = {
-  aliyunIPAuth: argv.aliyun_ip_auth,
-  juheIPAuth: argv.juhe_ip_auth,
 }
 
 // https://ziyuan.baidu.com/linksubmit/index

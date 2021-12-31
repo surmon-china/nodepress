@@ -21,7 +21,7 @@ export class TagController {
   @Get()
   @UseGuards(HumanizedJwtAuthGuard)
   @HttpProcessor.paginate()
-  @HttpProcessor.handle('获取标签')
+  @HttpProcessor.handle('Get tags')
   getTags(@QueryParams(['cache']) { querys, options, origin, isAuthenticated }): Promise<PaginateResult<Tag>> {
     const keyword = lodash.trim(origin.keyword)
     if (keyword) {
@@ -30,34 +30,34 @@ export class TagController {
     }
 
     return !isAuthenticated && querys.cache
-      ? this.tagService.getListCache()
-      : this.tagService.getList(querys, options, isAuthenticated)
+      ? this.tagService.getPaginateCache()
+      : this.tagService.paginater(querys, options, !isAuthenticated)
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('添加标签')
+  @HttpProcessor.handle('Create tag')
   createTag(@Body() tag: Tag): Promise<Tag> {
     return this.tagService.create(tag)
   }
 
   @Delete()
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('批量删除标签')
+  @HttpProcessor.handle('Delete tags')
   delTags(@Body() body: TagsPayload) {
     return this.tagService.batchDelete(body.tag_ids)
   }
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('修改标签')
+  @HttpProcessor.handle('Update Tag')
   putTag(@QueryParams() { params }, @Body() tag: Tag): Promise<Tag> {
     return this.tagService.update(params.id, tag)
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('删除单个标签')
+  @HttpProcessor.handle('Delete tag')
   delTag(@QueryParams() { params }): Promise<Tag> {
     return this.tagService.delete(params.id)
   }

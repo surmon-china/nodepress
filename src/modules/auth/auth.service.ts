@@ -6,11 +6,12 @@
 import lodash from 'lodash'
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
+import { UNDEFINED } from '@app/constants/value.constant'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { decodeBase64, decodeMd5 } from '@app/transformers/codec.transformer'
+import { decodeBase64, decodeMD5 } from '@app/transformers/codec.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { TokenResult } from './auth.interface'
-import { Auth } from './auth.model'
+import { Auth, DEFAULT_AUTH } from './auth.model'
 import * as APP_CONFIG from '@app/app.config'
 
 @Injectable()
@@ -20,12 +21,11 @@ export class AuthService {
     @InjectModel(Auth) private readonly authModel: MongooseModel<Auth>
   ) {}
 
-  // 获取已有密码
-  private getExtantPassword(auth: Auth): string {
-    return auth?.password || decodeMd5(APP_CONFIG.AUTH.defaultPassword as string)
+  private async getExistedPassword(): Promise<string> {
+    const auth = await this.authModel.findOne(UNDEFINED, '+password').exec()
+    return auth?.password || decodeMD5(APP_CONFIG.AUTH.defaultPassword as string)
   }
 
-  // 签发 Token
   public createToken(): TokenResult {
     return {
       access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
@@ -33,68 +33,63 @@ export class AuthService {
     }
   }
 
-  // 验证 Auth 数据
   public validateAuthData(payload: any): Promise<any> {
     const isVerified = lodash.isEqual(payload.data, APP_CONFIG.AUTH.data)
     return isVerified ? payload.data : null
   }
 
-  // 获取管理员信息
-  public getAdminInfo(): Promise<Auth> {
-    return this.authModel.findOne().exec()
+  public async getAdminInfo(): Promise<Auth> {
+    const adminInfo = await this.authModel.findOne(UNDEFINED, '-_id').exec()
+    return adminInfo ? adminInfo.toObject() : DEFAULT_AUTH
   }
 
-  // 修改管理员信息
   public async putAdminInfo(auth: Auth): Promise<Auth> {
-    // 密码解码
-    const password = decodeBase64(auth.password)
-    const new_password = decodeBase64(auth.new_password)
-    Reflect.deleteProperty(auth, 'password')
-    Reflect.deleteProperty(auth, 'new_password')
+    const { password, new_password, ...restAuth } = auth
 
-    // 验证密码
+    let newPassword: string | void
     if (password || new_password) {
+      // verify password
       if (!password || !new_password) {
-        throw '密码不完整或无效'
+        throw 'Incomplete passwords'
       }
       if (password === new_password) {
-        throw '新旧密码不可一致'
+        throw 'Old password and new password cannot be same'
       }
-    }
 
-    // 获取现存 Auth
-    const extantAuth = await this.authModel.findOne(null, '+password').exec()
-
-    // 修改密码 -> 核对已存在密码
-    if (password) {
-      const oldPassword = decodeMd5(password)
-      const extantPassword = this.getExtantPassword(extantAuth)
-      if (oldPassword !== extantPassword) {
-        throw '原密码不正确'
+      // update password
+      const oldPassword = decodeMD5(decodeBase64(password))
+      const existedPassword = await this.getExistedPassword()
+      if (oldPassword !== existedPassword) {
+        throw 'Old password incorrect'
       } else {
-        auth.password = decodeMd5(new_password)
+        newPassword = decodeMD5(decodeBase64(new_password))
       }
     }
 
-    // 更新或新建数据
-    const newAuthData = await (extantAuth && !!extantAuth._id
-      ? Object.assign(extantAuth, auth).save()
-      : this.authModel.create(auth))
-    const authData = newAuthData.toObject() as Auth
-    Reflect.deleteProperty(authData, 'password')
-    return authData
+    // data
+    const targetAuthData: Auth = { ...restAuth }
+    if (newPassword) {
+      targetAuthData.password = newPassword
+    }
+
+    // save
+    const existedAuth = await this.authModel.findOne(UNDEFINED, '+password').exec()
+    if (existedAuth) {
+      await Object.assign(existedAuth, targetAuthData).save()
+    } else {
+      await this.authModel.create(targetAuthData)
+    }
+
+    return this.getAdminInfo()
   }
 
-  // 登陆
   public async adminLogin(password: string): Promise<TokenResult> {
-    const auth = await this.authModel.findOne(null, '+password').exec()
-    const extantPassword = this.getExtantPassword(auth)
-    const loginPassword = decodeMd5(decodeBase64(password))
-
-    if (loginPassword === extantPassword) {
+    const existedPassword = await this.getExistedPassword()
+    const loginPassword = decodeMD5(decodeBase64(password))
+    if (loginPassword === existedPassword) {
       return this.createToken()
     } else {
-      throw '密码不匹配'
+      throw 'Password incorrect'
     }
   }
 }
