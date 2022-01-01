@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.4（2022-01-01)
+
+**Feature**
+
+- [Comment] add `reviseIPLocation` service
+
 ### 3.7.2（2021-12-31）
 
 **Chore**

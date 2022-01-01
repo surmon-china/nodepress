@@ -217,7 +217,7 @@ export class CommentService {
   }
 
   // get comment detail by ObjectID
-  public getDetailByObjectID(commentID: Types.ObjectId): Promise<Comment> {
+  public getDetailByObjectID(commentID: Types.ObjectId): Promise<DocumentType<Comment>> {
     return this.commentModel
       .findById(commentID)
       .exec()
@@ -286,5 +286,20 @@ export class CommentService {
     const result = await this.commentModel.deleteMany({ _id: { $in: commentIDs } }).exec()
     this.updateCommentCountWithArticle(postIDs)
     return result
+  }
+
+  public async reviseIPLocation(commentID: Types.ObjectId) {
+    const comment = await this.getDetailByObjectID(commentID)
+    if (!comment.ip) {
+      return `Comment "${commentID}" hasn't IP address`
+    }
+
+    const location = await this.ipService.queryLocation(comment.ip)
+    if (!location) {
+      return `Empty location query result`
+    }
+
+    comment.ip_location = { ...location }
+    return await comment.save()
   }
 }

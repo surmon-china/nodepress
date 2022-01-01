@@ -78,6 +78,13 @@ export class CommentController {
     return this.commentService.update(params.id, comment, visitor.referer)
   }
 
+  @Put(':id/ip_location')
+  @UseGuards(JwtAuthGuard)
+  @HttpProcessor.handle('Update comment IP location')
+  putCommentIPLocation(@QueryParams() { params }) {
+    return this.commentService.reviseIPLocation(params.id)
+  }
+
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('Delete comment')
