@@ -24,6 +24,9 @@ export declare class CommentController {
         params: any;
         visitor: any;
     }, comment: Comment): Promise<Comment>;
+    putCommentIPLocation({ params }: {
+        params: any;
+    }): Promise<string | import("@typegoose/typegoose").DocumentType<Comment, import("@typegoose/typegoose/lib/types").BeAnObject>>;
     delComment({ params }: {
         params: any;
     }): Promise<Comment>;

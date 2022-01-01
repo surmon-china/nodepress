@@ -28,7 +28,7 @@ export declare class CommentService {
     normalizeNewComment(comment: CreateCommentBase, visitor: QueryVisitor): Comment;
     create(comment: Comment): Promise<Comment>;
     createFormClient(comment: CreateCommentBase, visitor: QueryVisitor): Promise<Comment>;
-    getDetailByObjectID(commentID: Types.ObjectId): Promise<Comment>;
+    getDetailByObjectID(commentID: Types.ObjectId): Promise<DocumentType<Comment>>;
     getDetailByNumberID(commentID: number): Promise<DocumentType<Comment>>;
     vote(commentID: number, isLike: boolean): Promise<{
         likes: number;
@@ -38,4 +38,5 @@ export declare class CommentService {
     delete(commentID: Types.ObjectId): Promise<Comment>;
     batchPatchState(action: CommentsStatePayload, referer: string): Promise<import("mongodb").UpdateResult>;
     batchDelete(commentIDs: Types.ObjectId[], postIDs: number[]): Promise<import("mongodb").DeleteResult>;
+    reviseIPLocation(commentID: Types.ObjectId): Promise<string | DocumentType<Comment, import("@typegoose/typegoose/lib/types").BeAnObject>>;
 }

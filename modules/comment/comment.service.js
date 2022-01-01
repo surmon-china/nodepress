@@ -244,6 +244,18 @@ let CommentService = class CommentService {
         this.updateCommentCountWithArticle(postIDs);
         return result;
     }
+    async reviseIPLocation(commentID) {
+        const comment = await this.getDetailByObjectID(commentID);
+        if (!comment.ip) {
+            return `Comment "${commentID}" hasn't IP address`;
+        }
+        const location = await this.ipService.queryLocation(comment.ip);
+        if (!location) {
+            return `Empty location query result`;
+        }
+        comment.ip_location = Object.assign({}, location);
+        return await comment.save();
+    }
 };
 CommentService = __decorate([
     (0, common_1.Injectable)(),

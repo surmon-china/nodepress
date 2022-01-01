@@ -57,6 +57,9 @@ let CommentController = class CommentController {
     putComment({ params, visitor }, comment) {
         return this.commentService.update(params.id, comment, visitor.referer);
     }
+    putCommentIPLocation({ params }) {
+        return this.commentService.reviseIPLocation(params.id);
+    }
     delComment({ params }) {
         return this.commentService.delete(params.id);
     }
@@ -118,6 +121,15 @@ __decorate([
     __metadata("design:paramtypes", [Object, comment_model_1.Comment]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "putComment", null);
+__decorate([
+    (0, common_1.Put)(':id/ip_location'),
+    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
+    http_decorator_1.HttpProcessor.handle('Update comment IP location'),
+    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], CommentController.prototype, "putCommentIPLocation", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
