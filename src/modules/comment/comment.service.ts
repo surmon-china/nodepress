@@ -36,20 +36,27 @@ export class CommentService {
 
   private emailToAdminAndTargetAuthor(comment: Comment) {
     const isGuestbook = comment.post_id === CommentPostID.Guestbook
-    const commentTypeText = isGuestbook ? 'guestbook comment' : 'article comment'
-    const contextPrefix = `${commentTypeText} by ${comment.author.name}`
-    const getMailText = (contentPrefix) => `${contentPrefix}: ${comment.content}`
-    const getMailHtml = (contentPrefix) => `
-      <p>${getMailText(contentPrefix)}</p><br>
-      <a href="${getPermalinkByID(comment.post_id)}" target="_blank">[ Read more ]</a>
+    const onWhere = isGuestbook ? 'guestbook' : 'article-' + comment.post_id
+
+    const getMailTexts = (contentPrefix = '') => [
+      `You have a new comment ${contentPrefix} on ${onWhere}.`,
+      `${comment.author.name}: ${comment.content}`,
+    ]
+
+    const getMailHtml = (contentPrefix = '') => `
+      ${getMailTexts(contentPrefix)
+        .map((t) => `<p>${t}</p>`)
+        .join('')}
+      <br>
+      <a href="${getPermalinkByID(comment.post_id)}" target="_blank">Reply to ${comment.author.name}</a>
     `
 
     // email to admin
     this.emailService.sendMail({
       to: APP_CONFIG.EMAIL.admin,
-      subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${commentTypeText}`,
-      text: getMailText(contextPrefix),
-      html: getMailHtml(contextPrefix),
+      subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment`,
+      text: getMailTexts().join('\n'),
+      html: getMailHtml(),
     })
 
     // email to parent comment author
@@ -58,9 +65,9 @@ export class CommentService {
         if (parentComment?.author.email) {
           this.emailService.sendMail({
             to: parentComment.author.email,
-            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${commentTypeText} reply`,
-            text: getMailText(`${contextPrefix} (reply)`),
-            html: getMailHtml(`${contextPrefix} (reply)`),
+            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment reply`,
+            text: getMailTexts(`(reply)`).join('\n'),
+            html: getMailHtml(`(reply)`),
           })
         }
       })
