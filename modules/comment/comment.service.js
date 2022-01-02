@@ -59,27 +59,32 @@ let CommentService = class CommentService {
     }
     emailToAdminAndTargetAuthor(comment) {
         const isGuestbook = comment.post_id === biz_interface_1.CommentPostID.Guestbook;
-        const commentTypeText = isGuestbook ? 'guestbook comment' : 'article comment';
-        const contextPrefix = `${commentTypeText} by ${comment.author.name}`;
-        const getMailText = (contentPrefix) => `${contentPrefix}: ${comment.content}`;
-        const getMailHtml = (contentPrefix) => `
-      <p>${getMailText(contentPrefix)}</p><br>
-      <a href="${(0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)}" target="_blank">[ Read more ]</a>
+        const onWhere = isGuestbook ? 'guestbook' : 'article-' + comment.post_id;
+        const getMailTexts = (contentPrefix = '') => [
+            `You have a new comment ${contentPrefix} on ${onWhere}.`,
+            `${comment.author.name}: ${comment.content}`,
+        ];
+        const getMailHtml = (contentPrefix = '') => `
+      ${getMailTexts(contentPrefix)
+            .map((t) => `<p>${t}</p>`)
+            .join('')}
+      <br>
+      <a href="${(0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)}" target="_blank">Reply to ${comment.author.name}</a>
     `;
         this.emailService.sendMail({
             to: APP_CONFIG.EMAIL.admin,
-            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${commentTypeText}`,
-            text: getMailText(contextPrefix),
-            html: getMailHtml(contextPrefix),
+            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment`,
+            text: getMailTexts().join('\n'),
+            html: getMailHtml(),
         });
         if (comment.pid) {
             this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
                 if (parentComment === null || parentComment === void 0 ? void 0 : parentComment.author.email) {
                     this.emailService.sendMail({
                         to: parentComment.author.email,
-                        subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${commentTypeText} reply`,
-                        text: getMailText(`${contextPrefix} (reply)`),
-                        html: getMailHtml(`${contextPrefix} (reply)`),
+                        subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment reply`,
+                        text: getMailTexts(`(reply)`).join('\n'),
+                        html: getMailHtml(`(reply)`),
                     });
                 }
             });
