@@ -21,10 +21,10 @@ export class OriginMiddleware implements NestMiddleware {
     // referer when production
     if (isProdEnv) {
       const { origin, referer } = request.headers
-      const checkHeader = (field) => !field || field.includes(CROSS_DOMAIN.allowedReferer)
-      const isVerifiedOrigin = checkHeader(origin)
-      const isVerifiedReferer = checkHeader(referer)
-      if (!isVerifiedOrigin && !isVerifiedReferer) {
+      const isAllowed = (field) => !field || field.includes(CROSS_DOMAIN.allowedReferer)
+      const isAllowedOrigin = isAllowed(origin)
+      const isAllowedReferer = isAllowed(referer)
+      if (!isAllowedOrigin && !isAllowedReferer) {
         return response.status(HttpStatus.UNAUTHORIZED).jsonp({
           status: ResponseStatus.Error,
           message: TEXT.HTTP_ANONYMOUS_TEXT,
