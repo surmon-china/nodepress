@@ -99,16 +99,16 @@ let VoteController = class VoteController {
                 const userInfo = await this.disqusPublicService.getUserInfo(token);
                 const isAdmin = userInfo.username === APP_CONFIG.DISQUS.adminUsername;
                 const moderator = isAdmin ? ` / Moderator` : '';
-                return [`(Disqus user${moderator})`, `${userInfo.name}`, userInfo.url, userInfo.profileUrl]
+                return [`${userInfo.name} (Disqus user${moderator})`, userInfo.url, userInfo.profileUrl]
                     .filter(Boolean)
                     .join(' · ');
             }
             catch (error) { }
         }
         if (author) {
-            return `(Guest user) ${author.name}`;
+            return `${author.name} (Guest user)`;
         }
-        return `Anonymous user`;
+        return null;
     }
     async getTargetTitle(post_id) {
         if (post_id === biz_interface_1.CommentPostID.Guestbook) {
@@ -149,28 +149,36 @@ let VoteController = class VoteController {
     async likeSite(voteBody, token, { visitor }) {
         const likes = await this.optionService.likeSite();
         this.voteDisqusThread(biz_interface_1.CommentPostID.Guestbook, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
-        this.emailToTargetVoteMessage({
-            to: APP_CONFIG.EMAIL.admin,
-            subject: `You have a new site vote`,
-            on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
-            vote: '+1',
-            author: await this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token),
-            location: await this.ipService.queryLocation(visitor.ip),
-            link: (0, urlmap_transformer_1.getPermalinkByID)(biz_interface_1.CommentPostID.Guestbook),
+        this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
+            if (author) {
+                this.emailToTargetVoteMessage({
+                    to: APP_CONFIG.EMAIL.admin,
+                    subject: `You have a new site vote`,
+                    on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
+                    vote: '+1',
+                    author,
+                    location: await this.ipService.queryLocation(visitor.ip),
+                    link: (0, urlmap_transformer_1.getPermalinkByID)(biz_interface_1.CommentPostID.Guestbook),
+                });
+            }
         });
         return likes;
     }
     async voteArticle(voteBody, token, { visitor }) {
         const likes = await this.articleService.like(voteBody.article_id);
         this.voteDisqusThread(voteBody.article_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
-        this.emailToTargetVoteMessage({
-            to: APP_CONFIG.EMAIL.admin,
-            subject: `You have a new article vote`,
-            on: await this.getTargetTitle(voteBody.article_id),
-            vote: '+1',
-            author: await this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token),
-            location: await this.ipService.queryLocation(visitor.ip),
-            link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
+        this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
+            if (author) {
+                this.emailToTargetVoteMessage({
+                    to: APP_CONFIG.EMAIL.admin,
+                    subject: `You have a new article vote`,
+                    on: await this.getTargetTitle(voteBody.article_id),
+                    vote: '+1',
+                    author,
+                    location: await this.ipService.queryLocation(visitor.ip),
+                    link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
+                });
+            }
         });
         return likes;
     }
@@ -189,18 +197,22 @@ let VoteController = class VoteController {
             }
             catch (error) { }
         }
-        this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
-            const tagetTitle = await this.getTargetTitle(comment.post_id);
-            const mailParams = {
-                vote: voteBody.vote > 0 ? '+1' : '-1',
-                on: `${tagetTitle} #${comment.id}`,
-                author: await this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token),
-                location: await this.ipService.queryLocation(visitor.ip),
-                link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
-            };
-            this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.EMAIL.admin, subject: `You have a new comment vote` }, mailParams));
-            if (comment.author.email) {
-                this.emailToTargetVoteMessage(Object.assign({ to: comment.author.email, subject: `Your comment ${comment.id} has a new vote` }, mailParams));
+        this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then((author) => {
+            if (author) {
+                this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
+                    const tagetTitle = await this.getTargetTitle(comment.post_id);
+                    const mailParams = {
+                        vote: voteBody.vote > 0 ? '+1' : '-1',
+                        on: `${tagetTitle} #${comment.id}`,
+                        author,
+                        location: await this.ipService.queryLocation(visitor.ip),
+                        link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
+                    };
+                    this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.EMAIL.admin, subject: `You have a new comment vote` }, mailParams));
+                    if (comment.author.email) {
+                        this.emailToTargetVoteMessage(Object.assign({ to: comment.author.email, subject: `Your comment #${comment.id} has a new vote` }, mailParams));
+                    }
+                });
             }
         });
         return result;

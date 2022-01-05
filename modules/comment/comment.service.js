@@ -81,7 +81,7 @@ let CommentService = class CommentService {
         if (comment.pid) {
             this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
                 if (parentComment === null || parentComment === void 0 ? void 0 : parentComment.author.email) {
-                    const subject = `Your comment ${parentComment.id} has a new reply`;
+                    const subject = `Your comment #${parentComment.id} has a new reply`;
                     this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, Object.assign({ to: parentComment.author.email, subject }, getMailContent(subject)));
                 }
             });
