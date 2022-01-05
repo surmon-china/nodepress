@@ -27,7 +27,6 @@ export const databaseProvider = {
       })
     }
 
-    // 连接数据库
     function connection() {
       return mongoose.connect(APP_CONFIG.MONGO_DB.uri)
     }
@@ -45,7 +44,7 @@ export const databaseProvider = {
     })
 
     mongoose.connection.on('disconnected', () => {
-      logger.error('[MongoDB]', `disconnected! 尝试 ${RECONNECT_INTERVAL / 1000}s 后重连`)
+      logger.error('[MongoDB]', `disconnected! retry when after ${RECONNECT_INTERVAL / 1000}s`)
       reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL)
     })
 

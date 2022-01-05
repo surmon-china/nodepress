@@ -50,14 +50,14 @@ export class AkismetService {
   private initVerify(): void {
     this.client
       .verifyKey()
-      .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Akismet Key 无效')))
+      .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
       .then(() => {
         this.clientIsValid = true
-        logger.info('[Akismet]', 'key 有效，已准备好工作！')
+        logger.info('[Akismet]', 'client init succeed!')
       })
       .catch((error) => {
         this.clientIsValid = false
-        logger.error('[Akismet]', '验证失败！无法工作', getMessageFromNormalError(error))
+        logger.error('[Akismet]', 'client init failed! reason:', getMessageFromNormalError(error))
       })
   }
 
@@ -66,25 +66,25 @@ export class AkismetService {
       return new Promise((resolve, reject) => {
         // 确定验证失败的情况下才会拦截验证，未认证或验证通过都继续操作
         if (this.clientIsValid === false) {
-          const message = [`[Akismet]`, `verifyKey 失败，放弃 ${handleType} 操作！`]
+          const message = [`[Akismet]`, `${handleType} failed! reason: init failed`]
           logger.warn(...(message as [any]))
           return resolve(message.join(''))
         }
 
-        logger.info(`[Akismet]`, `${handleType} 操作中...`, new Date())
+        logger.info(`[Akismet]`, `${handleType}...`, new Date())
         this.client[handleType](content)
           .then((result) => {
             // 如果是检查 spam 且检查结果为 true
             if (handleType === AkismetActionType.CheckSpam && result) {
-              logger.warn(`[Akismet]`, `${handleType} 检测到 SPAM！`, new Date(), content)
+              logger.warn(`[Akismet]`, `${handleType} found SPAM！`, new Date(), content)
               reject('SPAM!')
             } else {
-              logger.info(`[Akismet]`, `${handleType} 操作成功！`)
+              logger.info(`[Akismet]`, `${handleType} succeed!`)
               resolve(result)
             }
           })
           .catch((error) => {
-            const message = [`[Akismet]`, `${handleType} 操作失败！`]
+            const message = [`[Akismet]`, `${handleType} failed!`]
             logger.error(...(message as [any]), error)
             reject(message.join(''))
           })

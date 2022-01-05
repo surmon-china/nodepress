@@ -40,25 +40,25 @@ export class EmailService {
       if (error) {
         this.clientIsValid = false
         setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(`[NodeMailer]`, `客户端初始化连接失败！将在半小时后重试`, getMessageFromNormalError(error))
+        logger.error(`[NodeMailer]`, `client init failed! retry when after 30 mins`, getMessageFromNormalError(error))
       } else {
         this.clientIsValid = true
-        logger.info('[NodeMailer]', '客户端初始化连接成功！随时可发送邮件')
+        logger.info('[NodeMailer]', 'client init succeed!')
       }
     })
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
-      logger.warn('[NodeMailer]', '由于未初始化成功，邮件客户端发送被拒绝！')
+      logger.warn('[NodeMailer]', 'send failed! reason: init failed')
       return false
     }
     const options = { ...mailOptions, from: APP_CONFIG.EMAIL.from }
     this.transporter.sendMail(options, (error, info) => {
       if (error) {
-        logger.error(`[NodeMailer]`, `邮件发送失败`, getMessageFromNormalError(error))
+        logger.error(`[NodeMailer]`, `send failed! reason:`, getMessageFromNormalError(error))
       } else {
-        logger.info('[NodeMailer]', '邮件发送成功', info.messageId, info.response)
+        logger.info('[NodeMailer]', 'send succeed!', info.messageId, info.response)
       }
     })
   }
