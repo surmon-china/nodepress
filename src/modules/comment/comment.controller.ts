@@ -45,7 +45,9 @@ export class CommentController {
   @Post()
   @HttpProcessor.handle('Create comment')
   createComment(@Body() comment: CreateCommentBase, @QueryParams() { visitor }): Promise<Comment> {
-    return this.commentService.createFormClient(comment, visitor)
+    return comment.author.email
+      ? this.commentService.createFormClient(comment, visitor)
+      : Promise.reject(`author email should not be empty`)
   }
 
   @Patch()
