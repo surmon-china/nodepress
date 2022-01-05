@@ -27,16 +27,17 @@ export class AuthController {
   @HttpProcessor.handle({ message: 'Login', error: HttpStatus.BAD_REQUEST })
   async login(@QueryParams() { visitor: { ip } }, @Body() body: AuthPasswordPayload): Promise<TokenResult> {
     const token = await this.authService.adminLogin(body.password)
-    const location = await this.ipService.queryLocation(ip)
-    const subject = `[${APP.NAME}] has new login activity`
-    const city = location?.city || 'unknow'
-    const country = location?.country || 'unknow'
-    const content = `IP: ${ip}, location: ${country} - ${city}`
-    this.emailService.sendMail({
-      subject,
-      to: EMAIL.admin,
-      text: `${subject}, ${content}`,
-      html: `${subject}, ${content}`,
+    this.ipService.queryLocation(ip).then((location) => {
+      const subject = `App has new login activity`
+      const city = location?.city || 'unknow'
+      const country = location?.country || 'unknow'
+      const content = `${subject}, IP: ${ip}, location: ${country} - ${city}`
+      this.emailService.sendMailAs(APP.NAME, {
+        to: EMAIL.admin,
+        subject,
+        text: content,
+        html: content,
+      })
     })
     return token
   }

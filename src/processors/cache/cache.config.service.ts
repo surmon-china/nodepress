@@ -17,9 +17,9 @@ export class CacheConfigService implements CacheOptionsFactory {
 
   // 发送告警邮件（半分钟节流）
   private sendAlarmMail = lodash.throttle((error: string) => {
-    this.emailService.sendMail({
+    this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
       to: APP_CONFIG.EMAIL.admin,
-      subject: `${APP_CONFIG.APP.NAME} Redis 发生异常！`,
+      subject: `Redis Error!`,
       text: error,
       html: `<pre><code>${error}</code></pre>`,
     })

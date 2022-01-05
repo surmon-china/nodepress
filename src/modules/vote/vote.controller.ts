@@ -66,7 +66,11 @@ export class VoteController {
     if (token) {
       try {
         const userInfo = await this.disqusPublicService.getUserInfo(token)
-        return `(Disqus user) ${userInfo.name}` + [userInfo.url, userInfo.profileUrl].filter(Boolean).join(' - ')
+        const isAdmin = userInfo.username === APP_CONFIG.DISQUS.adminUsername
+        const moderator = isAdmin ? ` / Moderator` : ''
+        return [`(Disqus user${moderator})`, `${userInfo.name}`, userInfo.url, userInfo.profileUrl]
+          .filter(Boolean)
+          .join(' · ')
       } catch (error) {}
     }
     // local user
@@ -86,12 +90,12 @@ export class VoteController {
     }
   }
 
-  // Email to admin
+  // Email to target
   // 1. site vote
   // 2. article vote
   // 3. comment vote
   private emailToTargetVoteMessage(message: {
-    type: string
+    subject: string
     to: string
     on: string
     link: string
@@ -100,7 +104,7 @@ export class VoteController {
     location?: IPLocation | null
   }) {
     const mailTexts = [
-      `You have a new ${message.type} vote on "${message.on}".`,
+      `${message.subject} on "${message.on}".`,
       `Vote: ${message.vote}`,
       `Author: ${message.author}`,
       `Location: ${
@@ -110,15 +114,13 @@ export class VoteController {
       }`,
     ]
 
-    this.emailService.sendMail({
+    const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('')
+    const linkHTML = `<a href="${message.link}" target="_blank">${message.on}</a>`
+    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
       to: message.to,
-      subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${message.type} vote`,
+      subject: message.subject,
       text: mailTexts.join('\n'),
-      html: [
-        mailTexts.map((t) => `<p>${t}</p>`).join(''),
-        `<br>`,
-        `<a href="${message.link}" target="_blank">${message.on}</a>`,
-      ].join('\n'),
+      html: [textHTML, `<br>`, linkHTML].join('\n'),
     })
   }
 
@@ -147,10 +149,10 @@ export class VoteController {
     this.voteDisqusThread(CommentPostID.Guestbook, 1, token?.access_token).catch(() => {})
     // email to admin
     this.emailToTargetVoteMessage({
-      type: 'site',
-      vote: '+1',
       to: APP_CONFIG.EMAIL.admin,
+      subject: `You have a new site vote`,
       on: await this.getTargetTitle(CommentPostID.Guestbook),
+      vote: '+1',
       author: await this.getAuthor(voteBody.author, token?.access_token),
       location: await this.ipService.queryLocation(visitor.ip),
       link: getPermalinkByID(CommentPostID.Guestbook),
@@ -172,10 +174,10 @@ export class VoteController {
     this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() => {})
     // email to admin
     this.emailToTargetVoteMessage({
-      type: 'article',
-      vote: '+1',
       to: APP_CONFIG.EMAIL.admin,
+      subject: `You have a new article vote`,
       on: await this.getTargetTitle(voteBody.article_id),
+      vote: '+1',
       author: await this.getAuthor(voteBody.author, token?.access_token),
       location: await this.ipService.queryLocation(visitor.ip),
       link: getPermalinkByID(voteBody.article_id),
@@ -207,20 +209,31 @@ export class VoteController {
         }
       } catch (error) {}
     }
-    // email to author
-    const comment = await this.commentService.getDetailByNumberID(voteBody.comment_id)
-    if (comment.author.email) {
+    // email
+    this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
       const tagetTitle = await this.getTargetTitle(comment.post_id)
-      this.emailToTargetVoteMessage({
-        type: 'comment',
-        to: comment.author.email,
+      const mailParams = {
         vote: voteBody.vote > 0 ? '+1' : '-1',
         on: `${tagetTitle} #${comment.id}`,
         author: await this.getAuthor(voteBody.author, token?.access_token),
         location: await this.ipService.queryLocation(visitor.ip),
         link: getPermalinkByID(comment.post_id),
+      }
+      // email to admin
+      this.emailToTargetVoteMessage({
+        to: APP_CONFIG.EMAIL.admin,
+        subject: `You have a new comment vote`,
+        ...mailParams,
       })
-    }
+      // email to author
+      if (comment.author.email) {
+        this.emailToTargetVoteMessage({
+          to: comment.author.email,
+          subject: `Your comment ${comment.id} has a new vote`,
+          ...mailParams,
+        })
+      }
+    })
 
     return result
   }

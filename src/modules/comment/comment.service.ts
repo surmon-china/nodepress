@@ -44,38 +44,33 @@ export class CommentService {
     }
 
     const authorName = comment.author.name
-    const getMailTexts = (contentPrefix = '') => [
-      `You have a new comment ${contentPrefix} on ${onWhere}.`,
-      `${authorName}: ${comment.content}`,
-    ]
-
-    const getMailHTML = (contentPrefix = '') => {
-      return [
-        getMailTexts(contentPrefix)
-          .map((t) => `<p>${t}</p>`)
-          .join(''),
-        `<br>`,
-        `<a href="${getPermalinkByID(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`,
-      ].join('\n')
+    const getMailContent = (subject = '') => {
+      const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`]
+      const textHTML = texts.map((text) => `<p>${text}</p>`).join('')
+      const linkHTML = `<a href="${getPermalinkByID(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`
+      return {
+        text: texts.join('\n'),
+        html: [textHTML, `<br>`, linkHTML].join('\n'),
+      }
     }
 
     // email to admin
-    this.emailService.sendMail({
+    const subject = `You have a new comment`
+    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
       to: APP_CONFIG.EMAIL.admin,
-      subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment`,
-      text: getMailTexts().join('\n'),
-      html: getMailHTML(),
+      subject,
+      ...getMailContent(subject),
     })
 
     // email to parent comment author
     if (comment.pid) {
       this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
         if (parentComment?.author.email) {
-          this.emailService.sendMail({
+          const subject = `Your comment ${parentComment.id} has a new reply`
+          this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
             to: parentComment.author.email,
-            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment reply`,
-            text: getMailTexts(`(reply)`).join('\n'),
-            html: getMailHTML(`(reply)`),
+            subject,
+            ...getMailContent(subject),
           })
         }
       })
