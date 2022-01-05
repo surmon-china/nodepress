@@ -42,9 +42,9 @@ let CacheConfigService = class CacheConfigService {
     constructor(emailService) {
         this.emailService = emailService;
         this.sendAlarmMail = lodash_1.default.throttle((error) => {
-            this.emailService.sendMail({
+            this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
                 to: APP_CONFIG.EMAIL.admin,
-                subject: `${APP_CONFIG.APP.NAME} Redis 发生异常！`,
+                subject: `Redis Error!`,
                 text: error,
                 html: `<pre><code>${error}</code></pre>`,
             });

@@ -10,4 +10,5 @@ export declare class EmailService {
     constructor();
     private verifyClient;
     sendMail(mailOptions: EmailOptions): false | undefined;
+    sendMailAs(prefix: string, mailOptions: EmailOptions): false | undefined;
 }

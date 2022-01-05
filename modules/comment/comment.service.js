@@ -67,34 +67,22 @@ let CommentService = class CommentService {
             onWhere = `"${article.toObject().title}"`;
         }
         const authorName = comment.author.name;
-        const getMailTexts = (contentPrefix = '') => [
-            `You have a new comment ${contentPrefix} on ${onWhere}.`,
-            `${authorName}: ${comment.content}`,
-        ];
-        const getMailHTML = (contentPrefix = '') => {
-            return [
-                getMailTexts(contentPrefix)
-                    .map((t) => `<p>${t}</p>`)
-                    .join(''),
-                `<br>`,
-                `<a href="${(0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`,
-            ].join('\n');
+        const getMailContent = (subject = '') => {
+            const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`];
+            const textHTML = texts.map((text) => `<p>${text}</p>`).join('');
+            const linkHTML = `<a href="${(0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`;
+            return {
+                text: texts.join('\n'),
+                html: [textHTML, `<br>`, linkHTML].join('\n'),
+            };
         };
-        this.emailService.sendMail({
-            to: APP_CONFIG.EMAIL.admin,
-            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment`,
-            text: getMailTexts().join('\n'),
-            html: getMailHTML(),
-        });
+        const subject = `You have a new comment`;
+        this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, Object.assign({ to: APP_CONFIG.EMAIL.admin, subject }, getMailContent(subject)));
         if (comment.pid) {
             this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
                 if (parentComment === null || parentComment === void 0 ? void 0 : parentComment.author.email) {
-                    this.emailService.sendMail({
-                        to: parentComment.author.email,
-                        subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment reply`,
-                        text: getMailTexts(`(reply)`).join('\n'),
-                        html: getMailHTML(`(reply)`),
-                    });
+                    const subject = `Your comment ${parentComment.id} has a new reply`;
+                    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, Object.assign({ to: parentComment.author.email, subject }, getMailContent(subject)));
                 }
             });
         }

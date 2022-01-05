@@ -30,16 +30,17 @@ let AuthController = class AuthController {
     }
     async login({ visitor: { ip } }, body) {
         const token = await this.authService.adminLogin(body.password);
-        const location = await this.ipService.queryLocation(ip);
-        const subject = `[${app_config_1.APP.NAME}] has new login activity`;
-        const city = (location === null || location === void 0 ? void 0 : location.city) || 'unknow';
-        const country = (location === null || location === void 0 ? void 0 : location.country) || 'unknow';
-        const content = `IP: ${ip}, location: ${country} - ${city}`;
-        this.emailService.sendMail({
-            subject,
-            to: app_config_1.EMAIL.admin,
-            text: `${subject}, ${content}`,
-            html: `${subject}, ${content}`,
+        this.ipService.queryLocation(ip).then((location) => {
+            const subject = `App has new login activity`;
+            const city = (location === null || location === void 0 ? void 0 : location.city) || 'unknow';
+            const country = (location === null || location === void 0 ? void 0 : location.country) || 'unknow';
+            const content = `${subject}, IP: ${ip}, location: ${country} - ${city}`;
+            this.emailService.sendMailAs(app_config_1.APP.NAME, {
+                to: app_config_1.EMAIL.admin,
+                subject,
+                text: content,
+                html: content,
+            });
         });
         return token;
     }

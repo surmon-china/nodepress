@@ -68,7 +68,7 @@ let EmailService = class EmailService {
             logger_1.default.warn('[NodeMailer]', '由于未初始化成功，邮件客户端发送被拒绝！');
             return false;
         }
-        const options = Object.assign(mailOptions, { from: APP_CONFIG.EMAIL.from });
+        const options = Object.assign(Object.assign({}, mailOptions), { from: APP_CONFIG.EMAIL.from });
         this.transporter.sendMail(options, (error, info) => {
             if (error) {
                 logger_1.default.error(`[NodeMailer]`, `邮件发送失败`, (0, error_transformer_1.getMessageFromNormalError)(error));
@@ -77,6 +77,9 @@ let EmailService = class EmailService {
                 logger_1.default.info('[NodeMailer]', '邮件发送成功', info.messageId, info.response);
             }
         });
+    }
+    sendMailAs(prefix, mailOptions) {
+        return this.sendMail(Object.assign(Object.assign({}, mailOptions), { subject: `[${prefix}] ${mailOptions.subject}` }));
     }
 };
 EmailService = __decorate([
