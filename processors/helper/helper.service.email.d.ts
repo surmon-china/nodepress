@@ -1,4 +1,4 @@
-export interface IEmailOptions {
+export interface EmailOptions {
     to: string;
     subject: string;
     text: string;
@@ -9,5 +9,5 @@ export declare class EmailService {
     private clientIsValid;
     constructor();
     private verifyClient;
-    sendMail(mailOptions: IEmailOptions): false | undefined;
+    sendMail(mailOptions: EmailOptions): false | undefined;
 }

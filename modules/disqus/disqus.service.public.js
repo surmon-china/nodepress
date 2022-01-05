@@ -181,7 +181,7 @@ let DisqusPublicService = class DisqusPublicService {
         if (userInfo.id !== commentDisqusAuthorID) {
             throw `You do not have write privileges on comment ${commentID}`;
         }
-        const result = await this.deleteDisqusComment({
+        await this.deleteDisqusComment({
             post: commentDisqusPostID,
             access_token: accessToken,
         });

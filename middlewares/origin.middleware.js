@@ -35,10 +35,10 @@ let OriginMiddleware = class OriginMiddleware {
     use(request, response, next) {
         if (app_environment_1.isProdEnv) {
             const { origin, referer } = request.headers;
-            const checkHeader = (field) => !field || field.includes(app_config_1.CROSS_DOMAIN.allowedReferer);
-            const isVerifiedOrigin = checkHeader(origin);
-            const isVerifiedReferer = checkHeader(referer);
-            if (!isVerifiedOrigin && !isVerifiedReferer) {
+            const isAllowed = (field) => !field || field.includes(app_config_1.CROSS_DOMAIN.allowedReferer);
+            const isAllowedOrigin = isAllowed(origin);
+            const isAllowedReferer = isAllowed(referer);
+            if (!isAllowedOrigin && !isAllowedReferer) {
                 return response.status(common_1.HttpStatus.UNAUTHORIZED).jsonp({
                     status: http_interface_1.ResponseStatus.Error,
                     message: TEXT.HTTP_ANONYMOUS_TEXT,

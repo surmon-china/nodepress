@@ -78,9 +78,12 @@ let ArticleService = class ArticleService {
     getUserHotListCache() {
         return this.hotArticleListCache();
     }
-    async getRelatedArticles(article) {
+    async getRandomRelatedArticles(article, count = 12) {
         const findParams = Object.assign(Object.assign({}, exports.COMMON_USER_QUERY_PARAMS), { tag: { $in: article.tag.map((t) => t._id) }, category: { $in: article.category.map((c) => c._id) } });
-        return this.articleModel.find(findParams, 'id title description thumb meta create_at update_at -_id').exec();
+        const projection = 'id title description thumb meta create_at update_at -_id';
+        const articles = await this.articleModel.find(findParams, projection).exec();
+        const filtered = articles.filter((a) => a.id !== article.id);
+        return lodash_1.default.sampleSize(filtered, count);
     }
     paginater(querys, options) {
         return this.articleModel.paginate(querys, Object.assign(Object.assign({}, options), { populate: ['category', 'tag'], select: '-password -content' }));
@@ -117,8 +120,7 @@ let ArticleService = class ArticleService {
             this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
         });
         const articleObject = article.toObject();
-        const relatedArticles = await this.getRelatedArticles(articleObject);
-        return Object.assign(Object.assign({}, articleObject), { related: lodash_1.default.sampleSize(relatedArticles, 12) });
+        return Object.assign(Object.assign({}, articleObject), { related: await this.getRandomRelatedArticles(articleObject) });
     }
     async like(articleID) {
         const article = await this.getDetailByNumberIDOrSlug(articleID);

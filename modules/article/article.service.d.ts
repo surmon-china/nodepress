@@ -25,7 +25,7 @@ export declare class ArticleService {
     private hotArticleListCache;
     constructor(tagService: TagService, cacheService: CacheService, archiveService: ArchiveService, seoService: SeoService, articleModel: MongooseModel<Article>);
     getUserHotListCache(): Promise<PaginateResult<Article>>;
-    private getRelatedArticles;
+    private getRandomRelatedArticles;
     paginater(querys: any, options: PaginateOptions): Promise<PaginateResult<Article>>;
     getList(articleIDs: number[]): Promise<Array<Article>>;
     getDetailByObjectID(articleID: Types.ObjectId): Promise<Article>;

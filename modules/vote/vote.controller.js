@@ -1,9 +1,28 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
@@ -12,17 +31,32 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VoteController = exports.ArticleVotePayload = exports.CommentVotePayload = void 0;
+exports.VoteController = exports.PageVotePayload = exports.CommentVotePayload = exports.VoteAuthorPayload = void 0;
 const class_validator_1 = require("class-validator");
 const common_1 = require("@nestjs/common");
+const query_params_decorator_1 = require("../../decorators/query-params.decorator");
 const http_decorator_1 = require("../../decorators/http.decorator");
+const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
+const helper_service_email_1 = require("../../processors/helper/helper.service.email");
 const option_service_1 = require("../option/option.service");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
+const comment_model_1 = require("../comment/comment.model");
 const disqus_service_public_1 = require("../disqus/disqus.service.public");
 const disqus_token_1 = require("../disqus/disqus.token");
 const biz_interface_1 = require("../../interfaces/biz.interface");
-class CommentVotePayload {
+const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
+const APP_CONFIG = __importStar(require("../../app.config"));
+class VoteAuthorPayload {
+}
+__decorate([
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_validator_1.IsObject)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", comment_model_1.Author)
+], VoteAuthorPayload.prototype, "author", void 0);
+exports.VoteAuthorPayload = VoteAuthorPayload;
+class CommentVotePayload extends VoteAuthorPayload {
 }
 __decorate([
     (0, class_validator_1.IsDefined)(),
@@ -36,26 +70,70 @@ __decorate([
     __metadata("design:type", Number)
 ], CommentVotePayload.prototype, "vote", void 0);
 exports.CommentVotePayload = CommentVotePayload;
-class ArticleVotePayload {
+class PageVotePayload extends VoteAuthorPayload {
 }
 __decorate([
     (0, class_validator_1.IsDefined)(),
     (0, class_validator_1.IsInt)(),
     __metadata("design:type", Number)
-], ArticleVotePayload.prototype, "article_id", void 0);
+], PageVotePayload.prototype, "article_id", void 0);
 __decorate([
     (0, class_validator_1.IsDefined)(),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsIn)([1]),
     __metadata("design:type", Number)
-], ArticleVotePayload.prototype, "vote", void 0);
-exports.ArticleVotePayload = ArticleVotePayload;
+], PageVotePayload.prototype, "vote", void 0);
+exports.PageVotePayload = PageVotePayload;
 let VoteController = class VoteController {
-    constructor(disqusPublicService, commentService, articleService, optionService) {
+    constructor(ipService, emailService, disqusPublicService, commentService, articleService, optionService) {
+        this.ipService = ipService;
+        this.emailService = emailService;
         this.disqusPublicService = disqusPublicService;
         this.commentService = commentService;
         this.articleService = articleService;
         this.optionService = optionService;
+    }
+    async getAuthor(author, token) {
+        if (token) {
+            try {
+                const userInfo = await this.disqusPublicService.getUserInfo(token);
+                return `(Disqus user) ${userInfo.name}` + [userInfo.url, userInfo.profileUrl].filter(Boolean).join(' - ');
+            }
+            catch (error) { }
+        }
+        if (author) {
+            return `(Guest user) ${author.name}`;
+        }
+        return `Anonymous user`;
+    }
+    async getTargetTitle(post_id) {
+        if (post_id === biz_interface_1.CommentPostID.Guestbook) {
+            return 'guestbook';
+        }
+        else {
+            const article = await this.articleService.getDetailByNumberIDOrSlug(post_id);
+            return article.toObject().title;
+        }
+    }
+    emailToTargetVoteMessage(message) {
+        const mailTexts = [
+            `You have a new ${message.type} vote on "${message.on}".`,
+            `Vote: ${message.vote}`,
+            `Author: ${message.author}`,
+            `Location: ${message.location
+                ? [message.location.country, message.location.region, message.location.city].join(' · ')
+                : 'unknow'}`,
+        ];
+        this.emailService.sendMail({
+            to: message.to,
+            subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new ${message.type} vote`,
+            text: mailTexts.join('\n'),
+            html: [
+                mailTexts.map((t) => `<p>${t}</p>`).join(''),
+                `<br>`,
+                `<a href="${message.link}" target="_blank">${message.on}</a>`,
+            ].join('\n'),
+        });
     }
     async voteDisqusThread(articleID, vote, token) {
         const thread = await this.disqusPublicService.makeSureThreadDetail(articleID);
@@ -66,17 +144,35 @@ let VoteController = class VoteController {
         });
         return result;
     }
-    async likeSite(token) {
+    async likeSite(voteBody, token, { visitor }) {
         const likes = await this.optionService.likeSite();
         this.voteDisqusThread(biz_interface_1.CommentPostID.Guestbook, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
+        this.emailToTargetVoteMessage({
+            type: 'site',
+            vote: '+1',
+            to: APP_CONFIG.EMAIL.admin,
+            on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
+            author: await this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token),
+            location: await this.ipService.queryLocation(visitor.ip),
+            link: (0, urlmap_transformer_1.getPermalinkByID)(biz_interface_1.CommentPostID.Guestbook),
+        });
         return likes;
     }
-    async voteArticle(voteBody, token) {
+    async voteArticle(voteBody, token, { visitor }) {
         const likes = await this.articleService.like(voteBody.article_id);
         this.voteDisqusThread(voteBody.article_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
+        this.emailToTargetVoteMessage({
+            type: 'article',
+            vote: '+1',
+            to: APP_CONFIG.EMAIL.admin,
+            on: await this.getTargetTitle(voteBody.article_id),
+            author: await this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token),
+            location: await this.ipService.queryLocation(visitor.ip),
+            link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
+        });
         return likes;
     }
-    async voteComment(voteBody, token) {
+    async voteComment(voteBody, token, { visitor }) {
         const result = await this.commentService.vote(voteBody.comment_id, voteBody.vote > 0);
         if (token) {
             try {
@@ -91,15 +187,30 @@ let VoteController = class VoteController {
             }
             catch (error) { }
         }
+        const comment = await this.commentService.getDetailByNumberID(voteBody.comment_id);
+        if (comment.author.email) {
+            const tagetTitle = await this.getTargetTitle(comment.post_id);
+            this.emailToTargetVoteMessage({
+                type: 'comment',
+                to: comment.author.email,
+                vote: voteBody.vote > 0 ? '+1' : '-1',
+                on: `${tagetTitle} #${comment.id}`,
+                author: await this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token),
+                location: await this.ipService.queryLocation(visitor.ip),
+                link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
+            });
+        }
         return result;
     }
 };
 __decorate([
     (0, common_1.Post)('/site'),
     http_decorator_1.HttpProcessor.handle('Vote site'),
-    __param(0, (0, disqus_token_1.CookieToken)()),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, disqus_token_1.CookieToken)()),
+    __param(2, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [VoteAuthorPayload, Object, Object]),
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "likeSite", null);
 __decorate([
@@ -107,8 +218,9 @@ __decorate([
     http_decorator_1.HttpProcessor.handle('Vote article'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.CookieToken)()),
+    __param(2, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ArticleVotePayload, Object]),
+    __metadata("design:paramtypes", [PageVotePayload, Object, Object]),
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "voteArticle", null);
 __decorate([
@@ -116,13 +228,16 @@ __decorate([
     http_decorator_1.HttpProcessor.handle('Vote comment'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.CookieToken)()),
+    __param(2, (0, query_params_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CommentVotePayload, Object]),
+    __metadata("design:paramtypes", [CommentVotePayload, Object, Object]),
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "voteComment", null);
 VoteController = __decorate([
     (0, common_1.Controller)('vote'),
-    __metadata("design:paramtypes", [disqus_service_public_1.DisqusPublicService,
+    __metadata("design:paramtypes", [helper_service_ip_1.IPService,
+        helper_service_email_1.EmailService,
+        disqus_service_public_1.DisqusPublicService,
         comment_service_1.CommentService,
         article_service_1.ArticleService,
         option_service_1.OptionService])
