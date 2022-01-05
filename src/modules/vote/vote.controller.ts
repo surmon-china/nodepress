@@ -149,17 +149,15 @@ export class VoteController {
     this.voteDisqusThread(CommentPostID.Guestbook, 1, token?.access_token).catch(() => {})
     // email to admin
     this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
-      if (author) {
-        this.emailToTargetVoteMessage({
-          to: APP_CONFIG.EMAIL.admin,
-          subject: `You have a new site vote`,
-          on: await this.getTargetTitle(CommentPostID.Guestbook),
-          vote: '+1',
-          author,
-          location: await this.ipService.queryLocation(visitor.ip),
-          link: getPermalinkByID(CommentPostID.Guestbook),
-        })
-      }
+      this.emailToTargetVoteMessage({
+        to: APP_CONFIG.EMAIL.admin,
+        subject: `You have a new site vote`,
+        on: await this.getTargetTitle(CommentPostID.Guestbook),
+        vote: '+1',
+        author: author || 'Anonymous user',
+        location: await this.ipService.queryLocation(visitor.ip),
+        link: getPermalinkByID(CommentPostID.Guestbook),
+      })
     })
 
     return likes
@@ -178,17 +176,15 @@ export class VoteController {
     this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() => {})
     // email to admin
     this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
-      if (author) {
-        this.emailToTargetVoteMessage({
-          to: APP_CONFIG.EMAIL.admin,
-          subject: `You have a new article vote`,
-          on: await this.getTargetTitle(voteBody.article_id),
-          vote: '+1',
-          author,
-          location: await this.ipService.queryLocation(visitor.ip),
-          link: getPermalinkByID(voteBody.article_id),
-        })
-      }
+      this.emailToTargetVoteMessage({
+        to: APP_CONFIG.EMAIL.admin,
+        subject: `You have a new article vote`,
+        on: await this.getTargetTitle(voteBody.article_id),
+        vote: '+1',
+        author: author || 'Anonymous user',
+        location: await this.ipService.queryLocation(visitor.ip),
+        link: getPermalinkByID(voteBody.article_id),
+      })
     })
 
     return likes
