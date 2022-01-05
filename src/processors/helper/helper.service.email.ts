@@ -10,8 +10,7 @@ import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
-// 邮件格式
-export interface IEmailOptions {
+export interface EmailOptions {
   to: string
   subject: string
   text: string
@@ -36,7 +35,6 @@ export class EmailService {
     this.verifyClient()
   }
 
-  // 验证有效性
   private verifyClient(): void {
     return this.transporter.verify((error) => {
       if (error) {
@@ -50,8 +48,7 @@ export class EmailService {
     })
   }
 
-  // 发邮件
-  public sendMail(mailOptions: IEmailOptions) {
+  public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
       logger.warn('[NodeMailer]', '由于未初始化成功，邮件客户端发送被拒绝！')
       return false

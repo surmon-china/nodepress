@@ -206,7 +206,7 @@ export class DisqusPublicService {
     }
 
     // disqus delete
-    const result = await this.deleteDisqusComment({
+    await this.deleteDisqusComment({
       post: commentDisqusPostID,
       access_token: accessToken,
     })

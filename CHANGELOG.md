@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.6（2022-01-05)
+
+**Feature**
+
+- [Article] random releted articles
+- [Comment] improve email content
+- [Vote] send email to admin when new vote
+
 ### 3.7.4（2022-01-01)
 
 **Feature**
