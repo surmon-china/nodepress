@@ -68,17 +68,17 @@ export class VoteController {
         const userInfo = await this.disqusPublicService.getUserInfo(token)
         const isAdmin = userInfo.username === APP_CONFIG.DISQUS.adminUsername
         const moderator = isAdmin ? ` / Moderator` : ''
-        return [`(Disqus user${moderator})`, `${userInfo.name}`, userInfo.url, userInfo.profileUrl]
+        return [`${userInfo.name} (Disqus user${moderator})`, userInfo.url, userInfo.profileUrl]
           .filter(Boolean)
           .join(' · ')
       } catch (error) {}
     }
     // local user
     if (author) {
-      return `(Guest user) ${author.name}`
+      return `${author.name} (Guest user)`
     }
     // guest user
-    return `Anonymous user`
+    return null
   }
 
   private async getTargetTitle(post_id: number) {
@@ -148,14 +148,18 @@ export class VoteController {
     // Disqus
     this.voteDisqusThread(CommentPostID.Guestbook, 1, token?.access_token).catch(() => {})
     // email to admin
-    this.emailToTargetVoteMessage({
-      to: APP_CONFIG.EMAIL.admin,
-      subject: `You have a new site vote`,
-      on: await this.getTargetTitle(CommentPostID.Guestbook),
-      vote: '+1',
-      author: await this.getAuthor(voteBody.author, token?.access_token),
-      location: await this.ipService.queryLocation(visitor.ip),
-      link: getPermalinkByID(CommentPostID.Guestbook),
+    this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
+      if (author) {
+        this.emailToTargetVoteMessage({
+          to: APP_CONFIG.EMAIL.admin,
+          subject: `You have a new site vote`,
+          on: await this.getTargetTitle(CommentPostID.Guestbook),
+          vote: '+1',
+          author,
+          location: await this.ipService.queryLocation(visitor.ip),
+          link: getPermalinkByID(CommentPostID.Guestbook),
+        })
+      }
     })
 
     return likes
@@ -173,14 +177,18 @@ export class VoteController {
     // Disqus
     this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() => {})
     // email to admin
-    this.emailToTargetVoteMessage({
-      to: APP_CONFIG.EMAIL.admin,
-      subject: `You have a new article vote`,
-      on: await this.getTargetTitle(voteBody.article_id),
-      vote: '+1',
-      author: await this.getAuthor(voteBody.author, token?.access_token),
-      location: await this.ipService.queryLocation(visitor.ip),
-      link: getPermalinkByID(voteBody.article_id),
+    this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
+      if (author) {
+        this.emailToTargetVoteMessage({
+          to: APP_CONFIG.EMAIL.admin,
+          subject: `You have a new article vote`,
+          on: await this.getTargetTitle(voteBody.article_id),
+          vote: '+1',
+          author,
+          location: await this.ipService.queryLocation(visitor.ip),
+          link: getPermalinkByID(voteBody.article_id),
+        })
+      }
     })
 
     return likes
@@ -209,28 +217,32 @@ export class VoteController {
         }
       } catch (error) {}
     }
-    // email
-    this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
-      const tagetTitle = await this.getTargetTitle(comment.post_id)
-      const mailParams = {
-        vote: voteBody.vote > 0 ? '+1' : '-1',
-        on: `${tagetTitle} #${comment.id}`,
-        author: await this.getAuthor(voteBody.author, token?.access_token),
-        location: await this.ipService.queryLocation(visitor.ip),
-        link: getPermalinkByID(comment.post_id),
-      }
-      // email to admin
-      this.emailToTargetVoteMessage({
-        to: APP_CONFIG.EMAIL.admin,
-        subject: `You have a new comment vote`,
-        ...mailParams,
-      })
-      // email to author
-      if (comment.author.email) {
-        this.emailToTargetVoteMessage({
-          to: comment.author.email,
-          subject: `Your comment ${comment.id} has a new vote`,
-          ...mailParams,
+    // email to user and admin
+    this.getAuthor(voteBody.author, token?.access_token).then((author) => {
+      if (author) {
+        this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
+          const tagetTitle = await this.getTargetTitle(comment.post_id)
+          const mailParams = {
+            vote: voteBody.vote > 0 ? '+1' : '-1',
+            on: `${tagetTitle} #${comment.id}`,
+            author,
+            location: await this.ipService.queryLocation(visitor.ip),
+            link: getPermalinkByID(comment.post_id),
+          }
+          // email to admin
+          this.emailToTargetVoteMessage({
+            to: APP_CONFIG.EMAIL.admin,
+            subject: `You have a new comment vote`,
+            ...mailParams,
+          })
+          // email to author
+          if (comment.author.email) {
+            this.emailToTargetVoteMessage({
+              to: comment.author.email,
+              subject: `Your comment #${comment.id} has a new vote`,
+              ...mailParams,
+            })
+          }
         })
       }
     })
