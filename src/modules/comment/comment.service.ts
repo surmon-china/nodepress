@@ -34,29 +34,37 @@ export class CommentService {
     @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>
   ) {}
 
-  private emailToAdminAndTargetAuthor(comment: Comment) {
-    const isGuestbook = comment.post_id === CommentPostID.Guestbook
-    const onWhere = isGuestbook ? 'guestbook' : 'article-' + comment.post_id
+  private async emailToAdminAndTargetAuthor(comment: Comment) {
+    let onWhere = ''
+    if (comment.post_id === CommentPostID.Guestbook) {
+      onWhere = 'guestbook'
+    } else {
+      const article = await this.articleService.getDetailByNumberIDOrSlug(comment.post_id)
+      onWhere = `"${article.toObject().title}"`
+    }
 
+    const authorName = comment.author.name
     const getMailTexts = (contentPrefix = '') => [
       `You have a new comment ${contentPrefix} on ${onWhere}.`,
-      `${comment.author.name}: ${comment.content}`,
+      `${authorName}: ${comment.content}`,
     ]
 
-    const getMailHtml = (contentPrefix = '') => `
-      ${getMailTexts(contentPrefix)
-        .map((t) => `<p>${t}</p>`)
-        .join('')}
-      <br>
-      <a href="${getPermalinkByID(comment.post_id)}" target="_blank">Reply to ${comment.author.name}</a>
-    `
+    const getMailHTML = (contentPrefix = '') => {
+      return [
+        getMailTexts(contentPrefix)
+          .map((t) => `<p>${t}</p>`)
+          .join(''),
+        `<br>`,
+        `<a href="${getPermalinkByID(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`,
+      ].join('\n')
+    }
 
     // email to admin
     this.emailService.sendMail({
       to: APP_CONFIG.EMAIL.admin,
       subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment`,
       text: getMailTexts().join('\n'),
-      html: getMailHtml(),
+      html: getMailHTML(),
     })
 
     // email to parent comment author
@@ -67,7 +75,7 @@ export class CommentService {
             to: parentComment.author.email,
             subject: `[${APP_CONFIG.APP.FE_NAME}] You have a new comment reply`,
             text: getMailTexts(`(reply)`).join('\n'),
-            html: getMailHtml(`(reply)`),
+            html: getMailHTML(`(reply)`),
           })
         }
       })

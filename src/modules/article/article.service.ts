@@ -61,13 +61,16 @@ export class ArticleService {
   }
 
   // get releted articles
-  private async getRelatedArticles(article: Article): Promise<Article[]> {
+  private async getRandomRelatedArticles(article: Article, count = 12): Promise<Article[]> {
     const findParams = {
       ...COMMON_USER_QUERY_PARAMS,
       tag: { $in: article.tag.map((t) => (t as any)._id) },
       category: { $in: article.category.map((c) => (c as any)._id) },
     }
-    return this.articleModel.find(findParams, 'id title description thumb meta create_at update_at -_id').exec()
+    const projection = 'id title description thumb meta create_at update_at -_id'
+    const articles = await this.articleModel.find(findParams, projection).exec()
+    const filtered = articles.filter((a) => a.id !== article.id)
+    return lodash.sampleSize(filtered, count)
   }
 
   // get paginate articles
@@ -124,10 +127,9 @@ export class ArticleService {
 
     // releted articles
     const articleObject = article.toObject()
-    const relatedArticles = await this.getRelatedArticles(articleObject)
     return {
       ...articleObject,
-      related: lodash.sampleSize(relatedArticles, 12),
+      related: await this.getRandomRelatedArticles(articleObject),
     }
   }
 

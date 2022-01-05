@@ -28,7 +28,7 @@ export class AuthController {
   async login(@QueryParams() { visitor: { ip } }, @Body() body: AuthPasswordPayload): Promise<TokenResult> {
     const token = await this.authService.adminLogin(body.password)
     const location = await this.ipService.queryLocation(ip)
-    const subject = `${APP.NAME} has new login activity`
+    const subject = `[${APP.NAME}] has new login activity`
     const city = location?.city || 'unknow'
     const country = location?.country || 'unknow'
     const content = `IP: ${ip}, location: ${country} - ${city}`

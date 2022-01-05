@@ -19,7 +19,7 @@ export function getModelToken(modelName: string): string {
   return modelName + DB_MODEL_TOKEN_SUFFIX
 }
 
-// 根据 Class 获取 Provider
+// Get Provider by Class
 export function getProviderByTypegooseClass(typegooseClass: TypegooseClass): Provider {
   return {
     provide: getModelToken(typegooseClass.name),
@@ -28,7 +28,7 @@ export function getProviderByTypegooseClass(typegooseClass: TypegooseClass): Pro
   }
 }
 
-// Model 注入器
+// Model injecter
 export function InjectModel(model: TypegooseClass) {
   return Inject(getModelToken(model.name))
 }
