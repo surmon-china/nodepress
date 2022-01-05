@@ -66,7 +66,7 @@ export class CommentService {
     if (comment.pid) {
       this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
         if (parentComment?.author.email) {
-          const subject = `Your comment ${parentComment.id} has a new reply`
+          const subject = `Your comment #${parentComment.id} has a new reply`
           this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
             to: parentComment.author.email,
             subject,
