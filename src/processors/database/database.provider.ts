@@ -19,9 +19,9 @@ export const databaseProvider = {
 
     // 发送告警邮件（当发送邮件时，数据库已达到万劫不复之地）
     const sendAlarmMail = (error: string) => {
-      emailService.sendMail({
+      emailService.sendMailAs(APP_CONFIG.APP.NAME, {
         to: APP_CONFIG.EMAIL.admin,
-        subject: `${APP_CONFIG.APP.NAME} 数据库发生异常！`,
+        subject: `MongoDB Error!`,
         text: error,
         html: `<pre><code>${error}</code></pre>`,
       })
