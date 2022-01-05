@@ -41,7 +41,9 @@ let CommentController = class CommentController {
         return this.commentService.paginater(querys, options, !isAuthenticated);
     }
     createComment(comment, { visitor }) {
-        return this.commentService.createFormClient(comment, visitor);
+        return comment.author.email
+            ? this.commentService.createFormClient(comment, visitor)
+            : Promise.reject(`author email should not be empty`);
     }
     patchComments({ visitor }, body) {
         return this.commentService.batchPatchState(body, visitor.referer);

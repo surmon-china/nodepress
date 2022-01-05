@@ -150,17 +150,15 @@ let VoteController = class VoteController {
         const likes = await this.optionService.likeSite();
         this.voteDisqusThread(biz_interface_1.CommentPostID.Guestbook, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
-            if (author) {
-                this.emailToTargetVoteMessage({
-                    to: APP_CONFIG.EMAIL.admin,
-                    subject: `You have a new site vote`,
-                    on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
-                    vote: '+1',
-                    author,
-                    location: await this.ipService.queryLocation(visitor.ip),
-                    link: (0, urlmap_transformer_1.getPermalinkByID)(biz_interface_1.CommentPostID.Guestbook),
-                });
-            }
+            this.emailToTargetVoteMessage({
+                to: APP_CONFIG.EMAIL.admin,
+                subject: `You have a new site vote`,
+                on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
+                vote: '+1',
+                author: author || 'Anonymous user',
+                location: await this.ipService.queryLocation(visitor.ip),
+                link: (0, urlmap_transformer_1.getPermalinkByID)(biz_interface_1.CommentPostID.Guestbook),
+            });
         });
         return likes;
     }
@@ -168,17 +166,15 @@ let VoteController = class VoteController {
         const likes = await this.articleService.like(voteBody.article_id);
         this.voteDisqusThread(voteBody.article_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
-            if (author) {
-                this.emailToTargetVoteMessage({
-                    to: APP_CONFIG.EMAIL.admin,
-                    subject: `You have a new article vote`,
-                    on: await this.getTargetTitle(voteBody.article_id),
-                    vote: '+1',
-                    author,
-                    location: await this.ipService.queryLocation(visitor.ip),
-                    link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
-                });
-            }
+            this.emailToTargetVoteMessage({
+                to: APP_CONFIG.EMAIL.admin,
+                subject: `You have a new article vote`,
+                on: await this.getTargetTitle(voteBody.article_id),
+                vote: '+1',
+                author: author || 'Anonymous user',
+                location: await this.ipService.queryLocation(visitor.ip),
+                link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
+            });
         });
         return likes;
     }
