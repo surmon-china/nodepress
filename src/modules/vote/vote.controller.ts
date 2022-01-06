@@ -126,7 +126,7 @@ export class VoteController {
 
   // Disqus logined user or guest user
   async voteDisqusThread(articleID: number, vote: number, token?: string) {
-    const thread = await this.disqusPublicService.makeSureThreadDetail(articleID)
+    const thread = await this.disqusPublicService.makeSureThreadDetailCache(articleID)
     const result = await this.disqusPublicService.voteThread({
       access_token: token || null,
       thread: thread.id,

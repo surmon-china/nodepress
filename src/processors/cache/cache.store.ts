@@ -21,6 +21,7 @@ const createRedisStore = (options: CacheStoreOptions) => {
     const _value = value ? JSON.stringify(value) : ''
     if (ttl) {
       const _ttl = typeof ttl === 'function' ? ttl(value) : ttl
+      // https://redis.io/commands/setex
       await client.setEx(key, _ttl, _value)
     } else {
       await client.set(key, _value)
