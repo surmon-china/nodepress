@@ -56,7 +56,7 @@ exports.databaseProvider = {
             }
         });
         mongoose_1.default.connection.on('disconnected', () => {
-            logger_1.default.error('[MongoDB]', `disconnected! 尝试 ${RECONNECT_INTERVAL / 1000}s 后重连`);
+            logger_1.default.error('[MongoDB]', `disconnected! retry when after ${RECONNECT_INTERVAL / 1000}s`);
             reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL);
         });
         mongoose_1.default.connection.on('error', (error) => {

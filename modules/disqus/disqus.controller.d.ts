@@ -15,7 +15,7 @@ export declare class DisqusController {
         authorize_url: string;
     };
     oauthCallback(query: CallbackCodePayload, response: any): Promise<void>;
-    oauthLogout(response: any): void;
+    oauthLogout(token: AccessToken | null, response: any): void;
     getUserInfo(token: AccessToken | null): Promise<any>;
     getThread(query: ThreadPostIDPayload): Promise<any>;
     createComment(comment: CreateCommentBase, { visitor }: {

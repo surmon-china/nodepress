@@ -138,7 +138,7 @@ let VoteController = class VoteController {
         });
     }
     async voteDisqusThread(articleID, vote, token) {
-        const thread = await this.disqusPublicService.makeSureThreadDetail(articleID);
+        const thread = await this.disqusPublicService.makeSureThreadDetailCache(articleID);
         const result = await this.disqusPublicService.voteThread({
             access_token: token || null,
             thread: thread.id,

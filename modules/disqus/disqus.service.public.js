@@ -35,6 +35,8 @@ exports.DisqusPublicService = void 0;
 const common_1 = require("@nestjs/common");
 const comment_service_1 = require("../comment/comment.service");
 const biz_interface_1 = require("../../interfaces/biz.interface");
+const cache_constant_1 = require("../../constants/cache.constant");
+const cache_service_1 = require("../../processors/cache/cache.service");
 const app_config_1 = require("../../app.config");
 const disqus_1 = require("../../utils/disqus");
 const extend_transformer_1 = require("../../transformers/extend.transformer");
@@ -43,13 +45,26 @@ const disqus_service_private_1 = require("./disqus.service.private");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
 let DisqusPublicService = class DisqusPublicService {
-    constructor(commentService, disqusPrivateService) {
+    constructor(cacheService, commentService, disqusPrivateService) {
+        this.cacheService = cacheService;
         this.commentService = commentService;
         this.disqusPrivateService = disqusPrivateService;
         this.disqus = new disqus_1.Disqus({
             apiKey: app_config_1.DISQUS.publicKey,
             apiSecret: app_config_1.DISQUS.secretKey,
         });
+    }
+    getUserInfoCacheKey(uid) {
+        return (0, cache_constant_1.getDisqusCacheKey)(`userinfo-${uid}`);
+    }
+    setUserInfoCache(uid, userInfo, ttl) {
+        return this.cacheService.set(this.getUserInfoCacheKey(uid), userInfo, { ttl });
+    }
+    getUserInfoCache(uid) {
+        return this.cacheService.get(this.getUserInfoCacheKey(uid));
+    }
+    deleteUserInfoCache(uid) {
+        return this.cacheService.delete(this.getUserInfoCacheKey(uid));
     }
     getAuthorizeURL() {
         return this.disqus.getAuthorizeURL('code', 'read,write', DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL);
@@ -80,6 +95,16 @@ let DisqusPublicService = class DisqusPublicService {
             .request('threads/details', { forum: app_config_1.DISQUS.forum, thread: `link:${(0, urlmap_transformer_1.getPermalinkByID)(postID)}` })
             .then((response) => response.response)
             .catch(() => this.disqusPrivateService.createThread(postID));
+    }
+    async makeSureThreadDetailCache(postID) {
+        const cacheKey = (0, cache_constant_1.getDisqusCacheKey)(`thread-post-${postID}`);
+        const cached = await this.cacheService.get(cacheKey);
+        if (cached) {
+            return cached;
+        }
+        const result = await this.makeSureThreadDetail(postID);
+        this.cacheService.set(cacheKey, result, { ttl: 60 * 60 * 24 });
+        return result;
     }
     async voteThread(params) {
         return this.disqus.request('threads/vote', params, true).catch((error) => {
@@ -128,7 +153,7 @@ let DisqusPublicService = class DisqusPublicService {
     async createUniversalComment(comment, visitor, accessToken) {
         const newComment = this.commentService.normalizeNewComment(comment, visitor);
         await this.commentService.isCommentableTarget(newComment.post_id);
-        const thread = await this.makeSureThreadDetail(newComment.post_id);
+        const thread = await this.makeSureThreadDetailCache(newComment.post_id);
         await this.commentService.isNotBlocklisted(newComment);
         let parentID = null;
         if (Boolean(newComment.pid)) {
@@ -190,7 +215,8 @@ let DisqusPublicService = class DisqusPublicService {
 };
 DisqusPublicService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [comment_service_1.CommentService,
+    __metadata("design:paramtypes", [cache_service_1.CacheService,
+        comment_service_1.CommentService,
         disqus_service_private_1.DisqusPrivateService])
 ], DisqusPublicService);
 exports.DisqusPublicService = DisqusPublicService;

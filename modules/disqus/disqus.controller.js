@@ -40,6 +40,7 @@ let DisqusController = class DisqusController {
     }
     async oauthCallback(query, response) {
         const accessToken = await this.disqusPublicService.getAccessToken(query.code);
+        this.disqusPublicService.setUserInfoCache(accessToken.user_id, await this.disqusPublicService.getUserInfo(accessToken.access_token), accessToken.expires_in);
         response.cookie(disqus_token_1.TOKEN_COOKIE_KEY, (0, disqus_token_1.encodeToken)(accessToken), {
             maxAge: accessToken.expires_in * 1000,
             httpOnly: true,
@@ -47,15 +48,23 @@ let DisqusController = class DisqusController {
         });
         response.send(`<script>window.close();</script>`);
     }
-    oauthLogout(response) {
+    oauthLogout(token, response) {
+        if (token) {
+            this.disqusPublicService.deleteUserInfoCache(token.user_id);
+        }
         response.clearCookie(disqus_token_1.TOKEN_COOKIE_KEY);
         response.send('ok');
     }
     getUserInfo(token) {
-        return token ? this.disqusPublicService.getUserInfo(token.access_token) : Promise.reject(`You are not logged in`);
+        if (!token) {
+            return Promise.reject(`You are not logged in`);
+        }
+        return this.disqusPublicService.getUserInfoCache(token.user_id).then((cached) => {
+            return cached || this.disqusPublicService.getUserInfo(token.access_token);
+        });
     }
     getThread(query) {
-        return this.disqusPublicService.makeSureThreadDetail(Number(query.post_id));
+        return this.disqusPublicService.makeSureThreadDetailCache(Number(query.post_id));
     }
     createComment(comment, { visitor }, token) {
         return this.disqusPublicService.createUniversalComment(comment, visitor, token === null || token === void 0 ? void 0 : token.access_token);
@@ -109,9 +118,10 @@ __decorate([
     (0, common_1.Get)('oauth-logout'),
     (0, common_1.Header)('content-type', 'text/plain'),
     http_decorator_1.HttpProcessor.handle('Disqus OAuth logout'),
-    __param(0, (0, common_1.Response)()),
+    __param(0, (0, disqus_token_1.CookieToken)()),
+    __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], DisqusController.prototype, "oauthLogout", null);
 __decorate([

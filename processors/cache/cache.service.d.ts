@@ -35,6 +35,7 @@ export declare class CacheService {
     private isReadied;
     constructor(cacheManager: Cache);
     get<T>(key: CacheKey): CacheResult<T>;
+    delete(key: CacheKey): CacheResult<void>;
     set(key: CacheKey, value: any, options?: {
         ttl: number;
     }): CacheResult<void>;

@@ -49,6 +49,12 @@ let CacheService = class CacheService {
         }
         return this.cacheStore.get(key);
     }
+    delete(key) {
+        if (!this.isReadied) {
+            return Promise.reject('Redis has not ready!');
+        }
+        return this.cacheStore.del(key);
+    }
     set(key, value, options) {
         if (!this.isReadied) {
             return Promise.reject('Redis has not ready!');

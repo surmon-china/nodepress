@@ -5,3 +5,4 @@ export declare const TAGS: string;
 export declare const HOT_ARTICLES: string;
 export declare const ARCHIVE: string;
 export declare const TODAY_VIEWS: string;
+export declare const getDisqusCacheKey: (key: string) => string;

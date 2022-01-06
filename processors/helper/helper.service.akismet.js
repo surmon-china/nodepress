@@ -58,38 +58,38 @@ let AkismetService = class AkismetService {
     initVerify() {
         this.client
             .verifyKey()
-            .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Akismet Key 无效')))
+            .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
             .then(() => {
             this.clientIsValid = true;
-            logger_1.default.info('[Akismet]', 'key 有效，已准备好工作！');
+            logger_1.default.info('[Akismet]', 'client init succeed!');
         })
             .catch((error) => {
             this.clientIsValid = false;
-            logger_1.default.error('[Akismet]', '验证失败！无法工作', (0, error_transformer_1.getMessageFromNormalError)(error));
+            logger_1.default.error('[Akismet]', 'client init failed! reason:', (0, error_transformer_1.getMessageFromNormalError)(error));
         });
     }
     makeInterceptor(handleType) {
         return (content) => {
             return new Promise((resolve, reject) => {
                 if (this.clientIsValid === false) {
-                    const message = [`[Akismet]`, `verifyKey 失败，放弃 ${handleType} 操作！`];
+                    const message = [`[Akismet]`, `${handleType} failed! reason: init failed`];
                     logger_1.default.warn(...message);
                     return resolve(message.join(''));
                 }
-                logger_1.default.info(`[Akismet]`, `${handleType} 操作中...`, new Date());
+                logger_1.default.info(`[Akismet]`, `${handleType}...`, new Date());
                 this.client[handleType](content)
                     .then((result) => {
                     if (handleType === AkismetActionType.CheckSpam && result) {
-                        logger_1.default.warn(`[Akismet]`, `${handleType} 检测到 SPAM！`, new Date(), content);
+                        logger_1.default.warn(`[Akismet]`, `${handleType} found SPAM！`, new Date(), content);
                         reject('SPAM!');
                     }
                     else {
-                        logger_1.default.info(`[Akismet]`, `${handleType} 操作成功！`);
+                        logger_1.default.info(`[Akismet]`, `${handleType} succeed!`);
                         resolve(result);
                     }
                 })
                     .catch((error) => {
-                    const message = [`[Akismet]`, `${handleType} 操作失败！`];
+                    const message = [`[Akismet]`, `${handleType} failed!`];
                     logger_1.default.error(...message, error);
                     reject(message.join(''));
                 });
