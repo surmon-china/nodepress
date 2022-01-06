@@ -9,6 +9,8 @@ import { CommentService } from '@app/modules/comment/comment.service'
 import { Comment, CreateCommentBase } from '@app/modules/comment/comment.model'
 import { QueryVisitor } from '@app/decorators/query-params.decorator'
 import { CommentState } from '@app/interfaces/biz.interface'
+import { getDisqusCacheKey } from '@app/constants/cache.constant'
+import { CacheService } from '@app/processors/cache/cache.service'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
 import { getExtendsObject, getExtendValue } from '@app/transformers/extend.transformer'
@@ -22,6 +24,7 @@ export class DisqusPublicService {
   private disqus: Disqus
 
   constructor(
+    private readonly cacheService: CacheService,
     private readonly commentService: CommentService,
     private readonly disqusPrivateService: DisqusPrivateService
   ) {
@@ -29,6 +32,22 @@ export class DisqusPublicService {
       apiKey: DISQUS.publicKey,
       apiSecret: DISQUS.secretKey,
     })
+  }
+
+  private getUserInfoCacheKey(uid: string | number) {
+    return getDisqusCacheKey(`userinfo-${uid}`)
+  }
+
+  public setUserInfoCache(uid: string | number, userInfo: any, ttl: number) {
+    return this.cacheService.set(this.getUserInfoCacheKey(uid), userInfo, { ttl })
+  }
+
+  public getUserInfoCache(uid: string | number) {
+    return this.cacheService.get<any>(this.getUserInfoCacheKey(uid))
+  }
+
+  public deleteUserInfoCache(uid: string | number) {
+    return this.cacheService.delete(this.getUserInfoCacheKey(uid))
   }
 
   public getAuthorizeURL() {
@@ -64,6 +83,18 @@ export class DisqusPublicService {
       .request('threads/details', { forum: DISQUS.forum, thread: `link:${getPermalinkByID(postID)}` })
       .then((response) => response.response)
       .catch(() => this.disqusPrivateService.createThread(postID))
+  }
+
+  public async makeSureThreadDetailCache(postID: number) {
+    const cacheKey = getDisqusCacheKey(`thread-post-${postID}`)
+    const cached = await this.cacheService.get<any>(cacheKey)
+    if (cached) {
+      return cached
+    }
+    const result = await this.makeSureThreadDetail(postID)
+    // cache 24 hours
+    this.cacheService.set(cacheKey, result, { ttl: 60 * 60 * 24 })
+    return result
   }
 
   public async voteThread(params: any) {
@@ -131,7 +162,7 @@ export class DisqusPublicService {
     // 1. commentable
     await this.commentService.isCommentableTarget(newComment.post_id)
     // 2. make sure disqus thread
-    const thread = await this.makeSureThreadDetail(newComment.post_id)
+    const thread = await this.makeSureThreadDetailCache(newComment.post_id)
     // 3. nodepress blocklist
     await this.commentService.isNotBlocklisted(newComment)
     // 4. disqus parent comment post ID

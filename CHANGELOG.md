@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.11（2022-01-06)
+
+**Feature**
+
+- [Disqus] cache for userinfo & thread
+
 ### 3.7.6（2022-01-05)
 
 **Feature**

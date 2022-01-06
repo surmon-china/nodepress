@@ -12,3 +12,7 @@ export const TAGS = CACHE_PREFIX + 'tags'
 export const HOT_ARTICLES = CACHE_PREFIX + 'hot-articles'
 export const ARCHIVE = CACHE_PREFIX + 'archive'
 export const TODAY_VIEWS = CACHE_PREFIX + 'today-views'
+
+export const getDisqusCacheKey = (key: string) => {
+  return `${CACHE_PREFIX}-disqus-${key}`
+}

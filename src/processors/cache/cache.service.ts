@@ -103,7 +103,21 @@ export class CacheService {
     return this.cacheStore.get(key)
   }
 
-  public set(key: CacheKey, value: any, options?: { ttl: number }): CacheResult<void> {
+  public delete(key: CacheKey): CacheResult<void> {
+    if (!this.isReadied) {
+      return Promise.reject('Redis has not ready!')
+    }
+    return this.cacheStore.del(key)
+  }
+
+  public set(
+    key: CacheKey,
+    value: any,
+    options?: {
+      /** seconds */
+      ttl: number
+    }
+  ): CacheResult<void> {
     if (!this.isReadied) {
       return Promise.reject('Redis has not ready!')
     }

@@ -57,6 +57,12 @@ export class DisqusController {
   @HttpProcessor.handle('Dsiqus OAuth login')
   async oauthCallback(@Query() query: CallbackCodePayload, @Response() response) {
     const accessToken = await this.disqusPublicService.getAccessToken(query.code)
+    // cache user info
+    this.disqusPublicService.setUserInfoCache(
+      accessToken.user_id,
+      await this.disqusPublicService.getUserInfo(accessToken.access_token),
+      accessToken.expires_in
+    )
     // http://expressjs.com/en/5x/api.html#res.cookie
     response.cookie(TOKEN_COOKIE_KEY, encodeToken(accessToken), {
       maxAge: accessToken.expires_in * 1000,
@@ -69,7 +75,10 @@ export class DisqusController {
   @Get('oauth-logout')
   @Header('content-type', 'text/plain')
   @HttpProcessor.handle('Disqus OAuth logout')
-  oauthLogout(@Response() response) {
+  oauthLogout(@CookieToken() token: AccessToken | null, @Response() response) {
+    if (token) {
+      this.disqusPublicService.deleteUserInfoCache(token.user_id)
+    }
     response.clearCookie(TOKEN_COOKIE_KEY)
     response.send('ok')
   }
@@ -77,13 +86,19 @@ export class DisqusController {
   @Get('user-info')
   @HttpProcessor.handle('Get Disqus user info')
   getUserInfo(@CookieToken() token: AccessToken | null) {
-    return token ? this.disqusPublicService.getUserInfo(token.access_token) : Promise.reject(`You are not logged in`)
+    if (!token) {
+      return Promise.reject(`You are not logged in`)
+    }
+
+    return this.disqusPublicService.getUserInfoCache(token.user_id).then((cached) => {
+      return cached || this.disqusPublicService.getUserInfo(token.access_token)
+    })
   }
 
   @Get('thread')
   @HttpProcessor.handle('Get Disqus thread info')
   getThread(@Query() query: ThreadPostIDPayload) {
-    return this.disqusPublicService.makeSureThreadDetail(Number(query.post_id))
+    return this.disqusPublicService.makeSureThreadDetailCache(Number(query.post_id))
   }
 
   @Post('comment')
