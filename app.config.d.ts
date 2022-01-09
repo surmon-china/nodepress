@@ -1,12 +1,13 @@
 export declare const APP: {
     PORT: number;
+    ROOT_PATH: string;
+    DEFAULT_CACHE_TTL: number;
     MASTER: string;
     NAME: string;
     URL: string;
+    EMAIL: string;
     FE_NAME: string;
     FE_URL: string;
-    ROOT_PATH: string;
-    DEFAULT_CACHE_TTL: number;
 };
 export declare const PROJECT: {
     name: any;
@@ -39,8 +40,6 @@ export declare const AUTH: {
 export declare const EMAIL: {
     account: unknown;
     password: unknown;
-    from: string;
-    admin: string;
 };
 export declare const DISQUS: {
     adminAccessToken: string;

@@ -10,13 +10,14 @@ const ROOT_PATH = path_1.default.join(__dirname, '..');
 const packageJSON = require(path_1.default.resolve(ROOT_PATH, 'package.json'));
 exports.APP = {
     PORT: 8000,
+    ROOT_PATH,
+    DEFAULT_CACHE_TTL: 60 * 60 * 24,
     MASTER: 'Surmon',
     NAME: 'NodePress',
     URL: 'https://api.surmon.me',
+    EMAIL: yargs_1.argv.admin_email || 'admin email, e.g. admin@surmon.me',
     FE_NAME: 'Surmon.me',
     FE_URL: 'https://surmon.me',
-    ROOT_PATH,
-    DEFAULT_CACHE_TTL: 60 * 60 * 24,
 };
 exports.PROJECT = {
     name: packageJSON.name,
@@ -47,10 +48,8 @@ exports.AUTH = {
     defaultPassword: yargs_1.argv.auth_default_password || 'root',
 };
 exports.EMAIL = {
-    account: yargs_1.argv.email_account || 'your email address, e.g. i@surmon.me',
+    account: yargs_1.argv.email_account || 'your email address, e.g. admin@surmon.me',
     password: yargs_1.argv.email_password || 'your email password',
-    from: '"Surmon" <i@surmon.me>',
-    admin: 'surmon@foxmail.com',
 };
 exports.DISQUS = {
     adminAccessToken: yargs_1.argv.disqus_admin_access_token || 'disqus admin access_token',
