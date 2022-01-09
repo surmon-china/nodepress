@@ -150,7 +150,7 @@ export class VoteController {
     // email to admin
     this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
       this.emailToTargetVoteMessage({
-        to: APP_CONFIG.EMAIL.admin,
+        to: APP_CONFIG.APP.EMAIL,
         subject: `You have a new site vote`,
         on: await this.getTargetTitle(CommentPostID.Guestbook),
         vote: '+1',
@@ -177,7 +177,7 @@ export class VoteController {
     // email to admin
     this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
       this.emailToTargetVoteMessage({
-        to: APP_CONFIG.EMAIL.admin,
+        to: APP_CONFIG.APP.EMAIL,
         subject: `You have a new article vote`,
         on: await this.getTargetTitle(voteBody.article_id),
         vote: '+1',
@@ -227,7 +227,7 @@ export class VoteController {
           }
           // email to admin
           this.emailToTargetVoteMessage({
-            to: APP_CONFIG.EMAIL.admin,
+            to: APP_CONFIG.APP.EMAIL,
             subject: `You have a new comment vote`,
             ...mailParams,
           })

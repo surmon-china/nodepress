@@ -53,7 +53,10 @@ export class EmailService {
       logger.warn('[NodeMailer]', 'send failed! reason: init failed')
       return false
     }
-    const options = { ...mailOptions, from: APP_CONFIG.EMAIL.from }
+    const options = {
+      ...mailOptions,
+      from: `"${APP_CONFIG.APP.MASTER}" <${APP_CONFIG.EMAIL.account}>`,
+    }
     this.transporter.sendMail(options, (error, info) => {
       if (error) {
         logger.error(`[NodeMailer]`, `send failed! reason:`, getMessageFromNormalError(error))
