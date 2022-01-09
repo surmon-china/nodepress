@@ -12,13 +12,14 @@ const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 
 export const APP = {
   PORT: 8000,
+  ROOT_PATH,
+  DEFAULT_CACHE_TTL: 60 * 60 * 24,
   MASTER: 'Surmon',
   NAME: 'NodePress',
   URL: 'https://api.surmon.me',
+  EMAIL: (argv.admin_email as string) || 'admin email, e.g. admin@surmon.me',
   FE_NAME: 'Surmon.me',
   FE_URL: 'https://surmon.me',
-  ROOT_PATH,
-  DEFAULT_CACHE_TTL: 60 * 60 * 24,
 }
 
 export const PROJECT = {
@@ -55,10 +56,8 @@ export const AUTH = {
 }
 
 export const EMAIL = {
-  account: argv.email_account || 'your email address, e.g. i@surmon.me',
+  account: argv.email_account || 'your email address, e.g. admin@surmon.me',
   password: argv.email_password || 'your email password',
-  from: '"Surmon" <i@surmon.me>',
-  admin: 'surmon@foxmail.com',
 }
 
 export const DISQUS = {

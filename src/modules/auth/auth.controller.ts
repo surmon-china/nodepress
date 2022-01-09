@@ -13,7 +13,7 @@ import { QueryParams } from '@app/decorators/query-params.decorator'
 import { Auth, AuthPasswordPayload } from './auth.model'
 import { AuthService } from './auth.service'
 import { TokenResult } from './auth.interface'
-import { APP, EMAIL } from '@app/app.config'
+import { APP } from '@app/app.config'
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +32,7 @@ export class AuthController {
       const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow'
       const content = `${subject}, IP: ${ip}, location: ${locationText}`
       this.emailService.sendMailAs(APP.NAME, {
-        to: EMAIL.admin,
+        to: APP.EMAIL,
         subject,
         text: content,
         html: content,
