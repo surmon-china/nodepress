@@ -46,7 +46,7 @@ export class DBBackupService {
       return result.name
     } catch (error) {
       this.mailToAdmin('Database backup failed!', String(error))
-      return Promise.reject(error)
+      throw error
     }
   }
 
