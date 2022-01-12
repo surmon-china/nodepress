@@ -57,7 +57,7 @@ export class CommentService {
     // email to admin
     const subject = `You have a new comment`
     this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
-      to: APP_CONFIG.APP.EMAIL,
+      to: APP_CONFIG.APP.ADMIN_EMAIL,
       subject,
       ...getMailContent(subject),
     })

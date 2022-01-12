@@ -46,7 +46,7 @@ export class ExpansionController {
   @Patch('database-backup')
   @UseGuards(JwtAuthGuard)
   @HttpProcessor.handle('Update database backup')
-  updateDatabaseBackup(): Promise<void> {
+  updateDatabaseBackup() {
     return this.dbBackupService.backup()
   }
 }

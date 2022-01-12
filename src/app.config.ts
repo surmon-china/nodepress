@@ -17,7 +17,7 @@ export const APP = {
   MASTER: 'Surmon',
   NAME: 'NodePress',
   URL: 'https://api.surmon.me',
-  EMAIL: (argv.admin_email as string) || 'admin email, e.g. admin@surmon.me',
+  ADMIN_EMAIL: (argv.admin_email as string) || 'admin email, e.g. admin@surmon.me',
   FE_NAME: 'Surmon.me',
   FE_URL: 'https://surmon.me',
 }

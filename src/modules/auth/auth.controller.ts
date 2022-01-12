@@ -32,7 +32,7 @@ export class AuthController {
       const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow'
       const content = `${subject}, IP: ${ip}, location: ${locationText}`
       this.emailService.sendMailAs(APP.NAME, {
-        to: APP.EMAIL,
+        to: APP.ADMIN_EMAIL,
         subject,
         text: content,
         html: content,
