@@ -58,9 +58,6 @@ $ yarn build
 
 # run
 $ yarn start:prod
-
-# update GEO IP database
-$ yarn update-geo-db
 ```
 
 ## Actions setup
