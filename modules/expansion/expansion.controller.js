@@ -66,7 +66,7 @@ __decorate([
     http_decorator_1.HttpProcessor.handle('Update database backup'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], ExpansionController.prototype, "updateDatabaseBackup", null);
 ExpansionController = __decorate([
     (0, common_1.Controller)('expansion'),

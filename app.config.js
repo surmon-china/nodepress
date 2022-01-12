@@ -15,7 +15,7 @@ exports.APP = {
     MASTER: 'Surmon',
     NAME: 'NodePress',
     URL: 'https://api.surmon.me',
-    EMAIL: yargs_1.argv.admin_email || 'admin email, e.g. admin@surmon.me',
+    ADMIN_EMAIL: yargs_1.argv.admin_email || 'admin email, e.g. admin@surmon.me',
     FE_NAME: 'Surmon.me',
     FE_URL: 'https://surmon.me',
 };

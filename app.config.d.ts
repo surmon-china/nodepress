@@ -5,7 +5,7 @@ export declare const APP: {
     MASTER: string;
     NAME: string;
     URL: string;
-    EMAIL: string;
+    ADMIN_EMAIL: string;
     FE_NAME: string;
     FE_URL: string;
 };

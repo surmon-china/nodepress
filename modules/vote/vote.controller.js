@@ -151,7 +151,7 @@ let VoteController = class VoteController {
         this.voteDisqusThread(biz_interface_1.CommentPostID.Guestbook, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
             this.emailToTargetVoteMessage({
-                to: APP_CONFIG.APP.EMAIL,
+                to: APP_CONFIG.APP.ADMIN_EMAIL,
                 subject: `You have a new site vote`,
                 on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
                 vote: '+1',
@@ -167,7 +167,7 @@ let VoteController = class VoteController {
         this.voteDisqusThread(voteBody.article_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
             this.emailToTargetVoteMessage({
-                to: APP_CONFIG.APP.EMAIL,
+                to: APP_CONFIG.APP.ADMIN_EMAIL,
                 subject: `You have a new article vote`,
                 on: await this.getTargetTitle(voteBody.article_id),
                 vote: '+1',
@@ -204,7 +204,7 @@ let VoteController = class VoteController {
                         location: await this.ipService.queryLocation(visitor.ip),
                         link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
                     };
-                    this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.EMAIL, subject: `You have a new comment vote` }, mailParams));
+                    this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailParams));
                     if (comment.author.email) {
                         this.emailToTargetVoteMessage(Object.assign({ to: comment.author.email, subject: `Your comment #${comment.id} has a new vote` }, mailParams));
                     }

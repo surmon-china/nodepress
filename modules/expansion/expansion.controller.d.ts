@@ -12,5 +12,5 @@ export declare class ExpansionController {
     getSystemStatistics(): Promise<ITodayStatistic>;
     getCloudStorageUpToken(): Promise<IUpToken>;
     getGoogleToken(): Promise<Credentials>;
-    updateDatabaseBackup(): Promise<void>;
+    updateDatabaseBackup(): Promise<string>;
 }
