@@ -26,14 +26,14 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         const data = {
             status: http_interface_1.ResponseStatus.Error,
             message: isString(errorOption) ? errorOption : errorOption.message,
-            error: errorInfo.message || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
+            error: (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.message) || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
             debug: app_environment_1.isDevEnv ? exception.stack : value_constant_1.UNDEFINED,
         };
         if (status === common_1.HttpStatus.NOT_FOUND) {
             data.error = data.error || `Not found`;
             data.message = data.message || `Invalid API: ${request.method} > ${request.url}`;
         }
-        return response.status(errorInfo.status || status).jsonp(data);
+        return response.status((errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.status) || status).jsonp(data);
     }
 };
 HttpExceptionFilter = __decorate([

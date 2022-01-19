@@ -13,8 +13,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DisqusController = void 0;
-const platform_express_1 = require("@nestjs/platform-express");
 const common_1 = require("@nestjs/common");
+const platform_express_1 = require("@nestjs/platform-express");
+const throttler_1 = require("@nestjs/throttler");
 const app_environment_1 = require("../../app.environment");
 const auth_guard_1 = require("../../guards/auth.guard");
 const http_decorator_1 = require("../../decorators/http.decorator");
@@ -141,6 +142,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DisqusController.prototype, "getThread", null);
 __decorate([
+    (0, throttler_1.Throttle)(6, 30),
     (0, common_1.Post)('comment'),
     http_decorator_1.HttpProcessor.handle('Create universal comment'),
     __param(0, (0, common_1.Body)()),

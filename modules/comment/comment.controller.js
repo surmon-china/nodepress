@@ -18,6 +18,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentController = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
+const throttler_1 = require("@nestjs/throttler");
 const auth_guard_1 = require("../../guards/auth.guard");
 const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
 const http_decorator_1 = require("../../decorators/http.decorator");
@@ -77,6 +78,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getComments", null);
 __decorate([
+    (0, throttler_1.Throttle)(6, 30),
     (0, common_1.Post)(),
     http_decorator_1.HttpProcessor.handle('Create comment'),
     __param(0, (0, common_1.Body)()),

@@ -27,7 +27,6 @@ const passport_1 = __importDefault(require("passport"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const compression_1 = __importDefault(require("compression"));
-const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const app_module_1 = require("./app.module");
 const core_1 = require("@nestjs/core");
 const validation_pipe_1 = require("./pipes/validation.pipe");
@@ -46,7 +45,6 @@ async function bootstrap() {
     app.use(body_parser_1.default.json({ limit: '1mb' }));
     app.use(body_parser_1.default.urlencoded({ extended: true }));
     app.use(passport_1.default.initialize());
-    app.use((0, express_rate_limit_1.default)({ max: 1000, windowMs: 15 * 60 * 1000 }));
     app.useGlobalFilters(new error_filter_1.HttpExceptionFilter());
     app.useGlobalPipes(new validation_pipe_1.ValidationPipe());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor(new core_1.Reflector()), new error_interceptor_1.ErrorInterceptor(new core_1.Reflector()), new logging_interceptor_1.LoggingInterceptor());

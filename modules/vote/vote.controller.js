@@ -34,6 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteController = exports.PageVotePayload = exports.CommentVotePayload = exports.VoteAuthorPayload = void 0;
 const class_validator_1 = require("class-validator");
 const common_1 = require("@nestjs/common");
+const throttler_1 = require("@nestjs/throttler");
 const query_params_decorator_1 = require("../../decorators/query-params.decorator");
 const http_decorator_1 = require("../../decorators/http.decorator");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
@@ -150,15 +151,17 @@ let VoteController = class VoteController {
         const likes = await this.optionService.likeSite();
         this.voteDisqusThread(biz_interface_1.CommentPostID.Guestbook, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
-            this.emailToTargetVoteMessage({
-                to: APP_CONFIG.APP.ADMIN_EMAIL,
-                subject: `You have a new site vote`,
-                on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
-                vote: '+1',
-                author: author || 'Anonymous user',
-                location: await this.ipService.queryLocation(visitor.ip),
-                link: (0, urlmap_transformer_1.getPermalinkByID)(biz_interface_1.CommentPostID.Guestbook),
-            });
+            if (author) {
+                this.emailToTargetVoteMessage({
+                    to: APP_CONFIG.APP.ADMIN_EMAIL,
+                    subject: `You have a new site vote`,
+                    on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
+                    vote: '+1',
+                    author: author || 'Anonymous user',
+                    location: await this.ipService.queryLocation(visitor.ip),
+                    link: (0, urlmap_transformer_1.getPermalinkByID)(biz_interface_1.CommentPostID.Guestbook),
+                });
+            }
         });
         return likes;
     }
@@ -166,15 +169,17 @@ let VoteController = class VoteController {
         const likes = await this.articleService.like(voteBody.article_id);
         this.voteDisqusThread(voteBody.article_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
-            this.emailToTargetVoteMessage({
-                to: APP_CONFIG.APP.ADMIN_EMAIL,
-                subject: `You have a new article vote`,
-                on: await this.getTargetTitle(voteBody.article_id),
-                vote: '+1',
-                author: author || 'Anonymous user',
-                location: await this.ipService.queryLocation(visitor.ip),
-                link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
-            });
+            if (author) {
+                this.emailToTargetVoteMessage({
+                    to: APP_CONFIG.APP.ADMIN_EMAIL,
+                    subject: `You have a new article vote`,
+                    on: await this.getTargetTitle(voteBody.article_id),
+                    vote: '+1',
+                    author,
+                    location: await this.ipService.queryLocation(visitor.ip),
+                    link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
+                });
+            }
         });
         return likes;
     }
@@ -215,6 +220,7 @@ let VoteController = class VoteController {
     }
 };
 __decorate([
+    (0, throttler_1.Throttle)(10, 60 * 60),
     (0, common_1.Post)('/site'),
     http_decorator_1.HttpProcessor.handle('Vote site'),
     __param(0, (0, common_1.Body)()),
@@ -225,6 +231,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "likeSite", null);
 __decorate([
+    (0, throttler_1.Throttle)(15, 60),
     (0, common_1.Post)('/article'),
     http_decorator_1.HttpProcessor.handle('Vote article'),
     __param(0, (0, common_1.Body)()),
@@ -235,6 +242,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "voteArticle", null);
 __decorate([
+    (0, throttler_1.Throttle)(10, 30),
     (0, common_1.Post)('/comment'),
     http_decorator_1.HttpProcessor.handle('Vote comment'),
     __param(0, (0, common_1.Body)()),
