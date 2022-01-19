@@ -4,7 +4,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { FileInterceptor } from '@nestjs/platform-express'
 import {
   Controller,
   Get,
@@ -18,6 +17,8 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { Throttle } from '@nestjs/throttler'
 import { isProdEnv } from '@app/app.environment'
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HttpProcessor } from '@app/decorators/http.decorator'
@@ -101,6 +102,8 @@ export class DisqusController {
     return this.disqusPublicService.makeSureThreadDetailCache(Number(query.post_id))
   }
 
+  // 30 seconds > limit 6
+  @Throttle(6, 30)
   @Post('comment')
   @HttpProcessor.handle('Create universal comment')
   createComment(

@@ -9,7 +9,6 @@ import passport from 'passport'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
-import rateLimit from 'express-rate-limit'
 import { AppModule } from '@app/app.module'
 import { NestFactory, Reflector } from '@nestjs/core'
 import { ValidationPipe } from '@app/pipes/validation.pipe'
@@ -31,7 +30,6 @@ async function bootstrap() {
   app.use(bodyParser.urlencoded({ extended: true }))
   // MARK: keep v0.5 https://github.com/jaredhanson/passport/blob/master/CHANGELOG.md#changed
   app.use(passport.initialize())
-  app.use(rateLimit({ max: 1000, windowMs: 15 * 60 * 1000 }))
   app.useGlobalFilters(new HttpExceptionFilter())
   app.useGlobalPipes(new ValidationPipe())
   app.useGlobalInterceptors(

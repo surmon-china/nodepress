@@ -27,7 +27,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const data: HttpResponseError = {
       status: ResponseStatus.Error,
       message: isString(errorOption) ? errorOption : errorOption.message,
-      error: errorInfo.message || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
+      error: errorInfo?.message || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
       debug: isDevEnv ? exception.stack : UNDEFINED,
     }
 
@@ -37,6 +37,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       data.message = data.message || `Invalid API: ${request.method} > ${request.url}`
     }
 
-    return response.status(errorInfo.status || status).jsonp(data)
+    return response.status(errorInfo?.status || status).jsonp(data)
   }
 }

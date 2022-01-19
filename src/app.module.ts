@@ -4,7 +4,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { APP_INTERCEPTOR } from '@nestjs/core'
+import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { AppController } from '@app/app.controller'
 
@@ -37,6 +38,12 @@ import { VoteModule } from '@app/modules/vote/vote.module'
 
 @Module({
   imports: [
+    // https://github.com/nestjs/throttler#readme
+    ThrottlerModule.forRoot({
+      ttl: 60 * 5, // 5 minutes
+      limit: 300, // 300 limit
+      ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
+    }),
     HelperModule,
     DatabaseModule,
     CacheModule,
@@ -58,6 +65,10 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     {
       provide: APP_INTERCEPTOR,
       useClass: HttpCacheInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
 })

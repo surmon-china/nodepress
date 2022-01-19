@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "3.7.13",
+  "version": "3.7.14",
   "description": "RESTful API service for Surmon.me blog",
   "author": {
     "name": "Surmon",
@@ -39,6 +39,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.2.4",
+    "@nestjs/throttler": "^2.0.0",
     "@typegoose/auto-increment": "^1.0.0",
     "@typegoose/typegoose": "^9.4.0",
     "akismet-api": "^5.2.1",
@@ -53,7 +54,6 @@
     "cookie-parser": "^1.4.6",
     "cross-env": "^7.0.3",
     "express": "^4.17.2",
-    "express-rate-limit": "^5.5.1",
     "fast-xml-parser": "^4.0.0-beta.8",
     "googleapis": "^92.0.0",
     "helmet": "^4.6.0",

@@ -6,6 +6,7 @@
 
 import { IsInt, IsDefined, IsIn, IsOptional, IsObject, ValidateNested } from 'class-validator'
 import { Controller, Post, Body } from '@nestjs/common'
+import { Throttle } from '@nestjs/throttler'
 import { QueryParams } from '@app/decorators/query-params.decorator'
 import { HttpProcessor } from '@app/decorators/http.decorator'
 import { IPService, IPLocation } from '@app/processors/helper/helper.service.ip'
@@ -136,6 +137,8 @@ export class VoteController {
     return result
   }
 
+  // 1 hour > limit 10
+  @Throttle(10, 60 * 60)
   @Post('/site')
   @HttpProcessor.handle('Vote site')
   async likeSite(
@@ -149,20 +152,24 @@ export class VoteController {
     this.voteDisqusThread(CommentPostID.Guestbook, 1, token?.access_token).catch(() => {})
     // email to admin
     this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
-      this.emailToTargetVoteMessage({
-        to: APP_CONFIG.APP.ADMIN_EMAIL,
-        subject: `You have a new site vote`,
-        on: await this.getTargetTitle(CommentPostID.Guestbook),
-        vote: '+1',
-        author: author || 'Anonymous user',
-        location: await this.ipService.queryLocation(visitor.ip),
-        link: getPermalinkByID(CommentPostID.Guestbook),
-      })
+      if (author) {
+        this.emailToTargetVoteMessage({
+          to: APP_CONFIG.APP.ADMIN_EMAIL,
+          subject: `You have a new site vote`,
+          on: await this.getTargetTitle(CommentPostID.Guestbook),
+          vote: '+1',
+          author: author || 'Anonymous user',
+          location: await this.ipService.queryLocation(visitor.ip),
+          link: getPermalinkByID(CommentPostID.Guestbook),
+        })
+      }
     })
 
     return likes
   }
 
+  // 1 minute > limit 15
+  @Throttle(15, 60)
   @Post('/article')
   @HttpProcessor.handle('Vote article')
   async voteArticle(
@@ -176,20 +183,24 @@ export class VoteController {
     this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() => {})
     // email to admin
     this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
-      this.emailToTargetVoteMessage({
-        to: APP_CONFIG.APP.ADMIN_EMAIL,
-        subject: `You have a new article vote`,
-        on: await this.getTargetTitle(voteBody.article_id),
-        vote: '+1',
-        author: author || 'Anonymous user',
-        location: await this.ipService.queryLocation(visitor.ip),
-        link: getPermalinkByID(voteBody.article_id),
-      })
+      if (author) {
+        this.emailToTargetVoteMessage({
+          to: APP_CONFIG.APP.ADMIN_EMAIL,
+          subject: `You have a new article vote`,
+          on: await this.getTargetTitle(voteBody.article_id),
+          vote: '+1',
+          author,
+          location: await this.ipService.queryLocation(visitor.ip),
+          link: getPermalinkByID(voteBody.article_id),
+        })
+      }
     })
 
     return likes
   }
 
+  // 30 seconds > limit 10
+  @Throttle(10, 30)
   @Post('/comment')
   @HttpProcessor.handle('Vote comment')
   async voteComment(

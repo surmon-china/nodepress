@@ -2,25 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.14（2022-01-19)
+
+**Feature**
+
+- `express-rate-limit` > `@nestjs/throttler`
+- **[Vote]** add throttler
+- **[Disqus]** add throttler
+- **[Comment]** add throttler
+
 ### 3.7.11（2022-01-06)
 
 **Feature**
 
-- [Disqus] cache for userinfo & thread
+- **[Disqus]** cache for userinfo & thread
 
 ### 3.7.6（2022-01-05)
 
 **Feature**
 
-- [Article] random releted articles
-- [Comment] improve email content
-- [Vote] send email to admin when new vote
+- **[Article]** random releted articles
+- **[Comment]** improve email content
+- **[Vote]** send email to admin when new vote
 
 ### 3.7.4（2022-01-01)
 
 **Feature**
 
-- [Comment] add `reviseIPLocation` service
+- **[Comment]** add `reviseIPLocation` service
 
 ### 3.7.2（2021-12-31）
 
@@ -32,18 +41,18 @@ All notable changes to this project will be documented in this file.
 
 **Feature**
 
-- [Like] rename `Like` module to `Vote`
-- [Disqus] add Disqus comment module
-- [Auth] rename `gravatar` to `avatar`
-- [Article] add `disabled_comment` field
-- [Article] remove `t_content` field
-- [Option] remove `icp` field
-- [Option] rename `blacklist` to `blocklist`
-- [Comment] remove `is_top` field
-- [Comment] add `dislikes` field
-- [Comment] hidden `ip`, `email` fields
-- [Comment] add `email_hash` virtual field
-- [Helper] IP location services to `ip-api.com` & `ipapi.co`
+- **[Like]** rename `Like` module to `Vote`
+- **[Disqus]** add Disqus comment module
+- **[Auth]** rename `gravatar` to `avatar`
+- **[Article]** add `disabled_comment` field
+- **[Article]** remove `t_content` field
+- **[Option]** remove `icp` field
+- **[Option]** rename `blacklist` to `blocklist`
+- **[Comment]** remove `is_top` field
+- **[Comment]** add `dislikes` field
+- **[Comment]** hidden `ip`, `email` fields
+- **[Comment]** add `email_hash` virtual field
+- **[Helper]** IP location services to `ip-api.com` & `ipapi.co`
 
 **Chore**
 

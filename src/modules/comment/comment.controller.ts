@@ -6,6 +6,7 @@
 
 import lodash from 'lodash'
 import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common'
+import { Throttle } from '@nestjs/throttler'
 import { JwtAuthGuard } from '@app/guards/auth.guard'
 import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
 import { HttpProcessor } from '@app/decorators/http.decorator'
@@ -42,6 +43,8 @@ export class CommentController {
     return this.commentService.paginater(querys, options, !isAuthenticated)
   }
 
+  // 30 seconds > limit 6
+  @Throttle(6, 30)
   @Post()
   @HttpProcessor.handle('Create comment')
   createComment(@Body() comment: CreateCommentBase, @QueryParams() { visitor }): Promise<Comment> {
