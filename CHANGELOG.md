@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.7.15（2022-02-01)
+
+**Feature**
+
+- **[MongoDB]** improve MongoDB config & backup
+
 ### 3.7.14（2022-01-19)
 
 **Feature**

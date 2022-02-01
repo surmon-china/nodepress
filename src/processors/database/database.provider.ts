@@ -27,8 +27,8 @@ export const databaseProvider = {
       })
     }
 
-    function connection() {
-      return mongoose.connect(APP_CONFIG.MONGO_DB.uri)
+    const connection = () => {
+      return mongoose.connect(APP_CONFIG.MONGO_DB.uri, {})
     }
 
     mongoose.connection.on('connecting', () => {
