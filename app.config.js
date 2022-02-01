@@ -31,9 +31,7 @@ exports.CROSS_DOMAIN = {
     allowedReferer: 'surmon.me',
 };
 exports.MONGO_DB = {
-    uri: `mongodb://127.0.0.1:${yargs_1.argv.dbport || '27017'}/NodePress`,
-    username: yargs_1.argv.db_username || 'DB_username',
-    password: yargs_1.argv.db_password || 'DB_password',
+    uri: yargs_1.argv.db_uri || `mongodb://127.0.0.1:27017/NodePress`,
 };
 exports.REDIS = {
     host: yargs_1.argv.redis_host || 'localhost',

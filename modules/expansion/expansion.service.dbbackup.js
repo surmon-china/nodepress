@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBBackupService = void 0;
-const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const shelljs_1 = __importDefault(require("shelljs"));
 const moment_1 = __importDefault(require("moment"));
@@ -27,9 +26,6 @@ const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
 const UPLOAD_INTERVAL = '0 0 3 * * *';
 const BACKUP_FILE_NAME = 'nodepress.tar.gz';
 const BACKUP_DIR_PATH = path_1.default.join(app_config_1.APP.ROOT_PATH, 'dbbackup');
-const BACKUP_DATA_PATH = path_1.default.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME);
-const SHELL_DIR_PATH = path_1.default.join(app_config_1.APP.ROOT_PATH, 'scripts');
-const BACKUP_SHELL_PATH = path_1.default.normalize(path_1.default.join(SHELL_DIR_PATH, 'dbbackup.sh'));
 let DBBackupService = class DBBackupService {
     constructor(emailService, cloudStorageService) {
         this.emailService = emailService;
@@ -63,17 +59,27 @@ let DBBackupService = class DBBackupService {
     }
     doBackup() {
         return new Promise((resolve, reject) => {
-            if (!fs_1.default.existsSync(BACKUP_SHELL_PATH)) {
-                return reject('DB Backup shell 脚本不存在');
+            if (!shelljs_1.default.which('mongodump')) {
+                return reject('DB Backup script requires [mongodump]');
             }
-            shelljs_1.default.exec(`sh ${BACKUP_SHELL_PATH}`, (code, out) => {
+            shelljs_1.default.cd(BACKUP_DIR_PATH);
+            shelljs_1.default.rm('-rf', `./backup.prev`);
+            shelljs_1.default.mv('./backup', './backup.prev');
+            shelljs_1.default.mkdir('backup');
+            shelljs_1.default.exec(`mongodump --uri="${app_config_1.MONGO_DB.uri}" --out="backup"`, (code, out) => {
+                logger_1.default.info('[expansion]', 'DB Backup mongodump 执行完成！', code, out);
+                if (code !== 0) {
+                    logger_1.default.warn('[expansion]', 'DB Backup mongodump failed!', out);
+                    return reject(out);
+                }
+                shelljs_1.default.exec(`tar -czf ${BACKUP_FILE_NAME} ./backup`);
                 const fileDate = (0, moment_1.default)(new Date()).format('YYYY-MM-DD-HH:mm');
-                const fileName = `nodepress-db-backup-${fileDate}.tar.gz`;
-                logger_1.default.info('[expansion]', 'DB Backup shell 执行完成！', code, out);
+                const fileName = `nodepress-mongodb/backup-${fileDate}.tar.gz`;
+                const filePath = path_1.default.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME);
                 logger_1.default.info('[expansion]', 'DB Backup 上传文件: ' + fileName);
-                logger_1.default.info('[expansion]', 'DB Backup 文件源位置: ' + BACKUP_DATA_PATH);
+                logger_1.default.info('[expansion]', 'DB Backup 文件源位置: ' + filePath);
                 this.cloudStorageService
-                    .uploadFile(fileName, BACKUP_DATA_PATH, app_config_1.DB_BACKUP.region, app_config_1.DB_BACKUP.bucket)
+                    .uploadFile(fileName, filePath, app_config_1.DB_BACKUP.region, app_config_1.DB_BACKUP.bucket)
                     .then((result) => {
                     const data = {
                         name: result.name,

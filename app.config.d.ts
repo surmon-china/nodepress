@@ -22,8 +22,6 @@ export declare const CROSS_DOMAIN: {
 };
 export declare const MONGO_DB: {
     uri: string;
-    username: unknown;
-    password: unknown;
 };
 export declare const REDIS: {
     host: unknown;
