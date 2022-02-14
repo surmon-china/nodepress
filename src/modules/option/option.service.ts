@@ -73,7 +73,7 @@ export class OptionService {
   public async incrementLikes(): Promise<number> {
     const option = await this.ensureAppOption()
     option.meta.likes++
-    await option.save()
+    await option.save({ timestamps: false })
     await this.optionCache.update()
     return option.meta.likes
   }

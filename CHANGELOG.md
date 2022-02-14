@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.1 (2022-02-15)
+
+**BugFix**
+
+- fix `{ timestamps: false }` for
+  - `article.meta.views`
+  - `article.meta.likes`
+  - `article.meta.comments`
+  - `comment.vote`
+  - `option.meta.likes`
+
 ### 3.8.0 (2022-02-14)
 
 **Feature**

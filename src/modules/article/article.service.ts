@@ -119,7 +119,7 @@ export class ArticleService {
 
     // article views
     article.meta.views++
-    article.save()
+    article.save({ timestamps: false })
 
     // global today views
     this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS).then((views) => {
@@ -135,7 +135,7 @@ export class ArticleService {
       publicOnly: true,
     })
     article.meta.likes++
-    await article.save()
+    await article.save({ timestamps: false })
     return article.meta.likes
   }
 
@@ -241,6 +241,6 @@ export class ArticleService {
   public async updateMetaComments(articleID: number, commentCount: number) {
     const findParams = { id: articleID }
     const patchParams = { $set: { 'meta.comments': commentCount } }
-    return this.articleModel.updateOne(findParams, patchParams).exec()
+    return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec()
   }
 }
