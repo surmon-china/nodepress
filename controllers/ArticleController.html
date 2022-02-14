@@ -1,0 +1,1082 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NodePress documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">NodePress documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content controller">
+                   <div class="content-data">
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Controllers</li>
+  <li >ArticleController</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/modules/article/article.controller.ts</code>
+        </p>
+
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>article</code>
+            </p>
+
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#createArticle" >createArticle</a>
+                            </li>
+                            <li>
+                                <a href="#delArticle" >delArticle</a>
+                            </li>
+                            <li>
+                                <a href="#delArticles" >delArticles</a>
+                            </li>
+                            <li>
+                                <a href="#getArticle" >getArticle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getArticles" >getArticles</a>
+                            </li>
+                            <li>
+                                <a href="#getHotArticles" >getHotArticles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getRelatedArticles" >getRelatedArticles</a>
+                            </li>
+                            <li>
+                                <a href="#patchArticles" >patchArticles</a>
+                            </li>
+                            <li>
+                                <a href="#putArticle" >putArticle</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createArticle"></a>
+                    <span class="name">
+                        <span ><b>createArticle</b></span>
+                        <a href="#createArticle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createArticle(article: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Create article&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">src/modules/article/article.controller.ts:131</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>article</td>
+                                    <td>
+                                                <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delArticle"></a>
+                    <span class="name">
+                        <span ><b>delArticle</b></span>
+                        <a href="#delArticle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>delArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete article&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="145"
+                            class="link-to-prism">src/modules/article/article.controller.ts:145</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delArticles"></a>
+                    <span class="name">
+                        <span ><b>delArticles</b></span>
+                        <a href="#delArticles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>delArticles(body: <a href="../classes/ArticleIDsDTO.html" target="_self">ArticleIDsDTO</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete articles&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="159"
+                            class="link-to-prism">src/modules/article/article.controller.ts:159</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="../classes/ArticleIDsDTO.html" target="_self" >ArticleIDsDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getArticle"></a>
+                    <span class="name">
+                        <span ><b>getArticle</b></span>
+                        <a href="#getArticle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;:id&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@({message: &#x27;Get article detail&#x27;, error: undefined})<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/modules/article/article.controller.ts:116</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getArticles"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getArticles</b></span>
+                        <a href="#getArticles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getArticles(query: <a href="../classes/ArticlePaginateQueryDTO.html" target="_self">ArticlePaginateQueryDTO</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get()<br />@UseGuards(AdminMaybeGuard)<br />@()<br />@(&#x27;Get articles&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/modules/article/article.controller.ts:37</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>query</td>
+                                    <td>
+                                                <code><a href="../classes/ArticlePaginateQueryDTO.html" target="_self" >ArticlePaginateQueryDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Article&gt;&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHotArticles"></a>
+                    <span class="name">
+                        <span ><b>getHotArticles</b></span>
+                        <a href="#getHotArticles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getHotArticles(query: <a href="../classes/ArticleListQueryDTO.html" target="_self">ArticleListQueryDTO</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;hot&#x27;)<br />@(&#x27;Get hot articles&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="96"
+                            class="link-to-prism">src/modules/article/article.controller.ts:96</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>query</td>
+                                    <td>
+                                                <code><a href="../classes/ArticleListQueryDTO.html" target="_self" >ArticleListQueryDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Array&lt;Article&gt;&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRelatedArticles"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getRelatedArticles</b></span>
+                        <a href="#getRelatedArticles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRelatedArticles(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, query: <a href="../classes/ArticleListQueryDTO.html" target="_self">ArticleListQueryDTO</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;related/:id&#x27;)<br />@(&#x27;Get related articles&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/modules/article/article.controller.ts:102</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>query</td>
+                                    <td>
+                                                <code><a href="../classes/ArticleListQueryDTO.html" target="_self" >ArticleListQueryDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Array&lt;Article&gt;&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="patchArticles"></a>
+                    <span class="name">
+                        <span ><b>patchArticles</b></span>
+                        <a href="#patchArticles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>patchArticles(body: <a href="../classes/ArticlesStateDTO.html" target="_self">ArticlesStateDTO</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update articles&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="152"
+                            class="link-to-prism">src/modules/article/article.controller.ts:152</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                                <code><a href="../classes/ArticlesStateDTO.html" target="_self" >ArticlesStateDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="putArticle"></a>
+                    <span class="name">
+                        <span ><b>putArticle</b></span>
+                        <a href="#putArticle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>putArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, article: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update article&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">src/modules/article/article.controller.ts:138</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>article</td>
+                                    <td>
+                                                <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
+ * @file Article controller
+ * @module module/article/controller
+ * @author Surmon &lt;https://github.com/surmon-china&gt;
+ */
+
+import lodash from &#x27;lodash&#x27;
+import { Types } from &#x27;mongoose&#x27;
+import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from &#x27;@nestjs/common&#x27;
+import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
+import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
+import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
+import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
+import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
+import { SortType } from &#x27;@app/interfaces/biz.interface&#x27;
+import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
+import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
+import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { ArticlePaginateQueryDTO, ArticleListQueryDTO, ArticleIDsDTO, ArticlesStateDTO } from &#x27;./article.dto&#x27;
+import { ARTICLE_HOT_SORT_PARAMS } from &#x27;./article.model&#x27;
+import { ArticleService } from &#x27;./article.service&#x27;
+import { Article } from &#x27;./article.model&#x27;
+
+@Controller(&#x27;article&#x27;)
+export class ArticleController {
+  constructor(
+    private readonly tagService: TagService,
+    private readonly categoryService: CategoryService,
+    private readonly articleService: ArticleService
+  ) {}
+
+  @Get()
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.paginate()
+  @Responsor.handle(&#x27;Get articles&#x27;)
+  async getArticles(
+    @Query(PermissionPipe, ExposePipe) query: ArticlePaginateQueryDTO
+  ): Promise&lt;PaginateResult&lt;Article&gt;&gt; {
+    const { page, per_page, sort, ...filters } &#x3D; query
+    const paginateQuery: PaginateQuery&lt;Article&gt; &#x3D; {}
+    const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page }
+
+    // sort
+    if (!lodash.isUndefined(sort)) {
+      if (sort &#x3D;&#x3D;&#x3D; SortType.Hot) {
+        paginateOptions.sort &#x3D; ARTICLE_HOT_SORT_PARAMS
+      } else {
+        paginateOptions.dateSort &#x3D; sort
+      }
+    }
+
+    // states
+    if (!lodash.isUndefined(filters.state)) {
+      paginateQuery.state &#x3D; filters.state
+    }
+    if (!lodash.isUndefined(filters.public)) {
+      paginateQuery.public &#x3D; filters.public
+    }
+    if (!lodash.isUndefined(filters.origin)) {
+      paginateQuery.origin &#x3D; filters.origin
+    }
+
+    // search
+    if (filters.keyword) {
+      const trimmed &#x3D; lodash.trim(filters.keyword)
+      const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
+      paginateQuery.$or &#x3D; [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
+    }
+
+    // date
+    if (filters.date) {
+      const queryDateMS &#x3D; new Date(filters.date).getTime()
+      paginateQuery.create_at &#x3D; {
+        $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
+        $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000),
+      }
+    }
+
+    // tag | category
+    if (filters.tag_slug) {
+      const tag &#x3D; await this.tagService.getDetailBySlug(filters.tag_slug)
+      paginateQuery.tag &#x3D; tag._id
+    }
+    if (filters.category_slug) {
+      const category &#x3D; await this.categoryService.getDetailBySlug(filters.category_slug)
+      paginateQuery.category &#x3D; category._id
+    }
+
+    // paginater
+    return this.articleService.paginater(paginateQuery, paginateOptions)
+  }
+
+  @Get(&#x27;hot&#x27;)
+  @Responsor.handle(&#x27;Get hot articles&#x27;)
+  getHotArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise&lt;Array&lt;Article&gt;&gt; {
+    return query.count ? this.articleService.getHotArticles(query.count) : this.articleService.getHotArticlesCache()
+  }
+
+  @Get(&#x27;related/:id&#x27;)
+  @Responsor.handle(&#x27;Get related articles&#x27;)
+  async getRelatedArticles(
+    @QueryParams() { params }: QueryParamsResult,
+    @Query(ExposePipe) query: ArticleListQueryDTO
+  ): Promise&lt;Array&lt;Article&gt;&gt; {
+    const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) })
+    return this.articleService.getRelatedArticles(article, query.count ?? 20)
+  }
+
+  @Get(&#x27;:id&#x27;)
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.handle({
+    message: &#x27;Get article detail&#x27;,
+    error: HttpStatus.NOT_FOUND,
+  })
+  getArticle(@QueryParams() { params, isUnauthenticated }: QueryParamsResult): Promise&lt;Article&gt; {
+    // guest user &gt; number ID | slug
+    if (isUnauthenticated) {
+      const idOrSlug &#x3D; isNaN(Number(params.id)) ? String(params.id) : Number(params.id)
+      return this.articleService.getFullDetailForGuest(idOrSlug)
+    }
+    // admin user &gt; Object ID | number ID
+    return Types.ObjectId.isValid(params.id)
+      ? this.articleService.getDetailByObjectID(params.id)
+      : this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) })
+  }
+
+  @Post()
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle(&#x27;Create article&#x27;)
+  createArticle(@Body() article: Article): Promise&lt;Article&gt; {
+    return this.articleService.create(article)
+  }
+
+  @Put(&#x27;:id&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle(&#x27;Update article&#x27;)
+  putArticle(@QueryParams() { params }: QueryParamsResult, @Body() article: Article): Promise&lt;Article&gt; {
+    return this.articleService.update(params.id, article)
+  }
+
+  @Delete(&#x27;:id&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle(&#x27;Delete article&#x27;)
+  delArticle(@QueryParams() { params }: QueryParamsResult): Promise&lt;Article&gt; {
+    return this.articleService.delete(params.id)
+  }
+
+  @Patch()
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle(&#x27;Update articles&#x27;)
+  patchArticles(@Body() body: ArticlesStateDTO) {
+    return this.articleService.batchPatchState(body.article_ids, body.state)
+  }
+
+  @Delete()
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle(&#x27;Delete articles&#x27;)
+  delArticles(@Body() body: ArticleIDsDTO) {
+    return this.articleService.batchDelete(body.article_ids)
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'ArticleController.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,1098 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NodePress documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">NodePress documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li >DisqusPrivateService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/modules/disqus/disqus.service.private.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#disqus" >disqus</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#approvePost" >approvePost</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createThread" >createThread</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#exportXML" >exportXML</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPosts" >getPosts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getThreads" >getThreads</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#importXML" >importXML</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#updatePost" >updatePost</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateThread" >updateThread</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/disqus/disqus.service.private.ts:26</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>articleService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ArticleService.html" target="_self" >ArticleService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>commentService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommentService.html" target="_self" >CommentService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="approvePost"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>approvePost</b></span>
+                        <a href="#approvePost"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>approvePost(params: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="110"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:110</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createThread"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>createThread</b></span>
+                        <a href="#createThread"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createThread(postID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:35</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>postID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportXML"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>exportXML</b></span>
+                        <a href="#exportXML"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>exportXML()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:125</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPosts"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getPosts</b></span>
+                        <a href="#getPosts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPosts(params: <a href="../interfaces/GeneralDisqusParams.html" target="_self">GeneralDisqusParams</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:70</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                                <code><a href="../interfaces/GeneralDisqusParams.html" target="_self" >GeneralDisqusParams</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getThreads"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getThreads</b></span>
+                        <a href="#getThreads"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getThreads(params: <a href="../interfaces/GeneralDisqusParams.html" target="_self">GeneralDisqusParams</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:56</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                                <code><a href="../interfaces/GeneralDisqusParams.html" target="_self" >GeneralDisqusParams</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="importXML"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>importXML</b></span>
+                        <a href="#importXML"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>importXML(file: Express.Multer.File)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="164"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:164</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>file</td>
+                                    <td>
+                                            <code>Express.Multer.File</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updatePost"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>updatePost</b></span>
+                        <a href="#updatePost"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updatePost(params: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="97"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:97</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateThread"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>updateThread</b></span>
+                        <a href="#updateThread"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateThread(params: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="84"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:84</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="disqus"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>disqus</b></span>
+                        <a href="#disqus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/Disqus.html" target="_self" >Disqus</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/disqus/disqus.service.private.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import moment from &#x27;moment&#x27;
+import { XMLParser } from &#x27;fast-xml-parser&#x27;
+import { Injectable } from &#x27;@nestjs/common&#x27;
+import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
+import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
+import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
+import { Article } from &#x27;@app/modules/article/article.model&#x27;
+import { CommentPostID, CommentState } from &#x27;@app/interfaces/biz.interface&#x27;
+import { getExtendObject } from &#x27;@app/transformers/extend.transformer&#x27;
+import { getPermalinkByID } from &#x27;@app/transformers/urlmap.transformer&#x27;
+import { DISQUS } from &#x27;@app/app.config&#x27;
+import { Disqus } from &#x27;@app/utils/disqus&#x27;
+import logger from &#x27;@app/utils/logger&#x27;
+import { GeneralDisqusParams } from &#x27;./disqus.dto&#x27;
+import { getDisqusXML } from &#x27;./disqus.xml&#x27;
+import * as DISQUS_CONST from &#x27;./disqus.constant&#x27;
+
+@Injectable()
+export class DisqusPrivateService {
+  private disqus: Disqus
+
+  constructor(private readonly articleService: ArticleService, private readonly commentService: CommentService) {
+    this.disqus &#x3D; new Disqus({
+      apiKey: DISQUS.publicKey,
+      apiSecret: DISQUS.secretKey,
+    })
+  }
+
+  public async createThread(postID: number) {
+    try {
+      const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postID, publicOnly: true })
+      // https://disqus.com/api/docs/threads/create/
+      const response &#x3D; await this.disqus.request(&#x27;threads/create&#x27;, {
+        forum: DISQUS.forum,
+        identifier: DISQUS_CONST.getThreadIdentifierByID(postID),
+        title: article.title,
+        message: article.description,
+        slug: article.slug || DISQUS_CONST.getThreadIdentifierByID(postID),
+        date: moment(article.create_at).unix(),
+        url: getPermalinkByID(postID),
+        access_token: DISQUS.adminAccessToken,
+      })
+      return response.response
+    } catch (error) {
+      logger.warn(&#x27;[disqus]&#x27;, &#x27;createThread&#x27;, postID, error)
+      throw error
+    }
+  }
+
+  public async getThreads(params: GeneralDisqusParams) {
+    // https://disqus.com/api/docs/threads/list/
+    return this.disqus
+      .request(&#x27;threads/list&#x27;, {
+        access_token: DISQUS.adminAccessToken,
+        forum: DISQUS.forum,
+        ...params,
+      })
+      .catch((error) &#x3D;&gt; {
+        logger.warn(&#x27;[disqus]&#x27;, &#x27;getThreads&#x27;, error)
+        return Promise.reject(error)
+      })
+  }
+
+  public async getPosts(params: GeneralDisqusParams) {
+    // https://disqus.com/api/docs/posts/list/
+    return this.disqus
+      .request(&#x27;posts/list&#x27;, {
+        access_token: DISQUS.adminAccessToken,
+        forum: DISQUS.forum,
+        ...params,
+      })
+      .catch((error) &#x3D;&gt; {
+        logger.warn(&#x27;[disqus]&#x27;, &#x27;getPosts&#x27;, error)
+        return Promise.reject(error)
+      })
+  }
+
+  public async updateThread(params: any) {
+    // https://disqus.com/api/docs/threads/update/
+    return this.disqus
+      .request(&#x27;threads/update&#x27;, {
+        access_token: DISQUS.adminAccessToken,
+        ...params,
+      })
+      .catch((error) &#x3D;&gt; {
+        logger.warn(&#x27;[disqus]&#x27;, &#x27;updateThread&#x27;, error)
+        return Promise.reject(error)
+      })
+  }
+
+  public async updatePost(params: any) {
+    // https://disqus.com/api/docs/posts/update/
+    return this.disqus
+      .request(&#x27;posts/update&#x27;, {
+        access_token: DISQUS.adminAccessToken,
+        ...params,
+      })
+      .catch((error) &#x3D;&gt; {
+        logger.warn(&#x27;[disqus]&#x27;, &#x27;updatePost&#x27;, error)
+        return Promise.reject(error)
+      })
+  }
+
+  public async approvePost(params: any) {
+    // https://disqus.com/api/docs/posts/approve/
+    return this.disqus
+      .request(&#x27;posts/approve&#x27;, {
+        access_token: DISQUS.adminAccessToken,
+        ...params,
+      })
+      .catch((error) &#x3D;&gt; {
+        logger.warn(&#x27;[disqus]&#x27;, &#x27;approvePost&#x27;, error)
+        return Promise.reject(error)
+      })
+  }
+
+  // export NodePress to Dsiqus
+  // https://help.disqus.com/en/articles/1717222-custom-xml-import-format
+  public async exportXML(): Promise&lt;string&gt; {
+    const treeMap &#x3D; new Map&lt;number, { comments: Array&lt;Comment&gt;; article: Article }&gt;()
+    const guestbook: Comment[] &#x3D; []
+
+    // 1. get comments
+    const allComments &#x3D; await this.commentService.getAll()
+    const todoComments &#x3D; allComments.filter((comment) &#x3D;&gt;
+      [CommentState.Auditing, CommentState.Published].includes(comment.state)
+    )
+    const todoCommentIDs &#x3D; todoComments.map((comment) &#x3D;&gt; comment.id)
+    todoComments.forEach((comment) &#x3D;&gt; {
+      if (comment.pid &amp;&amp; !todoCommentIDs.includes(comment.pid)) {
+        comment.pid &#x3D; 0
+      }
+      if (comment.post_id &#x3D;&#x3D;&#x3D; CommentPostID.Guestbook) {
+        guestbook.push(comment)
+      } else if (treeMap.has(comment.post_id)) {
+        treeMap.get(comment.post_id)!.comments.push(comment)
+      } else {
+        treeMap.set(comment.post_id, { comments: [comment] } as any)
+      }
+    })
+
+    // 2. map comment postIDs &amp; get articles
+    const articleIDs &#x3D; Array.from(treeMap.keys())
+    const articles &#x3D; await this.articleService.getList(articleIDs)
+    articles.forEach((article) &#x3D;&gt; {
+      if (treeMap.has(article.id)) {
+        treeMap.get(article.id)!.article &#x3D; article
+      }
+    })
+
+    // 3. make XML data
+    const treeList &#x3D; Array.from(treeMap.values()).filter((item) &#x3D;&gt; Boolean(item.article))
+    return getDisqusXML(treeList, guestbook)
+  }
+
+  // import Disqus data to NodePress
+  // https://help.disqus.com/en/articles/1717164-comments-export
+  public async importXML(file: Express.Multer.File) {
+    const xml &#x3D; file.buffer.toString()
+    const parser &#x3D; new XMLParser({
+      ignoreAttributes: false,
+      allowBooleanAttributes: true,
+      attributeNamePrefix: &#x27;@&#x27;,
+    })
+    const object &#x3D; parser.parse(xml)
+    // const threads: any[] &#x3D; object.disqus.thread
+    const posts: any[] &#x3D; object.disqus.post
+    // filter new data
+    const filtered &#x3D; posts.filter((post) &#x3D;&gt; Boolean(post.id))
+    const getEach &#x3D; (post: any) &#x3D;&gt; ({
+      commentID: Number(post.id.replace(&#x60;wp_id&#x3D;&#x60;, &#x27;&#x27;)),
+      postID: post[&#x27;@dsq:id&#x27;] as string,
+      threadID: post.thread[&#x27;@dsq:id&#x27;] as string,
+      isAnonymous: post.author.isAnonymous as boolean,
+      username: (post.author.username as string) || null,
+    })
+
+    const doImport &#x3D; async (each: ReturnType&lt;typeof getEach&gt;) &#x3D;&gt; {
+      if (!Number.isFinite(each.commentID)) {
+        throw &#x60;Invalid comment ID &#x27;${each.commentID}&#x27;&#x60;
+      }
+
+      const comment &#x3D; await this.commentService.getDetailByNumberID(each.commentID)
+      if (!comment) {
+        throw &#x60;Invalid comment &#x27;${comment}&#x27;&#x60;
+      }
+
+      const _extends &#x3D; comment.extends || []
+      const extendsObject &#x3D; getExtendObject(_extends)
+      // post ID
+      if (!extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]) {
+        _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postID })
+      }
+      // thread ID
+      if (!extendsObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY]) {
+        _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadID })
+      }
+      // guest(anonymous) | disqus user
+      if (each.isAnonymous) {
+        if (!extendsObject[DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY]) {
+          _extends.push({ name: DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY, value: &#x27;true&#x27; })
+        }
+      } else if (each.username) {
+        if (!extendsObject[DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY]) {
+          _extends.push({ name: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY, value: each.username })
+        }
+      }
+      comment.extends &#x3D; _extends
+      return await comment.save()
+    }
+
+    const done: any[] &#x3D; []
+    const fail: any[] &#x3D; []
+    for (const post of filtered) {
+      const each &#x3D; getEach(post)
+      try {
+        await doImport(each)
+        done.push(each)
+      } catch (error) {
+        fail.push(each)
+      }
+    }
+
+    logger.info(&#x27;[disqus]&#x27;, &#x27;import XML&#x27;, { done: done.length, fail: fail.length })
+    return { done, fail }
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'DisqusPrivateService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
