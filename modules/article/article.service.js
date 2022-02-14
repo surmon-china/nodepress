@@ -109,7 +109,7 @@ let ArticleService = class ArticleService {
             populate: true,
         });
         article.meta.views++;
-        article.save();
+        article.save({ timestamps: false });
         this.cacheService.get(CACHE_KEY.TODAY_VIEWS).then((views) => {
             this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
         });
@@ -121,7 +121,7 @@ let ArticleService = class ArticleService {
             publicOnly: true,
         });
         article.meta.likes++;
-        await article.save();
+        await article.save({ timestamps: false });
         return article.meta.likes;
     }
     async create(newArticle) {
@@ -207,7 +207,7 @@ let ArticleService = class ArticleService {
     async updateMetaComments(articleID, commentCount) {
         const findParams = { id: articleID };
         const patchParams = { $set: { 'meta.comments': commentCount } };
-        return this.articleModel.updateOne(findParams, patchParams).exec();
+        return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec();
     }
 };
 ArticleService = __decorate([

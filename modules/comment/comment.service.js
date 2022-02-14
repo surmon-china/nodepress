@@ -256,7 +256,7 @@ let CommentService = class CommentService {
     async vote(commentID, isLike) {
         const comment = await this.getDetailByNumberID(commentID);
         isLike ? comment.likes++ : comment.dislikes++;
-        await comment.save();
+        await comment.save({ timestamps: false });
         return {
             likes: comment.likes,
             dislikes: comment.dislikes,

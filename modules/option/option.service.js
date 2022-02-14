@@ -87,7 +87,7 @@ let OptionService = class OptionService {
     async incrementLikes() {
         const option = await this.ensureAppOption();
         option.meta.likes++;
-        await option.save();
+        await option.save({ timestamps: false });
         await this.optionCache.update();
         return option.meta.likes;
     }
