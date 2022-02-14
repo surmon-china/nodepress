@@ -5,18 +5,22 @@
  */
 
 import lodash from 'lodash'
-import { isValidObjectId } from 'mongoose'
-import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common'
-import { QueryParams, QueryParamsField as QueryField } from '@app/decorators/query-params.decorator'
-import { HttpProcessor } from '@app/decorators/http.decorator'
-import { JwtAuthGuard } from '@app/guards/auth.guard'
-import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
+import { Types } from 'mongoose'
+import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from '@nestjs/common'
+import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { Responsor } from '@app/decorators/responsor.decorator'
+import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
+import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
+import { PermissionPipe } from '@app/pipes/permission.pipe'
+import { ExposePipe } from '@app/pipes/expose.pipe'
 import { SortType } from '@app/interfaces/biz.interface'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
-import { PaginateResult } from '@app/utils/paginate'
-import { Article, ArticlesPayload, ArticlesStatePayload } from './article.model'
-import { ArticleService, COMMON_HOT_SORT_PARAMS } from './article.service'
+import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { ArticlePaginateQueryDTO, ArticleListQueryDTO, ArticleIDsDTO, ArticlesStateDTO } from './article.dto'
+import { ARTICLE_HOT_SORT_PARAMS } from './article.model'
+import { ArticleService } from './article.service'
+import { Article } from './article.model'
 
 @Controller('article')
 export class ArticleController {
@@ -27,117 +31,132 @@ export class ArticleController {
   ) {}
 
   @Get()
-  @UseGuards(HumanizedJwtAuthGuard)
-  @HttpProcessor.paginate()
-  @HttpProcessor.handle('Get articles')
-  getArticles(
-    @QueryParams([
-      QueryField.Date,
-      QueryField.State,
-      QueryField.Public,
-      QueryField.Origin,
-      'cache',
-      'tag',
-      'category',
-      'tag_slug',
-      'category_slug',
-    ])
-    { querys, options, origin, isAuthenticated }
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.paginate()
+  @Responsor.handle('Get articles')
+  async getArticles(
+    @Query(PermissionPipe, ExposePipe) query: ArticlePaginateQueryDTO
   ): Promise<PaginateResult<Article>> {
-    // 如果是请求热门文章，则判断如何处理（注：前后台都会请求热门文章）
-    if (Number(origin.sort) === SortType.Hot) {
-      // 设置热排参数
-      options.sort = COMMON_HOT_SORT_PARAMS
-      // request cache from user
-      if (!isAuthenticated && querys.cache) {
-        return this.articleService.getUserHotListCache()
+    const { page, per_page, sort, ...filters } = query
+    const paginateQuery: PaginateQuery<Article> = {}
+    const paginateOptions: PaginateOptions = { page, perPage: per_page }
+
+    // sort
+    if (!lodash.isUndefined(sort)) {
+      if (sort === SortType.Hot) {
+        paginateOptions.sort = ARTICLE_HOT_SORT_PARAMS
+      } else {
+        paginateOptions.dateSort = sort
       }
     }
 
-    // 关键词搜索
-    const keyword = lodash.trim(origin.keyword)
-    if (keyword) {
-      const keywordRegExp = new RegExp(keyword, 'i')
-      querys.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
+    // states
+    if (!lodash.isUndefined(filters.state)) {
+      paginateQuery.state = filters.state
+    }
+    if (!lodash.isUndefined(filters.public)) {
+      paginateQuery.public = filters.public
+    }
+    if (!lodash.isUndefined(filters.origin)) {
+      paginateQuery.origin = filters.origin
     }
 
-    // 分类别名查询
-    type TSlugService = (slug: string) => Promise<any>
-    const slugParams = [
-      {
-        name: 'tag',
-        field: 'tag_slug',
-        service: this.tagService.getDetailBySlug.bind(this.tagService) as TSlugService,
-      },
-      {
-        name: 'category',
-        field: 'category_slug',
-        service: this.categoryService.getDetailBySlug.bind(this.categoryService) as TSlugService,
-      },
-    ]
+    // search
+    if (filters.keyword) {
+      const trimmed = lodash.trim(filters.keyword)
+      const keywordRegExp = new RegExp(trimmed, 'i')
+      paginateQuery.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
+    }
 
-    const matchedParam = slugParams.find((item) => querys[item.field])
-    const matchedField = matchedParam?.field
-    const matchedSlug = matchedField && querys[matchedField]
-    return !matchedSlug
-      ? this.articleService.paginater(querys, options)
-      : matchedParam.service(matchedSlug).then((param) => {
-          const paramField = matchedParam.name
-          const paramId = param?._id
-          if (paramId) {
-            querys = Object.assign(querys, { [paramField]: paramId })
-            Reflect.deleteProperty(querys, matchedField)
-            return this.articleService.paginater(querys, options)
-          } else {
-            return Promise.reject(`条件 ${matchedField} > ${matchedSlug} 不存在`)
-          }
-        })
+    // date
+    if (filters.date) {
+      const queryDateMS = new Date(filters.date).getTime()
+      paginateQuery.create_at = {
+        $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
+        $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000),
+      }
+    }
+
+    // tag | category
+    if (filters.tag_slug) {
+      const tag = await this.tagService.getDetailBySlug(filters.tag_slug)
+      paginateQuery.tag = tag._id
+    }
+    if (filters.category_slug) {
+      const category = await this.categoryService.getDetailBySlug(filters.category_slug)
+      paginateQuery.category = category._id
+    }
+
+    // paginater
+    return this.articleService.paginater(paginateQuery, paginateOptions)
+  }
+
+  @Get('hot')
+  @Responsor.handle('Get hot articles')
+  getHotArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise<Array<Article>> {
+    return query.count ? this.articleService.getHotArticles(query.count) : this.articleService.getHotArticlesCache()
+  }
+
+  @Get('related/:id')
+  @Responsor.handle('Get related articles')
+  async getRelatedArticles(
+    @QueryParams() { params }: QueryParamsResult,
+    @Query(ExposePipe) query: ArticleListQueryDTO
+  ): Promise<Array<Article>> {
+    const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) })
+    return this.articleService.getRelatedArticles(article, query.count ?? 20)
   }
 
   @Get(':id')
-  @UseGuards(HumanizedJwtAuthGuard)
-  @HttpProcessor.handle({
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.handle({
     message: 'Get article detail',
     error: HttpStatus.NOT_FOUND,
   })
-  getArticle(@QueryParams() { params, isAuthenticated }): Promise<Article> {
-    return isAuthenticated && isValidObjectId(params.id)
+  getArticle(@QueryParams() { params, isUnauthenticated }: QueryParamsResult): Promise<Article> {
+    // guest user > number ID | slug
+    if (isUnauthenticated) {
+      const idOrSlug = isNaN(Number(params.id)) ? String(params.id) : Number(params.id)
+      return this.articleService.getFullDetailForGuest(idOrSlug)
+    }
+    // admin user > Object ID | number ID
+    return Types.ObjectId.isValid(params.id)
       ? this.articleService.getDetailByObjectID(params.id)
-      : this.articleService.getFullDetailForUser(isNaN(params.id) ? String(params.id) : Number(params.id))
+      : this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) })
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Create article')
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Create article')
   createArticle(@Body() article: Article): Promise<Article> {
     return this.articleService.create(article)
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update article')
-  putArticle(@QueryParams() { params }, @Body() article: Article): Promise<Article> {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update article')
+  putArticle(@QueryParams() { params }: QueryParamsResult, @Body() article: Article): Promise<Article> {
     return this.articleService.update(params.id, article)
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Delete article')
-  delArticle(@QueryParams() { params }): Promise<Article> {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Delete article')
+  delArticle(@QueryParams() { params }: QueryParamsResult): Promise<Article> {
     return this.articleService.delete(params.id)
   }
 
   @Patch()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update articles')
-  patchArticles(@Body() body: ArticlesStatePayload) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update articles')
+  patchArticles(@Body() body: ArticlesStateDTO) {
     return this.articleService.batchPatchState(body.article_ids, body.state)
   }
 
   @Delete()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Delete articles')
-  delArticles(@Body() body: ArticlesPayload) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Delete articles')
+  delArticles(@Body() body: ArticleIDsDTO) {
     return this.articleService.batchDelete(body.article_ids)
   }
 }

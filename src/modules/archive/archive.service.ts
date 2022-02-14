@@ -7,17 +7,15 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { CacheService, CacheIOResult } from '@app/processors/cache/cache.service'
-import { SortType, PublishState, PublicState } from '@app/interfaces/biz.interface'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import { SortType } from '@app/interfaces/biz.interface'
 import { Category } from '@app/modules/category/category.model'
-import { Article } from '@app/modules/article/article.model'
+import { Article, ARTICLE_GUEST_QUERY_FILTER } from '@app/modules/article/article.model'
 import { Tag } from '@app/modules/tag/tag.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
-import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
 export interface ArchiveData {
-  meta: typeof APP_CONFIG.PROJECT
   tags: Tag[]
   categories: Category[]
   articles: Article[]
@@ -53,9 +51,7 @@ export class ArchiveService {
 
   private getAllArticles(): Promise<Article[]> {
     return this.articleModel
-      .find({ state: PublishState.Published, public: PublicState.Public }, null, {
-        select: '-password -content',
-      })
+      .find(ARTICLE_GUEST_QUERY_FILTER, null, { select: '-content' })
       .sort({ _id: SortType.Desc })
       .exec()
   }
@@ -63,7 +59,6 @@ export class ArchiveService {
   private async getArchiveData(): Promise<ArchiveData> {
     try {
       return {
-        meta: APP_CONFIG.PROJECT,
         tags: await this.getAllTags(),
         categories: await this.getAllCategories(),
         articles: await this.getAllArticles(),

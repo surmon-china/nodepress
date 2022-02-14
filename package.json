@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "3.7.15",
+  "version": "3.8.0",
   "description": "RESTful API service for Surmon.me blog",
   "author": {
     "name": "Surmon",
@@ -12,6 +12,7 @@
     "url": "https://github.com/surmon-china/nodepress/issues"
   },
   "homepage": "https://github.com/surmon-china/nodepress#readme",
+  "documentation": "https://github.surmon.me/nodepress",
   "repository": {
     "type": "git",
     "url": "https://github.com/surmon-china/nodepress.git"
@@ -30,6 +31,7 @@
     "test:cov": "cross-env NODE_ENV=test jest --coverage",
     "test:debug": "cross-env NODE_ENV=test node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json",
+    "doc": "compodoc -p tsconfig.json -n 'NodePress documentation' -d documentation --disableCoverage",
     "release": ". ./scripts/release.sh"
   },
   "dependencies": {
@@ -37,6 +39,7 @@
     "@nestjs/common": "^8.2.4",
     "@nestjs/core": "^8.2.4",
     "@nestjs/jwt": "^8.0.0",
+    "@nestjs/mapped-types": "^1.0.1",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.2.4",
     "@nestjs/throttler": "^2.0.0",
@@ -74,6 +77,7 @@
     "yargs": "^17.3.0"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.18",
     "@nestjs/cli": "^8.1.5",
     "@nestjs/schematics": "^8.0.5",
     "@nestjs/testing": "^8.2.4",
@@ -89,6 +93,7 @@
     "@types/passport-jwt": "^3.0.6",
     "@types/shelljs": "^0.8.9",
     "@types/supertest": "^2.0.11",
+    "@types/validator": "^13.7.1",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
     "eslint": "^8.4.1",

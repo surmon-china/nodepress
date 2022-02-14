@@ -11,7 +11,7 @@ import * as APP_CONFIG from '@app/app.config'
 
 /**
  * @class CorsMiddleware
- * @classdesc 用于处理 CORS 跨域
+ * @classdesc CORS
  */
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {

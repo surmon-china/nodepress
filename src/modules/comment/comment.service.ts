@@ -4,21 +4,20 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Types } from 'mongoose'
-import { DocumentType } from '@typegoose/typegoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
+import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
+import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
 import { ArticleService } from '@app/modules/article/article.service'
 import { IPService } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
-import { AkismetService, AkismetActionType } from '@app/processors/helper/helper.service.akismet'
-import { QueryVisitor } from '@app/decorators/query-params.decorator'
+import { AkismetService, AkismetAction } from '@app/processors/helper/helper.service.akismet'
+import { QueryVisitor } from '@app/decorators/queryparams.decorator'
 import { OptionService } from '@app/modules/option/option.service'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
-import { Comment, CreateCommentBase, CommentsStatePayload } from './comment.model'
+import { Comment, CommentBase, COMMENT_GUEST_QUERY_FILTER } from './comment.model'
+import { CommentsStateDTO } from './comment.dto'
 import { isProdEnv } from '@app/app.environment'
 import logger from '@app/utils/logger'
 import * as APP_CONFIG from '@app/app.config'
@@ -39,7 +38,7 @@ export class CommentService {
     if (comment.post_id === CommentPostID.Guestbook) {
       onWhere = 'guestbook'
     } else {
-      const article = await this.articleService.getDetailByNumberIDOrSlug(comment.post_id)
+      const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: comment.post_id })
       onWhere = `"${article.toObject().title}"`
     }
 
@@ -77,7 +76,7 @@ export class CommentService {
     }
   }
 
-  private submitCommentAkismet(action: AkismetActionType, comment: Comment, referer?: string): Promise<void> {
+  private submitCommentAkismet(action: AkismetAction, comment: Comment, referer?: string): Promise<void> {
     return this.akismetService[action]({
       user_ip: comment.ip!,
       user_agent: comment.agent!,
@@ -91,10 +90,8 @@ export class CommentService {
     })
   }
 
-  // 更新当前所受影响的文章的评论聚合数据
-  private async updateCommentCountWithArticle(postIDs: number[]) {
+  private async updateCommentsCountWithArticles(postIDs: number[]) {
     // filter invalid post_id & guestbook
-    postIDs = postIDs || []
     postIDs = postIDs.map(Number).filter(Boolean)
     if (!postIDs.length) {
       return false
@@ -102,14 +99,16 @@ export class CommentService {
 
     try {
       const counts = await this.commentModel.aggregate([
-        { $match: { state: CommentState.Published, post_id: { $in: postIDs } } },
+        { $match: { ...COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIDs } } },
         { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } },
       ])
       if (!counts || !counts.length) {
         await this.articleService.updateMetaComments(postIDs[0], 0)
       } else {
         await Promise.all(
-          counts.map((count) => this.articleService.updateMetaComments(count._id, count.num_tutorial))
+          counts.map((count) => {
+            return this.articleService.updateMetaComments(count._id, count.num_tutorial)
+          })
         )
       }
     } catch (error) {
@@ -118,13 +117,13 @@ export class CommentService {
   }
 
   // 根据操作状态处理评论转移，处理评论状态转移
-  private updateBlocklistAkismetWithComment(comments: Comment[], state: CommentState, referrer?: string) {
+  private updateBlocklistAkismetWithComment(comments: Comment[], state: CommentState, referer?: string) {
     const isSPAM = state === CommentState.Spam
-    const action = isSPAM ? AkismetActionType.SubmitSpam : AkismetActionType.SubmitHam
+    const action = isSPAM ? AkismetAction.SubmitSpam : AkismetAction.SubmitHam
     //  SPAM > append to blocklist & submitSpam
     //  HAM > remove from blocklist & submitHAM
     // akismet
-    comments.forEach((comment) => this.submitCommentAkismet(action, comment, referrer))
+    comments.forEach((comment) => this.submitCommentAkismet(action, comment, referer))
     // block list
     const ips: string[] = comments.map((comment) => comment.ip!).filter(Boolean)
     const emails: string[] = comments.map((comment) => comment.author.email!).filter(Boolean)
@@ -138,7 +137,7 @@ export class CommentService {
 
   // validate comment by NodePress IP/email/keywords
   public async isNotBlocklisted(comment: Comment): Promise<void> {
-    const { blocklist } = await this.optionService.getAppOption()
+    const { blocklist } = await this.optionService.ensureAppOption()
     const { keywords, mails, ips } = blocklist
     const blockIP = ips.includes(comment.ip!)
     const blockEmail = mails.includes(comment.author.email!)
@@ -164,7 +163,11 @@ export class CommentService {
   }
 
   // get comment list for client user
-  public async paginater(querys, options: PaginateOptions, hideIPEmail = false): Promise<PaginateResult<Comment>> {
+  public async paginater(
+    querys: PaginateQuery<Comment>,
+    options: PaginateOptions,
+    hideIPEmail = false
+  ): Promise<PaginateResult<Comment>> {
     // MARK: can't use 'lean' with virtual 'email_hash'
     // MARK: can't use select('-email') with virtual 'email_hash'
     // https://github.com/Automattic/mongoose/issues/3130#issuecomment-395750197
@@ -184,7 +187,7 @@ export class CommentService {
     }
   }
 
-  public normalizeNewComment(comment: CreateCommentBase, visitor: QueryVisitor): Comment {
+  public normalizeNewComment(comment: CommentBase, visitor: QueryVisitor): Comment {
     return {
       ...comment,
       pid: Number(comment.pid),
@@ -200,46 +203,114 @@ export class CommentService {
   }
 
   // create comment
-  public async create(comment: Comment): Promise<Comment> {
+  public async create(comment: Comment): Promise<MongooseDoc<Comment>> {
     const ip_location = isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null
     const succeedComment = await this.commentModel.create({
       ...comment,
       ip_location,
     })
     // update aggregate & email notification
-    this.updateCommentCountWithArticle([succeedComment.post_id])
+    this.updateCommentsCountWithArticles([succeedComment.post_id])
     this.emailToAdminAndTargetAuthor(succeedComment)
     return succeedComment
   }
 
   // create comment from client
-  public async createFormClient(comment: CreateCommentBase, visitor: QueryVisitor): Promise<Comment> {
+  public async createFormClient(comment: CommentBase, visitor: QueryVisitor): Promise<MongooseDoc<Comment>> {
     const newComment = this.normalizeNewComment(comment, visitor)
     // 1. check commentable
     await this.isCommentableTarget(newComment.post_id)
     // 2. block list | akismet
     await Promise.all([
       this.isNotBlocklisted(newComment),
-      this.submitCommentAkismet(AkismetActionType.CheckSpam, newComment, visitor.referer),
+      this.submitCommentAkismet(AkismetAction.CheckSpam, newComment, visitor.referer),
     ])
     // 3. create
     return this.create(newComment)
   }
 
   // get comment detail by ObjectID
-  public getDetailByObjectID(commentID: Types.ObjectId): Promise<DocumentType<Comment>> {
+  public getDetailByObjectID(commentID: MongooseID): Promise<MongooseDoc<Comment>> {
     return this.commentModel
       .findById(commentID)
       .exec()
-      .then((result) => result || Promise.reject(`Comment "${commentID}" not found`))
+      .then((result) => result || Promise.reject(`Comment '${commentID}' not found`))
   }
 
   // get comment detail by number ID
-  public getDetailByNumberID(commentID: number): Promise<DocumentType<Comment>> {
+  public getDetailByNumberID(commentID: number): Promise<MongooseDoc<Comment>> {
     return this.commentModel
       .findOne({ id: commentID })
       .exec()
-      .then((result) => result || Promise.reject(`Comment "${commentID}" not found`))
+      .then((result) => result || Promise.reject(`Comment '${commentID}' not found`))
+  }
+
+  // update comment
+  public async update(
+    commentID: MongooseID,
+    newComment: Partial<Comment>,
+    referer?: string
+  ): Promise<MongooseDoc<Comment>> {
+    const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment, { new: true }).exec()
+    if (!comment) {
+      throw `Comment '${commentID}' not found`
+    }
+
+    this.updateCommentsCountWithArticles([comment.post_id])
+    this.updateBlocklistAkismetWithComment([comment], comment.state, referer)
+    return comment
+  }
+
+  // delete comment
+  public async delete(commentID: MongooseID): Promise<MongooseDoc<Comment>> {
+    const comment = await this.commentModel.findByIdAndRemove(commentID).exec()
+    if (!comment) {
+      throw `Comment '${commentID}' not found`
+    }
+
+    this.updateCommentsCountWithArticles([comment.post_id])
+    return comment
+  }
+
+  public async batchPatchState(action: CommentsStateDTO, referer?: string) {
+    const { comment_ids, post_ids, state } = action
+    const actionResult = await this.commentModel
+      .updateMany({ _id: { $in: comment_ids } }, { $set: { state } }, { multi: true })
+      .exec()
+    // 更新关联数据
+    this.updateCommentsCountWithArticles(post_ids)
+    try {
+      const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } })
+      this.updateBlocklistAkismetWithComment(todoComments, state, referer)
+    } catch (error) {
+      logger.warn('[comment]', `对评论进行改变状态 ${state} 时，出现查询错误！`, error)
+    }
+    return actionResult
+  }
+
+  public async batchDelete(commentIDs: MongooseID[], postIDs: number[]) {
+    const result = await this.commentModel.deleteMany({ _id: { $in: commentIDs } }).exec()
+    this.updateCommentsCountWithArticles(postIDs)
+    return result
+  }
+
+  public async getTotalCount(publicOnly: boolean): Promise<number> {
+    return await this.commentModel.countDocuments(publicOnly ? COMMENT_GUEST_QUERY_FILTER : {}).exec()
+  }
+
+  public async reviseIPLocation(commentID: MongooseID) {
+    const comment = await this.getDetailByObjectID(commentID)
+    if (!comment.ip) {
+      return `Comment '${commentID}' hasn't IP address`
+    }
+
+    const location = await this.ipService.queryLocation(comment.ip)
+    if (!location) {
+      return `Empty location query result`
+    }
+
+    comment.ip_location = { ...location }
+    return await comment.save()
   }
 
   // vote comment
@@ -251,65 +322,5 @@ export class CommentService {
       likes: comment.likes,
       dislikes: comment.dislikes,
     }
-  }
-
-  // update comment
-  public async update(commentID: Types.ObjectId, newComment: Partial<Comment>, referer?: string): Promise<Comment> {
-    const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment, { new: true }).exec()
-    if (!comment) {
-      throw `Comment "${commentID}" not found`
-    }
-
-    this.updateCommentCountWithArticle([comment.post_id])
-    this.updateBlocklistAkismetWithComment([comment], comment.state, referer)
-    return comment
-  }
-
-  // delete comment
-  public async delete(commentID: Types.ObjectId): Promise<Comment> {
-    const comment = await this.commentModel.findByIdAndRemove(commentID).exec()
-    if (!comment) {
-      throw `Comment "${commentID}" not found`
-    }
-
-    this.updateCommentCountWithArticle([comment.post_id])
-    return comment
-  }
-
-  public async batchPatchState(action: CommentsStatePayload, referer: string) {
-    const { comment_ids, post_ids, state } = action
-    const actionResult = await this.commentModel
-      .updateMany({ _id: { $in: comment_ids } }, { $set: { state } }, { multi: true })
-      .exec()
-    // 更新关联数据
-    this.updateCommentCountWithArticle(post_ids)
-    try {
-      const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } })
-      this.updateBlocklistAkismetWithComment(todoComments, state, referer)
-    } catch (error) {
-      logger.warn('[comment]', `对评论进行改变状态 ${state} 时，出现查询错误！`, error)
-    }
-    return actionResult
-  }
-
-  public async batchDelete(commentIDs: Types.ObjectId[], postIDs: number[]) {
-    const result = await this.commentModel.deleteMany({ _id: { $in: commentIDs } }).exec()
-    this.updateCommentCountWithArticle(postIDs)
-    return result
-  }
-
-  public async reviseIPLocation(commentID: Types.ObjectId) {
-    const comment = await this.getDetailByObjectID(commentID)
-    if (!comment.ip) {
-      return `Comment "${commentID}" hasn't IP address`
-    }
-
-    const location = await this.ipService.queryLocation(comment.ip)
-    if (!location) {
-      return `Empty location query result`
-    }
-
-    comment.ip_location = { ...location }
-    return await comment.save()
   }
 }

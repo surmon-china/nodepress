@@ -5,8 +5,8 @@
  */
 
 import { UseGuards, Controller, Get, Patch } from '@nestjs/common'
-import { JwtAuthGuard } from '@app/guards/auth.guard'
-import { HttpProcessor } from '@app/decorators/http.decorator'
+import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
+import { Responsor } from '@app/decorators/responsor.decorator'
 import { ArchiveService, ArchiveData } from './archive.service'
 
 @Controller('archive')
@@ -14,14 +14,14 @@ export class ArchiveController {
   constructor(private readonly archiveService: ArchiveService) {}
 
   @Get()
-  @HttpProcessor.handle('Get archive')
+  @Responsor.handle('Get archive')
   getArchive(): Promise<ArchiveData> {
     return this.archiveService.getCache()
   }
 
   @Patch()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update archive cache')
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update archive cache')
   updateArchive(): Promise<any> {
     return this.archiveService.updateCache()
   }

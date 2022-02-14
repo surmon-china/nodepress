@@ -5,10 +5,10 @@
  */
 
 import { Controller, Get, Put, Body, UseGuards } from '@nestjs/common'
-import { QueryParams } from '@app/decorators/query-params.decorator'
-import { HttpProcessor } from '@app/decorators/http.decorator'
-import { JwtAuthGuard } from '@app/guards/auth.guard'
-import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
+import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { Responsor } from '@app/decorators/responsor.decorator'
+import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
+import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
 import { OptionService } from './option.service'
 import { Option } from './option.model'
 
@@ -17,15 +17,15 @@ export class OptionController {
   constructor(private readonly optionService: OptionService) {}
 
   @Get()
-  @UseGuards(HumanizedJwtAuthGuard)
-  @HttpProcessor.handle('Get site options')
-  getOption(@QueryParams() { isAuthenticated }): Promise<Option> {
-    return isAuthenticated ? this.optionService.getAppOption() : this.optionService.getOptionUserCache()
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.handle('Get site options')
+  getOption(@QueryParams() { isAuthenticated }: QueryParamsResult) {
+    return isAuthenticated ? this.optionService.ensureAppOption() : this.optionService.getOptionCacheForGuest()
   }
 
   @Put()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update site options')
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update site options')
   putOption(@Body() option: Option): Promise<Option> {
     return this.optionService.putOption(option)
   }

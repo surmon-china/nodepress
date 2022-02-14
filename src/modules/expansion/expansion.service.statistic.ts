@@ -6,38 +6,40 @@
 
 import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
-import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { CacheService } from '@app/processors/cache/cache.service'
-import { Article } from '@app/modules/article/article.model'
-import { Comment } from '@app/modules/comment/comment.model'
-import { Tag } from '@app/modules/tag/tag.model'
+import { ArticleService } from '@app/modules/article/article.service'
+import { CommentService } from '@app/modules/comment/comment.service'
+import { TagService } from '@app/modules/tag/tag.service'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
 
-export interface ITodayStatistic {
+export interface Statistic {
   tags: number | null
-  views: number | null
   articles: number | null
   comments: number | null
+  totalViews: number | null
+  totalLikes: number | null
+  todayViews: number | null
 }
 
 @Injectable()
 export class StatisticService {
-  private resultData: ITodayStatistic = {
+  private resultData: Statistic = {
     tags: null,
-    views: null,
     articles: null,
     comments: null,
+    totalViews: null,
+    totalLikes: null,
+    todayViews: null,
   }
 
   constructor(
     private readonly cacheService: CacheService,
-    @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>,
-    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
-    @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>
+    private readonly articleService: ArticleService,
+    private readonly commentService: CommentService,
+    private readonly tagService: TagService
   ) {
-    // 每天 0 点数据清零
+    // clear date when everyday 00:00
     schedule.scheduleJob('1 0 0 * * *', () => {
       this.cacheService.set(CACHE_KEY.TODAY_VIEWS, 0).catch((error) => {
         logger.warn('[expansion]', 'statistic set TODAY_VIEWS Error:', error)
@@ -45,28 +47,37 @@ export class StatisticService {
     })
   }
 
-  private async getViewsCount() {
+  private async getTodayViewsCount() {
     const views = await this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS)
-    this.resultData.views = views || 0
+    this.resultData.todayViews = views || 0
+  }
+
+  private async getArticlesStatistic() {
+    const meta = await this.articleService.getMetaStatistic()
+    this.resultData.totalViews = meta.totalViews
+    this.resultData.totalLikes = meta.totalLikes
+  }
+
+  private async getArticlesCount(publicOnly: boolean) {
+    this.resultData.articles = await this.articleService.getTotalCount(publicOnly)
   }
 
   private async getTagsCount() {
-    const count = await this.tagModel.countDocuments().exec()
-    this.resultData.tags = count
+    this.resultData.tags = await this.tagService.getTotalCount()
   }
 
-  private async getArticlesCount() {
-    const count = await this.articleModel.countDocuments().exec()
-    this.resultData.articles = count
+  private async getCommentsCount(publicOnly: boolean) {
+    this.resultData.comments = await this.commentService.getTotalCount(publicOnly)
   }
 
-  private async getCommentsCount() {
-    const count = await this.commentModel.countDocuments().exec()
-    this.resultData.comments = count
-  }
-
-  public getStatistic() {
-    return Promise.all([this.getTagsCount(), this.getViewsCount(), this.getArticlesCount(), this.getCommentsCount()])
+  public getStatistic(publicOnly: boolean) {
+    return Promise.all([
+      this.getTagsCount(),
+      this.getArticlesCount(publicOnly),
+      this.getCommentsCount(publicOnly),
+      this.getArticlesStatistic(),
+      this.getTodayViewsCount(),
+    ])
       .then(() => Promise.resolve(this.resultData))
       .catch(() => Promise.resolve(this.resultData))
   }

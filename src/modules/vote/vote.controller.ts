@@ -4,11 +4,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IsInt, IsDefined, IsIn, IsOptional, IsObject, ValidateNested } from 'class-validator'
 import { Controller, Post, Body } from '@nestjs/common'
 import { Throttle } from '@nestjs/throttler'
-import { QueryParams } from '@app/decorators/query-params.decorator'
-import { HttpProcessor } from '@app/decorators/http.decorator'
+import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { Responsor } from '@app/decorators/responsor.decorator'
 import { IPService, IPLocation } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import { OptionService } from '@app/modules/option/option.service'
@@ -16,40 +15,12 @@ import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { Author } from '@app/modules/comment/comment.model'
 import { DisqusPublicService } from '@app/modules/disqus/disqus.service.public'
-import { CookieToken } from '@app/modules/disqus/disqus.token'
+import { DisqusToken } from '@app/modules/disqus/disqus.token'
 import { AccessToken } from '@app/utils/disqus'
 import { CommentPostID } from '@app/interfaces/biz.interface'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
+import { VoteAuthorDTO, CommentVoteDTO, PageVoteDTO } from './vote.dto'
 import * as APP_CONFIG from '@app/app.config'
-
-export class VoteAuthorPayload {
-  @ValidateNested()
-  @IsObject()
-  @IsOptional()
-  author?: Author
-}
-
-export class CommentVotePayload extends VoteAuthorPayload {
-  @IsDefined()
-  @IsInt()
-  comment_id: number
-
-  @IsDefined()
-  @IsInt()
-  @IsIn([1, -1])
-  vote: number
-}
-
-export class PageVotePayload extends VoteAuthorPayload {
-  @IsDefined()
-  @IsInt()
-  article_id: number
-
-  @IsDefined()
-  @IsInt()
-  @IsIn([1])
-  vote: number
-}
 
 @Controller('vote')
 export class VoteController {
@@ -86,7 +57,7 @@ export class VoteController {
     if (post_id === CommentPostID.Guestbook) {
       return 'guestbook'
     } else {
-      const article = await this.articleService.getDetailByNumberIDOrSlug(post_id)
+      const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: post_id })
       return article.toObject().title
     }
   }
@@ -127,7 +98,7 @@ export class VoteController {
 
   // Disqus logined user or guest user
   async voteDisqusThread(articleID: number, vote: number, token?: string) {
-    const thread = await this.disqusPublicService.makeSureThreadDetailCache(articleID)
+    const thread = await this.disqusPublicService.ensureThreadDetailCache(articleID)
     const result = await this.disqusPublicService.voteThread({
       access_token: token || null,
       thread: thread.id,
@@ -140,14 +111,14 @@ export class VoteController {
   // 1 hour > limit 10
   @Throttle(10, 60 * 60)
   @Post('/site')
-  @HttpProcessor.handle('Vote site')
+  @Responsor.handle('Vote site')
   async likeSite(
-    @Body() voteBody: VoteAuthorPayload,
-    @CookieToken() token: AccessToken | null,
-    @QueryParams() { visitor }
+    @Body() voteBody: VoteAuthorDTO,
+    @DisqusToken() token: AccessToken | null,
+    @QueryParams() { visitor }: QueryParamsResult
   ) {
     // NodePress
-    const likes = await this.optionService.likeSite()
+    const likes = await this.optionService.incrementLikes()
     // Disqus
     this.voteDisqusThread(CommentPostID.Guestbook, 1, token?.access_token).catch(() => {})
     // email to admin
@@ -171,14 +142,14 @@ export class VoteController {
   // 1 minute > limit 15
   @Throttle(15, 60)
   @Post('/article')
-  @HttpProcessor.handle('Vote article')
+  @Responsor.handle('Vote article')
   async voteArticle(
-    @Body() voteBody: PageVotePayload,
-    @CookieToken() token: AccessToken | null,
-    @QueryParams() { visitor }
+    @Body() voteBody: PageVoteDTO,
+    @DisqusToken() token: AccessToken | null,
+    @QueryParams() { visitor }: QueryParamsResult
   ) {
     // NodePress
-    const likes = await this.articleService.like(voteBody.article_id)
+    const likes = await this.articleService.incrementLikes(voteBody.article_id)
     // Disqus
     this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() => {})
     // email to admin
@@ -202,11 +173,11 @@ export class VoteController {
   // 30 seconds > limit 10
   @Throttle(10, 30)
   @Post('/comment')
-  @HttpProcessor.handle('Vote comment')
+  @Responsor.handle('Vote comment')
   async voteComment(
-    @Body() voteBody: CommentVotePayload,
-    @CookieToken() token: AccessToken | null,
-    @QueryParams() { visitor }
+    @Body() voteBody: CommentVoteDTO,
+    @DisqusToken() token: AccessToken | null,
+    @QueryParams() { visitor }: QueryParamsResult
   ) {
     // NodePress
     const result = await this.commentService.vote(voteBody.comment_id, voteBody.vote > 0)

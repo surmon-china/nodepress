@@ -4,7 +4,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions, Severity } from '@typegoose/typegoose'
 import { Type } from 'class-transformer'
@@ -23,7 +22,6 @@ import {
   IsArray,
   IsObject,
   ValidateNested,
-  ArrayNotEmpty,
   ArrayUnique,
 } from 'class-validator'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
@@ -32,7 +30,18 @@ import { getProviderByTypegooseClass } from '@app/transformers/model.transformer
 import { decodeMD5 } from '@app/transformers/codec.transformer'
 import { CommentParentID, CommentState } from '@app/interfaces/biz.interface'
 import { IPLocation } from '@app/processors/helper/helper.service.ip'
-import { Extend } from '@app/models/extend.model'
+import { ExtendModel } from '@app/models/extend.model'
+
+export const COMMENT_STATES = [
+  CommentState.Auditing,
+  CommentState.Deleted,
+  CommentState.Published,
+  CommentState.Spam,
+] as const
+
+export const COMMENT_GUEST_QUERY_FILTER = Object.freeze({
+  state: CommentState.Published,
+})
 
 @modelOptions({
   schemaOptions: {
@@ -41,15 +50,15 @@ import { Extend } from '@app/models/extend.model'
   },
 })
 export class Author {
-  @IsNotEmpty()
-  @IsString()
   @MaxLength(20)
+  @IsString()
+  @IsNotEmpty()
   @prop({ required: true, validate: /\S+/ })
   name: string
 
-  // can't get disqus user's email
-  @IsString()
+  // MARK: can't get disqus user's email
   @IsEmail()
+  @IsString()
   @IsOptional()
   @prop()
   email?: string
@@ -66,11 +75,10 @@ export class Author {
   }
 }
 
-// 创建评论的基数据
-export class CreateCommentBase {
+export class CommentBase {
   // article ID
-  @IsNotEmpty({ message: 'post id?' })
   @IsInt()
+  @IsNotEmpty({ message: 'post ID?' })
   @prop({ required: true, index: true })
   post_id: number
 
@@ -79,10 +87,10 @@ export class CreateCommentBase {
   @prop({ default: CommentParentID.Self, index: true })
   pid: number
 
-  @IsNotEmpty({ message: 'comment content?' })
-  @IsString({ message: 'comment content must be string type' })
-  @MaxLength(3000)
   @MinLength(3) // sync with Disqus
+  @MaxLength(3000)
+  @IsString()
+  @IsNotEmpty({ message: 'comment content?' })
   @prop({ required: true, validate: /\S+/ })
   content: string
 
@@ -111,12 +119,12 @@ export class CreateCommentBase {
     },
   },
 })
-export class Comment extends CreateCommentBase {
+export class Comment extends CommentBase {
   @prop({ unique: true })
   id?: number
 
-  // comment state
-  @IsIn([CommentState.Auditing, CommentState.Deleted, CommentState.Published, CommentState.Spam])
+  // state
+  @IsIn(COMMENT_STATES)
   @IsInt()
   @prop({ enum: CommentState, default: CommentState.Published, index: true })
   state: CommentState
@@ -146,28 +154,10 @@ export class Comment extends CreateCommentBase {
   @prop({ default: Date.now })
   update_at?: Date
 
-  @IsArray()
   @ArrayUnique()
-  @prop({ _id: false, default: [], type: () => [Extend] })
-  extends: Extend[]
-}
-
-export class CommentsPayload {
   @IsArray()
-  @ArrayNotEmpty()
-  @ArrayUnique()
-  comment_ids: Types.ObjectId[]
-
-  @IsArray()
-  @ArrayUnique()
-  post_ids: number[]
-}
-
-export class CommentsStatePayload extends CommentsPayload {
-  @IsIn([CommentState.Auditing, CommentState.Deleted, CommentState.Published, CommentState.Spam])
-  @IsInt()
-  @prop({ enum: CommentState, default: CommentState.Published })
-  state: CommentState
+  @prop({ _id: false, default: [], type: () => [ExtendModel] })
+  extends: ExtendModel[]
 }
 
 export const CommentProvider = getProviderByTypegooseClass(Comment)

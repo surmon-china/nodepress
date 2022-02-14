@@ -15,19 +15,19 @@ export enum ThreadState {
   Closed = 'closed',
 }
 
-export class CallbackCodePayload {
+export class CallbackCodeDTO {
   @IsNotEmpty()
   @IsString()
   code: string
 }
 
-export class ThreadPostIDPayload {
+export class ThreadPostIdDTO {
   @IsNotEmpty()
   @IsNumberString()
   post_id: string
 }
 
-export class CommentIDPayload {
+export class CommentIdDTO {
   @IsNotEmpty()
   @IsNumber()
   comment_id: number

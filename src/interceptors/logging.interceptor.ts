@@ -4,6 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { Request } from 'express'
 import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common'
@@ -17,7 +18,7 @@ export class LoggingInterceptor implements NestInterceptor {
     if (!isDevEnv) {
       return call$
     }
-    const request = context.switchToHttp().getRequest()
+    const request = context.switchToHttp().getRequest<Request>()
     const content = request.method + ' -> ' + request.url
     logger.debug('+++ req：', content)
     const now = Date.now()

@@ -10,7 +10,7 @@ import * as TEXT from '@app/constants/text.constant'
 /**
  * @class HttpForbiddenError
  * @classdesc 403 -> 无权限/权限不足
- * @example new HttpForbiddenError('错误信息')
+ * @example new HttpForbiddenError('error message')
  * @example new HttpForbiddenError(new Error())
  */
 export class HttpForbiddenError extends HttpException {

@@ -26,9 +26,9 @@
 
 **更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/main/CHANGELOG.md#changelog)**
 
-**接口文档：[API documentation](https://github.com/surmon-china/nodepress/blob/main/DOC_API.md)**
+**接口文档：[API documentation](https://github.surmon.me/nodepress)**
 
-**架构设计：[Architecture documentation](https://github.com/surmon-china/nodepress/blob/main/DOC.md)**
+**架构设计：[Architecture documentation](https://github.com/surmon-china/nodepress/blob/main/DOCUMENTATION.md)**
 
 ---
 

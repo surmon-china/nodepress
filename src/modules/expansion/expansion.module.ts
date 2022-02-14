@@ -5,16 +5,17 @@
  */
 
 import { Module } from '@nestjs/common'
-import { TagProvider } from '@app/modules/tag/tag.model'
-import { ArticleProvider } from '@app/modules/article/article.model'
-import { CommentProvider } from '@app/modules/comment/comment.model'
+import { TagModule } from '@app/modules/tag/tag.module'
+import { ArticleModule } from '@app/modules/article/article.module'
+import { CommentModule } from '@app/modules/comment/comment.module'
 import { ExpansionController } from './expansion.controller'
 import { StatisticService } from './expansion.service.statistic'
 import { DBBackupService } from './expansion.service.dbbackup'
 
 @Module({
+  imports: [TagModule, ArticleModule, CommentModule],
   controllers: [ExpansionController],
-  providers: [TagProvider, ArticleProvider, CommentProvider, StatisticService, DBBackupService],
+  providers: [StatisticService, DBBackupService],
   exports: [StatisticService, DBBackupService],
 })
 export class ExpansionModule {}

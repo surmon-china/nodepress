@@ -5,14 +5,15 @@
  */
 
 import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs/common'
-import { JwtAuthGuard } from '@app/guards/auth.guard'
+import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { IPService } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
-import { HttpProcessor } from '@app/decorators/http.decorator'
-import { QueryParams } from '@app/decorators/query-params.decorator'
-import { Auth, AuthPasswordPayload } from './auth.model'
+import { Responsor } from '@app/decorators/responsor.decorator'
+import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { AuthLoginDTO, AuthUpdateDTO } from './auth.dto'
 import { AuthService } from './auth.service'
 import { TokenResult } from './auth.interface'
+import { Auth } from './auth.model'
 import { APP } from '@app/app.config'
 
 @Controller('auth')
@@ -24,8 +25,11 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  @HttpProcessor.handle({ message: 'Login', error: HttpStatus.BAD_REQUEST })
-  async login(@QueryParams() { visitor: { ip } }, @Body() body: AuthPasswordPayload): Promise<TokenResult> {
+  @Responsor.handle({ message: 'Login', error: HttpStatus.BAD_REQUEST })
+  async login(
+    @QueryParams() { visitor: { ip } }: QueryParamsResult,
+    @Body() body: AuthLoginDTO
+  ): Promise<TokenResult> {
     const token = await this.authService.adminLogin(body.password)
     this.ipService.queryLocation(ip).then((location) => {
       const subject = `App has new login activity`
@@ -42,30 +46,30 @@ export class AuthController {
   }
 
   @Get('admin')
-  @HttpProcessor.handle('Get admin info')
+  @Responsor.handle('Get admin info')
   getAdminInfo(): Promise<Auth> {
     return this.authService.getAdminInfo()
   }
 
   @Put('admin')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update admin info')
-  putAdminInfo(@Body() auth: Auth): Promise<Auth> {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update admin info')
+  putAdminInfo(@Body() auth: AuthUpdateDTO): Promise<Auth> {
     return this.authService.putAdminInfo(auth)
   }
 
   // check token
   @Post('check')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Check token')
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Check token')
   checkToken(): string {
     return 'ok'
   }
 
   // refresh token
   @Post('renewal')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Renewal Token')
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Renewal Token')
   renewalToken(): TokenResult {
     return this.authService.createToken()
   }

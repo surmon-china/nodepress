@@ -9,9 +9,8 @@ import passport from 'passport'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
+import { NestFactory } from '@nestjs/core'
 import { AppModule } from '@app/app.module'
-import { NestFactory, Reflector } from '@nestjs/core'
-import { ValidationPipe } from '@app/pipes/validation.pipe'
 import { HttpExceptionFilter } from '@app/filters/error.filter'
 import { TransformInterceptor } from '@app/interceptors/transform.interceptor'
 import { LoggingInterceptor } from '@app/interceptors/logging.interceptor'
@@ -31,12 +30,11 @@ async function bootstrap() {
   // MARK: keep v0.5 https://github.com/jaredhanson/passport/blob/master/CHANGELOG.md#changed
   app.use(passport.initialize())
   app.useGlobalFilters(new HttpExceptionFilter())
-  app.useGlobalPipes(new ValidationPipe())
-  app.useGlobalInterceptors(
-    new TransformInterceptor(new Reflector()),
-    new ErrorInterceptor(new Reflector()),
-    new LoggingInterceptor()
-  )
+  app.useGlobalInterceptors(new TransformInterceptor(), new ErrorInterceptor(), new LoggingInterceptor())
+  // https://github.com/nestjs/nest/issues/528#issuecomment-403212561
+  // https://stackoverflow.com/a/60141437/6222535
+  // MARK: can't used!
+  // useContainer(app.select(AppModule), { fallbackOnErrors: true, fallback: true })
   return await app.listen(APP_CONFIG.APP.PORT)
 }
 

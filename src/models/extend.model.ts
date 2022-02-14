@@ -7,14 +7,14 @@
 import { prop } from '@typegoose/typegoose'
 import { IsString, IsNotEmpty } from 'class-validator'
 
-export class Extend {
-  @IsNotEmpty()
+export class ExtendModel {
   @IsString()
+  @IsNotEmpty()
   @prop({ required: false, validate: /\S+/ })
   name: string
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   @prop({ required: false, validate: /\S+/ })
   value: string
 }

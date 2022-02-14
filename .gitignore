@@ -14,6 +14,9 @@ ecosystem.config.js
 /dbbackup/*
 !/dbbackup/.gitkeep
 
+# documentation
+/documentation
+
 # Logs
 logs
 *.log

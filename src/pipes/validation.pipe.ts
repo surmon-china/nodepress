@@ -6,22 +6,23 @@
 
 import { validate } from 'class-validator'
 import { plainToClass } from 'class-transformer'
-import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common'
+import { Injectable, PipeTransform, ArgumentMetadata } from '@nestjs/common'
 import { ValidationError } from '@app/errors/validation.error'
+import { VALIDATION_ERROR_DEFAULT } from '@app/constants/text.constant'
+
+export const isUnverifiableMetatype = (metatype: any): metatype is undefined => {
+  const basicTypes = [String, Boolean, Number, Array, Object]
+  return !metatype || basicTypes.includes(metatype as any)
+}
 
 /**
  * @class ValidationPipe
- * @classdesc 验证所有使用 class-validator 的地方的 class 模型
+ * @classdesc validate metatype class format
  */
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
-  private toValidate(metatype): boolean {
-    const types = [String, Boolean, Number, Array, Object]
-    return !types.find((type) => metatype === type)
-  }
-
   async transform(value, { metatype }: ArgumentMetadata) {
-    if (!metatype || !this.toValidate(metatype)) {
+    if (isUnverifiableMetatype(metatype)) {
       return value
     }
 
@@ -43,9 +44,9 @@ export class ValidationPipe implements PipeTransform<any> {
         }
       })
 
-      throw new ValidationError(messages.join('; '))
+      throw new ValidationError(`${VALIDATION_ERROR_DEFAULT}: ` + messages.join(', '))
     }
 
-    return value
+    return object
   }
 }

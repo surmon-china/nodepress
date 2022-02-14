@@ -6,14 +6,14 @@
 
 import { Injectable } from '@nestjs/common'
 import { CommentService } from '@app/modules/comment/comment.service'
-import { Comment, CreateCommentBase } from '@app/modules/comment/comment.model'
-import { QueryVisitor } from '@app/decorators/query-params.decorator'
+import { Comment, CommentBase } from '@app/modules/comment/comment.model'
+import { QueryVisitor } from '@app/decorators/queryparams.decorator'
 import { CommentState } from '@app/interfaces/biz.interface'
 import { getDisqusCacheKey } from '@app/constants/cache.constant'
 import { CacheService } from '@app/processors/cache/cache.service'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
-import { getExtendsObject, getExtendValue } from '@app/transformers/extend.transformer'
+import { getExtendObject, getExtendValue } from '@app/transformers/extend.transformer'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { DisqusPrivateService } from './disqus.service.private'
 import logger from '@app/utils/logger'
@@ -78,20 +78,20 @@ export class DisqusPublicService {
       })
   }
 
-  public makeSureThreadDetail(postID: number) {
+  public ensureThreadDetail(postID: number) {
     return this.disqus
       .request('threads/details', { forum: DISQUS.forum, thread: `link:${getPermalinkByID(postID)}` })
       .then((response) => response.response)
       .catch(() => this.disqusPrivateService.createThread(postID))
   }
 
-  public async makeSureThreadDetailCache(postID: number) {
+  public async ensureThreadDetailCache(postID: number) {
     const cacheKey = getDisqusCacheKey(`thread-post-${postID}`)
     const cached = await this.cacheService.get<any>(cacheKey)
     if (cached) {
       return cached
     }
-    const result = await this.makeSureThreadDetail(postID)
+    const result = await this.ensureThreadDetail(postID)
     // cache 24 hours
     this.cacheService.set(cacheKey, result, { ttl: 60 * 60 * 24 })
     return result
@@ -157,12 +157,12 @@ export class DisqusPublicService {
     )
   }
 
-  public async createUniversalComment(comment: CreateCommentBase, visitor: QueryVisitor, accessToken?: string) {
+  public async createUniversalComment(comment: CommentBase, visitor: QueryVisitor, accessToken?: string) {
     const newComment = this.commentService.normalizeNewComment(comment, visitor)
     // 1. commentable
     await this.commentService.isCommentableTarget(newComment.post_id)
     // 2. make sure disqus thread
-    const thread = await this.makeSureThreadDetailCache(newComment.post_id)
+    const thread = await this.ensureThreadDetailCache(newComment.post_id)
     // 3. nodepress blocklist
     await this.commentService.isNotBlocklisted(newComment)
     // 4. disqus parent comment post ID
@@ -223,7 +223,7 @@ export class DisqusPublicService {
     }
 
     // disqus extend info
-    const extendsObject = getExtendsObject(comment.extends)
+    const extendsObject = getExtendObject(comment.extends)
     const commentDisqusPostID = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
     const commentDisqusAuthorID = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
     if (!commentDisqusAuthorID || !commentDisqusPostID) {
@@ -233,7 +233,7 @@ export class DisqusPublicService {
     // user ID === author ID
     const userInfo = await this.getUserInfo(accessToken)
     if (userInfo.id !== commentDisqusAuthorID) {
-      throw `You do not have write privileges on comment ${commentID}`
+      throw `You do not have write privileges on comment '${commentID}'`
     }
 
     // disqus delete

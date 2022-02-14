@@ -5,14 +5,14 @@
  */
 
 import { UnauthorizedException } from '@nestjs/common'
-import { ResponseMessage } from '@app/interfaces/http.interface'
+import { ResponseMessage } from '@app/interfaces/response.interface'
 import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class HttpUnauthorizedError
  * @classdesc 401 -> 未授权/权限验证失败
- * @example new HttpUnauthorizedError('全新验证失败')
- * @example new HttpUnauthorizedError('错误信息', new Error())
+ * @example new HttpUnauthorizedError('unauthorized')
+ * @example new HttpUnauthorizedError('error message', new Error())
  */
 export class HttpUnauthorizedError extends UnauthorizedException {
   constructor(message?: ResponseMessage, error?: any) {

@@ -4,7 +4,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, index, plugin, Ref, modelOptions } from '@typegoose/typegoose'
 import {
@@ -24,20 +23,32 @@ import {
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface'
+import { SortType, PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface'
 import { Category } from '@app/modules/category/category.model'
-import { Extend } from '@app/models/extend.model'
+import { ExtendModel } from '@app/models/extend.model'
 import { Tag } from '@app/modules/tag/tag.model'
 
-export function getDefaultMeta(): Meta {
-  return {
-    likes: 0,
-    views: 0,
-    comments: 0,
-  }
-}
+export const ARTICLE_PUBLISH_STATES = [PublishState.Draft, PublishState.Published, PublishState.Recycle] as const
+export const ARTICLE_PUBLIC_STATES = [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
+export const ARTICLE_ORIGIN_STATES = [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
 
-export class Meta {
+export const ARTICLE_GUEST_QUERY_FILTER = Object.freeze({
+  state: PublishState.Published,
+  public: PublicState.Public,
+})
+
+export const ARTICLE_HOT_SORT_PARAMS = Object.freeze({
+  'meta.comments': SortType.Desc,
+  'meta.likes': SortType.Desc,
+})
+
+const ARTICLE_DEFAULT_META: ArticleMeta = Object.freeze({
+  likes: 0,
+  views: 0,
+  comments: 0,
+})
+
+export class ArticleMeta {
   @IsInt()
   @prop({ default: 0 })
   likes: number
@@ -46,6 +57,10 @@ export class Meta {
   @prop({ default: 0 })
   views: number
 
+  // MARK: keep comments field manual
+  // 1. `.sort()` can't by other model schema
+  // https://stackoverflow.com/questions/66174791/how-to-access-a-different-schema-in-a-virtual-method
+  // 2. `virtual` can't support publicOnly params and can't access other schema
   @IsInt()
   @prop({ default: 0 })
   comments: number
@@ -68,8 +83,8 @@ export class Meta {
     name: 'SearchIndex',
     weights: {
       title: 10,
-      content: 3,
       description: 18,
+      content: 3,
     },
   }
 )
@@ -78,19 +93,19 @@ export class Article {
   id: number
 
   @Matches(/^[a-zA-Z0-9-_]+$/)
-  @IsString()
   @MaxLength(50)
+  @IsString()
   @IsOptional()
   @prop({ default: null, validate: /^[a-zA-Z0-9-_]+$/, index: true })
   slug: string
 
+  @IsString()
   @IsNotEmpty({ message: 'title?' })
-  @IsString({ message: 'string?' })
   @prop({ required: true, validate: /\S+/, text: true })
   title: string
 
+  @IsString()
   @IsNotEmpty({ message: 'content?' })
-  @IsString({ message: 'string?' })
   @prop({ required: true, validate: /\S+/, text: true })
   content: string
 
@@ -98,9 +113,9 @@ export class Article {
   @prop({ text: true })
   description: string
 
-  @IsDefined()
-  @IsArray()
   @ArrayUnique()
+  @IsArray()
+  @IsDefined()
   @prop({ type: () => [String] })
   keywords: string[]
 
@@ -109,42 +124,36 @@ export class Article {
   @prop()
   thumb: string
 
-  // password
-  @IsString({ message: 'string?' })
-  @IsOptional()
-  @prop({ default: '' })
-  password: string
-
   // disabled comment
   @IsBoolean()
   @prop({ default: false })
   disabled_comment: boolean
 
   // publish state
+  @IsIn(ARTICLE_PUBLISH_STATES)
+  @IsInt()
   @IsDefined()
-  @IsIn([PublishState.Draft, PublishState.Published, PublishState.Recycle])
-  @IsInt({ message: 'PublishState?' })
   @prop({ enum: PublishState, default: PublishState.Published, index: true })
   state: PublishState
 
   // public state
+  @IsIn(ARTICLE_PUBLIC_STATES)
+  @IsInt()
   @IsDefined()
-  @IsIn([PublicState.Public, PublicState.Secret, PublicState.Password])
-  @IsInt({ message: 'PublicState?' })
   @prop({ enum: PublicState, default: PublicState.Public, index: true })
   public: PublicState
 
   // origin state
-  @IsDefined()
-  @IsIn([OriginState.Hybrid, OriginState.Original, OriginState.Reprint])
+  @IsIn(ARTICLE_ORIGIN_STATES)
   @IsInt()
+  @IsDefined()
   @prop({ enum: OriginState, default: OriginState.Original, index: true })
   origin: OriginState
 
   // category
-  @IsArray()
-  @ArrayNotEmpty()
   @ArrayUnique()
+  @ArrayNotEmpty()
+  @IsArray()
   @prop({ ref: () => Category, required: true, index: true })
   category: Ref<Category>[]
 
@@ -153,8 +162,8 @@ export class Article {
   @prop({ ref: () => Tag, index: true })
   tag: Ref<Tag>[]
 
-  @prop({ _id: false })
-  meta: Meta
+  @prop({ _id: false, default: { ...ARTICLE_DEFAULT_META } })
+  meta: ArticleMeta
 
   @prop({ default: Date.now, index: true, immutable: true })
   create_at?: Date
@@ -162,28 +171,10 @@ export class Article {
   @prop({ default: Date.now })
   update_at?: Date
 
-  @IsArray()
   @ArrayUnique()
-  @prop({ _id: false, default: [], type: () => [Extend] })
-  extends: Extend[]
-
-  // releted articles
-  related?: Article[]
-}
-
-export class ArticlesPayload {
   @IsArray()
-  @ArrayNotEmpty()
-  @ArrayUnique()
-  article_ids: Types.ObjectId[]
-}
-
-export class ArticlesStatePayload extends ArticlesPayload {
-  @IsDefined()
-  @IsIn([PublishState.Draft, PublishState.Published, PublishState.Recycle])
-  @IsInt({ message: 'PublishState?' })
-  @prop({ enum: PublishState, default: PublishState.Published })
-  state: PublishState
+  @prop({ _id: false, default: [], type: () => [ExtendModel] })
+  extends: ExtendModel[]
 }
 
 export const ArticleProvider = getProviderByTypegooseClass(Article)

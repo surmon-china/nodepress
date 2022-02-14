@@ -12,6 +12,7 @@ import { decodeBase64, decodeMD5 } from '@app/transformers/codec.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { TokenResult } from './auth.interface'
 import { Auth, DEFAULT_AUTH } from './auth.model'
+import { AuthUpdateDTO } from './auth.dto'
 import * as APP_CONFIG from '@app/app.config'
 
 @Injectable()
@@ -43,7 +44,7 @@ export class AuthService {
     return adminInfo ? adminInfo.toObject() : DEFAULT_AUTH
   }
 
-  public async putAdminInfo(auth: Auth): Promise<Auth> {
+  public async putAdminInfo(auth: AuthUpdateDTO): Promise<Auth> {
     const { password, new_password, ...restAuth } = auth
 
     let newPassword: string | void

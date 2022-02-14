@@ -7,11 +7,11 @@
 import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions } from '@typegoose/typegoose'
-import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { Extend } from '@app/models/extend.model'
+import { ExtendModel } from '@app/models/extend.model'
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
@@ -27,15 +27,15 @@ export class Category {
   @prop({ unique: true })
   id: number
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   @prop({ required: true, validate: /\S+/ })
   name: string
 
   @Matches(/^[a-zA-Z0-9-_]+$/)
-  @IsNotEmpty({ message: 'slug?' })
-  @IsString()
   @MaxLength(30)
+  @IsString()
+  @IsNotEmpty({ message: 'slug?' })
   @prop({ required: true, validate: /^[a-zA-Z0-9-_]+$/, unique: true })
   slug: string
 
@@ -52,20 +52,13 @@ export class Category {
   @prop({ default: Date.now })
   update_at?: Date
 
-  @IsArray()
   @ArrayUnique()
-  @prop({ _id: false, default: [], type: () => [Extend] })
-  extends: Extend[]
+  @IsArray()
+  @prop({ _id: false, default: [], type: () => [ExtendModel] })
+  extends: ExtendModel[]
 
   // for article aggregate
-  count?: number
-}
-
-export class CategoriesPayload {
-  @IsArray()
-  @ArrayNotEmpty()
-  @ArrayUnique()
-  category_ids: Types.ObjectId[]
+  articles_count?: number
 }
 
 export const CategoryProvider = getProviderByTypegooseClass(Category)

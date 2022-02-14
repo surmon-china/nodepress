@@ -13,7 +13,7 @@ import { ArticleProvider } from './article.model'
 import { ArticleService } from './article.service'
 
 @Module({
-  imports: [TagModule, CategoryModule, ArchiveModule],
+  imports: [ArchiveModule, CategoryModule, TagModule],
   controllers: [ArticleController],
   providers: [ArticleProvider, ArticleService],
   exports: [ArticleService],

@@ -9,8 +9,8 @@ import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class HttpBadRequestError
- * @classdesc 400 -> 请求不合法
- * @example new HttpBadRequestError('错误信息')
+ * @classdesc 400 -> Bad request
+ * @example new HttpBadRequestError('error message')
  * @example new HttpBadRequestError(new Error())
  */
 export class HttpBadRequestError extends HttpException {

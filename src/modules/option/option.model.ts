@@ -20,13 +20,13 @@ import {
 } from 'class-validator'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
-export const DEFAULT_OPTION = Object.freeze<Option>({
-  title: '',
-  sub_title: '',
-  description: '',
+export const DEFAULT_OPTION: Option = Object.freeze<Option>({
+  title: 'NodePress',
+  sub_title: 'blog server app',
+  description: 'RESTful API service for blog',
   keywords: [],
-  site_url: '',
-  site_email: '',
+  site_url: 'https://github.com/surmon-china/nodepress',
+  site_email: 'admin@example.com',
   blocklist: {
     ips: [],
     mails: [],
@@ -36,7 +36,7 @@ export const DEFAULT_OPTION = Object.freeze<Option>({
   ad_config: '',
 })
 
-class Meta {
+class AppMeta {
   @IsInt()
   @prop({ default: 0 })
   likes: number
@@ -44,20 +44,20 @@ class Meta {
 
 // user block list
 export class Blocklist {
-  @IsArray()
   @ArrayUnique()
+  @IsArray()
   @IsOptional()
   @prop({ type: () => [String], default: [] })
   ips: string[]
 
-  @IsArray()
   @ArrayUnique()
+  @IsArray()
   @IsOptional()
   @prop({ type: () => [String], default: [] })
   mails: string[]
 
-  @IsArray()
   @ArrayUnique()
+  @IsArray()
   @IsOptional()
   @prop({ type: () => [String], default: [] })
   keywords: string[]
@@ -72,30 +72,30 @@ export class Blocklist {
   },
 })
 export class Option {
-  @IsNotEmpty({ message: 'title?' })
   @IsString()
+  @IsNotEmpty({ message: 'title?' })
   @prop({ required: true, validate: /\S+/ })
   title: string
 
-  @IsNotEmpty({ message: 'sub title?' })
   @IsString()
+  @IsNotEmpty({ message: 'sub title?' })
   @prop({ required: true, validate: /\S+/ })
   sub_title: string
 
-  @IsNotEmpty()
   @IsString()
+  @IsNotEmpty()
   @prop({ required: true })
   description: string
 
-  @IsArray()
   @ArrayUnique()
+  @IsArray()
   @IsOptional()
   @prop({ type: () => [String], default: [] })
   keywords: string[]
 
-  @IsNotEmpty()
-  @IsString()
   @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsNotEmpty()
   @prop({ required: true })
   site_url: string
 
@@ -106,15 +106,15 @@ export class Option {
   site_email: string
 
   // site meta info
-  @prop({ _id: false })
-  meta: Meta
+  @prop({ _id: false, default: { ...DEFAULT_OPTION.meta } })
+  meta: AppMeta
 
   // site user block list
   @Type(() => Blocklist)
   @ValidateNested()
   @IsObject()
   @IsOptional()
-  @prop({ _id: false })
+  @prop({ _id: false, default: { ...DEFAULT_OPTION.blocklist } })
   blocklist: Blocklist
 
   // ad config

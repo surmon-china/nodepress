@@ -26,7 +26,7 @@ export const decodeToken = (token: string): AccessToken | null => {
   }
 }
 
-export const CookieToken = createParamDecorator((key: string = TOKEN_COOKIE_KEY, context: ExecutionContext) => {
+export const DisqusToken = createParamDecorator((key: string = TOKEN_COOKIE_KEY, context: ExecutionContext) => {
   const request = context.switchToHttp().getRequest()
   const cookies = request.cookies
   const token = cookies[key]

@@ -12,12 +12,12 @@ import { CommentService } from '@app/modules/comment/comment.service'
 import { Comment } from '@app/modules/comment/comment.model'
 import { Article } from '@app/modules/article/article.model'
 import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
-import { getExtendsObject } from '@app/transformers/extend.transformer'
+import { getExtendObject } from '@app/transformers/extend.transformer'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
 import logger from '@app/utils/logger'
-import { GeneralDisqusParams } from './disqus.model'
+import { GeneralDisqusParams } from './disqus.dto'
 import { getDisqusXML } from './disqus.xml'
 import * as DISQUS_CONST from './disqus.constant'
 
@@ -34,7 +34,7 @@ export class DisqusPrivateService {
 
   public async createThread(postID: number) {
     try {
-      const article = await this.articleService.getDetailByNumberIDOrSlug(postID)
+      const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postID, publicOnly: true })
       // https://disqus.com/api/docs/threads/create/
       const response = await this.disqus.request('threads/create', {
         forum: DISQUS.forum,
@@ -183,16 +183,16 @@ export class DisqusPrivateService {
 
     const doImport = async (each: ReturnType<typeof getEach>) => {
       if (!Number.isFinite(each.commentID)) {
-        throw `Invalid comment ID ${each.commentID}`
+        throw `Invalid comment ID '${each.commentID}'`
       }
 
       const comment = await this.commentService.getDetailByNumberID(each.commentID)
       if (!comment) {
-        throw `Invalid comment ${comment}`
+        throw `Invalid comment '${comment}'`
       }
 
       const _extends = comment.extends || []
-      const extendsObject = getExtendsObject(_extends)
+      const extendsObject = getExtendObject(_extends)
       // post ID
       if (!extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]) {
         _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postID })

@@ -6,7 +6,6 @@
 
 import { tap } from 'rxjs/operators'
 import { Observable, of } from 'rxjs'
-import { Reflector } from '@nestjs/core'
 import {
   HttpAdapterHost,
   NestInterceptor,
@@ -16,9 +15,9 @@ import {
   Injectable,
   RequestMethod,
 } from '@nestjs/common'
+import { getHttpCacheKey, getHttpCacheTTL } from '@app/decorators/cache.decorator'
 import { CacheService } from '@app/processors/cache/cache.service'
 import * as SYSTEM from '@app/constants/system.constant'
-import * as META from '@app/constants/meta.constant'
 import * as APP_CONFIG from '@app/app.config'
 
 /**
@@ -28,7 +27,6 @@ import * as APP_CONFIG from '@app/app.config'
 @Injectable()
 export class HttpCacheInterceptor implements NestInterceptor {
   constructor(
-    @Inject(SYSTEM.REFLECTOR) private readonly reflector: Reflector,
     @Inject(SYSTEM.HTTP_ADAPTER_HOST)
     private readonly httpAdapterHost: HttpAdapterHost,
     private readonly cacheService: CacheService
@@ -45,7 +43,7 @@ export class HttpCacheInterceptor implements NestInterceptor {
     }
 
     const target = context.getHandler()
-    const metaTTL = this.reflector.get(META.HTTP_CACHE_TTL_METADATA, target)
+    const metaTTL = getHttpCacheTTL(target)
     const ttl = metaTTL || APP_CONFIG.APP.DEFAULT_CACHE_TTL
 
     try {
@@ -65,7 +63,7 @@ export class HttpCacheInterceptor implements NestInterceptor {
     const httpServer = this.httpAdapterHost.httpAdapter
     const isHttpApp = Boolean(httpServer?.getRequestMethod)
     const isGetRequest = isHttpApp && httpServer.getRequestMethod(request) === RequestMethod[RequestMethod.GET]
-    const cacheKey = this.reflector.get(META.HTTP_CACHE_KEY_METADATA, context.getHandler())
+    const cacheKey = getHttpCacheKey(context.getHandler())
     const isMatchedCache = isHttpApp && isGetRequest && cacheKey
     // const requestUrl = httpServer.getRequestUrl(request);
     // logger.debug('isMatchedCache', isMatchedCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);

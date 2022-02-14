@@ -1,6 +1,6 @@
 /**
- * @file JwtAuth guard
- * @module guard/auth
+ * @file AdminMaybe guard
+ * @module guard/admin-maybe
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -10,22 +10,21 @@ import { HttpUnauthorizedError } from '@app/errors/unauthorized.error'
 import { UNDEFINED } from '@app/constants/value.constant'
 
 /**
- * @class JwtAuthGuard
- * @classdesc 检验规则：Token 是否存在 -> Token 是否在有效期内 -> Token 解析出的数据是否对的上
- * @example ```@UseGuards(JwtAuthGuard)```
+ * @class AdminMaybeGuard
+ * @classdesc Token isn't existed | Token validated
+ * @example ```@UseGuards(AdminMaybeGuard)```
  */
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class AdminMaybeGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
     return super.canActivate(context)
   }
 
-  /**
-   * @function handleRequest
-   * @description 如果解析出的数据对不上，则判定为无效
-   */
   handleRequest(error, authInfo, errInfo) {
-    if (authInfo && !error && !errInfo) {
+    const validToken = Boolean(authInfo)
+    // MARK: https://github.com/mikenicholson/passport-jwt/issues/174
+    const emptyToken = !authInfo && errInfo?.message === 'No auth token'
+    if (!error && (validToken || emptyToken)) {
       return authInfo
     } else {
       throw error || new HttpUnauthorizedError(UNDEFINED, errInfo?.message)

@@ -5,95 +5,120 @@
  */
 
 import lodash from 'lodash'
-import { Controller, Get, Put, Post, Patch, Delete, Body, UseGuards, HttpStatus } from '@nestjs/common'
+import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from '@nestjs/common'
 import { Throttle } from '@nestjs/throttler'
-import { JwtAuthGuard } from '@app/guards/auth.guard'
-import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
-import { HttpProcessor } from '@app/decorators/http.decorator'
-import { PaginateResult } from '@app/utils/paginate'
-import { QueryParams, QueryParamsField } from '@app/decorators/query-params.decorator'
+import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
+import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
+import { PermissionPipe } from '@app/pipes/permission.pipe'
+import { ExposePipe } from '@app/pipes/expose.pipe'
 import { SortType } from '@app/interfaces/biz.interface'
+import { Responsor } from '@app/decorators/responsor.decorator'
+import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { CommentPaginateQueryDTO, CommentsDTO, CommentsStateDTO } from './comment.dto'
 import { CommentService } from './comment.service'
-import { Comment, CreateCommentBase, CommentsPayload, CommentsStatePayload } from './comment.model'
+import { Comment, CommentBase } from './comment.model'
 
 @Controller('comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Get()
-  @UseGuards(HumanizedJwtAuthGuard)
-  @HttpProcessor.paginate()
-  @HttpProcessor.handle('Get comment list')
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.paginate()
+  @Responsor.handle('Get comments')
   getComments(
-    @QueryParams([QueryParamsField.State, QueryParamsField.CommentState, 'post_id'])
-    { querys, options, origin, isAuthenticated }
+    @Query(PermissionPipe, ExposePipe) query: CommentPaginateQueryDTO,
+    @QueryParams() { isUnauthenticated }: QueryParamsResult
   ): Promise<PaginateResult<Comment>> {
-    // 热门排序
-    if (Number(origin.sort) === SortType.Hot) {
-      options.sort = { likes: SortType.Desc }
+    const { sort, page, per_page, ...filters } = query
+    const paginateQuery: PaginateQuery<Comment> = {}
+    const paginateOptions: PaginateOptions = { page, perPage: per_page }
+
+    // sort
+    if (!lodash.isUndefined(sort)) {
+      if (sort === SortType.Hot) {
+        paginateOptions.sort = { likes: SortType.Desc }
+      } else {
+        paginateOptions.dateSort = sort
+      }
     }
 
-    // 关键词搜索
-    const keyword = lodash.trim(origin.keyword)
-    if (keyword) {
-      const keywordRegExp = new RegExp(keyword, 'i')
-      querys.$or = [{ content: keywordRegExp }, { 'author.name': keywordRegExp }, { 'author.email': keywordRegExp }]
+    // state
+    if (!lodash.isUndefined(filters.state)) {
+      paginateQuery.state = filters.state
     }
 
-    return this.commentService.paginater(querys, options, !isAuthenticated)
+    // post ID
+    if (!lodash.isUndefined(filters.post_id)) {
+      paginateQuery.post_id = filters.post_id
+    }
+
+    // search
+    if (filters.keyword) {
+      const trimmed = lodash.trim(filters.keyword)
+      const keywordRegExp = new RegExp(trimmed, 'i')
+      paginateQuery.$or = [
+        { content: keywordRegExp },
+        { 'author.name': keywordRegExp },
+        { 'author.email': keywordRegExp },
+      ]
+    }
+
+    return this.commentService.paginater(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
   // 30 seconds > limit 6
   @Throttle(6, 30)
   @Post()
-  @HttpProcessor.handle('Create comment')
-  createComment(@Body() comment: CreateCommentBase, @QueryParams() { visitor }): Promise<Comment> {
+  @Responsor.handle('Create comment')
+  createComment(@Body() comment: CommentBase, @QueryParams() { visitor }: QueryParamsResult): Promise<Comment> {
     return comment.author.email
       ? this.commentService.createFormClient(comment, visitor)
       : Promise.reject(`author email should not be empty`)
   }
 
   @Patch()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update comments')
-  patchComments(@QueryParams() { visitor }, @Body() body: CommentsStatePayload) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update comments')
+  patchComments(@QueryParams() { visitor }: QueryParamsResult, @Body() body: CommentsStateDTO) {
     return this.commentService.batchPatchState(body, visitor.referer)
   }
 
   @Delete()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Delete comments')
-  delComments(@Body() body: CommentsPayload) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Delete comments')
+  delComments(@Body() body: CommentsDTO) {
     return this.commentService.batchDelete(body.comment_ids, body.post_ids)
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle({ message: 'Get comment detail', error: HttpStatus.NOT_FOUND })
-  getComment(@QueryParams() { params }): Promise<Comment> {
-    return this.commentService.getDetailByNumberID(params.id).then((comment) => {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle({ message: 'Get comment detail', error: HttpStatus.NOT_FOUND })
+  getComment(@QueryParams() { params }: QueryParamsResult): Promise<Comment> {
+    return this.commentService.getDetailByObjectID(params.id).then((comment) => {
       return comment ? comment : Promise.reject('Comment not found')
     })
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update comment')
-  putComment(@QueryParams() { params, visitor }, @Body() comment: Comment): Promise<Comment> {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update comment')
+  putComment(@QueryParams() { params, visitor }: QueryParamsResult, @Body() comment: Comment): Promise<Comment> {
     return this.commentService.update(params.id, comment, visitor.referer)
   }
 
   @Put(':id/ip_location')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update comment IP location')
-  putCommentIPLocation(@QueryParams() { params }) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update comment IP location')
+  putCommentIPLocation(@QueryParams() { params }: QueryParamsResult) {
     return this.commentService.reviseIPLocation(params.id)
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Delete comment')
-  delComment(@QueryParams() { params }) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Delete comment')
+  delComment(@QueryParams() { params }: QueryParamsResult) {
     return this.commentService.delete(params.id)
   }
 }

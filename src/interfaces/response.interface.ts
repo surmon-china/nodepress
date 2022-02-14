@@ -15,17 +15,16 @@ export interface HttpResponseBase {
   message: ResponseMessage
 }
 
-export type ExceptionOption =
+export type ExceptionInfo =
   | ResponseMessage
   | {
       message: ResponseMessage
       error?: any
     }
 
-// 翻页数据
+// paginate data
 export interface HttpPaginateResult<T> {
   data: T
-  params: any
   pagination: {
     total: number
     current_page: number
@@ -42,8 +41,9 @@ export type HttpResponseError = HttpResponseBase & {
 
 // HTTP success
 export type HttpResponseSuccess<T> = HttpResponseBase & {
+  params?: any
   result: T | HttpPaginateResult<T>
 }
 
-// HTTP Response
+// HTTP response
 export type HttpResponse<T> = HttpResponseError | HttpResponseSuccess<T>

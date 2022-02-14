@@ -1,6 +1,6 @@
 /**
  * @file Expansion Aliyun cloud storage service
- * @module module/expansion/cs.service
+ * @module module/expansion/cloud-storage.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -10,7 +10,7 @@ import * as APP_CONFIG from '@app/app.config'
 
 const STS = (OSS as any).STS
 
-export interface IUpToken {
+export interface UploadToken {
   AccessKeyId: string
   AccessKeySecret: string
   SecurityToken: string
@@ -28,8 +28,8 @@ export class CloudStorageService {
     })
   }
 
-  // 获取临时 Token
-  public async getToken(): Promise<IUpToken> {
+  // get upload Token
+  public async getToken(): Promise<UploadToken> {
     const response = await this.sts.assumeRole(
       APP_CONFIG.ALIYUN_CLOUD_STORAGE.aliyunAcsARN,
       null,
@@ -39,7 +39,6 @@ export class CloudStorageService {
     return response.credentials
   }
 
-  // 上传文件
   public async uploadFile(name: string, file: any, region: string, bucket: string) {
     return this.getToken().then((token) => {
       let client: OSS | null = new OSS({

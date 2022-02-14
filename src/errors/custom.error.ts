@@ -5,16 +5,16 @@
  */
 
 import { HttpException, HttpStatus } from '@nestjs/common'
-import { ExceptionOption } from '@app/interfaces/http.interface'
+import { ExceptionInfo } from '@app/interfaces/response.interface'
 
 /**
  * @class CustomError
- * @classdesc 默认 500 -> 服务端出错
- * @example new CustomError({ message: '错误信息' }, 400)
- * @example new CustomError({ message: '错误信息', error: new Error(xxx) })
+ * @classdesc default 500 -> server error
+ * @example new CustomError({ message: 'error message' }, 400)
+ * @example new CustomError({ message: 'error message', error: new Error(xxx) })
  */
 export class CustomError extends HttpException {
-  constructor(options: ExceptionOption, statusCode?: HttpStatus) {
+  constructor(options: ExceptionInfo, statusCode?: HttpStatus) {
     super(options, statusCode || HttpStatus.INTERNAL_SERVER_ERROR)
   }
 }

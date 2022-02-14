@@ -10,7 +10,7 @@ import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
-export enum AkismetActionType {
+export enum AkismetAction {
   CheckSpam = 'checkSpam',
   SubmitSpam = 'submitSpam',
   SubmitHam = 'submitHam',
@@ -61,7 +61,7 @@ export class AkismetService {
       })
   }
 
-  private makeInterceptor(handleType: AkismetActionType) {
+  private makeInterceptor(handleType: AkismetAction) {
     return (content: AkismetPayload): Promise<any> => {
       return new Promise((resolve, reject) => {
         // 确定验证失败的情况下才会拦截验证，未认证或验证通过都继续操作
@@ -75,7 +75,7 @@ export class AkismetService {
         this.client[handleType](content)
           .then((result) => {
             // 如果是检查 spam 且检查结果为 true
-            if (handleType === AkismetActionType.CheckSpam && result) {
+            if (handleType === AkismetAction.CheckSpam && result) {
               logger.warn(`[Akismet]`, `${handleType} found SPAM！`, new Date(), content)
               reject('SPAM!')
             } else {
@@ -93,14 +93,14 @@ export class AkismetService {
   }
 
   public checkSpam(payload: AkismetPayload): Promise<any> {
-    return this.makeInterceptor(AkismetActionType.CheckSpam)(payload)
+    return this.makeInterceptor(AkismetAction.CheckSpam)(payload)
   }
 
   public submitSpam(payload: AkismetPayload): Promise<any> {
-    return this.makeInterceptor(AkismetActionType.SubmitSpam)(payload)
+    return this.makeInterceptor(AkismetAction.SubmitSpam)(payload)
   }
 
   public submitHam(payload: AkismetPayload): Promise<any> {
-    return this.makeInterceptor(AkismetActionType.SubmitHam)(payload)
+    return this.makeInterceptor(AkismetAction.SubmitHam)(payload)
   }
 }

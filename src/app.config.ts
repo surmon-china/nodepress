@@ -17,7 +17,7 @@ export const APP = {
   MASTER: 'Surmon',
   NAME: 'NodePress',
   URL: 'https://api.surmon.me',
-  ADMIN_EMAIL: (argv.admin_email as string) || 'admin email, e.g. admin@surmon.me',
+  ADMIN_EMAIL: (argv.admin_email as string) || 'admin email, e.g. admin@example.com',
   FE_NAME: 'Surmon.me',
   FE_URL: 'https://surmon.me',
 }
@@ -27,6 +27,7 @@ export const PROJECT = {
   version: packageJSON.version,
   author: packageJSON.author,
   homepage: packageJSON.homepage,
+  documentation: packageJSON.documentation,
   issues: packageJSON.bugs.url,
 }
 
@@ -75,7 +76,7 @@ export const AKISMET = {
 
 // https://ziyuan.baidu.com/linksubmit/index
 export const BAIDU_INDEXED = {
-  site: argv.baidu_site || 'your baidu site domain. e.g. surmon.me',
+  site: argv.baidu_site || 'your baidu site domain. e.g. https://surmon.me',
   token: argv.baidu_token || 'your baidu seo push token',
 }
 

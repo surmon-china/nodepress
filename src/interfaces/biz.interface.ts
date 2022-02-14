@@ -4,6 +4,13 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+// 排序
+export enum SortType {
+  Asc = 1, // 升序
+  Desc = -1, // 降序
+  Hot = 2, // 热序
+}
+
 // 发布状态
 export enum PublishState {
   Draft = 0, // 草稿
@@ -13,9 +20,9 @@ export enum PublishState {
 
 // 公开状态
 export enum PublicState {
-  Password = 0, // 需要密码
-  Public = 1, // 公开状态
+  Public = 1, // 公开
   Secret = -1, // 私密
+  Reserve = 0, // 保留（限制）
 }
 
 // 转载状态
@@ -41,11 +48,4 @@ export enum CommentPostID {
 // 评论本身的类型
 export enum CommentParentID {
   Self = 0, // 自身一级评论
-}
-
-// 排序状态
-export enum SortType {
-  Asc = 1, // 升序
-  Desc = -1, // 降序
-  Hot = 2, // 最热
 }

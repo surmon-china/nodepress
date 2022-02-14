@@ -10,7 +10,7 @@ import { Article } from '@app/modules/article/article.model'
 import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { getThreadIdentifierByID } from './disqus.constant'
-import { ThreadState } from './disqus.model'
+import { ThreadState } from './disqus.dto'
 import { APP } from '@app/app.config'
 
 // DOC: https://help.disqus.com/en/articles/1717222-custom-xml-import-format

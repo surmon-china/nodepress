@@ -5,59 +5,76 @@
  */
 
 import lodash from 'lodash'
-import { Controller, Get, Put, Post, Delete, Body, UseGuards } from '@nestjs/common'
-import { JwtAuthGuard } from '@app/guards/auth.guard'
-import { HumanizedJwtAuthGuard } from '@app/guards/humanized-auth.guard'
-import { QueryParams, QueryParamsField } from '@app/decorators/query-params.decorator'
-import { HttpProcessor } from '@app/decorators/http.decorator'
-import { PaginateResult } from '@app/utils/paginate'
-import { Announcement, AnnouncementsPayload } from './announcement.model'
+import { Controller, Get, Put, Post, Delete, Body, UseGuards, Query } from '@nestjs/common'
+import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
+import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
+import { PermissionPipe } from '@app/pipes/permission.pipe'
+import { ExposePipe } from '@app/pipes/expose.pipe'
+import { Responsor } from '@app/decorators/responsor.decorator'
+import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { PaginateResult, PaginateQuery } from '@app/utils/paginate'
+import { AnnouncementsDTO, AnnouncementPaginateQueryDTO } from './announcement.dto'
 import { AnnouncementService } from './announcement.service'
+import { Announcement } from './announcement.model'
 
 @Controller('announcement')
 export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) {}
 
   @Get()
-  @UseGuards(HumanizedJwtAuthGuard)
-  @HttpProcessor.paginate()
-  @HttpProcessor.handle('Get announcements')
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.paginate()
+  @Responsor.handle('Get announcements')
   getAnnouncements(
-    @QueryParams([QueryParamsField.State]) { querys, options, origin }
+    @Query(PermissionPipe, ExposePipe) query: AnnouncementPaginateQueryDTO
   ): Promise<PaginateResult<Announcement>> {
-    const keyword = lodash.trim(origin.keyword)
+    const { sort, page, per_page, ...filters } = query
+    const { keyword, state } = filters
+    const paginateQuery: PaginateQuery<Announcement> = {}
+
+    // search
     if (keyword) {
-      querys.content = new RegExp(keyword, 'i')
+      paginateQuery.content = new RegExp(lodash.trim(keyword), 'i')
     }
 
-    return this.announcementService.paginater(querys, options)
+    // state
+    if (state != null) {
+      paginateQuery.state = state
+    }
+
+    // paginater
+    return this.announcementService.paginater(paginateQuery, {
+      page,
+      perPage: per_page,
+      dateSort: sort,
+    })
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Create announcement')
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Create announcement')
   createAnnouncement(@Body() announcement: Announcement) {
     return this.announcementService.create(announcement)
   }
 
   @Delete()
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Delete announcements')
-  delAnnouncements(@Body() body: AnnouncementsPayload) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Delete announcements')
+  delAnnouncements(@Body() body: AnnouncementsDTO) {
     return this.announcementService.batchDelete(body.announcement_ids)
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Update announcement')
-  putAnnouncement(@QueryParams() { params }, @Body() announcement: Announcement) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Update announcement')
+  putAnnouncement(@QueryParams() { params }: QueryParamsResult, @Body() announcement: Announcement) {
     return this.announcementService.update(params.id, announcement)
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  @HttpProcessor.handle('Delete announcement')
-  delAnnouncement(@QueryParams() { params }) {
+  @UseGuards(AdminOnlyGuard)
+  @Responsor.handle('Delete announcement')
+  delAnnouncement(@QueryParams() { params }: QueryParamsResult) {
     return this.announcementService.delete(params.id)
   }
 }

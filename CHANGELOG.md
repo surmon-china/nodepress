@@ -2,13 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
-### 3.7.15（2022-02-01)
+### 3.8.0 (2022-02-14)
+
+**Feature**
+
+- improve `guards`
+- improve `QueryParams` decorator
+- improve `Mongoose` types
+- improve `Model` > `DTOs`
+- improve `Option` module service
+- improve `Expansion` statistic service
+- Remove query `cache` field
+- Rename `tag.count` `category.count` to `<target>.articles_count`
+- Add API `/article/hot` `/article/releted` `/tag/all`
+- Add `PermissionPipe` `ExposePipe` pipes
+- Rename `HttpProcessor` to `Responsor`
+- Generate documentation by `compodoc`
+
+### 3.7.15 (2022-02-01)
 
 **Feature**
 
 - **[MongoDB]** improve MongoDB config & backup
 
-### 3.7.14（2022-01-19)
+### 3.7.14 (2022-01-19)
 
 **Feature**
 
@@ -17,13 +34,13 @@ All notable changes to this project will be documented in this file.
 - **[Disqus]** add throttler
 - **[Comment]** add throttler
 
-### 3.7.11（2022-01-06)
+### 3.7.11 (2022-01-06)
 
 **Feature**
 
 - **[Disqus]** cache for userinfo & thread
 
-### 3.7.6（2022-01-05)
+### 3.7.6 (2022-01-05)
 
 **Feature**
 
@@ -31,13 +48,13 @@ All notable changes to this project will be documented in this file.
 - **[Comment]** improve email content
 - **[Vote]** send email to admin when new vote
 
-### 3.7.4（2022-01-01)
+### 3.7.4 (2022-01-01)
 
 **Feature**
 
 - **[Comment]** add `reviseIPLocation` service
 
-### 3.7.2（2021-12-31）
+### 3.7.2 (2021-12-31)
 
 **Chore**
 
@@ -307,7 +324,7 @@ All notable changes to this project will be documented in this file.
 ### v1.0.0
 
 - 驱动搜索引擎 ping 接口 文章发布后自动 ping 给搜索引擎 xml
-- 增加评论功能+黑名单，评论可自动校验 spam，及黑名单（ip、邮箱、关键字的校验）
+- 增加评论功能+黑名单，评论可自动校验 spam，及黑名单 (ip、邮箱、关键字的校验)
 - 使用 helmet + 手动优化，优化程序安全性
 - 优化 mongoose 实例
 - 优化数据表结构

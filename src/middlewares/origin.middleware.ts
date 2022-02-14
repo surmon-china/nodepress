@@ -6,7 +6,7 @@
 
 import { Request, Response } from 'express'
 import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common'
-import { HttpResponseError, ResponseStatus } from '@app/interfaces/http.interface'
+import { HttpResponseError, ResponseStatus } from '@app/interfaces/response.interface'
 import { isProdEnv } from '@app/app.environment'
 import { CROSS_DOMAIN } from '@app/app.config'
 import * as TEXT from '@app/constants/text.constant'

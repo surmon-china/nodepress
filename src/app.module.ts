@@ -4,27 +4,28 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core'
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
+import { APP_INTERCEPTOR, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { AppController } from '@app/app.controller'
 
-// 拦截器
+// framework
 import { HttpCacheInterceptor } from '@app/interceptors/cache.interceptor'
+import { ValidationPipe } from '@app/pipes/validation.pipe'
 
-// 中间件
+// middlewares
 import { CorsMiddleware } from '@app/middlewares/cors.middleware'
 import { OriginMiddleware } from '@app/middlewares/origin.middleware'
 
-// 公共模块
+// universal modules
 import { DatabaseModule } from '@app/processors/database/database.module'
 import { CacheModule } from '@app/processors/cache/cache.module'
 import { HelperModule } from '@app/processors/helper/helper.module'
 
-// 业务模块（辅助）
+// BIZ helper module
 import { ExpansionModule } from '@app/modules/expansion/expansion.module'
 
-// 业务模块（核心）
+// BIZ modules
 import { AuthModule } from '@app/modules/auth/auth.module'
 import { OptionModule } from '@app/modules/option/option.module'
 import { AnnouncementModule } from '@app/modules/announcement/announcement.module'
@@ -48,7 +49,7 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     DatabaseModule,
     CacheModule,
     ExpansionModule,
-
+    // BIZs
     AuthModule,
     OptionModule,
     AnnouncementModule,
@@ -69,6 +70,10 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
     },
   ],
 })
