@@ -34,8 +34,8 @@ import { ExtendModel } from '@app/models/extend.model'
 
 export const COMMENT_STATES = [
   CommentState.Auditing,
-  CommentState.Deleted,
   CommentState.Published,
+  CommentState.Deleted,
   CommentState.Spam,
 ] as const
 
