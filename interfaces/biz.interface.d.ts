@@ -1,12 +1,17 @@
+export declare enum SortType {
+    Asc = 1,
+    Desc = -1,
+    Hot = 2
+}
 export declare enum PublishState {
     Draft = 0,
     Published = 1,
     Recycle = -1
 }
 export declare enum PublicState {
-    Password = 0,
     Public = 1,
-    Secret = -1
+    Secret = -1,
+    Reserve = 0
 }
 export declare enum OriginState {
     Original = 0,
@@ -24,9 +29,4 @@ export declare enum CommentPostID {
 }
 export declare enum CommentParentID {
     Self = 0
-}
-export declare enum SortType {
-    Asc = 1,
-    Desc = -1,
-    Hot = 2
 }

@@ -43,7 +43,6 @@ const category_model_1 = require("../category/category.model");
 const article_model_1 = require("../article/article.model");
 const tag_model_1 = require("../tag/tag.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
-const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 let ArchiveService = class ArchiveService {
     constructor(cacheService, tagModel, articleModel, categoryModel) {
@@ -68,16 +67,13 @@ let ArchiveService = class ArchiveService {
     }
     getAllArticles() {
         return this.articleModel
-            .find({ state: biz_interface_1.PublishState.Published, public: biz_interface_1.PublicState.Public }, null, {
-            select: '-password -content',
-        })
+            .find(article_model_1.ARTICLE_GUEST_QUERY_FILTER, null, { select: '-content' })
             .sort({ _id: biz_interface_1.SortType.Desc })
             .exec();
     }
     async getArchiveData() {
         try {
             return {
-                meta: APP_CONFIG.PROJECT,
                 tags: await this.getAllTags(),
                 categories: await this.getAllCategories(),
                 articles: await this.getAllArticles(),

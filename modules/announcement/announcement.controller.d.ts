@@ -1,20 +1,14 @@
+import { QueryParamsResult } from '@app/decorators/queryparams.decorator';
 import { PaginateResult } from '@app/utils/paginate';
-import { Announcement, AnnouncementsPayload } from './announcement.model';
+import { AnnouncementsDTO, AnnouncementPaginateQueryDTO } from './announcement.dto';
 import { AnnouncementService } from './announcement.service';
+import { Announcement } from './announcement.model';
 export declare class AnnouncementController {
     private readonly announcementService;
     constructor(announcementService: AnnouncementService);
-    getAnnouncements({ querys, options, origin }: {
-        querys: any;
-        options: any;
-        origin: any;
-    }): Promise<PaginateResult<Announcement>>;
-    createAnnouncement(announcement: Announcement): Promise<Announcement>;
-    delAnnouncements(body: AnnouncementsPayload): Promise<import("mongodb").DeleteResult>;
-    putAnnouncement({ params }: {
-        params: any;
-    }, announcement: Announcement): Promise<Announcement>;
-    delAnnouncement({ params }: {
-        params: any;
-    }): Promise<Announcement>;
+    getAnnouncements(query: AnnouncementPaginateQueryDTO): Promise<PaginateResult<Announcement>>;
+    createAnnouncement(announcement: Announcement): Promise<import("../../interfaces/mongoose.interface").MongooseDoc<Announcement>>;
+    delAnnouncements(body: AnnouncementsDTO): Promise<import("mongodb").DeleteResult>;
+    putAnnouncement({ params }: QueryParamsResult, announcement: Announcement): Promise<import("../../interfaces/mongoose.interface").MongooseDoc<Announcement>>;
+    delAnnouncement({ params }: QueryParamsResult): Promise<import("../../interfaces/mongoose.interface").MongooseDoc<Announcement>>;
 }

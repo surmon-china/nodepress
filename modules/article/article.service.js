@@ -34,7 +34,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleService = exports.COMMON_USER_QUERY_PARAMS = exports.COMMON_HOT_SORT_PARAMS = void 0;
+exports.ArticleService = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
@@ -43,50 +43,41 @@ const helper_service_seo_1 = require("../../processors/helper/helper.service.seo
 const cache_service_1 = require("../../processors/cache/cache.service");
 const archive_service_1 = require("../archive/archive.service");
 const tag_service_1 = require("../tag/tag.service");
-const biz_interface_1 = require("../../interfaces/biz.interface");
 const article_model_1 = require("./article.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
-exports.COMMON_HOT_SORT_PARAMS = {
-    'meta.comments': biz_interface_1.SortType.Desc,
-    'meta.likes': biz_interface_1.SortType.Desc,
-};
-exports.COMMON_USER_QUERY_PARAMS = Object.freeze({
-    state: biz_interface_1.PublishState.Published,
-    public: biz_interface_1.PublicState.Public,
-});
 let ArticleService = class ArticleService {
-    constructor(tagService, cacheService, archiveService, seoService, articleModel) {
+    constructor(seoService, tagService, cacheService, archiveService, articleModel) {
+        this.seoService = seoService;
         this.tagService = tagService;
         this.cacheService = cacheService;
         this.archiveService = archiveService;
-        this.seoService = seoService;
         this.articleModel = articleModel;
-        this.hotArticleListCache = this.cacheService.interval({
+        this.hotArticlesCache = this.cacheService.interval({
+            key: CACHE_KEY.HOT_ARTICLES,
+            promise: () => this.getHotArticles(20),
             timeout: {
                 success: 1000 * 60 * 30,
                 error: 1000 * 60 * 5,
             },
-            key: CACHE_KEY.HOT_ARTICLES,
-            promise: () => {
-                return this.paginater.bind(this)(exports.COMMON_USER_QUERY_PARAMS, {
-                    perPage: 10,
-                    sort: exports.COMMON_HOT_SORT_PARAMS,
-                });
-            },
         });
     }
-    getUserHotListCache() {
-        return this.hotArticleListCache();
+    getHotArticles(count) {
+        return this.paginater(article_model_1.ARTICLE_GUEST_QUERY_FILTER, {
+            perPage: count,
+            sort: article_model_1.ARTICLE_HOT_SORT_PARAMS,
+        }).then((result) => result.documents);
     }
-    async getRandomRelatedArticles(article, count = 12) {
-        const findParams = Object.assign(Object.assign({}, exports.COMMON_USER_QUERY_PARAMS), { tag: { $in: article.tag.map((t) => t._id) }, category: { $in: article.category.map((c) => c._id) } });
-        const projection = 'id title description thumb meta create_at update_at -_id';
-        const articles = await this.articleModel.find(findParams, projection).exec();
-        const filtered = articles.filter((a) => a.id !== article.id);
+    getHotArticlesCache() {
+        return this.hotArticlesCache();
+    }
+    async getRelatedArticles(article, count) {
+        const findParams = Object.assign(Object.assign({}, article_model_1.ARTICLE_GUEST_QUERY_FILTER), { tag: { $in: article.tag.map((t) => t._id) }, category: { $in: article.category.map((c) => c._id) } });
+        const articles = await this.articleModel.find(findParams, '-content', { limit: count * 3 }).exec();
+        const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject());
         return lodash_1.default.sampleSize(filtered, count);
     }
-    paginater(querys, options) {
-        return this.articleModel.paginate(querys, Object.assign(Object.assign({}, options), { populate: ['category', 'tag'], select: '-password -content' }));
+    paginater(query, options) {
+        return this.articleModel.paginate(query, Object.assign(Object.assign({}, options), { projection: '-content', populate: ['category', 'tag'] }));
     }
     getList(articleIDs) {
         return this.articleModel.find({ id: { $in: articleIDs } }).exec();
@@ -95,35 +86,40 @@ let ArticleService = class ArticleService {
         return this.articleModel
             .findById(articleID)
             .exec()
-            .then((result) => result || Promise.reject(`Article "${articleID}" not found`));
+            .then((result) => result || Promise.reject(`Article '${articleID}' not found`));
     }
-    getDetailByNumberIDOrSlug(target) {
-        const params = Object.assign({}, exports.COMMON_USER_QUERY_PARAMS);
-        if (typeof target === 'string') {
-            params.slug = target;
+    getDetailByNumberIDOrSlug({ idOrSlug, publicOnly = false, populate = false, }) {
+        const params = {};
+        if (typeof idOrSlug === 'string') {
+            params.slug = idOrSlug;
         }
         else {
-            params.id = target;
+            params.id = idOrSlug;
         }
         return this.articleModel
-            .findOne(params)
-            .select('-password')
-            .populate(['category', 'tag'])
+            .findOne(publicOnly ? Object.assign(Object.assign({}, params), article_model_1.ARTICLE_GUEST_QUERY_FILTER) : params)
+            .populate(populate ? ['category', 'tag'] : [])
             .exec()
-            .then((result) => result || Promise.reject(`Article "${target}" not found`));
+            .then((result) => result || Promise.reject(`Article '${idOrSlug}' not found`));
     }
-    async getFullDetailForUser(target) {
-        const article = await this.getDetailByNumberIDOrSlug(target);
+    async getFullDetailForGuest(target) {
+        const article = await this.getDetailByNumberIDOrSlug({
+            idOrSlug: target,
+            publicOnly: true,
+            populate: true,
+        });
         article.meta.views++;
         article.save();
         this.cacheService.get(CACHE_KEY.TODAY_VIEWS).then((views) => {
             this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
         });
-        const articleObject = article.toObject();
-        return Object.assign(Object.assign({}, articleObject), { related: await this.getRandomRelatedArticles(articleObject) });
+        return article.toObject();
     }
-    async like(articleID) {
-        const article = await this.getDetailByNumberIDOrSlug(articleID);
+    async incrementLikes(articleID) {
+        const article = await this.getDetailByNumberIDOrSlug({
+            idOrSlug: articleID,
+            publicOnly: true,
+        });
         article.meta.likes++;
         await article.save();
         return article.meta.likes;
@@ -132,12 +128,12 @@ let ArticleService = class ArticleService {
         if (newArticle.slug) {
             const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec();
             if (existedArticle) {
-                throw `Article slug "${newArticle.slug}" is existed`;
+                throw `Article slug '${newArticle.slug}' is existed`;
             }
         }
-        const article = await this.articleModel.create(Object.assign(Object.assign({}, newArticle), { meta: (0, article_model_1.getDefaultMeta)() }));
+        const article = await this.articleModel.create(newArticle);
         this.seoService.push((0, urlmap_transformer_1.getArticleUrl)(article.id));
-        this.tagService.updatePaginateCache();
+        this.tagService.updateAllTagsCache();
         this.archiveService.updateCache();
         return article;
     }
@@ -145,7 +141,7 @@ let ArticleService = class ArticleService {
         if (newArticle.slug) {
             const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec();
             if (existedArticle && String(existedArticle._id) !== String(articleID)) {
-                throw `Article slug "${newArticle.slug}" is existed`;
+                throw `Article slug '${newArticle.slug}' is existed`;
             }
         }
         Reflect.deleteProperty(newArticle, 'meta');
@@ -153,20 +149,20 @@ let ArticleService = class ArticleService {
         Reflect.deleteProperty(newArticle, 'update_at');
         const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle, { new: true }).exec();
         if (!article) {
-            throw `Article "${articleID}" not found`;
+            throw `Article '${articleID}' not found`;
         }
         this.seoService.update((0, urlmap_transformer_1.getArticleUrl)(article.id));
-        this.tagService.updatePaginateCache();
+        this.tagService.updateAllTagsCache();
         this.archiveService.updateCache();
         return article;
     }
     async delete(articleID) {
         const article = await this.articleModel.findByIdAndRemove(articleID).exec();
         if (!article) {
-            throw `Article "${articleID}" not found`;
+            throw `Article '${articleID}' not found`;
         }
         this.seoService.delete((0, urlmap_transformer_1.getArticleUrl)(article.id));
-        this.tagService.updatePaginateCache();
+        this.tagService.updateAllTagsCache();
         this.archiveService.updateCache();
         return article;
     }
@@ -174,19 +170,35 @@ let ArticleService = class ArticleService {
         const actionResult = await this.articleModel
             .updateMany({ _id: { $in: articleIDs } }, { $set: { state } }, { multi: true })
             .exec();
-        this.tagService.updatePaginateCache();
+        this.tagService.updateAllTagsCache();
         this.archiveService.updateCache();
         return actionResult;
     }
     async batchDelete(articleIDs) {
         const articles = await this.articleModel.find({ _id: { $in: articleIDs } }).exec();
         this.seoService.delete(articles.map((article) => (0, urlmap_transformer_1.getArticleUrl)(article.id)));
-        const actionResult = await this.articleModel.deleteMany({
-            _id: { $in: articleIDs },
-        });
-        this.tagService.updatePaginateCache();
+        const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIDs } }).exec();
+        this.tagService.updateAllTagsCache();
         this.archiveService.updateCache();
         return actionResult;
+    }
+    async getTotalCount(publicOnly) {
+        return await this.articleModel.countDocuments(publicOnly ? article_model_1.ARTICLE_GUEST_QUERY_FILTER : {}).exec();
+    }
+    async getMetaStatistic() {
+        const [result] = await this.articleModel.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalViews: { $sum: '$meta.views' },
+                    totalLikes: { $sum: '$meta.likes' },
+                },
+            },
+        ]);
+        return {
+            totalViews: result.totalViews,
+            totalLikes: result.totalLikes,
+        };
     }
     async isCommentableArticle(articleID) {
         const article = await this.articleModel.findOne({ id: articleID }).exec();
@@ -201,10 +213,10 @@ let ArticleService = class ArticleService {
 ArticleService = __decorate([
     (0, common_1.Injectable)(),
     __param(4, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
-    __metadata("design:paramtypes", [tag_service_1.TagService,
+    __metadata("design:paramtypes", [helper_service_seo_1.SeoService,
+        tag_service_1.TagService,
         cache_service_1.CacheService,
-        archive_service_1.ArchiveService,
-        helper_service_seo_1.SeoService, Object])
+        archive_service_1.ArchiveService, Object])
 ], ArticleService);
 exports.ArticleService = ArticleService;
 //# sourceMappingURL=article.service.js.map

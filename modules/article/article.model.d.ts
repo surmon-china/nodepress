@@ -1,11 +1,20 @@
-import { Types } from 'mongoose';
 import { Ref } from '@typegoose/typegoose';
-import { PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface';
+import { SortType, PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface';
 import { Category } from '@app/modules/category/category.model';
-import { Extend } from '@app/models/extend.model';
+import { ExtendModel } from '@app/models/extend.model';
 import { Tag } from '@app/modules/tag/tag.model';
-export declare function getDefaultMeta(): Meta;
-export declare class Meta {
+export declare const ARTICLE_PUBLISH_STATES: readonly [PublishState.Draft, PublishState.Published, PublishState.Recycle];
+export declare const ARTICLE_PUBLIC_STATES: readonly [PublicState.Public, PublicState.Secret, PublicState.Reserve];
+export declare const ARTICLE_ORIGIN_STATES: readonly [OriginState.Original, OriginState.Reprint, OriginState.Hybrid];
+export declare const ARTICLE_GUEST_QUERY_FILTER: Readonly<{
+    state: PublishState;
+    public: PublicState;
+}>;
+export declare const ARTICLE_HOT_SORT_PARAMS: Readonly<{
+    'meta.comments': SortType;
+    'meta.likes': SortType;
+}>;
+export declare class ArticleMeta {
     likes: number;
     views: number;
     comments: number;
@@ -18,23 +27,15 @@ export declare class Article {
     description: string;
     keywords: string[];
     thumb: string;
-    password: string;
     disabled_comment: boolean;
     state: PublishState;
     public: PublicState;
     origin: OriginState;
     category: Ref<Category>[];
     tag: Ref<Tag>[];
-    meta: Meta;
+    meta: ArticleMeta;
     create_at?: Date;
     update_at?: Date;
-    extends: Extend[];
-    related?: Article[];
-}
-export declare class ArticlesPayload {
-    article_ids: Types.ObjectId[];
-}
-export declare class ArticlesStatePayload extends ArticlesPayload {
-    state: PublishState;
+    extends: ExtendModel[];
 }
 export declare const ArticleProvider: import("@nestjs/common").Provider<any>;

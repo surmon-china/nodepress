@@ -56,7 +56,7 @@ let DisqusPrivateService = class DisqusPrivateService {
     }
     async createThread(postID) {
         try {
-            const article = await this.articleService.getDetailByNumberIDOrSlug(postID);
+            const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postID, publicOnly: true });
             const response = await this.disqus.request('threads/create', {
                 forum: app_config_1.DISQUS.forum,
                 identifier: DISQUS_CONST.getThreadIdentifierByID(postID),
@@ -163,14 +163,14 @@ let DisqusPrivateService = class DisqusPrivateService {
         });
         const doImport = async (each) => {
             if (!Number.isFinite(each.commentID)) {
-                throw `Invalid comment ID ${each.commentID}`;
+                throw `Invalid comment ID '${each.commentID}'`;
             }
             const comment = await this.commentService.getDetailByNumberID(each.commentID);
             if (!comment) {
-                throw `Invalid comment ${comment}`;
+                throw `Invalid comment '${comment}'`;
             }
             const _extends = comment.extends || [];
-            const extendsObject = (0, extend_transformer_1.getExtendsObject)(_extends);
+            const extendsObject = (0, extend_transformer_1.getExtendObject)(_extends);
             if (!extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]) {
                 _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postID });
             }

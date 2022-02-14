@@ -1,24 +1,26 @@
-import { MongooseModel } from '@app/interfaces/mongoose.interface';
 import { CacheService } from '@app/processors/cache/cache.service';
-import { Article } from '@app/modules/article/article.model';
-import { Comment } from '@app/modules/comment/comment.model';
-import { Tag } from '@app/modules/tag/tag.model';
-export interface ITodayStatistic {
+import { ArticleService } from '@app/modules/article/article.service';
+import { CommentService } from '@app/modules/comment/comment.service';
+import { TagService } from '@app/modules/tag/tag.service';
+export interface Statistic {
     tags: number | null;
-    views: number | null;
     articles: number | null;
     comments: number | null;
+    totalViews: number | null;
+    totalLikes: number | null;
+    todayViews: number | null;
 }
 export declare class StatisticService {
     private readonly cacheService;
-    private readonly tagModel;
-    private readonly articleModel;
-    private readonly commentModel;
+    private readonly articleService;
+    private readonly commentService;
+    private readonly tagService;
     private resultData;
-    constructor(cacheService: CacheService, tagModel: MongooseModel<Tag>, articleModel: MongooseModel<Article>, commentModel: MongooseModel<Comment>);
-    private getViewsCount;
-    private getTagsCount;
+    constructor(cacheService: CacheService, articleService: ArticleService, commentService: CommentService, tagService: TagService);
+    private getTodayViewsCount;
+    private getArticlesStatistic;
     private getArticlesCount;
+    private getTagsCount;
     private getCommentsCount;
-    getStatistic(): Promise<ITodayStatistic>;
+    getStatistic(publicOnly: boolean): Promise<Statistic>;
 }

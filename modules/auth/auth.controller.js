@@ -14,12 +14,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
-const auth_guard_1 = require("../../guards/auth.guard");
+const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
-const http_decorator_1 = require("../../decorators/http.decorator");
-const query_params_decorator_1 = require("../../decorators/query-params.decorator");
-const auth_model_1 = require("./auth.model");
+const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const auth_dto_1 = require("./auth.dto");
 const auth_service_1 = require("./auth.service");
 const app_config_1 = require("../../app.config");
 let AuthController = class AuthController {
@@ -58,41 +58,41 @@ let AuthController = class AuthController {
 };
 __decorate([
     (0, common_1.Post)('login'),
-    http_decorator_1.HttpProcessor.handle({ message: 'Login', error: common_1.HttpStatus.BAD_REQUEST }),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    responsor_decorator_1.Responsor.handle({ message: 'Login', error: common_1.HttpStatus.BAD_REQUEST }),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, auth_model_1.AuthPasswordPayload]),
+    __metadata("design:paramtypes", [Object, auth_dto_1.AuthLoginDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
     (0, common_1.Get)('admin'),
-    http_decorator_1.HttpProcessor.handle('Get admin info'),
+    responsor_decorator_1.Responsor.handle('Get admin info'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getAdminInfo", null);
 __decorate([
     (0, common_1.Put)('admin'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update admin info'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update admin info'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [auth_model_1.Auth]),
+    __metadata("design:paramtypes", [auth_dto_1.AuthUpdateDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "putAdminInfo", null);
 __decorate([
     (0, common_1.Post)('check'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Check token'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Check token'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
 ], AuthController.prototype, "checkToken", null);
 __decorate([
     (0, common_1.Post)('renewal'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Renewal Token'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Renewal Token'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Object)

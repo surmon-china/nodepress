@@ -31,24 +31,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SeoService = exports.SeoAction = void 0;
+exports.SeoService = exports.SEOAction = void 0;
 const APP_CONFIG = __importStar(require("../../app.config"));
 const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const helper_service_google_1 = require("./helper.service.google");
 const logger_1 = __importDefault(require("../../utils/logger"));
-var SeoAction;
-(function (SeoAction) {
-    SeoAction["Push"] = "push";
-    SeoAction["Update"] = "update";
-    SeoAction["Delete"] = "delete";
-})(SeoAction = exports.SeoAction || (exports.SeoAction = {}));
-const ActionNameMap = {
-    [SeoAction.Push]: '提交',
-    [SeoAction.Update]: '更新',
-    [SeoAction.Delete]: '删除',
-};
+var SEOAction;
+(function (SEOAction) {
+    SEOAction["Push"] = "push";
+    SEOAction["Update"] = "update";
+    SEOAction["Delete"] = "delete";
+})(SEOAction = exports.SEOAction || (exports.SEOAction = {}));
 let SeoService = class SeoService {
     constructor(httpService, googleService) {
         this.httpService = httpService;
@@ -56,12 +51,12 @@ let SeoService = class SeoService {
     }
     pingBaidu(action, urls) {
         const urlKeyMap = {
-            [SeoAction.Push]: 'urls',
-            [SeoAction.Update]: 'update',
-            [SeoAction.Delete]: 'del',
+            [SEOAction.Push]: 'urls',
+            [SEOAction.Update]: 'update',
+            [SEOAction.Delete]: 'del',
         };
         const urlKey = urlKeyMap[action];
-        const actionText = `百度 ping [${ActionNameMap[action]}] 操作`;
+        const actionText = `Baidu ping [${action}] action`;
         this.httpService.axiosRef
             .request({
             method: 'post',
@@ -70,21 +65,21 @@ let SeoService = class SeoService {
             url: `http://data.zz.baidu.com/${urlKey}?site=${APP_CONFIG.BAIDU_INDEXED.site}&token=${APP_CONFIG.BAIDU_INDEXED.token}`,
         })
             .then((response) => {
-            logger_1.default.info(`[SEO]`, `${actionText}成功：`, urls, response.statusText);
+            logger_1.default.info(`[SEO]`, `${actionText} succeed:`, urls, response.statusText);
         })
             .catch((error) => {
-            logger_1.default.warn(`[SEO]`, `${actionText}失败：`, (0, error_transformer_1.getMessageFromAxiosError)(error));
+            logger_1.default.warn(`[SEO]`, `${actionText} failed:`, (0, error_transformer_1.getMessageFromAxiosError)(error));
         });
     }
     pingGoogle(action, urls) {
         const pingActionMap = {
-            [SeoAction.Push]: 'URL_UPDATED',
-            [SeoAction.Update]: 'URL_UPDATED',
-            [SeoAction.Delete]: 'URL_DELETED',
+            [SEOAction.Push]: 'URL_UPDATED',
+            [SEOAction.Update]: 'URL_UPDATED',
+            [SEOAction.Delete]: 'URL_DELETED',
         };
         const [url] = urls;
         const type = pingActionMap[action];
-        const actionText = `Google ping [${ActionNameMap[action]}] 操作`;
+        const actionText = `Google ping [${action}] action`;
         this.googleService
             .getCredentials()
             .then((credentials) => {
@@ -99,12 +94,12 @@ let SeoService = class SeoService {
                 url: `https://indexing.googleapis.com/v3/urlNotifications:publish`,
             })
                 .then((response) => {
-                logger_1.default.info(`[SEO]`, `${actionText}成功：`, url, response.statusText);
+                logger_1.default.info(`[SEO]`, `${actionText} succeed:`, url, response.statusText);
             })
                 .catch((error) => Promise.reject((0, error_transformer_1.getMessageFromAxiosError)(error)));
         })
             .catch((error) => {
-            logger_1.default.warn(`[SEO]`, `${actionText}失败：`, error);
+            logger_1.default.warn(`[SEO]`, `${actionText} failed:`, error);
         });
     }
     humanizedUrl(url) {
@@ -112,18 +107,18 @@ let SeoService = class SeoService {
     }
     push(url) {
         const urls = this.humanizedUrl(url);
-        this.pingBaidu(SeoAction.Push, urls);
-        this.pingGoogle(SeoAction.Push, urls);
+        this.pingBaidu(SEOAction.Push, urls);
+        this.pingGoogle(SEOAction.Push, urls);
     }
     update(url) {
         const urls = this.humanizedUrl(url);
-        this.pingBaidu(SeoAction.Update, urls);
-        this.pingGoogle(SeoAction.Update, urls);
+        this.pingBaidu(SEOAction.Update, urls);
+        this.pingGoogle(SEOAction.Update, urls);
     }
     delete(url) {
         const urls = this.humanizedUrl(url);
-        this.pingBaidu(SeoAction.Delete, urls);
-        this.pingGoogle(SeoAction.Delete, urls);
+        this.pingBaidu(SEOAction.Delete, urls);
+        this.pingGoogle(SEOAction.Delete, urls);
     }
 };
 SeoService = __decorate([

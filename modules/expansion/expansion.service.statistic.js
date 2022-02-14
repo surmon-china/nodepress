@@ -27,9 +27,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -37,24 +34,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatisticService = void 0;
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
-const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_service_1 = require("../../processors/cache/cache.service");
-const article_model_1 = require("../article/article.model");
-const comment_model_1 = require("../comment/comment.model");
-const tag_model_1 = require("../tag/tag.model");
+const article_service_1 = require("../article/article.service");
+const comment_service_1 = require("../comment/comment.service");
+const tag_service_1 = require("../tag/tag.service");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 let StatisticService = class StatisticService {
-    constructor(cacheService, tagModel, articleModel, commentModel) {
+    constructor(cacheService, articleService, commentService, tagService) {
         this.cacheService = cacheService;
-        this.tagModel = tagModel;
-        this.articleModel = articleModel;
-        this.commentModel = commentModel;
+        this.articleService = articleService;
+        this.commentService = commentService;
+        this.tagService = tagService;
         this.resultData = {
             tags: null,
-            views: null,
             articles: null,
             comments: null,
+            totalViews: null,
+            totalLikes: null,
+            todayViews: null,
         };
         node_schedule_1.default.scheduleJob('1 0 0 * * *', () => {
             this.cacheService.set(CACHE_KEY.TODAY_VIEWS, 0).catch((error) => {
@@ -62,34 +60,42 @@ let StatisticService = class StatisticService {
             });
         });
     }
-    async getViewsCount() {
+    async getTodayViewsCount() {
         const views = await this.cacheService.get(CACHE_KEY.TODAY_VIEWS);
-        this.resultData.views = views || 0;
+        this.resultData.todayViews = views || 0;
+    }
+    async getArticlesStatistic() {
+        const meta = await this.articleService.getMetaStatistic();
+        this.resultData.totalViews = meta.totalViews;
+        this.resultData.totalLikes = meta.totalLikes;
+    }
+    async getArticlesCount(publicOnly) {
+        this.resultData.articles = await this.articleService.getTotalCount(publicOnly);
     }
     async getTagsCount() {
-        const count = await this.tagModel.countDocuments().exec();
-        this.resultData.tags = count;
+        this.resultData.tags = await this.tagService.getTotalCount();
     }
-    async getArticlesCount() {
-        const count = await this.articleModel.countDocuments().exec();
-        this.resultData.articles = count;
+    async getCommentsCount(publicOnly) {
+        this.resultData.comments = await this.commentService.getTotalCount(publicOnly);
     }
-    async getCommentsCount() {
-        const count = await this.commentModel.countDocuments().exec();
-        this.resultData.comments = count;
-    }
-    getStatistic() {
-        return Promise.all([this.getTagsCount(), this.getViewsCount(), this.getArticlesCount(), this.getCommentsCount()])
+    getStatistic(publicOnly) {
+        return Promise.all([
+            this.getTagsCount(),
+            this.getArticlesCount(publicOnly),
+            this.getCommentsCount(publicOnly),
+            this.getArticlesStatistic(),
+            this.getTodayViewsCount(),
+        ])
             .then(() => Promise.resolve(this.resultData))
             .catch(() => Promise.resolve(this.resultData));
     }
 };
 StatisticService = __decorate([
     (0, common_1.Injectable)(),
-    __param(1, (0, model_transformer_1.InjectModel)(tag_model_1.Tag)),
-    __param(2, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
-    __param(3, (0, model_transformer_1.InjectModel)(comment_model_1.Comment)),
-    __metadata("design:paramtypes", [cache_service_1.CacheService, Object, Object, Object])
+    __metadata("design:paramtypes", [cache_service_1.CacheService,
+        article_service_1.ArticleService,
+        comment_service_1.CommentService,
+        tag_service_1.TagService])
 ], StatisticService);
 exports.StatisticService = StatisticService;
 //# sourceMappingURL=expansion.service.statistic.js.map

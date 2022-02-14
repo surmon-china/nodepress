@@ -34,15 +34,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpCacheInterceptor = void 0;
 const operators_1 = require("rxjs/operators");
 const rxjs_1 = require("rxjs");
-const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
+const cache_decorator_1 = require("../decorators/cache.decorator");
 const cache_service_1 = require("../processors/cache/cache.service");
 const SYSTEM = __importStar(require("../constants/system.constant"));
-const META = __importStar(require("../constants/meta.constant"));
 const APP_CONFIG = __importStar(require("../app.config"));
 let HttpCacheInterceptor = class HttpCacheInterceptor {
-    constructor(reflector, httpAdapterHost, cacheService) {
-        this.reflector = reflector;
+    constructor(httpAdapterHost, cacheService) {
         this.httpAdapterHost = httpAdapterHost;
         this.cacheService = cacheService;
     }
@@ -53,7 +51,7 @@ let HttpCacheInterceptor = class HttpCacheInterceptor {
             return call$;
         }
         const target = context.getHandler();
-        const metaTTL = this.reflector.get(META.HTTP_CACHE_TTL_METADATA, target);
+        const metaTTL = (0, cache_decorator_1.getHttpCacheTTL)(target);
         const ttl = metaTTL || APP_CONFIG.APP.DEFAULT_CACHE_TTL;
         try {
             const value = await this.cacheService.get(key);
@@ -68,16 +66,15 @@ let HttpCacheInterceptor = class HttpCacheInterceptor {
         const httpServer = this.httpAdapterHost.httpAdapter;
         const isHttpApp = Boolean(httpServer === null || httpServer === void 0 ? void 0 : httpServer.getRequestMethod);
         const isGetRequest = isHttpApp && httpServer.getRequestMethod(request) === common_1.RequestMethod[common_1.RequestMethod.GET];
-        const cacheKey = this.reflector.get(META.HTTP_CACHE_KEY_METADATA, context.getHandler());
+        const cacheKey = (0, cache_decorator_1.getHttpCacheKey)(context.getHandler());
         const isMatchedCache = isHttpApp && isGetRequest && cacheKey;
         return isMatchedCache ? cacheKey : undefined;
     }
 };
 HttpCacheInterceptor = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(SYSTEM.REFLECTOR)),
-    __param(1, (0, common_1.Inject)(SYSTEM.HTTP_ADAPTER_HOST)),
-    __metadata("design:paramtypes", [core_1.Reflector, Object, cache_service_1.CacheService])
+    __param(0, (0, common_1.Inject)(SYSTEM.HTTP_ADAPTER_HOST)),
+    __metadata("design:paramtypes", [Object, cache_service_1.CacheService])
 ], HttpCacheInterceptor);
 exports.HttpCacheInterceptor = HttpCacheInterceptor;
 //# sourceMappingURL=cache.interceptor.js.map

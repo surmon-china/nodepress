@@ -14,6 +14,7 @@ export declare const PROJECT: {
     version: any;
     author: any;
     homepage: any;
+    documentation: any;
     issues: any;
 };
 export declare const CROSS_DOMAIN: {

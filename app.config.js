@@ -15,7 +15,7 @@ exports.APP = {
     MASTER: 'Surmon',
     NAME: 'NodePress',
     URL: 'https://api.surmon.me',
-    ADMIN_EMAIL: yargs_1.argv.admin_email || 'admin email, e.g. admin@surmon.me',
+    ADMIN_EMAIL: yargs_1.argv.admin_email || 'admin email, e.g. admin@example.com',
     FE_NAME: 'Surmon.me',
     FE_URL: 'https://surmon.me',
 };
@@ -24,6 +24,7 @@ exports.PROJECT = {
     version: packageJSON.version,
     author: packageJSON.author,
     homepage: packageJSON.homepage,
+    documentation: packageJSON.documentation,
     issues: packageJSON.bugs.url,
 };
 exports.CROSS_DOMAIN = {
@@ -61,7 +62,7 @@ exports.AKISMET = {
     blog: yargs_1.argv.akismet_blog || 'your akismet blog site, e.g. https://surmon.me',
 };
 exports.BAIDU_INDEXED = {
-    site: yargs_1.argv.baidu_site || 'your baidu site domain. e.g. surmon.me',
+    site: yargs_1.argv.baidu_site || 'your baidu site domain. e.g. https://surmon.me',
     token: yargs_1.argv.baidu_token || 'your baidu seo push token',
 };
 exports.GOOGLE = {

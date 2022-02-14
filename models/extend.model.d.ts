@@ -1,4 +1,4 @@
-export declare class Extend {
+export declare class ExtendModel {
     name: string;
     value: string;
 }

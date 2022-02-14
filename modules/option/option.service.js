@@ -49,64 +49,43 @@ let OptionService = class OptionService {
         this.optionCache = this.cacheService.promise({
             ioMode: true,
             key: CACHE_KEY.OPTION,
-            promise: () => {
-                return this.getAppOption().then((option) => {
-                    Reflect.deleteProperty(option, 'blocklist');
-                    return option;
-                });
-            },
+            promise: () => this.ensureAppOption().then((option) => lodash_1.default.omit(option, ['blocklist'])),
         });
         this.optionCache.update().catch((error) => {
             logger_1.default.warn('[option]', 'init getAppOption', error);
         });
     }
-    async getAppOption() {
+    async ensureAppOption() {
         const option = await this.optionModel.findOne().exec();
-        return option ? option.toObject() : option_model_1.DEFAULT_OPTION;
+        return option || (await this.optionModel.create(Object.assign({}, option_model_1.DEFAULT_OPTION)));
     }
-    getOptionUserCache() {
+    getOptionCacheForGuest() {
         return this.optionCache.get();
     }
-    async putOption(option) {
-        Reflect.deleteProperty(option, '_id');
-        Reflect.deleteProperty(option, 'meta');
-        let result;
-        const extantOption = await this.optionModel.findOne().exec();
-        if (extantOption) {
-            await extantOption.update(option);
-            result = await this.getAppOption();
-        }
-        else {
-            result = await this.optionModel.create(option);
-        }
+    async putOption(newOption) {
+        Reflect.deleteProperty(newOption, '_id');
+        Reflect.deleteProperty(newOption, 'meta');
+        await this.ensureAppOption();
+        await this.optionModel.updateOne({}, newOption).exec();
         await this.optionCache.update();
-        return result;
+        return await this.ensureAppOption();
     }
     async appendToBlocklist(payload) {
-        const option = await this.optionModel.findOne().exec();
-        if (!option) {
-            throw `Uninitialized option`;
-        }
+        const option = await this.ensureAppOption();
         option.blocklist.ips = lodash_1.default.uniq([...option.blocklist.ips, ...payload.ips]);
         option.blocklist.mails = lodash_1.default.uniq([...option.blocklist.mails, ...payload.emails]);
         await option.save();
         return option.blocklist;
     }
     async removeFromBlocklist(payload) {
-        const option = await this.optionModel.findOne().exec();
-        if (!option) {
-            throw `Uninitialized option`;
-        }
+        const option = await this.ensureAppOption();
         option.blocklist.ips = option.blocklist.ips.filter((ip) => !payload.ips.includes(ip));
         option.blocklist.mails = option.blocklist.mails.filter((email) => !payload.emails.includes(email));
         await option.save();
         return option.blocklist;
     }
-    async likeSite() {
-        const option = await this.optionModel.findOne().exec();
-        if (!option) {
-            throw `Uninitialized option`;
-        }
+    async incrementLikes() {
+        const option = await this.ensureAppOption();
         option.meta.likes++;
         await option.save();
         await this.optionCache.update();

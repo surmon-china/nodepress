@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const core_1 = require("@nestjs/core");
-const throttler_1 = require("@nestjs/throttler");
 const common_1 = require("@nestjs/common");
+const throttler_1 = require("@nestjs/throttler");
 const app_controller_1 = require("./app.controller");
 const cache_interceptor_1 = require("./interceptors/cache.interceptor");
+const validation_pipe_1 = require("./pipes/validation.pipe");
 const cors_middleware_1 = require("./middlewares/cors.middleware");
 const origin_middleware_1 = require("./middlewares/origin.middleware");
 const database_module_1 = require("./processors/database/database.module");
@@ -65,6 +66,10 @@ AppModule = __decorate([
             {
                 provide: core_1.APP_GUARD,
                 useClass: throttler_1.ThrottlerGuard,
+            },
+            {
+                provide: core_1.APP_PIPE,
+                useClass: validation_pipe_1.ValidationPipe,
             },
         ],
     })

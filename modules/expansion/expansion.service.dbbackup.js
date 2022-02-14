@@ -19,7 +19,7 @@ const moment_1 = __importDefault(require("moment"));
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
-const helper_service_cs_1 = require("../../processors/helper/helper.service.cs");
+const helper_service_cloud_storage_1 = require("../../processors/helper/helper.service.cloud-storage");
 const app_config_1 = require("../../app.config");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
@@ -100,7 +100,7 @@ let DBBackupService = class DBBackupService {
 DBBackupService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [helper_service_email_1.EmailService,
-        helper_service_cs_1.CloudStorageService])
+        helper_service_cloud_storage_1.CloudStorageService])
 ], DBBackupService);
 exports.DBBackupService = DBBackupService;
 //# sourceMappingURL=expansion.service.dbbackup.js.map

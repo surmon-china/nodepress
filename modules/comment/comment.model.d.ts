@@ -1,21 +1,24 @@
-import { Types } from 'mongoose';
 import { CommentState } from '@app/interfaces/biz.interface';
 import { IPLocation } from '@app/processors/helper/helper.service.ip';
-import { Extend } from '@app/models/extend.model';
+import { ExtendModel } from '@app/models/extend.model';
+export declare const COMMENT_STATES: readonly [CommentState.Auditing, CommentState.Published, CommentState.Deleted, CommentState.Spam];
+export declare const COMMENT_GUEST_QUERY_FILTER: Readonly<{
+    state: CommentState;
+}>;
 export declare class Author {
     name: string;
     email?: string;
     site?: string;
     get email_hash(): string | null;
 }
-export declare class CreateCommentBase {
+export declare class CommentBase {
     post_id: number;
     pid: number;
     content: string;
     agent?: string;
     author: Author;
 }
-export declare class Comment extends CreateCommentBase {
+export declare class Comment extends CommentBase {
     id?: number;
     state: CommentState;
     likes: number;
@@ -26,13 +29,6 @@ export declare class Comment extends CreateCommentBase {
     });
     create_at?: Date;
     update_at?: Date;
-    extends: Extend[];
-}
-export declare class CommentsPayload {
-    comment_ids: Types.ObjectId[];
-    post_ids: number[];
-}
-export declare class CommentsStatePayload extends CommentsPayload {
-    state: CommentState;
+    extends: ExtendModel[];
 }
 export declare const CommentProvider: import("@nestjs/common").Provider<any>;

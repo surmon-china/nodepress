@@ -8,9 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExpansionModule = void 0;
 const common_1 = require("@nestjs/common");
-const tag_model_1 = require("../tag/tag.model");
-const article_model_1 = require("../article/article.model");
-const comment_model_1 = require("../comment/comment.model");
+const tag_module_1 = require("../tag/tag.module");
+const article_module_1 = require("../article/article.module");
+const comment_module_1 = require("../comment/comment.module");
 const expansion_controller_1 = require("./expansion.controller");
 const expansion_service_statistic_1 = require("./expansion.service.statistic");
 const expansion_service_dbbackup_1 = require("./expansion.service.dbbackup");
@@ -18,8 +18,9 @@ let ExpansionModule = class ExpansionModule {
 };
 ExpansionModule = __decorate([
     (0, common_1.Module)({
+        imports: [tag_module_1.TagModule, article_module_1.ArticleModule, comment_module_1.CommentModule],
         controllers: [expansion_controller_1.ExpansionController],
-        providers: [tag_model_1.TagProvider, article_model_1.ArticleProvider, comment_model_1.CommentProvider, expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService],
+        providers: [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService],
         exports: [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService],
     })
 ], ExpansionModule);

@@ -1,30 +1,22 @@
+import { QueryParamsResult } from '@app/decorators/queryparams.decorator';
 import { TagService } from '@app/modules/tag/tag.service';
 import { CategoryService } from '@app/modules/category/category.service';
 import { PaginateResult } from '@app/utils/paginate';
-import { Article, ArticlesPayload, ArticlesStatePayload } from './article.model';
+import { ArticlePaginateQueryDTO, ArticleListQueryDTO, ArticleIDsDTO, ArticlesStateDTO } from './article.dto';
 import { ArticleService } from './article.service';
+import { Article } from './article.model';
 export declare class ArticleController {
     private readonly tagService;
     private readonly categoryService;
     private readonly articleService;
     constructor(tagService: TagService, categoryService: CategoryService, articleService: ArticleService);
-    getArticles({ querys, options, origin, isAuthenticated }: {
-        querys: any;
-        options: any;
-        origin: any;
-        isAuthenticated: any;
-    }): Promise<PaginateResult<Article>>;
-    getArticle({ params, isAuthenticated }: {
-        params: any;
-        isAuthenticated: any;
-    }): Promise<Article>;
+    getArticles(query: ArticlePaginateQueryDTO): Promise<PaginateResult<Article>>;
+    getHotArticles(query: ArticleListQueryDTO): Promise<Array<Article>>;
+    getRelatedArticles({ params }: QueryParamsResult, query: ArticleListQueryDTO): Promise<Array<Article>>;
+    getArticle({ params, isUnauthenticated }: QueryParamsResult): Promise<Article>;
     createArticle(article: Article): Promise<Article>;
-    putArticle({ params }: {
-        params: any;
-    }, article: Article): Promise<Article>;
-    delArticle({ params }: {
-        params: any;
-    }): Promise<Article>;
-    patchArticles(body: ArticlesStatePayload): Promise<import("mongodb").UpdateResult>;
-    delArticles(body: ArticlesPayload): Promise<import("mongodb").DeleteResult>;
+    putArticle({ params }: QueryParamsResult, article: Article): Promise<Article>;
+    delArticle({ params }: QueryParamsResult): Promise<Article>;
+    patchArticles(body: ArticlesStateDTO): Promise<import("mongodb").UpdateResult>;
+    delArticles(body: ArticleIDsDTO): Promise<import("mongodb").DeleteResult>;
 }

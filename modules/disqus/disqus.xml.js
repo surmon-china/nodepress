@@ -8,7 +8,7 @@ const moment_1 = __importDefault(require("moment"));
 const biz_interface_1 = require("../../interfaces/biz.interface");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const disqus_constant_1 = require("./disqus.constant");
-const disqus_model_1 = require("./disqus.model");
+const disqus_dto_1 = require("./disqus.dto");
 const app_config_1 = require("../../app.config");
 const getCommentItemXML = (comment) => {
     return `
@@ -51,7 +51,7 @@ const getDisqusXML = (data, guestbook) => {
               <content:encoded><![CDATA[${item.article.description || ''}]]></content:encoded>
               <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierByID)(item.article.id)}</dsq:thread_identifier>
               <wp:post_date_gmt>${(0, moment_1.default)(item.article.create_at).format('YYYY-MM-DD HH:mm:ss')}</wp:post_date_gmt>
-              <wp:comment_status>${item.article.disabled_comment ? disqus_model_1.ThreadState.Closed : disqus_model_1.ThreadState.Open}</wp:comment_status>
+              <wp:comment_status>${item.article.disabled_comment ? disqus_dto_1.ThreadState.Closed : disqus_dto_1.ThreadState.Open}</wp:comment_status>
               ${item.comments.map(getCommentItemXML).join('\n')}
             </item>
           `)

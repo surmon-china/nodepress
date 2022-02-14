@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArchiveController = void 0;
 const common_1 = require("@nestjs/common");
-const auth_guard_1 = require("../../guards/auth.guard");
-const http_decorator_1 = require("../../decorators/http.decorator");
+const admin_only_guard_1 = require("../../guards/admin-only.guard");
+const responsor_decorator_1 = require("../../decorators/responsor.decorator");
 const archive_service_1 = require("./archive.service");
 let ArchiveController = class ArchiveController {
     constructor(archiveService) {
@@ -27,15 +27,15 @@ let ArchiveController = class ArchiveController {
 };
 __decorate([
     (0, common_1.Get)(),
-    http_decorator_1.HttpProcessor.handle('Get archive'),
+    responsor_decorator_1.Responsor.handle('Get archive'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ArchiveController.prototype, "getArchive", null);
 __decorate([
     (0, common_1.Patch)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update archive cache'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update archive cache'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

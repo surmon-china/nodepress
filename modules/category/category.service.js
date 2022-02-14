@@ -16,32 +16,27 @@ exports.CategoryService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
-const biz_interface_1 = require("../../interfaces/biz.interface");
 const archive_service_1 = require("../archive/archive.service");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
 const article_model_1 = require("../article/article.model");
 const category_model_1 = require("./category.model");
 let CategoryService = class CategoryService {
-    constructor(archiveService, seoService, articleModel, categoryModel) {
-        this.archiveService = archiveService;
+    constructor(seoService, archiveService, articleModel, categoryModel) {
         this.seoService = seoService;
+        this.archiveService = archiveService;
         this.articleModel = articleModel;
         this.categoryModel = categoryModel;
     }
-    async paginater(querys, options, publicOnly) {
-        const matchState = {
-            state: biz_interface_1.PublishState.Published,
-            public: biz_interface_1.PublicState.Public,
-        };
-        const categories = await this.categoryModel.paginate(querys, Object.assign(Object.assign({}, options), { lean: true }));
+    async paginater(query, options, publicOnly) {
+        const categories = await this.categoryModel.paginate(query, Object.assign(Object.assign({}, options), { lean: true }));
         const counts = await this.articleModel.aggregate([
-            { $match: publicOnly ? matchState : {} },
+            { $match: publicOnly ? article_model_1.ARTICLE_GUEST_QUERY_FILTER : {} },
             { $unwind: '$category' },
-            { $group: { _id: '$category', num_tutorial: { $sum: 1 } } },
+            { $group: { _id: '$category', count: { $sum: 1 } } },
         ]);
         const hydratedDocs = categories.documents.map((category) => {
-            const finded = counts.find((count) => String(count._id) === String(category._id));
-            return Object.assign(Object.assign({}, category), { count: finded ? finded.num_tutorial : 0 });
+            const finded = counts.find((item) => String(item._id) === String(category._id));
+            return Object.assign(Object.assign({}, category), { articles_count: finded ? finded.count : 0 });
         });
         return Object.assign(Object.assign({}, categories), { documents: hydratedDocs });
     }
@@ -49,12 +44,12 @@ let CategoryService = class CategoryService {
         return this.categoryModel
             .findOne({ slug })
             .exec()
-            .then((result) => result || Promise.reject(`Category "${slug}" not found`));
+            .then((result) => result || Promise.reject(`Category '${slug}' not found`));
     }
     async create(newCategory) {
         const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
         if (existedCategory) {
-            throw `Category slug "${newCategory.slug}" is existed`;
+            throw `Category slug '${newCategory.slug}' is existed`;
         }
         const category = await this.categoryModel.create(newCategory);
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
@@ -69,12 +64,18 @@ let CategoryService = class CategoryService {
             (function findCateItem(id) {
                 findById(id)
                     .then((category) => {
+                    var _a;
                     if (!category) {
-                        return resolve(categories);
+                        if (id === categoryID) {
+                            return reject(`Category '${categoryID}' not found`);
+                        }
+                        else {
+                            return resolve(categories);
+                        }
                     }
-                    categories.unshift(category);
+                    categories.unshift(category.toObject());
                     const parentId = category.pid;
-                    const hasParent = parentId && parentId !== category.id;
+                    const hasParent = parentId && parentId.toString() !== ((_a = category._id) === null || _a === void 0 ? void 0 : _a.toString());
                     return hasParent ? findCateItem(parentId) : resolve(categories);
                 })
                     .catch(reject);
@@ -84,11 +85,11 @@ let CategoryService = class CategoryService {
     async update(categoryID, newCategory) {
         const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
         if (existedCategory && String(existedCategory._id) !== String(categoryID)) {
-            throw `Category slug "${newCategory.slug}" is existed`;
+            throw `Category slug '${newCategory.slug}' is existed`;
         }
         const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory, { new: true }).exec();
         if (!category) {
-            throw `Category "${categoryID}" not found`;
+            throw `Category '${categoryID}' not found`;
         }
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
         this.archiveService.updateCache();
@@ -97,7 +98,7 @@ let CategoryService = class CategoryService {
     async delete(categoryID) {
         const category = await this.categoryModel.findByIdAndRemove(categoryID).exec();
         if (!category) {
-            throw `Category "${categoryID}" not found`;
+            throw `Category '${categoryID}' not found`;
         }
         this.archiveService.updateCache();
         this.seoService.delete((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
@@ -124,8 +125,8 @@ CategoryService = __decorate([
     (0, common_1.Injectable)(),
     __param(2, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
     __param(3, (0, model_transformer_1.InjectModel)(category_model_1.Category)),
-    __metadata("design:paramtypes", [archive_service_1.ArchiveService,
-        helper_service_seo_1.SeoService, Object, Object])
+    __metadata("design:paramtypes", [helper_service_seo_1.SeoService,
+        archive_service_1.ArchiveService, Object, Object])
 ], CategoryService);
 exports.CategoryService = CategoryService;
 //# sourceMappingURL=category.service.js.map

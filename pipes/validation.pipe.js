@@ -6,18 +6,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ValidationPipe = void 0;
+exports.ValidationPipe = exports.isUnverifiableMetatype = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const common_1 = require("@nestjs/common");
 const validation_error_1 = require("../errors/validation.error");
+const text_constant_1 = require("../constants/text.constant");
+const isUnverifiableMetatype = (metatype) => {
+    const basicTypes = [String, Boolean, Number, Array, Object];
+    return !metatype || basicTypes.includes(metatype);
+};
+exports.isUnverifiableMetatype = isUnverifiableMetatype;
 let ValidationPipe = class ValidationPipe {
-    toValidate(metatype) {
-        const types = [String, Boolean, Number, Array, Object];
-        return !types.find((type) => metatype === type);
-    }
     async transform(value, { metatype }) {
-        if (!metatype || !this.toValidate(metatype)) {
+        if ((0, exports.isUnverifiableMetatype)(metatype)) {
             return value;
         }
         const object = (0, class_transformer_1.plainToClass)(metatype, value);
@@ -35,9 +37,9 @@ let ValidationPipe = class ValidationPipe {
                     error.children.forEach((e) => pushMessage(e.constraints));
                 }
             });
-            throw new validation_error_1.ValidationError(messages.join('; '));
+            throw new validation_error_1.ValidationError(`${text_constant_1.VALIDATION_ERROR_DEFAULT}: ` + messages.join(', '));
         }
-        return value;
+        return object;
     }
 };
 ValidationPipe = __decorate([

@@ -4,9 +4,5 @@ export declare class Auth {
     slogan: string;
     avatar: string;
     password?: string;
-    new_password?: string;
-}
-export declare class AuthPasswordPayload {
-    password: string;
 }
 export declare const AuthProvider: import("@nestjs/common").Provider<any>;

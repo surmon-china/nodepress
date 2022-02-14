@@ -11,6 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -19,67 +30,84 @@ exports.ArticleController = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const mongoose_1 = require("mongoose");
 const common_1 = require("@nestjs/common");
-const query_params_decorator_1 = require("../../decorators/query-params.decorator");
-const http_decorator_1 = require("../../decorators/http.decorator");
-const auth_guard_1 = require("../../guards/auth.guard");
-const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
+const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const admin_only_guard_1 = require("../../guards/admin-only.guard");
+const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
+const permission_pipe_1 = require("../../pipes/permission.pipe");
+const expose_pipe_1 = require("../../pipes/expose.pipe");
 const biz_interface_1 = require("../../interfaces/biz.interface");
 const tag_service_1 = require("../tag/tag.service");
 const category_service_1 = require("../category/category.service");
+const article_dto_1 = require("./article.dto");
 const article_model_1 = require("./article.model");
 const article_service_1 = require("./article.service");
+const article_model_2 = require("./article.model");
 let ArticleController = class ArticleController {
     constructor(tagService, categoryService, articleService) {
         this.tagService = tagService;
         this.categoryService = categoryService;
         this.articleService = articleService;
     }
-    getArticles({ querys, options, origin, isAuthenticated }) {
-        if (Number(origin.sort) === biz_interface_1.SortType.Hot) {
-            options.sort = article_service_1.COMMON_HOT_SORT_PARAMS;
-            if (!isAuthenticated && querys.cache) {
-                return this.articleService.getUserHotListCache();
+    async getArticles(query) {
+        const { page, per_page, sort } = query, filters = __rest(query, ["page", "per_page", "sort"]);
+        const paginateQuery = {};
+        const paginateOptions = { page, perPage: per_page };
+        if (!lodash_1.default.isUndefined(sort)) {
+            if (sort === biz_interface_1.SortType.Hot) {
+                paginateOptions.sort = article_model_1.ARTICLE_HOT_SORT_PARAMS;
+            }
+            else {
+                paginateOptions.dateSort = sort;
             }
         }
-        const keyword = lodash_1.default.trim(origin.keyword);
-        if (keyword) {
-            const keywordRegExp = new RegExp(keyword, 'i');
-            querys.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }];
+        if (!lodash_1.default.isUndefined(filters.state)) {
+            paginateQuery.state = filters.state;
         }
-        const slugParams = [
-            {
-                name: 'tag',
-                field: 'tag_slug',
-                service: this.tagService.getDetailBySlug.bind(this.tagService),
-            },
-            {
-                name: 'category',
-                field: 'category_slug',
-                service: this.categoryService.getDetailBySlug.bind(this.categoryService),
-            },
-        ];
-        const matchedParam = slugParams.find((item) => querys[item.field]);
-        const matchedField = matchedParam === null || matchedParam === void 0 ? void 0 : matchedParam.field;
-        const matchedSlug = matchedField && querys[matchedField];
-        return !matchedSlug
-            ? this.articleService.paginater(querys, options)
-            : matchedParam.service(matchedSlug).then((param) => {
-                const paramField = matchedParam.name;
-                const paramId = param === null || param === void 0 ? void 0 : param._id;
-                if (paramId) {
-                    querys = Object.assign(querys, { [paramField]: paramId });
-                    Reflect.deleteProperty(querys, matchedField);
-                    return this.articleService.paginater(querys, options);
-                }
-                else {
-                    return Promise.reject(`条件 ${matchedField} > ${matchedSlug} 不存在`);
-                }
-            });
+        if (!lodash_1.default.isUndefined(filters.public)) {
+            paginateQuery.public = filters.public;
+        }
+        if (!lodash_1.default.isUndefined(filters.origin)) {
+            paginateQuery.origin = filters.origin;
+        }
+        if (filters.keyword) {
+            const trimmed = lodash_1.default.trim(filters.keyword);
+            const keywordRegExp = new RegExp(trimmed, 'i');
+            paginateQuery.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }];
+        }
+        if (filters.date) {
+            const queryDateMS = new Date(filters.date).getTime();
+            paginateQuery.create_at = {
+                $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
+                $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000),
+            };
+        }
+        if (filters.tag_slug) {
+            const tag = await this.tagService.getDetailBySlug(filters.tag_slug);
+            paginateQuery.tag = tag._id;
+        }
+        if (filters.category_slug) {
+            const category = await this.categoryService.getDetailBySlug(filters.category_slug);
+            paginateQuery.category = category._id;
+        }
+        return this.articleService.paginater(paginateQuery, paginateOptions);
     }
-    getArticle({ params, isAuthenticated }) {
-        return isAuthenticated && (0, mongoose_1.isValidObjectId)(params.id)
+    getHotArticles(query) {
+        return query.count ? this.articleService.getHotArticles(query.count) : this.articleService.getHotArticlesCache();
+    }
+    async getRelatedArticles({ params }, query) {
+        var _a;
+        const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) });
+        return this.articleService.getRelatedArticles(article, (_a = query.count) !== null && _a !== void 0 ? _a : 20);
+    }
+    getArticle({ params, isUnauthenticated }) {
+        if (isUnauthenticated) {
+            const idOrSlug = isNaN(Number(params.id)) ? String(params.id) : Number(params.id);
+            return this.articleService.getFullDetailForGuest(idOrSlug);
+        }
+        return mongoose_1.Types.ObjectId.isValid(params.id)
             ? this.articleService.getDetailByObjectID(params.id)
-            : this.articleService.getFullDetailForUser(isNaN(params.id) ? String(params.id) : Number(params.id));
+            : this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) });
     }
     createArticle(article) {
         return this.articleService.create(article);
@@ -99,80 +127,87 @@ let ArticleController = class ArticleController {
 };
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
-    http_decorator_1.HttpProcessor.paginate(),
-    http_decorator_1.HttpProcessor.handle('Get articles'),
-    __param(0, (0, query_params_decorator_1.QueryParams)([
-        query_params_decorator_1.QueryParamsField.Date,
-        query_params_decorator_1.QueryParamsField.State,
-        query_params_decorator_1.QueryParamsField.Public,
-        query_params_decorator_1.QueryParamsField.Origin,
-        'cache',
-        'tag',
-        'category',
-        'tag_slug',
-        'category_slug',
-    ])),
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
+    responsor_decorator_1.Responsor.paginate(),
+    responsor_decorator_1.Responsor.handle('Get articles'),
+    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [article_dto_1.ArticlePaginateQueryDTO]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticles", null);
 __decorate([
+    (0, common_1.Get)('hot'),
+    responsor_decorator_1.Responsor.handle('Get hot articles'),
+    __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [article_dto_1.ArticleListQueryDTO]),
+    __metadata("design:returntype", Promise)
+], ArticleController.prototype, "getHotArticles", null);
+__decorate([
+    (0, common_1.Get)('related/:id'),
+    responsor_decorator_1.Responsor.handle('Get related articles'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    __param(1, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, article_dto_1.ArticleListQueryDTO]),
+    __metadata("design:returntype", Promise)
+], ArticleController.prototype, "getRelatedArticles", null);
+__decorate([
     (0, common_1.Get)(':id'),
-    (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle({
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
+    responsor_decorator_1.Responsor.handle({
         message: 'Get article detail',
         error: common_1.HttpStatus.NOT_FOUND,
     }),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticle", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Create article'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Create article'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_model_1.Article]),
+    __metadata("design:paramtypes", [article_model_2.Article]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "createArticle", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update article'),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update article'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, article_model_1.Article]),
+    __metadata("design:paramtypes", [Object, article_model_2.Article]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "putArticle", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Delete article'),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Delete article'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "delArticle", null);
 __decorate([
     (0, common_1.Patch)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update articles'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update articles'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_model_1.ArticlesStatePayload]),
+    __metadata("design:paramtypes", [article_dto_1.ArticlesStateDTO]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "patchArticles", null);
 __decorate([
     (0, common_1.Delete)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Delete articles'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Delete articles'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_model_1.ArticlesPayload]),
+    __metadata("design:paramtypes", [article_dto_1.ArticleIDsDTO]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "delArticles", null);
 ArticleController = __decorate([

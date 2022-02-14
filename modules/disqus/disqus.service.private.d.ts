@@ -1,7 +1,7 @@
 /// <reference types="multer" />
 import { ArticleService } from '@app/modules/article/article.service';
 import { CommentService } from '@app/modules/comment/comment.service';
-import { GeneralDisqusParams } from './disqus.model';
+import { GeneralDisqusParams } from './disqus.dto';
 export declare class DisqusPrivateService {
     private readonly articleService;
     private readonly commentService;

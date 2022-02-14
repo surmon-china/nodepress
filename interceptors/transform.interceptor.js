@@ -24,52 +24,51 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransformInterceptor = exports.transformDataToPaginate = void 0;
+exports.TransformInterceptor = void 0;
 const operators_1 = require("rxjs/operators");
-const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
-const http_interface_1 = require("../interfaces/http.interface");
-const META = __importStar(require("../constants/meta.constant"));
+const response_interface_1 = require("../interfaces/response.interface");
+const responsor_decorator_1 = require("../decorators/responsor.decorator");
 const TEXT = __importStar(require("../constants/text.constant"));
-function transformDataToPaginate(data, request) {
-    return {
-        data: data.documents,
-        params: (request === null || request === void 0 ? void 0 : request.queryParams) || null,
-        pagination: {
-            total: data.total,
-            current_page: data.page,
-            per_page: data.perPage,
-            total_page: data.totalPage,
-        },
-    };
-}
-exports.transformDataToPaginate = transformDataToPaginate;
 let TransformInterceptor = class TransformInterceptor {
-    constructor(reflector) {
-        this.reflector = reflector;
-    }
     intercept(context, next) {
         const call$ = next.handle();
         const target = context.getHandler();
+        const { successMessage, transform, paginate } = (0, responsor_decorator_1.getResponsorOptions)(target);
+        if (!transform) {
+            return call$;
+        }
         const request = context.switchToHttp().getRequest();
-        const message = this.reflector.get(META.HTTP_SUCCESS_MESSAGE, target);
-        const usePaginate = this.reflector.get(META.HTTP_RES_TRANSFORM_PAGINATE, target);
         return call$.pipe((0, operators_1.map)((data) => {
             return {
-                result: usePaginate ? transformDataToPaginate(data, request) : data,
-                status: http_interface_1.ResponseStatus.Success,
-                message: message || TEXT.HTTP_DEFAULT_SUCCESS_TEXT,
+                status: response_interface_1.ResponseStatus.Success,
+                message: successMessage || TEXT.HTTP_DEFAULT_SUCCESS_TEXT,
+                params: {
+                    isAuthenticated: request.isAuthenticated(),
+                    isUnauthenticated: request.isUnauthenticated(),
+                    url: request.url,
+                    method: request.method,
+                    routes: request.params,
+                    payload: request.$validatedPayload || {},
+                },
+                result: paginate
+                    ? {
+                        data: data.documents,
+                        pagination: {
+                            total: data.total,
+                            current_page: data.page,
+                            per_page: data.perPage,
+                            total_page: data.totalPage,
+                        },
+                    }
+                    : data,
             };
         }));
     }
 };
 TransformInterceptor = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [core_1.Reflector])
+    (0, common_1.Injectable)()
 ], TransformInterceptor);
 exports.TransformInterceptor = TransformInterceptor;
 //# sourceMappingURL=transform.interceptor.js.map

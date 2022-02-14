@@ -15,12 +15,12 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const model_transformer_1 = require("../../transformers/model.transformer");
 exports.DEFAULT_OPTION = Object.freeze({
-    title: '',
-    sub_title: '',
-    description: '',
+    title: 'NodePress',
+    sub_title: 'blog server app',
+    description: 'RESTful API service for blog',
     keywords: [],
-    site_url: '',
-    site_email: '',
+    site_url: 'https://github.com/surmon-china/nodepress',
+    site_email: 'admin@example.com',
     blocklist: {
         ips: [],
         mails: [],
@@ -29,32 +29,32 @@ exports.DEFAULT_OPTION = Object.freeze({
     meta: { likes: 0 },
     ad_config: '',
 });
-class Meta {
+class AppMeta {
 }
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, typegoose_1.prop)({ default: 0 }),
     __metadata("design:type", Number)
-], Meta.prototype, "likes", void 0);
+], AppMeta.prototype, "likes", void 0);
 class Blocklist {
 }
 __decorate([
-    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
     (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
 ], Blocklist.prototype, "ips", void 0);
 __decorate([
-    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
     (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
 ], Blocklist.prototype, "mails", void 0);
 __decorate([
-    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
     (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
@@ -63,34 +63,34 @@ exports.Blocklist = Blocklist;
 let Option = class Option {
 };
 __decorate([
-    (0, class_validator_1.IsNotEmpty)({ message: 'title?' }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)({ message: 'title?' }),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Option.prototype, "title", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)({ message: 'sub title?' }),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)({ message: 'sub title?' }),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Option.prototype, "sub_title", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true }),
     __metadata("design:type", String)
 ], Option.prototype, "description", void 0);
 __decorate([
-    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
     (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
 ], Option.prototype, "keywords", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsUrl)({ require_protocol: true }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true }),
     __metadata("design:type", String)
 ], Option.prototype, "site_url", void 0);
@@ -102,15 +102,15 @@ __decorate([
     __metadata("design:type", String)
 ], Option.prototype, "site_email", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ _id: false }),
-    __metadata("design:type", Meta)
+    (0, typegoose_1.prop)({ _id: false, default: Object.assign({}, exports.DEFAULT_OPTION.meta) }),
+    __metadata("design:type", AppMeta)
 ], Option.prototype, "meta", void 0);
 __decorate([
     (0, class_transformer_1.Type)(() => Blocklist),
     (0, class_validator_1.ValidateNested)(),
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ _id: false }),
+    (0, typegoose_1.prop)({ _id: false, default: Object.assign({}, exports.DEFAULT_OPTION.blocklist) }),
     __metadata("design:type", Blocklist)
 ], Option.prototype, "blocklist", void 0);
 __decorate([

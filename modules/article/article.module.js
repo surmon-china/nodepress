@@ -18,7 +18,7 @@ let ArticleModule = class ArticleModule {
 };
 ArticleModule = __decorate([
     (0, common_1.Module)({
-        imports: [tag_module_1.TagModule, category_module_1.CategoryModule, archive_module_1.ArchiveModule],
+        imports: [archive_module_1.ArchiveModule, category_module_1.CategoryModule, tag_module_1.TagModule],
         controllers: [article_controller_1.ArticleController],
         providers: [article_model_1.ArticleProvider, article_service_1.ArticleService],
         exports: [article_service_1.ArticleService],

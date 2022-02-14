@@ -11,6 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -18,22 +29,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnnouncementController = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
-const auth_guard_1 = require("../../guards/auth.guard");
-const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
-const query_params_decorator_1 = require("../../decorators/query-params.decorator");
-const http_decorator_1 = require("../../decorators/http.decorator");
-const announcement_model_1 = require("./announcement.model");
+const admin_only_guard_1 = require("../../guards/admin-only.guard");
+const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
+const permission_pipe_1 = require("../../pipes/permission.pipe");
+const expose_pipe_1 = require("../../pipes/expose.pipe");
+const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const announcement_dto_1 = require("./announcement.dto");
 const announcement_service_1 = require("./announcement.service");
+const announcement_model_1 = require("./announcement.model");
 let AnnouncementController = class AnnouncementController {
     constructor(announcementService) {
         this.announcementService = announcementService;
     }
-    getAnnouncements({ querys, options, origin }) {
-        const keyword = lodash_1.default.trim(origin.keyword);
+    getAnnouncements(query) {
+        const { sort, page, per_page } = query, filters = __rest(query, ["sort", "page", "per_page"]);
+        const { keyword, state } = filters;
+        const paginateQuery = {};
         if (keyword) {
-            querys.content = new RegExp(keyword, 'i');
+            paginateQuery.content = new RegExp(lodash_1.default.trim(keyword), 'i');
         }
-        return this.announcementService.paginater(querys, options);
+        if (state != null) {
+            paginateQuery.state = state;
+        }
+        return this.announcementService.paginater(paginateQuery, {
+            page,
+            perPage: per_page,
+            dateSort: sort,
+        });
     }
     createAnnouncement(announcement) {
         return this.announcementService.create(announcement);
@@ -50,18 +73,18 @@ let AnnouncementController = class AnnouncementController {
 };
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
-    http_decorator_1.HttpProcessor.paginate(),
-    http_decorator_1.HttpProcessor.handle('Get announcements'),
-    __param(0, (0, query_params_decorator_1.QueryParams)([query_params_decorator_1.QueryParamsField.State])),
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
+    responsor_decorator_1.Responsor.paginate(),
+    responsor_decorator_1.Responsor.handle('Get announcements'),
+    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [announcement_dto_1.AnnouncementPaginateQueryDTO]),
     __metadata("design:returntype", Promise)
 ], AnnouncementController.prototype, "getAnnouncements", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Create announcement'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Create announcement'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_model_1.Announcement]),
@@ -69,18 +92,18 @@ __decorate([
 ], AnnouncementController.prototype, "createAnnouncement", null);
 __decorate([
     (0, common_1.Delete)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Delete announcements'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Delete announcements'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [announcement_model_1.AnnouncementsPayload]),
+    __metadata("design:paramtypes", [announcement_dto_1.AnnouncementsDTO]),
     __metadata("design:returntype", void 0)
 ], AnnouncementController.prototype, "delAnnouncements", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update announcement'),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update announcement'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, announcement_model_1.Announcement]),
@@ -88,9 +111,9 @@ __decorate([
 ], AnnouncementController.prototype, "putAnnouncement", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Delete announcement'),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Delete announcement'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)

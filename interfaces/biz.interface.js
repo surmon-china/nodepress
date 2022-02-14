@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SortType = exports.CommentParentID = exports.CommentPostID = exports.CommentState = exports.OriginState = exports.PublicState = exports.PublishState = void 0;
+exports.CommentParentID = exports.CommentPostID = exports.CommentState = exports.OriginState = exports.PublicState = exports.PublishState = exports.SortType = void 0;
+var SortType;
+(function (SortType) {
+    SortType[SortType["Asc"] = 1] = "Asc";
+    SortType[SortType["Desc"] = -1] = "Desc";
+    SortType[SortType["Hot"] = 2] = "Hot";
+})(SortType = exports.SortType || (exports.SortType = {}));
 var PublishState;
 (function (PublishState) {
     PublishState[PublishState["Draft"] = 0] = "Draft";
@@ -9,9 +15,9 @@ var PublishState;
 })(PublishState = exports.PublishState || (exports.PublishState = {}));
 var PublicState;
 (function (PublicState) {
-    PublicState[PublicState["Password"] = 0] = "Password";
     PublicState[PublicState["Public"] = 1] = "Public";
     PublicState[PublicState["Secret"] = -1] = "Secret";
+    PublicState[PublicState["Reserve"] = 0] = "Reserve";
 })(PublicState = exports.PublicState || (exports.PublicState = {}));
 var OriginState;
 (function (OriginState) {
@@ -34,10 +40,4 @@ var CommentParentID;
 (function (CommentParentID) {
     CommentParentID[CommentParentID["Self"] = 0] = "Self";
 })(CommentParentID = exports.CommentParentID || (exports.CommentParentID = {}));
-var SortType;
-(function (SortType) {
-    SortType[SortType["Asc"] = 1] = "Asc";
-    SortType[SortType["Desc"] = -1] = "Desc";
-    SortType[SortType["Hot"] = 2] = "Hot";
-})(SortType = exports.SortType || (exports.SortType = {}));
 //# sourceMappingURL=biz.interface.js.map

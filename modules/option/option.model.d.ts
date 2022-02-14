@@ -1,5 +1,5 @@
-export declare const DEFAULT_OPTION: Readonly<Option>;
-declare class Meta {
+export declare const DEFAULT_OPTION: Option;
+declare class AppMeta {
     likes: number;
 }
 export declare class Blocklist {
@@ -14,7 +14,7 @@ export declare class Option {
     keywords: string[];
     site_url: string;
     site_email: string;
-    meta: Meta;
+    meta: AppMeta;
     blocklist: Blocklist;
     ad_config: string;
     update_at?: Date;

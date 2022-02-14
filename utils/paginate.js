@@ -10,12 +10,16 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.paginate = exports.mongoosePaginate = void 0;
+const merge_1 = __importDefault(require("lodash/merge"));
 const DEFAULT_OPTIONS = Object.freeze({
     page: 1,
     perPage: 16,
-    offset: 0,
+    dateSort: -1,
     lean: false,
 });
 function mongoosePaginate(schema) {
@@ -23,10 +27,10 @@ function mongoosePaginate(schema) {
 }
 exports.mongoosePaginate = mongoosePaginate;
 function paginate(filterQuery = {}, options = {}) {
-    const _a = Object.assign(Object.assign({}, DEFAULT_OPTIONS), options), { page, perPage, offset, select, queryOptions } = _a, resetOptions = __rest(_a, ["page", "perPage", "offset", "select", "queryOptions"]);
-    const skip = offset > 0 ? offset : (page - 1) * perPage;
+    const _a = (0, merge_1.default)(Object.assign({}, DEFAULT_OPTIONS), Object.assign({}, options)), { page, perPage, dateSort, projection, $queryOptions } = _a, resetOptions = __rest(_a, ["page", "perPage", "dateSort", "projection", "$queryOptions"]);
+    const findQueryOptions = Object.assign(Object.assign({}, resetOptions), $queryOptions);
     const countQuery = this.countDocuments ? this.countDocuments(filterQuery).exec() : this.count(filterQuery).exec();
-    const pageQuery = this.find(filterQuery, select, Object.assign(Object.assign({ skip, limit: perPage }, resetOptions), queryOptions)).exec();
+    const pageQuery = this.find(filterQuery, projection, Object.assign({ skip: (page - 1) * perPage, limit: perPage, sort: dateSort ? { _id: dateSort } : findQueryOptions.sort }, findQueryOptions)).exec();
     return Promise.all([countQuery, pageQuery]).then(([countResult, pageResult]) => {
         const result = {
             documents: pageResult,

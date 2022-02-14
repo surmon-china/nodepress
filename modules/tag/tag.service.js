@@ -47,90 +47,88 @@ const tag_model_1 = require("./tag.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 let TagService = class TagService {
-    constructor(cacheService, archiveService, seoService, tagModel, articleModel) {
+    constructor(seoService, cacheService, archiveService, tagModel, articleModel) {
+        this.seoService = seoService;
         this.cacheService = cacheService;
         this.archiveService = archiveService;
-        this.seoService = seoService;
         this.tagModel = tagModel;
         this.articleModel = articleModel;
-        this.tagPaginateCache = this.cacheService.promise({
+        this.allTagsCache = this.cacheService.promise({
             ioMode: true,
-            key: CACHE_KEY.TAGS,
-            promise: () => {
-                const options = {
-                    page: 1,
-                    perPage: 168,
-                    sort: { _id: biz_interface_1.SortType.Desc },
-                };
-                return this.paginater(null, options, true);
-            },
+            key: CACHE_KEY.ALL_TAGS,
+            promise: () => this.getAllTags(),
         });
-        this.updatePaginateCache().catch((error) => {
+        this.updateAllTagsCache().catch((error) => {
             logger_1.default.warn('[tag]', 'init tagPaginateCache', error);
         });
     }
-    getPaginateCache() {
-        return this.tagPaginateCache.get();
+    async aggregate(publicOnly, documents) {
+        const counts = await this.articleModel.aggregate([
+            { $match: publicOnly ? article_model_1.ARTICLE_GUEST_QUERY_FILTER : {} },
+            { $unwind: '$tag' },
+            { $group: { _id: '$tag', count: { $sum: 1 } } },
+        ]);
+        const hydratedDocs = documents.map((tag) => {
+            const found = counts.find((item) => String(item._id) === String(tag._id));
+            return Object.assign(Object.assign({}, tag), { articles_count: found ? found.count : 0 });
+        });
+        return hydratedDocs;
     }
-    updatePaginateCache() {
-        return this.tagPaginateCache.update();
+    async getAllTags() {
+        const allTags = await this.tagModel.find().lean().sort({ _id: biz_interface_1.SortType.Desc }).exec();
+        const documents = await this.aggregate(true, allTags);
+        return documents;
+    }
+    getAllTagsCache() {
+        return this.allTagsCache.get();
+    }
+    updateAllTagsCache() {
+        return this.allTagsCache.update();
     }
     async paginater(querys, options, publicOnly) {
-        const matchState = {
-            state: biz_interface_1.PublishState.Published,
-            public: biz_interface_1.PublicState.Public,
-        };
         const tags = await this.tagModel.paginate(querys, Object.assign(Object.assign({}, options), { lean: true }));
-        const counts = await this.articleModel.aggregate([
-            { $match: publicOnly ? matchState : {} },
-            { $unwind: '$tag' },
-            { $group: { _id: '$tag', num_tutorial: { $sum: 1 } } },
-        ]);
-        const hydratedDocs = tags.documents.map((tag) => {
-            const found = counts.find((count) => String(count._id) === String(tag._id));
-            return Object.assign(Object.assign({}, tag), { count: found ? found.num_tutorial : 0 });
-        });
-        return Object.assign(Object.assign({}, tags), { documents: hydratedDocs });
+        const documents = await this.aggregate(publicOnly, tags.documents);
+        return Object.assign(Object.assign({}, tags), { documents });
     }
     getDetailBySlug(slug) {
         return this.tagModel
             .findOne({ slug })
             .exec()
-            .then((result) => result || Promise.reject(`Tag "${slug}" not found`));
+            .then((result) => result || Promise.reject(`Tag '${slug}' not found`));
     }
     async create(newTag) {
         const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
         if (existedTag) {
-            throw `Tag slug "${newTag.slug}" is existed`;
+            throw `Tag slug '${newTag.slug}' is existed`;
         }
         const tag = await this.tagModel.create(newTag);
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
-        this.updatePaginateCache();
+        this.updateAllTagsCache();
         return tag;
     }
     async update(tagID, newTag) {
         const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
         if (existedTag && String(existedTag._id) !== String(tagID)) {
-            throw `Tag slug "${newTag.slug}" is existed`;
+            throw `Tag slug '${newTag.slug}' is existed`;
         }
         const tag = await this.tagModel.findByIdAndUpdate(tagID, newTag, { new: true }).exec();
         if (!tag) {
-            throw `Tag "${tagID}" not found`;
+            throw `Tag '${tagID}' not found`;
         }
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
-        this.updatePaginateCache();
+        this.updateAllTagsCache();
         return tag;
     }
     async delete(tagID) {
         const tag = await this.tagModel.findByIdAndRemove(tagID).exec();
         if (!tag) {
-            throw `Tag "${tagID}" not found`;
+            throw `Tag '${tagID}' not found`;
         }
         this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
-        this.updatePaginateCache();
+        this.updateAllTagsCache();
         return tag;
     }
     async batchDelete(tagIDs) {
@@ -138,17 +136,20 @@ let TagService = class TagService {
         this.seoService.delete(tags.map((tag) => (0, urlmap_transformer_1.getTagUrl)(tag.slug)));
         const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIDs } }).exec();
         this.archiveService.updateCache();
-        this.updatePaginateCache();
+        this.updateAllTagsCache();
         return actionResult;
+    }
+    async getTotalCount() {
+        return await this.tagModel.countDocuments().exec();
     }
 };
 TagService = __decorate([
     (0, common_1.Injectable)(),
     __param(3, (0, model_transformer_1.InjectModel)(tag_model_1.Tag)),
     __param(4, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
-    __metadata("design:paramtypes", [cache_service_1.CacheService,
-        archive_service_1.ArchiveService,
-        helper_service_seo_1.SeoService, Object, Object])
+    __metadata("design:paramtypes", [helper_service_seo_1.SeoService,
+        cache_service_1.CacheService,
+        archive_service_1.ArchiveService, Object, Object])
 ], TagService);
 exports.TagService = TagService;
 //# sourceMappingURL=tag.service.js.map

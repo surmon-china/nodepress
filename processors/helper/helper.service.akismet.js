@@ -31,18 +31,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AkismetService = exports.AkismetActionType = void 0;
+exports.AkismetService = exports.AkismetAction = void 0;
 const akismet_api_1 = __importDefault(require("akismet-api"));
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
-var AkismetActionType;
-(function (AkismetActionType) {
-    AkismetActionType["CheckSpam"] = "checkSpam";
-    AkismetActionType["SubmitSpam"] = "submitSpam";
-    AkismetActionType["SubmitHam"] = "submitHam";
-})(AkismetActionType = exports.AkismetActionType || (exports.AkismetActionType = {}));
+var AkismetAction;
+(function (AkismetAction) {
+    AkismetAction["CheckSpam"] = "checkSpam";
+    AkismetAction["SubmitSpam"] = "submitSpam";
+    AkismetAction["SubmitHam"] = "submitHam";
+})(AkismetAction = exports.AkismetAction || (exports.AkismetAction = {}));
 let AkismetService = class AkismetService {
     constructor() {
         this.clientIsValid = false;
@@ -79,7 +79,7 @@ let AkismetService = class AkismetService {
                 logger_1.default.info(`[Akismet]`, `${handleType}...`, new Date());
                 this.client[handleType](content)
                     .then((result) => {
-                    if (handleType === AkismetActionType.CheckSpam && result) {
+                    if (handleType === AkismetAction.CheckSpam && result) {
                         logger_1.default.warn(`[Akismet]`, `${handleType} found SPAM！`, new Date(), content);
                         reject('SPAM!');
                     }
@@ -97,13 +97,13 @@ let AkismetService = class AkismetService {
         };
     }
     checkSpam(payload) {
-        return this.makeInterceptor(AkismetActionType.CheckSpam)(payload);
+        return this.makeInterceptor(AkismetAction.CheckSpam)(payload);
     }
     submitSpam(payload) {
-        return this.makeInterceptor(AkismetActionType.SubmitSpam)(payload);
+        return this.makeInterceptor(AkismetAction.SubmitSpam)(payload);
     }
     submitHam(payload) {
-        return this.makeInterceptor(AkismetActionType.SubmitHam)(payload);
+        return this.makeInterceptor(AkismetAction.SubmitHam)(payload);
     }
 };
 AkismetService = __decorate([

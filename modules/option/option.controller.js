@@ -14,10 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OptionController = void 0;
 const common_1 = require("@nestjs/common");
-const query_params_decorator_1 = require("../../decorators/query-params.decorator");
-const http_decorator_1 = require("../../decorators/http.decorator");
-const auth_guard_1 = require("../../guards/auth.guard");
-const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
+const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const admin_only_guard_1 = require("../../guards/admin-only.guard");
+const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const option_service_1 = require("./option.service");
 const option_model_1 = require("./option.model");
 let OptionController = class OptionController {
@@ -25,7 +25,7 @@ let OptionController = class OptionController {
         this.optionService = optionService;
     }
     getOption({ isAuthenticated }) {
-        return isAuthenticated ? this.optionService.getAppOption() : this.optionService.getOptionUserCache();
+        return isAuthenticated ? this.optionService.ensureAppOption() : this.optionService.getOptionCacheForGuest();
     }
     putOption(option) {
         return this.optionService.putOption(option);
@@ -33,17 +33,17 @@ let OptionController = class OptionController {
 };
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Get site options'),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
+    responsor_decorator_1.Responsor.handle('Get site options'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], OptionController.prototype, "getOption", null);
 __decorate([
     (0, common_1.Put)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update site options'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update site options'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [option_model_1.Option]),

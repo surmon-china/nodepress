@@ -1,21 +1,15 @@
+import { QueryParamsResult } from '@app/decorators/queryparams.decorator';
 import { PaginateResult } from '@app/utils/paginate';
-import { Tag, TagsPayload } from './tag.model';
+import { TagsDTO, TagPaginateQueryDTO } from './tag.dto';
 import { TagService } from './tag.service';
+import { Tag } from './tag.model';
 export declare class TagController {
     private readonly tagService;
     constructor(tagService: TagService);
-    getTags({ querys, options, origin, isAuthenticated }: {
-        querys: any;
-        options: any;
-        origin: any;
-        isAuthenticated: any;
-    }): Promise<PaginateResult<Tag>>;
+    getTags(query: TagPaginateQueryDTO, { isUnauthenticated }: QueryParamsResult): Promise<PaginateResult<Tag>>;
+    getAllTags(): Promise<Array<Tag>>;
     createTag(tag: Tag): Promise<Tag>;
-    delTags(body: TagsPayload): Promise<import("mongodb").DeleteResult>;
-    putTag({ params }: {
-        params: any;
-    }, tag: Tag): Promise<Tag>;
-    delTag({ params }: {
-        params: any;
-    }): Promise<Tag>;
+    delTags(body: TagsDTO): Promise<import("mongodb").DeleteResult>;
+    putTag({ params }: QueryParamsResult, tag: Tag): Promise<Tag>;
+    delTag({ params }: QueryParamsResult): Promise<Tag>;
 }

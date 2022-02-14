@@ -20,8 +20,8 @@ let AnnouncementService = class AnnouncementService {
     constructor(announcementModel) {
         this.announcementModel = announcementModel;
     }
-    paginater(querys, options) {
-        return this.announcementModel.paginate(querys, options);
+    paginater(query, options) {
+        return this.announcementModel.paginate(query, options);
     }
     create(announcement) {
         return this.announcementModel.create(announcement);
@@ -30,13 +30,13 @@ let AnnouncementService = class AnnouncementService {
         return this.announcementModel
             .findByIdAndUpdate(announcementID, announcement, { new: true })
             .exec()
-            .then((result) => result || Promise.reject(`Announcement "${announcementID}" not found`));
+            .then((result) => result || Promise.reject(`Announcement '${announcementID}' not found`));
     }
     delete(announcementID) {
         return this.announcementModel
             .findByIdAndRemove(announcementID)
             .exec()
-            .then((result) => result || Promise.reject(`Announcement "${announcementID}" not found`));
+            .then((result) => result || Promise.reject(`Announcement '${announcementID}' not found`));
     }
     batchDelete(announcementIDs) {
         return this.announcementModel.deleteMany({ _id: { $in: announcementIDs } }).exec();

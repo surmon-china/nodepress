@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TagProvider = exports.TagsPayload = exports.Tag = void 0;
+exports.TagProvider = exports.Tag = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
@@ -43,12 +43,6 @@ __decorate([
     __metadata("design:type", String)
 ], Tag.prototype, "description", void 0);
 __decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ArrayUnique)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.Extend] }),
-    __metadata("design:type", Array)
-], Tag.prototype, "extends", void 0);
-__decorate([
     (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
     __metadata("design:type", Date)
 ], Tag.prototype, "create_at", void 0);
@@ -56,6 +50,12 @@ __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
 ], Tag.prototype, "update_at", void 0);
+__decorate([
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ArrayUnique)(),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.ExtendModel] }),
+    __metadata("design:type", Array)
+], Tag.prototype, "extends", void 0);
 Tag = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.generalAutoIncrementIDConfig),
@@ -69,14 +69,5 @@ Tag = __decorate([
     })
 ], Tag);
 exports.Tag = Tag;
-class TagsPayload {
-}
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ArrayNotEmpty)(),
-    (0, class_validator_1.ArrayUnique)(),
-    __metadata("design:type", Array)
-], TagsPayload.prototype, "tag_ids", void 0);
-exports.TagsPayload = TagsPayload;
 exports.TagProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Tag);
 //# sourceMappingURL=tag.model.js.map

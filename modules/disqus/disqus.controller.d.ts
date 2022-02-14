@@ -1,9 +1,10 @@
 /// <reference types="multer" />
-import { CreateCommentBase } from '@app/modules/comment/comment.model';
+import { QueryParamsResult } from '@app/decorators/queryparams.decorator';
+import { CommentBase } from '@app/modules/comment/comment.model';
 import { AccessToken } from '@app/utils/disqus';
 import { DisqusPublicService } from './disqus.service.public';
 import { DisqusPrivateService } from './disqus.service.private';
-import { CallbackCodePayload, ThreadPostIDPayload, CommentIDPayload, GeneralDisqusParams } from './disqus.model';
+import { CallbackCodeDTO, ThreadPostIdDTO, CommentIdDTO, GeneralDisqusParams } from './disqus.dto';
 export declare class DisqusController {
     private readonly disqusPublicService;
     private readonly disqusPrivateService;
@@ -14,14 +15,12 @@ export declare class DisqusController {
         public_key: string;
         authorize_url: string;
     };
-    oauthCallback(query: CallbackCodePayload, response: any): Promise<void>;
+    oauthCallback(query: CallbackCodeDTO, response: any): Promise<void>;
     oauthLogout(token: AccessToken | null, response: any): void;
     getUserInfo(token: AccessToken | null): Promise<any>;
-    getThread(query: ThreadPostIDPayload): Promise<any>;
-    createComment(comment: CreateCommentBase, { visitor }: {
-        visitor: any;
-    }, token: AccessToken | null): Promise<import("@app/modules/comment/comment.model").Comment>;
-    deleteComment(payload: CommentIDPayload, token: AccessToken | null): Promise<import("@app/modules/comment/comment.model").Comment>;
+    getThread(query: ThreadPostIdDTO): Promise<any>;
+    createComment({ visitor }: QueryParamsResult, token: AccessToken | null, comment: CommentBase): Promise<import("../../interfaces/mongoose.interface").MongooseDoc<import("@app/modules/comment/comment.model").Comment>>;
+    deleteComment(payload: CommentIdDTO, token: AccessToken | null): Promise<import("../../interfaces/mongoose.interface").MongooseDoc<import("@app/modules/comment/comment.model").Comment>>;
     getThreads(query: GeneralDisqusParams): Promise<{
         code: number;
         response: any;

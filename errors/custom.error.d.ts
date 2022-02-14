@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { ExceptionOption } from '@app/interfaces/http.interface';
+import { ExceptionInfo } from '@app/interfaces/response.interface';
 export declare class CustomError extends HttpException {
-    constructor(options: ExceptionOption, statusCode?: HttpStatus);
+    constructor(options: ExceptionInfo, statusCode?: HttpStatus);
 }

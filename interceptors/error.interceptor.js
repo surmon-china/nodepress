@@ -24,35 +24,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ErrorInterceptor = void 0;
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
-const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
+const responsor_decorator_1 = require("../decorators/responsor.decorator");
 const custom_error_1 = require("../errors/custom.error");
-const META = __importStar(require("../constants/meta.constant"));
 const TEXT = __importStar(require("../constants/text.constant"));
 let ErrorInterceptor = class ErrorInterceptor {
-    constructor(reflector) {
-        this.reflector = reflector;
-    }
     intercept(context, next) {
         const call$ = next.handle();
         const target = context.getHandler();
-        const statusCode = this.reflector.get(META.HTTP_ERROR_CODE, target);
-        const message = this.reflector.get(META.HTTP_ERROR_MESSAGE, target);
+        const { errorCode, errorMessage } = (0, responsor_decorator_1.getResponsorOptions)(target);
         return call$.pipe((0, operators_1.catchError)((error) => {
-            return (0, rxjs_1.throwError)(() => new custom_error_1.CustomError({ message: message || TEXT.HTTP_DEFAULT_ERROR_TEXT, error }, statusCode));
+            return (0, rxjs_1.throwError)(() => new custom_error_1.CustomError({ message: errorMessage || TEXT.HTTP_DEFAULT_ERROR_TEXT, error }, errorCode));
         }));
     }
 };
 ErrorInterceptor = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [core_1.Reflector])
+    (0, common_1.Injectable)()
 ], ErrorInterceptor);
 exports.ErrorInterceptor = ErrorInterceptor;
 //# sourceMappingURL=error.interceptor.js.map

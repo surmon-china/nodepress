@@ -90,19 +90,19 @@ let DisqusPublicService = class DisqusPublicService {
             return Promise.reject(error);
         });
     }
-    makeSureThreadDetail(postID) {
+    ensureThreadDetail(postID) {
         return this.disqus
             .request('threads/details', { forum: app_config_1.DISQUS.forum, thread: `link:${(0, urlmap_transformer_1.getPermalinkByID)(postID)}` })
             .then((response) => response.response)
             .catch(() => this.disqusPrivateService.createThread(postID));
     }
-    async makeSureThreadDetailCache(postID) {
+    async ensureThreadDetailCache(postID) {
         const cacheKey = (0, cache_constant_1.getDisqusCacheKey)(`thread-post-${postID}`);
         const cached = await this.cacheService.get(cacheKey);
         if (cached) {
             return cached;
         }
-        const result = await this.makeSureThreadDetail(postID);
+        const result = await this.ensureThreadDetail(postID);
         this.cacheService.set(cacheKey, result, { ttl: 60 * 60 * 24 });
         return result;
     }
@@ -153,7 +153,7 @@ let DisqusPublicService = class DisqusPublicService {
     async createUniversalComment(comment, visitor, accessToken) {
         const newComment = this.commentService.normalizeNewComment(comment, visitor);
         await this.commentService.isCommentableTarget(newComment.post_id);
-        const thread = await this.makeSureThreadDetailCache(newComment.post_id);
+        const thread = await this.ensureThreadDetailCache(newComment.post_id);
         await this.commentService.isNotBlocklisted(newComment);
         let parentID = null;
         if (Boolean(newComment.pid)) {
@@ -196,7 +196,7 @@ let DisqusPublicService = class DisqusPublicService {
         if (!comment) {
             throw 'Comment not found';
         }
-        const extendsObject = (0, extend_transformer_1.getExtendsObject)(comment.extends);
+        const extendsObject = (0, extend_transformer_1.getExtendObject)(comment.extends);
         const commentDisqusPostID = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY];
         const commentDisqusAuthorID = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY];
         if (!commentDisqusAuthorID || !commentDisqusPostID) {
@@ -204,7 +204,7 @@ let DisqusPublicService = class DisqusPublicService {
         }
         const userInfo = await this.getUserInfo(accessToken);
         if (userInfo.id !== commentDisqusAuthorID) {
-            throw `You do not have write privileges on comment ${commentID}`;
+            throw `You do not have write privileges on comment '${commentID}'`;
         }
         await this.deleteDisqusComment({
             post: commentDisqusPostID,

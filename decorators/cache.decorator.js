@@ -22,9 +22,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HttpCache = void 0;
+exports.getHttpCacheTTL = exports.getHttpCacheKey = exports.HttpCache = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
+const reflector_constant_1 = require("../constants/reflector.constant");
 const META = __importStar(require("../constants/meta.constant"));
 function HttpCache(...args) {
     const option = args[0];
@@ -33,7 +34,7 @@ function HttpCache(...args) {
     const ttl = isOption(option) ? option.ttl : args[1] || null;
     return (_, __, descriptor) => {
         if (key) {
-            (0, common_1.CacheKey)(key)(descriptor.value);
+            (0, common_1.SetMetadata)(META.HTTP_CACHE_KEY_METADATA, key)(descriptor.value);
         }
         if (ttl) {
             (0, common_1.SetMetadata)(META.HTTP_CACHE_TTL_METADATA, ttl)(descriptor.value);
@@ -42,4 +43,12 @@ function HttpCache(...args) {
     };
 }
 exports.HttpCache = HttpCache;
+const getHttpCacheKey = (target) => {
+    return reflector_constant_1.reflector.get(META.HTTP_CACHE_KEY_METADATA, target);
+};
+exports.getHttpCacheKey = getHttpCacheKey;
+const getHttpCacheTTL = (target) => {
+    return reflector_constant_1.reflector.get(META.HTTP_CACHE_TTL_METADATA, target);
+};
+exports.getHttpCacheTTL = getHttpCacheTTL;
 //# sourceMappingURL=cache.decorator.js.map

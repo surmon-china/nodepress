@@ -9,22 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Extend = void 0;
+exports.ExtendModel = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
-class Extend {
+class ExtendModel {
 }
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: false, validate: /\S+/ }),
     __metadata("design:type", String)
-], Extend.prototype, "name", void 0);
+], ExtendModel.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: false, validate: /\S+/ }),
     __metadata("design:type", String)
-], Extend.prototype, "value", void 0);
-exports.Extend = Extend;
+], ExtendModel.prototype, "value", void 0);
+exports.ExtendModel = ExtendModel;
 //# sourceMappingURL=extend.model.js.map

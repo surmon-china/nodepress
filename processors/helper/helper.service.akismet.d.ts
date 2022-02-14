@@ -1,4 +1,4 @@
-export declare enum AkismetActionType {
+export declare enum AkismetAction {
     CheckSpam = "checkSpam",
     SubmitSpam = "submitSpam",
     SubmitHam = "submitHam"

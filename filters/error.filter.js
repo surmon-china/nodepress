@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpExceptionFilter = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
-const http_interface_1 = require("../interfaces/http.interface");
+const response_interface_1 = require("../interfaces/response.interface");
 const value_constant_1 = require("../constants/value.constant");
 const app_environment_1 = require("../app.environment");
 let HttpExceptionFilter = class HttpExceptionFilter {
@@ -24,10 +24,10 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         const isString = (value) => lodash_1.default.isString(value);
         const errorInfo = isString(errorOption) ? null : errorOption.error;
         const data = {
-            status: http_interface_1.ResponseStatus.Error,
+            status: response_interface_1.ResponseStatus.Error,
             message: isString(errorOption) ? errorOption : errorOption.message,
             error: (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.message) || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
-            debug: app_environment_1.isDevEnv ? exception.stack : value_constant_1.UNDEFINED,
+            debug: app_environment_1.isDevEnv ? errorInfo.stack || exception.stack : value_constant_1.UNDEFINED,
         };
         if (status === common_1.HttpStatus.NOT_FOUND) {
             data.error = data.error || `Not found`;

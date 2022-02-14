@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentProvider = exports.CommentsStatePayload = exports.CommentsPayload = exports.Comment = exports.CreateCommentBase = exports.Author = void 0;
+exports.CommentProvider = exports.Comment = exports.CommentBase = exports.Author = exports.COMMENT_GUEST_QUERY_FILTER = exports.COMMENT_STATES = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_transformer_1 = require("class-transformer");
@@ -20,6 +20,15 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
 const biz_interface_1 = require("../../interfaces/biz.interface");
 const extend_model_1 = require("../../models/extend.model");
+exports.COMMENT_STATES = [
+    biz_interface_1.CommentState.Auditing,
+    biz_interface_1.CommentState.Published,
+    biz_interface_1.CommentState.Deleted,
+    biz_interface_1.CommentState.Spam,
+];
+exports.COMMENT_GUEST_QUERY_FILTER = Object.freeze({
+    state: biz_interface_1.CommentState.Published,
+});
 let Author = class Author {
     get email_hash() {
         var _a;
@@ -28,15 +37,15 @@ let Author = class Author {
     }
 };
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.MaxLength)(20),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Author.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     (0, typegoose_1.prop)(),
     __metadata("design:type", String)
@@ -57,31 +66,31 @@ Author = __decorate([
     })
 ], Author);
 exports.Author = Author;
-class CreateCommentBase {
+class CommentBase {
 }
 __decorate([
-    (0, class_validator_1.IsNotEmpty)({ message: 'post id?' }),
     (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.IsNotEmpty)({ message: 'post ID?' }),
     (0, typegoose_1.prop)({ required: true, index: true }),
     __metadata("design:type", Number)
-], CreateCommentBase.prototype, "post_id", void 0);
+], CommentBase.prototype, "post_id", void 0);
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, typegoose_1.prop)({ default: biz_interface_1.CommentParentID.Self, index: true }),
     __metadata("design:type", Number)
-], CreateCommentBase.prototype, "pid", void 0);
+], CommentBase.prototype, "pid", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)({ message: 'comment content?' }),
-    (0, class_validator_1.IsString)({ message: 'comment content must be string type' }),
-    (0, class_validator_1.MaxLength)(3000),
     (0, class_validator_1.MinLength)(3),
+    (0, class_validator_1.MaxLength)(3000),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)({ message: 'comment content?' }),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
-], CreateCommentBase.prototype, "content", void 0);
+], CommentBase.prototype, "content", void 0);
 __decorate([
     (0, typegoose_1.prop)({ validate: /\S+/ }),
     __metadata("design:type", String)
-], CreateCommentBase.prototype, "agent", void 0);
+], CommentBase.prototype, "agent", void 0);
 __decorate([
     (0, class_transformer_1.Type)(() => Author),
     (0, class_validator_1.ValidateNested)(),
@@ -90,16 +99,16 @@ __decorate([
     (0, class_validator_1.IsDefined)({ message: 'comment author?' }),
     (0, typegoose_1.prop)({ required: true, _id: false }),
     __metadata("design:type", Author)
-], CreateCommentBase.prototype, "author", void 0);
-exports.CreateCommentBase = CreateCommentBase;
-let Comment = class Comment extends CreateCommentBase {
+], CommentBase.prototype, "author", void 0);
+exports.CommentBase = CommentBase;
+let Comment = class Comment extends CommentBase {
 };
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
     __metadata("design:type", Number)
 ], Comment.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)([biz_interface_1.CommentState.Auditing, biz_interface_1.CommentState.Deleted, biz_interface_1.CommentState.Published, biz_interface_1.CommentState.Spam]),
+    (0, class_validator_1.IsIn)(exports.COMMENT_STATES),
     (0, class_validator_1.IsInt)(),
     (0, typegoose_1.prop)({ enum: biz_interface_1.CommentState, default: biz_interface_1.CommentState.Published, index: true }),
     __metadata("design:type", Number)
@@ -133,9 +142,9 @@ __decorate([
     __metadata("design:type", Date)
 ], Comment.prototype, "update_at", void 0);
 __decorate([
-    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayUnique)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.Extend] }),
+    (0, class_validator_1.IsArray)(),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.ExtendModel] }),
     __metadata("design:type", Array)
 ], Comment.prototype, "extends", void 0);
 Comment = __decorate([
@@ -152,28 +161,5 @@ Comment = __decorate([
     })
 ], Comment);
 exports.Comment = Comment;
-class CommentsPayload {
-}
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ArrayNotEmpty)(),
-    (0, class_validator_1.ArrayUnique)(),
-    __metadata("design:type", Array)
-], CommentsPayload.prototype, "comment_ids", void 0);
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ArrayUnique)(),
-    __metadata("design:type", Array)
-], CommentsPayload.prototype, "post_ids", void 0);
-exports.CommentsPayload = CommentsPayload;
-class CommentsStatePayload extends CommentsPayload {
-}
-__decorate([
-    (0, class_validator_1.IsIn)([biz_interface_1.CommentState.Auditing, biz_interface_1.CommentState.Deleted, biz_interface_1.CommentState.Published, biz_interface_1.CommentState.Spam]),
-    (0, class_validator_1.IsInt)(),
-    (0, typegoose_1.prop)({ enum: biz_interface_1.CommentState, default: biz_interface_1.CommentState.Published }),
-    __metadata("design:type", Number)
-], CommentsStatePayload.prototype, "state", void 0);
-exports.CommentsStatePayload = CommentsStatePayload;
 exports.CommentProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Comment);
 //# sourceMappingURL=comment.model.js.map

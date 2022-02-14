@@ -27,7 +27,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OriginMiddleware = void 0;
 const common_1 = require("@nestjs/common");
-const http_interface_1 = require("../interfaces/http.interface");
+const response_interface_1 = require("../interfaces/response.interface");
 const app_environment_1 = require("../app.environment");
 const app_config_1 = require("../app.config");
 const TEXT = __importStar(require("../constants/text.constant"));
@@ -40,7 +40,7 @@ let OriginMiddleware = class OriginMiddleware {
             const isAllowedReferer = isAllowed(referer);
             if (!isAllowedOrigin && !isAllowedReferer) {
                 return response.status(common_1.HttpStatus.UNAUTHORIZED).jsonp({
-                    status: http_interface_1.ResponseStatus.Error,
+                    status: response_interface_1.ResponseStatus.Error,
                     message: TEXT.HTTP_ANONYMOUS_TEXT,
                     error: null,
                 });

@@ -17,15 +17,15 @@ const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const throttler_1 = require("@nestjs/throttler");
 const app_environment_1 = require("../../app.environment");
-const auth_guard_1 = require("../../guards/auth.guard");
-const http_decorator_1 = require("../../decorators/http.decorator");
-const query_params_decorator_1 = require("../../decorators/query-params.decorator");
+const admin_only_guard_1 = require("../../guards/admin-only.guard");
+const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const comment_model_1 = require("../comment/comment.model");
 const app_config_1 = require("../../app.config");
 const disqus_service_public_1 = require("./disqus.service.public");
 const disqus_service_private_1 = require("./disqus.service.private");
 const disqus_token_1 = require("./disqus.token");
-const disqus_model_1 = require("./disqus.model");
+const disqus_dto_1 = require("./disqus.dto");
 let DisqusController = class DisqusController {
     constructor(disqusPublicService, disqusPrivateService) {
         this.disqusPublicService = disqusPublicService;
@@ -65,9 +65,9 @@ let DisqusController = class DisqusController {
         });
     }
     getThread(query) {
-        return this.disqusPublicService.makeSureThreadDetailCache(Number(query.post_id));
+        return this.disqusPublicService.ensureThreadDetailCache(Number(query.post_id));
     }
-    createComment(comment, { visitor }, token) {
+    createComment({ visitor }, token, comment) {
         return this.disqusPublicService.createUniversalComment(comment, visitor, token === null || token === void 0 ? void 0 : token.access_token);
     }
     deleteComment(payload, token) {
@@ -99,7 +99,7 @@ let DisqusController = class DisqusController {
 };
 __decorate([
     (0, common_1.Get)('config'),
-    http_decorator_1.HttpProcessor.handle('Get Disqus config'),
+    responsor_decorator_1.Responsor.handle('Get Disqus config'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
@@ -108,18 +108,18 @@ __decorate([
     (0, common_1.Get)('oauth-callback'),
     (0, common_1.Header)('content-type', 'text/html'),
     (0, common_1.Header)('Content-Security-Policy', "script-src 'unsafe-inline'"),
-    http_decorator_1.HttpProcessor.handle('Dsiqus OAuth login'),
+    responsor_decorator_1.Responsor.handle('Dsiqus OAuth login'),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [disqus_model_1.CallbackCodePayload, Object]),
+    __metadata("design:paramtypes", [disqus_dto_1.CallbackCodeDTO, Object]),
     __metadata("design:returntype", Promise)
 ], DisqusController.prototype, "oauthCallback", null);
 __decorate([
     (0, common_1.Get)('oauth-logout'),
     (0, common_1.Header)('content-type', 'text/plain'),
-    http_decorator_1.HttpProcessor.handle('Disqus OAuth logout'),
-    __param(0, (0, disqus_token_1.CookieToken)()),
+    responsor_decorator_1.Responsor.handle('Disqus OAuth logout'),
+    __param(0, (0, disqus_token_1.DisqusToken)()),
     __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
@@ -127,44 +127,44 @@ __decorate([
 ], DisqusController.prototype, "oauthLogout", null);
 __decorate([
     (0, common_1.Get)('user-info'),
-    http_decorator_1.HttpProcessor.handle('Get Disqus user info'),
-    __param(0, (0, disqus_token_1.CookieToken)()),
+    responsor_decorator_1.Responsor.handle('Get Disqus user info'),
+    __param(0, (0, disqus_token_1.DisqusToken)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], DisqusController.prototype, "getUserInfo", null);
 __decorate([
     (0, common_1.Get)('thread'),
-    http_decorator_1.HttpProcessor.handle('Get Disqus thread info'),
+    responsor_decorator_1.Responsor.handle('Get Disqus thread info'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [disqus_model_1.ThreadPostIDPayload]),
+    __metadata("design:paramtypes", [disqus_dto_1.ThreadPostIdDTO]),
     __metadata("design:returntype", void 0)
 ], DisqusController.prototype, "getThread", null);
 __decorate([
-    (0, throttler_1.Throttle)(6, 30),
     (0, common_1.Post)('comment'),
-    http_decorator_1.HttpProcessor.handle('Create universal comment'),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, query_params_decorator_1.QueryParams)()),
-    __param(2, (0, disqus_token_1.CookieToken)()),
+    (0, throttler_1.Throttle)(6, 30),
+    responsor_decorator_1.Responsor.handle('Create universal comment'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    __param(1, (0, disqus_token_1.DisqusToken)()),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [comment_model_1.CreateCommentBase, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, comment_model_1.CommentBase]),
     __metadata("design:returntype", void 0)
 ], DisqusController.prototype, "createComment", null);
 __decorate([
     (0, common_1.Delete)('comment'),
-    http_decorator_1.HttpProcessor.handle('Delete universal comment'),
+    responsor_decorator_1.Responsor.handle('Delete universal comment'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, disqus_token_1.CookieToken)()),
+    __param(1, (0, disqus_token_1.DisqusToken)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [disqus_model_1.CommentIDPayload, Object]),
+    __metadata("design:paramtypes", [disqus_dto_1.CommentIdDTO, Object]),
     __metadata("design:returntype", void 0)
 ], DisqusController.prototype, "deleteComment", null);
 __decorate([
     (0, common_1.Get)('threads'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Get Disqus threads'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Get Disqus threads'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -172,8 +172,8 @@ __decorate([
 ], DisqusController.prototype, "getThreads", null);
 __decorate([
     (0, common_1.Get)('posts'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Get Disqus posts'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Get Disqus posts'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -181,8 +181,8 @@ __decorate([
 ], DisqusController.prototype, "getPosts", null);
 __decorate([
     (0, common_1.Post)('post'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update Disqus post'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update Disqus post'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -190,8 +190,8 @@ __decorate([
 ], DisqusController.prototype, "updatePost", null);
 __decorate([
     (0, common_1.Post)('thread'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update Disqus thread'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update Disqus thread'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -199,8 +199,8 @@ __decorate([
 ], DisqusController.prototype, "updateThread", null);
 __decorate([
     (0, common_1.Get)('export-xml'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Export XML for Disqus import'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Export XML for Disqus import'),
     __param(0, (0, common_1.Response)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -208,9 +208,9 @@ __decorate([
 ], DisqusController.prototype, "exportXML", null);
 __decorate([
     (0, common_1.Post)('import-xml'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Import XML from Dsiqus'),
+    responsor_decorator_1.Responsor.handle('Import XML from Dsiqus'),
     __param(0, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

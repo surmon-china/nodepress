@@ -31,60 +31,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VoteController = exports.PageVotePayload = exports.CommentVotePayload = exports.VoteAuthorPayload = void 0;
-const class_validator_1 = require("class-validator");
+exports.VoteController = void 0;
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
-const query_params_decorator_1 = require("../../decorators/query-params.decorator");
-const http_decorator_1 = require("../../decorators/http.decorator");
+const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const responsor_decorator_1 = require("../../decorators/responsor.decorator");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
 const option_service_1 = require("../option/option.service");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
-const comment_model_1 = require("../comment/comment.model");
 const disqus_service_public_1 = require("../disqus/disqus.service.public");
 const disqus_token_1 = require("../disqus/disqus.token");
 const biz_interface_1 = require("../../interfaces/biz.interface");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
+const vote_dto_1 = require("./vote.dto");
 const APP_CONFIG = __importStar(require("../../app.config"));
-class VoteAuthorPayload {
-}
-__decorate([
-    (0, class_validator_1.ValidateNested)(),
-    (0, class_validator_1.IsObject)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", comment_model_1.Author)
-], VoteAuthorPayload.prototype, "author", void 0);
-exports.VoteAuthorPayload = VoteAuthorPayload;
-class CommentVotePayload extends VoteAuthorPayload {
-}
-__decorate([
-    (0, class_validator_1.IsDefined)(),
-    (0, class_validator_1.IsInt)(),
-    __metadata("design:type", Number)
-], CommentVotePayload.prototype, "comment_id", void 0);
-__decorate([
-    (0, class_validator_1.IsDefined)(),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsIn)([1, -1]),
-    __metadata("design:type", Number)
-], CommentVotePayload.prototype, "vote", void 0);
-exports.CommentVotePayload = CommentVotePayload;
-class PageVotePayload extends VoteAuthorPayload {
-}
-__decorate([
-    (0, class_validator_1.IsDefined)(),
-    (0, class_validator_1.IsInt)(),
-    __metadata("design:type", Number)
-], PageVotePayload.prototype, "article_id", void 0);
-__decorate([
-    (0, class_validator_1.IsDefined)(),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsIn)([1]),
-    __metadata("design:type", Number)
-], PageVotePayload.prototype, "vote", void 0);
-exports.PageVotePayload = PageVotePayload;
 let VoteController = class VoteController {
     constructor(ipService, emailService, disqusPublicService, commentService, articleService, optionService) {
         this.ipService = ipService;
@@ -116,7 +78,7 @@ let VoteController = class VoteController {
             return 'guestbook';
         }
         else {
-            const article = await this.articleService.getDetailByNumberIDOrSlug(post_id);
+            const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: post_id });
             return article.toObject().title;
         }
     }
@@ -139,7 +101,7 @@ let VoteController = class VoteController {
         });
     }
     async voteDisqusThread(articleID, vote, token) {
-        const thread = await this.disqusPublicService.makeSureThreadDetailCache(articleID);
+        const thread = await this.disqusPublicService.ensureThreadDetailCache(articleID);
         const result = await this.disqusPublicService.voteThread({
             access_token: token || null,
             thread: thread.id,
@@ -148,7 +110,7 @@ let VoteController = class VoteController {
         return result;
     }
     async likeSite(voteBody, token, { visitor }) {
-        const likes = await this.optionService.likeSite();
+        const likes = await this.optionService.incrementLikes();
         this.voteDisqusThread(biz_interface_1.CommentPostID.Guestbook, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
             if (author) {
@@ -166,7 +128,7 @@ let VoteController = class VoteController {
         return likes;
     }
     async voteArticle(voteBody, token, { visitor }) {
-        const likes = await this.articleService.like(voteBody.article_id);
+        const likes = await this.articleService.incrementLikes(voteBody.article_id);
         this.voteDisqusThread(voteBody.article_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
             if (author) {
@@ -222,34 +184,34 @@ let VoteController = class VoteController {
 __decorate([
     (0, throttler_1.Throttle)(10, 60 * 60),
     (0, common_1.Post)('/site'),
-    http_decorator_1.HttpProcessor.handle('Vote site'),
+    responsor_decorator_1.Responsor.handle('Vote site'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, disqus_token_1.CookieToken)()),
-    __param(2, (0, query_params_decorator_1.QueryParams)()),
+    __param(1, (0, disqus_token_1.DisqusToken)()),
+    __param(2, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [VoteAuthorPayload, Object, Object]),
+    __metadata("design:paramtypes", [vote_dto_1.VoteAuthorDTO, Object, Object]),
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "likeSite", null);
 __decorate([
     (0, throttler_1.Throttle)(15, 60),
     (0, common_1.Post)('/article'),
-    http_decorator_1.HttpProcessor.handle('Vote article'),
+    responsor_decorator_1.Responsor.handle('Vote article'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, disqus_token_1.CookieToken)()),
-    __param(2, (0, query_params_decorator_1.QueryParams)()),
+    __param(1, (0, disqus_token_1.DisqusToken)()),
+    __param(2, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [PageVotePayload, Object, Object]),
+    __metadata("design:paramtypes", [vote_dto_1.PageVoteDTO, Object, Object]),
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "voteArticle", null);
 __decorate([
     (0, throttler_1.Throttle)(10, 30),
     (0, common_1.Post)('/comment'),
-    http_decorator_1.HttpProcessor.handle('Vote comment'),
+    responsor_decorator_1.Responsor.handle('Vote comment'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, disqus_token_1.CookieToken)()),
-    __param(2, (0, query_params_decorator_1.QueryParams)()),
+    __param(1, (0, disqus_token_1.DisqusToken)()),
+    __param(2, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [CommentVotePayload, Object, Object]),
+    __metadata("design:paramtypes", [vote_dto_1.CommentVoteDTO, Object, Object]),
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "voteComment", null);
 VoteController = __decorate([

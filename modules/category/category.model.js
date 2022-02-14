@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var Category_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CategoryProvider = exports.CategoriesPayload = exports.Category = void 0;
+exports.CategoryProvider = exports.Category = void 0;
 const mongoose_1 = require("mongoose");
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
@@ -26,16 +26,16 @@ __decorate([
     __metadata("design:type", Number)
 ], Category.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Category.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.Matches)(/^[a-zA-Z0-9-_]+$/),
-    (0, class_validator_1.IsNotEmpty)({ message: 'slug?' }),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.MaxLength)(30),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)({ message: 'slug?' }),
     (0, typegoose_1.prop)({ required: true, validate: /^[a-zA-Z0-9-_]+$/, unique: true }),
     __metadata("design:type", String)
 ], Category.prototype, "slug", void 0);
@@ -57,9 +57,9 @@ __decorate([
     __metadata("design:type", Date)
 ], Category.prototype, "update_at", void 0);
 __decorate([
-    (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayUnique)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.Extend] }),
+    (0, class_validator_1.IsArray)(),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.ExtendModel] }),
     __metadata("design:type", Array)
 ], Category.prototype, "extends", void 0);
 Category = Category_1 = __decorate([
@@ -75,14 +75,5 @@ Category = Category_1 = __decorate([
     })
 ], Category);
 exports.Category = Category;
-class CategoriesPayload {
-}
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ArrayNotEmpty)(),
-    (0, class_validator_1.ArrayUnique)(),
-    __metadata("design:type", Array)
-], CategoriesPayload.prototype, "category_ids", void 0);
-exports.CategoriesPayload = CategoriesPayload;
 exports.CategoryProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Category);
 //# sourceMappingURL=category.model.js.map

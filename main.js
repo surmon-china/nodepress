@@ -27,9 +27,8 @@ const passport_1 = __importDefault(require("passport"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const compression_1 = __importDefault(require("compression"));
-const app_module_1 = require("./app.module");
 const core_1 = require("@nestjs/core");
-const validation_pipe_1 = require("./pipes/validation.pipe");
+const app_module_1 = require("./app.module");
 const error_filter_1 = require("./filters/error.filter");
 const transform_interceptor_1 = require("./interceptors/transform.interceptor");
 const logging_interceptor_1 = require("./interceptors/logging.interceptor");
@@ -46,8 +45,7 @@ async function bootstrap() {
     app.use(body_parser_1.default.urlencoded({ extended: true }));
     app.use(passport_1.default.initialize());
     app.useGlobalFilters(new error_filter_1.HttpExceptionFilter());
-    app.useGlobalPipes(new validation_pipe_1.ValidationPipe());
-    app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor(new core_1.Reflector()), new error_interceptor_1.ErrorInterceptor(new core_1.Reflector()), new logging_interceptor_1.LoggingInterceptor());
+    app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor(), new error_interceptor_1.ErrorInterceptor(), new logging_interceptor_1.LoggingInterceptor());
     return await app.listen(APP_CONFIG.APP.PORT);
 }
 bootstrap().then(() => {

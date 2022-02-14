@@ -1,14 +1,13 @@
-import { Types } from 'mongoose';
-import { DocumentType } from '@typegoose/typegoose';
-import { MongooseModel } from '@app/interfaces/mongoose.interface';
-import { PaginateResult, PaginateOptions } from '@app/utils/paginate';
+import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface';
+import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate';
 import { ArticleService } from '@app/modules/article/article.service';
 import { IPService } from '@app/processors/helper/helper.service.ip';
 import { EmailService } from '@app/processors/helper/helper.service.email';
 import { AkismetService } from '@app/processors/helper/helper.service.akismet';
-import { QueryVisitor } from '@app/decorators/query-params.decorator';
+import { QueryVisitor } from '@app/decorators/queryparams.decorator';
 import { OptionService } from '@app/modules/option/option.service';
-import { Comment, CreateCommentBase, CommentsStatePayload } from './comment.model';
+import { Comment, CommentBase } from './comment.model';
+import { CommentsStateDTO } from './comment.dto';
 export declare class CommentService {
     private readonly ipService;
     private readonly emailService;
@@ -19,24 +18,25 @@ export declare class CommentService {
     constructor(ipService: IPService, emailService: EmailService, akismetService: AkismetService, optionService: OptionService, articleService: ArticleService, commentModel: MongooseModel<Comment>);
     private emailToAdminAndTargetAuthor;
     private submitCommentAkismet;
-    private updateCommentCountWithArticle;
+    private updateCommentsCountWithArticles;
     private updateBlocklistAkismetWithComment;
     isNotBlocklisted(comment: Comment): Promise<void>;
     isCommentableTarget(targetPostID: number): Promise<void>;
     getAll(): Promise<Array<Comment>>;
-    paginater(querys: any, options: PaginateOptions, hideIPEmail?: boolean): Promise<PaginateResult<Comment>>;
-    normalizeNewComment(comment: CreateCommentBase, visitor: QueryVisitor): Comment;
-    create(comment: Comment): Promise<Comment>;
-    createFormClient(comment: CreateCommentBase, visitor: QueryVisitor): Promise<Comment>;
-    getDetailByObjectID(commentID: Types.ObjectId): Promise<DocumentType<Comment>>;
-    getDetailByNumberID(commentID: number): Promise<DocumentType<Comment>>;
+    paginater(querys: PaginateQuery<Comment>, options: PaginateOptions, hideIPEmail?: boolean): Promise<PaginateResult<Comment>>;
+    normalizeNewComment(comment: CommentBase, visitor: QueryVisitor): Comment;
+    create(comment: Comment): Promise<MongooseDoc<Comment>>;
+    createFormClient(comment: CommentBase, visitor: QueryVisitor): Promise<MongooseDoc<Comment>>;
+    getDetailByObjectID(commentID: MongooseID): Promise<MongooseDoc<Comment>>;
+    getDetailByNumberID(commentID: number): Promise<MongooseDoc<Comment>>;
+    update(commentID: MongooseID, newComment: Partial<Comment>, referer?: string): Promise<MongooseDoc<Comment>>;
+    delete(commentID: MongooseID): Promise<MongooseDoc<Comment>>;
+    batchPatchState(action: CommentsStateDTO, referer?: string): Promise<import("mongodb").UpdateResult>;
+    batchDelete(commentIDs: MongooseID[], postIDs: number[]): Promise<import("mongodb").DeleteResult>;
+    getTotalCount(publicOnly: boolean): Promise<number>;
+    reviseIPLocation(commentID: MongooseID): Promise<string | import("@typegoose/typegoose").DocumentType<Comment, import("@typegoose/typegoose/lib/types").BeAnObject>>;
     vote(commentID: number, isLike: boolean): Promise<{
         likes: number;
         dislikes: number;
     }>;
-    update(commentID: Types.ObjectId, newComment: Partial<Comment>, referer?: string): Promise<Comment>;
-    delete(commentID: Types.ObjectId): Promise<Comment>;
-    batchPatchState(action: CommentsStatePayload, referer: string): Promise<import("mongodb").UpdateResult>;
-    batchDelete(commentIDs: Types.ObjectId[], postIDs: number[]): Promise<import("mongodb").DeleteResult>;
-    reviseIPLocation(commentID: Types.ObjectId): Promise<string | DocumentType<Comment, import("@typegoose/typegoose/lib/types").BeAnObject>>;
 }

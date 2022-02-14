@@ -14,18 +14,21 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryController = void 0;
 const common_1 = require("@nestjs/common");
-const auth_guard_1 = require("../../guards/auth.guard");
-const humanized_auth_guard_1 = require("../../guards/humanized-auth.guard");
-const http_decorator_1 = require("../../decorators/http.decorator");
-const query_params_decorator_1 = require("../../decorators/query-params.decorator");
-const category_model_1 = require("./category.model");
+const admin_only_guard_1 = require("../../guards/admin-only.guard");
+const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
+const permission_pipe_1 = require("../../pipes/permission.pipe");
+const expose_pipe_1 = require("../../pipes/expose.pipe");
+const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const category_dto_1 = require("./category.dto");
 const category_service_1 = require("./category.service");
+const category_model_1 = require("./category.model");
 let CategoryController = class CategoryController {
     constructor(categoryService) {
         this.categoryService = categoryService;
     }
-    getCategories({ querys, options, isAuthenticated }) {
-        return this.categoryService.paginater(querys, options, !isAuthenticated);
+    getCategories(query, { isUnauthenticated }) {
+        return this.categoryService.paginater({}, { page: query.page, perPage: query.per_page, dateSort: query.sort }, isUnauthenticated);
     }
     createCategory(category) {
         return this.categoryService.create(category);
@@ -33,8 +36,8 @@ let CategoryController = class CategoryController {
     delCategories(body) {
         return this.categoryService.batchDelete(body.category_ids);
     }
-    getCategory(categoryID) {
-        return this.categoryService.getGenealogyById(categoryID);
+    getCategory({ params }) {
+        return this.categoryService.getGenealogyById(params.id);
     }
     putCategory({ params }, category) {
         return this.categoryService.update(params.id, category);
@@ -45,18 +48,19 @@ let CategoryController = class CategoryController {
 };
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(humanized_auth_guard_1.HumanizedJwtAuthGuard),
-    http_decorator_1.HttpProcessor.paginate(),
-    http_decorator_1.HttpProcessor.handle('Get categories'),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
+    responsor_decorator_1.Responsor.paginate(),
+    responsor_decorator_1.Responsor.handle('Get categories'),
+    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
+    __param(1, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [category_dto_1.CategoryPaginateQueryDTO, Object]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "getCategories", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Create category'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Create category'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [category_model_1.Category]),
@@ -64,26 +68,26 @@ __decorate([
 ], CategoryController.prototype, "createCategory", null);
 __decorate([
     (0, common_1.Delete)(),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Delete categories'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Delete categories'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [category_model_1.CategoriesPayload]),
+    __metadata("design:paramtypes", [category_dto_1.CategoriesDTO]),
     __metadata("design:returntype", void 0)
 ], CategoryController.prototype, "delCategories", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    http_decorator_1.HttpProcessor.handle('Get categories tree'),
-    __param(0, (0, common_1.Param)('id')),
+    responsor_decorator_1.Responsor.handle('Get categories tree'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "getCategory", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Update category'),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Update category'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, category_model_1.Category]),
@@ -91,9 +95,9 @@ __decorate([
 ], CategoryController.prototype, "putCategory", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(auth_guard_1.JwtAuthGuard),
-    http_decorator_1.HttpProcessor.handle('Delete category'),
-    __param(0, (0, query_params_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responsor_decorator_1.Responsor.handle('Delete category'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
