@@ -1730,7 +1730,7 @@ export class ArticleService {
 
     // article views
     article.meta.views++
-    article.save()
+    article.save({ timestamps: false })
 
     // global today views
     this.cacheService.get&lt;number&gt;(CACHE_KEY.TODAY_VIEWS).then((views) &#x3D;&gt; {
@@ -1746,7 +1746,7 @@ export class ArticleService {
       publicOnly: true,
     })
     article.meta.likes++
-    await article.save()
+    await article.save({ timestamps: false })
     return article.meta.likes
   }
 
@@ -1852,7 +1852,7 @@ export class ArticleService {
   public async updateMetaComments(articleID: number, commentCount: number) {
     const findParams &#x3D; { id: articleID }
     const patchParams &#x3D; { $set: { &#x27;meta.comments&#x27;: commentCount } }
-    return this.articleModel.updateOne(findParams, patchParams).exec()
+    return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec()
   }
 }
 </code></pre>
