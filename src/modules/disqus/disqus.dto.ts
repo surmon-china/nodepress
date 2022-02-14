@@ -1,6 +1,6 @@
 /**
- * @file Disqus model
- * @module module/disqus/model
+ * @file Disqus DTO
+ * @module module/disqus/dto
  * @author Surmon <https://github.com/surmon-china>
  */
 

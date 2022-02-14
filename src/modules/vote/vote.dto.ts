@@ -15,23 +15,23 @@ export class VoteAuthorDTO {
 }
 
 export class CommentVoteDTO extends VoteAuthorDTO {
-  @IsDefined()
   @IsInt()
+  @IsDefined()
   comment_id: number
 
-  @IsDefined()
-  @IsInt()
   @IsIn([1, -1])
+  @IsInt()
+  @IsDefined()
   vote: number
 }
 
 export class PageVoteDTO extends VoteAuthorDTO {
-  @IsDefined()
   @IsInt()
+  @IsDefined()
   article_id: number
 
-  @IsDefined()
-  @IsInt()
   @IsIn([1])
+  @IsInt()
+  @IsDefined()
   vote: number
 }
