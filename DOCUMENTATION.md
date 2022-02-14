@@ -18,7 +18,7 @@
 - `status`：
   - `success`：正常
   - `error`：异常
-- `message`：永远返回，由 [`responsor.decorator`](/src/decorators/responsor.decorator) 装饰
+- `message`：永远返回，由 [`responsor.decorator`](/src/decorators/responsor.decorator.ts) 装饰
 - `error`：一般会返回错误发生节点的 error；在 `status` 为 `error` 的时候必须返回，方便调试
 - `debug`：开发模式下为发生错误的堆栈，生产模式不返回
 - `result`：在 `status` 为 `success` 的时候必须返回
@@ -144,7 +144,7 @@
   - [评论过滤服务](/src/processors/helper/helper.service.akismet.ts)：使用 Akismet 过滤 SPAM；暴露三个方法：校验 SPAM、提交 SPAM、提交 HAM
   - [邮件服务](/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
   - [IP 地理查询服务](/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；使用一些免费在线服务
-  - [第三方云存储服务](/src/processors/helper/helper.service.cloud-storage)：生成云存储上传 Token（目前服务为 Aliyun OSS），后期可以添加 SDK 的更多支持，如管理文件
+  - [第三方云存储服务](/src/processors/helper/helper.service.cloud-storage.ts)：生成云存储上传 Token（目前服务为 Aliyun OSS），后期可以添加 SDK 的更多支持，如管理文件
   - Google 证书（鉴权）服务：用于生成各 Google 应用的服务端证书
 
 ## Special issues
@@ -152,7 +152,6 @@
 #### Google Indexing API
 
 - [完整的配置流程文档](https://developers.google.com/search/apis/indexing-api/v3/quickstart)
-- 「 统计用户的所有者角色 」添加页面 [在这里](https://www.google.com/webmains/verification/details?hl=zh-CN&domain=<xxx.com>)，而非 [新版的](https://search.google.com/search-console/users?resource_id=<xxx.com>)
 
 #### Google Auth
 
