@@ -75,6 +75,13 @@ export class ArticleListQueryDTO {
   count?: number
 }
 
+export class ArticleCalendarQueryDTO {
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  timezone?: string
+}
+
 export class ArticleIDsDTO {
   @ArrayNotEmpty()
   @ArrayUnique()

@@ -14,7 +14,7 @@ import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { SortType } from '@app/interfaces/biz.interface'
 import { ArchiveService } from '@app/modules/archive/archive.service'
-import { Article, ARTICLE_GUEST_QUERY_FILTER } from '@app/modules/article/article.model'
+import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
 import { Tag } from './tag.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
@@ -43,7 +43,7 @@ export class TagService {
 
   private async aggregate(publicOnly: boolean, documents: Array<Tag>) {
     const counts = await this.articleModel.aggregate<{ _id: Types.ObjectId; count: number }>([
-      { $match: publicOnly ? ARTICLE_GUEST_QUERY_FILTER : {} },
+      { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
       { $unwind: '$tag' },
       { $group: { _id: '$tag', count: { $sum: 1 } } },
     ])

@@ -37,7 +37,7 @@ export class CommentController {
 
     // sort
     if (!lodash.isUndefined(sort)) {
-      if (sort === SortType.Hot) {
+      if (sort === SortType.Hottest) {
         paginateOptions.sort = { likes: SortType.Desc }
       } else {
         paginateOptions.dateSort = sort

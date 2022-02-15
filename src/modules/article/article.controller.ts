@@ -17,8 +17,14 @@ import { SortType } from '@app/interfaces/biz.interface'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import { ArticlePaginateQueryDTO, ArticleListQueryDTO, ArticleIDsDTO, ArticlesStateDTO } from './article.dto'
-import { ARTICLE_HOT_SORT_PARAMS } from './article.model'
+import {
+  ArticlePaginateQueryDTO,
+  ArticleListQueryDTO,
+  ArticleCalendarQueryDTO,
+  ArticleIDsDTO,
+  ArticlesStateDTO,
+} from './article.dto'
+import { ARTICLE_HOTTEST_SORT_PARAMS } from './article.model'
 import { ArticleService } from './article.service'
 import { Article } from './article.model'
 
@@ -43,8 +49,8 @@ export class ArticleController {
 
     // sort
     if (!lodash.isUndefined(sort)) {
-      if (sort === SortType.Hot) {
-        paginateOptions.sort = ARTICLE_HOT_SORT_PARAMS
+      if (sort === SortType.Hottest) {
+        paginateOptions.sort = ARTICLE_HOTTEST_SORT_PARAMS
       } else {
         paginateOptions.dateSort = sort
       }
@@ -91,20 +97,37 @@ export class ArticleController {
     return this.articleService.paginater(paginateQuery, paginateOptions)
   }
 
-  @Get('hot')
-  @Responsor.handle('Get hot articles')
-  getHotArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise<Array<Article>> {
-    return query.count ? this.articleService.getHotArticles(query.count) : this.articleService.getHotArticlesCache()
+  @Get('hottest')
+  @Responsor.handle('Get hottest articles')
+  getHottestArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise<Array<Article>> {
+    return query.count
+      ? this.articleService.getHottestArticles(query.count)
+      : this.articleService.getHottestArticlesCache()
   }
 
-  @Get('related/:id')
-  @Responsor.handle('Get related articles')
-  async getRelatedArticles(
-    @QueryParams() { params }: QueryParamsResult,
-    @Query(ExposePipe) query: ArticleListQueryDTO
-  ): Promise<Array<Article>> {
-    const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) })
-    return this.articleService.getRelatedArticles(article, query.count ?? 20)
+  @Get('calendar')
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.handle('Get article calendar')
+  getArticleCalendar(
+    @Query(ExposePipe) query: ArticleCalendarQueryDTO,
+    @QueryParams() { isUnauthenticated }: QueryParamsResult
+  ) {
+    return this.articleService.getCalendar(isUnauthenticated, query.timezone)
+  }
+
+  @Get(':id/context')
+  @Responsor.handle('Get context articles')
+  async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
+    const articleID = Number(params.id)
+    const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
+    const [prev_article] = await this.articleService.getNearArticles(articleID, 'early', 1)
+    const [next_article] = await this.articleService.getNearArticles(articleID, 'later', 1)
+    const related_articles = await this.articleService.getRelatedArticles(article, 20)
+    return {
+      prev_article: prev_article || null,
+      next_article: next_article || null,
+      related_articles,
+    }
   }
 
   @Get(':id')

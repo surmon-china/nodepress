@@ -8,7 +8,7 @@
 export enum SortType {
   Asc = 1, // 升序
   Desc = -1, // 降序
-  Hot = 2, // 热序
+  Hottest = 2, // 热序
 }
 
 // 发布状态

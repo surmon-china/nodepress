@@ -16,12 +16,18 @@ import { TagService } from '@app/modules/tag/tag.service'
 import { PublishState } from '@app/interfaces/biz.interface'
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import { Article, ARTICLE_GUEST_QUERY_FILTER, ARTICLE_HOT_SORT_PARAMS } from './article.model'
+import {
+  Article,
+  ARTICLE_LIST_QUERY_GUEST_FILTER,
+  ARTICLE_LIST_QUERY_PROJECTION,
+  ARTICLE_FULL_QUERY_REF_POPULATE,
+  ARTICLE_HOTTEST_SORT_PARAMS,
+} from './article.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 
 @Injectable()
 export class ArticleService {
-  private hotArticlesCache: CacheIntervalResult<Array<Article>>
+  private hottestArticlesCache: CacheIntervalResult<Array<Article>>
 
   constructor(
     private readonly seoService: SeoService,
@@ -30,9 +36,9 @@ export class ArticleService {
     private readonly archiveService: ArchiveService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
   ) {
-    this.hotArticlesCache = this.cacheService.interval({
-      key: CACHE_KEY.HOT_ARTICLES,
-      promise: () => this.getHotArticles(20),
+    this.hottestArticlesCache = this.cacheService.interval({
+      key: CACHE_KEY.HOTTEST_ARTICLES,
+      promise: () => this.getHottestArticles(20),
       timeout: {
         success: 1000 * 60 * 30, // 成功后 30 分钟更新一次数据
         error: 1000 * 60 * 5, // 失败后 5 分钟更新一次数据
@@ -40,25 +46,46 @@ export class ArticleService {
     })
   }
 
-  public getHotArticles(count: number): Promise<Array<Article>> {
-    return this.paginater(ARTICLE_GUEST_QUERY_FILTER, {
+  public getHottestArticles(count: number): Promise<Array<Article>> {
+    return this.paginater(ARTICLE_LIST_QUERY_GUEST_FILTER, {
       perPage: count,
-      sort: ARTICLE_HOT_SORT_PARAMS,
+      sort: ARTICLE_HOTTEST_SORT_PARAMS,
     }).then((result) => result.documents)
   }
 
-  public getHotArticlesCache(): Promise<Array<Article>> {
-    return this.hotArticlesCache()
+  public getHottestArticlesCache(): Promise<Array<Article>> {
+    return this.hottestArticlesCache()
+  }
+
+  // get near articles
+  public async getNearArticles(articleID: number, type: 'later' | 'early', count: number): Promise<Article[]> {
+    const typeFieldMap = {
+      early: { field: '$lt', sort: -1 },
+      later: { field: '$gt', sort: 1 },
+    }
+    const trgetType = typeFieldMap[type]
+    return this.articleModel
+      .find(
+        { ...ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [trgetType.field]: articleID } },
+        ARTICLE_LIST_QUERY_PROJECTION
+      )
+      .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
+      .sort({ id: trgetType.sort })
+      .limit(count)
+      .exec()
   }
 
   // get related articles
   public async getRelatedArticles(article: Article, count: number): Promise<Article[]> {
     const findParams: FilterQuery<Article> = {
-      ...ARTICLE_GUEST_QUERY_FILTER,
+      ...ARTICLE_LIST_QUERY_GUEST_FILTER,
       tag: { $in: article.tag.map((t) => (t as any)._id) },
       category: { $in: article.category.map((c) => (c as any)._id) },
     }
-    const articles = await this.articleModel.find(findParams, '-content', { limit: count * 3 }).exec()
+    const articles = await this.articleModel
+      .find(findParams, ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 3 })
+      .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
+      .exec()
     const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject())
     return lodash.sampleSize(filtered, count)
   }
@@ -67,8 +94,8 @@ export class ArticleService {
   public paginater(query: PaginateQuery<Article>, options: PaginateOptions): Promise<PaginateResult<Article>> {
     return this.articleModel.paginate(query, {
       ...options,
-      projection: '-content',
-      populate: ['category', 'tag'],
+      projection: ARTICLE_LIST_QUERY_PROJECTION,
+      populate: ARTICLE_FULL_QUERY_REF_POPULATE,
     })
   }
 
@@ -103,8 +130,8 @@ export class ArticleService {
     }
 
     return this.articleModel
-      .findOne(publicOnly ? { ...params, ...ARTICLE_GUEST_QUERY_FILTER } : params)
-      .populate(populate ? ['category', 'tag'] : [])
+      .findOne(publicOnly ? { ...params, ...ARTICLE_LIST_QUERY_GUEST_FILTER } : params)
+      .populate(populate ? ARTICLE_FULL_QUERY_REF_POPULATE : [])
       .exec()
       .then((result) => result || Promise.reject(`Article '${idOrSlug}' not found`))
   }
@@ -207,7 +234,19 @@ export class ArticleService {
   }
 
   public async getTotalCount(publicOnly: boolean): Promise<number> {
-    return await this.articleModel.countDocuments(publicOnly ? ARTICLE_GUEST_QUERY_FILTER : {}).exec()
+    return await this.articleModel.countDocuments(publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {}).exec()
+  }
+
+  public getCalendar(publicOnly: boolean, timezone = 'GMT') {
+    return this.articleModel
+      .aggregate<{ _id: string; count: number }>([
+        { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
+        { $project: { day: { $dateToString: { date: '$create_at', format: '%Y-%m-%d', timezone } } } },
+        { $group: { _id: '$day', count: { $sum: 1 } } },
+        { $sort: { _id: 1 } },
+      ])
+      .then((calendar) => calendar.map(({ _id, ...r }) => ({ ...r, day: _id })))
+      .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`))
   }
 
   public async getMetaStatistic() {

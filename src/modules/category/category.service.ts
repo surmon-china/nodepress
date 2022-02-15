@@ -11,7 +11,7 @@ import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
-import { Article, ARTICLE_GUEST_QUERY_FILTER } from '@app/modules/article/article.model'
+import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
 import { Category } from './category.model'
 
 @Injectable()
@@ -30,7 +30,7 @@ export class CategoryService {
   ): Promise<PaginateResult<Category>> {
     const categories = await this.categoryModel.paginate(query, { ...options, lean: true })
     const counts = await this.articleModel.aggregate([
-      { $match: publicOnly ? ARTICLE_GUEST_QUERY_FILTER : {} },
+      { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
       { $unwind: '$category' },
       { $group: { _id: '$category', count: { $sum: 1 } } },
     ])

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.2 (2022-02-15)
+
+**Feature**
+
+- New API `/article/calendar`
+- Refactoring API `/article/related/:id` to `/article/:id/context`
+- Rename API `/article/hot` to `/article/hottest`
+- Improve `Article` module
+
 ### 3.8.1 (2022-02-15)
 
 **BugFix**
@@ -25,7 +34,7 @@ All notable changes to this project will be documented in this file.
 - improve `Expansion` statistic service
 - Remove query `cache` field
 - Rename `tag.count` `category.count` to `<target>.articles_count`
-- Add API `/article/hot` `/article/releted` `/tag/all`
+- Add API `/article/hot` `/article/related` `/tag/all`
 - Add `PermissionPipe` `ExposePipe` pipes
 - Rename `HttpProcessor` to `Responsor`
 - Generate documentation by `compodoc`
@@ -55,7 +64,7 @@ All notable changes to this project will be documented in this file.
 
 **Feature**
 
-- **[Article]** random releted articles
+- **[Article]** random related articles
 - **[Comment]** improve email content
 - **[Vote]** send email to admin when new vote
 

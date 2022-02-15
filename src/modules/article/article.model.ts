@@ -32,12 +32,14 @@ export const ARTICLE_PUBLISH_STATES = [PublishState.Draft, PublishState.Publishe
 export const ARTICLE_PUBLIC_STATES = [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
 export const ARTICLE_ORIGIN_STATES = [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
 
-export const ARTICLE_GUEST_QUERY_FILTER = Object.freeze({
+export const ARTICLE_FULL_QUERY_REF_POPULATE = ['category', 'tag']
+export const ARTICLE_LIST_QUERY_PROJECTION = { content: false }
+export const ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
   state: PublishState.Published,
   public: PublicState.Public,
 })
 
-export const ARTICLE_HOT_SORT_PARAMS = Object.freeze({
+export const ARTICLE_HOTTEST_SORT_PARAMS = Object.freeze({
   'meta.comments': SortType.Desc,
   'meta.likes': SortType.Desc,
 })
