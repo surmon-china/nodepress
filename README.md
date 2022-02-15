@@ -18,11 +18,11 @@
 &nbsp;
 [![GitHub license](https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/blob/main/LICENSE)
 
-**RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [`nestjs`](https://github.com/nestjs/nest), required [`MongoDB`](https://www.mongodb.com/) & [`Redis`](https://redis.io/).**
+**RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [NestJS](https://github.com/nestjs/nest), required [MongoDB](https://www.mongodb.com/) & [Redis](https://redis.io/).**
 
-**适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [`nestjs`](https://github.com/nestjs/nest)，需安装 [`MongoDB`](https://www.mongodb.com/) 和 [`Redis`](https://redis.io/) 方可完整运行。**
+**适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [NestJS](https://github.com/nestjs/nest)，需安装 [MongoDB](https://www.mongodb.com/) 和 [Redis](https://redis.io/) 方可完整运行。**
 
-> v3.x 使用 [`nestjs`](https://github.com/nestjs/nest) 进行重构，之前的 nodejs 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/archive/nodejs)。
+> v3.x 使用 [NestJS](https://github.com/nestjs/nest) 进行重构，之前的 Node.js 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/archive/nodejs)。
 
 **更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/main/CHANGELOG.md#changelog)**
 
