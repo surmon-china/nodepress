@@ -96,15 +96,18 @@
                                 <a href="#getArticle" >getArticle</a>
                             </li>
                             <li>
+                                <a href="#getArticleCalendar" >getArticleCalendar</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getArticleContext" >getArticleContext</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Async</span>
                                 <a href="#getArticles" >getArticles</a>
                             </li>
                             <li>
-                                <a href="#getHotArticles" >getHotArticles</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#getRelatedArticles" >getRelatedArticles</a>
+                                <a href="#getHottestArticles" >getHottestArticles</a>
                             </li>
                             <li>
                                 <a href="#patchArticles" >patchArticles</a>
@@ -156,8 +159,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="131"
-                            class="link-to-prism">src/modules/article/article.controller.ts:131</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="154"
+                            class="link-to-prism">src/modules/article/article.controller.ts:154</a></div>
                 </td>
             </tr>
 
@@ -232,8 +235,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="145"
-                            class="link-to-prism">src/modules/article/article.controller.ts:145</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="168"
+                            class="link-to-prism">src/modules/article/article.controller.ts:168</a></div>
                 </td>
             </tr>
 
@@ -307,8 +310,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="159"
-                            class="link-to-prism">src/modules/article/article.controller.ts:159</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="182"
+                            class="link-to-prism">src/modules/article/article.controller.ts:182</a></div>
                 </td>
             </tr>
 
@@ -383,8 +386,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="116"
-                            class="link-to-prism">src/modules/article/article.controller.ts:116</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="139"
+                            class="link-to-prism">src/modules/article/article.controller.ts:139</a></div>
                 </td>
             </tr>
 
@@ -435,6 +438,170 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getArticleCalendar"></a>
+                    <span class="name">
+                        <span ><b>getArticleCalendar</b></span>
+                        <a href="#getArticleCalendar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getArticleCalendar(query: <a href="../classes/ArticleCalendarQueryDTO.html" target="_self">ArticleCalendarQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;calendar&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get article calendar&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/modules/article/article.controller.ts:111</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>query</td>
+                                    <td>
+                                                <code><a href="../classes/ArticleCalendarQueryDTO.html" target="_self" >ArticleCalendarQueryDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getArticleContext"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getArticleContext</b></span>
+                        <a href="#getArticleContext"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getArticleContext(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;:id/context&#x27;)<br />@(&#x27;Get context articles&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="120"
+                            class="link-to-prism">src/modules/article/article.controller.ts:120</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getArticles"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -460,8 +627,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="37"
-                            class="link-to-prism">src/modules/article/article.controller.ts:37</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">src/modules/article/article.controller.ts:43</a></div>
                 </td>
             </tr>
 
@@ -513,16 +680,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getHotArticles"></a>
+                    <a name="getHottestArticles"></a>
                     <span class="name">
-                        <span ><b>getHotArticles</b></span>
-                        <a href="#getHotArticles"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getHottestArticles</b></span>
+                        <a href="#getHottestArticles"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getHotArticles(query: <a href="../classes/ArticleListQueryDTO.html" target="_self">ArticleListQueryDTO</a>)</code>
+<code>getHottestArticles(query: <a href="../classes/ArticleListQueryDTO.html" target="_self">ArticleListQueryDTO</a>)</code>
                 </td>
             </tr>
 
@@ -530,85 +697,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;hot&#x27;)<br />@(&#x27;Get hot articles&#x27;)<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="96"
-                            class="link-to-prism">src/modules/article/article.controller.ts:96</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>query</td>
-                                    <td>
-                                                <code><a href="../classes/ArticleListQueryDTO.html" target="_self" >ArticleListQueryDTO</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Array&lt;Article&gt;&gt;</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getRelatedArticles"></a>
-                    <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>getRelatedArticles</b></span>
-                        <a href="#getRelatedArticles"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getRelatedArticles(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, query: <a href="../classes/ArticleListQueryDTO.html" target="_self">ArticleListQueryDTO</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Get(&#x27;related/:id&#x27;)<br />@(&#x27;Get related articles&#x27;)<br /></code>
+                    <code>@Get(&#x27;hottest&#x27;)<br />@(&#x27;Get hottest articles&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -635,17 +724,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
                                 <tr>
                                     <td>query</td>
                                     <td>
@@ -701,8 +779,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="152"
-                            class="link-to-prism">src/modules/article/article.controller.ts:152</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="175"
+                            class="link-to-prism">src/modules/article/article.controller.ts:175</a></div>
                 </td>
             </tr>
 
@@ -777,8 +855,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="138"
-                            class="link-to-prism">src/modules/article/article.controller.ts:138</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="161"
+                            class="link-to-prism">src/modules/article/article.controller.ts:161</a></div>
                 </td>
             </tr>
 
@@ -860,8 +938,14 @@ import { SortType } from &#x27;@app/interfaces/biz.interface&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { ArticlePaginateQueryDTO, ArticleListQueryDTO, ArticleIDsDTO, ArticlesStateDTO } from &#x27;./article.dto&#x27;
-import { ARTICLE_HOT_SORT_PARAMS } from &#x27;./article.model&#x27;
+import {
+  ArticlePaginateQueryDTO,
+  ArticleListQueryDTO,
+  ArticleCalendarQueryDTO,
+  ArticleIDsDTO,
+  ArticlesStateDTO,
+} from &#x27;./article.dto&#x27;
+import { ARTICLE_HOTTEST_SORT_PARAMS } from &#x27;./article.model&#x27;
 import { ArticleService } from &#x27;./article.service&#x27;
 import { Article } from &#x27;./article.model&#x27;
 
@@ -886,8 +970,8 @@ export class ArticleController {
 
     // sort
     if (!lodash.isUndefined(sort)) {
-      if (sort &#x3D;&#x3D;&#x3D; SortType.Hot) {
-        paginateOptions.sort &#x3D; ARTICLE_HOT_SORT_PARAMS
+      if (sort &#x3D;&#x3D;&#x3D; SortType.Hottest) {
+        paginateOptions.sort &#x3D; ARTICLE_HOTTEST_SORT_PARAMS
       } else {
         paginateOptions.dateSort &#x3D; sort
       }
@@ -934,20 +1018,37 @@ export class ArticleController {
     return this.articleService.paginater(paginateQuery, paginateOptions)
   }
 
-  @Get(&#x27;hot&#x27;)
-  @Responsor.handle(&#x27;Get hot articles&#x27;)
-  getHotArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise&lt;Array&lt;Article&gt;&gt; {
-    return query.count ? this.articleService.getHotArticles(query.count) : this.articleService.getHotArticlesCache()
+  @Get(&#x27;hottest&#x27;)
+  @Responsor.handle(&#x27;Get hottest articles&#x27;)
+  getHottestArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise&lt;Array&lt;Article&gt;&gt; {
+    return query.count
+      ? this.articleService.getHottestArticles(query.count)
+      : this.articleService.getHottestArticlesCache()
   }
 
-  @Get(&#x27;related/:id&#x27;)
-  @Responsor.handle(&#x27;Get related articles&#x27;)
-  async getRelatedArticles(
-    @QueryParams() { params }: QueryParamsResult,
-    @Query(ExposePipe) query: ArticleListQueryDTO
-  ): Promise&lt;Array&lt;Article&gt;&gt; {
-    const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) })
-    return this.articleService.getRelatedArticles(article, query.count ?? 20)
+  @Get(&#x27;calendar&#x27;)
+  @UseGuards(AdminMaybeGuard)
+  @Responsor.handle(&#x27;Get article calendar&#x27;)
+  getArticleCalendar(
+    @Query(ExposePipe) query: ArticleCalendarQueryDTO,
+    @QueryParams() { isUnauthenticated }: QueryParamsResult
+  ) {
+    return this.articleService.getCalendar(isUnauthenticated, query.timezone)
+  }
+
+  @Get(&#x27;:id/context&#x27;)
+  @Responsor.handle(&#x27;Get context articles&#x27;)
+  async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
+    const articleID &#x3D; Number(params.id)
+    const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
+    const [prev_article] &#x3D; await this.articleService.getNearArticles(articleID, &#x27;early&#x27;, 1)
+    const [next_article] &#x3D; await this.articleService.getNearArticles(articleID, &#x27;later&#x27;, 1)
+    const related_articles &#x3D; await this.articleService.getRelatedArticles(article, 20)
+    return {
+      prev_article: prev_article || null,
+      next_article: next_article || null,
+      related_articles,
+    }
   }
 
   @Get(&#x27;:id&#x27;)

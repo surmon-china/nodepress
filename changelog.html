@@ -33,6 +33,14 @@
 
 <h1 id="changelog">Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3 id="382-2022-02-15">3.8.2 (2022-02-15)</h3>
+<p><strong>Feature</strong></p>
+<ul>
+<li>New API <code>/article/calendar</code></li>
+<li>Refactoring API <code>/article/related/:id</code> to <code>/article/:id/context</code></li>
+<li>Rename API <code>/article/hot</code> to <code>/article/hottest</code></li>
+<li>Improve <code>Article</code> module</li>
+</ul>
 <h3 id="381-2022-02-15">3.8.1 (2022-02-15)</h3>
 <p><strong>BugFix</strong></p>
 <ul>
@@ -56,7 +64,7 @@
 <li>improve <code>Expansion</code> statistic service</li>
 <li>Remove query <code>cache</code> field</li>
 <li>Rename <code>tag.count</code> <code>category.count</code> to <code>&lt;target&gt;.articles_count</code></li>
-<li>Add API <code>/article/hot</code> <code>/article/releted</code> <code>/tag/all</code></li>
+<li>Add API <code>/article/hot</code> <code>/article/related</code> <code>/tag/all</code></li>
 <li>Add <code>PermissionPipe</code> <code>ExposePipe</code> pipes</li>
 <li>Rename <code>HttpProcessor</code> to <code>Responsor</code></li>
 <li>Generate documentation by <code>compodoc</code></li>
@@ -82,7 +90,7 @@
 <h3 id="376-2022-01-05">3.7.6 (2022-01-05)</h3>
 <p><strong>Feature</strong></p>
 <ul>
-<li><strong>[Article]</strong> random releted articles</li>
+<li><strong>[Article]</strong> random related articles</li>
 <li><strong>[Comment]</strong> improve email content</li>
 <li><strong>[Vote]</strong> send email to admin when new vote</li>
 </ul>

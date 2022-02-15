@@ -141,7 +141,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/modules/article/article.dto.ts:89</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/modules/article/article.dto.ts:96</a></div>
                         </td>
                     </tr>
 
@@ -182,7 +182,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/ArticleIDsDTO.html#source" target="_self" >ArticleIDsDTO:82</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/ArticleIDsDTO.html#source" target="_self" >ArticleIDsDTO:89</a></code>
 </div>
                         </td>
                     </tr>
@@ -271,6 +271,13 @@ export class ArticleListQueryDTO {
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknowToNumber(value))
   count?: number
+}
+
+export class ArticleCalendarQueryDTO {
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  timezone?: string
 }
 
 export class ArticleIDsDTO {

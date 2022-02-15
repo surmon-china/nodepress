@@ -225,7 +225,7 @@ export class PaginateOptionDTO extends PaginateBaseOptionDTO {
 }
 
 export class PaginateOptionWithHotSortDTO extends PaginateBaseOptionDTO {
-  @IsIn([SortType.Asc, SortType.Desc, SortType.Hot])
+  @IsIn([SortType.Asc, SortType.Desc, SortType.Hottest])
   @IsInt()
   @IsNotEmpty()
   @IsOptional()

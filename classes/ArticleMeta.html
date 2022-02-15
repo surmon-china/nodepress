@@ -138,7 +138,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/modules/article/article.model.ts:66</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/article/article.model.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -173,7 +173,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/modules/article/article.model.ts:54</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/article/article.model.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -208,7 +208,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/modules/article/article.model.ts:58</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/article/article.model.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -255,12 +255,14 @@ export const ARTICLE_PUBLISH_STATES &#x3D; [PublishState.Draft, PublishState.Pub
 export const ARTICLE_PUBLIC_STATES &#x3D; [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
 export const ARTICLE_ORIGIN_STATES &#x3D; [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
 
-export const ARTICLE_GUEST_QUERY_FILTER &#x3D; Object.freeze({
+export const ARTICLE_FULL_QUERY_REF_POPULATE &#x3D; [&#x27;category&#x27;, &#x27;tag&#x27;]
+export const ARTICLE_LIST_QUERY_PROJECTION &#x3D; { content: false }
+export const ARTICLE_LIST_QUERY_GUEST_FILTER &#x3D; Object.freeze({
   state: PublishState.Published,
   public: PublicState.Public,
 })
 
-export const ARTICLE_HOT_SORT_PARAMS &#x3D; Object.freeze({
+export const ARTICLE_HOTTEST_SORT_PARAMS &#x3D; Object.freeze({
   &#x27;meta.comments&#x27;: SortType.Desc,
   &#x27;meta.likes&#x27;: SortType.Desc,
 })

@@ -816,7 +816,7 @@ export class CommentController {
 
     // sort
     if (!lodash.isUndefined(sort)) {
-      if (sort &#x3D;&#x3D;&#x3D; SortType.Hot) {
+      if (sort &#x3D;&#x3D;&#x3D; SortType.Hottest) {
         paginateOptions.sort &#x3D; { likes: SortType.Desc }
       } else {
         paginateOptions.dateSort &#x3D; sort

@@ -222,7 +222,11 @@ import { CacheService, CacheIOResult } from &#x27;@app/processors/cache/cache.se
 import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { SortType } from &#x27;@app/interfaces/biz.interface&#x27;
 import { Category } from &#x27;@app/modules/category/category.model&#x27;
-import { Article, ARTICLE_GUEST_QUERY_FILTER } from &#x27;@app/modules/article/article.model&#x27;
+import {
+  Article,
+  ARTICLE_LIST_QUERY_GUEST_FILTER,
+  ARTICLE_LIST_QUERY_PROJECTION,
+} from &#x27;@app/modules/article/article.model&#x27;
 import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
 import * as CACHE_KEY from &#x27;@app/constants/cache.constant&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
@@ -263,7 +267,7 @@ export class ArchiveService {
 
   private getAllArticles(): Promise&lt;Article[]&gt; {
     return this.articleModel
-      .find(ARTICLE_GUEST_QUERY_FILTER, null, { select: &#x27;-content&#x27; })
+      .find(ARTICLE_LIST_QUERY_GUEST_FILTER, ARTICLE_LIST_QUERY_PROJECTION)
       .sort({ _id: SortType.Desc })
       .exec()
   }

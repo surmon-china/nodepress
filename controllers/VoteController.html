@@ -947,7 +947,7 @@ export class VoteController {
       try {
         const postID &#x3D; await this.disqusPublicService.getDisqusPostIDByCommentID(voteBody.comment_id)
         if (postID) {
-          const result &#x3D; await this.disqusPublicService.votePost({
+          await this.disqusPublicService.votePost({
             access_token: token.access_token,
             post: postID,
             vote: voteBody.vote,
