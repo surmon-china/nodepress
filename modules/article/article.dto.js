@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticlesStateDTO = exports.ArticleIDsDTO = exports.ArticleListQueryDTO = exports.ArticlePaginateQueryDTO = void 0;
+exports.ArticlesStateDTO = exports.ArticleIDsDTO = exports.ArticleCalendarQueryDTO = exports.ArticleListQueryDTO = exports.ArticlePaginateQueryDTO = void 0;
 const mapped_types_1 = require("@nestjs/mapped-types");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
@@ -72,6 +72,15 @@ __decorate([
     __metadata("design:type", Number)
 ], ArticleListQueryDTO.prototype, "count", void 0);
 exports.ArticleListQueryDTO = ArticleListQueryDTO;
+class ArticleCalendarQueryDTO {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], ArticleCalendarQueryDTO.prototype, "timezone", void 0);
+exports.ArticleCalendarQueryDTO = ArticleCalendarQueryDTO;
 class ArticleIDsDTO {
 }
 __decorate([

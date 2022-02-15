@@ -6,11 +6,15 @@ import { Tag } from '@app/modules/tag/tag.model';
 export declare const ARTICLE_PUBLISH_STATES: readonly [PublishState.Draft, PublishState.Published, PublishState.Recycle];
 export declare const ARTICLE_PUBLIC_STATES: readonly [PublicState.Public, PublicState.Secret, PublicState.Reserve];
 export declare const ARTICLE_ORIGIN_STATES: readonly [OriginState.Original, OriginState.Reprint, OriginState.Hybrid];
-export declare const ARTICLE_GUEST_QUERY_FILTER: Readonly<{
+export declare const ARTICLE_FULL_QUERY_REF_POPULATE: string[];
+export declare const ARTICLE_LIST_QUERY_PROJECTION: {
+    content: boolean;
+};
+export declare const ARTICLE_LIST_QUERY_GUEST_FILTER: Readonly<{
     state: PublishState;
     public: PublicState;
 }>;
-export declare const ARTICLE_HOT_SORT_PARAMS: Readonly<{
+export declare const ARTICLE_HOTTEST_SORT_PARAMS: Readonly<{
     'meta.comments': SortType;
     'meta.likes': SortType;
 }>;

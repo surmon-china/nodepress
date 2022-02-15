@@ -30,7 +30,7 @@ let CategoryService = class CategoryService {
     async paginater(query, options, publicOnly) {
         const categories = await this.categoryModel.paginate(query, Object.assign(Object.assign({}, options), { lean: true }));
         const counts = await this.articleModel.aggregate([
-            { $match: publicOnly ? article_model_1.ARTICLE_GUEST_QUERY_FILTER : {} },
+            { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
             { $unwind: '$category' },
             { $group: { _id: '$category', count: { $sum: 1 } } },
         ]);

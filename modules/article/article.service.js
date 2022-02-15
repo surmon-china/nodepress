@@ -30,6 +30,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -52,32 +63,48 @@ let ArticleService = class ArticleService {
         this.cacheService = cacheService;
         this.archiveService = archiveService;
         this.articleModel = articleModel;
-        this.hotArticlesCache = this.cacheService.interval({
-            key: CACHE_KEY.HOT_ARTICLES,
-            promise: () => this.getHotArticles(20),
+        this.hottestArticlesCache = this.cacheService.interval({
+            key: CACHE_KEY.HOTTEST_ARTICLES,
+            promise: () => this.getHottestArticles(20),
             timeout: {
                 success: 1000 * 60 * 30,
                 error: 1000 * 60 * 5,
             },
         });
     }
-    getHotArticles(count) {
-        return this.paginater(article_model_1.ARTICLE_GUEST_QUERY_FILTER, {
+    getHottestArticles(count) {
+        return this.paginater(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, {
             perPage: count,
-            sort: article_model_1.ARTICLE_HOT_SORT_PARAMS,
+            sort: article_model_1.ARTICLE_HOTTEST_SORT_PARAMS,
         }).then((result) => result.documents);
     }
-    getHotArticlesCache() {
-        return this.hotArticlesCache();
+    getHottestArticlesCache() {
+        return this.hottestArticlesCache();
+    }
+    async getNearArticles(articleID, type, count) {
+        const typeFieldMap = {
+            early: { field: '$lt', sort: -1 },
+            later: { field: '$gt', sort: 1 },
+        };
+        const trgetType = typeFieldMap[type];
+        return this.articleModel
+            .find(Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { id: { [trgetType.field]: articleID } }), article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
+            .populate(article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE)
+            .sort({ id: trgetType.sort })
+            .limit(count)
+            .exec();
     }
     async getRelatedArticles(article, count) {
-        const findParams = Object.assign(Object.assign({}, article_model_1.ARTICLE_GUEST_QUERY_FILTER), { tag: { $in: article.tag.map((t) => t._id) }, category: { $in: article.category.map((c) => c._id) } });
-        const articles = await this.articleModel.find(findParams, '-content', { limit: count * 3 }).exec();
+        const findParams = Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { tag: { $in: article.tag.map((t) => t._id) }, category: { $in: article.category.map((c) => c._id) } });
+        const articles = await this.articleModel
+            .find(findParams, article_model_1.ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 3 })
+            .populate(article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE)
+            .exec();
         const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject());
         return lodash_1.default.sampleSize(filtered, count);
     }
     paginater(query, options) {
-        return this.articleModel.paginate(query, Object.assign(Object.assign({}, options), { projection: '-content', populate: ['category', 'tag'] }));
+        return this.articleModel.paginate(query, Object.assign(Object.assign({}, options), { projection: article_model_1.ARTICLE_LIST_QUERY_PROJECTION, populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE }));
     }
     getList(articleIDs) {
         return this.articleModel.find({ id: { $in: articleIDs } }).exec();
@@ -97,8 +124,8 @@ let ArticleService = class ArticleService {
             params.id = idOrSlug;
         }
         return this.articleModel
-            .findOne(publicOnly ? Object.assign(Object.assign({}, params), article_model_1.ARTICLE_GUEST_QUERY_FILTER) : params)
-            .populate(populate ? ['category', 'tag'] : [])
+            .findOne(publicOnly ? Object.assign(Object.assign({}, params), article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER) : params)
+            .populate(populate ? article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE : [])
             .exec()
             .then((result) => result || Promise.reject(`Article '${idOrSlug}' not found`));
     }
@@ -183,7 +210,21 @@ let ArticleService = class ArticleService {
         return actionResult;
     }
     async getTotalCount(publicOnly) {
-        return await this.articleModel.countDocuments(publicOnly ? article_model_1.ARTICLE_GUEST_QUERY_FILTER : {}).exec();
+        return await this.articleModel.countDocuments(publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {}).exec();
+    }
+    getCalendar(publicOnly, timezone = 'GMT') {
+        return this.articleModel
+            .aggregate([
+            { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
+            { $project: { day: { $dateToString: { date: '$create_at', format: '%Y-%m-%d', timezone } } } },
+            { $group: { _id: '$day', count: { $sum: 1 } } },
+            { $sort: { _id: 1 } },
+        ])
+            .then((calendar) => calendar.map((_a) => {
+            var { _id } = _a, r = __rest(_a, ["_id"]);
+            return (Object.assign(Object.assign({}, r), { day: _id }));
+        }))
+            .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`));
     }
     async getMetaStatistic() {
         const [result] = await this.articleModel.aggregate([

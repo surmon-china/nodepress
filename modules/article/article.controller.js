@@ -54,8 +54,8 @@ let ArticleController = class ArticleController {
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page };
         if (!lodash_1.default.isUndefined(sort)) {
-            if (sort === biz_interface_1.SortType.Hot) {
-                paginateOptions.sort = article_model_1.ARTICLE_HOT_SORT_PARAMS;
+            if (sort === biz_interface_1.SortType.Hottest) {
+                paginateOptions.sort = article_model_1.ARTICLE_HOTTEST_SORT_PARAMS;
             }
             else {
                 paginateOptions.dateSort = sort;
@@ -92,13 +92,25 @@ let ArticleController = class ArticleController {
         }
         return this.articleService.paginater(paginateQuery, paginateOptions);
     }
-    getHotArticles(query) {
-        return query.count ? this.articleService.getHotArticles(query.count) : this.articleService.getHotArticlesCache();
+    getHottestArticles(query) {
+        return query.count
+            ? this.articleService.getHottestArticles(query.count)
+            : this.articleService.getHottestArticlesCache();
     }
-    async getRelatedArticles({ params }, query) {
-        var _a;
-        const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) });
-        return this.articleService.getRelatedArticles(article, (_a = query.count) !== null && _a !== void 0 ? _a : 20);
+    getArticleCalendar(query, { isUnauthenticated }) {
+        return this.articleService.getCalendar(isUnauthenticated, query.timezone);
+    }
+    async getArticleContext({ params }) {
+        const articleID = Number(params.id);
+        const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true });
+        const [prev_article] = await this.articleService.getNearArticles(articleID, 'early', 1);
+        const [next_article] = await this.articleService.getNearArticles(articleID, 'later', 1);
+        const related_articles = await this.articleService.getRelatedArticles(article, 20);
+        return {
+            prev_article: prev_article || null,
+            next_article: next_article || null,
+            related_articles,
+        };
     }
     getArticle({ params, isUnauthenticated }) {
         if (isUnauthenticated) {
@@ -136,22 +148,31 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticles", null);
 __decorate([
-    (0, common_1.Get)('hot'),
-    responsor_decorator_1.Responsor.handle('Get hot articles'),
+    (0, common_1.Get)('hottest'),
+    responsor_decorator_1.Responsor.handle('Get hottest articles'),
     __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticleListQueryDTO]),
     __metadata("design:returntype", Promise)
-], ArticleController.prototype, "getHotArticles", null);
+], ArticleController.prototype, "getHottestArticles", null);
 __decorate([
-    (0, common_1.Get)('related/:id'),
-    responsor_decorator_1.Responsor.handle('Get related articles'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
-    __param(1, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
+    (0, common_1.Get)('calendar'),
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
+    responsor_decorator_1.Responsor.handle('Get article calendar'),
+    __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
+    __param(1, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, article_dto_1.ArticleListQueryDTO]),
+    __metadata("design:paramtypes", [article_dto_1.ArticleCalendarQueryDTO, Object]),
+    __metadata("design:returntype", void 0)
+], ArticleController.prototype, "getArticleCalendar", null);
+__decorate([
+    (0, common_1.Get)(':id/context'),
+    responsor_decorator_1.Responsor.handle('Get context articles'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], ArticleController.prototype, "getRelatedArticles", null);
+], ArticleController.prototype, "getArticleContext", null);
 __decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

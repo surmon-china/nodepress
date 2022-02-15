@@ -64,7 +64,7 @@ let TagService = class TagService {
     }
     async aggregate(publicOnly, documents) {
         const counts = await this.articleModel.aggregate([
-            { $match: publicOnly ? article_model_1.ARTICLE_GUEST_QUERY_FILTER : {} },
+            { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
             { $unwind: '$tag' },
             { $group: { _id: '$tag', count: { $sum: 1 } } },
         ]);

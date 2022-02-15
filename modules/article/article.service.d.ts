@@ -12,10 +12,11 @@ export declare class ArticleService {
     private readonly cacheService;
     private readonly archiveService;
     private readonly articleModel;
-    private hotArticlesCache;
+    private hottestArticlesCache;
     constructor(seoService: SeoService, tagService: TagService, cacheService: CacheService, archiveService: ArchiveService, articleModel: MongooseModel<Article>);
-    getHotArticles(count: number): Promise<Array<Article>>;
-    getHotArticlesCache(): Promise<Array<Article>>;
+    getHottestArticles(count: number): Promise<Array<Article>>;
+    getHottestArticlesCache(): Promise<Array<Article>>;
+    getNearArticles(articleID: number, type: 'later' | 'early', count: number): Promise<Article[]>;
     getRelatedArticles(article: Article, count: number): Promise<Article[]>;
     paginater(query: PaginateQuery<Article>, options: PaginateOptions): Promise<PaginateResult<Article>>;
     getList(articleIDs: number[]): Promise<Array<Article>>;
@@ -33,6 +34,10 @@ export declare class ArticleService {
     batchPatchState(articleIDs: MongooseID[], state: PublishState): Promise<import("mongodb").UpdateResult>;
     batchDelete(articleIDs: MongooseID[]): Promise<import("mongodb").DeleteResult>;
     getTotalCount(publicOnly: boolean): Promise<number>;
+    getCalendar(publicOnly: boolean, timezone?: string): Promise<{
+        day: string;
+        count: number;
+    }[]>;
     getMetaStatistic(): Promise<{
         totalViews: number;
         totalLikes: number;

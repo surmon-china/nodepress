@@ -5,7 +5,7 @@ var SortType;
 (function (SortType) {
     SortType[SortType["Asc"] = 1] = "Asc";
     SortType[SortType["Desc"] = -1] = "Desc";
-    SortType[SortType["Hot"] = 2] = "Hot";
+    SortType[SortType["Hottest"] = 2] = "Hottest";
 })(SortType = exports.SortType || (exports.SortType = {}));
 var PublishState;
 (function (PublishState) {

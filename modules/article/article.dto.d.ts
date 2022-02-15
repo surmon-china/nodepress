@@ -12,6 +12,9 @@ export declare class ArticlePaginateQueryDTO extends ArticlePaginateQueryDTO_bas
 export declare class ArticleListQueryDTO {
     count?: number;
 }
+export declare class ArticleCalendarQueryDTO {
+    timezone?: string;
+}
 export declare class ArticleIDsDTO {
     article_ids: string[];
 }

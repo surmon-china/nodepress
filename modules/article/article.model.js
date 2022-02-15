@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleProvider = exports.Article = exports.ArticleMeta = exports.ARTICLE_HOT_SORT_PARAMS = exports.ARTICLE_GUEST_QUERY_FILTER = exports.ARTICLE_ORIGIN_STATES = exports.ARTICLE_PUBLIC_STATES = exports.ARTICLE_PUBLISH_STATES = void 0;
+exports.ArticleProvider = exports.Article = exports.ArticleMeta = exports.ARTICLE_HOTTEST_SORT_PARAMS = exports.ARTICLE_LIST_QUERY_GUEST_FILTER = exports.ARTICLE_LIST_QUERY_PROJECTION = exports.ARTICLE_FULL_QUERY_REF_POPULATE = exports.ARTICLE_ORIGIN_STATES = exports.ARTICLE_PUBLIC_STATES = exports.ARTICLE_PUBLISH_STATES = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
@@ -23,11 +23,13 @@ const tag_model_1 = require("../tag/tag.model");
 exports.ARTICLE_PUBLISH_STATES = [biz_interface_1.PublishState.Draft, biz_interface_1.PublishState.Published, biz_interface_1.PublishState.Recycle];
 exports.ARTICLE_PUBLIC_STATES = [biz_interface_1.PublicState.Public, biz_interface_1.PublicState.Secret, biz_interface_1.PublicState.Reserve];
 exports.ARTICLE_ORIGIN_STATES = [biz_interface_1.OriginState.Original, biz_interface_1.OriginState.Reprint, biz_interface_1.OriginState.Hybrid];
-exports.ARTICLE_GUEST_QUERY_FILTER = Object.freeze({
+exports.ARTICLE_FULL_QUERY_REF_POPULATE = ['category', 'tag'];
+exports.ARTICLE_LIST_QUERY_PROJECTION = { content: false };
+exports.ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
     state: biz_interface_1.PublishState.Published,
     public: biz_interface_1.PublicState.Public,
 });
-exports.ARTICLE_HOT_SORT_PARAMS = Object.freeze({
+exports.ARTICLE_HOTTEST_SORT_PARAMS = Object.freeze({
     'meta.comments': biz_interface_1.SortType.Desc,
     'meta.likes': biz_interface_1.SortType.Desc,
 });

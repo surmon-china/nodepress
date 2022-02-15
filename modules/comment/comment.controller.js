@@ -49,7 +49,7 @@ let CommentController = class CommentController {
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page };
         if (!lodash_1.default.isUndefined(sort)) {
-            if (sort === biz_interface_1.SortType.Hot) {
+            if (sort === biz_interface_1.SortType.Hottest) {
                 paginateOptions.sort = { likes: biz_interface_1.SortType.Desc };
             }
             else {

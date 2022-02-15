@@ -67,7 +67,7 @@ let ArchiveService = class ArchiveService {
     }
     getAllArticles() {
         return this.articleModel
-            .find(article_model_1.ARTICLE_GUEST_QUERY_FILTER, null, { select: '-content' })
+            .find(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
             .sort({ _id: biz_interface_1.SortType.Desc })
             .exec();
     }

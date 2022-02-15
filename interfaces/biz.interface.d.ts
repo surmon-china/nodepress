@@ -1,7 +1,7 @@
 export declare enum SortType {
     Asc = 1,
     Desc = -1,
-    Hot = 2
+    Hottest = 2
 }
 export declare enum PublishState {
     Draft = 0,

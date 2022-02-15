@@ -48,7 +48,7 @@ exports.PaginateOptionDTO = PaginateOptionDTO;
 class PaginateOptionWithHotSortDTO extends PaginateBaseOptionDTO {
 }
 __decorate([
-    (0, class_validator_1.IsIn)([biz_interface_1.SortType.Asc, biz_interface_1.SortType.Desc, biz_interface_1.SortType.Hot]),
+    (0, class_validator_1.IsIn)([biz_interface_1.SortType.Asc, biz_interface_1.SortType.Desc, biz_interface_1.SortType.Hottest]),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
