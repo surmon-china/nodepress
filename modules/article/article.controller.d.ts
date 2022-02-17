@@ -13,7 +13,7 @@ export declare class ArticleController {
     getArticles(query: ArticlePaginateQueryDTO): Promise<PaginateResult<Article>>;
     getHottestArticles(query: ArticleListQueryDTO): Promise<Array<Article>>;
     getArticleCalendar(query: ArticleCalendarQueryDTO, { isUnauthenticated }: QueryParamsResult): Promise<{
-        day: string;
+        date: string;
         count: number;
     }[]>;
     getArticleContext({ params }: QueryParamsResult): Promise<{

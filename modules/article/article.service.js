@@ -222,7 +222,7 @@ let ArticleService = class ArticleService {
         ])
             .then((calendar) => calendar.map((_a) => {
             var { _id } = _a, r = __rest(_a, ["_id"]);
-            return (Object.assign(Object.assign({}, r), { day: _id }));
+            return (Object.assign(Object.assign({}, r), { date: _id }));
         }))
             .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`));
     }

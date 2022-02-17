@@ -35,7 +35,7 @@ export declare class ArticleService {
     batchDelete(articleIDs: MongooseID[]): Promise<import("mongodb").DeleteResult>;
     getTotalCount(publicOnly: boolean): Promise<number>;
     getCalendar(publicOnly: boolean, timezone?: string): Promise<{
-        day: string;
+        date: string;
         count: number;
     }[]>;
     getMetaStatistic(): Promise<{
