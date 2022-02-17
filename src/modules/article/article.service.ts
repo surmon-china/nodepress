@@ -245,7 +245,7 @@ export class ArticleService {
         { $group: { _id: '$day', count: { $sum: 1 } } },
         { $sort: { _id: 1 } },
       ])
-      .then((calendar) => calendar.map(({ _id, ...r }) => ({ ...r, day: _id })))
+      .then((calendar) => calendar.map(({ _id, ...r }) => ({ ...r, date: _id })))
       .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`))
   }
 
