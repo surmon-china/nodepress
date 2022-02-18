@@ -96,6 +96,9 @@
                             <a href="#ARTICLE_IDENTIFIER_PREFIX" title="src/modules/disqus/disqus.constant.ts" ><b>ARTICLE_IDENTIFIER_PREFIX</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.constant.ts)</a>
                         </li>
                         <li>
+                            <a href="#ARTICLE_LANGUAGES" title="src/modules/article/article.model.ts" ><b>ARTICLE_LANGUAGES</b>&nbsp;&nbsp;&nbsp;(src/.../article.model.ts)</a>
+                        </li>
+                        <li>
                             <a href="#ARTICLE_LIST_QUERY_GUEST_FILTER" title="src/modules/article/article.model.ts" ><b>ARTICLE_LIST_QUERY_GUEST_FILTER</b>&nbsp;&nbsp;&nbsp;(src/.../article.model.ts)</a>
                         </li>
                         <li>
@@ -273,6 +276,9 @@
                             <a href="#GUESTBOOK_IDENTIFIER" title="src/modules/disqus/disqus.constant.ts" ><b>GUESTBOOK_IDENTIFIER</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.constant.ts)</a>
                         </li>
                         <li>
+                            <a href="#GUESTBOOK_POST_ID" title="src/constants/biz.constant.ts" ><b>GUESTBOOK_POST_ID</b>&nbsp;&nbsp;&nbsp;(src/.../biz.constant.ts)</a>
+                        </li>
+                        <li>
                             <a href="#HOTTEST_ARTICLES" title="src/constants/cache.constant.ts" ><b>HOTTEST_ARTICLES</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
@@ -409,6 +415,9 @@
                         </li>
                         <li>
                             <a href="#Responsor" title="src/decorators/responsor.decorator.ts" ><b>Responsor</b>&nbsp;&nbsp;&nbsp;(src/.../responsor.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ROOT_COMMENT_PID" title="src/constants/biz.constant.ts" ><b>ROOT_COMMENT_PID</b>&nbsp;&nbsp;&nbsp;(src/.../biz.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#ROOT_PATH" title="src/app.config.ts" ><b>ROOT_PATH</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
@@ -1345,6 +1354,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="ARTICLE_LANGUAGES"></a>
+                    <span class="name">
+                        <span ><b>ARTICLE_LANGUAGES</b></span>
+                        <a href="#ARTICLE_LANGUAGES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[Language.English, Language.Chinese] as const</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="ARTICLE_LIST_QUERY_GUEST_FILTER"></a>
                     <span class="name">
                         <span ><b>ARTICLE_LIST_QUERY_GUEST_FILTER</b></span>
@@ -1691,7 +1720,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>(id: string) &#x3D;&gt; {
-  return id &#x3D;&#x3D;&#x3D; GUESTBOOK_IDENTIFIER ? CommentPostID.Guestbook : id.replace(ARTICLE_IDENTIFIER_PREFIX, &#x27;&#x27;)
+  return id &#x3D;&#x3D;&#x3D; GUESTBOOK_IDENTIFIER ? GUESTBOOK_POST_ID : id.replace(ARTICLE_IDENTIFIER_PREFIX, &#x27;&#x27;)
 }</code>
                     </td>
                 </tr>
@@ -1713,7 +1742,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>(postID: number) &#x3D;&gt; {
-  return postID &#x3D;&#x3D;&#x3D; CommentPostID.Guestbook ? GUESTBOOK_IDENTIFIER : &#x60;${ARTICLE_IDENTIFIER_PREFIX}${postID}&#x60;
+  return postID &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID ? GUESTBOOK_IDENTIFIER : &#x60;${ARTICLE_IDENTIFIER_PREFIX}${postID}&#x60;
 }</code>
                     </td>
                 </tr>
@@ -2945,9 +2974,9 @@
       &lt;channel&gt;
         &lt;item&gt;
           &lt;title&gt;Guestbook&lt;/title&gt;
-          &lt;link&gt;${getPermalinkByID(CommentPostID.Guestbook)}&lt;/link&gt;
+          &lt;link&gt;${getPermalinkByID(GUESTBOOK_POST_ID)}&lt;/link&gt;
           &lt;content:encoded&gt;&lt;![CDATA[${APP.FE_NAME}]]&gt;&lt;/content:encoded&gt;
-          &lt;dsq:thread_identifier&gt;${getThreadIdentifierByID(CommentPostID.Guestbook)}&lt;/dsq:thread_identifier&gt;
+          &lt;dsq:thread_identifier&gt;${getThreadIdentifierByID(GUESTBOOK_POST_ID)}&lt;/dsq:thread_identifier&gt;
           &lt;wp:post_date_gmt&gt;2017-01-01 00:00:00&lt;/wp:post_date_gmt&gt;
           &lt;wp:comment_status&gt;open&lt;/wp:comment_status&gt;
           ${guestbook.map(getCommentItemXML).join(&#x27;\n&#x27;)}
@@ -3316,6 +3345,61 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>&#x27;__customHttpSuccessMessage__&#x27;</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/constants/biz.constant.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GUESTBOOK_POST_ID"></a>
+                    <span class="name">
+                        <span ><b>GUESTBOOK_POST_ID</b></span>
+                        <a href="#GUESTBOOK_POST_ID"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ROOT_COMMENT_PID"></a>
+                    <span class="name">
+                        <span ><b>ROOT_COMMENT_PID</b></span>
+                        <a href="#ROOT_COMMENT_PID"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
                     </td>
                 </tr>
 

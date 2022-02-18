@@ -159,8 +159,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="154"
-                            class="link-to-prism">src/modules/article/article.controller.ts:154</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="159"
+                            class="link-to-prism">src/modules/article/article.controller.ts:159</a></div>
                 </td>
             </tr>
 
@@ -235,8 +235,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="168"
-                            class="link-to-prism">src/modules/article/article.controller.ts:168</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/modules/article/article.controller.ts:173</a></div>
                 </td>
             </tr>
 
@@ -310,8 +310,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="182"
-                            class="link-to-prism">src/modules/article/article.controller.ts:182</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="187"
+                            class="link-to-prism">src/modules/article/article.controller.ts:187</a></div>
                 </td>
             </tr>
 
@@ -386,8 +386,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="139"
-                            class="link-to-prism">src/modules/article/article.controller.ts:139</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="144"
+                            class="link-to-prism">src/modules/article/article.controller.ts:144</a></div>
                 </td>
             </tr>
 
@@ -461,8 +461,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="111"
-                            class="link-to-prism">src/modules/article/article.controller.ts:111</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/modules/article/article.controller.ts:116</a></div>
                 </td>
             </tr>
 
@@ -550,8 +550,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="120"
-                            class="link-to-prism">src/modules/article/article.controller.ts:120</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">src/modules/article/article.controller.ts:125</a></div>
                 </td>
             </tr>
 
@@ -703,8 +703,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="102"
-                            class="link-to-prism">src/modules/article/article.controller.ts:102</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">src/modules/article/article.controller.ts:107</a></div>
                 </td>
             </tr>
 
@@ -779,8 +779,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="175"
-                            class="link-to-prism">src/modules/article/article.controller.ts:175</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="180"
+                            class="link-to-prism">src/modules/article/article.controller.ts:180</a></div>
                 </td>
             </tr>
 
@@ -855,8 +855,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="161"
-                            class="link-to-prism">src/modules/article/article.controller.ts:161</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="166"
+                            class="link-to-prism">src/modules/article/article.controller.ts:166</a></div>
                 </td>
             </tr>
 
@@ -934,7 +934,7 @@ import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
 import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
-import { SortType } from &#x27;@app/interfaces/biz.interface&#x27;
+import { SortType } from &#x27;@app/constants/biz.constant&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
@@ -975,6 +975,11 @@ export class ArticleController {
       } else {
         paginateOptions.dateSort &#x3D; sort
       }
+    }
+
+    // language
+    if (!lodash.isUndefined(filters.lang)) {
+      paginateQuery.lang &#x3D; filters.lang
     }
 
     // states

@@ -1873,7 +1873,7 @@
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { CommentPostID, CommentState } from &#x27;@app/interfaces/biz.interface&#x27;
+import { GUESTBOOK_POST_ID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { IPService } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
@@ -1900,7 +1900,7 @@ export class CommentService {
 
   private async emailToAdminAndTargetAuthor(comment: Comment) {
     let onWhere &#x3D; &#x27;&#x27;
-    if (comment.post_id &#x3D;&#x3D;&#x3D; CommentPostID.Guestbook) {
+    if (comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID) {
       onWhere &#x3D; &#x27;guestbook&#x27;
     } else {
       const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: comment.post_id })
@@ -2015,7 +2015,7 @@ export class CommentService {
 
   // validate comment target commentable
   public async isCommentableTarget(targetPostID: number): Promise&lt;void&gt; {
-    if (targetPostID !&#x3D;&#x3D; CommentPostID.Guestbook) {
+    if (targetPostID !&#x3D;&#x3D; GUESTBOOK_POST_ID) {
       const isCommentable &#x3D; await this.articleService.isCommentableArticle(targetPostID)
       if (!isCommentable) {
         return Promise.reject(&#x60;Comment target ${targetPostID} was disabled comment&#x60;)

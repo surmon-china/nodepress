@@ -778,7 +778,7 @@ import { Author } from &#x27;@app/modules/comment/comment.model&#x27;
 import { DisqusPublicService } from &#x27;@app/modules/disqus/disqus.service.public&#x27;
 import { DisqusToken } from &#x27;@app/modules/disqus/disqus.token&#x27;
 import { AccessToken } from &#x27;@app/utils/disqus&#x27;
-import { CommentPostID } from &#x27;@app/interfaces/biz.interface&#x27;
+import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
 import { getPermalinkByID } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { VoteAuthorDTO, CommentVoteDTO, PageVoteDTO } from &#x27;./vote.dto&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -815,7 +815,7 @@ export class VoteController {
   }
 
   private async getTargetTitle(post_id: number) {
-    if (post_id &#x3D;&#x3D;&#x3D; CommentPostID.Guestbook) {
+    if (post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID) {
       return &#x27;guestbook&#x27;
     } else {
       const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: post_id })
@@ -881,18 +881,18 @@ export class VoteController {
     // NodePress
     const likes &#x3D; await this.optionService.incrementLikes()
     // Disqus
-    this.voteDisqusThread(CommentPostID.Guestbook, 1, token?.access_token).catch(() &#x3D;&gt; {})
+    this.voteDisqusThread(GUESTBOOK_POST_ID, 1, token?.access_token).catch(() &#x3D;&gt; {})
     // email to admin
     this.getAuthor(voteBody.author, token?.access_token).then(async (author) &#x3D;&gt; {
       if (author) {
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP.ADMIN_EMAIL,
           subject: &#x60;You have a new site vote&#x60;,
-          on: await this.getTargetTitle(CommentPostID.Guestbook),
+          on: await this.getTargetTitle(GUESTBOOK_POST_ID),
           vote: &#x27;+1&#x27;,
           author: author || &#x27;Anonymous user&#x27;,
           location: await this.ipService.queryLocation(visitor.ip),
-          link: getPermalinkByID(CommentPostID.Guestbook),
+          link: getPermalinkByID(GUESTBOOK_POST_ID),
         })
       }
     })

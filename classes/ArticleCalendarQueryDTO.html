@@ -134,7 +134,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/modules/article/article.dto.ts:82</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/modules/article/article.dto.ts:93</a></div>
                         </td>
                     </tr>
 
@@ -168,12 +168,17 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
 } from &#x27;class-validator&#x27;
-import { PublishState, PublicState, OriginState } from &#x27;@app/interfaces/biz.interface&#x27;
+import { PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
 import { WhenGuest } from &#x27;@app/decorators/guest.decorator&#x27;
 import { unknowToNumber } from &#x27;@app/transformers/value.transformer&#x27;
 import { DateQueryDTO, KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
-import { ARTICLE_PUBLISH_STATES, ARTICLE_PUBLIC_STATES, ARTICLE_ORIGIN_STATES } from &#x27;./article.model&#x27;
+import {
+  ARTICLE_PUBLISH_STATES,
+  ARTICLE_PUBLIC_STATES,
+  ARTICLE_ORIGIN_STATES,
+  ARTICLE_LANGUAGES,
+} from &#x27;./article.model&#x27;
 
 export class ArticlePaginateQueryDTO extends IntersectionType(
   PaginateOptionWithHotSortDTO,
@@ -212,6 +217,12 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsNotEmpty()
   @IsOptional()
   category_slug?: string
+
+  @IsIn(ARTICLE_LANGUAGES)
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  lang: string
 }
 
 export class ArticleListQueryDTO {

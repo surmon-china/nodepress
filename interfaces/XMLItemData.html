@@ -180,7 +180,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import moment from &#x27;moment&#x27;
 import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
 import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import { CommentPostID, CommentState } from &#x27;@app/interfaces/biz.interface&#x27;
+import { GUESTBOOK_POST_ID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
 import { getPermalinkByID } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { getThreadIdentifierByID } from &#x27;./disqus.constant&#x27;
 import { ThreadState } from &#x27;./disqus.dto&#x27;
@@ -219,9 +219,9 @@ export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comme
       &lt;channel&gt;
         &lt;item&gt;
           &lt;title&gt;Guestbook&lt;/title&gt;
-          &lt;link&gt;${getPermalinkByID(CommentPostID.Guestbook)}&lt;/link&gt;
+          &lt;link&gt;${getPermalinkByID(GUESTBOOK_POST_ID)}&lt;/link&gt;
           &lt;content:encoded&gt;&lt;![CDATA[${APP.FE_NAME}]]&gt;&lt;/content:encoded&gt;
-          &lt;dsq:thread_identifier&gt;${getThreadIdentifierByID(CommentPostID.Guestbook)}&lt;/dsq:thread_identifier&gt;
+          &lt;dsq:thread_identifier&gt;${getThreadIdentifierByID(GUESTBOOK_POST_ID)}&lt;/dsq:thread_identifier&gt;
           &lt;wp:post_date_gmt&gt;2017-01-01 00:00:00&lt;/wp:post_date_gmt&gt;
           &lt;wp:comment_status&gt;open&lt;/wp:comment_status&gt;
           ${guestbook.map(getCommentItemXML).join(&#x27;\n&#x27;)}

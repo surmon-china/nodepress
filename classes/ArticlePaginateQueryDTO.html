@@ -87,6 +87,9 @@
                                 <a href="#category_slug" >category_slug</a>
                             </li>
                             <li>
+                                <a href="#lang" >lang</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Optional</span>
                                 <a href="#origin" >origin</a>
                             </li>
@@ -150,7 +153,42 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/article/article.dto.ts:65</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/article/article.dto.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lang"></a>
+                    <span class="name">
+                        <span ><b>lang</b></span>
+                        <a href="#lang"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsIn(ARTICLE_LANGUAGES)<br />@IsString()<br />@IsNotEmpty()<br />@IsOptional()<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/modules/article/article.dto.ts:76</a></div>
                         </td>
                     </tr>
 
@@ -186,7 +224,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/article/article.dto.ts:55</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/article/article.dto.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -222,7 +260,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/article/article.dto.ts:48</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/modules/article/article.dto.ts:53</a></div>
                         </td>
                     </tr>
 
@@ -258,7 +296,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/modules/article/article.dto.ts:40</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/article/article.dto.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -294,7 +332,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/article/article.dto.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/article/article.dto.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -328,12 +366,17 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
 } from &#x27;class-validator&#x27;
-import { PublishState, PublicState, OriginState } from &#x27;@app/interfaces/biz.interface&#x27;
+import { PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
 import { WhenGuest } from &#x27;@app/decorators/guest.decorator&#x27;
 import { unknowToNumber } from &#x27;@app/transformers/value.transformer&#x27;
 import { DateQueryDTO, KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
-import { ARTICLE_PUBLISH_STATES, ARTICLE_PUBLIC_STATES, ARTICLE_ORIGIN_STATES } from &#x27;./article.model&#x27;
+import {
+  ARTICLE_PUBLISH_STATES,
+  ARTICLE_PUBLIC_STATES,
+  ARTICLE_ORIGIN_STATES,
+  ARTICLE_LANGUAGES,
+} from &#x27;./article.model&#x27;
 
 export class ArticlePaginateQueryDTO extends IntersectionType(
   PaginateOptionWithHotSortDTO,
@@ -372,6 +415,12 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsNotEmpty()
   @IsOptional()
   category_slug?: string
+
+  @IsIn(ARTICLE_LANGUAGES)
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  lang: string
 }
 
 export class ArticleListQueryDTO {

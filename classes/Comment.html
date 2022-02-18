@@ -622,7 +622,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@prop({default: undefined, index: true})<br />
+                            @IsInt()<br />@prop({default: ROOT_COMMENT_PID, index: true})<br />
                         </code>
                     </td>
                 </tr>
@@ -720,7 +720,7 @@ import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.cons
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
-import { CommentParentID, CommentState } from &#x27;@app/interfaces/biz.interface&#x27;
+import { ROOT_COMMENT_PID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
 import { IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 import { ExtendModel } from &#x27;@app/models/extend.model&#x27;
 
@@ -776,7 +776,7 @@ export class CommentBase {
 
   // parent comment ID
   @IsInt()
-  @prop({ default: CommentParentID.Self, index: true })
+  @prop({ default: ROOT_COMMENT_PID, index: true })
   pid: number
 
   @MinLength(3) // sync with Disqus

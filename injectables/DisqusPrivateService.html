@@ -801,7 +801,7 @@ import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
 import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import { CommentPostID, CommentState } from &#x27;@app/interfaces/biz.interface&#x27;
+import { GUESTBOOK_POST_ID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
 import { getExtendObject } from &#x27;@app/transformers/extend.transformer&#x27;
 import { getPermalinkByID } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { DISQUS } from &#x27;@app/app.config&#x27;
@@ -926,7 +926,7 @@ export class DisqusPrivateService {
       if (comment.pid &amp;&amp; !todoCommentIDs.includes(comment.pid)) {
         comment.pid &#x3D; 0
       }
-      if (comment.post_id &#x3D;&#x3D;&#x3D; CommentPostID.Guestbook) {
+      if (comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID) {
         guestbook.push(comment)
       } else if (treeMap.has(comment.post_id)) {
         treeMap.get(comment.post_id)!.comments.push(comment)

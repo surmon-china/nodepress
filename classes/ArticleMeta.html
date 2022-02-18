@@ -138,7 +138,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/article/article.model.ts:68</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/modules/article/article.model.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -173,7 +173,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/article/article.model.ts:56</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/article/article.model.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -208,7 +208,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/article/article.model.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/modules/article/article.model.ts:61</a></div>
                         </td>
                     </tr>
 
@@ -243,14 +243,15 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
 } from &#x27;class-validator&#x27;
+import { Language, SortType, PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
 import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
-import { SortType, PublishState, PublicState, OriginState } from &#x27;@app/interfaces/biz.interface&#x27;
 import { Category } from &#x27;@app/modules/category/category.model&#x27;
 import { ExtendModel } from &#x27;@app/models/extend.model&#x27;
 import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
 
+export const ARTICLE_LANGUAGES &#x3D; [Language.English, Language.Chinese] as const
 export const ARTICLE_PUBLISH_STATES &#x3D; [PublishState.Draft, PublishState.Published, PublishState.Recycle] as const
 export const ARTICLE_PUBLIC_STATES &#x3D; [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
 export const ARTICLE_ORIGIN_STATES &#x3D; [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
@@ -349,11 +350,6 @@ export class Article {
   @prop()
   thumb: string
 
-  // disabled comment
-  @IsBoolean()
-  @prop({ default: false })
-  disabled_comment: boolean
-
   // publish state
   @IsIn(ARTICLE_PUBLISH_STATES)
   @IsInt()
@@ -386,6 +382,21 @@ export class Article {
   // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
   @prop({ ref: () &#x3D;&gt; Tag, index: true })
   tag: Ref&lt;Tag&gt;[]
+
+  // language
+  // MARK: can&#x27;t use &#x27;language&#x27; field
+  // https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/
+  // https://docs.mongodb.com/manual/reference/text-search-languages/#std-label-text-search-languages
+  @IsIn(ARTICLE_LANGUAGES)
+  @IsString()
+  @IsDefined()
+  @prop({ default: Language.Chinese, index: true })
+  lang: Language
+
+  // disabled comment
+  @IsBoolean()
+  @prop({ default: false })
+  disabled_comment: boolean
 
   @prop({ _id: false, default: { ...ARTICLE_DEFAULT_META } })
   meta: ArticleMeta
