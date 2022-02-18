@@ -1,4 +1,4 @@
-import { PublishState } from '@app/interfaces/biz.interface';
+import { PublishState } from '@app/constants/biz.constant';
 export declare const ANNOUNCEMENT_STATES: readonly [PublishState.Draft, PublishState.Published];
 export declare class Announcement {
     id: number;

@@ -1,4 +1,4 @@
-import { PublishState } from '@app/interfaces/biz.interface';
+import { PublishState } from '@app/constants/biz.constant';
 import { PaginateOptionDTO } from '@app/models/paginate.model';
 import { KeywordQueryDTO } from '@app/models/query.model';
 declare const AnnouncementPaginateQueryDTO_base: import("@nestjs/mapped-types").MappedType<PaginateOptionDTO & KeywordQueryDTO>;

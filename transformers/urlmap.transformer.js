@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPermalinkByID = exports.getGuestbookPageUrl = exports.getArticleUrl = exports.getCategoryUrl = exports.getTagUrl = void 0;
-const biz_interface_1 = require("../interfaces/biz.interface");
+const biz_constant_1 = require("../constants/biz.constant");
 const APP_CONFIG = __importStar(require("../app.config"));
 function getTagUrl(tagSlug) {
     return `${APP_CONFIG.APP.FE_URL}/tag/${tagSlug}`;
@@ -39,7 +39,7 @@ function getGuestbookPageUrl() {
 }
 exports.getGuestbookPageUrl = getGuestbookPageUrl;
 function getPermalinkByID(id) {
-    return id === biz_interface_1.CommentPostID.Guestbook ? getGuestbookPageUrl() : getArticleUrl(id);
+    return id === biz_constant_1.GUESTBOOK_POST_ID ? getGuestbookPageUrl() : getArticleUrl(id);
 }
 exports.getPermalinkByID = getPermalinkByID;
 //# sourceMappingURL=urlmap.transformer.js.map

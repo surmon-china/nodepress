@@ -34,7 +34,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DisqusPublicService = void 0;
 const common_1 = require("@nestjs/common");
 const comment_service_1 = require("../comment/comment.service");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const cache_constant_1 = require("../../constants/cache.constant");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const app_config_1 = require("../../app.config");
@@ -210,7 +210,7 @@ let DisqusPublicService = class DisqusPublicService {
             post: commentDisqusPostID,
             access_token: accessToken,
         });
-        return await this.commentService.update(comment._id, { state: biz_interface_1.CommentState.Deleted });
+        return await this.commentService.update(comment._id, { state: biz_constant_1.CommentState.Deleted });
     }
 };
 DisqusPublicService = __decorate([

@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentParentID = exports.CommentPostID = exports.CommentState = exports.OriginState = exports.PublicState = exports.PublishState = exports.SortType = void 0;
+exports.ROOT_COMMENT_PID = exports.GUESTBOOK_POST_ID = exports.CommentState = exports.OriginState = exports.PublicState = exports.PublishState = exports.SortType = exports.Language = void 0;
+var Language;
+(function (Language) {
+    Language["English"] = "en";
+    Language["Chinese"] = "zh";
+})(Language = exports.Language || (exports.Language = {}));
 var SortType;
 (function (SortType) {
     SortType[SortType["Asc"] = 1] = "Asc";
@@ -32,12 +37,6 @@ var CommentState;
     CommentState[CommentState["Deleted"] = -1] = "Deleted";
     CommentState[CommentState["Spam"] = -2] = "Spam";
 })(CommentState = exports.CommentState || (exports.CommentState = {}));
-var CommentPostID;
-(function (CommentPostID) {
-    CommentPostID[CommentPostID["Guestbook"] = 0] = "Guestbook";
-})(CommentPostID = exports.CommentPostID || (exports.CommentPostID = {}));
-var CommentParentID;
-(function (CommentParentID) {
-    CommentParentID[CommentParentID["Self"] = 0] = "Self";
-})(CommentParentID = exports.CommentParentID || (exports.CommentParentID = {}));
-//# sourceMappingURL=biz.interface.js.map
+exports.GUESTBOOK_POST_ID = 0;
+exports.ROOT_COMMENT_PID = 0;
+//# sourceMappingURL=biz.constant.js.map

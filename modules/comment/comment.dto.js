@@ -14,7 +14,7 @@ const mapped_types_1 = require("@nestjs/mapped-types");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const guest_decorator_1 = require("../../decorators/guest.decorator");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const comment_model_1 = require("./comment.model");
 const query_model_1 = require("../../models/query.model");
 const paginate_model_1 = require("../../models/paginate.model");
@@ -22,7 +22,7 @@ const value_transformer_1 = require("../../transformers/value.transformer");
 class CommentPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionWithHotSortDTO, query_model_1.KeywordQueryDTO) {
 }
 __decorate([
-    (0, guest_decorator_1.WhenGuest)({ only: [biz_interface_1.CommentState.Published], default: biz_interface_1.CommentState.Published }),
+    (0, guest_decorator_1.WhenGuest)({ only: [biz_constant_1.CommentState.Published], default: biz_constant_1.CommentState.Published }),
     (0, class_validator_1.IsIn)(comment_model_1.COMMENT_STATES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),

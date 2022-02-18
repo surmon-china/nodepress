@@ -2,7 +2,7 @@ import { SeoService } from '@app/processors/helper/helper.service.seo';
 import { CacheService } from '@app/processors/cache/cache.service';
 import { ArchiveService } from '@app/modules/archive/archive.service';
 import { TagService } from '@app/modules/tag/tag.service';
-import { PublishState } from '@app/interfaces/biz.interface';
+import { PublishState } from '@app/constants/biz.constant';
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface';
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate';
 import { Article } from './article.model';

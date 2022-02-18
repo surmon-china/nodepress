@@ -1,8 +1,9 @@
 import { Ref } from '@typegoose/typegoose';
-import { SortType, PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface';
+import { Language, SortType, PublishState, PublicState, OriginState } from '@app/constants/biz.constant';
 import { Category } from '@app/modules/category/category.model';
 import { ExtendModel } from '@app/models/extend.model';
 import { Tag } from '@app/modules/tag/tag.model';
+export declare const ARTICLE_LANGUAGES: readonly [Language.English, Language.Chinese];
 export declare const ARTICLE_PUBLISH_STATES: readonly [PublishState.Draft, PublishState.Published, PublishState.Recycle];
 export declare const ARTICLE_PUBLIC_STATES: readonly [PublicState.Public, PublicState.Secret, PublicState.Reserve];
 export declare const ARTICLE_ORIGIN_STATES: readonly [OriginState.Original, OriginState.Reprint, OriginState.Hybrid];
@@ -31,12 +32,13 @@ export declare class Article {
     description: string;
     keywords: string[];
     thumb: string;
-    disabled_comment: boolean;
     state: PublishState;
     public: PublicState;
     origin: OriginState;
     category: Ref<Category>[];
     tag: Ref<Tag>[];
+    lang: Language;
+    disabled_comment: boolean;
     meta: ArticleMeta;
     create_at?: Date;
     update_at?: Date;

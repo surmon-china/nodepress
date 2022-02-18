@@ -9,29 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleProvider = exports.Article = exports.ArticleMeta = exports.ARTICLE_HOTTEST_SORT_PARAMS = exports.ARTICLE_LIST_QUERY_GUEST_FILTER = exports.ARTICLE_LIST_QUERY_PROJECTION = exports.ARTICLE_FULL_QUERY_REF_POPULATE = exports.ARTICLE_ORIGIN_STATES = exports.ARTICLE_PUBLIC_STATES = exports.ARTICLE_PUBLISH_STATES = void 0;
+exports.ArticleProvider = exports.Article = exports.ArticleMeta = exports.ARTICLE_HOTTEST_SORT_PARAMS = exports.ARTICLE_LIST_QUERY_GUEST_FILTER = exports.ARTICLE_LIST_QUERY_PROJECTION = exports.ARTICLE_FULL_QUERY_REF_POPULATE = exports.ARTICLE_ORIGIN_STATES = exports.ARTICLE_PUBLIC_STATES = exports.ARTICLE_PUBLISH_STATES = exports.ARTICLE_LANGUAGES = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
+const biz_constant_1 = require("../../constants/biz.constant");
 const increment_constant_1 = require("../../constants/increment.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
-const biz_interface_1 = require("../../interfaces/biz.interface");
 const category_model_1 = require("../category/category.model");
 const extend_model_1 = require("../../models/extend.model");
 const tag_model_1 = require("../tag/tag.model");
-exports.ARTICLE_PUBLISH_STATES = [biz_interface_1.PublishState.Draft, biz_interface_1.PublishState.Published, biz_interface_1.PublishState.Recycle];
-exports.ARTICLE_PUBLIC_STATES = [biz_interface_1.PublicState.Public, biz_interface_1.PublicState.Secret, biz_interface_1.PublicState.Reserve];
-exports.ARTICLE_ORIGIN_STATES = [biz_interface_1.OriginState.Original, biz_interface_1.OriginState.Reprint, biz_interface_1.OriginState.Hybrid];
+exports.ARTICLE_LANGUAGES = [biz_constant_1.Language.English, biz_constant_1.Language.Chinese];
+exports.ARTICLE_PUBLISH_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published, biz_constant_1.PublishState.Recycle];
+exports.ARTICLE_PUBLIC_STATES = [biz_constant_1.PublicState.Public, biz_constant_1.PublicState.Secret, biz_constant_1.PublicState.Reserve];
+exports.ARTICLE_ORIGIN_STATES = [biz_constant_1.OriginState.Original, biz_constant_1.OriginState.Reprint, biz_constant_1.OriginState.Hybrid];
 exports.ARTICLE_FULL_QUERY_REF_POPULATE = ['category', 'tag'];
 exports.ARTICLE_LIST_QUERY_PROJECTION = { content: false };
 exports.ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
-    state: biz_interface_1.PublishState.Published,
-    public: biz_interface_1.PublicState.Public,
+    state: biz_constant_1.PublishState.Published,
+    public: biz_constant_1.PublicState.Public,
 });
 exports.ARTICLE_HOTTEST_SORT_PARAMS = Object.freeze({
-    'meta.comments': biz_interface_1.SortType.Desc,
-    'meta.likes': biz_interface_1.SortType.Desc,
+    'meta.comments': biz_constant_1.SortType.Desc,
+    'meta.likes': biz_constant_1.SortType.Desc,
 });
 const ARTICLE_DEFAULT_META = Object.freeze({
     likes: 0,
@@ -101,29 +102,24 @@ __decorate([
     __metadata("design:type", String)
 ], Article.prototype, "thumb", void 0);
 __decorate([
-    (0, class_validator_1.IsBoolean)(),
-    (0, typegoose_1.prop)({ default: false }),
-    __metadata("design:type", Boolean)
-], Article.prototype, "disabled_comment", void 0);
-__decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_PUBLISH_STATES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: biz_interface_1.PublishState, default: biz_interface_1.PublishState.Published, index: true }),
+    (0, typegoose_1.prop)({ enum: biz_constant_1.PublishState, default: biz_constant_1.PublishState.Published, index: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "state", void 0);
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_PUBLIC_STATES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: biz_interface_1.PublicState, default: biz_interface_1.PublicState.Public, index: true }),
+    (0, typegoose_1.prop)({ enum: biz_constant_1.PublicState, default: biz_constant_1.PublicState.Public, index: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "public", void 0);
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_ORIGIN_STATES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: biz_interface_1.OriginState, default: biz_interface_1.OriginState.Original, index: true }),
+    (0, typegoose_1.prop)({ enum: biz_constant_1.OriginState, default: biz_constant_1.OriginState.Original, index: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "origin", void 0);
 __decorate([
@@ -137,6 +133,18 @@ __decorate([
     (0, typegoose_1.prop)({ ref: () => tag_model_1.Tag, index: true }),
     __metadata("design:type", Array)
 ], Article.prototype, "tag", void 0);
+__decorate([
+    (0, class_validator_1.IsIn)(exports.ARTICLE_LANGUAGES),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsDefined)(),
+    (0, typegoose_1.prop)({ default: biz_constant_1.Language.Chinese, index: true }),
+    __metadata("design:type", String)
+], Article.prototype, "lang", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, typegoose_1.prop)({ default: false }),
+    __metadata("design:type", Boolean)
+], Article.prototype, "disabled_comment", void 0);
 __decorate([
     (0, typegoose_1.prop)({ _id: false, default: Object.assign({}, ARTICLE_DEFAULT_META) }),
     __metadata("design:type", ArticleMeta)

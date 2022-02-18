@@ -40,7 +40,7 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const archive_service_1 = require("../archive/archive.service");
 const article_model_1 = require("../article/article.model");
 const tag_model_1 = require("./tag.model");
@@ -75,7 +75,7 @@ let TagService = class TagService {
         return hydratedDocs;
     }
     async getAllTags() {
-        const allTags = await this.tagModel.find().lean().sort({ _id: biz_interface_1.SortType.Desc }).exec();
+        const allTags = await this.tagModel.find().lean().sort({ _id: biz_constant_1.SortType.Desc }).exec();
         const documents = await this.aggregate(true, allTags);
         return documents;
     }

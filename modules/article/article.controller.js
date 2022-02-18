@@ -36,7 +36,7 @@ const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
 const expose_pipe_1 = require("../../pipes/expose.pipe");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const tag_service_1 = require("../tag/tag.service");
 const category_service_1 = require("../category/category.service");
 const article_dto_1 = require("./article.dto");
@@ -54,12 +54,15 @@ let ArticleController = class ArticleController {
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page };
         if (!lodash_1.default.isUndefined(sort)) {
-            if (sort === biz_interface_1.SortType.Hottest) {
+            if (sort === biz_constant_1.SortType.Hottest) {
                 paginateOptions.sort = article_model_1.ARTICLE_HOTTEST_SORT_PARAMS;
             }
             else {
                 paginateOptions.dateSort = sort;
             }
+        }
+        if (!lodash_1.default.isUndefined(filters.lang)) {
+            paginateQuery.lang = filters.lang;
         }
         if (!lodash_1.default.isUndefined(filters.state)) {
             paginateQuery.state = filters.state;

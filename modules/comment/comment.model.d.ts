@@ -1,4 +1,4 @@
-import { CommentState } from '@app/interfaces/biz.interface';
+import { CommentState } from '@app/constants/biz.constant';
 import { IPLocation } from '@app/processors/helper/helper.service.ip';
 import { ExtendModel } from '@app/models/extend.model';
 export declare const COMMENT_STATES: readonly [CommentState.Auditing, CommentState.Published, CommentState.Deleted, CommentState.Spam];

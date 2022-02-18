@@ -37,7 +37,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const article_service_1 = require("../article/article.service");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
@@ -59,7 +59,7 @@ let CommentService = class CommentService {
     }
     async emailToAdminAndTargetAuthor(comment) {
         let onWhere = '';
-        if (comment.post_id === biz_interface_1.CommentPostID.Guestbook) {
+        if (comment.post_id === biz_constant_1.GUESTBOOK_POST_ID) {
             onWhere = 'guestbook';
         }
         else {
@@ -124,7 +124,7 @@ let CommentService = class CommentService {
         }
     }
     updateBlocklistAkismetWithComment(comments, state, referer) {
-        const isSPAM = state === biz_interface_1.CommentState.Spam;
+        const isSPAM = state === biz_constant_1.CommentState.Spam;
         const action = isSPAM ? helper_service_akismet_1.AkismetAction.SubmitSpam : helper_service_akismet_1.AkismetAction.SubmitHam;
         comments.forEach((comment) => this.submitCommentAkismet(action, comment, referer));
         const ips = comments.map((comment) => comment.ip).filter(Boolean);
@@ -148,7 +148,7 @@ let CommentService = class CommentService {
         }
     }
     async isCommentableTarget(targetPostID) {
-        if (targetPostID !== biz_interface_1.CommentPostID.Guestbook) {
+        if (targetPostID !== biz_constant_1.GUESTBOOK_POST_ID) {
             const isCommentable = await this.articleService.isCommentableArticle(targetPostID);
             if (!isCommentable) {
                 return Promise.reject(`Comment target ${targetPostID} was disabled comment`);
@@ -171,7 +171,7 @@ let CommentService = class CommentService {
             }) });
     }
     normalizeNewComment(comment, visitor) {
-        return Object.assign(Object.assign({}, comment), { pid: Number(comment.pid), post_id: Number(comment.post_id), state: biz_interface_1.CommentState.Published, likes: 0, dislikes: 0, ip: visitor.ip, ip_location: {}, agent: visitor.ua || comment.agent, extends: [] });
+        return Object.assign(Object.assign({}, comment), { pid: Number(comment.pid), post_id: Number(comment.post_id), state: biz_constant_1.CommentState.Published, likes: 0, dislikes: 0, ip: visitor.ip, ip_location: {}, agent: visitor.ua || comment.agent, extends: [] });
     }
     async create(comment) {
         const ip_location = app_environment_1.isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null;

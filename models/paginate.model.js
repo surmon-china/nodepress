@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaginateOptionWithHotSortDTO = exports.PaginateOptionDTO = exports.PaginateBaseOptionDTO = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
-const biz_interface_1 = require("../interfaces/biz.interface");
+const biz_constant_1 = require("../constants/biz.constant");
 const value_transformer_1 = require("../transformers/value.transformer");
 class PaginateBaseOptionDTO {
 }
@@ -37,7 +37,7 @@ exports.PaginateBaseOptionDTO = PaginateBaseOptionDTO;
 class PaginateOptionDTO extends PaginateBaseOptionDTO {
 }
 __decorate([
-    (0, class_validator_1.IsIn)([biz_interface_1.SortType.Asc, biz_interface_1.SortType.Desc]),
+    (0, class_validator_1.IsIn)([biz_constant_1.SortType.Asc, biz_constant_1.SortType.Desc]),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
@@ -48,7 +48,7 @@ exports.PaginateOptionDTO = PaginateOptionDTO;
 class PaginateOptionWithHotSortDTO extends PaginateBaseOptionDTO {
 }
 __decorate([
-    (0, class_validator_1.IsIn)([biz_interface_1.SortType.Asc, biz_interface_1.SortType.Desc, biz_interface_1.SortType.Hottest]),
+    (0, class_validator_1.IsIn)([biz_constant_1.SortType.Asc, biz_constant_1.SortType.Desc, biz_constant_1.SortType.Hottest]),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),

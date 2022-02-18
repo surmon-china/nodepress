@@ -38,7 +38,7 @@ exports.ArchiveService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_service_1 = require("../../processors/cache/cache.service");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const category_model_1 = require("../category/category.model");
 const article_model_1 = require("../article/article.model");
 const tag_model_1 = require("../tag/tag.model");
@@ -60,15 +60,15 @@ let ArchiveService = class ArchiveService {
         });
     }
     getAllTags() {
-        return this.tagModel.find().sort({ _id: biz_interface_1.SortType.Desc }).exec();
+        return this.tagModel.find().sort({ _id: biz_constant_1.SortType.Desc }).exec();
     }
     getAllCategories() {
-        return this.categoryModel.find().sort({ _id: biz_interface_1.SortType.Desc }).exec();
+        return this.categoryModel.find().sort({ _id: biz_constant_1.SortType.Desc }).exec();
     }
     getAllArticles() {
         return this.articleModel
             .find(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
-            .sort({ _id: biz_interface_1.SortType.Desc })
+            .sort({ _id: biz_constant_1.SortType.Desc })
             .exec();
     }
     async getArchiveData() {

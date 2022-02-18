@@ -15,14 +15,14 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const value_transformer_1 = require("../../transformers/value.transformer");
 const guest_decorator_1 = require("../../decorators/guest.decorator");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const paginate_model_1 = require("../../models/paginate.model");
 const query_model_1 = require("../../models/query.model");
 const announcement_model_1 = require("./announcement.model");
 class AnnouncementPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionDTO, query_model_1.KeywordQueryDTO) {
 }
 __decorate([
-    (0, guest_decorator_1.WhenGuest)({ only: [biz_interface_1.PublishState.Published], default: biz_interface_1.PublishState.Published }),
+    (0, guest_decorator_1.WhenGuest)({ only: [biz_constant_1.PublishState.Published], default: biz_constant_1.PublishState.Published }),
     (0, class_validator_1.IsIn)(announcement_model_1.ANNOUNCEMENT_STATES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),

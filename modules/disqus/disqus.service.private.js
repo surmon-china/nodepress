@@ -37,7 +37,7 @@ const fast_xml_parser_1 = require("fast-xml-parser");
 const common_1 = require("@nestjs/common");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const extend_transformer_1 = require("../../transformers/extend.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const app_config_1 = require("../../app.config");
@@ -118,13 +118,13 @@ let DisqusPrivateService = class DisqusPrivateService {
         const treeMap = new Map();
         const guestbook = [];
         const allComments = await this.commentService.getAll();
-        const todoComments = allComments.filter((comment) => [biz_interface_1.CommentState.Auditing, biz_interface_1.CommentState.Published].includes(comment.state));
+        const todoComments = allComments.filter((comment) => [biz_constant_1.CommentState.Auditing, biz_constant_1.CommentState.Published].includes(comment.state));
         const todoCommentIDs = todoComments.map((comment) => comment.id);
         todoComments.forEach((comment) => {
             if (comment.pid && !todoCommentIDs.includes(comment.pid)) {
                 comment.pid = 0;
             }
-            if (comment.post_id === biz_interface_1.CommentPostID.Guestbook) {
+            if (comment.post_id === biz_constant_1.GUESTBOOK_POST_ID) {
                 guestbook.push(comment);
             }
             else if (treeMap.has(comment.post_id)) {

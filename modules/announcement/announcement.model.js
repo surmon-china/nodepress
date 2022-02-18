@@ -16,8 +16,8 @@ const class_validator_1 = require("class-validator");
 const increment_constant_1 = require("../../constants/increment.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
-const biz_interface_1 = require("../../interfaces/biz.interface");
-exports.ANNOUNCEMENT_STATES = [biz_interface_1.PublishState.Draft, biz_interface_1.PublishState.Published];
+const biz_constant_1 = require("../../constants/biz.constant");
+exports.ANNOUNCEMENT_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published];
 let Announcement = class Announcement {
 };
 __decorate([
@@ -34,7 +34,7 @@ __decorate([
     (0, class_validator_1.IsIn)(exports.ANNOUNCEMENT_STATES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: biz_interface_1.PublishState, default: biz_interface_1.PublishState.Published, index: true }),
+    (0, typegoose_1.prop)({ enum: biz_constant_1.PublishState, default: biz_constant_1.PublishState.Published, index: true }),
     __metadata("design:type", Number)
 ], Announcement.prototype, "state", void 0);
 __decorate([

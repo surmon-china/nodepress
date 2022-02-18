@@ -43,7 +43,7 @@ const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
 const disqus_service_public_1 = require("../disqus/disqus.service.public");
 const disqus_token_1 = require("../disqus/disqus.token");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const vote_dto_1 = require("./vote.dto");
 const APP_CONFIG = __importStar(require("../../app.config"));
@@ -74,7 +74,7 @@ let VoteController = class VoteController {
         return null;
     }
     async getTargetTitle(post_id) {
-        if (post_id === biz_interface_1.CommentPostID.Guestbook) {
+        if (post_id === biz_constant_1.GUESTBOOK_POST_ID) {
             return 'guestbook';
         }
         else {
@@ -111,17 +111,17 @@ let VoteController = class VoteController {
     }
     async likeSite(voteBody, token, { visitor }) {
         const likes = await this.optionService.incrementLikes();
-        this.voteDisqusThread(biz_interface_1.CommentPostID.Guestbook, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
+        this.voteDisqusThread(biz_constant_1.GUESTBOOK_POST_ID, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
             if (author) {
                 this.emailToTargetVoteMessage({
                     to: APP_CONFIG.APP.ADMIN_EMAIL,
                     subject: `You have a new site vote`,
-                    on: await this.getTargetTitle(biz_interface_1.CommentPostID.Guestbook),
+                    on: await this.getTargetTitle(biz_constant_1.GUESTBOOK_POST_ID),
                     vote: '+1',
                     author: author || 'Anonymous user',
                     location: await this.ipService.queryLocation(visitor.ip),
-                    link: (0, urlmap_transformer_1.getPermalinkByID)(biz_interface_1.CommentPostID.Guestbook),
+                    link: (0, urlmap_transformer_1.getPermalinkByID)(biz_constant_1.GUESTBOOK_POST_ID),
                 });
             }
         });

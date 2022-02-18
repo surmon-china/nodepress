@@ -18,16 +18,16 @@ const increment_constant_1 = require("../../constants/increment.constant");
 const paginate_1 = require("../../utils/paginate");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const extend_model_1 = require("../../models/extend.model");
 exports.COMMENT_STATES = [
-    biz_interface_1.CommentState.Auditing,
-    biz_interface_1.CommentState.Published,
-    biz_interface_1.CommentState.Deleted,
-    biz_interface_1.CommentState.Spam,
+    biz_constant_1.CommentState.Auditing,
+    biz_constant_1.CommentState.Published,
+    biz_constant_1.CommentState.Deleted,
+    biz_constant_1.CommentState.Spam,
 ];
 exports.COMMENT_GUEST_QUERY_FILTER = Object.freeze({
-    state: biz_interface_1.CommentState.Published,
+    state: biz_constant_1.CommentState.Published,
 });
 let Author = class Author {
     get email_hash() {
@@ -76,7 +76,7 @@ __decorate([
 ], CommentBase.prototype, "post_id", void 0);
 __decorate([
     (0, class_validator_1.IsInt)(),
-    (0, typegoose_1.prop)({ default: biz_interface_1.CommentParentID.Self, index: true }),
+    (0, typegoose_1.prop)({ default: biz_constant_1.ROOT_COMMENT_PID, index: true }),
     __metadata("design:type", Number)
 ], CommentBase.prototype, "pid", void 0);
 __decorate([
@@ -110,7 +110,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsIn)(exports.COMMENT_STATES),
     (0, class_validator_1.IsInt)(),
-    (0, typegoose_1.prop)({ enum: biz_interface_1.CommentState, default: biz_interface_1.CommentState.Published, index: true }),
+    (0, typegoose_1.prop)({ enum: biz_constant_1.CommentState, default: biz_constant_1.CommentState.Published, index: true }),
     __metadata("design:type", Number)
 ], Comment.prototype, "state", void 0);
 __decorate([

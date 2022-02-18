@@ -34,7 +34,7 @@ const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
 const expose_pipe_1 = require("../../pipes/expose.pipe");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 const responsor_decorator_1 = require("../../decorators/responsor.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const comment_dto_1 = require("./comment.dto");
@@ -49,8 +49,8 @@ let CommentController = class CommentController {
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page };
         if (!lodash_1.default.isUndefined(sort)) {
-            if (sort === biz_interface_1.SortType.Hottest) {
-                paginateOptions.sort = { likes: biz_interface_1.SortType.Desc };
+            if (sort === biz_constant_1.SortType.Hottest) {
+                paginateOptions.sort = { likes: biz_constant_1.SortType.Desc };
             }
             else {
                 paginateOptions.dateSort = sort;

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getIDByThreadIdentifier = exports.getThreadIdentifierByID = exports.ARTICLE_THREAD_ID_EXTEND_KEY = exports.COMMENT_ANONYMOUS_EXTEND_KEY = exports.COMMENT_AUTHOR_USERNAME_EXTEND_KEY = exports.COMMENT_AUTHOR_ID_EXTEND_KEY = exports.COMMENT_THREAD_ID_EXTEND_KEY = exports.COMMENT_POST_ID_EXTEND_KEY = exports.DISQUS_OAUTH_CALLBACK_URL = void 0;
 const app_config_1 = require("../../app.config");
 const app_environment_1 = require("../../app.environment");
-const biz_interface_1 = require("../../interfaces/biz.interface");
+const biz_constant_1 = require("../../constants/biz.constant");
 exports.DISQUS_OAUTH_CALLBACK_URL = app_environment_1.isProdEnv
     ? `${app_config_1.APP.URL}/disqus/oauth-callback`
     : `http://localhost:8000/disqus/oauth-callback`;
@@ -16,11 +16,11 @@ exports.ARTICLE_THREAD_ID_EXTEND_KEY = 'disqus-thread-id';
 const GUESTBOOK_IDENTIFIER = 'guestbook';
 const ARTICLE_IDENTIFIER_PREFIX = 'article-';
 const getThreadIdentifierByID = (postID) => {
-    return postID === biz_interface_1.CommentPostID.Guestbook ? GUESTBOOK_IDENTIFIER : `${ARTICLE_IDENTIFIER_PREFIX}${postID}`;
+    return postID === biz_constant_1.GUESTBOOK_POST_ID ? GUESTBOOK_IDENTIFIER : `${ARTICLE_IDENTIFIER_PREFIX}${postID}`;
 };
 exports.getThreadIdentifierByID = getThreadIdentifierByID;
 const getIDByThreadIdentifier = (id) => {
-    return id === GUESTBOOK_IDENTIFIER ? biz_interface_1.CommentPostID.Guestbook : id.replace(ARTICLE_IDENTIFIER_PREFIX, '');
+    return id === GUESTBOOK_IDENTIFIER ? biz_constant_1.GUESTBOOK_POST_ID : id.replace(ARTICLE_IDENTIFIER_PREFIX, '');
 };
 exports.getIDByThreadIdentifier = getIDByThreadIdentifier;
 //# sourceMappingURL=disqus.constant.js.map

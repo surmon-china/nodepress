@@ -1,4 +1,4 @@
-import { SortType } from '@app/interfaces/biz.interface';
+import { SortType } from '@app/constants/biz.constant';
 export declare class PaginateBaseOptionDTO {
     page?: number;
     per_page?: number;

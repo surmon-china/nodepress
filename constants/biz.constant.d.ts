@@ -1,3 +1,7 @@
+export declare enum Language {
+    English = "en",
+    Chinese = "zh"
+}
 export declare enum SortType {
     Asc = 1,
     Desc = -1,
@@ -24,9 +28,5 @@ export declare enum CommentState {
     Deleted = -1,
     Spam = -2
 }
-export declare enum CommentPostID {
-    Guestbook = 0
-}
-export declare enum CommentParentID {
-    Self = 0
-}
+export declare const GUESTBOOK_POST_ID = 0;
+export declare const ROOT_COMMENT_PID = 0;
