@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.8.4 (2022-02-19)
+
+**Feature**
+
+- **[Article]** add `lang` field
+
 ### 3.8.2 (2022-02-15)
 
 **Feature**
