@@ -12,7 +12,7 @@ import { CacheService, CacheIOResult } from '@app/processors/cache/cache.service
 import { SeoService } from '@app/processors/helper/helper.service.seo'
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import { SortType } from '@app/interfaces/biz.interface'
+import { SortType } from '@app/constants/biz.constant'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
 import { Tag } from './tag.model'

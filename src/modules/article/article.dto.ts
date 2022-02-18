@@ -19,12 +19,17 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
 } from 'class-validator'
-import { PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface'
+import { PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
 import { WhenGuest } from '@app/decorators/guest.decorator'
 import { unknowToNumber } from '@app/transformers/value.transformer'
 import { DateQueryDTO, KeywordQueryDTO } from '@app/models/query.model'
 import { PaginateOptionWithHotSortDTO } from '@app/models/paginate.model'
-import { ARTICLE_PUBLISH_STATES, ARTICLE_PUBLIC_STATES, ARTICLE_ORIGIN_STATES } from './article.model'
+import {
+  ARTICLE_PUBLISH_STATES,
+  ARTICLE_PUBLIC_STATES,
+  ARTICLE_ORIGIN_STATES,
+  ARTICLE_LANGUAGES,
+} from './article.model'
 
 export class ArticlePaginateQueryDTO extends IntersectionType(
   PaginateOptionWithHotSortDTO,
@@ -63,6 +68,12 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsNotEmpty()
   @IsOptional()
   category_slug?: string
+
+  @IsIn(ARTICLE_LANGUAGES)
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  lang: string
 }
 
 export class ArticleListQueryDTO {

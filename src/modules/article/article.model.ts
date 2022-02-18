@@ -20,14 +20,15 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
 } from 'class-validator'
+import { Language, SortType, PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { SortType, PublishState, PublicState, OriginState } from '@app/interfaces/biz.interface'
 import { Category } from '@app/modules/category/category.model'
 import { ExtendModel } from '@app/models/extend.model'
 import { Tag } from '@app/modules/tag/tag.model'
 
+export const ARTICLE_LANGUAGES = [Language.English, Language.Chinese] as const
 export const ARTICLE_PUBLISH_STATES = [PublishState.Draft, PublishState.Published, PublishState.Recycle] as const
 export const ARTICLE_PUBLIC_STATES = [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
 export const ARTICLE_ORIGIN_STATES = [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
@@ -126,11 +127,6 @@ export class Article {
   @prop()
   thumb: string
 
-  // disabled comment
-  @IsBoolean()
-  @prop({ default: false })
-  disabled_comment: boolean
-
   // publish state
   @IsIn(ARTICLE_PUBLISH_STATES)
   @IsInt()
@@ -163,6 +159,21 @@ export class Article {
   // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
   @prop({ ref: () => Tag, index: true })
   tag: Ref<Tag>[]
+
+  // language
+  // MARK: can't use 'language' field
+  // https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/
+  // https://docs.mongodb.com/manual/reference/text-search-languages/#std-label-text-search-languages
+  @IsIn(ARTICLE_LANGUAGES)
+  @IsString()
+  @IsDefined()
+  @prop({ default: Language.Chinese, index: true })
+  lang: Language
+
+  // disabled comment
+  @IsBoolean()
+  @prop({ default: false })
+  disabled_comment: boolean
 
   @prop({ _id: false, default: { ...ARTICLE_DEFAULT_META } })
   meta: ArticleMeta

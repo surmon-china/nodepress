@@ -6,7 +6,7 @@
 
 import { APP } from '@app/app.config'
 import { isProdEnv } from '@app/app.environment'
-import { CommentPostID } from '@app/interfaces/biz.interface'
+import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 
 export const DISQUS_OAUTH_CALLBACK_URL = isProdEnv
   ? `${APP.URL}/disqus/oauth-callback`
@@ -24,8 +24,8 @@ export const ARTICLE_THREAD_ID_EXTEND_KEY = 'disqus-thread-id'
 const GUESTBOOK_IDENTIFIER = 'guestbook'
 const ARTICLE_IDENTIFIER_PREFIX = 'article-'
 export const getThreadIdentifierByID = (postID: number) => {
-  return postID === CommentPostID.Guestbook ? GUESTBOOK_IDENTIFIER : `${ARTICLE_IDENTIFIER_PREFIX}${postID}`
+  return postID === GUESTBOOK_POST_ID ? GUESTBOOK_IDENTIFIER : `${ARTICLE_IDENTIFIER_PREFIX}${postID}`
 }
 export const getIDByThreadIdentifier = (id: string) => {
-  return id === GUESTBOOK_IDENTIFIER ? CommentPostID.Guestbook : id.replace(ARTICLE_IDENTIFIER_PREFIX, '')
+  return id === GUESTBOOK_IDENTIFIER ? GUESTBOOK_POST_ID : id.replace(ARTICLE_IDENTIFIER_PREFIX, '')
 }

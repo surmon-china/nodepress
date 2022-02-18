@@ -28,7 +28,7 @@ import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { decodeMD5 } from '@app/transformers/codec.transformer'
-import { CommentParentID, CommentState } from '@app/interfaces/biz.interface'
+import { ROOT_COMMENT_PID, CommentState } from '@app/constants/biz.constant'
 import { IPLocation } from '@app/processors/helper/helper.service.ip'
 import { ExtendModel } from '@app/models/extend.model'
 
@@ -84,7 +84,7 @@ export class CommentBase {
 
   // parent comment ID
   @IsInt()
-  @prop({ default: CommentParentID.Self, index: true })
+  @prop({ default: ROOT_COMMENT_PID, index: true })
   pid: number
 
   @MinLength(3) // sync with Disqus

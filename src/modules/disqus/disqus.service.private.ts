@@ -11,7 +11,7 @@ import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { Comment } from '@app/modules/comment/comment.model'
 import { Article } from '@app/modules/article/article.model'
-import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
+import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
 import { getExtendObject } from '@app/transformers/extend.transformer'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { DISQUS } from '@app/app.config'
@@ -136,7 +136,7 @@ export class DisqusPrivateService {
       if (comment.pid && !todoCommentIDs.includes(comment.pid)) {
         comment.pid = 0
       }
-      if (comment.post_id === CommentPostID.Guestbook) {
+      if (comment.post_id === GUESTBOOK_POST_ID) {
         guestbook.push(comment)
       } else if (treeMap.has(comment.post_id)) {
         treeMap.get(comment.post_id)!.comments.push(comment)

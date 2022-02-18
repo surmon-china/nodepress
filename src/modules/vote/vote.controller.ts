@@ -17,7 +17,7 @@ import { Author } from '@app/modules/comment/comment.model'
 import { DisqusPublicService } from '@app/modules/disqus/disqus.service.public'
 import { DisqusToken } from '@app/modules/disqus/disqus.token'
 import { AccessToken } from '@app/utils/disqus'
-import { CommentPostID } from '@app/interfaces/biz.interface'
+import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { VoteAuthorDTO, CommentVoteDTO, PageVoteDTO } from './vote.dto'
 import * as APP_CONFIG from '@app/app.config'
@@ -54,7 +54,7 @@ export class VoteController {
   }
 
   private async getTargetTitle(post_id: number) {
-    if (post_id === CommentPostID.Guestbook) {
+    if (post_id === GUESTBOOK_POST_ID) {
       return 'guestbook'
     } else {
       const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: post_id })
@@ -120,18 +120,18 @@ export class VoteController {
     // NodePress
     const likes = await this.optionService.incrementLikes()
     // Disqus
-    this.voteDisqusThread(CommentPostID.Guestbook, 1, token?.access_token).catch(() => {})
+    this.voteDisqusThread(GUESTBOOK_POST_ID, 1, token?.access_token).catch(() => {})
     // email to admin
     this.getAuthor(voteBody.author, token?.access_token).then(async (author) => {
       if (author) {
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP.ADMIN_EMAIL,
           subject: `You have a new site vote`,
-          on: await this.getTargetTitle(CommentPostID.Guestbook),
+          on: await this.getTargetTitle(GUESTBOOK_POST_ID),
           vote: '+1',
           author: author || 'Anonymous user',
           location: await this.ipService.queryLocation(visitor.ip),
-          link: getPermalinkByID(CommentPostID.Guestbook),
+          link: getPermalinkByID(GUESTBOOK_POST_ID),
         })
       }
     })

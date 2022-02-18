@@ -10,7 +10,7 @@ import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty } from 'class-validator'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { PublishState } from '@app/interfaces/biz.interface'
+import { PublishState } from '@app/constants/biz.constant'
 
 export const ANNOUNCEMENT_STATES = [PublishState.Draft, PublishState.Published] as const
 

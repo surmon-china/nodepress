@@ -6,7 +6,7 @@
 
 import { IsIn, IsInt, IsOptional, IsNotEmpty, Min, Max } from 'class-validator'
 import { Transform } from 'class-transformer'
-import { SortType } from '@app/interfaces/biz.interface'
+import { SortType } from '@app/constants/biz.constant'
 import { unknowToNumber } from '@app/transformers/value.transformer'
 
 export class PaginateBaseOptionDTO {

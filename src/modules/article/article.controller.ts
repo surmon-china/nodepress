@@ -13,7 +13,7 @@ import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { ExposePipe } from '@app/pipes/expose.pipe'
-import { SortType } from '@app/interfaces/biz.interface'
+import { SortType } from '@app/constants/biz.constant'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
@@ -54,6 +54,11 @@ export class ArticleController {
       } else {
         paginateOptions.dateSort = sort
       }
+    }
+
+    // language
+    if (!lodash.isUndefined(filters.lang)) {
+      paginateQuery.lang = filters.lang
     }
 
     // states

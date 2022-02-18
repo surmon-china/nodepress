@@ -7,7 +7,7 @@
 import moment from 'moment'
 import { Comment } from '@app/modules/comment/comment.model'
 import { Article } from '@app/modules/article/article.model'
-import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
+import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { getThreadIdentifierByID } from './disqus.constant'
 import { ThreadState } from './disqus.dto'
@@ -46,9 +46,9 @@ export const getDisqusXML = (data: XMLItemData[], guestbook: Array<Comment>) => 
       <channel>
         <item>
           <title>Guestbook</title>
-          <link>${getPermalinkByID(CommentPostID.Guestbook)}</link>
+          <link>${getPermalinkByID(GUESTBOOK_POST_ID)}</link>
           <content:encoded><![CDATA[${APP.FE_NAME}]]></content:encoded>
-          <dsq:thread_identifier>${getThreadIdentifierByID(CommentPostID.Guestbook)}</dsq:thread_identifier>
+          <dsq:thread_identifier>${getThreadIdentifierByID(GUESTBOOK_POST_ID)}</dsq:thread_identifier>
           <wp:post_date_gmt>2017-01-01 00:00:00</wp:post_date_gmt>
           <wp:comment_status>open</wp:comment_status>
           ${guestbook.map(getCommentItemXML).join('\n')}

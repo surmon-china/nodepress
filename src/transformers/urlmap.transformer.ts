@@ -5,7 +5,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { CommentPostID } from '@app/interfaces/biz.interface'
+import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 import * as APP_CONFIG from '@app/app.config'
 
 export function getTagUrl(tagSlug: string): string {
@@ -25,5 +25,5 @@ export function getGuestbookPageUrl(): string {
 }
 
 export function getPermalinkByID(id: number): string {
-  return id === CommentPostID.Guestbook ? getGuestbookPageUrl() : getArticleUrl(id)
+  return id === GUESTBOOK_POST_ID ? getGuestbookPageUrl() : getArticleUrl(id)
 }

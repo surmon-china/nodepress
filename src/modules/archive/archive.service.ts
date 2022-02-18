@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { CacheService, CacheIOResult } from '@app/processors/cache/cache.service'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { SortType } from '@app/interfaces/biz.interface'
+import { SortType } from '@app/constants/biz.constant'
 import { Category } from '@app/modules/category/category.model'
 import {
   Article,

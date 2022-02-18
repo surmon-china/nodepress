@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import { CommentPostID, CommentState } from '@app/interfaces/biz.interface'
+import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
 import { ArticleService } from '@app/modules/article/article.service'
 import { IPService } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
@@ -35,7 +35,7 @@ export class CommentService {
 
   private async emailToAdminAndTargetAuthor(comment: Comment) {
     let onWhere = ''
-    if (comment.post_id === CommentPostID.Guestbook) {
+    if (comment.post_id === GUESTBOOK_POST_ID) {
       onWhere = 'guestbook'
     } else {
       const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: comment.post_id })
@@ -150,7 +150,7 @@ export class CommentService {
 
   // validate comment target commentable
   public async isCommentableTarget(targetPostID: number): Promise<void> {
-    if (targetPostID !== CommentPostID.Guestbook) {
+    if (targetPostID !== GUESTBOOK_POST_ID) {
       const isCommentable = await this.articleService.isCommentableArticle(targetPostID)
       if (!isCommentable) {
         return Promise.reject(`Comment target ${targetPostID} was disabled comment`)
