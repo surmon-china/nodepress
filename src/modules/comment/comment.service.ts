@@ -277,7 +277,7 @@ export class CommentService {
     const actionResult = await this.commentModel
       .updateMany({ _id: { $in: comment_ids } }, { $set: { state } }, { multi: true })
       .exec()
-    // 更新关联数据
+    // update ref article.meta.comments
     this.updateCommentsCountWithArticles(post_ids)
     try {
       const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } })
