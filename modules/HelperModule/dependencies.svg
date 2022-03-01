@@ -14,13 +14,13 @@
 <title>cluster_HelperModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-32.8 8,-230.8 930,-230.8 930,-32.8 8,-32.8"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_HelperModule_exports</title>
-<polygon fill="none" stroke="black" points="91,-170.8 91,-222.8 798,-222.8 798,-170.8 91,-170.8"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_HelperModule_providers</title>
 <polygon fill="none" stroke="black" points="16,-40.8 16,-92.8 922,-92.8 922,-40.8 16,-40.8"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_HelperModule_exports</title>
+<polygon fill="none" stroke="black" points="91,-170.8 91,-222.8 798,-222.8 798,-170.8 91,-170.8"/>
 </g>
 <!-- AkismetService  -->
 <g id="node1" class="node">

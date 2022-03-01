@@ -143,8 +143,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="65"
-                            class="link-to-prism">src/modules/auth/auth.controller.ts:65</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/modules/auth/auth.controller.ts:67</a></div>
                 </td>
             </tr>
 
@@ -187,8 +187,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="50"
-                            class="link-to-prism">src/modules/auth/auth.controller.ts:50</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="52"
+                            class="link-to-prism">src/modules/auth/auth.controller.ts:52</a></div>
                 </td>
             </tr>
 
@@ -320,8 +320,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="57"
-                            class="link-to-prism">src/modules/auth/auth.controller.ts:57</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/modules/auth/auth.controller.ts:59</a></div>
                 </td>
             </tr>
 
@@ -396,8 +396,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/modules/auth/auth.controller.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/modules/auth/auth.controller.ts:75</a></div>
                 </td>
             </tr>
 
@@ -450,17 +450,19 @@ export class AuthController {
     @Body() body: AuthLoginDTO
   ): Promise&lt;TokenResult&gt; {
     const token &#x3D; await this.authService.adminLogin(body.password)
-    this.ipService.queryLocation(ip).then((location) &#x3D;&gt; {
-      const subject &#x3D; &#x60;App has new login activity&#x60;
-      const locationText &#x3D; location ? [location.country, location.region, location.city].join(&#x27; · &#x27;) : &#x27;unknow&#x27;
-      const content &#x3D; &#x60;${subject}, IP: ${ip}, location: ${locationText}&#x60;
-      this.emailService.sendMailAs(APP.NAME, {
-        to: APP.ADMIN_EMAIL,
-        subject,
-        text: content,
-        html: content,
+    if (ip) {
+      this.ipService.queryLocation(ip).then((location) &#x3D;&gt; {
+        const subject &#x3D; &#x60;App has new login activity&#x60;
+        const locationText &#x3D; location ? [location.country, location.region, location.city].join(&#x27; · &#x27;) : &#x27;unknow&#x27;
+        const content &#x3D; &#x60;${subject}, IP: ${ip}, location: ${locationText}&#x60;
+        this.emailService.sendMailAs(APP.NAME, {
+          to: APP.ADMIN_EMAIL,
+          subject,
+          text: content,
+          html: content,
+        })
       })
-    })
+    }
     return token
   }
 

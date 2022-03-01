@@ -100,7 +100,7 @@
 import { createParamDecorator, ExecutionContext } from &#x27;@nestjs/common&#x27;
 
 export interface QueryVisitor {
-  ip: string
+  ip: string | null
   ua?: string
   origin?: string
   referer?: string
@@ -149,7 +149,7 @@ export const QueryParams &#x3D; createParamDecorator(
       request.ips[0]
 
     const visitor: QueryVisitor &#x3D; {
-      ip: ip.replace(&#x27;::ffff:&#x27;, &#x27;&#x27;).replace(&#x27;::1&#x27;, &#x27;&#x27;),
+      ip: ip.replace(&#x27;::ffff:&#x27;, &#x27;&#x27;).replace(&#x27;::1&#x27;, &#x27;&#x27;) || null,
       ua: request.headers[&#x27;user-agent&#x27;],
       origin: request.headers.origin,
       referer: request.headers.referer,

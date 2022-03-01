@@ -18,13 +18,13 @@
 <title>cluster_ArticleModule_imports</title>
 <polygon fill="none" stroke="black" points="174,-40.8 174,-92.8 523,-92.8 523,-40.8 174,-40.8"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_ArticleModule_exports</title>
-<polygon fill="none" stroke="black" points="222,-170.8 222,-222.8 338,-222.8 338,-170.8 222,-170.8"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_ArticleModule_providers</title>
 <polygon fill="none" stroke="black" points="16,-40.8 16,-92.8 166,-92.8 166,-40.8 16,-40.8"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_ArticleModule_exports</title>
+<polygon fill="none" stroke="black" points="222,-170.8 222,-222.8 338,-222.8 338,-170.8 222,-170.8"/>
 </g>
 <!-- ArchiveModule -->
 <g id="node1" class="node">

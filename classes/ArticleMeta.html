@@ -248,7 +248,7 @@ import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.cons
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { Category } from &#x27;@app/modules/category/category.model&#x27;
-import { ExtendModel } from &#x27;@app/models/extend.model&#x27;
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
 
 export const ARTICLE_LANGUAGES &#x3D; [Language.English, Language.Chinese] as const
@@ -336,19 +336,19 @@ export class Article {
   content: string
 
   @IsString()
-  @prop({ text: true })
+  @prop({ default: &#x27;&#x27;, text: true })
   description: string
 
   @ArrayUnique()
   @IsArray()
   @IsDefined()
-  @prop({ type: () &#x3D;&gt; [String] })
+  @prop({ default: [], type: () &#x3D;&gt; [String] })
   keywords: string[]
 
   @IsString()
   @IsOptional()
-  @prop()
-  thumb: string
+  @prop({ default: null })
+  thumb: null | string
 
   // publish state
   @IsIn(ARTICLE_PUBLISH_STATES)
@@ -409,8 +409,8 @@ export class Article {
 
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [ExtendModel] })
-  extends: ExtendModel[]
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  extends: KeyValueModel[]
 }
 
 export const ArticleProvider &#x3D; getProviderByTypegooseClass(Article)

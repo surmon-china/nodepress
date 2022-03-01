@@ -204,6 +204,9 @@
                             <a href="#DEFAULT_OPTIONS" title="src/utils/paginate.ts" ><b>DEFAULT_OPTIONS</b>&nbsp;&nbsp;&nbsp;(src/.../paginate.ts)</a>
                         </li>
                         <li>
+                            <a href="#DEFAULT_STATISTIC" title="src/modules/expansion/expansion.service.statistic.ts" ><b>DEFAULT_STATISTIC</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.statistic.ts)</a>
+                        </li>
+                        <li>
                             <a href="#DISQUS" title="src/app.config.ts" ><b>DISQUS</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
@@ -219,6 +222,9 @@
                             <a href="#EMAIL" title="src/app.config.ts" ><b>EMAIL</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
+                            <a href="#emotionMap" title="src/modules/feedback/feedback.model.ts" ><b>emotionMap</b>&nbsp;&nbsp;&nbsp;(src/.../feedback.model.ts)</a>
+                        </li>
+                        <li>
                             <a href="#encodeToken" title="src/modules/disqus/disqus.token.ts" ><b>encodeToken</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.token.ts)</a>
                         </li>
                         <li>
@@ -226,6 +232,15 @@
                         </li>
                         <li>
                             <a href="#error" title="src/decorators/responsor.decorator.ts" ><b>error</b>&nbsp;&nbsp;&nbsp;(src/.../responsor.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FEEDBACK_EMOTION_VALUES" title="src/modules/feedback/feedback.model.ts" ><b>FEEDBACK_EMOTION_VALUES</b>&nbsp;&nbsp;&nbsp;(src/.../feedback.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FEEDBACK_EMOTIONS" title="src/modules/feedback/feedback.model.ts" ><b>FEEDBACK_EMOTIONS</b>&nbsp;&nbsp;&nbsp;(src/.../feedback.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FeedbackProvider" title="src/modules/feedback/feedback.model.ts" ><b>FeedbackProvider</b>&nbsp;&nbsp;&nbsp;(src/.../feedback.model.ts)</a>
                         </li>
                         <li>
                             <a href="#generalAutoIncrementIDConfig" title="src/constants/increment.constant.ts" ><b>generalAutoIncrementIDConfig</b>&nbsp;&nbsp;&nbsp;(src/.../increment.constant.ts)</a>
@@ -418,6 +433,9 @@
                         </li>
                         <li>
                             <a href="#ROOT_COMMENT_PID" title="src/constants/biz.constant.ts" ><b>ROOT_COMMENT_PID</b>&nbsp;&nbsp;&nbsp;(src/.../biz.constant.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ROOT_FEEDBACK_TID" title="src/constants/biz.constant.ts" ><b>ROOT_FEEDBACK_TID</b>&nbsp;&nbsp;&nbsp;(src/.../biz.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#ROOT_PATH" title="src/app.config.ts" ><b>ROOT_PATH</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
@@ -2720,14 +2738,21 @@
   sub_title: &#x27;blog server app&#x27;,
   description: &#x27;RESTful API service for blog&#x27;,
   keywords: [],
+  statement: &#x27;&#x27;,
   site_url: &#x27;https://github.com/surmon-china/nodepress&#x27;,
   site_email: &#x27;admin@example.com&#x27;,
+  friend_links: [
+    {
+      name: APP.FE_NAME,
+      value: APP.FE_URL,
+    },
+  ],
+  meta: { likes: 0 },
   blocklist: {
     ips: [],
     mails: [],
     keywords: [],
   },
-  meta: { likes: 0 },
   ad_config: &#x27;&#x27;,
 })</code>
                     </td>
@@ -2784,6 +2809,148 @@
   dateSort: -1,
   lean: false,
 })</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/modules/expansion/expansion.service.statistic.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DEFAULT_STATISTIC"></a>
+                    <span class="name">
+                        <span ><b>DEFAULT_STATISTIC</b></span>
+                        <a href="#DEFAULT_STATISTIC"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Object.freeze({
+  tags: null,
+  articles: null,
+  comments: null,
+  totalViews: null,
+  totalLikes: null,
+  todayViews: null,
+  averageEmotion: null,
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/modules/feedback/feedback.model.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="emotionMap"></a>
+                    <span class="name">
+                        <span ><b>emotionMap</b></span>
+                        <a href="#emotionMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map(
+  [
+    {
+      value: FeedbackEmotion.Hate,
+      text: FeedbackEmotion[FeedbackEmotion.Hate],
+      emoji: &#x27;😠&#x27;,
+    },
+    {
+      value: FeedbackEmotion.Dislike,
+      text: FeedbackEmotion[FeedbackEmotion.Dislike],
+      emoji: &#x27;🙁&#x27;,
+    },
+    {
+      value: FeedbackEmotion.Neutral,
+      text: FeedbackEmotion[FeedbackEmotion.Neutral],
+      emoji: &#x27;😐&#x27;,
+    },
+    {
+      value: FeedbackEmotion.Like,
+      text: FeedbackEmotion[FeedbackEmotion.Like],
+      emoji: &#x27;😀&#x27;,
+    },
+    {
+      value: FeedbackEmotion.Love,
+      text: FeedbackEmotion[FeedbackEmotion.Love],
+      emoji: &#x27;🥰&#x27;,
+    },
+  ].map((item) &#x3D;&gt; [item.value, item])
+)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FEEDBACK_EMOTION_VALUES"></a>
+                    <span class="name">
+                        <span ><b>FEEDBACK_EMOTION_VALUES</b></span>
+                        <a href="#FEEDBACK_EMOTION_VALUES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>FEEDBACK_EMOTIONS.map((e) &#x3D;&gt; e.value)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FEEDBACK_EMOTIONS"></a>
+                    <span class="name">
+                        <span ><b>FEEDBACK_EMOTIONS</b></span>
+                        <a href="#FEEDBACK_EMOTIONS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Array.from(emotionMap.values())</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FeedbackProvider"></a>
+                    <span class="name">
+                        <span ><b>FeedbackProvider</b></span>
+                        <a href="#FeedbackProvider"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>getProviderByTypegooseClass(Feedback)</code>
                     </td>
                 </tr>
 
@@ -3023,7 +3190,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>(_extends: ExtendModel[]): { [key: string]: string } &#x3D;&gt; {
+                        <i>Default value : </i><code>(_extends: KeyValueModel[]): { [key: string]: string } &#x3D;&gt; {
   return _extends.length ? _extends.reduce((v, c) &#x3D;&gt; ({ ...v, [c.name]: c.value }), {}) : {}
 }</code>
                     </td>
@@ -3045,7 +3212,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>(_extends: ExtendModel[], key: string): string | void &#x3D;&gt; {
+                        <i>Default value : </i><code>(_extends: KeyValueModel[], key: string): string | void &#x3D;&gt; {
   return _extends.length ? getExtendObject(_extends)[key] : void 0
 }</code>
                     </td>
@@ -3388,6 +3555,32 @@
                     <span class="name">
                         <span ><b>ROOT_COMMENT_PID</b></span>
                         <a href="#ROOT_COMMENT_PID"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ROOT_FEEDBACK_TID"></a>
+                    <span class="name">
+                        <span ><b>ROOT_FEEDBACK_TID</b></span>
+                        <a href="#ROOT_FEEDBACK_TID"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -3826,7 +4019,7 @@
       request.ips[0]
 
     const visitor: QueryVisitor &#x3D; {
-      ip: ip.replace(&#x27;::ffff:&#x27;, &#x27;&#x27;).replace(&#x27;::1&#x27;, &#x27;&#x27;),
+      ip: ip.replace(&#x27;::ffff:&#x27;, &#x27;&#x27;).replace(&#x27;::1&#x27;, &#x27;&#x27;) || null,
       ua: request.headers[&#x27;user-agent&#x27;],
       origin: request.headers.origin,
       referer: request.headers.referer,

@@ -131,7 +131,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                        <i>Type : </i>    <code>string | null</code>
 
                     </td>
                 </tr>
@@ -140,13 +140,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({validate: /\S+/})<br />
+                            @IsString()<br />@prop({default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/modules/comment/comment.model.ts:99</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/comment/comment.model.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -181,7 +181,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/modules/comment/comment.model.ts:107</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/modules/comment/comment.model.ts:108</a></div>
                         </td>
                     </tr>
 
@@ -331,7 +331,7 @@ import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transf
 import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
 import { ROOT_COMMENT_PID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
 import { IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
-import { ExtendModel } from &#x27;@app/models/extend.model&#x27;
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 
 export const COMMENT_STATES &#x3D; [
   CommentState.Auditing,
@@ -361,14 +361,14 @@ export class Author {
   @IsEmail()
   @IsString()
   @IsOptional()
-  @prop()
-  email?: string
+  @prop({ default: null })
+  email?: string | null
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsOptional()
-  @prop()
-  site?: string
+  @prop({ default: null })
+  site?: string | null
 
   public get email_hash() {
     const email &#x3D; this.email?.trim().toLowerCase()
@@ -396,8 +396,9 @@ export class CommentBase {
   content: string
 
   // user agent
-  @prop({ validate: /\S+/ })
-  agent?: string
+  @IsString()
+  @prop({ default: null })
+  agent?: string | null
 
   @Type(() &#x3D;&gt; Author)
   @ValidateNested()
@@ -442,8 +443,8 @@ export class Comment extends CommentBase {
   // IP address
   @IsIP()
   @IsOptional()
-  @prop()
-  ip?: string
+  @prop({ default: null })
+  ip: null | string
 
   // IP location
   @prop({ default: null, type: Object })
@@ -457,8 +458,8 @@ export class Comment extends CommentBase {
 
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [ExtendModel] })
-  extends: ExtendModel[]
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  extends: KeyValueModel[]
 }
 
 export const CommentProvider &#x3D; getProviderByTypegooseClass(Comment)

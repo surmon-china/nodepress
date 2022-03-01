@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >Author</li>
+  <li >FeedbackBase</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -62,7 +62,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/comment/comment.model.ts</code>
+            <code>src/modules/feedback/feedback.model.ts</code>
         </p>
 
 
@@ -83,15 +83,19 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Optional</span>
-                                <a href="#email" >email</a>
+                                <a href="#content" >content</a>
                             </li>
                             <li>
-                                <a href="#name" >name</a>
+                                <a href="#emotion" >emotion</a>
                             </li>
                             <li>
-                                    <span class="modifier">Optional</span>
-                                <a href="#site" >site</a>
+                                <a href="#tid" >tid</a>
+                            </li>
+                            <li>
+                                <a href="#user_email" >user_email</a>
+                            </li>
+                            <li>
+                                <a href="#user_name" >user_name</a>
                             </li>
                         </ul>
                     </td>
@@ -111,7 +115,10 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#email_hash" >email_hash</a>
+                                    <a href="#emotion_text" >emotion_text</a>
+                                </li>
+                                <li>
+                                    <a href="#emotion_emoji" >emotion_emoji</a>
                                 </li>
                             </ul>
                         </td>
@@ -130,46 +137,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="email"></a>
+                    <a name="content"></a>
                     <span class="name">
-                            <span class="modifier">Optional</span>
-                        <span ><b>email</b></span>
-                        <a href="#email"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>string | null</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @IsEmail()<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/modules/comment/comment.model.ts:64</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="name"></a>
-                    <span class="name">
-                        <span ><b>name</b></span>
-                        <a href="#name"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>content</b></span>
+                        <a href="#content"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -184,13 +155,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @MaxLength(20)<br />@IsString()<br />@IsNotEmpty()<br />@prop({required: true, validate: /\S+/})<br />
+                            @MinLength(3)<br />@MaxLength(3000)<br />@IsString()<br />@IsNotEmpty()<br />@prop({required: true, validate: /\S+/})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/comment/comment.model.ts:57</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/modules/feedback/feedback.model.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -201,17 +172,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="site"></a>
+                    <a name="emotion"></a>
                     <span class="name">
-                            <span class="modifier">Optional</span>
-                        <span ><b>site</b></span>
-                        <a href="#site"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>emotion</b></span>
+                        <a href="#emotion"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>string | null</code>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                     </td>
                 </tr>
@@ -220,13 +190,118 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsUrl({require_protocol: true})<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @IsIn(FEEDBACK_EMOTION_VALUES)<br />@IsInt()<br />@IsNotEmpty()<br />@prop({required: true, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/comment/comment.model.ts:70</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/modules/feedback/feedback.model.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tid"></a>
+                    <span class="name">
+                        <span ><b>tid</b></span>
+                        <a href="#tid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Min(0)<br />@IsInt()<br />@IsNotEmpty()<br />@prop({required: true, index: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/feedback/feedback.model.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="user_email"></a>
+                    <span class="name">
+                        <span ><b>user_email</b></span>
+                        <a href="#user_email"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>null | string</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsEmail()<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/modules/feedback/feedback.model.ts:106</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="user_name"></a>
+                    <span class="name">
+                        <span ><b>user_name</b></span>
+                        <a href="#user_name"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>null | string</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @MaxLength(20)<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/feedback/feedback.model.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -249,19 +324,41 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="email_hash"></a>
-                        <span class="name"><b>email_hash</b><a href="#email_hash"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="emotion_text"></a>
+                        <span class="name"><b>emotion_text</b><a href="#emotion_text"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>get</b><code>email_hash()</code></span>
+                        <span class="accessor"><b>get</b><code>emotion_text()</code></span>
                     </td>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/modules/comment/comment.model.ts:72</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/modules/feedback/feedback.model.ts:81</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="emotion_emoji"></a>
+                        <span class="name"><b>emotion_emoji</b><a href="#emotion_emoji"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>emotion_emoji()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/modules/feedback/feedback.model.ts:85</a></div>
                                 </td>
                             </tr>
 
@@ -274,140 +371,141 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
-import { Type } from &#x27;class-transformer&#x27;
 import {
   IsString,
   MinLength,
   MaxLength,
-  IsDefined,
-  IsIn,
+  Min,
   IsIP,
-  IsUrl,
+  IsBoolean,
   IsEmail,
+  IsIn,
   IsInt,
   IsOptional,
   IsNotEmpty,
-  IsArray,
-  IsObject,
-  ValidateNested,
-  ArrayUnique,
 } from &#x27;class-validator&#x27;
 import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.constant&#x27;
-import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
-import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
-import { ROOT_COMMENT_PID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
+import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
-import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 
-export const COMMENT_STATES &#x3D; [
-  CommentState.Auditing,
-  CommentState.Published,
-  CommentState.Deleted,
-  CommentState.Spam,
-] as const
+export enum FeedbackEmotion {
+  Hate &#x3D; 1,
+  Dislike &#x3D; 2,
+  Neutral &#x3D; 3,
+  Like &#x3D; 4,
+  Love &#x3D; 5,
+}
 
-export const COMMENT_GUEST_QUERY_FILTER &#x3D; Object.freeze({
-  state: CommentState.Published,
-})
+const emotionMap &#x3D; new Map(
+  [
+    {
+      value: FeedbackEmotion.Hate,
+      text: FeedbackEmotion[FeedbackEmotion.Hate],
+      emoji: &#x27;😠&#x27;,
+    },
+    {
+      value: FeedbackEmotion.Dislike,
+      text: FeedbackEmotion[FeedbackEmotion.Dislike],
+      emoji: &#x27;🙁&#x27;,
+    },
+    {
+      value: FeedbackEmotion.Neutral,
+      text: FeedbackEmotion[FeedbackEmotion.Neutral],
+      emoji: &#x27;😐&#x27;,
+    },
+    {
+      value: FeedbackEmotion.Like,
+      text: FeedbackEmotion[FeedbackEmotion.Like],
+      emoji: &#x27;😀&#x27;,
+    },
+    {
+      value: FeedbackEmotion.Love,
+      text: FeedbackEmotion[FeedbackEmotion.Love],
+      emoji: &#x27;🥰&#x27;,
+    },
+  ].map((item) &#x3D;&gt; [item.value, item])
+)
 
-@modelOptions({
-  schemaOptions: {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  },
-})
-export class Author {
-  @MaxLength(20)
+export const FEEDBACK_EMOTIONS &#x3D; Array.from(emotionMap.values())
+export const FEEDBACK_EMOTION_VALUES &#x3D; FEEDBACK_EMOTIONS.map((e) &#x3D;&gt; e.value)
+
+export class FeedbackBase {
+  @Min(0)
+  @IsInt()
+  @IsNotEmpty()
+  @prop({ required: true, index: true })
+  tid: number
+
+  @IsIn(FEEDBACK_EMOTION_VALUES)
+  @IsInt()
+  @IsNotEmpty()
+  @prop({ required: true, index: true })
+  emotion: number
+
+  public get emotion_text() {
+    return emotionMap.get(this.emotion)!.text
+  }
+
+  public get emotion_emoji() {
+    return emotionMap.get(this.emotion)!.emoji
+  }
+
+  @MinLength(3)
+  @MaxLength(3000)
   @IsString()
   @IsNotEmpty()
   @prop({ required: true, validate: /\S+/ })
-  name: string
+  content: string
 
-  // MARK: can&#x27;t get disqus user&#x27;s email
+  @MaxLength(20)
+  @IsString()
+  @IsOptional()
+  @prop({ default: null })
+  user_name: null | string
+
   @IsEmail()
   @IsString()
   @IsOptional()
   @prop({ default: null })
-  email?: string | null
-
-  @IsUrl({ require_protocol: true })
-  @IsString()
-  @IsOptional()
-  @prop({ default: null })
-  site?: string | null
-
-  public get email_hash() {
-    const email &#x3D; this.email?.trim().toLowerCase()
-    return email ? decodeMD5(email) : null
-  }
-}
-
-export class CommentBase {
-  // article ID
-  @IsInt()
-  @IsNotEmpty({ message: &#x27;post ID?&#x27; })
-  @prop({ required: true, index: true })
-  post_id: number
-
-  // parent comment ID
-  @IsInt()
-  @prop({ default: ROOT_COMMENT_PID, index: true })
-  pid: number
-
-  @MinLength(3) // sync with Disqus
-  @MaxLength(3000)
-  @IsString()
-  @IsNotEmpty({ message: &#x27;comment content?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
-  content: string
-
-  // user agent
-  @IsString()
-  @prop({ default: null })
-  agent?: string | null
-
-  @Type(() &#x3D;&gt; Author)
-  @ValidateNested()
-  @IsObject()
-  @IsNotEmpty()
-  @IsDefined({ message: &#x27;comment author?&#x27; })
-  @prop({ required: true, _id: false })
-  author: Author
+  user_email: null | string
 }
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
-  // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: {
       createdAt: &#x27;create_at&#x27;,
       updatedAt: &#x27;update_at&#x27;,
     },
   },
 })
-export class Comment extends CommentBase {
+export class Feedback extends FeedbackBase {
   @prop({ unique: true })
-  id?: number
+  id: number
 
-  // state
-  @IsIn(COMMENT_STATES)
-  @IsInt()
-  @prop({ enum: CommentState, default: CommentState.Published, index: true })
-  state: CommentState
+  @IsBoolean()
+  @prop({ default: false, index: true })
+  marked: boolean
 
-  // likes
-  @IsInt()
-  @prop({ default: 0, index: true })
-  likes: number
+  @IsString()
+  @IsOptional()
+  @prop({ default: &#x27;&#x27; })
+  remark: string
 
-  @IsInt()
-  @prop({ default: 0, index: true })
-  dislikes: number
+  @IsString()
+  @IsOptional()
+  @prop({ default: null })
+  origin: null | string
 
-  // IP address
+  @IsString()
+  @prop({ default: null })
+  user_agent?: string
+
   @IsIP()
   @IsOptional()
   @prop({ default: null })
@@ -422,14 +520,9 @@ export class Comment extends CommentBase {
 
   @prop({ default: Date.now })
   update_at?: Date
-
-  @ArrayUnique()
-  @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  extends: KeyValueModel[]
 }
 
-export const CommentProvider &#x3D; getProviderByTypegooseClass(Comment)
+export const FeedbackProvider &#x3D; getProviderByTypegooseClass(Feedback)
 </code></pre>
     </div>
 </div>
@@ -467,7 +560,7 @@ export const CommentProvider &#x3D; getProviderByTypegooseClass(Comment)
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'Author.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'FeedbackBase.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

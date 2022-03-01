@@ -132,7 +132,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/option/option.model.ts:42</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/modules/option/option.model.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -165,21 +165,30 @@ import {
   ValidateNested,
   ArrayUnique,
 } from &#x27;class-validator&#x27;
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { APP } from &#x27;@app/app.config&#x27;
 
 export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   title: &#x27;NodePress&#x27;,
   sub_title: &#x27;blog server app&#x27;,
   description: &#x27;RESTful API service for blog&#x27;,
   keywords: [],
+  statement: &#x27;&#x27;,
   site_url: &#x27;https://github.com/surmon-china/nodepress&#x27;,
   site_email: &#x27;admin@example.com&#x27;,
+  friend_links: [
+    {
+      name: APP.FE_NAME,
+      value: APP.FE_URL,
+    },
+  ],
+  meta: { likes: 0 },
   blocklist: {
     ips: [],
     mails: [],
     keywords: [],
   },
-  meta: { likes: 0 },
   ad_config: &#x27;&#x27;,
 })
 
@@ -237,7 +246,7 @@ export class Option {
   @ArrayUnique()
   @IsArray()
   @IsOptional()
-  @prop({ type: () &#x3D;&gt; [String], default: [] })
+  @prop({ default: [], type: () &#x3D;&gt; [String] })
   keywords: string[]
 
   @IsUrl({ require_protocol: true })
@@ -251,6 +260,16 @@ export class Option {
   @IsNotEmpty()
   @prop({ required: true })
   site_email: string
+
+  @IsString()
+  @IsOptional()
+  @prop({ required: true })
+  statement: string
+
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  friend_links: KeyValueModel[]
 
   // site meta info
   @prop({ _id: false, default: { ...DEFAULT_OPTION.meta } })
@@ -267,8 +286,8 @@ export class Option {
   // ad config
   @IsString()
   @IsOptional()
-  @prop({ default: &#x27;&#x27; })
-  ad_config: string
+  @prop({ default: null })
+  ad_config: string | null
 
   @prop({ default: Date.now })
   update_at?: Date

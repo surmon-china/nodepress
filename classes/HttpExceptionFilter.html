@@ -204,7 +204,7 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from &#x27;@nestjs/common&#x27;
-import { ResponseStatus, HttpResponseError, ExceptionInfo, ResponseMessage } from &#x27;@app/interfaces/response.interface&#x27;
+import { ResponseStatus, HttpResponseError, ExceptionInfo } from &#x27;@app/interfaces/response.interface&#x27;
 import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 
@@ -217,25 +217,25 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const request &#x3D; host.switchToHttp().getRequest()
     const response &#x3D; host.switchToHttp().getResponse()
-    const status &#x3D; exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
-    const errorOption: ExceptionInfo &#x3D; exception.getResponse() as ExceptionInfo
-    const isString &#x3D; (value): value is ResponseMessage &#x3D;&gt; lodash.isString(value)
-    const errorInfo &#x3D; isString(errorOption) ? null : errorOption.error
+    const exceptionStatus &#x3D; exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
+    const errorResponse: ExceptionInfo &#x3D; exception.getResponse() as ExceptionInfo
+    const errorMessage &#x3D; lodash.isString(errorResponse) ? errorResponse : errorResponse.message
+    const errorInfo &#x3D; lodash.isString(errorResponse) ? null : errorResponse.error
 
     const data: HttpResponseError &#x3D; {
       status: ResponseStatus.Error,
-      message: isString(errorOption) ? errorOption : errorOption.message,
-      error: errorInfo?.message || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
-      debug: isDevEnv ? errorInfo.stack || exception.stack : UNDEFINED,
+      message: errorMessage,
+      error: errorInfo?.message || (lodash.isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
+      debug: isDevEnv ? errorInfo?.stack || exception.stack : UNDEFINED,
     }
 
     // default 404
-    if (status &#x3D;&#x3D;&#x3D; HttpStatus.NOT_FOUND) {
+    if (exceptionStatus &#x3D;&#x3D;&#x3D; HttpStatus.NOT_FOUND) {
       data.error &#x3D; data.error || &#x60;Not found&#x60;
       data.message &#x3D; data.message || &#x60;Invalid API: ${request.method} &gt; ${request.url}&#x60;
     }
 
-    return response.status(errorInfo?.status || status).jsonp(data)
+    return response.status(errorInfo?.status || exceptionStatus).jsonp(data)
   }
 }
 </code></pre>

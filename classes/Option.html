@@ -92,6 +92,9 @@
                                 <a href="#description" >description</a>
                             </li>
                             <li>
+                                <a href="#friend_links" >friend_links</a>
+                            </li>
+                            <li>
                                 <a href="#keywords" >keywords</a>
                             </li>
                             <li>
@@ -102,6 +105,9 @@
                             </li>
                             <li>
                                 <a href="#site_url" >site_url</a>
+                            </li>
+                            <li>
+                                <a href="#statement" >statement</a>
                             </li>
                             <li>
                                 <a href="#sub_title" >sub_title</a>
@@ -145,7 +151,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                        <i>Type : </i>    <code>string | null</code>
 
                     </td>
                 </tr>
@@ -154,13 +160,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@prop({default: &#x27;&#x27;})<br />
+                            @IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/modules/option/option.model.ts:124</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/option/option.model.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -195,7 +201,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/modules/option/option.model.ts:118</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/modules/option/option.model.ts:137</a></div>
                         </td>
                     </tr>
 
@@ -230,7 +236,42 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/option/option.model.ts:88</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/modules/option/option.model.ts:97</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="friend_links"></a>
+                    <span class="name">
+                        <span ><b>friend_links</b></span>
+                        <a href="#friend_links"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/KeyValueModel.html" target="_self" >KeyValueModel[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ArrayUnique()<br />@IsArray()<br />@prop({_id: false, default: undefined, type: () &#x3D;&gt; })<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="125" class="link-to-prism">src/modules/option/option.model.ts:125</a></div>
                         </td>
                     </tr>
 
@@ -259,13 +300,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; , default: undefined})<br />
+                            @ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({default: undefined, type: () &#x3D;&gt; })<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/modules/option/option.model.ts:94</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/modules/option/option.model.ts:103</a></div>
                         </td>
                     </tr>
 
@@ -300,7 +341,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="110" class="link-to-prism">src/modules/option/option.model.ts:110</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">src/modules/option/option.model.ts:129</a></div>
                         </td>
                     </tr>
 
@@ -335,7 +376,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/modules/option/option.model.ts:106</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/modules/option/option.model.ts:115</a></div>
                         </td>
                     </tr>
 
@@ -370,7 +411,42 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/option/option.model.ts:100</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/modules/option/option.model.ts:109</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="statement"></a>
+                    <span class="name">
+                        <span ><b>statement</b></span>
+                        <a href="#statement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsString()<br />@IsOptional()<br />@prop({required: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/modules/option/option.model.ts:120</a></div>
                         </td>
                     </tr>
 
@@ -405,7 +481,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/option/option.model.ts:83</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/modules/option/option.model.ts:92</a></div>
                         </td>
                     </tr>
 
@@ -440,7 +516,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/modules/option/option.model.ts:78</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/modules/option/option.model.ts:87</a></div>
                         </td>
                     </tr>
 
@@ -476,7 +552,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="127" class="link-to-prism">src/modules/option/option.model.ts:127</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">src/modules/option/option.model.ts:146</a></div>
                         </td>
                     </tr>
 
@@ -509,21 +585,30 @@ import {
   ValidateNested,
   ArrayUnique,
 } from &#x27;class-validator&#x27;
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { APP } from &#x27;@app/app.config&#x27;
 
 export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   title: &#x27;NodePress&#x27;,
   sub_title: &#x27;blog server app&#x27;,
   description: &#x27;RESTful API service for blog&#x27;,
   keywords: [],
+  statement: &#x27;&#x27;,
   site_url: &#x27;https://github.com/surmon-china/nodepress&#x27;,
   site_email: &#x27;admin@example.com&#x27;,
+  friend_links: [
+    {
+      name: APP.FE_NAME,
+      value: APP.FE_URL,
+    },
+  ],
+  meta: { likes: 0 },
   blocklist: {
     ips: [],
     mails: [],
     keywords: [],
   },
-  meta: { likes: 0 },
   ad_config: &#x27;&#x27;,
 })
 
@@ -581,7 +666,7 @@ export class Option {
   @ArrayUnique()
   @IsArray()
   @IsOptional()
-  @prop({ type: () &#x3D;&gt; [String], default: [] })
+  @prop({ default: [], type: () &#x3D;&gt; [String] })
   keywords: string[]
 
   @IsUrl({ require_protocol: true })
@@ -595,6 +680,16 @@ export class Option {
   @IsNotEmpty()
   @prop({ required: true })
   site_email: string
+
+  @IsString()
+  @IsOptional()
+  @prop({ required: true })
+  statement: string
+
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  friend_links: KeyValueModel[]
 
   // site meta info
   @prop({ _id: false, default: { ...DEFAULT_OPTION.meta } })
@@ -611,8 +706,8 @@ export class Option {
   // ad config
   @IsString()
   @IsOptional()
-  @prop({ default: &#x27;&#x27; })
-  ad_config: string
+  @prop({ default: null })
+  ad_config: string | null
 
   @prop({ default: Date.now })
   update_at?: Date
