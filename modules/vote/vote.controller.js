@@ -34,8 +34,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteController = void 0;
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
-const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
 const option_service_1 = require("../option/option.service");
@@ -55,6 +55,9 @@ let VoteController = class VoteController {
         this.commentService = commentService;
         this.articleService = articleService;
         this.optionService = optionService;
+    }
+    async queryIPLocation(ip) {
+        return ip ? await this.ipService.queryLocation(ip) : null;
     }
     async getAuthor(author, token) {
         if (token) {
@@ -120,7 +123,7 @@ let VoteController = class VoteController {
                     on: await this.getTargetTitle(biz_constant_1.GUESTBOOK_POST_ID),
                     vote: '+1',
                     author: author || 'Anonymous user',
-                    location: await this.ipService.queryLocation(visitor.ip),
+                    location: await this.queryIPLocation(visitor.ip),
                     link: (0, urlmap_transformer_1.getPermalinkByID)(biz_constant_1.GUESTBOOK_POST_ID),
                 });
             }
@@ -138,7 +141,7 @@ let VoteController = class VoteController {
                     on: await this.getTargetTitle(voteBody.article_id),
                     vote: '+1',
                     author,
-                    location: await this.ipService.queryLocation(visitor.ip),
+                    location: await this.queryIPLocation(visitor.ip),
                     link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
                 });
             }
@@ -168,7 +171,7 @@ let VoteController = class VoteController {
                         vote: voteBody.vote > 0 ? '+1' : '-1',
                         on: `${tagetTitle} #${comment.id}`,
                         author,
-                        location: await this.ipService.queryLocation(visitor.ip),
+                        location: await this.queryIPLocation(visitor.ip),
                         link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
                     };
                     this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailParams));

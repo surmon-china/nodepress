@@ -37,23 +37,27 @@ const common_1 = require("@nestjs/common");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
+const feedback_service_1 = require("../feedback/feedback.service");
 const tag_service_1 = require("../tag/tag.service");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
 const logger_1 = __importDefault(require("../../utils/logger"));
+const DEFAULT_STATISTIC = Object.freeze({
+    tags: null,
+    articles: null,
+    comments: null,
+    totalViews: null,
+    totalLikes: null,
+    todayViews: null,
+    averageEmotion: null,
+});
 let StatisticService = class StatisticService {
-    constructor(cacheService, articleService, commentService, tagService) {
+    constructor(cacheService, articleService, commentService, feedbackService, tagService) {
         this.cacheService = cacheService;
         this.articleService = articleService;
         this.commentService = commentService;
+        this.feedbackService = feedbackService;
         this.tagService = tagService;
-        this.resultData = {
-            tags: null,
-            articles: null,
-            comments: null,
-            totalViews: null,
-            totalLikes: null,
-            todayViews: null,
-        };
+        this.resultData = Object.assign({}, DEFAULT_STATISTIC);
         node_schedule_1.default.scheduleJob('1 0 0 * * *', () => {
             this.cacheService.set(CACHE_KEY.TODAY_VIEWS, 0).catch((error) => {
                 logger_1.default.warn('[expansion]', 'statistic set TODAY_VIEWS Error:', error);
@@ -78,11 +82,15 @@ let StatisticService = class StatisticService {
     async getCommentsCount(publicOnly) {
         this.resultData.comments = await this.commentService.getTotalCount(publicOnly);
     }
+    async getAverageEmotion() {
+        this.resultData.averageEmotion = await this.feedbackService.getRootFeedbackAverageEmotion();
+    }
     getStatistic(publicOnly) {
         return Promise.all([
             this.getTagsCount(),
             this.getArticlesCount(publicOnly),
             this.getCommentsCount(publicOnly),
+            this.getAverageEmotion(),
             this.getArticlesStatistic(),
             this.getTodayViewsCount(),
         ])
@@ -95,6 +103,7 @@ StatisticService = __decorate([
     __metadata("design:paramtypes", [cache_service_1.CacheService,
         article_service_1.ArticleService,
         comment_service_1.CommentService,
+        feedback_service_1.FeedbackService,
         tag_service_1.TagService])
 ], StatisticService);
 exports.StatisticService = StatisticService;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ROOT_COMMENT_PID = exports.GUESTBOOK_POST_ID = exports.CommentState = exports.OriginState = exports.PublicState = exports.PublishState = exports.SortType = exports.Language = void 0;
+exports.ROOT_FEEDBACK_TID = exports.ROOT_COMMENT_PID = exports.GUESTBOOK_POST_ID = exports.CommentState = exports.OriginState = exports.PublicState = exports.PublishState = exports.SortType = exports.Language = void 0;
 var Language;
 (function (Language) {
     Language["English"] = "en";
@@ -39,4 +39,5 @@ var CommentState;
 })(CommentState = exports.CommentState || (exports.CommentState = {}));
 exports.GUESTBOOK_POST_ID = 0;
 exports.ROOT_COMMENT_PID = 0;
+exports.ROOT_FEEDBACK_TID = 0;
 //# sourceMappingURL=biz.constant.js.map

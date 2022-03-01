@@ -30,3 +30,4 @@ export declare enum CommentState {
 }
 export declare const GUESTBOOK_POST_ID = 0;
 export declare const ROOT_COMMENT_PID = 0;
+export declare const ROOT_FEEDBACK_TID = 0;

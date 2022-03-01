@@ -1,6 +1,6 @@
 import { Request } from 'express';
 export interface QueryVisitor {
-    ip: string;
+    ip: string | null;
     ua?: string;
     origin?: string;
     referer?: string;

@@ -30,17 +30,19 @@ let AuthController = class AuthController {
     }
     async login({ visitor: { ip } }, body) {
         const token = await this.authService.adminLogin(body.password);
-        this.ipService.queryLocation(ip).then((location) => {
-            const subject = `App has new login activity`;
-            const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow';
-            const content = `${subject}, IP: ${ip}, location: ${locationText}`;
-            this.emailService.sendMailAs(app_config_1.APP.NAME, {
-                to: app_config_1.APP.ADMIN_EMAIL,
-                subject,
-                text: content,
-                html: content,
+        if (ip) {
+            this.ipService.queryLocation(ip).then((location) => {
+                const subject = `App has new login activity`;
+                const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow';
+                const content = `${subject}, IP: ${ip}, location: ${locationText}`;
+                this.emailService.sendMailAs(app_config_1.APP.NAME, {
+                    to: app_config_1.APP.ADMIN_EMAIL,
+                    subject,
+                    text: content,
+                    html: content,
+                });
             });
-        });
+        }
         return token;
     }
     getAdminInfo() {

@@ -1,7 +1,7 @@
 import { Ref } from '@typegoose/typegoose';
 import { Language, SortType, PublishState, PublicState, OriginState } from '@app/constants/biz.constant';
 import { Category } from '@app/modules/category/category.model';
-import { ExtendModel } from '@app/models/extend.model';
+import { KeyValueModel } from '@app/models/key-value.model';
 import { Tag } from '@app/modules/tag/tag.model';
 export declare const ARTICLE_LANGUAGES: readonly [Language.English, Language.Chinese];
 export declare const ARTICLE_PUBLISH_STATES: readonly [PublishState.Draft, PublishState.Published, PublishState.Recycle];
@@ -31,7 +31,7 @@ export declare class Article {
     content: string;
     description: string;
     keywords: string[];
-    thumb: string;
+    thumb: null | string;
     state: PublishState;
     public: PublicState;
     origin: OriginState;
@@ -42,6 +42,6 @@ export declare class Article {
     meta: ArticleMeta;
     create_at?: Date;
     update_at?: Date;
-    extends: ExtendModel[];
+    extends: KeyValueModel[];
 }
 export declare const ArticleProvider: import("@nestjs/common").Provider<any>;

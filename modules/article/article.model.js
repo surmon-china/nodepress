@@ -18,7 +18,7 @@ const increment_constant_1 = require("../../constants/increment.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 const category_model_1 = require("../category/category.model");
-const extend_model_1 = require("../../models/extend.model");
+const key_value_model_1 = require("../../models/key-value.model");
 const tag_model_1 = require("../tag/tag.model");
 exports.ARTICLE_LANGUAGES = [biz_constant_1.Language.English, biz_constant_1.Language.Chinese];
 exports.ARTICLE_PUBLISH_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published, biz_constant_1.PublishState.Recycle];
@@ -85,21 +85,21 @@ __decorate([
 ], Article.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, typegoose_1.prop)({ text: true }),
+    (0, typegoose_1.prop)({ default: '', text: true }),
     __metadata("design:type", String)
 ], Article.prototype, "description", void 0);
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ type: () => [String] }),
+    (0, typegoose_1.prop)({ default: [], type: () => [String] }),
     __metadata("design:type", Array)
 ], Article.prototype, "keywords", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)(),
-    __metadata("design:type", String)
+    (0, typegoose_1.prop)({ default: null }),
+    __metadata("design:type", Object)
 ], Article.prototype, "thumb", void 0);
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_PUBLISH_STATES),
@@ -160,7 +160,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.ExtendModel] }),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
     __metadata("design:type", Array)
 ], Article.prototype, "extends", void 0);
 Article = __decorate([

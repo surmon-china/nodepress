@@ -7,12 +7,12 @@ export interface AkismetPayload {
     user_ip: string;
     user_agent: string;
     referrer: string;
-    permalink?: string;
+    permalink?: string | null;
     comment_type?: 'comment' | 'reply';
-    comment_author?: string;
-    comment_author_email?: string;
-    comment_author_url?: string;
-    comment_content?: string;
+    comment_author?: string | null;
+    comment_author_email?: string | null;
+    comment_author_url?: string | null;
+    comment_content?: string | null;
 }
 export declare class AkismetService {
     private client;

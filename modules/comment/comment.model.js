@@ -19,7 +19,7 @@ const paginate_1 = require("../../utils/paginate");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
 const biz_constant_1 = require("../../constants/biz.constant");
-const extend_model_1 = require("../../models/extend.model");
+const key_value_model_1 = require("../../models/key-value.model");
 exports.COMMENT_STATES = [
     biz_constant_1.CommentState.Auditing,
     biz_constant_1.CommentState.Published,
@@ -47,15 +47,15 @@ __decorate([
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)(),
-    __metadata("design:type", String)
+    (0, typegoose_1.prop)({ default: null }),
+    __metadata("design:type", Object)
 ], Author.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsUrl)({ require_protocol: true }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)(),
-    __metadata("design:type", String)
+    (0, typegoose_1.prop)({ default: null }),
+    __metadata("design:type", Object)
 ], Author.prototype, "site", void 0);
 Author = __decorate([
     (0, typegoose_1.modelOptions)({
@@ -88,8 +88,9 @@ __decorate([
     __metadata("design:type", String)
 ], CommentBase.prototype, "content", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ validate: /\S+/ }),
-    __metadata("design:type", String)
+    (0, class_validator_1.IsString)(),
+    (0, typegoose_1.prop)({ default: null }),
+    __metadata("design:type", Object)
 ], CommentBase.prototype, "agent", void 0);
 __decorate([
     (0, class_transformer_1.Type)(() => Author),
@@ -126,8 +127,8 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsIP)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)(),
-    __metadata("design:type", String)
+    (0, typegoose_1.prop)({ default: null }),
+    __metadata("design:type", Object)
 ], Comment.prototype, "ip", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: null, type: Object }),
@@ -144,7 +145,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.ExtendModel] }),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
     __metadata("design:type", Array)
 ], Comment.prototype, "extends", void 0);
 Comment = __decorate([

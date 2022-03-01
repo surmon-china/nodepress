@@ -49,7 +49,11 @@ let OptionService = class OptionService {
         this.optionCache = this.cacheService.promise({
             ioMode: true,
             key: CACHE_KEY.OPTION,
-            promise: () => this.ensureAppOption().then((option) => lodash_1.default.omit(option, ['blocklist'])),
+            promise: () => {
+                return this.ensureAppOption().then((option) => {
+                    return lodash_1.default.omit(option.toObject(), ['blocklist']);
+                });
+            },
         });
         this.optionCache.update().catch((error) => {
             logger_1.default.warn('[option]', 'init getAppOption', error);

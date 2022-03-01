@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { ExtendModel } from '@app/models/extend.model';
+import { KeyValueModel } from '@app/models/key-value.model';
 export declare class Category {
     id: number;
     name: string;
@@ -8,7 +8,7 @@ export declare class Category {
     pid: Types.ObjectId;
     create_at?: Date;
     update_at?: Date;
-    extends: ExtendModel[];
+    extends: KeyValueModel[];
     articles_count?: number;
 }
 export declare const CategoryProvider: import("@nestjs/common").Provider<any>;

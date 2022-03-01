@@ -15,6 +15,7 @@ export declare class VoteController {
     private readonly articleService;
     private readonly optionService;
     constructor(ipService: IPService, emailService: EmailService, disqusPublicService: DisqusPublicService, commentService: CommentService, articleService: ArticleService, optionService: OptionService);
+    private queryIPLocation;
     private getAuthor;
     private getTargetTitle;
     private emailToTargetVoteMessage;

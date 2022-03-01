@@ -12,7 +12,7 @@ exports.QueryParams = (0, common_1.createParamDecorator)((field, context) => {
         request.ip ||
         request.ips[0];
     const visitor = {
-        ip: ip.replace('::ffff:', '').replace('::1', ''),
+        ip: ip.replace('::ffff:', '').replace('::1', '') || null,
         ua: request.headers['user-agent'],
         origin: request.headers.origin,
         referer: request.headers.referer,

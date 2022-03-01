@@ -13,20 +13,29 @@ exports.OptionProvider = exports.Option = exports.Blocklist = exports.DEFAULT_OP
 const typegoose_1 = require("@typegoose/typegoose");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
+const key_value_model_1 = require("../../models/key-value.model");
 const model_transformer_1 = require("../../transformers/model.transformer");
+const app_config_1 = require("../../app.config");
 exports.DEFAULT_OPTION = Object.freeze({
     title: 'NodePress',
     sub_title: 'blog server app',
     description: 'RESTful API service for blog',
     keywords: [],
+    statement: '',
     site_url: 'https://github.com/surmon-china/nodepress',
     site_email: 'admin@example.com',
+    friend_links: [
+        {
+            name: app_config_1.APP.FE_NAME,
+            value: app_config_1.APP.FE_URL,
+        },
+    ],
+    meta: { likes: 0 },
     blocklist: {
         ips: [],
         mails: [],
         keywords: [],
     },
-    meta: { likes: 0 },
     ad_config: '',
 });
 class AppMeta {
@@ -84,7 +93,7 @@ __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ type: () => [String], default: [] }),
+    (0, typegoose_1.prop)({ default: [], type: () => [String] }),
     __metadata("design:type", Array)
 ], Option.prototype, "keywords", void 0);
 __decorate([
@@ -102,6 +111,18 @@ __decorate([
     __metadata("design:type", String)
 ], Option.prototype, "site_email", void 0);
 __decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, typegoose_1.prop)({ required: true }),
+    __metadata("design:type", String)
+], Option.prototype, "statement", void 0);
+__decorate([
+    (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsArray)(),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
+    __metadata("design:type", Array)
+], Option.prototype, "friend_links", void 0);
+__decorate([
     (0, typegoose_1.prop)({ _id: false, default: Object.assign({}, exports.DEFAULT_OPTION.meta) }),
     __metadata("design:type", AppMeta)
 ], Option.prototype, "meta", void 0);
@@ -116,8 +137,8 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: '' }),
-    __metadata("design:type", String)
+    (0, typegoose_1.prop)({ default: null }),
+    __metadata("design:type", Object)
 ], Option.prototype, "ad_config", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),

@@ -18,7 +18,7 @@ const class_validator_1 = require("class-validator");
 const increment_constant_1 = require("../../constants/increment.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
-const extend_model_1 = require("../../models/extend.model");
+const key_value_model_1 = require("../../models/key-value.model");
 let Category = Category_1 = class Category {
 };
 __decorate([
@@ -40,8 +40,8 @@ __decorate([
     __metadata("design:type", String)
 ], Category.prototype, "slug", void 0);
 __decorate([
-    (0, class_validator_1.IsString)({ message: 'description must be string type' }),
-    (0, typegoose_1.prop)(),
+    (0, class_validator_1.IsString)(),
+    (0, typegoose_1.prop)({ default: '' }),
     __metadata("design:type", String)
 ], Category.prototype, "description", void 0);
 __decorate([
@@ -59,7 +59,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [extend_model_1.ExtendModel] }),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
     __metadata("design:type", Array)
 ], Category.prototype, "extends", void 0);
 Category = Category_1 = __decorate([

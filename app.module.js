@@ -21,6 +21,7 @@ const helper_module_1 = require("./processors/helper/helper.module");
 const expansion_module_1 = require("./modules/expansion/expansion.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const option_module_1 = require("./modules/option/option.module");
+const feedback_module_1 = require("./modules/feedback/feedback.module");
 const announcement_module_1 = require("./modules/announcement/announcement.module");
 const tag_module_1 = require("./modules/tag/tag.module");
 const category_module_1 = require("./modules/category/category.module");
@@ -48,6 +49,7 @@ AppModule = __decorate([
             expansion_module_1.ExpansionModule,
             auth_module_1.AuthModule,
             option_module_1.OptionModule,
+            feedback_module_1.FeedbackModule,
             announcement_module_1.AnnouncementModule,
             tag_module_1.TagModule,
             category_module_1.CategoryModule,

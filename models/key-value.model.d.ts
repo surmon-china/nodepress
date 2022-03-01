@@ -1,4 +1,4 @@
-export declare class ExtendModel {
+export declare class KeyValueModel {
     name: string;
     value: string;
 }

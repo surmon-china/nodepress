@@ -19,21 +19,21 @@ let HttpExceptionFilter = class HttpExceptionFilter {
     catch(exception, host) {
         const request = host.switchToHttp().getRequest();
         const response = host.switchToHttp().getResponse();
-        const status = exception.getStatus() || common_1.HttpStatus.INTERNAL_SERVER_ERROR;
-        const errorOption = exception.getResponse();
-        const isString = (value) => lodash_1.default.isString(value);
-        const errorInfo = isString(errorOption) ? null : errorOption.error;
+        const exceptionStatus = exception.getStatus() || common_1.HttpStatus.INTERNAL_SERVER_ERROR;
+        const errorResponse = exception.getResponse();
+        const errorMessage = lodash_1.default.isString(errorResponse) ? errorResponse : errorResponse.message;
+        const errorInfo = lodash_1.default.isString(errorResponse) ? null : errorResponse.error;
         const data = {
             status: response_interface_1.ResponseStatus.Error,
-            message: isString(errorOption) ? errorOption : errorOption.message,
-            error: (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.message) || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
-            debug: app_environment_1.isDevEnv ? errorInfo.stack || exception.stack : value_constant_1.UNDEFINED,
+            message: errorMessage,
+            error: (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.message) || (lodash_1.default.isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
+            debug: app_environment_1.isDevEnv ? (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.stack) || exception.stack : value_constant_1.UNDEFINED,
         };
-        if (status === common_1.HttpStatus.NOT_FOUND) {
+        if (exceptionStatus === common_1.HttpStatus.NOT_FOUND) {
             data.error = data.error || `Not found`;
             data.message = data.message || `Invalid API: ${request.method} > ${request.url}`;
         }
-        return response.status((errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.status) || status).jsonp(data);
+        return response.status((errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.status) || exceptionStatus).jsonp(data);
     }
 };
 HttpExceptionFilter = __decorate([
