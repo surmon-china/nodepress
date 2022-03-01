@@ -18,19 +18,17 @@ export declare class FeedbackBase {
     get emotion_text(): string;
     get emotion_emoji(): string;
     content: string;
-    user_name: null | string;
-    user_email: null | string;
+    user_name: string | null;
+    user_email: string | null;
 }
 export declare class Feedback extends FeedbackBase {
     id: number;
     marked: boolean;
     remark: string;
-    origin: null | string;
+    origin: string | null;
     user_agent?: string;
     ip: null | string;
-    ip_location: null | (Partial<IPLocation> & {
-        [key: string]: any;
-    });
+    ip_location: Partial<IPLocation> | null;
     create_at?: Date;
     update_at?: Date;
 }

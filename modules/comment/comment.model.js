@@ -47,14 +47,14 @@ __decorate([
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Author.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsUrl)({ require_protocol: true }),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Author.prototype, "site", void 0);
 Author = __decorate([
@@ -89,7 +89,7 @@ __decorate([
 ], CommentBase.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], CommentBase.prototype, "agent", void 0);
 __decorate([
@@ -127,11 +127,11 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsIP)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Comment.prototype, "ip", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: null, type: Object }),
+    (0, typegoose_1.prop)({ type: Object, default: null }),
     __metadata("design:type", Object)
 ], Comment.prototype, "ip_location", void 0);
 __decorate([

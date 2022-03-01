@@ -31,7 +31,7 @@ export declare class Article {
     content: string;
     description: string;
     keywords: string[];
-    thumb: null | string;
+    thumb: string | null;
     state: PublishState;
     public: PublicState;
     origin: OriginState;

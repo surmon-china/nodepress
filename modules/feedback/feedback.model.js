@@ -87,14 +87,14 @@ __decorate([
     (0, class_validator_1.MaxLength)(20),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], FeedbackBase.prototype, "user_name", void 0);
 __decorate([
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], FeedbackBase.prototype, "user_email", void 0);
 exports.FeedbackBase = FeedbackBase;
@@ -118,7 +118,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Feedback.prototype, "origin", void 0);
 __decorate([
@@ -129,11 +129,11 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsIP)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Feedback.prototype, "ip", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: null, type: Object }),
+    (0, typegoose_1.prop)({ type: Object, default: null }),
     __metadata("design:type", Object)
 ], Feedback.prototype, "ip_location", void 0);
 __decorate([

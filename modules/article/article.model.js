@@ -98,7 +98,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Article.prototype, "thumb", void 0);
 __decorate([

@@ -7,6 +7,7 @@ export interface IPLocation {
     region_code: string;
     city: string;
     zip: string;
+    [key: string]: any;
 }
 export declare class IPService {
     private readonly httpService;

@@ -23,10 +23,8 @@ export declare class Comment extends CommentBase {
     state: CommentState;
     likes: number;
     dislikes: number;
-    ip: null | string;
-    ip_location: null | (Partial<IPLocation> & {
-        [key: string]: any;
-    });
+    ip: string | null;
+    ip_location: Partial<IPLocation> | null;
     create_at?: Date;
     update_at?: Date;
     extends: KeyValueModel[];

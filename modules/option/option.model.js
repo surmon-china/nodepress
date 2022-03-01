@@ -113,7 +113,8 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ required: true }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, typegoose_1.prop)({ default: '' }),
     __metadata("design:type", String)
 ], Option.prototype, "statement", void 0);
 __decorate([
@@ -137,7 +138,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Option.prototype, "ad_config", void 0);
 __decorate([
