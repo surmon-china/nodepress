@@ -4,12 +4,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { ExtendModel } from '@app/models/extend.model'
+import { KeyValueModel } from '@app/models/key-value.model'
 
-export const getExtendObject = (_extends: ExtendModel[]): { [key: string]: string } => {
+export const getExtendObject = (_extends: KeyValueModel[]): { [key: string]: string } => {
   return _extends.length ? _extends.reduce((v, c) => ({ ...v, [c.name]: c.value }), {}) : {}
 }
 
-export const getExtendValue = (_extends: ExtendModel[], key: string): string | void => {
+export const getExtendValue = (_extends: KeyValueModel[], key: string): string | void => {
   return _extends.length ? getExtendObject(_extends)[key] : void 0
 }

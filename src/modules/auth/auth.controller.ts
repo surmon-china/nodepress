@@ -31,17 +31,19 @@ export class AuthController {
     @Body() body: AuthLoginDTO
   ): Promise<TokenResult> {
     const token = await this.authService.adminLogin(body.password)
-    this.ipService.queryLocation(ip).then((location) => {
-      const subject = `App has new login activity`
-      const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow'
-      const content = `${subject}, IP: ${ip}, location: ${locationText}`
-      this.emailService.sendMailAs(APP.NAME, {
-        to: APP.ADMIN_EMAIL,
-        subject,
-        text: content,
-        html: content,
+    if (ip) {
+      this.ipService.queryLocation(ip).then((location) => {
+        const subject = `App has new login activity`
+        const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow'
+        const content = `${subject}, IP: ${ip}, location: ${locationText}`
+        this.emailService.sendMailAs(APP.NAME, {
+          to: APP.ADMIN_EMAIL,
+          subject,
+          text: content,
+          html: content,
+        })
       })
-    })
+    }
     return token
   }
 

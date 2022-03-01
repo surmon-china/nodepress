@@ -18,21 +18,30 @@ import {
   ValidateNested,
   ArrayUnique,
 } from 'class-validator'
+import { KeyValueModel } from '@app/models/key-value.model'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
+import { APP } from '@app/app.config'
 
 export const DEFAULT_OPTION: Option = Object.freeze<Option>({
   title: 'NodePress',
   sub_title: 'blog server app',
   description: 'RESTful API service for blog',
   keywords: [],
+  statement: '',
   site_url: 'https://github.com/surmon-china/nodepress',
   site_email: 'admin@example.com',
+  friend_links: [
+    {
+      name: APP.FE_NAME,
+      value: APP.FE_URL,
+    },
+  ],
+  meta: { likes: 0 },
   blocklist: {
     ips: [],
     mails: [],
     keywords: [],
   },
-  meta: { likes: 0 },
   ad_config: '',
 })
 
@@ -90,7 +99,7 @@ export class Option {
   @ArrayUnique()
   @IsArray()
   @IsOptional()
-  @prop({ type: () => [String], default: [] })
+  @prop({ default: [], type: () => [String] })
   keywords: string[]
 
   @IsUrl({ require_protocol: true })
@@ -104,6 +113,16 @@ export class Option {
   @IsNotEmpty()
   @prop({ required: true })
   site_email: string
+
+  @IsString()
+  @IsOptional()
+  @prop({ required: true })
+  statement: string
+
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
+  friend_links: KeyValueModel[]
 
   // site meta info
   @prop({ _id: false, default: { ...DEFAULT_OPTION.meta } })
@@ -120,8 +139,8 @@ export class Option {
   // ad config
   @IsString()
   @IsOptional()
-  @prop({ default: '' })
-  ad_config: string
+  @prop({ default: null })
+  ad_config: string | null
 
   @prop({ default: Date.now })
   update_at?: Date

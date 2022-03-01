@@ -9,34 +9,32 @@ import { Injectable } from '@nestjs/common'
 import { CacheService } from '@app/processors/cache/cache.service'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
+import { FeedbackService } from '@app/modules/feedback/feedback.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
 
-export interface Statistic {
-  tags: number | null
-  articles: number | null
-  comments: number | null
-  totalViews: number | null
-  totalLikes: number | null
-  todayViews: number | null
-}
+const DEFAULT_STATISTIC = Object.freeze({
+  tags: null,
+  articles: null,
+  comments: null,
+  totalViews: null,
+  totalLikes: null,
+  todayViews: null,
+  averageEmotion: null,
+})
+
+export type Statistic = Record<keyof typeof DEFAULT_STATISTIC, number | null>
 
 @Injectable()
 export class StatisticService {
-  private resultData: Statistic = {
-    tags: null,
-    articles: null,
-    comments: null,
-    totalViews: null,
-    totalLikes: null,
-    todayViews: null,
-  }
+  private resultData: Statistic = { ...DEFAULT_STATISTIC }
 
   constructor(
     private readonly cacheService: CacheService,
     private readonly articleService: ArticleService,
     private readonly commentService: CommentService,
+    private readonly feedbackService: FeedbackService,
     private readonly tagService: TagService
   ) {
     // clear date when everyday 00:00
@@ -70,11 +68,16 @@ export class StatisticService {
     this.resultData.comments = await this.commentService.getTotalCount(publicOnly)
   }
 
+  private async getAverageEmotion() {
+    this.resultData.averageEmotion = await this.feedbackService.getRootFeedbackAverageEmotion()
+  }
+
   public getStatistic(publicOnly: boolean) {
     return Promise.all([
       this.getTagsCount(),
       this.getArticlesCount(publicOnly),
       this.getCommentsCount(publicOnly),
+      this.getAverageEmotion(),
       this.getArticlesStatistic(),
       this.getTodayViewsCount(),
     ])

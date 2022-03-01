@@ -30,8 +30,8 @@ export class KeywordQueryDTO {
 
 // MARK: example
 export class BooleanQueryDTO {
-  @IsInt()
   @IsIn([BooleanNumberValue.True, BooleanNumberValue.False])
+  @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknowToNumber(value))

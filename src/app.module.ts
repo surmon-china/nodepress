@@ -28,6 +28,7 @@ import { ExpansionModule } from '@app/modules/expansion/expansion.module'
 // BIZ modules
 import { AuthModule } from '@app/modules/auth/auth.module'
 import { OptionModule } from '@app/modules/option/option.module'
+import { FeedbackModule } from '@app/modules/feedback/feedback.module'
 import { AnnouncementModule } from '@app/modules/announcement/announcement.module'
 import { TagModule } from '@app/modules/tag/tag.module'
 import { CategoryModule } from '@app/modules/category/category.module'
@@ -52,6 +53,7 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     // BIZs
     AuthModule,
     OptionModule,
+    FeedbackModule,
     AnnouncementModule,
     TagModule,
     CategoryModule,

@@ -6,8 +6,8 @@
 
 import { Controller, Post, Body } from '@nestjs/common'
 import { Throttle } from '@nestjs/throttler'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { Responsor } from '@app/decorators/responsor.decorator'
+import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { IPService, IPLocation } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import { OptionService } from '@app/modules/option/option.service'
@@ -32,6 +32,10 @@ export class VoteController {
     private readonly articleService: ArticleService,
     private readonly optionService: OptionService
   ) {}
+
+  private async queryIPLocation(ip: string | null) {
+    return ip ? await this.ipService.queryLocation(ip) : null
+  }
 
   private async getAuthor(author: Author | void, token?: string | null) {
     // disqus user
@@ -130,7 +134,7 @@ export class VoteController {
           on: await this.getTargetTitle(GUESTBOOK_POST_ID),
           vote: '+1',
           author: author || 'Anonymous user',
-          location: await this.ipService.queryLocation(visitor.ip),
+          location: await this.queryIPLocation(visitor.ip),
           link: getPermalinkByID(GUESTBOOK_POST_ID),
         })
       }
@@ -161,7 +165,7 @@ export class VoteController {
           on: await this.getTargetTitle(voteBody.article_id),
           vote: '+1',
           author,
-          location: await this.ipService.queryLocation(visitor.ip),
+          location: await this.queryIPLocation(visitor.ip),
           link: getPermalinkByID(voteBody.article_id),
         })
       }
@@ -204,7 +208,7 @@ export class VoteController {
             vote: voteBody.vote > 0 ? '+1' : '-1',
             on: `${tagetTitle} #${comment.id}`,
             author,
-            location: await this.ipService.queryLocation(visitor.ip),
+            location: await this.queryIPLocation(visitor.ip),
             link: getPermalinkByID(comment.post_id),
           }
           // email to admin

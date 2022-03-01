@@ -49,3 +49,4 @@ export enum CommentState {
 
 export const GUESTBOOK_POST_ID = 0
 export const ROOT_COMMENT_PID = 0
+export const ROOT_FEEDBACK_TID = 0

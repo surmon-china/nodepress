@@ -6,7 +6,7 @@
 
 import lodash from 'lodash'
 import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from '@nestjs/common'
-import { ResponseStatus, HttpResponseError, ExceptionInfo, ResponseMessage } from '@app/interfaces/response.interface'
+import { ResponseStatus, HttpResponseError, ExceptionInfo } from '@app/interfaces/response.interface'
 import { UNDEFINED } from '@app/constants/value.constant'
 import { isDevEnv } from '@app/app.environment'
 
@@ -19,24 +19,24 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const request = host.switchToHttp().getRequest()
     const response = host.switchToHttp().getResponse()
-    const status = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
-    const errorOption: ExceptionInfo = exception.getResponse() as ExceptionInfo
-    const isString = (value): value is ResponseMessage => lodash.isString(value)
-    const errorInfo = isString(errorOption) ? null : errorOption.error
+    const exceptionStatus = exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
+    const errorResponse: ExceptionInfo = exception.getResponse() as ExceptionInfo
+    const errorMessage = lodash.isString(errorResponse) ? errorResponse : errorResponse.message
+    const errorInfo = lodash.isString(errorResponse) ? null : errorResponse.error
 
     const data: HttpResponseError = {
       status: ResponseStatus.Error,
-      message: isString(errorOption) ? errorOption : errorOption.message,
-      error: errorInfo?.message || (isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
-      debug: isDevEnv ? errorInfo.stack || exception.stack : UNDEFINED,
+      message: errorMessage,
+      error: errorInfo?.message || (lodash.isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
+      debug: isDevEnv ? errorInfo?.stack || exception.stack : UNDEFINED,
     }
 
     // default 404
-    if (status === HttpStatus.NOT_FOUND) {
+    if (exceptionStatus === HttpStatus.NOT_FOUND) {
       data.error = data.error || `Not found`
       data.message = data.message || `Invalid API: ${request.method} > ${request.url}`
     }
 
-    return response.status(errorInfo?.status || status).jsonp(data)
+    return response.status(errorInfo?.status || exceptionStatus).jsonp(data)
   }
 }

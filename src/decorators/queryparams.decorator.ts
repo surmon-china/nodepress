@@ -8,7 +8,7 @@ import { Request } from 'express'
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 
 export interface QueryVisitor {
-  ip: string
+  ip: string | null
   ua?: string
   origin?: string
   referer?: string
@@ -57,7 +57,7 @@ export const QueryParams = createParamDecorator(
       request.ips[0]
 
     const visitor: QueryVisitor = {
-      ip: ip.replace('::ffff:', '').replace('::1', ''),
+      ip: ip.replace('::ffff:', '').replace('::1', '') || null,
       ua: request.headers['user-agent'],
       origin: request.headers.origin,
       referer: request.headers.referer,

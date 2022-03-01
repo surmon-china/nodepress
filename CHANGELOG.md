@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.9.0 (2022-02-28)
+
+**Feature**
+
+- **[Option]** add `statement` `friend_links` field
+- Add `feedback` module
+
 ### 3.8.4 (2022-02-19)
 
 **Feature**

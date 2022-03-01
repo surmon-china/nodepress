@@ -10,7 +10,7 @@ import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayUnique } from '
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { ExtendModel } from '@app/models/extend.model'
+import { KeyValueModel } from '@app/models/key-value.model'
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
@@ -38,8 +38,8 @@ export class Tag {
   @prop({ required: true, validate: /^[a-zA-Z0-9-_]+$/, unique: true })
   slug: string
 
-  @IsString({ message: 'description must be string type' })
-  @prop()
+  @IsString()
+  @prop({ default: '' })
   description: string
 
   @prop({ default: Date.now, immutable: true })
@@ -50,8 +50,8 @@ export class Tag {
 
   @IsArray()
   @ArrayUnique()
-  @prop({ _id: false, default: [], type: () => [ExtendModel] })
-  extends: ExtendModel[]
+  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
+  extends: KeyValueModel[]
 
   // for article aggregate
   articles_count?: number

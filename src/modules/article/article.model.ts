@@ -25,7 +25,7 @@ import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { Category } from '@app/modules/category/category.model'
-import { ExtendModel } from '@app/models/extend.model'
+import { KeyValueModel } from '@app/models/key-value.model'
 import { Tag } from '@app/modules/tag/tag.model'
 
 export const ARTICLE_LANGUAGES = [Language.English, Language.Chinese] as const
@@ -113,19 +113,19 @@ export class Article {
   content: string
 
   @IsString()
-  @prop({ text: true })
+  @prop({ default: '', text: true })
   description: string
 
   @ArrayUnique()
   @IsArray()
   @IsDefined()
-  @prop({ type: () => [String] })
+  @prop({ default: [], type: () => [String] })
   keywords: string[]
 
   @IsString()
   @IsOptional()
-  @prop()
-  thumb: string
+  @prop({ default: null })
+  thumb: null | string
 
   // publish state
   @IsIn(ARTICLE_PUBLISH_STATES)
@@ -186,8 +186,8 @@ export class Article {
 
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () => [ExtendModel] })
-  extends: ExtendModel[]
+  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
+  extends: KeyValueModel[]
 }
 
 export const ArticleProvider = getProviderByTypegooseClass(Article)

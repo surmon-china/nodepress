@@ -30,7 +30,7 @@ import { getProviderByTypegooseClass } from '@app/transformers/model.transformer
 import { decodeMD5 } from '@app/transformers/codec.transformer'
 import { ROOT_COMMENT_PID, CommentState } from '@app/constants/biz.constant'
 import { IPLocation } from '@app/processors/helper/helper.service.ip'
-import { ExtendModel } from '@app/models/extend.model'
+import { KeyValueModel } from '@app/models/key-value.model'
 
 export const COMMENT_STATES = [
   CommentState.Auditing,
@@ -60,14 +60,14 @@ export class Author {
   @IsEmail()
   @IsString()
   @IsOptional()
-  @prop()
-  email?: string
+  @prop({ default: null })
+  email?: string | null
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsOptional()
-  @prop()
-  site?: string
+  @prop({ default: null })
+  site?: string | null
 
   public get email_hash() {
     const email = this.email?.trim().toLowerCase()
@@ -95,8 +95,9 @@ export class CommentBase {
   content: string
 
   // user agent
-  @prop({ validate: /\S+/ })
-  agent?: string
+  @IsString()
+  @prop({ default: null })
+  agent?: string | null
 
   @Type(() => Author)
   @ValidateNested()
@@ -141,8 +142,8 @@ export class Comment extends CommentBase {
   // IP address
   @IsIP()
   @IsOptional()
-  @prop()
-  ip?: string
+  @prop({ default: null })
+  ip: null | string
 
   // IP location
   @prop({ default: null, type: Object })
@@ -156,8 +157,8 @@ export class Comment extends CommentBase {
 
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () => [ExtendModel] })
-  extends: ExtendModel[]
+  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
+  extends: KeyValueModel[]
 }
 
 export const CommentProvider = getProviderByTypegooseClass(Comment)
