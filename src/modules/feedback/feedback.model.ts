@@ -96,14 +96,14 @@ export class FeedbackBase {
   @MaxLength(20)
   @IsString()
   @IsOptional()
-  @prop({ default: null })
-  user_name: null | string
+  @prop({ type: String, default: null })
+  user_name: string | null
 
   @IsEmail()
   @IsString()
   @IsOptional()
-  @prop({ default: null })
-  user_email: null | string
+  @prop({ type: String, default: null })
+  user_email: string | null
 }
 
 @plugin(mongoosePaginate)
@@ -134,8 +134,8 @@ export class Feedback extends FeedbackBase {
 
   @IsString()
   @IsOptional()
-  @prop({ default: null })
-  origin: null | string
+  @prop({ type: String, default: null })
+  origin: string | null
 
   @IsString()
   @prop({ default: null })
@@ -143,12 +143,11 @@ export class Feedback extends FeedbackBase {
 
   @IsIP()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   ip: null | string
 
-  // IP location
-  @prop({ default: null, type: Object })
-  ip_location: null | (Partial<IPLocation> & { [key: string]: any })
+  @prop({ type: Object, default: null })
+  ip_location: Partial<IPLocation> | null
 
   @prop({ default: Date.now, immutable: true })
   create_at?: Date

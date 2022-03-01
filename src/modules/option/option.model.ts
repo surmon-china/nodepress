@@ -116,7 +116,8 @@ export class Option {
 
   @IsString()
   @IsOptional()
-  @prop({ required: true })
+  @IsNotEmpty()
+  @prop({ default: '' })
   statement: string
 
   @ArrayUnique()
@@ -139,7 +140,7 @@ export class Option {
   // ad config
   @IsString()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   ad_config: string | null
 
   @prop({ default: Date.now })

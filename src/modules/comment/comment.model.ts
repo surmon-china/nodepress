@@ -60,13 +60,13 @@ export class Author {
   @IsEmail()
   @IsString()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   email?: string | null
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   site?: string | null
 
   public get email_hash() {
@@ -96,7 +96,7 @@ export class CommentBase {
 
   // user agent
   @IsString()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   agent?: string | null
 
   @Type(() => Author)
@@ -142,12 +142,12 @@ export class Comment extends CommentBase {
   // IP address
   @IsIP()
   @IsOptional()
-  @prop({ default: null })
-  ip: null | string
+  @prop({ type: String, default: null })
+  ip: string | null
 
   // IP location
-  @prop({ default: null, type: Object })
-  ip_location: null | (Partial<IPLocation> & { [key: string]: any })
+  @prop({ type: Object, default: null })
+  ip_location: Partial<IPLocation> | null
 
   @prop({ default: Date.now, immutable: true })
   create_at?: Date
