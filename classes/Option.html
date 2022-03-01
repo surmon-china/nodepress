@@ -160,13 +160,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/option/option.model.ts:143</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="144" class="link-to-prism">src/modules/option/option.model.ts:144</a></div>
                         </td>
                     </tr>
 
@@ -201,7 +201,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/modules/option/option.model.ts:137</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/modules/option/option.model.ts:138</a></div>
                         </td>
                     </tr>
 
@@ -271,7 +271,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="125" class="link-to-prism">src/modules/option/option.model.ts:125</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">src/modules/option/option.model.ts:126</a></div>
                         </td>
                     </tr>
 
@@ -341,7 +341,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">src/modules/option/option.model.ts:129</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/modules/option/option.model.ts:130</a></div>
                         </td>
                     </tr>
 
@@ -440,13 +440,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@prop({required: true})<br />
+                            @IsString()<br />@IsOptional()<br />@IsNotEmpty()<br />@prop({default: &#x27;&#x27;})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/modules/option/option.model.ts:120</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">src/modules/option/option.model.ts:121</a></div>
                         </td>
                     </tr>
 
@@ -552,7 +552,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">src/modules/option/option.model.ts:146</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="147" class="link-to-prism">src/modules/option/option.model.ts:147</a></div>
                         </td>
                     </tr>
 
@@ -683,7 +683,8 @@ export class Option {
 
   @IsString()
   @IsOptional()
-  @prop({ required: true })
+  @IsNotEmpty()
+  @prop({ default: &#x27;&#x27; })
   statement: string
 
   @ArrayUnique()
@@ -706,7 +707,7 @@ export class Option {
   // ad config
   @IsString()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   ad_config: string | null
 
   @prop({ default: Date.now })

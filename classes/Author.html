@@ -149,7 +149,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsEmail()<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @IsEmail()<br />@IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -220,7 +220,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsUrl({require_protocol: true})<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @IsUrl({require_protocol: true})<br />@IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -328,13 +328,13 @@ export class Author {
   @IsEmail()
   @IsString()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   email?: string | null
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   site?: string | null
 
   public get email_hash() {
@@ -364,7 +364,7 @@ export class CommentBase {
 
   // user agent
   @IsString()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   agent?: string | null
 
   @Type(() &#x3D;&gt; Author)
@@ -410,12 +410,12 @@ export class Comment extends CommentBase {
   // IP address
   @IsIP()
   @IsOptional()
-  @prop({ default: null })
-  ip: null | string
+  @prop({ type: String, default: null })
+  ip: string | null
 
   // IP location
-  @prop({ default: null, type: Object })
-  ip_location: null | (Partial&lt;IPLocation&gt; &amp; { [key: string]: any })
+  @prop({ type: Object, default: null })
+  ip_location: Partial&lt;IPLocation&gt; | null
 
   @prop({ default: Date.now, immutable: true })
   create_at?: Date

@@ -181,7 +181,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="154" class="link-to-prism">src/modules/feedback/feedback.model.ts:154</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="153" class="link-to-prism">src/modules/feedback/feedback.model.ts:153</a></div>
                         </td>
                     </tr>
 
@@ -245,7 +245,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIP()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @IsIP()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -271,7 +271,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>null | </code>
+                        <i>Type : </i>        <code><a href="../interfaces/IPLocation.html" target="_self" >Partial&lt;IPLocation&gt; | null</a></code>
 
                     </td>
                 </tr>
@@ -280,13 +280,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined, type: Object})<br />
+                            @prop({type: Object, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="151" class="link-to-prism">src/modules/feedback/feedback.model.ts:151</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="150" class="link-to-prism">src/modules/feedback/feedback.model.ts:150</a></div>
                         </td>
                     </tr>
 
@@ -341,7 +341,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>null | string</code>
+                        <i>Type : </i>    <code>string | null</code>
 
                     </td>
                 </tr>
@@ -350,7 +350,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -427,7 +427,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="157" class="link-to-prism">src/modules/feedback/feedback.model.ts:157</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="156" class="link-to-prism">src/modules/feedback/feedback.model.ts:156</a></div>
                         </td>
                     </tr>
 
@@ -609,7 +609,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>null | string</code>
+                        <i>Type : </i>    <code>string | null</code>
 
                     </td>
                 </tr>
@@ -618,7 +618,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsEmail()<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @IsEmail()<br />@IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -651,7 +651,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>null | string</code>
+                        <i>Type : </i>    <code>string | null</code>
 
                     </td>
                 </tr>
@@ -660,7 +660,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @MaxLength(20)<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @MaxLength(20)<br />@IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -784,14 +784,14 @@ export class FeedbackBase {
   @MaxLength(20)
   @IsString()
   @IsOptional()
-  @prop({ default: null })
-  user_name: null | string
+  @prop({ type: String, default: null })
+  user_name: string | null
 
   @IsEmail()
   @IsString()
   @IsOptional()
-  @prop({ default: null })
-  user_email: null | string
+  @prop({ type: String, default: null })
+  user_email: string | null
 }
 
 @plugin(mongoosePaginate)
@@ -822,8 +822,8 @@ export class Feedback extends FeedbackBase {
 
   @IsString()
   @IsOptional()
-  @prop({ default: null })
-  origin: null | string
+  @prop({ type: String, default: null })
+  origin: string | null
 
   @IsString()
   @prop({ default: null })
@@ -831,12 +831,11 @@ export class Feedback extends FeedbackBase {
 
   @IsIP()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   ip: null | string
 
-  // IP location
-  @prop({ default: null, type: Object })
-  ip_location: null | (Partial&lt;IPLocation&gt; &amp; { [key: string]: any })
+  @prop({ type: Object, default: null })
+  ip_location: Partial&lt;IPLocation&gt; | null
 
   @prop({ default: Date.now, immutable: true })
   create_at?: Date

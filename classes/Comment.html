@@ -308,7 +308,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>null | string</code>
+                        <i>Type : </i>    <code>string | null</code>
 
                     </td>
                 </tr>
@@ -317,7 +317,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIP()<br />@IsOptional()<br />@prop({default: undefined})<br />
+                            @IsIP()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -343,7 +343,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>null | </code>
+                        <i>Type : </i>        <code><a href="../interfaces/IPLocation.html" target="_self" >Partial&lt;IPLocation&gt; | null</a></code>
 
                     </td>
                 </tr>
@@ -352,7 +352,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined, type: Object})<br />
+                            @prop({type: Object, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -494,7 +494,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@prop({default: undefined})<br />
+                            @IsString()<br />@prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -750,13 +750,13 @@ export class Author {
   @IsEmail()
   @IsString()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   email?: string | null
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsOptional()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   site?: string | null
 
   public get email_hash() {
@@ -786,7 +786,7 @@ export class CommentBase {
 
   // user agent
   @IsString()
-  @prop({ default: null })
+  @prop({ type: String, default: null })
   agent?: string | null
 
   @Type(() &#x3D;&gt; Author)
@@ -832,12 +832,12 @@ export class Comment extends CommentBase {
   // IP address
   @IsIP()
   @IsOptional()
-  @prop({ default: null })
-  ip: null | string
+  @prop({ type: String, default: null })
+  ip: string | null
 
   // IP location
-  @prop({ default: null, type: Object })
-  ip_location: null | (Partial&lt;IPLocation&gt; &amp; { [key: string]: any })
+  @prop({ type: Object, default: null })
+  ip_location: Partial&lt;IPLocation&gt; | null
 
   @prop({ default: Date.now, immutable: true })
   create_at?: Date

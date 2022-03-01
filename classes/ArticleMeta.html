@@ -347,8 +347,8 @@ export class Article {
 
   @IsString()
   @IsOptional()
-  @prop({ default: null })
-  thumb: null | string
+  @prop({ type: String, default: null })
+  thumb: string | null
 
   // publish state
   @IsIn(ARTICLE_PUBLISH_STATES)
