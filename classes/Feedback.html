@@ -713,23 +713,23 @@ import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 
 export enum FeedbackEmotion {
-  Hate &#x3D; 1,
-  Dislike &#x3D; 2,
+  Terrible &#x3D; 1,
+  Bad &#x3D; 2,
   Neutral &#x3D; 3,
-  Like &#x3D; 4,
-  Love &#x3D; 5,
+  Great &#x3D; 4,
+  Amazing &#x3D; 5,
 }
 
 const emotionMap &#x3D; new Map(
   [
     {
-      value: FeedbackEmotion.Hate,
-      text: FeedbackEmotion[FeedbackEmotion.Hate],
+      value: FeedbackEmotion.Terrible,
+      text: FeedbackEmotion[FeedbackEmotion.Terrible],
       emoji: &#x27;😠&#x27;,
     },
     {
-      value: FeedbackEmotion.Dislike,
-      text: FeedbackEmotion[FeedbackEmotion.Dislike],
+      value: FeedbackEmotion.Bad,
+      text: FeedbackEmotion[FeedbackEmotion.Bad],
       emoji: &#x27;🙁&#x27;,
     },
     {
@@ -738,13 +738,13 @@ const emotionMap &#x3D; new Map(
       emoji: &#x27;😐&#x27;,
     },
     {
-      value: FeedbackEmotion.Like,
-      text: FeedbackEmotion[FeedbackEmotion.Like],
-      emoji: &#x27;😀&#x27;,
+      value: FeedbackEmotion.Great,
+      text: FeedbackEmotion[FeedbackEmotion.Great],
+      emoji: &#x27;😃&#x27;,
     },
     {
-      value: FeedbackEmotion.Love,
-      text: FeedbackEmotion[FeedbackEmotion.Love],
+      value: FeedbackEmotion.Amazing,
+      text: FeedbackEmotion[FeedbackEmotion.Amazing],
       emoji: &#x27;🥰&#x27;,
     },
   ].map((item) &#x3D;&gt; [item.value, item])
