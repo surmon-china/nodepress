@@ -25,23 +25,23 @@ import { mongoosePaginate } from '@app/utils/paginate'
 import { IPLocation } from '@app/processors/helper/helper.service.ip'
 
 export enum FeedbackEmotion {
-  Hate = 1,
-  Dislike = 2,
+  Terrible = 1,
+  Bad = 2,
   Neutral = 3,
-  Like = 4,
-  Love = 5,
+  Great = 4,
+  Amazing = 5,
 }
 
 const emotionMap = new Map(
   [
     {
-      value: FeedbackEmotion.Hate,
-      text: FeedbackEmotion[FeedbackEmotion.Hate],
+      value: FeedbackEmotion.Terrible,
+      text: FeedbackEmotion[FeedbackEmotion.Terrible],
       emoji: '😠',
     },
     {
-      value: FeedbackEmotion.Dislike,
-      text: FeedbackEmotion[FeedbackEmotion.Dislike],
+      value: FeedbackEmotion.Bad,
+      text: FeedbackEmotion[FeedbackEmotion.Bad],
       emoji: '🙁',
     },
     {
@@ -50,13 +50,13 @@ const emotionMap = new Map(
       emoji: '😐',
     },
     {
-      value: FeedbackEmotion.Like,
-      text: FeedbackEmotion[FeedbackEmotion.Like],
-      emoji: '😀',
+      value: FeedbackEmotion.Great,
+      text: FeedbackEmotion[FeedbackEmotion.Great],
+      emoji: '😃',
     },
     {
-      value: FeedbackEmotion.Love,
-      text: FeedbackEmotion[FeedbackEmotion.Love],
+      value: FeedbackEmotion.Amazing,
+      text: FeedbackEmotion[FeedbackEmotion.Amazing],
       emoji: '🥰',
     },
   ].map((item) => [item.value, item])
