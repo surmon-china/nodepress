@@ -18,21 +18,21 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 var FeedbackEmotion;
 (function (FeedbackEmotion) {
-    FeedbackEmotion[FeedbackEmotion["Hate"] = 1] = "Hate";
-    FeedbackEmotion[FeedbackEmotion["Dislike"] = 2] = "Dislike";
+    FeedbackEmotion[FeedbackEmotion["Terrible"] = 1] = "Terrible";
+    FeedbackEmotion[FeedbackEmotion["Bad"] = 2] = "Bad";
     FeedbackEmotion[FeedbackEmotion["Neutral"] = 3] = "Neutral";
-    FeedbackEmotion[FeedbackEmotion["Like"] = 4] = "Like";
-    FeedbackEmotion[FeedbackEmotion["Love"] = 5] = "Love";
+    FeedbackEmotion[FeedbackEmotion["Great"] = 4] = "Great";
+    FeedbackEmotion[FeedbackEmotion["Amazing"] = 5] = "Amazing";
 })(FeedbackEmotion = exports.FeedbackEmotion || (exports.FeedbackEmotion = {}));
 const emotionMap = new Map([
     {
-        value: FeedbackEmotion.Hate,
-        text: FeedbackEmotion[FeedbackEmotion.Hate],
+        value: FeedbackEmotion.Terrible,
+        text: FeedbackEmotion[FeedbackEmotion.Terrible],
         emoji: '😠',
     },
     {
-        value: FeedbackEmotion.Dislike,
-        text: FeedbackEmotion[FeedbackEmotion.Dislike],
+        value: FeedbackEmotion.Bad,
+        text: FeedbackEmotion[FeedbackEmotion.Bad],
         emoji: '🙁',
     },
     {
@@ -41,13 +41,13 @@ const emotionMap = new Map([
         emoji: '😐',
     },
     {
-        value: FeedbackEmotion.Like,
-        text: FeedbackEmotion[FeedbackEmotion.Like],
-        emoji: '😀',
+        value: FeedbackEmotion.Great,
+        text: FeedbackEmotion[FeedbackEmotion.Great],
+        emoji: '😃',
     },
     {
-        value: FeedbackEmotion.Love,
-        text: FeedbackEmotion[FeedbackEmotion.Love],
+        value: FeedbackEmotion.Amazing,
+        text: FeedbackEmotion[FeedbackEmotion.Amazing],
         emoji: '🥰',
     },
 ].map((item) => [item.value, item]));

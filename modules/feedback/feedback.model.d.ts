@@ -1,10 +1,10 @@
 import { IPLocation } from '@app/processors/helper/helper.service.ip';
 export declare enum FeedbackEmotion {
-    Hate = 1,
-    Dislike = 2,
+    Terrible = 1,
+    Bad = 2,
     Neutral = 3,
-    Like = 4,
-    Love = 5
+    Great = 4,
+    Amazing = 5
 }
 export declare const FEEDBACK_EMOTIONS: {
     value: FeedbackEmotion;
