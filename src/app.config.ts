@@ -55,8 +55,11 @@ export const AUTH = {
 }
 
 export const EMAIL = {
-  account: argv.email_account || 'your email address, e.g. admin@surmon.me',
-  password: argv.email_password || 'your email password',
+  port: 587,
+  host: (argv.email_host as string) || 'your email host, e.g. smtp.qq.com',
+  account: (argv.email_account as string) || 'your email address, e.g. admin@example.me',
+  password: (argv.email_password as string) || 'your email password',
+  from: `"${APP.FE_NAME}" <${argv.email_from || argv.email_account}>`,
 }
 
 export const DISQUS = {

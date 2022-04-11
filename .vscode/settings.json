@@ -5,18 +5,5 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "prettier.semi": false,
-  "prettier.singleQuote": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.enabled": false,
-  "cSpell.words": [
-    "AKISMET",
-    "aliyun",
-    "appleboy",
-    "middlewares",
-    "nestjs",
-    "nodepress",
-    "prebuild",
-    "surmon",
-    "typegoose"]
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -19,14 +19,14 @@ export interface EmailOptions {
 
 @Injectable()
 export class EmailService {
-  private transporter: nodemailer
+  private transporter: nodemailer.Transporter
   private clientIsValid: boolean
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.qq.com',
-      secure: true,
-      port: 465,
+      host: APP_CONFIG.EMAIL.host,
+      port: APP_CONFIG.EMAIL.port,
+      secure: false,
       auth: {
         user: APP_CONFIG.EMAIL.account,
         pass: APP_CONFIG.EMAIL.password,
@@ -53,17 +53,20 @@ export class EmailService {
       logger.warn('[NodeMailer]', 'send failed! reason: init failed')
       return false
     }
-    const options = {
-      ...mailOptions,
-      from: `"${APP_CONFIG.APP.MASTER}" <${APP_CONFIG.EMAIL.account}>`,
-    }
-    this.transporter.sendMail(options, (error, info) => {
-      if (error) {
-        logger.error(`[NodeMailer]`, `send failed! reason:`, getMessageFromNormalError(error))
-      } else {
-        logger.info('[NodeMailer]', 'send succeed!', info.messageId, info.response)
+
+    this.transporter.sendMail(
+      {
+        ...mailOptions,
+        from: APP_CONFIG.EMAIL.from,
+      },
+      (error, info) => {
+        if (error) {
+          logger.error(`[NodeMailer]`, `send failed! reason:`, getMessageFromNormalError(error))
+        } else {
+          logger.info('[NodeMailer]', 'send succeed!', info.messageId, info.response)
+        }
       }
-    })
+    )
   }
 
   public sendMailAs(prefix: string, mailOptions: EmailOptions) {
