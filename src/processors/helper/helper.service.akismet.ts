@@ -4,8 +4,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import akismet from 'akismet-api'
+import { AkismetClient } from 'akismet-api'
 import { Injectable } from '@nestjs/common'
+import { UNDEFINED } from '@app/constants/value.constant'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
@@ -31,7 +32,7 @@ export interface AkismetPayload {
 
 @Injectable()
 export class AkismetService {
-  private client: akismet
+  private client: AkismetClient
   private clientIsValid = false
 
   constructor() {
@@ -41,9 +42,9 @@ export class AkismetService {
 
   private initClient(): void {
     // https://github.com/chrisfosterelli/akismet-api
-    this.client = akismet.client({
-      key: APP_CONFIG.AKISMET.key,
-      blog: APP_CONFIG.AKISMET.blog,
+    this.client = new AkismetClient({
+      key: APP_CONFIG.AKISMET.key as string,
+      blog: APP_CONFIG.AKISMET.blog as string,
     })
   }
 
@@ -72,7 +73,14 @@ export class AkismetService {
         }
 
         logger.info(`[Akismet]`, `${handleType}...`, new Date())
-        this.client[handleType](content)
+        this.client[handleType]({
+          ...content,
+          permalink: content.permalink || UNDEFINED,
+          comment_author: content.comment_author || UNDEFINED,
+          comment_author_email: content.comment_author_email || UNDEFINED,
+          comment_author_url: content.comment_author_url || UNDEFINED,
+          comment_content: content.comment_content || UNDEFINED,
+        })
           .then((result) => {
             // 如果是检查 spam 且检查结果为 true
             if (handleType === AkismetAction.CheckSpam && result) {

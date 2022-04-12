@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.9.4 (2022-04-12)
+
+**Feature**
+
+- **[Helper]** improve `nodemailer` config
+- **[Helper]** improve `akismet` types
+
+**Chore**
+
+- Upgrade deps
+
 ### 3.9.0 (2022-02-28)
 
 **Feature**
