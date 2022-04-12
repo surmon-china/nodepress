@@ -47,6 +47,7 @@
 
 
 
+
 <ol class="breadcrumb">
   <li>Miscellaneous</li>
   <li>Variables</li>
@@ -923,8 +924,11 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  account: argv.email_account || &#x27;your email address, e.g. admin@surmon.me&#x27;,
-  password: argv.email_password || &#x27;your email password&#x27;,
+  port: 587,
+  host: (argv.email_host as string) || &#x27;your email host, e.g. smtp.qq.com&#x27;,
+  account: (argv.email_account as string) || &#x27;your email address, e.g. admin@example.me&#x27;,
+  password: (argv.email_password as string) || &#x27;your email password&#x27;,
+  from: &#x60;&quot;${APP.FE_NAME}&quot; &lt;${argv.email_from || argv.email_account}&gt;&#x60;,
 }</code>
                     </td>
                 </tr>

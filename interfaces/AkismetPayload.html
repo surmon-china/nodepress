@@ -486,8 +486,9 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import akismet from &#x27;akismet-api&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AkismetClient } from &#x27;akismet-api&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
+import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
@@ -513,7 +514,7 @@ export interface AkismetPayload {
 
 @Injectable()
 export class AkismetService {
-  private client: akismet
+  private client: AkismetClient
   private clientIsValid &#x3D; false
 
   constructor() {
@@ -523,9 +524,9 @@ export class AkismetService {
 
   private initClient(): void {
     // https://github.com/chrisfosterelli/akismet-api
-    this.client &#x3D; akismet.client({
-      key: APP_CONFIG.AKISMET.key,
-      blog: APP_CONFIG.AKISMET.blog,
+    this.client &#x3D; new AkismetClient({
+      key: APP_CONFIG.AKISMET.key as string,
+      blog: APP_CONFIG.AKISMET.blog as string,
     })
   }
 
@@ -554,7 +555,14 @@ export class AkismetService {
         }
 
         logger.info(&#x60;[Akismet]&#x60;, &#x60;${handleType}...&#x60;, new Date())
-        this.client[handleType](content)
+        this.client[handleType]({
+          ...content,
+          permalink: content.permalink || UNDEFINED,
+          comment_author: content.comment_author || UNDEFINED,
+          comment_author_email: content.comment_author_email || UNDEFINED,
+          comment_author_url: content.comment_author_url || UNDEFINED,
+          comment_content: content.comment_content || UNDEFINED,
+        })
           .then((result) &#x3D;&gt; {
             // 如果是检查 spam 且检查结果为 true
             if (handleType &#x3D;&#x3D;&#x3D; AkismetAction.CheckSpam &amp;&amp; result) {
@@ -589,6 +597,7 @@ export class AkismetService {
 </code></pre>
     </div>
 </div>
+
 
 
 

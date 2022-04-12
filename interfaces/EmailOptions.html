@@ -270,14 +270,14 @@ export interface EmailOptions {
 
 @Injectable()
 export class EmailService {
-  private transporter: nodemailer
+  private transporter: nodemailer.Transporter
   private clientIsValid: boolean
 
   constructor() {
     this.transporter &#x3D; nodemailer.createTransport({
-      host: &#x27;smtp.qq.com&#x27;,
-      secure: true,
-      port: 465,
+      host: APP_CONFIG.EMAIL.host,
+      port: APP_CONFIG.EMAIL.port,
+      secure: false,
       auth: {
         user: APP_CONFIG.EMAIL.account,
         pass: APP_CONFIG.EMAIL.password,
@@ -304,17 +304,20 @@ export class EmailService {
       logger.warn(&#x27;[NodeMailer]&#x27;, &#x27;send failed! reason: init failed&#x27;)
       return false
     }
-    const options &#x3D; {
-      ...mailOptions,
-      from: &#x60;&quot;${APP_CONFIG.APP.MASTER}&quot; &lt;${APP_CONFIG.EMAIL.account}&gt;&#x60;,
-    }
-    this.transporter.sendMail(options, (error, info) &#x3D;&gt; {
-      if (error) {
-        logger.error(&#x60;[NodeMailer]&#x60;, &#x60;send failed! reason:&#x60;, getMessageFromNormalError(error))
-      } else {
-        logger.info(&#x27;[NodeMailer]&#x27;, &#x27;send succeed!&#x27;, info.messageId, info.response)
+
+    this.transporter.sendMail(
+      {
+        ...mailOptions,
+        from: APP_CONFIG.EMAIL.from,
+      },
+      (error, info) &#x3D;&gt; {
+        if (error) {
+          logger.error(&#x60;[NodeMailer]&#x60;, &#x60;send failed! reason:&#x60;, getMessageFromNormalError(error))
+        } else {
+          logger.info(&#x27;[NodeMailer]&#x27;, &#x27;send succeed!&#x27;, info.messageId, info.response)
+        }
       }
-    })
+    )
   }
 
   public sendMailAs(prefix: string, mailOptions: EmailOptions) {
@@ -327,6 +330,7 @@ export class EmailService {
 </code></pre>
     </div>
 </div>
+
 
 
 
