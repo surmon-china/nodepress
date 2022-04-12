@@ -9,7 +9,7 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
     set: <T>(key: string, value: T, options?: CacheStoreSetOptions<T>) => Promise<void>;
     get: <T_1>(key: string) => Promise<T_1>;
     del: (key: string) => Promise<void>;
-    client: import("redis").RedisClientType<{
+    client: import("@node-redis/client").RedisClientType<{
         graph: {
             CONFIG_GET: typeof import("@node-redis/graph/dist/commands/CONFIG_GET");
             configGet: typeof import("@node-redis/graph/dist/commands/CONFIG_GET");
@@ -252,7 +252,7 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
             RESERVE: typeof import("@node-redis/bloom/dist/commands/top-k/RESERVE");
             reserve: typeof import("@node-redis/bloom/dist/commands/top-k/RESERVE");
         };
-    }, import("redis").RedisScripts>;
+    } & import("redis").RedisModules, import("redis").RedisScripts>;
 };
 declare const redisStoreFactory: CacheStoreFactory;
 export default redisStoreFactory;

@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -40,9 +44,9 @@ const logger_1 = __importDefault(require("../../utils/logger"));
 let EmailService = class EmailService {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({
-            host: 'smtp.qq.com',
-            secure: true,
-            port: 465,
+            host: APP_CONFIG.EMAIL.host,
+            port: APP_CONFIG.EMAIL.port,
+            secure: false,
             auth: {
                 user: APP_CONFIG.EMAIL.account,
                 pass: APP_CONFIG.EMAIL.password,
@@ -68,8 +72,7 @@ let EmailService = class EmailService {
             logger_1.default.warn('[NodeMailer]', 'send failed! reason: init failed');
             return false;
         }
-        const options = Object.assign(Object.assign({}, mailOptions), { from: `"${APP_CONFIG.APP.MASTER}" <${APP_CONFIG.EMAIL.account}>` });
-        this.transporter.sendMail(options, (error, info) => {
+        this.transporter.sendMail(Object.assign(Object.assign({}, mailOptions), { from: APP_CONFIG.EMAIL.from }), (error, info) => {
             if (error) {
                 logger_1.default.error(`[NodeMailer]`, `send failed! reason:`, (0, error_transformer_1.getMessageFromNormalError)(error));
             }

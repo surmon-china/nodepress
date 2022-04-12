@@ -47,8 +47,11 @@ exports.AUTH = {
     defaultPassword: yargs_1.argv.auth_default_password || 'root',
 };
 exports.EMAIL = {
-    account: yargs_1.argv.email_account || 'your email address, e.g. admin@surmon.me',
+    port: 587,
+    host: yargs_1.argv.email_host || 'your email host, e.g. smtp.qq.com',
+    account: yargs_1.argv.email_account || 'your email address, e.g. admin@example.me',
     password: yargs_1.argv.email_password || 'your email password',
+    from: `"${exports.APP.FE_NAME}" <${yargs_1.argv.email_from || yargs_1.argv.email_account}>`,
 };
 exports.DISQUS = {
     adminAccessToken: yargs_1.argv.disqus_admin_access_token || 'disqus admin access_token',

@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -32,8 +36,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AkismetService = exports.AkismetAction = void 0;
-const akismet_api_1 = __importDefault(require("akismet-api"));
+const akismet_api_1 = require("akismet-api");
 const common_1 = require("@nestjs/common");
+const value_constant_1 = require("../../constants/value.constant");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
@@ -50,7 +55,7 @@ let AkismetService = class AkismetService {
         this.initVerify();
     }
     initClient() {
-        this.client = akismet_api_1.default.client({
+        this.client = new akismet_api_1.AkismetClient({
             key: APP_CONFIG.AKISMET.key,
             blog: APP_CONFIG.AKISMET.blog,
         });
@@ -77,7 +82,7 @@ let AkismetService = class AkismetService {
                     return resolve(message.join(''));
                 }
                 logger_1.default.info(`[Akismet]`, `${handleType}...`, new Date());
-                this.client[handleType](content)
+                this.client[handleType](Object.assign(Object.assign({}, content), { permalink: content.permalink || value_constant_1.UNDEFINED, comment_author: content.comment_author || value_constant_1.UNDEFINED, comment_author_email: content.comment_author_email || value_constant_1.UNDEFINED, comment_author_url: content.comment_author_url || value_constant_1.UNDEFINED, comment_content: content.comment_content || value_constant_1.UNDEFINED }))
                     .then((result) => {
                     if (handleType === AkismetAction.CheckSpam && result) {
                         logger_1.default.warn(`[Akismet]`, `${handleType} found SPAM！`, new Date(), content);

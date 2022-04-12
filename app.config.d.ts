@@ -37,8 +37,11 @@ export declare const AUTH: {
     defaultPassword: unknown;
 };
 export declare const EMAIL: {
-    account: unknown;
-    password: unknown;
+    port: number;
+    host: string;
+    account: string;
+    password: string;
+    from: string;
 };
 export declare const DISQUS: {
     adminAccessToken: string;
