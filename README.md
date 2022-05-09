@@ -38,6 +38,10 @@
 - **Blog admin:** [`veact-admin`](https://github.com/surmon-china/veact-admin) powered by React & [`Veact`](https://github.com/veactjs/veact)
 - **Blog native app:** [`surmon.me.native`](https://github.com/surmon-china/surmon.me.native) powered by react-native
 
+## Activity
+
+<img src="https://repobeats.axiom.co/api/embed/71f149de93460011ac02a251036e1710895381d4.svg" width="100%" />
+
 ## Development Setup
 
 ```bash
