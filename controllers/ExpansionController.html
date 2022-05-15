@@ -84,9 +84,6 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#getCloudStorageUploadToken" >getCloudStorageUploadToken</a>
-                            </li>
-                            <li>
                                 <a href="#getGoogleToken" >getGoogleToken</a>
                             </li>
                             <li>
@@ -94,6 +91,9 @@
                             </li>
                             <li>
                                 <a href="#updateDatabaseBackup" >updateDatabaseBackup</a>
+                            </li>
+                            <li>
+                                <a href="#uploadStatic" >uploadStatic</a>
                             </li>
                         </ul>
                     </td>
@@ -112,50 +112,6 @@
     <h3 id="methods">
         Methods
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getCloudStorageUploadToken"></a>
-                    <span class="name">
-                        <span ><b>getCloudStorageUploadToken</b></span>
-                        <a href="#getCloudStorageUploadToken"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getCloudStorageUploadToken()</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Get(&#x27;uptoken&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Get cloud storage upload token&#x27;)<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="37"
-                            class="link-to-prism">src/modules/expansion/expansion.controller.ts:37</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/UploadToken.html" target="_self" >Promise&lt;UploadToken&gt;</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -183,8 +139,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/modules/expansion/expansion.controller.ts:44</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="39"
+                            class="link-to-prism">src/modules/expansion/expansion.controller.ts:39</a></div>
                 </td>
             </tr>
 
@@ -227,8 +183,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="30"
-                            class="link-to-prism">src/modules/expansion/expansion.controller.ts:30</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/modules/expansion/expansion.controller.ts:32</a></div>
                 </td>
             </tr>
 
@@ -302,8 +258,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="51"
-                            class="link-to-prism">src/modules/expansion/expansion.controller.ts:51</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/modules/expansion/expansion.controller.ts:46</a></div>
                 </td>
             </tr>
 
@@ -314,6 +270,93 @@
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="uploadStatic"></a>
+                    <span class="name">
+                        <span ><b>uploadStatic</b></span>
+                        <a href="#uploadStatic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>uploadStatic(file: Express.Multer.File, body)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;upload&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@UseInterceptors(undefined)<br />@(&#x27;Upload file to cloud storage&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="54"
+                            class="link-to-prism">src/modules/expansion/expansion.controller.ts:54</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>file</td>
+                                    <td>
+                                            <code>Express.Multer.File</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>body</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -330,22 +373,24 @@
  */
 
 import { Credentials } from &#x27;google-auth-library&#x27;
-import { Controller, Get, Patch, UseGuards } from &#x27;@nestjs/common&#x27;
+import { Controller, Get, Post, Patch, UploadedFile, Body, UseGuards, UseInterceptors } from &#x27;@nestjs/common&#x27;
+import { FileInterceptor } from &#x27;@nestjs/platform-express&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
 import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { CloudStorageService, UploadToken } from &#x27;@app/processors/helper/helper.service.cloud-storage&#x27;
+import { AWSService } from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { GoogleService } from &#x27;@app/processors/helper/helper.service.google&#x27;
 import { StatisticService, Statistic } from &#x27;./expansion.service.statistic&#x27;
 import { DBBackupService } from &#x27;./expansion.service.dbbackup&#x27;
+import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 @Controller(&#x27;expansion&#x27;)
 export class ExpansionController {
   constructor(
+    private readonly awsService: AWSService,
     private readonly googleService: GoogleService,
     private readonly dbBackupService: DBBackupService,
-    private readonly cloudStorageService: CloudStorageService,
     private readonly statisticService: StatisticService
   ) {}
 
@@ -354,13 +399,6 @@ export class ExpansionController {
   @Responsor.handle(&#x27;Get statistic&#x27;)
   getSystemStatistics(@QueryParams() { isUnauthenticated }: QueryParamsResult): Promise&lt;Statistic&gt; {
     return this.statisticService.getStatistic(isUnauthenticated)
-  }
-
-  @Get(&#x27;uptoken&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Get cloud storage upload token&#x27;)
-  getCloudStorageUploadToken(): Promise&lt;UploadToken&gt; {
-    return this.cloudStorageService.getToken()
   }
 
   @Get(&#x27;google-token&#x27;)
@@ -375,6 +413,25 @@ export class ExpansionController {
   @Responsor.handle(&#x27;Update database backup&#x27;)
   updateDatabaseBackup() {
     return this.dbBackupService.backup()
+  }
+
+  @Post(&#x27;upload&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @UseInterceptors(FileInterceptor(&#x27;file&#x27;))
+  @Responsor.handle(&#x27;Upload file to cloud storage&#x27;)
+  uploadStatic(@UploadedFile() file: Express.Multer.File, @Body() body) {
+    return this.awsService
+      .uploadFile({
+        name: body.name,
+        file: file.buffer,
+        fileContentType: file.mimetype,
+        region: APP_CONFIG.AWS.s3StaticRegion,
+        bucket: APP_CONFIG.AWS.s3StaticBucket,
+      })
+      .then((result) &#x3D;&gt; ({
+        ...result,
+        url: &#x60;${APP_CONFIG.APP.STATIC_URL}/${result.key}&#x60;,
+      }))
   }
 }
 </code></pre>

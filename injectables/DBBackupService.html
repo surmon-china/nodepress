@@ -109,12 +109,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, cloudStorageService: <a href="../injectables/CloudStorageService.html" target="_self">CloudStorageService</a>)</code>
+<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, awsService: <a href="../injectables/AWSService.html" target="_self">AWSService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:23</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:24</a></div>
                             </td>
                         </tr>
 
@@ -144,10 +144,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>cloudStorageService</td>
+                                                        <td>awsService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/CloudStorageService.html" target="_self" >CloudStorageService</a></code>
+                                                                        <code><a href="../injectables/AWSService.html" target="_self" >AWSService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -192,8 +192,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:34</a></div>
                 </td>
             </tr>
 
@@ -202,7 +202,7 @@
                 <td class="col-md-4">
 
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                 </td>
@@ -231,8 +231,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="57"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:57</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="55"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:55</a></div>
                 </td>
             </tr>
 
@@ -270,8 +270,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="47"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:47</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:45</a></div>
                 </td>
             </tr>
 
@@ -337,27 +337,25 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import path from &#x27;path&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import fs from &#x27;fs&#x27;
+import path from &#x27;path&#x27;
 import shell from &#x27;shelljs&#x27;
 import moment from &#x27;moment&#x27;
 import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
-import { CloudStorageService } from &#x27;@app/processors/helper/helper.service.cloud-storage&#x27;
+import { AWSService } from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { APP, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
 const UP_FAILED_TIMEOUT &#x3D; 1000 * 60 * 5
 const UPLOAD_INTERVAL &#x3D; &#x27;0 0 3 * * *&#x27;
-const BACKUP_FILE_NAME &#x3D; &#x27;nodepress.tar.gz&#x27;
+const BACKUP_FILE_NAME &#x3D; &#x27;nodepress.zip&#x27;
 const BACKUP_DIR_PATH &#x3D; path.join(APP.ROOT_PATH, &#x27;dbbackup&#x27;)
 
 @Injectable()
 export class DBBackupService {
-  constructor(
-    private readonly emailService: EmailService,
-    private readonly cloudStorageService: CloudStorageService
-  ) {
+  constructor(private readonly emailService: EmailService, private readonly awsService: AWSService) {
     logger.info(&#x27;[expansion]&#x27;, &#x27;DB Backup 开始执行定时数据备份任务！&#x27;)
     schedule.scheduleJob(UPLOAD_INTERVAL, () &#x3D;&gt; {
       this.backup().catch(() &#x3D;&gt; {
@@ -366,11 +364,11 @@ export class DBBackupService {
     })
   }
 
-  public async backup(): Promise&lt;string&gt; {
+  public async backup() {
     try {
       const result &#x3D; await this.doBackup()
       this.mailToAdmin(&#x27;Database backup succeed&#x27;, JSON.stringify(result, null, 2))
-      return result.name
+      return result
     } catch (error) {
       this.mailToAdmin(&#x27;Database backup failed!&#x27;, String(error))
       throw error
@@ -388,7 +386,7 @@ export class DBBackupService {
   }
 
   private doBackup() {
-    return new Promise&lt;{ url: string; name: string }&gt;((resolve, reject) &#x3D;&gt; {
+    return new Promise&lt;{ url: string; key: string }&gt;((resolve, reject) &#x3D;&gt; {
       if (!shell.which(&#x27;mongodump&#x27;)) {
         return reject(&#x27;DB Backup script requires [mongodump]&#x27;)
       }
@@ -405,24 +403,33 @@ export class DBBackupService {
           return reject(out)
         }
 
-        shell.exec(&#x60;tar -czf ${BACKUP_FILE_NAME} ./backup&#x60;)
+        if (!shell.which(&#x27;zip&#x27;)) {
+          return reject(&#x27;DB Backup script requires [zip]&#x27;)
+        }
+
+        // tar -czf - backup | openssl des3 -salt -k &lt;password&gt; -out target.tar.gz
+        // shell.exec(&#x60;tar -czf ${BACKUP_FILE_NAME} ./backup&#x60;)
+        shell.exec(&#x60;zip -r -P ${DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup&#x60;)
         const fileDate &#x3D; moment(new Date()).format(&#x27;YYYY-MM-DD-HH:mm&#x27;)
-        const fileName &#x3D; &#x60;nodepress-mongodb/backup-${fileDate}.tar.gz&#x60;
+        const fileName &#x3D; &#x60;nodepress-mongodb/backup-${fileDate}.zip&#x60;
         const filePath &#x3D; path.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME)
         logger.info(&#x27;[expansion]&#x27;, &#x27;DB Backup 上传文件: &#x27; + fileName)
         logger.info(&#x27;[expansion]&#x27;, &#x27;DB Backup 文件源位置: &#x27; + filePath)
 
-        // 上传文件
-        this.cloudStorageService
-          .uploadFile(fileName, filePath, DB_BACKUP.region, DB_BACKUP.bucket)
+        // upload to cloud storage
+        this.awsService
+          .uploadFile({
+            name: fileName,
+            file: fs.createReadStream(filePath),
+            fileContentType: &#x27;application/zip&#x27;,
+            region: DB_BACKUP.s3Region,
+            bucket: DB_BACKUP.s3Bucket,
+            classType: &#x27;GLACIER&#x27;,
+            encryption: &#x27;AES256&#x27;,
+          })
           .then((result) &#x3D;&gt; {
-            const data &#x3D; {
-              name: result.name,
-              url: result.url,
-              data: result.data,
-            }
-            logger.info(&#x27;[expansion]&#x27;, &#x27;DB Backup succeed!&#x27;, data)
-            resolve(data)
+            logger.info(&#x27;[expansion]&#x27;, &#x27;DB Backup succeed!&#x27;, result.url)
+            resolve(result)
           })
           .catch((error) &#x3D;&gt; {
             logger.warn(&#x27;[expansion]&#x27;, &#x27;DB Backup failed!&#x27;, error)

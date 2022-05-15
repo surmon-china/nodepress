@@ -14,13 +14,13 @@
 <title>cluster_DisqusModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-32.8 8,-230.8 801,-230.8 801,-32.8 8,-32.8"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_DisqusModule_imports</title>
-<polygon fill="none" stroke="black" points="429,-40.8 429,-92.8 793,-92.8 793,-40.8 429,-40.8"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_DisqusModule_exports</title>
 <polygon fill="none" stroke="black" points="332,-170.8 332,-222.8 642,-222.8 642,-170.8 332,-170.8"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_DisqusModule_imports</title>
+<polygon fill="none" stroke="black" points="429,-40.8 429,-92.8 793,-92.8 793,-40.8 429,-40.8"/>
 </g>
 <g id="clust6" class="cluster">
 <title>cluster_DisqusModule_providers</title>

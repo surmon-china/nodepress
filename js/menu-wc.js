@@ -397,18 +397,18 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/HelperModule.html" data-type="entity-link" >HelperModule</a>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                        'data-target="#injectables-links-module-HelperModule-52abf9815367cac7221f3e895fa6cf96fa1ca94d72cb7db2c0e4cbebf1fc206fc2362b7b9ec8cc9975ccb2ca2cc30c94f87e1f4e9404bdfb1d2e53d8d5ae5f44"' : 'data-target="#xs-injectables-links-module-HelperModule-52abf9815367cac7221f3e895fa6cf96fa1ca94d72cb7db2c0e4cbebf1fc206fc2362b7b9ec8cc9975ccb2ca2cc30c94f87e1f4e9404bdfb1d2e53d8d5ae5f44"' }>
+                                        'data-target="#injectables-links-module-HelperModule-1c08b842a687dcdaae4c771647b5b8666b3b133f0672bf8350c08f392d0eab5fd7350b9d3b50516be88306607936e8b442c39dae0991dbf7f6092d877def4c79"' : 'data-target="#xs-injectables-links-module-HelperModule-1c08b842a687dcdaae4c771647b5b8666b3b133f0672bf8350c08f392d0eab5fd7350b9d3b50516be88306607936e8b442c39dae0991dbf7f6092d877def4c79"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-HelperModule-52abf9815367cac7221f3e895fa6cf96fa1ca94d72cb7db2c0e4cbebf1fc206fc2362b7b9ec8cc9975ccb2ca2cc30c94f87e1f4e9404bdfb1d2e53d8d5ae5f44"' :
-                                        'id="xs-injectables-links-module-HelperModule-52abf9815367cac7221f3e895fa6cf96fa1ca94d72cb7db2c0e4cbebf1fc206fc2362b7b9ec8cc9975ccb2ca2cc30c94f87e1f4e9404bdfb1d2e53d8d5ae5f44"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-HelperModule-1c08b842a687dcdaae4c771647b5b8666b3b133f0672bf8350c08f392d0eab5fd7350b9d3b50516be88306607936e8b442c39dae0991dbf7f6092d877def4c79"' :
+                                        'id="xs-injectables-links-module-HelperModule-1c08b842a687dcdaae4c771647b5b8666b3b133f0672bf8350c08f392d0eab5fd7350b9d3b50516be88306607936e8b442c39dae0991dbf7f6092d877def4c79"' }>
                                         <li class="link">
-                                            <a href="injectables/AkismetService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AkismetService</a>
+                                            <a href="injectables/AWSService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AWSService</a>
                                         </li>
                                         <li class="link">
-                                            <a href="injectables/CloudStorageService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >CloudStorageService</a>
+                                            <a href="injectables/AkismetService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AkismetService</a>
                                         </li>
                                         <li class="link">
                                             <a href="injectables/EmailService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >EmailService</a>
@@ -703,7 +703,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <a href="injectables/AkismetService.html" data-type="entity-link" >AkismetService</a>
                                 </li>
                                 <li class="link">
-                                    <a href="injectables/CloudStorageService.html" data-type="entity-link" >CloudStorageService</a>
+                                    <a href="injectables/AWSService.html" data-type="entity-link" >AWSService</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/CorsMiddleware.html" data-type="entity-link" >CorsMiddleware</a>
@@ -797,6 +797,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/EmailOptions.html" data-type="entity-link" >EmailOptions</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/FileUploader.html" data-type="entity-link" >FileUploader</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/GeneralDisqusParams.html" data-type="entity-link" >GeneralDisqusParams</a>
                             </li>
                             <li class="link">
@@ -849,9 +852,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="interfaces/TypegooseClass.html" data-type="entity-link" >TypegooseClass</a>
-                            </li>
-                            <li class="link">
-                                <a href="interfaces/UploadToken.html" data-type="entity-link" >UploadToken</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/XMLItemData.html" data-type="entity-link" >XMLItemData</a>

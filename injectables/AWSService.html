@@ -40,7 +40,7 @@
 
 <ol class="breadcrumb">
   <li>Injectables</li>
-  <li >CloudStorageService</li>
+  <li >AWSService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,7 +58,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/helper/helper.service.cloud-storage.ts</code>
+            <code>src/processors/helper/helper.service.aws.ts</code>
         </p>
 
 
@@ -69,21 +69,6 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#sts" >sts</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -94,13 +79,15 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getToken" >getToken</a>
+                                    <span class="modifier">Private</span>
+                                <a href="#createClient" >createClient</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
+                                <a href="#getObjectAttributes" >getObjectAttributes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#uploadFile" >uploadFile</a>
                             </li>
                         </ul>
@@ -115,24 +102,6 @@
     </table>
 </section>
 
-            <section>
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor()</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/processors/helper/helper.service.cloud-storage.ts:22</a></div>
-                            </td>
-                        </tr>
-
-            </tbody>
-        </table>
-</section>
 
             <section>
     
@@ -143,67 +112,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getToken"></a>
+                    <a name="createClient"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
-                        <span class="modifier">Async</span>
-                        <span ><b>getToken</b></span>
-                        <a href="#getToken"><span class="icon ion-ios-link"></span></a>
+                        <span class="modifier">Private</span>
+                        <span ><b>createClient</b></span>
+                        <a href="#createClient"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getToken()</code>
+                    <code>createClient(region: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="32"
-                            class="link-to-prism">src/processors/helper/helper.service.cloud-storage.ts:32</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/UploadToken.html" target="_self" >Promise&lt;UploadToken&gt;</a></code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="uploadFile"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span class="modifier">Async</span>
-                        <span ><b>uploadFile</b></span>
-                        <a href="#uploadFile"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>uploadFile(name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, file: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, region: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, bucket: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">src/processors/helper/helper.service.cloud-storage.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:31</a></div>
                 </td>
             </tr>
 
@@ -224,43 +152,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>name</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>file</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
                                     <td>region</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>bucket</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
@@ -277,7 +169,149 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getObjectAttributes"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>getObjectAttributes</b></span>
+                        <a href="#getObjectAttributes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getObjectAttributes(payload: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:41</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>payload</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="uploadFile"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span ><b>uploadFile</b></span>
+                        <a href="#uploadFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>uploadFile(payload: <a href="../interfaces/FileUploader.html" target="_self">FileUploader</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:51</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>payload</td>
+                                    <td>
+                                                <code><a href="../interfaces/FileUploader.html" target="_self" >FileUploader</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
@@ -288,85 +322,75 @@
         </tbody>
     </table>
 </section>
-            <section>
-    
-    <h3 id="inputs">
-        Properties
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="sts"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>sts</b></span>
-                        <a href="#sts"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/processors/helper/helper.service.cloud-storage.ts:22</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-</section>
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import OSS from &#x27;ali-oss&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectAttributesCommand,
+  ObjectAttributes,
+  StorageClass,
+  ServerSideEncryption,
+  PutObjectRequest,
+} from &#x27;@aws-sdk/client-s3&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-const STS &#x3D; (OSS as any).STS
-
-export interface UploadToken {
-  AccessKeyId: string
-  AccessKeySecret: string
-  SecurityToken: string
-  Expiration: string
+export interface FileUploader {
+  name: string
+  file: PutObjectRequest[&#x27;Body&#x27;] | string | Uint8Array | Buffer
+  fileContentType?: string
+  region: string
+  bucket: string
+  classType?: StorageClass
+  encryption?: ServerSideEncryption
 }
 
 @Injectable()
-export class CloudStorageService {
-  private sts: typeof STS
-
-  constructor() {
-    this.sts &#x3D; new STS({
-      accessKeyId: APP_CONFIG.ALIYUN_CLOUD_STORAGE.accessKey,
-      accessKeySecret: APP_CONFIG.ALIYUN_CLOUD_STORAGE.secretKey,
+export class AWSService {
+  private createClient(region: string) {
+    return new S3Client({
+      region,
+      credentials: {
+        accessKeyId: APP_CONFIG.AWS.accessKeyId,
+        secretAccessKey: APP_CONFIG.AWS.secretAccessKey,
+      },
     })
   }
 
-  // get upload Token
-  public async getToken(): Promise&lt;UploadToken&gt; {
-    const response &#x3D; await this.sts.assumeRole(
-      APP_CONFIG.ALIYUN_CLOUD_STORAGE.aliyunAcsARN,
-      null,
-      15 * 60,
-      &#x27;session-name&#x27;
-    )
-    return response.credentials
+  public getObjectAttributes(payload: { region: string; bucket: string; key: string }) {
+    const s3Client &#x3D; this.createClient(payload.region)
+    const command &#x3D; new GetObjectAttributesCommand({
+      Bucket: payload.bucket,
+      Key: payload.key,
+      ObjectAttributes: Object.values(ObjectAttributes),
+    })
+    return s3Client.send(command)
   }
 
-  public async uploadFile(name: string, file: any, region: string, bucket: string) {
-    return this.getToken().then((token) &#x3D;&gt; {
-      let client: OSS | null &#x3D; new OSS({
-        region,
-        bucket,
-        accessKeyId: token.AccessKeyId,
-        accessKeySecret: token.AccessKeySecret,
-        stsToken: token.SecurityToken,
-        secure: true,
-      })
-      return client.put(name, file).finally(() &#x3D;&gt; {
-        client &#x3D; null
+  public uploadFile(payload: FileUploader) {
+    const { region, bucket, name: key } &#x3D; payload
+    const s3Client &#x3D; this.createClient(region)
+    const command &#x3D; new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      Body: payload.file,
+      ContentType: payload.fileContentType,
+      StorageClass: payload.classType ?? &#x27;STANDARD&#x27;,
+      ServerSideEncryption: payload.encryption,
+    })
+    return s3Client.send(command).then(() &#x3D;&gt; {
+      return this.getObjectAttributes({ region, bucket, key }).then((attributes) &#x3D;&gt; {
+        return {
+          key,
+          // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
+          url: &#x60;https://${bucket}.s3.${region}.amazonaws.com/${key}&#x60;,
+          eTag: attributes.ETag,
+          size: attributes.ObjectSize,
+        }
       })
     })
   }
@@ -414,7 +438,7 @@ export class CloudStorageService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'CloudStorageService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AWSService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

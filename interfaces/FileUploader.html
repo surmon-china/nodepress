@@ -47,7 +47,7 @@
   <li>Interfaces</li>
   <li
   >
-  UploadToken</li>
+  FileUploader</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -65,7 +65,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/helper/helper.service.cloud-storage.ts</code>
+            <code>src/processors/helper/helper.service.aws.ts</code>
         </p>
 
 
@@ -84,27 +84,48 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#AccessKeyId" 
+                                        <a href="#bucket" 
 >
-                                            AccessKeyId
+                                            bucket
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#AccessKeySecret" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#classType" 
 >
-                                            AccessKeySecret
+                                            classType
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#Expiration" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#encryption" 
 >
-                                            Expiration
+                                            encryption
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#SecurityToken" 
+                                        <a href="#file" 
 >
-                                            SecurityToken
+                                            file
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#fileContentType" 
+>
+                                            fileContentType
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#name" 
+>
+                                            name
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#region" 
+>
+                                            region
                                         </a>
                                 </li>
                             </ul>
@@ -122,9 +143,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="AccessKeyId"></a>
-                                        <span class="name "><b>AccessKeyId</b>
-                                            <a href="#AccessKeyId">
+                                        <a name="bucket"></a>
+                                        <span class="name "><b>bucket</b>
+                                            <a href="#bucket">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -132,7 +153,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>AccessKeyId:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>bucket:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -155,9 +176,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="AccessKeySecret"></a>
-                                        <span class="name "><b>AccessKeySecret</b>
-                                            <a href="#AccessKeySecret">
+                                        <a name="classType"></a>
+                                        <span class="name "><b>classType</b>
+                                            <a href="#classType">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -165,7 +186,154 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>AccessKeySecret:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>classType:     <code>StorageClass</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>StorageClass</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="encryption"></a>
+                                        <span class="name "><b>encryption</b>
+                                            <a href="#encryption">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>encryption:     <code>ServerSideEncryption</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>ServerSideEncryption</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="file"></a>
+                                        <span class="name "><b>file</b>
+                                            <a href="#file">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>file:     <code> | string | Uint8Array | Buffer</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code> | string | Uint8Array | Buffer</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="fileContentType"></a>
+                                        <span class="name "><b>fileContentType</b>
+                                            <a href="#fileContentType">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>fileContentType:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="name"></a>
+                                        <span class="name "><b>name</b>
+                                            <a href="#name">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>name:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -188,9 +356,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="Expiration"></a>
-                                        <span class="name "><b>Expiration</b>
-                                            <a href="#Expiration">
+                                        <a name="region"></a>
+                                        <span class="name "><b>region</b>
+                                            <a href="#region">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -198,40 +366,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>Expiration:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="SecurityToken"></a>
-                                        <span class="name "><b>SecurityToken</b>
-                                            <a href="#SecurityToken">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>SecurityToken:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>region:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -255,53 +390,70 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import OSS from &#x27;ali-oss&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectAttributesCommand,
+  ObjectAttributes,
+  StorageClass,
+  ServerSideEncryption,
+  PutObjectRequest,
+} from &#x27;@aws-sdk/client-s3&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-const STS &#x3D; (OSS as any).STS
-
-export interface UploadToken {
-  AccessKeyId: string
-  AccessKeySecret: string
-  SecurityToken: string
-  Expiration: string
+export interface FileUploader {
+  name: string
+  file: PutObjectRequest[&#x27;Body&#x27;] | string | Uint8Array | Buffer
+  fileContentType?: string
+  region: string
+  bucket: string
+  classType?: StorageClass
+  encryption?: ServerSideEncryption
 }
 
 @Injectable()
-export class CloudStorageService {
-  private sts: typeof STS
-
-  constructor() {
-    this.sts &#x3D; new STS({
-      accessKeyId: APP_CONFIG.ALIYUN_CLOUD_STORAGE.accessKey,
-      accessKeySecret: APP_CONFIG.ALIYUN_CLOUD_STORAGE.secretKey,
+export class AWSService {
+  private createClient(region: string) {
+    return new S3Client({
+      region,
+      credentials: {
+        accessKeyId: APP_CONFIG.AWS.accessKeyId,
+        secretAccessKey: APP_CONFIG.AWS.secretAccessKey,
+      },
     })
   }
 
-  // get upload Token
-  public async getToken(): Promise&lt;UploadToken&gt; {
-    const response &#x3D; await this.sts.assumeRole(
-      APP_CONFIG.ALIYUN_CLOUD_STORAGE.aliyunAcsARN,
-      null,
-      15 * 60,
-      &#x27;session-name&#x27;
-    )
-    return response.credentials
+  public getObjectAttributes(payload: { region: string; bucket: string; key: string }) {
+    const s3Client &#x3D; this.createClient(payload.region)
+    const command &#x3D; new GetObjectAttributesCommand({
+      Bucket: payload.bucket,
+      Key: payload.key,
+      ObjectAttributes: Object.values(ObjectAttributes),
+    })
+    return s3Client.send(command)
   }
 
-  public async uploadFile(name: string, file: any, region: string, bucket: string) {
-    return this.getToken().then((token) &#x3D;&gt; {
-      let client: OSS | null &#x3D; new OSS({
-        region,
-        bucket,
-        accessKeyId: token.AccessKeyId,
-        accessKeySecret: token.AccessKeySecret,
-        stsToken: token.SecurityToken,
-        secure: true,
-      })
-      return client.put(name, file).finally(() &#x3D;&gt; {
-        client &#x3D; null
+  public uploadFile(payload: FileUploader) {
+    const { region, bucket, name: key } &#x3D; payload
+    const s3Client &#x3D; this.createClient(region)
+    const command &#x3D; new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      Body: payload.file,
+      ContentType: payload.fileContentType,
+      StorageClass: payload.classType ?? &#x27;STANDARD&#x27;,
+      ServerSideEncryption: payload.encryption,
+    })
+    return s3Client.send(command).then(() &#x3D;&gt; {
+      return this.getObjectAttributes({ region, bucket, key }).then((attributes) &#x3D;&gt; {
+        return {
+          key,
+          // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
+          url: &#x60;https://${bucket}.s3.${region}.amazonaws.com/${key}&#x60;,
+          eTag: attributes.ETag,
+          size: attributes.ObjectSize,
+        }
       })
     })
   }
@@ -343,7 +495,7 @@ export class CloudStorageService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'UploadToken.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'FileUploader.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

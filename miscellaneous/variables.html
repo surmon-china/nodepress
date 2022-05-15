@@ -67,9 +67,6 @@
                             <a href="#AKISMET" title="src/app.config.ts" ><b>AKISMET</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
-                            <a href="#ALIYUN_CLOUD_STORAGE" title="src/app.config.ts" ><b>ALIYUN_CLOUD_STORAGE</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
-                        </li>
-                        <li>
                             <a href="#ALL_TAGS" title="src/constants/cache.constant.ts" ><b>ALL_TAGS</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
@@ -128,6 +125,9 @@
                         </li>
                         <li>
                             <a href="#AuthProvider" title="src/modules/auth/auth.model.ts" ><b>AuthProvider</b>&nbsp;&nbsp;&nbsp;(src/.../auth.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AWS" title="src/app.config.ts" ><b>AWS</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
                             <a href="#BACKUP_DIR_PATH" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>BACKUP_DIR_PATH</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
@@ -283,6 +283,9 @@
                             <a href="#getThreadIdentifierByID" title="src/modules/disqus/disqus.constant.ts" ><b>getThreadIdentifierByID</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.constant.ts)</a>
                         </li>
                         <li>
+                            <a href="#getTodayViewsCount" title="src/modules/expansion/expansion.helper.ts" ><b>getTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.helper.ts)</a>
+                        </li>
+                        <li>
                             <a href="#GOOGLE" title="src/app.config.ts" ><b>GOOGLE</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
@@ -350,6 +353,9 @@
                         </li>
                         <li>
                             <a href="#HTTP_UNAUTHORIZED_TEXT_DEFAULT" title="src/constants/text.constant.ts" ><b>HTTP_UNAUTHORIZED_TEXT_DEFAULT</b>&nbsp;&nbsp;&nbsp;(src/.../text.constant.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#increaseTodayViewsCount" title="src/modules/expansion/expansion.helper.ts" ><b>increaseTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.helper.ts)</a>
                         </li>
                         <li>
                             <a href="#isDevEnv" title="src/app.environment.ts" ><b>isDevEnv</b>&nbsp;&nbsp;&nbsp;(src/.../app.environment.ts)</a>
@@ -427,6 +433,9 @@
                             <a href="#renderTime" title="src/utils/logger.ts" ><b>renderTime</b>&nbsp;&nbsp;&nbsp;(src/.../logger.ts)</a>
                         </li>
                         <li>
+                            <a href="#resetTodayViewsCount" title="src/modules/expansion/expansion.helper.ts" ><b>resetTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.helper.ts)</a>
+                        </li>
+                        <li>
                             <a href="#resourcesRequiringPost" title="src/utils/disqus.ts" ><b>resourcesRequiringPost</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.ts)</a>
                         </li>
                         <li>
@@ -443,9 +452,6 @@
                         </li>
                         <li>
                             <a href="#services" title="src/processors/helper/helper.module.ts" ><b>services</b>&nbsp;&nbsp;&nbsp;(src/.../helper.module.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#STS" title="src/processors/helper/helper.service.cloud-storage.ts" ><b>STS</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.cloud-storage.ts)</a>
                         </li>
                         <li>
                             <a href="#success" title="src/decorators/responsor.decorator.ts" ><b>success</b>&nbsp;&nbsp;&nbsp;(src/.../responsor.decorator.ts)</a>
@@ -690,36 +696,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ALIYUN_CLOUD_STORAGE"></a>
-                    <span class="name">
-                        <span ><b>ALIYUN_CLOUD_STORAGE</b></span>
-                        <a href="#ALIYUN_CLOUD_STORAGE"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  accessKey: (argv.cs_access_key as string) || &#x27;cloudstorage access key for cloud storage&#x27;,
-  secretKey: (argv.cs_secret_key as string) || &#x27;cloudstorage secret key for cloud storage&#x27;,
-  aliyunAcsARN: (argv.cs_aliyun_acs as string) || &#x27;aliyun Acs ARN, e.g. acs:ram::xxx:role/xxx&#x27;,
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="APP"></a>
                     <span class="name">
                         <span ><b>APP</b></span>
@@ -745,6 +721,7 @@
   ADMIN_EMAIL: (argv.admin_email as string) || &#x27;admin email, e.g. admin@example.com&#x27;,
   FE_NAME: &#x27;Surmon.me&#x27;,
   FE_URL: &#x27;https://surmon.me&#x27;,
+  STATIC_URL: &#x27;https://static.surmon.me&#x27;,
 }</code>
                     </td>
                 </tr>
@@ -776,6 +753,37 @@
   data: argv.auth_data || { user: &#x27;root&#x27; },
   jwtTokenSecret: argv.auth_key || &#x27;nodepress&#x27;,
   defaultPassword: argv.auth_default_password || &#x27;root&#x27;,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AWS"></a>
+                    <span class="name">
+                        <span ><b>AWS</b></span>
+                        <a href="#AWS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  accessKeyId: argv.aws_access_key_id as string,
+  secretAccessKey: argv.aws_secret_access_key as string,
+  s3StaticRegion: argv.aws_s3_static_region as string,
+  s3StaticBucket: argv.aws_s3_static_bucket as string,
 }</code>
                     </td>
                 </tr>
@@ -861,8 +869,9 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  bucket: (argv.db_backup_bucket as string) || &#x27;cloudstorage bucket name for dbbackup&#x27;,
-  region: (argv.db_backup_region as string) || &#x27;cloudstorage region for dbbackup, e.g. oss-cn-hangzhou&#x27;,
+  s3Region: argv.db_backup_s3_region as string,
+  s3Bucket: argv.db_backup_s3_bucket as string,
+  password: argv.db_backup_file_password as string,
 }</code>
                     </td>
                 </tr>
@@ -1887,7 +1896,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;nodepress.tar.gz&#x27;</code>
+                        <i>Default value : </i><code>&#x27;nodepress.zip&#x27;</code>
                     </td>
                 </tr>
 
@@ -3298,6 +3307,78 @@
         </tbody>
     </table>
 </section>
+    <h3>src/modules/expansion/expansion.helper.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTodayViewsCount"></a>
+                    <span class="name">
+                        <span ><b>getTodayViewsCount</b></span>
+                        <a href="#getTodayViewsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async (cache: CacheService) &#x3D;&gt; {
+  const count &#x3D; await cache.get&lt;number&gt;(CACHE_KEY.TODAY_VIEWS)
+  return count ? Number(count) : 0
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="increaseTodayViewsCount"></a>
+                    <span class="name">
+                        <span ><b>increaseTodayViewsCount</b></span>
+                        <a href="#increaseTodayViewsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async (cache: CacheService) &#x3D;&gt; {
+  const views &#x3D; await getTodayViewsCount(cache)
+  await cache.set(CACHE_KEY.TODAY_VIEWS, views + 1)
+  return views + 1
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetTodayViewsCount"></a>
+                    <span class="name">
+                        <span ><b>resetTodayViewsCount</b></span>
+                        <a href="#resetTodayViewsCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(cache: CacheService) &#x3D;&gt; {
+  return cache.set(CACHE_KEY.TODAY_VIEWS, 0)
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>src/constants/meta.constant.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -4093,30 +4174,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>[GoogleService, AkismetService, CloudStorageService, EmailService, SeoService, IPService]</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
-    <h3>src/processors/helper/helper.service.cloud-storage.ts</h3>
-    <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="STS"></a>
-                    <span class="name">
-                        <span ><b>STS</b></span>
-                        <a href="#STS"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>(OSS as any).STS</code>
+                        <i>Default value : </i><code>[GoogleService, AkismetService, AWSService, EmailService, SeoService, IPService]</code>
                     </td>
                 </tr>
 
