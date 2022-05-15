@@ -20,6 +20,7 @@ export const APP = {
   ADMIN_EMAIL: (argv.admin_email as string) || 'admin email, e.g. admin@example.com',
   FE_NAME: 'Surmon.me',
   FE_URL: 'https://surmon.me',
+  STATIC_URL: 'https://static.surmon.me',
 }
 
 export const PROJECT = {
@@ -87,13 +88,15 @@ export const GOOGLE = {
   serverAccountFilePath: path.resolve(ROOT_PATH, 'classified', 'google_service_account.json'),
 }
 
-export const ALIYUN_CLOUD_STORAGE = {
-  accessKey: (argv.cs_access_key as string) || 'cloudstorage access key for cloud storage',
-  secretKey: (argv.cs_secret_key as string) || 'cloudstorage secret key for cloud storage',
-  aliyunAcsARN: (argv.cs_aliyun_acs as string) || 'aliyun Acs ARN, e.g. acs:ram::xxx:role/xxx',
+export const AWS = {
+  accessKeyId: argv.aws_access_key_id as string,
+  secretAccessKey: argv.aws_secret_access_key as string,
+  s3StaticRegion: argv.aws_s3_static_region as string,
+  s3StaticBucket: argv.aws_s3_static_bucket as string,
 }
 
 export const DB_BACKUP = {
-  bucket: (argv.db_backup_bucket as string) || 'cloudstorage bucket name for dbbackup',
-  region: (argv.db_backup_region as string) || 'cloudstorage region for dbbackup, e.g. oss-cn-hangzhou',
+  s3Region: argv.db_backup_s3_region as string,
+  s3Bucket: argv.db_backup_s3_bucket as string,
+  password: argv.db_backup_file_password as string,
 }

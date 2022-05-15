@@ -11,6 +11,7 @@ import { InjectModel } from '@app/transformers/model.transformer'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
 import { CacheService, CacheIntervalResult } from '@app/processors/cache/cache.service'
+import { increaseTodayViewsCount } from '@app/modules/expansion/expansion.helper'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { PublishState } from '@app/constants/biz.constant'
@@ -149,9 +150,7 @@ export class ArticleService {
     article.save({ timestamps: false })
 
     // global today views
-    this.cacheService.get<number>(CACHE_KEY.TODAY_VIEWS).then((views) => {
-      this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1)
-    })
+    increaseTodayViewsCount(this.cacheService)
 
     return article.toObject()
   }

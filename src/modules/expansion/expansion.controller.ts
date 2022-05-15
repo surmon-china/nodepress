@@ -5,22 +5,24 @@
  */
 
 import { Credentials } from 'google-auth-library'
-import { Controller, Get, Patch, UseGuards } from '@nestjs/common'
+import { Controller, Get, Post, Patch, UploadedFile, Body, UseGuards, UseInterceptors } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
 import { Responsor } from '@app/decorators/responsor.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
-import { CloudStorageService, UploadToken } from '@app/processors/helper/helper.service.cloud-storage'
+import { AWSService } from '@app/processors/helper/helper.service.aws'
 import { GoogleService } from '@app/processors/helper/helper.service.google'
 import { StatisticService, Statistic } from './expansion.service.statistic'
 import { DBBackupService } from './expansion.service.dbbackup'
+import * as APP_CONFIG from '@app/app.config'
 
 @Controller('expansion')
 export class ExpansionController {
   constructor(
+    private readonly awsService: AWSService,
     private readonly googleService: GoogleService,
     private readonly dbBackupService: DBBackupService,
-    private readonly cloudStorageService: CloudStorageService,
     private readonly statisticService: StatisticService
   ) {}
 
@@ -29,13 +31,6 @@ export class ExpansionController {
   @Responsor.handle('Get statistic')
   getSystemStatistics(@QueryParams() { isUnauthenticated }: QueryParamsResult): Promise<Statistic> {
     return this.statisticService.getStatistic(isUnauthenticated)
-  }
-
-  @Get('uptoken')
-  @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Get cloud storage upload token')
-  getCloudStorageUploadToken(): Promise<UploadToken> {
-    return this.cloudStorageService.getToken()
   }
 
   @Get('google-token')
@@ -50,5 +45,24 @@ export class ExpansionController {
   @Responsor.handle('Update database backup')
   updateDatabaseBackup() {
     return this.dbBackupService.backup()
+  }
+
+  @Post('upload')
+  @UseGuards(AdminOnlyGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  @Responsor.handle('Upload file to cloud storage')
+  uploadStatic(@UploadedFile() file: Express.Multer.File, @Body() body) {
+    return this.awsService
+      .uploadFile({
+        name: body.name,
+        file: file.buffer,
+        fileContentType: file.mimetype,
+        region: APP_CONFIG.AWS.s3StaticRegion,
+        bucket: APP_CONFIG.AWS.s3StaticBucket,
+      })
+      .then((result) => ({
+        ...result,
+        url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}`,
+      }))
   }
 }

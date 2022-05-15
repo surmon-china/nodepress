@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.10.0 (2022-05-15)
+
+**Feature**
+
+- AliYun OSS to AWS S3
+- Remove STSToken API for cloud storage
+
 ### 3.9.4 (2022-04-12)
 
 **Feature**
