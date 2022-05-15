@@ -8,6 +8,7 @@ export declare const APP: {
     ADMIN_EMAIL: string;
     FE_NAME: string;
     FE_URL: string;
+    STATIC_URL: string;
 };
 export declare const PROJECT: {
     name: any;
@@ -61,12 +62,14 @@ export declare const BAIDU_INDEXED: {
 export declare const GOOGLE: {
     serverAccountFilePath: string;
 };
-export declare const ALIYUN_CLOUD_STORAGE: {
-    accessKey: string;
-    secretKey: string;
-    aliyunAcsARN: string;
+export declare const AWS: {
+    accessKeyId: string;
+    secretAccessKey: string;
+    s3StaticRegion: string;
+    s3StaticBucket: string;
 };
 export declare const DB_BACKUP: {
-    bucket: string;
-    region: string;
+    s3Region: string;
+    s3Bucket: string;
+    password: string;
 };

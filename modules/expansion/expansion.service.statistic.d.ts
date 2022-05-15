@@ -19,14 +19,7 @@ export declare class StatisticService {
     private readonly commentService;
     private readonly feedbackService;
     private readonly tagService;
-    private resultData;
     constructor(cacheService: CacheService, articleService: ArticleService, commentService: CommentService, feedbackService: FeedbackService, tagService: TagService);
-    private getTodayViewsCount;
-    private getArticlesStatistic;
-    private getArticlesCount;
-    private getTagsCount;
-    private getCommentsCount;
-    private getAverageEmotion;
     getStatistic(publicOnly: boolean): Promise<Statistic>;
 }
 export {};

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DB_BACKUP = exports.ALIYUN_CLOUD_STORAGE = exports.GOOGLE = exports.BAIDU_INDEXED = exports.AKISMET = exports.DISQUS = exports.EMAIL = exports.AUTH = exports.REDIS = exports.MONGO_DB = exports.CROSS_DOMAIN = exports.PROJECT = exports.APP = void 0;
+exports.DB_BACKUP = exports.AWS = exports.GOOGLE = exports.BAIDU_INDEXED = exports.AKISMET = exports.DISQUS = exports.EMAIL = exports.AUTH = exports.REDIS = exports.MONGO_DB = exports.CROSS_DOMAIN = exports.PROJECT = exports.APP = void 0;
 const path_1 = __importDefault(require("path"));
 const yargs_1 = require("yargs");
 const ROOT_PATH = path_1.default.join(__dirname, '..');
@@ -18,6 +18,7 @@ exports.APP = {
     ADMIN_EMAIL: yargs_1.argv.admin_email || 'admin email, e.g. admin@example.com',
     FE_NAME: 'Surmon.me',
     FE_URL: 'https://surmon.me',
+    STATIC_URL: 'https://static.surmon.me',
 };
 exports.PROJECT = {
     name: packageJSON.name,
@@ -71,13 +72,15 @@ exports.BAIDU_INDEXED = {
 exports.GOOGLE = {
     serverAccountFilePath: path_1.default.resolve(ROOT_PATH, 'classified', 'google_service_account.json'),
 };
-exports.ALIYUN_CLOUD_STORAGE = {
-    accessKey: yargs_1.argv.cs_access_key || 'cloudstorage access key for cloud storage',
-    secretKey: yargs_1.argv.cs_secret_key || 'cloudstorage secret key for cloud storage',
-    aliyunAcsARN: yargs_1.argv.cs_aliyun_acs || 'aliyun Acs ARN, e.g. acs:ram::xxx:role/xxx',
+exports.AWS = {
+    accessKeyId: yargs_1.argv.aws_access_key_id,
+    secretAccessKey: yargs_1.argv.aws_secret_access_key,
+    s3StaticRegion: yargs_1.argv.aws_s3_static_region,
+    s3StaticBucket: yargs_1.argv.aws_s3_static_bucket,
 };
 exports.DB_BACKUP = {
-    bucket: yargs_1.argv.db_backup_bucket || 'cloudstorage bucket name for dbbackup',
-    region: yargs_1.argv.db_backup_region || 'cloudstorage region for dbbackup, e.g. oss-cn-hangzhou',
+    s3Region: yargs_1.argv.db_backup_s3_region,
+    s3Bucket: yargs_1.argv.db_backup_s3_bucket,
+    password: yargs_1.argv.db_backup_file_password,
 };
 //# sourceMappingURL=app.config.js.map

@@ -13,23 +13,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBBackupService = void 0;
+const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const shelljs_1 = __importDefault(require("shelljs"));
 const moment_1 = __importDefault(require("moment"));
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
-const helper_service_cloud_storage_1 = require("../../processors/helper/helper.service.cloud-storage");
+const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
 const app_config_1 = require("../../app.config");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
 const UPLOAD_INTERVAL = '0 0 3 * * *';
-const BACKUP_FILE_NAME = 'nodepress.tar.gz';
+const BACKUP_FILE_NAME = 'nodepress.zip';
 const BACKUP_DIR_PATH = path_1.default.join(app_config_1.APP.ROOT_PATH, 'dbbackup');
 let DBBackupService = class DBBackupService {
-    constructor(emailService, cloudStorageService) {
+    constructor(emailService, awsService) {
         this.emailService = emailService;
-        this.cloudStorageService = cloudStorageService;
+        this.awsService = awsService;
         logger_1.default.info('[expansion]', 'DB Backup 开始执行定时数据备份任务！');
         node_schedule_1.default.scheduleJob(UPLOAD_INTERVAL, () => {
             this.backup().catch(() => {
@@ -41,7 +42,7 @@ let DBBackupService = class DBBackupService {
         try {
             const result = await this.doBackup();
             this.mailToAdmin('Database backup succeed', JSON.stringify(result, null, 2));
-            return result.name;
+            return result;
         }
         catch (error) {
             this.mailToAdmin('Database backup failed!', String(error));
@@ -72,22 +73,28 @@ let DBBackupService = class DBBackupService {
                     logger_1.default.warn('[expansion]', 'DB Backup mongodump failed!', out);
                     return reject(out);
                 }
-                shelljs_1.default.exec(`tar -czf ${BACKUP_FILE_NAME} ./backup`);
+                if (!shelljs_1.default.which('zip')) {
+                    return reject('DB Backup script requires [zip]');
+                }
+                shelljs_1.default.exec(`zip -r -P ${app_config_1.DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup`);
                 const fileDate = (0, moment_1.default)(new Date()).format('YYYY-MM-DD-HH:mm');
-                const fileName = `nodepress-mongodb/backup-${fileDate}.tar.gz`;
+                const fileName = `nodepress-mongodb/backup-${fileDate}.zip`;
                 const filePath = path_1.default.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME);
                 logger_1.default.info('[expansion]', 'DB Backup 上传文件: ' + fileName);
                 logger_1.default.info('[expansion]', 'DB Backup 文件源位置: ' + filePath);
-                this.cloudStorageService
-                    .uploadFile(fileName, filePath, app_config_1.DB_BACKUP.region, app_config_1.DB_BACKUP.bucket)
+                this.awsService
+                    .uploadFile({
+                    name: fileName,
+                    file: fs_1.default.createReadStream(filePath),
+                    fileContentType: 'application/zip',
+                    region: app_config_1.DB_BACKUP.s3Region,
+                    bucket: app_config_1.DB_BACKUP.s3Bucket,
+                    classType: 'GLACIER',
+                    encryption: 'AES256',
+                })
                     .then((result) => {
-                    const data = {
-                        name: result.name,
-                        url: result.url,
-                        data: result.data,
-                    };
-                    logger_1.default.info('[expansion]', 'DB Backup succeed!', data);
-                    resolve(data);
+                    logger_1.default.info('[expansion]', 'DB Backup succeed!', result.url);
+                    resolve(result);
                 })
                     .catch((error) => {
                     logger_1.default.warn('[expansion]', 'DB Backup failed!', error);
@@ -99,8 +106,7 @@ let DBBackupService = class DBBackupService {
 };
 DBBackupService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [helper_service_email_1.EmailService,
-        helper_service_cloud_storage_1.CloudStorageService])
+    __metadata("design:paramtypes", [helper_service_email_1.EmailService, helper_service_aws_1.AWSService])
 ], DBBackupService);
 exports.DBBackupService = DBBackupService;
 //# sourceMappingURL=expansion.service.dbbackup.js.map

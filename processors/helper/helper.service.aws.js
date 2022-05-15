@@ -28,48 +28,56 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CloudStorageService = void 0;
-const ali_oss_1 = __importDefault(require("ali-oss"));
+exports.AWSService = void 0;
+const client_s3_1 = require("@aws-sdk/client-s3");
 const common_1 = require("@nestjs/common");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const STS = ali_oss_1.default.STS;
-let CloudStorageService = class CloudStorageService {
-    constructor() {
-        this.sts = new STS({
-            accessKeyId: APP_CONFIG.ALIYUN_CLOUD_STORAGE.accessKey,
-            accessKeySecret: APP_CONFIG.ALIYUN_CLOUD_STORAGE.secretKey,
+let AWSService = class AWSService {
+    createClient(region) {
+        return new client_s3_1.S3Client({
+            region,
+            credentials: {
+                accessKeyId: APP_CONFIG.AWS.accessKeyId,
+                secretAccessKey: APP_CONFIG.AWS.secretAccessKey,
+            },
         });
     }
-    async getToken() {
-        const response = await this.sts.assumeRole(APP_CONFIG.ALIYUN_CLOUD_STORAGE.aliyunAcsARN, null, 15 * 60, 'session-name');
-        return response.credentials;
+    getObjectAttributes(payload) {
+        const s3Client = this.createClient(payload.region);
+        const command = new client_s3_1.GetObjectAttributesCommand({
+            Bucket: payload.bucket,
+            Key: payload.key,
+            ObjectAttributes: Object.values(client_s3_1.ObjectAttributes),
+        });
+        return s3Client.send(command);
     }
-    async uploadFile(name, file, region, bucket) {
-        return this.getToken().then((token) => {
-            let client = new ali_oss_1.default({
-                region,
-                bucket,
-                accessKeyId: token.AccessKeyId,
-                accessKeySecret: token.AccessKeySecret,
-                stsToken: token.SecurityToken,
-                secure: true,
-            });
-            return client.put(name, file).finally(() => {
-                client = null;
+    uploadFile(payload) {
+        var _a;
+        const { region, bucket, name: key } = payload;
+        const s3Client = this.createClient(region);
+        const command = new client_s3_1.PutObjectCommand({
+            Bucket: bucket,
+            Key: key,
+            Body: payload.file,
+            ContentType: payload.fileContentType,
+            StorageClass: (_a = payload.classType) !== null && _a !== void 0 ? _a : 'STANDARD',
+            ServerSideEncryption: payload.encryption,
+        });
+        return s3Client.send(command).then(() => {
+            return this.getObjectAttributes({ region, bucket, key }).then((attributes) => {
+                return {
+                    key,
+                    url: `https://${bucket}.s3.${region}.amazonaws.com/${key}`,
+                    eTag: attributes.ETag,
+                    size: attributes.ObjectSize,
+                };
             });
         });
     }
 };
-CloudStorageService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
-], CloudStorageService);
-exports.CloudStorageService = CloudStorageService;
-//# sourceMappingURL=helper.service.cloud-storage.js.map
+AWSService = __decorate([
+    (0, common_1.Injectable)()
+], AWSService);
+exports.AWSService = AWSService;
+//# sourceMappingURL=helper.service.aws.js.map

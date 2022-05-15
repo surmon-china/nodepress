@@ -11,11 +11,11 @@ const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const helper_service_google_1 = require("./helper.service.google");
 const helper_service_akismet_1 = require("./helper.service.akismet");
-const helper_service_cloud_storage_1 = require("./helper.service.cloud-storage");
+const helper_service_aws_1 = require("./helper.service.aws");
 const helper_service_email_1 = require("./helper.service.email");
 const helper_service_seo_1 = require("./helper.service.seo");
 const helper_service_ip_1 = require("./helper.service.ip");
-const services = [helper_service_google_1.GoogleService, helper_service_akismet_1.AkismetService, helper_service_cloud_storage_1.CloudStorageService, helper_service_email_1.EmailService, helper_service_seo_1.SeoService, helper_service_ip_1.IPService];
+const services = [helper_service_google_1.GoogleService, helper_service_akismet_1.AkismetService, helper_service_aws_1.AWSService, helper_service_email_1.EmailService, helper_service_seo_1.SeoService, helper_service_ip_1.IPService];
 let HelperModule = class HelperModule {
 };
 HelperModule = __decorate([

@@ -56,6 +56,7 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
 const cache_service_1 = require("../../processors/cache/cache.service");
+const expansion_helper_1 = require("../expansion/expansion.helper");
 const archive_service_1 = require("../archive/archive.service");
 const tag_service_1 = require("../tag/tag.service");
 const article_model_1 = require("./article.model");
@@ -141,9 +142,7 @@ let ArticleService = class ArticleService {
         });
         article.meta.views++;
         article.save({ timestamps: false });
-        this.cacheService.get(CACHE_KEY.TODAY_VIEWS).then((views) => {
-            this.cacheService.set(CACHE_KEY.TODAY_VIEWS, (views || 0) + 1);
-        });
+        (0, expansion_helper_1.increaseTodayViewsCount)(this.cacheService);
         return article.toObject();
     }
     async incrementLikes(articleID) {
