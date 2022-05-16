@@ -60,7 +60,7 @@ export declare const BAIDU_INDEXED: {
     token: unknown;
 };
 export declare const GOOGLE: {
-    serverAccountFilePath: string;
+    jwtServiceAccountCredentials: any;
 };
 export declare const AWS: {
     accessKeyId: string;

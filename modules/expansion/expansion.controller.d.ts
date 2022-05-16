@@ -13,14 +13,11 @@ export declare class ExpansionController {
     constructor(awsService: AWSService, googleService: GoogleService, dbBackupService: DBBackupService, statisticService: StatisticService);
     getSystemStatistics({ isUnauthenticated }: QueryParamsResult): Promise<Statistic>;
     getGoogleToken(): Promise<Credentials>;
-    updateDatabaseBackup(): Promise<{
-        url: string;
-        key: string;
-    }>;
+    updateDatabaseBackup(): Promise<import("@app/processors/helper/helper.service.aws").UploadResult>;
     uploadStatic(file: Express.Multer.File, body: any): Promise<{
         url: string;
         key: string;
-        eTag: string | undefined;
-        size: number | undefined;
+        eTag: string;
+        size: number;
     }>;
 }

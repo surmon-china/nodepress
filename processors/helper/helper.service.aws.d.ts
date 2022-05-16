@@ -9,6 +9,12 @@ export interface FileUploader {
     classType?: StorageClass;
     encryption?: ServerSideEncryption;
 }
+export interface UploadResult {
+    key: string;
+    url: string;
+    eTag: string;
+    size: number;
+}
 export declare class AWSService {
     private createClient;
     getObjectAttributes(payload: {
@@ -16,10 +22,5 @@ export declare class AWSService {
         bucket: string;
         key: string;
     }): Promise<import("@aws-sdk/client-s3").GetObjectAttributesCommandOutput>;
-    uploadFile(payload: FileUploader): Promise<{
-        key: string;
-        url: string;
-        eTag: string | undefined;
-        size: number | undefined;
-    }>;
+    uploadFile(payload: FileUploader): Promise<UploadResult>;
 }

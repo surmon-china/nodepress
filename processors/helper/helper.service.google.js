@@ -48,26 +48,26 @@ let GoogleService = class GoogleService {
         this.initClient();
     }
     initClient() {
+        var _a, _b;
         try {
-            const key = require(APP_CONFIG.GOOGLE.serverAccountFilePath);
-            this.jwtClient = new googleapis_1.google.auth.JWT(key.client_email, value_constant_1.UNDEFINED, key.private_key, [
+            this.jwtClient = new googleapis_1.google.auth.JWT((_a = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _a === void 0 ? void 0 : _a.client_email, value_constant_1.UNDEFINED, (_b = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _b === void 0 ? void 0 : _b.private_key, [
                 'https://www.googleapis.com/auth/indexing',
                 'https://www.googleapis.com/auth/analytics.readonly',
             ], value_constant_1.UNDEFINED);
         }
         catch (error) {
-            logger_1.default.warn('[GoogleAPI]', '服务初始化时读取配置文件失败！');
+            logger_1.default.warn('[GoogleAPI]', 'client initialization failed!');
         }
     }
     getCredentials() {
         return new Promise((resolve, reject) => {
             if (!this.jwtClient) {
-                return reject('[GoogleAPI] 未成功初始化，无法获取证书！');
+                return reject('[GoogleAPI] client initialization failed!');
             }
             this.jwtClient.authorize((error, credentials) => {
                 const message = (0, error_transformer_1.getMessageFromNormalError)(error);
                 if (message) {
-                    logger_1.default.warn('[GoogleAPI]', '获取证书失败：', message);
+                    logger_1.default.warn('[GoogleAPI]', 'jwt authorize failed: ', message);
                     reject(message);
                 }
                 resolve(credentials);

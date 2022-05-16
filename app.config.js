@@ -70,7 +70,7 @@ exports.BAIDU_INDEXED = {
     token: yargs_1.argv.baidu_token || 'your baidu seo push token',
 };
 exports.GOOGLE = {
-    serverAccountFilePath: path_1.default.resolve(ROOT_PATH, 'classified', 'google_service_account.json'),
+    jwtServiceAccountCredentials: yargs_1.argv.google_jwt_cred_json ? JSON.parse(yargs_1.argv.google_jwt_cred_json) : null,
 };
 exports.AWS = {
     accessKeyId: yargs_1.argv.aws_access_key_id,

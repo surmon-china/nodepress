@@ -41,7 +41,8 @@ let DBBackupService = class DBBackupService {
     async backup() {
         try {
             const result = await this.doBackup();
-            this.mailToAdmin('Database backup succeed', JSON.stringify(result, null, 2));
+            const json = Object.assign(Object.assign({}, result), { size: (result.size / 1024).toFixed(2) + 'kb' });
+            this.mailToAdmin('Database backup succeed', JSON.stringify(json, null, 2), true);
             return result;
         }
         catch (error) {
@@ -49,13 +50,12 @@ let DBBackupService = class DBBackupService {
             throw error;
         }
     }
-    mailToAdmin(subject, detail) {
-        const content = `${subject}, detail: ${detail}`;
+    mailToAdmin(subject, content, isCode) {
         this.emailService.sendMailAs(app_config_1.APP.NAME, {
             to: app_config_1.APP.ADMIN_EMAIL,
             subject,
-            text: content,
-            html: content,
+            text: `${subject}, detail: ${content}`,
+            html: `${subject} <br> ${isCode ? `<pre>${isCode}</pre>` : content}`,
         });
     }
     doBackup() {
