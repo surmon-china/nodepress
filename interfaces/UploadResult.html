@@ -47,7 +47,7 @@
   <li>Interfaces</li>
   <li
   >
-  FileUploader</li>
+  UploadResult</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -84,48 +84,27 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#bucket" 
+                                        <a href="#eTag" 
 >
-                                            bucket
+                                            eTag
                                         </a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#classType" 
+                                        <a href="#key" 
 >
-                                            classType
+                                            key
                                         </a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#encryption" 
+                                        <a href="#size" 
 >
-                                            encryption
+                                            size
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#file" 
+                                        <a href="#url" 
 >
-                                            file
-                                        </a>
-                                </li>
-                                <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#fileContentType" 
->
-                                            fileContentType
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#name" 
->
-                                            name
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#region" 
->
-                                            region
+                                            url
                                         </a>
                                 </li>
                             </ul>
@@ -143,9 +122,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="bucket"></a>
-                                        <span class="name "><b>bucket</b>
-                                            <a href="#bucket">
+                                        <a name="eTag"></a>
+                                        <span class="name "><b>eTag</b>
+                                            <a href="#eTag">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -153,7 +132,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>bucket:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>eTag:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -176,9 +155,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="classType"></a>
-                                        <span class="name "><b>classType</b>
-                                            <a href="#classType">
+                                        <a name="key"></a>
+                                        <span class="name "><b>key</b>
+                                            <a href="#key">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -186,154 +165,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>classType:     <code>StorageClass</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>StorageClass</code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="encryption"></a>
-                                        <span class="name "><b>encryption</b>
-                                            <a href="#encryption">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>encryption:     <code>ServerSideEncryption</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>ServerSideEncryption</code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="file"></a>
-                                        <span class="name "><b>file</b>
-                                            <a href="#file">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>file:     <code> | string | Uint8Array | Buffer</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code> | string | Uint8Array | Buffer</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="fileContentType"></a>
-                                        <span class="name "><b>fileContentType</b>
-                                            <a href="#fileContentType">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>fileContentType:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="name"></a>
-                                        <span class="name "><b>name</b>
-                                            <a href="#name">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>name:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>key:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -356,9 +188,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="region"></a>
-                                        <span class="name "><b>region</b>
-                                            <a href="#region">
+                                        <a name="size"></a>
+                                        <span class="name "><b>size</b>
+                                            <a href="#size">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -366,7 +198,40 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>region:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>size:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="url"></a>
+                                        <span class="name "><b>url</b>
+                                            <a href="#url">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>url:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -502,7 +367,7 @@ export class AWSService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'FileUploader.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'UploadResult.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

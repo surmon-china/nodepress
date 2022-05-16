@@ -159,8 +159,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/processors/helper/helper.service.google.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/processors/helper/helper.service.google.ts:42</a></div>
                 </td>
             </tr>
 
@@ -277,32 +277,31 @@ export class GoogleService {
 
   private initClient() {
     try {
-      const key &#x3D; require(APP_CONFIG.GOOGLE.serverAccountFilePath)
       this.jwtClient &#x3D; new google.auth.JWT(
-        key.client_email,
+        APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.client_email,
         UNDEFINED,
-        key.private_key,
+        APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.private_key,
         [
-          &#x27;https://www.googleapis.com/auth/indexing&#x27;, // ping 服务
-          &#x27;https://www.googleapis.com/auth/analytics.readonly&#x27;, // GA 服务
+          &#x27;https://www.googleapis.com/auth/indexing&#x27;, // ping service
+          &#x27;https://www.googleapis.com/auth/analytics.readonly&#x27;, // GA service
         ],
         UNDEFINED
       )
     } catch (error) {
-      logger.warn(&#x27;[GoogleAPI]&#x27;, &#x27;服务初始化时读取配置文件失败！&#x27;)
+      logger.warn(&#x27;[GoogleAPI]&#x27;, &#x27;client initialization failed!&#x27;)
     }
   }
 
-  // 获取证书
+  // get credentials for client
   public getCredentials(): Promise&lt;Credentials&gt; {
     return new Promise((resolve, reject) &#x3D;&gt; {
       if (!this.jwtClient) {
-        return reject(&#x27;[GoogleAPI] 未成功初始化，无法获取证书！&#x27;)
+        return reject(&#x27;[GoogleAPI] client initialization failed!&#x27;)
       }
       this.jwtClient.authorize((error, credentials: Credentials) &#x3D;&gt; {
         const message &#x3D; getMessageFromNormalError(error)
         if (message) {
-          logger.warn(&#x27;[GoogleAPI]&#x27;, &#x27;获取证书失败：&#x27;, message)
+          logger.warn(&#x27;[GoogleAPI]&#x27;, &#x27;jwt authorize failed: &#x27;, message)
           reject(message)
         }
         resolve(credentials)

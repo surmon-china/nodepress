@@ -130,8 +130,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="31"
-                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:31</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="38"
+                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:38</a></div>
                 </td>
             </tr>
 
@@ -201,8 +201,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="41"
-                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:41</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="48"
+                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:48</a></div>
                 </td>
             </tr>
 
@@ -272,8 +272,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="51"
-                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:51</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">src/processors/helper/helper.service.aws.ts:58</a></div>
                 </td>
             </tr>
 
@@ -311,7 +311,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>        <code><a href="../interfaces/UploadResult.html" target="_self" >Promise&lt;UploadResult&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -349,6 +349,13 @@ export interface FileUploader {
   encryption?: ServerSideEncryption
 }
 
+export interface UploadResult {
+  key: string
+  url: string
+  eTag: string
+  size: number
+}
+
 @Injectable()
 export class AWSService {
   private createClient(region: string) {
@@ -371,7 +378,7 @@ export class AWSService {
     return s3Client.send(command)
   }
 
-  public uploadFile(payload: FileUploader) {
+  public uploadFile(payload: FileUploader): Promise&lt;UploadResult&gt; {
     const { region, bucket, name: key } &#x3D; payload
     const s3Client &#x3D; this.createClient(region)
     const command &#x3D; new PutObjectCommand({
@@ -388,8 +395,8 @@ export class AWSService {
           key,
           // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
           url: &#x60;https://${bucket}.s3.${region}.amazonaws.com/${key}&#x60;,
-          eTag: attributes.ETag,
-          size: attributes.ObjectSize,
+          eTag: attributes.ETag!,
+          size: attributes.ObjectSize!,
         }
       })
     })

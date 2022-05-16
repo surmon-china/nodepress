@@ -854,6 +854,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/TypegooseClass.html" data-type="entity-link" >TypegooseClass</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/UploadResult.html" data-type="entity-link" >UploadResult</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/XMLItemData.html" data-type="entity-link" >XMLItemData</a>
                             </li>
                         </ul>

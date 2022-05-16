@@ -263,15 +263,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>mailToAdmin(subject: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, detail: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>mailToAdmin(subject: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, content: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isCode?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="45"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:45</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:46</a></div>
                 </td>
             </tr>
 
@@ -304,13 +304,25 @@
 
                                 </tr>
                                 <tr>
-                                    <td>detail</td>
+                                    <td>content</td>
                                     <td>
                                                 <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
 
                                     <td>
                                         No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>isCode</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
                                     </td>
 
 
@@ -344,7 +356,7 @@ import moment from &#x27;moment&#x27;
 import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
-import { AWSService } from &#x27;@app/processors/helper/helper.service.aws&#x27;
+import { AWSService, UploadResult } from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { APP, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
@@ -367,7 +379,8 @@ export class DBBackupService {
   public async backup() {
     try {
       const result &#x3D; await this.doBackup()
-      this.mailToAdmin(&#x27;Database backup succeed&#x27;, JSON.stringify(result, null, 2))
+      const json &#x3D; { ...result, size: (result.size / 1024).toFixed(2) + &#x27;kb&#x27; }
+      this.mailToAdmin(&#x27;Database backup succeed&#x27;, JSON.stringify(json, null, 2), true)
       return result
     } catch (error) {
       this.mailToAdmin(&#x27;Database backup failed!&#x27;, String(error))
@@ -375,18 +388,17 @@ export class DBBackupService {
     }
   }
 
-  private mailToAdmin(subject: string, detail: string) {
-    const content &#x3D; &#x60;${subject}, detail: ${detail}&#x60;
+  private mailToAdmin(subject: string, content: string, isCode?: boolean) {
     this.emailService.sendMailAs(APP.NAME, {
       to: APP.ADMIN_EMAIL,
       subject,
-      text: content,
-      html: content,
+      text: &#x60;${subject}, detail: ${content}&#x60;,
+      html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${isCode}&lt;/pre&gt;&#x60; : content}&#x60;,
     })
   }
 
   private doBackup() {
-    return new Promise&lt;{ url: string; key: string }&gt;((resolve, reject) &#x3D;&gt; {
+    return new Promise&lt;UploadResult&gt;((resolve, reject) &#x3D;&gt; {
       if (!shell.which(&#x27;mongodump&#x27;)) {
         return reject(&#x27;DB Backup script requires [mongodump]&#x27;)
       }

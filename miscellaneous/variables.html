@@ -965,7 +965,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  serverAccountFilePath: path.resolve(ROOT_PATH, &#x27;classified&#x27;, &#x27;google_service_account.json&#x27;),
+  jwtServiceAccountCredentials: argv.google_jwt_cred_json ? JSON.parse(argv.google_jwt_cred_json as string) : null,
 }</code>
                     </td>
                 </tr>
