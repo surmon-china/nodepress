@@ -23,32 +23,31 @@ export class GoogleService {
 
   private initClient() {
     try {
-      const key = require(APP_CONFIG.GOOGLE.serverAccountFilePath)
       this.jwtClient = new google.auth.JWT(
-        key.client_email,
+        APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.client_email,
         UNDEFINED,
-        key.private_key,
+        APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.private_key,
         [
-          'https://www.googleapis.com/auth/indexing', // ping 服务
-          'https://www.googleapis.com/auth/analytics.readonly', // GA 服务
+          'https://www.googleapis.com/auth/indexing', // ping service
+          'https://www.googleapis.com/auth/analytics.readonly', // GA service
         ],
         UNDEFINED
       )
     } catch (error) {
-      logger.warn('[GoogleAPI]', '服务初始化时读取配置文件失败！')
+      logger.warn('[GoogleAPI]', 'client initialization failed!')
     }
   }
 
-  // 获取证书
+  // get credentials for client
   public getCredentials(): Promise<Credentials> {
     return new Promise((resolve, reject) => {
       if (!this.jwtClient) {
-        return reject('[GoogleAPI] 未成功初始化，无法获取证书！')
+        return reject('[GoogleAPI] client initialization failed!')
       }
       this.jwtClient.authorize((error, credentials: Credentials) => {
         const message = getMessageFromNormalError(error)
         if (message) {
-          logger.warn('[GoogleAPI]', '获取证书失败：', message)
+          logger.warn('[GoogleAPI]', 'jwt authorize failed: ', message)
           reject(message)
         }
         resolve(credentials)

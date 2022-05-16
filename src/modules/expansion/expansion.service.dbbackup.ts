@@ -11,7 +11,7 @@ import moment from 'moment'
 import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
-import { AWSService } from '@app/processors/helper/helper.service.aws'
+import { AWSService, UploadResult } from '@app/processors/helper/helper.service.aws'
 import { APP, MONGO_DB, DB_BACKUP } from '@app/app.config'
 import logger from '@app/utils/logger'
 
@@ -34,7 +34,8 @@ export class DBBackupService {
   public async backup() {
     try {
       const result = await this.doBackup()
-      this.mailToAdmin('Database backup succeed', JSON.stringify(result, null, 2))
+      const json = { ...result, size: (result.size / 1024).toFixed(2) + 'kb' }
+      this.mailToAdmin('Database backup succeed', JSON.stringify(json, null, 2), true)
       return result
     } catch (error) {
       this.mailToAdmin('Database backup failed!', String(error))
@@ -42,18 +43,17 @@ export class DBBackupService {
     }
   }
 
-  private mailToAdmin(subject: string, detail: string) {
-    const content = `${subject}, detail: ${detail}`
+  private mailToAdmin(subject: string, content: string, isCode?: boolean) {
     this.emailService.sendMailAs(APP.NAME, {
       to: APP.ADMIN_EMAIL,
       subject,
-      text: content,
-      html: content,
+      text: `${subject}, detail: ${content}`,
+      html: `${subject} <br> ${isCode ? `<pre>${isCode}</pre>` : content}`,
     })
   }
 
   private doBackup() {
-    return new Promise<{ url: string; key: string }>((resolve, reject) => {
+    return new Promise<UploadResult>((resolve, reject) => {
       if (!shell.which('mongodump')) {
         return reject('DB Backup script requires [mongodump]')
       }

@@ -85,7 +85,7 @@ export const BAIDU_INDEXED = {
 }
 
 export const GOOGLE = {
-  serverAccountFilePath: path.resolve(ROOT_PATH, 'classified', 'google_service_account.json'),
+  jwtServiceAccountCredentials: argv.google_jwt_cred_json ? JSON.parse(argv.google_jwt_cred_json as string) : null,
 }
 
 export const AWS = {

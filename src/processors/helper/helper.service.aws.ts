@@ -26,6 +26,13 @@ export interface FileUploader {
   encryption?: ServerSideEncryption
 }
 
+export interface UploadResult {
+  key: string
+  url: string
+  eTag: string
+  size: number
+}
+
 @Injectable()
 export class AWSService {
   private createClient(region: string) {
@@ -48,7 +55,7 @@ export class AWSService {
     return s3Client.send(command)
   }
 
-  public uploadFile(payload: FileUploader) {
+  public uploadFile(payload: FileUploader): Promise<UploadResult> {
     const { region, bucket, name: key } = payload
     const s3Client = this.createClient(region)
     const command = new PutObjectCommand({
@@ -65,8 +72,8 @@ export class AWSService {
           key,
           // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
           url: `https://${bucket}.s3.${region}.amazonaws.com/${key}`,
-          eTag: attributes.ETag,
-          size: attributes.ObjectSize,
+          eTag: attributes.ETag!,
+          size: attributes.ObjectSize!,
         }
       })
     })

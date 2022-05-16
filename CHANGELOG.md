@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.10.1 (2022-05-16)
+
+**Feature**
+
+- Remove classified dir.
+- Improve DB backup mail context
+
 ### 3.10.0 (2022-05-15)
 
 **Feature**

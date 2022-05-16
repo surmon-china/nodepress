@@ -1,7 +1,5 @@
 
 # gitkeep
-/classified/*
-!/classified/.gitkeep
 dump.rdb
 ecosystem.config.js
 
