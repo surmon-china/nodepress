@@ -393,7 +393,7 @@ export class DBBackupService {
       to: APP.ADMIN_EMAIL,
       subject,
       text: &#x60;${subject}, detail: ${content}&#x60;,
-      html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${isCode}&lt;/pre&gt;&#x60; : content}&#x60;,
+      html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${content}&lt;/pre&gt;&#x60; : content}&#x60;,
     })
   }
 
