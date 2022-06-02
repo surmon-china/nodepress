@@ -23,7 +23,7 @@ const BACKUP_DIR_PATH = path.join(APP.ROOT_PATH, 'dbbackup')
 @Injectable()
 export class DBBackupService {
   constructor(private readonly emailService: EmailService, private readonly awsService: AWSService) {
-    logger.info('[expansion]', 'DB Backup 开始执行定时数据备份任务！')
+    logger.info('[expansion]', 'DB Backup schedule job initialized')
     schedule.scheduleJob(UPLOAD_INTERVAL, () => {
       this.backup().catch(() => {
         setTimeout(this.backup, UP_FAILED_TIMEOUT)
@@ -64,7 +64,7 @@ export class DBBackupService {
       shell.mkdir('backup')
 
       shell.exec(`mongodump --uri="${MONGO_DB.uri}" --out="backup"`, (code, out) => {
-        logger.info('[expansion]', 'DB Backup mongodump 执行完成！', code, out)
+        logger.info('[expansion]', 'DB Backup mongodump done', code, out)
         if (code !== 0) {
           logger.warn('[expansion]', 'DB Backup mongodump failed!', out)
           return reject(out)
@@ -80,8 +80,8 @@ export class DBBackupService {
         const fileDate = moment(new Date()).format('YYYY-MM-DD-HH:mm')
         const fileName = `nodepress-mongodb/backup-${fileDate}.zip`
         const filePath = path.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME)
-        logger.info('[expansion]', 'DB Backup 上传文件: ' + fileName)
-        logger.info('[expansion]', 'DB Backup 文件源位置: ' + filePath)
+        logger.info('[expansion]', 'DB Backup uploading: ' + fileName)
+        logger.info('[expansion]', 'DB Backup file source: ' + filePath)
 
         // upload to cloud storage
         this.awsService
@@ -95,7 +95,7 @@ export class DBBackupService {
             encryption: 'AES256',
           })
           .then((result) => {
-            logger.info('[expansion]', 'DB Backup succeed!', result.url)
+            logger.info('[expansion]', 'DB Backup succeed', result.url)
             resolve(result)
           })
           .catch((error) => {

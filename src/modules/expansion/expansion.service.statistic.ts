@@ -35,7 +35,7 @@ export class StatisticService {
     private readonly feedbackService: FeedbackService,
     private readonly tagService: TagService
   ) {
-    // clear date when everyday 00:00
+    // daily data cleaning at 00:00
     schedule.scheduleJob('1 0 0 * * *', () => {
       resetTodayViewsCount(this.cacheService).catch((error) => {
         logger.warn('[expansion]', 'statistic set TODAY_VIEWS Error:', error)

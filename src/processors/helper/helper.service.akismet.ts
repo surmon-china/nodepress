@@ -1,5 +1,5 @@
 /**
- * @file Helper Akismet service
+ * @file Akismet service
  * @module processor/helper/akismet.service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -54,7 +54,7 @@ export class AkismetService {
       .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
       .then(() => {
         this.clientIsValid = true
-        logger.info('[Akismet]', 'client init succeed!')
+        logger.info('[Akismet]', 'client init succeed')
       })
       .catch((error) => {
         this.clientIsValid = false
@@ -65,7 +65,7 @@ export class AkismetService {
   private makeInterceptor(handleType: AkismetAction) {
     return (content: AkismetPayload): Promise<any> => {
       return new Promise((resolve, reject) => {
-        // 确定验证失败的情况下才会拦截验证，未认证或验证通过都继续操作
+        // continue operation only when initialization successful
         if (this.clientIsValid === false) {
           const message = [`[Akismet]`, `${handleType} failed! reason: init failed`]
           logger.warn(...(message as [any]))
@@ -82,12 +82,11 @@ export class AkismetService {
           comment_content: content.comment_content || UNDEFINED,
         })
           .then((result) => {
-            // 如果是检查 spam 且检查结果为 true
             if (handleType === AkismetAction.CheckSpam && result) {
               logger.warn(`[Akismet]`, `${handleType} found SPAM！`, new Date(), content)
               reject('SPAM!')
             } else {
-              logger.info(`[Akismet]`, `${handleType} succeed!`)
+              logger.info(`[Akismet]`, `${handleType} succeed`)
               resolve(result)
             }
           })

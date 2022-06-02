@@ -1,6 +1,5 @@
 /**
- * Helper Google service.
- * @file Helper Google credentials service
+ * @file Google credentials service
  * @module module/helper/google.service
  * @author Surmon <https://github.com/surmon-china>
  */

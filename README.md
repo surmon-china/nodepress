@@ -22,27 +22,19 @@
 
 **适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [NestJS](https://github.com/nestjs/nest)，需安装 [MongoDB](https://www.mongodb.com/) 和 [Redis](https://redis.io/) 方可完整运行。**
 
-> v3.x 使用 [NestJS](https://github.com/nestjs/nest) 进行重构，之前的 Node.js 版本在 [此分支](https://github.com/surmon-china/nodepress/tree/archive/nodejs)。
-
-**更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/main/CHANGELOG.md#changelog)**
-
-**接口文档：[API documentation](https://github.surmon.me/nodepress)**
-
-**架构设计：[Architecture documentation](https://github.com/surmon-china/nodepress/blob/main/DOCUMENTATION.md)**
+- **更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/main/CHANGELOG.md#changelog)**
+- **接口文档：[API documentation](https://github.surmon.me/nodepress)**
+- **架构设计：[Architecture documentation](https://github.com/surmon-china/nodepress/blob/main/DOCUMENTATION.md)**
 
 ---
 
-**🔥 其他 [相关项目](https://github.com/stars/surmon-china/lists/surmon-me)：**
+**🔥 [Related projects](https://github.com/stars/surmon-china/lists/surmon-me)：**
 
 - **SSR Blog:** [`surmon.me`](https://github.com/surmon-china/surmon.me) powered by Vue (3)
 - **Blog admin:** [`veact-admin`](https://github.com/surmon-china/veact-admin) powered by React & [`Veact`](https://github.com/veactjs/veact)
 - **Blog native app:** [`surmon.me.native`](https://github.com/surmon-china/surmon.me.native) powered by react-native
 
-## Activity
-
-<img src="https://repobeats.axiom.co/api/embed/71f149de93460011ac02a251036e1710895381d4.svg" width="100%" />
-
-## Development Setup
+### Development Setup
 
 ```bash
 $ yarn
@@ -64,10 +56,16 @@ $ yarn build
 $ yarn start:prod
 ```
 
-## Actions setup
+### Actions setup
 
-**Rule:**
+- `Any PR open` → `CI:Build test`
+- `New tag v*` → `CI:Create release`
+- `Create create` → `CI:Deploy` → `CI:Execute server script`
 
-- `any PR open` → `CI:Build test`
-- `new tag v*` → `CI:Create Release`
-- `release create` → `CI:Deploy` → `CI:Execute server script`
+### Changelog
+
+Detailed changes for each release are documented in the [release notes](/CHANGELOG.md).
+
+### License
+
+Licensed under the [MIT](/LICENSE) License.

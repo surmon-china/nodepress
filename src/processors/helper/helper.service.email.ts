@@ -1,5 +1,5 @@
 /**
- * @file Helper Email service
+ * @file Email service
  * @module processor/helper/email.service
  * @author Surmon <https://github.com/surmon-china>
  */

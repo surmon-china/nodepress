@@ -1,5 +1,5 @@
 /**
- * @file Expansion aws service
+ * @file AWS storage service
  * @module module/expansion/aws.service
  * @author Surmon <https://github.com/surmon-china>
  */
