@@ -2,13 +2,13 @@
 
 <p align="center">
   <a href="https://github.com/surmon-china/nodepress" target="blank">
-    <img src="https://raw.githubusercontent.com/surmon-china/nodepress/main/logo.png" height="90" alt="nodepress Logo" />
+    <img src="/logo.png" height="90" alt="nodepress Logo" />
   </a>
 </p>
 
 # NodePress
 
-[![nodepress](https://raw.githubusercontent.com/surmon-china/nodepress/main/badge.svg)](https://github.com/surmon-china/nodepress)
+[![nodepress](/badge.svg)](https://github.com/surmon-china/nodepress)
 &nbsp;
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/stargazers)
 &nbsp;
@@ -16,19 +16,19 @@
 &nbsp;
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/surmon-china/nodepress/Deploy?label=deploy&style=for-the-badge)](https://github.com/surmon-china/nodepress/actions?query=workflow:%22Deploy%22)
 &nbsp;
-[![GitHub license](https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge)](/LICENSE)
 
 **RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [NestJS](https://github.com/nestjs/nest), required [MongoDB](https://www.mongodb.com/) & [Redis](https://redis.io/).**
 
 **适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [NestJS](https://github.com/nestjs/nest)，需安装 [MongoDB](https://www.mongodb.com/) 和 [Redis](https://redis.io/) 方可完整运行。**
 
-- **更新记录：[CHANGELOG.md](https://github.com/surmon-china/nodepress/blob/main/CHANGELOG.md#changelog)**
+- **更新记录：[CHANGELOG.md](/CHANGELOG.md#changelog)**
 - **接口文档：[API documentation](https://github.surmon.me/nodepress)**
-- **架构设计：[Architecture documentation](https://github.com/surmon-china/nodepress/blob/main/DOCUMENTATION.md)**
+- **架构设计：[Architecture documentation](/DOCUMENTATION.md)**
 
 ---
 
-**🔥 [Related projects](https://github.com/stars/surmon-china/lists/surmon-me)：**
+**🔥 [Related projects](https://github.com/stars/surmon-china/lists/surmon-me)**
 
 - **SSR Blog:** [`surmon.me`](https://github.com/surmon-china/surmon.me) powered by Vue (3)
 - **Blog admin:** [`veact-admin`](https://github.com/surmon-china/veact-admin) powered by React & [`Veact`](https://github.com/veactjs/veact)
