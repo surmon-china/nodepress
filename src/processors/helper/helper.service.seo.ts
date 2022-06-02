@@ -1,5 +1,5 @@
 /**
- * @file Helper SEO service
+ * @file SEO service
  * @module module/helper/seo.service
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -22,28 +22,20 @@ export enum SEOAction {
 export class SeoService {
   constructor(private readonly httpService: HttpService, private readonly googleService: GoogleService) {}
 
-  // Baidu
+  // Baidu https://ziyuan.baidu.com/linksubmit/index
   private pingBaidu(action: SEOAction, urls: string[]): void {
-    const urlKeyMap = {
-      [SEOAction.Push]: 'urls',
-      [SEOAction.Update]: 'update',
-      [SEOAction.Delete]: 'del',
-    }
-    const urlKey = urlKeyMap[action]
-    const actionText = `Baidu ping [${action}] action`
-
     this.httpService.axiosRef
       .request({
         method: 'post',
         data: urls.join('\n'),
         headers: { 'Content-Type': 'text/plain' },
-        url: `http://data.zz.baidu.com/${urlKey}?site=${APP_CONFIG.BAIDU_INDEXED.site}&token=${APP_CONFIG.BAIDU_INDEXED.token}`,
+        url: `http://data.zz.baidu.com/urls?site=${APP_CONFIG.BAIDU_INDEXED.site}&token=${APP_CONFIG.BAIDU_INDEXED.token}`,
       })
       .then((response) => {
-        logger.info(`[SEO]`, `${actionText} succeed:`, urls, response.statusText)
+        logger.info(`[SEO]`, `Baidu ping [${action}] succeed:`, urls, response.statusText)
       })
       .catch((error) => {
-        logger.warn(`[SEO]`, `${actionText} failed:`, getMessageFromAxiosError(error))
+        logger.warn(`[SEO]`, `Baidu ping [${action}] failed:`, getMessageFromAxiosError(error))
       })
   }
 
