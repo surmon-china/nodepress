@@ -41,7 +41,7 @@ const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../helper/helper.service.email");
 const cache_store_1 = __importDefault(require("./cache.store"));
 const APP_CONFIG = __importStar(require("../../app.config"));
-const logger_1 = __importDefault(require("../../utils/logger"));
+const cache_logger_1 = require("./cache.logger");
 let CacheConfigService = class CacheConfigService {
     constructor(emailService) {
         this.emailService = emailService;
@@ -55,11 +55,11 @@ let CacheConfigService = class CacheConfigService {
         }, 1000 * 30);
     }
     retryStrategy(retries) {
-        const errorMessage = ['[Redis]', `retryStrategy！retries: ${retries}`];
-        logger_1.default.error(...errorMessage);
-        this.sendAlarmMail(errorMessage.join(''));
+        const errorMessage = `retryStrategy! retries: ${retries}`;
+        cache_logger_1.redisLog.error(errorMessage);
+        this.sendAlarmMail(errorMessage);
         if (retries > 6) {
-            return new Error('[Redis] 尝试次数已达极限！');
+            return new Error('Redis maximum retries!');
         }
         return Math.min(retries * 1000, 3000);
     }

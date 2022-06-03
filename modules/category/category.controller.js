@@ -19,7 +19,7 @@ const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
 const expose_pipe_1 = require("../../pipes/expose.pipe");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const category_dto_1 = require("./category.dto");
 const category_service_1 = require("./category.service");
 const category_model_1 = require("./category.model");
@@ -28,7 +28,7 @@ let CategoryController = class CategoryController {
         this.categoryService = categoryService;
     }
     getCategories(query, { isUnauthenticated }) {
-        return this.categoryService.paginater({}, { page: query.page, perPage: query.per_page, dateSort: query.sort }, isUnauthenticated);
+        return this.categoryService.paginator({}, { page: query.page, perPage: query.per_page, dateSort: query.sort }, isUnauthenticated);
     }
     createCategory(category) {
         return this.categoryService.create(category);
@@ -49,8 +49,8 @@ let CategoryController = class CategoryController {
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.paginate(),
-    responsor_decorator_1.Responsor.handle('Get categories'),
+    responser_decorator_1.Responser.paginate(),
+    responser_decorator_1.Responser.handle('Get categories'),
     __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
     __param(1, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
@@ -60,7 +60,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Create category'),
+    responser_decorator_1.Responser.handle('Create category'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [category_model_1.Category]),
@@ -69,7 +69,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete categories'),
+    responser_decorator_1.Responser.handle('Delete categories'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [category_dto_1.CategoriesDTO]),
@@ -77,7 +77,7 @@ __decorate([
 ], CategoryController.prototype, "delCategories", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    responsor_decorator_1.Responsor.handle('Get categories tree'),
+    responser_decorator_1.Responser.handle('Get categories tree'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -86,7 +86,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update category'),
+    responser_decorator_1.Responser.handle('Update category'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -96,7 +96,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete category'),
+    responser_decorator_1.Responser.handle('Delete category'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

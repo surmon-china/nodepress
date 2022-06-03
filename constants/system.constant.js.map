@@ -1,1 +1,1 @@
-{"version":3,"file":"system.constant.js","sourceRoot":"","sources":["../../src/constants/system.constant.ts"],"names":[],"mappings":";;;AAQa,QAAA,iBAAiB,GAAG,iBAAiB,CAAA;AACrC,QAAA,SAAS,GAAG,WAAW,CAAA;AAEvB,QAAA,mBAAmB,GAAG,mBAAmB,CAAA;AACzC,QAAA,qBAAqB,GAAG,YAAY,CAAA"}
+{"version":3,"file":"system.constant.js","sourceRoot":"","sources":["../../src/constants/system.constant.ts"],"names":[],"mappings":";;;AAOa,QAAA,iBAAiB,GAAG,iBAAiB,CAAA;AACrC,QAAA,SAAS,GAAG,WAAW,CAAA;AAEvB,QAAA,mBAAmB,GAAG,mBAAmB,CAAA;AACzC,QAAA,qBAAqB,GAAG,YAAY,CAAA"}

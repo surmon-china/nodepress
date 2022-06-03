@@ -33,13 +33,13 @@ exports.TransformInterceptor = void 0;
 const operators_1 = require("rxjs/operators");
 const common_1 = require("@nestjs/common");
 const response_interface_1 = require("../interfaces/response.interface");
-const responsor_decorator_1 = require("../decorators/responsor.decorator");
+const responser_decorator_1 = require("../decorators/responser.decorator");
 const TEXT = __importStar(require("../constants/text.constant"));
 let TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
         const call$ = next.handle();
         const target = context.getHandler();
-        const { successMessage, transform, paginate } = (0, responsor_decorator_1.getResponsorOptions)(target);
+        const { successMessage, transform, paginate } = (0, responser_decorator_1.getResponserOptions)(target);
         if (!transform) {
             return call$;
         }

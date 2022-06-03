@@ -32,6 +32,7 @@ const helper_service_email_1 = require("../helper/helper.service.email");
 const system_constant_1 = require("../../constants/system.constant");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('MongoDB');
 exports.databaseProvider = {
     inject: [helper_service_email_1.EmailService],
     provide: system_constant_1.DB_CONNECTION_TOKEN,
@@ -50,21 +51,21 @@ exports.databaseProvider = {
             return mongoose_1.default.connect(APP_CONFIG.MONGO_DB.uri, {});
         };
         mongoose_1.default.connection.on('connecting', () => {
-            logger_1.default.info('[MongoDB]', 'connecting...');
+            log.info('connecting...');
         });
         mongoose_1.default.connection.on('open', () => {
-            logger_1.default.info('[MongoDB]', 'readied!');
+            log.info('readied (open).');
             if (reconnectionTask) {
                 clearTimeout(reconnectionTask);
                 reconnectionTask = null;
             }
         });
         mongoose_1.default.connection.on('disconnected', () => {
-            logger_1.default.error('[MongoDB]', `disconnected! retry when after ${RECONNECT_INTERVAL / 1000}s`);
+            log.error(`disconnected! retry when after ${RECONNECT_INTERVAL / 1000}s`);
             reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL);
         });
         mongoose_1.default.connection.on('error', (error) => {
-            logger_1.default.error('[MongoDB]', 'error!', error);
+            log.error('error!', error);
             mongoose_1.default.disconnect();
             sendAlarmMail(String(error));
         });

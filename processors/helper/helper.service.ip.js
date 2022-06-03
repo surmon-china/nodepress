@@ -17,11 +17,12 @@ const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('IP_Query');
 let IPService = class IPService {
     constructor(httpService) {
         this.httpService = httpService;
     }
-    queryLocationByIPAPI(ip) {
+    queryLocationByIP_API(ip) {
         return this.httpService.axiosRef
             .get(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,region,regionName,city,zip`)
             .then((response) => {
@@ -39,7 +40,7 @@ let IPService = class IPService {
         })
             .catch((error) => {
             const message = (0, error_transformer_1.getMessageFromAxiosError)(error);
-            logger_1.default.warn('[IP Query]', 'queryLocationByIPAPI failed!', message);
+            log.warn('queryLocationByIPAPI failed!', message);
             return Promise.reject(message);
         });
     }
@@ -61,12 +62,12 @@ let IPService = class IPService {
         })
             .catch((error) => {
             const message = (0, error_transformer_1.getMessageFromAxiosError)(error);
-            logger_1.default.warn('[IP Query]', 'queryLocationByAPICo failed!', message);
+            log.warn('queryLocationByAPICo failed!', message);
             return Promise.reject(message);
         });
     }
     queryLocation(ip) {
-        return this.queryLocationByIPAPI(ip)
+        return this.queryLocationByIP_API(ip)
             .catch(() => this.queryLocationByAPICo(ip))
             .catch(() => null);
     }

@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteController = void 0;
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
@@ -96,7 +96,7 @@ let VoteController = class VoteController {
             `Author: ${message.author}`,
             `Location: ${message.location
                 ? [message.location.country, message.location.region, message.location.city].join(' · ')
-                : 'unknow'}`,
+                : 'unknown'}`,
         ];
         const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('');
         const linkHTML = `<a href="${message.link}" target="_blank">${message.on}</a>`;
@@ -170,10 +170,10 @@ let VoteController = class VoteController {
         this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then((author) => {
             if (author) {
                 this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
-                    const tagetTitle = await this.getTargetTitle(comment.post_id);
+                    const targetTitle = await this.getTargetTitle(comment.post_id);
                     const mailParams = {
                         vote: voteBody.vote > 0 ? '+1' : '-1',
-                        on: `${tagetTitle} #${comment.id}`,
+                        on: `${targetTitle} #${comment.id}`,
                         author,
                         location: await this.queryIPLocation(visitor.ip),
                         link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
@@ -191,7 +191,7 @@ let VoteController = class VoteController {
 __decorate([
     (0, throttler_1.Throttle)(10, 60 * 60),
     (0, common_1.Post)('/site'),
-    responsor_decorator_1.Responsor.handle('Vote site'),
+    responser_decorator_1.Responser.handle('Vote site'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
     __param(2, (0, queryparams_decorator_1.QueryParams)()),
@@ -202,7 +202,7 @@ __decorate([
 __decorate([
     (0, throttler_1.Throttle)(15, 60),
     (0, common_1.Post)('/article'),
-    responsor_decorator_1.Responsor.handle('Vote article'),
+    responser_decorator_1.Responser.handle('Vote article'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
     __param(2, (0, queryparams_decorator_1.QueryParams)()),
@@ -213,7 +213,7 @@ __decorate([
 __decorate([
     (0, throttler_1.Throttle)(10, 30),
     (0, common_1.Post)('/comment'),
-    responsor_decorator_1.Responsor.handle('Vote comment'),
+    responser_decorator_1.Responser.handle('Vote comment'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
     __param(2, (0, queryparams_decorator_1.QueryParams)()),

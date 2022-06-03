@@ -18,7 +18,7 @@ export declare class CategoryService {
     private readonly articleModel;
     private readonly categoryModel;
     constructor(seoService: SeoService, archiveService: ArchiveService, articleModel: MongooseModel<Article>, categoryModel: MongooseModel<Category>);
-    paginater(query: PaginateQuery<Category>, options: PaginateOptions, publicOnly: boolean): Promise<PaginateResult<Category>>;
+    paginator(query: PaginateQuery<Category>, options: PaginateOptions, publicOnly: boolean): Promise<PaginateResult<Category>>;
     getDetailBySlug(slug: string): Promise<MongooseDoc<Category>>;
     create(newCategory: Category): Promise<MongooseDoc<Category>>;
     getGenealogyById(categoryID: MongooseID): Promise<Category[]>;

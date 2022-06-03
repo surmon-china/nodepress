@@ -42,6 +42,7 @@ const error_transformer_1 = require("../../transformers/error.transformer");
 const value_constant_1 = require("../../constants/value.constant");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('GoogleAPI');
 let GoogleService = class GoogleService {
     constructor() {
         this.jwtClient = null;
@@ -56,18 +57,18 @@ let GoogleService = class GoogleService {
             ], value_constant_1.UNDEFINED);
         }
         catch (error) {
-            logger_1.default.warn('[GoogleAPI]', 'client initialization failed!');
+            log.warn('client initialization failed!');
         }
     }
     getCredentials() {
         return new Promise((resolve, reject) => {
             if (!this.jwtClient) {
-                return reject('[GoogleAPI] client initialization failed!');
+                return reject('GoogleAPI client initialization failed!');
             }
             this.jwtClient.authorize((error, credentials) => {
                 const message = (0, error_transformer_1.getMessageFromNormalError)(error);
                 if (message) {
-                    logger_1.default.warn('[GoogleAPI]', 'jwt authorize failed: ', message);
+                    log.warn('JWT authorize failed!', message);
                     reject(message);
                 }
                 resolve(credentials);

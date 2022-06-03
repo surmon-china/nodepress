@@ -31,7 +31,7 @@ const lodash_1 = __importDefault(require("lodash"));
 const mongoose_1 = require("mongoose");
 const common_1 = require("@nestjs/common");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
@@ -93,7 +93,7 @@ let ArticleController = class ArticleController {
             const category = await this.categoryService.getDetailBySlug(filters.category_slug);
             paginateQuery.category = category._id;
         }
-        return this.articleService.paginater(paginateQuery, paginateOptions);
+        return this.articleService.paginator(paginateQuery, paginateOptions);
     }
     getHottestArticles(query) {
         return query.count
@@ -143,8 +143,8 @@ let ArticleController = class ArticleController {
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.paginate(),
-    responsor_decorator_1.Responsor.handle('Get articles'),
+    responser_decorator_1.Responser.paginate(),
+    responser_decorator_1.Responser.handle('Get articles'),
     __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticlePaginateQueryDTO]),
@@ -152,7 +152,7 @@ __decorate([
 ], ArticleController.prototype, "getArticles", null);
 __decorate([
     (0, common_1.Get)('hottest'),
-    responsor_decorator_1.Responsor.handle('Get hottest articles'),
+    responser_decorator_1.Responser.handle('Get hottest articles'),
     __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticleListQueryDTO]),
@@ -161,7 +161,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('calendar'),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.handle('Get article calendar'),
+    responser_decorator_1.Responser.handle('Get article calendar'),
     __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
     __param(1, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
@@ -170,7 +170,7 @@ __decorate([
 ], ArticleController.prototype, "getArticleCalendar", null);
 __decorate([
     (0, common_1.Get)(':id/context'),
-    responsor_decorator_1.Responsor.handle('Get context articles'),
+    responser_decorator_1.Responser.handle('Get context articles'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -179,7 +179,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.handle({
+    responser_decorator_1.Responser.handle({
         message: 'Get article detail',
         error: common_1.HttpStatus.NOT_FOUND,
     }),
@@ -191,7 +191,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Create article'),
+    responser_decorator_1.Responser.handle('Create article'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_model_2.Article]),
@@ -200,7 +200,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update article'),
+    responser_decorator_1.Responser.handle('Update article'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -210,7 +210,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete article'),
+    responser_decorator_1.Responser.handle('Delete article'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -219,7 +219,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update articles'),
+    responser_decorator_1.Responser.handle('Update articles'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticlesStateDTO]),
@@ -228,7 +228,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete articles'),
+    responser_decorator_1.Responser.handle('Delete articles'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticleIDsDTO]),

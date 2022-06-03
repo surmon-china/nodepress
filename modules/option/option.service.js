@@ -46,6 +46,7 @@ const cache_service_1 = require("../../processors/cache/cache.service");
 const option_model_1 = require("./option.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('OptionService');
 let OptionService = class OptionService {
     constructor(optionModel, cacheService) {
         this.optionModel = optionModel;
@@ -60,7 +61,7 @@ let OptionService = class OptionService {
             },
         });
         this.optionCache.update().catch((error) => {
-            logger_1.default.warn('[option]', 'init getAppOption', error);
+            log.warn('init getAppOption failed!', error);
         });
     }
     async ensureAppOption() {

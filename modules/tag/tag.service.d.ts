@@ -17,7 +17,7 @@ export declare class TagService {
     getAllTags(): Promise<Array<Tag>>;
     getAllTagsCache(): Promise<Array<Tag>>;
     updateAllTagsCache(): Promise<Array<Tag>>;
-    paginater(querys: PaginateQuery<Tag>, options: PaginateOptions, publicOnly: boolean): Promise<PaginateResult<Tag>>;
+    paginator(query: PaginateQuery<Tag>, options: PaginateOptions, publicOnly: boolean): Promise<PaginateResult<Tag>>;
     getDetailBySlug(slug: string): Promise<MongooseDoc<Tag>>;
     create(newTag: Tag): Promise<MongooseDoc<Tag>>;
     update(tagID: MongooseID, newTag: Tag): Promise<MongooseDoc<Tag>>;

@@ -33,7 +33,7 @@ const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
 const expose_pipe_1 = require("../../pipes/expose.pipe");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const announcement_dto_1 = require("./announcement.dto");
 const announcement_service_1 = require("./announcement.service");
@@ -52,7 +52,7 @@ let AnnouncementController = class AnnouncementController {
         if (state != null) {
             paginateQuery.state = state;
         }
-        return this.announcementService.paginater(paginateQuery, {
+        return this.announcementService.paginator(paginateQuery, {
             page,
             perPage: per_page,
             dateSort: sort,
@@ -74,8 +74,8 @@ let AnnouncementController = class AnnouncementController {
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.paginate(),
-    responsor_decorator_1.Responsor.handle('Get announcements'),
+    responser_decorator_1.Responser.paginate(),
+    responser_decorator_1.Responser.handle('Get announcements'),
     __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_dto_1.AnnouncementPaginateQueryDTO]),
@@ -84,7 +84,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Create announcement'),
+    responser_decorator_1.Responser.handle('Create announcement'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_model_1.Announcement]),
@@ -93,7 +93,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete announcements'),
+    responser_decorator_1.Responser.handle('Delete announcements'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_dto_1.AnnouncementsDTO]),
@@ -102,7 +102,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update announcement'),
+    responser_decorator_1.Responser.handle('Update announcement'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -112,7 +112,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete announcement'),
+    responser_decorator_1.Responser.handle('Delete announcement'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

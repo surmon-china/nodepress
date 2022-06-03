@@ -78,7 +78,7 @@ let ArticleService = class ArticleService {
         });
     }
     getHottestArticles(count) {
-        return this.paginater(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, {
+        return this.paginator(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, {
             perPage: count,
             sort: article_model_1.ARTICLE_HOTTEST_SORT_PARAMS,
         }).then((result) => result.documents);
@@ -91,11 +91,11 @@ let ArticleService = class ArticleService {
             early: { field: '$lt', sort: -1 },
             later: { field: '$gt', sort: 1 },
         };
-        const trgetType = typeFieldMap[type];
+        const targetType = typeFieldMap[type];
         return this.articleModel
-            .find(Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { id: { [trgetType.field]: articleID } }), article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
+            .find(Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { id: { [targetType.field]: articleID } }), article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
             .populate(article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE)
-            .sort({ id: trgetType.sort })
+            .sort({ id: targetType.sort })
             .limit(count)
             .exec();
     }
@@ -108,7 +108,7 @@ let ArticleService = class ArticleService {
         const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject());
         return lodash_1.default.sampleSize(filtered, count);
     }
-    paginater(query, options) {
+    paginator(query, options) {
         return this.articleModel.paginate(query, Object.assign(Object.assign({}, options), { projection: article_model_1.ARTICLE_LIST_QUERY_PROJECTION, populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE }));
     }
     getList(articleIDs) {

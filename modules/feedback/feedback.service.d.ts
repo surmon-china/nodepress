@@ -10,7 +10,7 @@ export declare class FeedbackService {
     private readonly feedbackModel;
     constructor(ipService: IPService, emailService: EmailService, feedbackModel: MongooseModel<Feedback>);
     private emailToAdmin;
-    paginater(querys: PaginateQuery<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>>;
+    paginator(query: PaginateQuery<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>>;
     create(feedback: FeedbackBase, visitor: QueryVisitor): Promise<MongooseDoc<Feedback>>;
     getDetail(feedbackID: MongooseID): Promise<MongooseDoc<Feedback>>;
     update(feedbackID: MongooseID, newFeedback: Partial<Feedback>): Promise<MongooseDoc<Feedback>>;

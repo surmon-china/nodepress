@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArchiveController = void 0;
 const common_1 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const archive_service_1 = require("./archive.service");
 let ArchiveController = class ArchiveController {
     constructor(archiveService) {
@@ -27,7 +27,7 @@ let ArchiveController = class ArchiveController {
 };
 __decorate([
     (0, common_1.Get)(),
-    responsor_decorator_1.Responsor.handle('Get archive'),
+    responser_decorator_1.Responser.handle('Get archive'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -35,7 +35,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update archive cache'),
+    responser_decorator_1.Responser.handle('Update archive cache'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

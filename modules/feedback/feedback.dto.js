@@ -24,7 +24,7 @@ __decorate([
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknowToNumber)(value)),
+    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], FeedbackPaginateQueryDTO.prototype, "tid", void 0);
 __decorate([
@@ -32,7 +32,7 @@ __decorate([
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknowToNumber)(value)),
+    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], FeedbackPaginateQueryDTO.prototype, "emotion", void 0);
 __decorate([
@@ -40,7 +40,7 @@ __decorate([
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknowToNumber)(value)),
+    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], FeedbackPaginateQueryDTO.prototype, "marked", void 0);
 exports.FeedbackPaginateQueryDTO = FeedbackPaginateQueryDTO;

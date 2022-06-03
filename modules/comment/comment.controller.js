@@ -35,7 +35,7 @@ const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
 const expose_pipe_1 = require("../../pipes/expose.pipe");
 const biz_constant_1 = require("../../constants/biz.constant");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const comment_dto_1 = require("./comment.dto");
 const comment_service_1 = require("./comment.service");
@@ -71,7 +71,7 @@ let CommentController = class CommentController {
                 { 'author.email': keywordRegExp },
             ];
         }
-        return this.commentService.paginater(paginateQuery, paginateOptions, isUnauthenticated);
+        return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated);
     }
     createComment(comment, { visitor }) {
         return comment.author.email
@@ -102,8 +102,8 @@ let CommentController = class CommentController {
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.paginate(),
-    responsor_decorator_1.Responsor.handle('Get comments'),
+    responser_decorator_1.Responser.paginate(),
+    responser_decorator_1.Responser.handle('Get comments'),
     __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
     __param(1, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
@@ -113,7 +113,7 @@ __decorate([
 __decorate([
     (0, throttler_1.Throttle)(6, 30),
     (0, common_1.Post)(),
-    responsor_decorator_1.Responsor.handle('Create comment'),
+    responser_decorator_1.Responser.handle('Create comment'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
@@ -123,7 +123,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update comments'),
+    responser_decorator_1.Responser.handle('Update comments'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -133,7 +133,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete comments'),
+    responser_decorator_1.Responser.handle('Delete comments'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [comment_dto_1.CommentsDTO]),
@@ -142,7 +142,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle({ message: 'Get comment detail', error: common_1.HttpStatus.NOT_FOUND }),
+    responser_decorator_1.Responser.handle({ message: 'Get comment detail', error: common_1.HttpStatus.NOT_FOUND }),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -151,7 +151,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update comment'),
+    responser_decorator_1.Responser.handle('Update comment'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -161,7 +161,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id/ip_location'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update comment IP location'),
+    responser_decorator_1.Responser.handle('Update comment IP location'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -170,7 +170,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete comment'),
+    responser_decorator_1.Responser.handle('Delete comment'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

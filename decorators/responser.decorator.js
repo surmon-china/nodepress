@@ -26,14 +26,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Responsor = exports.paginate = exports.handle = exports.success = exports.error = exports.getResponsorOptions = void 0;
+exports.Responser = exports.paginate = exports.handle = exports.success = exports.error = exports.getResponserOptions = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
 const value_constant_1 = require("../constants/value.constant");
 const reflector_constant_1 = require("../constants/reflector.constant");
 const META = __importStar(require("../constants/meta.constant"));
 const TEXT = __importStar(require("../constants/text.constant"));
-const getResponsorOptions = (target) => {
+const getResponserOptions = (target) => {
     return {
         errorCode: reflector_constant_1.reflector.get(META.HTTP_ERROR_CODE, target),
         successCode: reflector_constant_1.reflector.get(META.HTTP_SUCCESS_CODE, target),
@@ -43,7 +43,7 @@ const getResponsorOptions = (target) => {
         paginate: reflector_constant_1.reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target),
     };
 };
-exports.getResponsorOptions = getResponsorOptions;
+exports.getResponserOptions = getResponserOptions;
 const createDecorator = (options) => {
     const { errorMessage, successMessage, errorCode, successCode, usePaginate } = options;
     return (_, __, descriptor) => {
@@ -99,5 +99,5 @@ const paginate = () => {
     return createDecorator({ usePaginate: true });
 };
 exports.paginate = paginate;
-exports.Responsor = { error: exports.error, success: exports.success, handle, paginate: exports.paginate };
-//# sourceMappingURL=responsor.decorator.js.map
+exports.Responser = { error: exports.error, success: exports.success, handle, paginate: exports.paginate };
+//# sourceMappingURL=responser.decorator.js.map

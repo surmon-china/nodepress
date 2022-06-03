@@ -49,6 +49,7 @@ const disqus_1 = require("../../utils/disqus");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const disqus_xml_1 = require("./disqus.xml");
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
+const log = logger_1.default.scope('DisqusPrivateService');
 let DisqusPrivateService = class DisqusPrivateService {
     constructor(articleService, commentService) {
         this.articleService = articleService;
@@ -74,7 +75,7 @@ let DisqusPrivateService = class DisqusPrivateService {
             return response.response;
         }
         catch (error) {
-            logger_1.default.warn('[disqus]', 'createThread', postID, error);
+            log.warn('createThread failed!', postID, error);
             throw error;
         }
     }
@@ -82,7 +83,7 @@ let DisqusPrivateService = class DisqusPrivateService {
         return this.disqus
             .request('threads/list', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken, forum: app_config_1.DISQUS.forum }, params))
             .catch((error) => {
-            logger_1.default.warn('[disqus]', 'getThreads', error);
+            log.warn('getThreads failed!', error);
             return Promise.reject(error);
         });
     }
@@ -90,7 +91,7 @@ let DisqusPrivateService = class DisqusPrivateService {
         return this.disqus
             .request('posts/list', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken, forum: app_config_1.DISQUS.forum }, params))
             .catch((error) => {
-            logger_1.default.warn('[disqus]', 'getPosts', error);
+            log.warn('getPosts failed!', error);
             return Promise.reject(error);
         });
     }
@@ -98,7 +99,7 @@ let DisqusPrivateService = class DisqusPrivateService {
         return this.disqus
             .request('threads/update', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken }, params))
             .catch((error) => {
-            logger_1.default.warn('[disqus]', 'updateThread', error);
+            log.warn('updateThread failed!', error);
             return Promise.reject(error);
         });
     }
@@ -106,7 +107,7 @@ let DisqusPrivateService = class DisqusPrivateService {
         return this.disqus
             .request('posts/update', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken }, params))
             .catch((error) => {
-            logger_1.default.warn('[disqus]', 'updatePost', error);
+            log.warn('updatePost failed!', error);
             return Promise.reject(error);
         });
     }
@@ -114,7 +115,7 @@ let DisqusPrivateService = class DisqusPrivateService {
         return this.disqus
             .request('posts/approve', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken }, params))
             .catch((error) => {
-            logger_1.default.warn('[disqus]', 'approvePost', error);
+            log.warn('approvePost failed!', error);
             return Promise.reject(error);
         });
     }
@@ -206,7 +207,7 @@ let DisqusPrivateService = class DisqusPrivateService {
                 fail.push(each);
             }
         }
-        logger_1.default.info('[disqus]', 'import XML', { done: done.length, fail: fail.length });
+        log.info('import XML', { done: done.length, fail: fail.length });
         return { done, fail };
     }
 };

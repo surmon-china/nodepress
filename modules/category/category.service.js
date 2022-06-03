@@ -27,7 +27,7 @@ let CategoryService = class CategoryService {
         this.articleModel = articleModel;
         this.categoryModel = categoryModel;
     }
-    async paginater(query, options, publicOnly) {
+    async paginator(query, options, publicOnly) {
         const categories = await this.categoryModel.paginate(query, Object.assign(Object.assign({}, options), { lean: true }));
         const counts = await this.articleModel.aggregate([
             { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
@@ -35,8 +35,8 @@ let CategoryService = class CategoryService {
             { $group: { _id: '$category', count: { $sum: 1 } } },
         ]);
         const hydratedDocs = categories.documents.map((category) => {
-            const finded = counts.find((item) => String(item._id) === String(category._id));
-            return Object.assign(Object.assign({}, category), { articles_count: finded ? finded.count : 0 });
+            const found = counts.find((item) => String(item._id) === String(category._id));
+            return Object.assign(Object.assign({}, category), { articles_count: found ? found.count : 0 });
         });
         return Object.assign(Object.assign({}, categories), { documents: hydratedDocs });
     }

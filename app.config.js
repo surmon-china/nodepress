@@ -55,15 +55,15 @@ exports.EMAIL = {
     from: `"${exports.APP.FE_NAME}" <${yargs_1.argv.email_from || yargs_1.argv.email_account}>`,
 };
 exports.DISQUS = {
-    adminAccessToken: yargs_1.argv.disqus_admin_access_token || 'disqus admin access_token',
-    adminUsername: yargs_1.argv.disqus_admin_username || 'disqus admin username',
-    forum: yargs_1.argv.disqus_forum_shortname || 'disqus forum shortname',
-    publicKey: yargs_1.argv.disqus_public_key || 'disqus application public_key',
-    secretKey: yargs_1.argv.disqus_secret_key || 'disqus application secret_key',
+    adminAccessToken: yargs_1.argv.disqus_admin_access_token || 'Disqus admin access_token',
+    adminUsername: yargs_1.argv.disqus_admin_username || 'Disqus admin username',
+    forum: yargs_1.argv.disqus_forum_shortname || 'Disqus forum shortname',
+    publicKey: yargs_1.argv.disqus_public_key || 'Disqus application public_key',
+    secretKey: yargs_1.argv.disqus_secret_key || 'Disqus application secret_key',
 };
 exports.AKISMET = {
-    key: yargs_1.argv.akismet_key || 'your akismet Key',
-    blog: yargs_1.argv.akismet_blog || 'your akismet blog site, e.g. https://surmon.me',
+    key: yargs_1.argv.akismet_key || 'your Akismet Key',
+    blog: yargs_1.argv.akismet_blog || 'your Akismet blog site, e.g. https://surmon.me',
 };
 exports.BAIDU_INDEXED = {
     site: yargs_1.argv.baidu_site || 'your baidu site domain. e.g. https://surmon.me',

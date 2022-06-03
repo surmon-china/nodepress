@@ -32,7 +32,7 @@ const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const expose_pipe_1 = require("../../pipes/expose.pipe");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const value_transformer_1 = require("../../transformers/value.transformer");
 const feedback_dto_1 = require("./feedback.dto");
@@ -65,7 +65,7 @@ let FeedbackController = class FeedbackController {
                 { remark: keywordRegExp },
             ];
         }
-        return this.feedbackService.paginater(paginateQuery, paginateOptions);
+        return this.feedbackService.paginator(paginateQuery, paginateOptions);
     }
     createFeedback(feedback, { visitor }) {
         return this.feedbackService.create(feedback, visitor);
@@ -83,8 +83,8 @@ let FeedbackController = class FeedbackController {
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.paginate(),
-    responsor_decorator_1.Responsor.handle('Get feedbacks'),
+    responser_decorator_1.Responser.paginate(),
+    responser_decorator_1.Responser.handle('Get feedbacks'),
     __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [feedback_dto_1.FeedbackPaginateQueryDTO]),
@@ -93,7 +93,7 @@ __decorate([
 __decorate([
     (0, throttler_1.Throttle)(3, 30),
     (0, common_1.Post)(),
-    responsor_decorator_1.Responsor.handle('Create feedback'),
+    responser_decorator_1.Responser.handle('Create feedback'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
@@ -103,7 +103,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete feedbacks'),
+    responser_decorator_1.Responser.handle('Delete feedbacks'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [feedback_dto_1.FeedbacksDTO]),
@@ -112,7 +112,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update feedback'),
+    responser_decorator_1.Responser.handle('Update feedback'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -122,7 +122,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete feedback'),
+    responser_decorator_1.Responser.handle('Delete feedback'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

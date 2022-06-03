@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const auth_dto_1 = require("./auth.dto");
 const auth_service_1 = require("./auth.service");
@@ -60,7 +60,7 @@ let AuthController = class AuthController {
 };
 __decorate([
     (0, common_1.Post)('login'),
-    responsor_decorator_1.Responsor.handle({ message: 'Login', error: common_1.HttpStatus.BAD_REQUEST }),
+    responser_decorator_1.Responser.handle({ message: 'Login', error: common_1.HttpStatus.BAD_REQUEST }),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -69,7 +69,7 @@ __decorate([
 ], AuthController.prototype, "login", null);
 __decorate([
     (0, common_1.Get)('admin'),
-    responsor_decorator_1.Responsor.handle('Get admin info'),
+    responser_decorator_1.Responser.handle('Get admin info'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -77,7 +77,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)('admin'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update admin info'),
+    responser_decorator_1.Responser.handle('Update admin info'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [auth_dto_1.AuthUpdateDTO]),
@@ -86,7 +86,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('check'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Check token'),
+    responser_decorator_1.Responser.handle('Check token'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
@@ -94,7 +94,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('renewal'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Renewal Token'),
+    responser_decorator_1.Responser.handle('Renewal Token'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Object)

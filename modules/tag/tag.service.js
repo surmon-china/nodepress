@@ -50,6 +50,7 @@ const article_model_1 = require("../article/article.model");
 const tag_model_1 = require("./tag.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('TagService');
 let TagService = class TagService {
     constructor(seoService, cacheService, archiveService, tagModel, articleModel) {
         this.seoService = seoService;
@@ -63,7 +64,7 @@ let TagService = class TagService {
             promise: () => this.getAllTags(),
         });
         this.updateAllTagsCache().catch((error) => {
-            logger_1.default.warn('[tag]', 'init tagPaginateCache', error);
+            log.warn('init tagPaginateCache failed!', error);
         });
     }
     async aggregate(publicOnly, documents) {
@@ -89,8 +90,8 @@ let TagService = class TagService {
     updateAllTagsCache() {
         return this.allTagsCache.update();
     }
-    async paginater(querys, options, publicOnly) {
-        const tags = await this.tagModel.paginate(querys, Object.assign(Object.assign({}, options), { lean: true }));
+    async paginator(query, options, publicOnly) {
+        const tags = await this.tagModel.paginate(query, Object.assign(Object.assign({}, options), { lean: true }));
         const documents = await this.aggregate(publicOnly, tags.documents);
         return Object.assign(Object.assign({}, tags), { documents });
     }

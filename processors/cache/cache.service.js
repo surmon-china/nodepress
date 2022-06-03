@@ -18,28 +18,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CacheService = void 0;
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
-const logger_1 = __importDefault(require("../../utils/logger"));
+const cache_logger_1 = require("./cache.logger");
 let CacheService = class CacheService {
     constructor(cacheManager) {
         this.isReadied = false;
         this.cacheStore = cacheManager.store;
         this.cacheStore.client.on('connect', () => {
-            logger_1.default.info('[Redis]', 'connecting...');
+            cache_logger_1.redisLog.info('connecting...');
         });
         this.cacheStore.client.on('reconnecting', () => {
-            logger_1.default.warn('[Redis]', 'reconnecting...');
+            cache_logger_1.redisLog.warn('reconnecting...');
         });
         this.cacheStore.client.on('ready', () => {
             this.isReadied = true;
-            logger_1.default.info('[Redis]', 'readied!');
+            cache_logger_1.redisLog.info('readied.');
         });
         this.cacheStore.client.on('end', () => {
             this.isReadied = false;
-            logger_1.default.error('[Redis]', 'Client End!');
+            cache_logger_1.redisLog.error('client end!');
         });
         this.cacheStore.client.on('error', (error) => {
             this.isReadied = false;
-            logger_1.default.error('[Redis]', `Client Error!`, error.message);
+            cache_logger_1.redisLog.error(`client error!`, error.message);
         });
         this.cacheStore.client.connect();
     }
@@ -94,7 +94,7 @@ let CacheService = class CacheService {
                     .catch((error) => {
                     const time = timeout.error || timeout.success;
                     setTimeout(doPromise, time);
-                    logger_1.default.warn('[Redis]', `超时任务执行失败，${time / 1000}s 后重试`, error);
+                    cache_logger_1.cacheLog.warn(`timeout task failed! retry when after ${time / 1000}s,`, error);
                 });
             };
             doPromise();
@@ -104,7 +104,7 @@ let CacheService = class CacheService {
                 promiseTask()
                     .then((data) => data)
                     .catch((error) => {
-                    logger_1.default.warn('[Redis]', `定时任务执行失败，${timing.error / 1000}s 后重试`, error);
+                    cache_logger_1.cacheLog.warn(`timing task failed! retry when after ${timing.error / 1000}s,`, error);
                     setTimeout(doPromise, timing.error);
                 });
             };

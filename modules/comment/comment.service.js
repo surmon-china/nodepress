@@ -52,6 +52,7 @@ const comment_model_1 = require("./comment.model");
 const app_environment_1 = require("../../app.environment");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const APP_CONFIG = __importStar(require("../../app.config"));
+const log = logger_1.default.scope('CommentService');
 let CommentService = class CommentService {
     constructor(ipService, emailService, akismetService, optionService, articleService, commentModel) {
         this.ipService = ipService;
@@ -124,7 +125,7 @@ let CommentService = class CommentService {
             }
         }
         catch (error) {
-            logger_1.default.warn('[comment]', 'updateCommentCountWithArticle failed!', error);
+            log.warn('updateCommentCountWithArticle failed!', error);
         }
     }
     updateBlocklistAkismetWithComment(comments, state, referer) {
@@ -137,8 +138,8 @@ let CommentService = class CommentService {
             ? this.optionService.appendToBlocklist({ ips, emails })
             : this.optionService.removeFromBlocklist({ ips, emails });
         blocklistAction
-            .then(() => logger_1.default.info('[comment]', 'updateBlocklistAkismetWithComment.blocklistAction > succeed'))
-            .catch((error) => logger_1.default.warn('[comment]', 'updateBlocklistAkismetWithComment.blocklistAction > failed', error));
+            .then(() => log.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
+            .catch((error) => log.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error));
     }
     async isNotBlocklisted(comment) {
         const { blocklist } = await this.optionService.ensureAppOption();
@@ -162,8 +163,8 @@ let CommentService = class CommentService {
     getAll() {
         return this.commentModel.find().exec();
     }
-    async paginater(querys, options, hideIPEmail = false) {
-        const result = await this.commentModel.paginate(querys, options);
+    async paginator(query, options, hideIPEmail = false) {
+        const result = await this.commentModel.paginate(query, options);
         if (!hideIPEmail) {
             return result;
         }
@@ -233,7 +234,7 @@ let CommentService = class CommentService {
             this.updateBlocklistAkismetWithComment(todoComments, state, referer);
         }
         catch (error) {
-            logger_1.default.warn('[comment]', `对评论进行改变状态 ${state} 时，出现查询错误！`, error);
+            log.warn(`batchPatchState to ${state} failed!`, error);
         }
         return actionResult;
     }

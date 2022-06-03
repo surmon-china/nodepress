@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.unknowToDate = exports.numberToBoolean = exports.unknowToNumber = void 0;
+exports.unknownToDate = exports.numberToBoolean = exports.unknownToNumber = void 0;
 const class_validator_1 = require("class-validator");
-function unknowToNumber(value) {
+function unknownToNumber(value) {
     return (0, class_validator_1.isNumberString)(value) ? Number(value) : value;
 }
-exports.unknowToNumber = unknowToNumber;
+exports.unknownToNumber = unknownToNumber;
 function numberToBoolean(value) {
     return (0, class_validator_1.isNumber)(value, {
         allowNaN: false,
@@ -15,8 +15,8 @@ function numberToBoolean(value) {
         : value;
 }
 exports.numberToBoolean = numberToBoolean;
-function unknowToDate(value) {
+function unknownToDate(value) {
     return (0, class_validator_1.isDateString)(value) ? new Date(value) : value;
 }
-exports.unknowToDate = unknowToDate;
+exports.unknownToDate = unknownToDate;
 //# sourceMappingURL=value.transformer.js.map

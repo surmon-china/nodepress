@@ -12,7 +12,7 @@ export interface IPLocation {
 export declare class IPService {
     private readonly httpService;
     constructor(httpService: HttpService);
-    private queryLocationByIPAPI;
+    private queryLocationByIP_API;
     private queryLocationByAPICo;
     queryLocation(ip: IP): Promise<IPLocation | null>;
 }

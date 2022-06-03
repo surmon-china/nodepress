@@ -4,7 +4,7 @@ import { Announcement } from './announcement.model';
 export declare class AnnouncementService {
     private readonly announcementModel;
     constructor(announcementModel: MongooseModel<Announcement>);
-    paginater(query: PaginateQuery<Announcement>, options: PaginateOptions): Promise<PaginateResult<Announcement>>;
+    paginator(query: PaginateQuery<Announcement>, options: PaginateOptions): Promise<PaginateResult<Announcement>>;
     create(announcement: Announcement): Promise<MongooseDoc<Announcement>>;
     update(announcementID: MongooseID, announcement: Announcement): Promise<MongooseDoc<Announcement>>;
     delete(announcementID: MongooseID): Promise<MongooseDoc<Announcement>>;

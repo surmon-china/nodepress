@@ -18,7 +18,7 @@ export declare class ArticleService {
     getHottestArticlesCache(): Promise<Array<Article>>;
     getNearArticles(articleID: number, type: 'later' | 'early', count: number): Promise<Article[]>;
     getRelatedArticles(article: Article, count: number): Promise<Article[]>;
-    paginater(query: PaginateQuery<Article>, options: PaginateOptions): Promise<PaginateResult<Article>>;
+    paginator(query: PaginateQuery<Article>, options: PaginateOptions): Promise<PaginateResult<Article>>;
     getList(articleIDs: number[]): Promise<Array<Article>>;
     getDetailByObjectID(articleID: MongooseID): Promise<MongooseDoc<Article>>;
     getDetailByNumberIDOrSlug({ idOrSlug, publicOnly, populate, }: {

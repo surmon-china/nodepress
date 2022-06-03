@@ -23,6 +23,7 @@ const helper_service_email_1 = require("../../processors/helper/helper.service.e
 const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
 const app_config_1 = require("../../app.config");
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('ExpansionDB_Backup');
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
 const UPLOAD_INTERVAL = '0 0 3 * * *';
 const BACKUP_FILE_NAME = 'nodepress.zip';
@@ -31,7 +32,7 @@ let DBBackupService = class DBBackupService {
     constructor(emailService, awsService) {
         this.emailService = emailService;
         this.awsService = awsService;
-        logger_1.default.info('[expansion]', 'DB Backup 开始执行定时数据备份任务！');
+        log.info('schedule job initialized.');
         node_schedule_1.default.scheduleJob(UPLOAD_INTERVAL, () => {
             this.backup().catch(() => {
                 setTimeout(this.backup, UP_FAILED_TIMEOUT);
@@ -68,9 +69,9 @@ let DBBackupService = class DBBackupService {
             shelljs_1.default.mv('./backup', './backup.prev');
             shelljs_1.default.mkdir('backup');
             shelljs_1.default.exec(`mongodump --uri="${app_config_1.MONGO_DB.uri}" --out="backup"`, (code, out) => {
-                logger_1.default.info('[expansion]', 'DB Backup mongodump 执行完成！', code, out);
+                log.info('mongodump done.', code, out);
                 if (code !== 0) {
-                    logger_1.default.warn('[expansion]', 'DB Backup mongodump failed!', out);
+                    log.warn('mongodump failed!', out);
                     return reject(out);
                 }
                 if (!shelljs_1.default.which('zip')) {
@@ -80,8 +81,8 @@ let DBBackupService = class DBBackupService {
                 const fileDate = (0, moment_1.default)(new Date()).format('YYYY-MM-DD-HH:mm');
                 const fileName = `nodepress-mongodb/backup-${fileDate}.zip`;
                 const filePath = path_1.default.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME);
-                logger_1.default.info('[expansion]', 'DB Backup 上传文件: ' + fileName);
-                logger_1.default.info('[expansion]', 'DB Backup 文件源位置: ' + filePath);
+                log.info('uploading: ' + fileName);
+                log.info('file source: ' + filePath);
                 this.awsService
                     .uploadFile({
                     name: fileName,
@@ -93,11 +94,11 @@ let DBBackupService = class DBBackupService {
                     encryption: 'AES256',
                 })
                     .then((result) => {
-                    logger_1.default.info('[expansion]', 'DB Backup succeed!', result.url);
+                    log.info('upload succeed.', result.url);
                     resolve(result);
                 })
                     .catch((error) => {
-                    logger_1.default.warn('[expansion]', 'DB Backup failed!', error);
+                    log.warn('upload failed!', error);
                     reject(JSON.stringify(error.message));
                 });
             });

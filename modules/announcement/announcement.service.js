@@ -20,7 +20,7 @@ let AnnouncementService = class AnnouncementService {
     constructor(announcementModel) {
         this.announcementModel = announcementModel;
     }
-    paginater(query, options) {
+    paginator(query, options) {
         return this.announcementModel.paginate(query, options);
     }
     create(announcement) {

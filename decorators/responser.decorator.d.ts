@@ -1,10 +1,10 @@
 import { HttpStatus } from '@nestjs/common';
 import { ResponseMessage } from '@app/interfaces/response.interface';
-export interface ResponsorOptions extends Omit<DecoratorCreatorOption, 'usePaginate'> {
+export interface ResponserOptions extends Omit<DecoratorCreatorOption, 'usePaginate'> {
     transform?: boolean;
     paginate?: boolean;
 }
-export declare const getResponsorOptions: (target: any) => ResponsorOptions;
+export declare const getResponserOptions: (target: any) => ResponserOptions;
 interface DecoratorCreatorOption {
     errorCode?: HttpStatus;
     successCode?: HttpStatus;
@@ -23,7 +23,7 @@ export declare const error: (message: ResponseMessage, statusCode?: HttpStatus |
 export declare const success: (message: ResponseMessage, statusCode?: HttpStatus | undefined) => MethodDecorator;
 export declare function handle(args: HandleOptionConfig): MethodDecorator;
 export declare const paginate: () => MethodDecorator;
-export declare const Responsor: {
+export declare const Responser: {
     error: (message: ResponseMessage, statusCode?: HttpStatus | undefined) => MethodDecorator;
     success: (message: ResponseMessage, statusCode?: HttpStatus | undefined) => MethodDecorator;
     handle: typeof handle;

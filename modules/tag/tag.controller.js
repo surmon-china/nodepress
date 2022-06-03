@@ -33,7 +33,7 @@ const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
 const expose_pipe_1 = require("../../pipes/expose.pipe");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const tag_dto_1 = require("./tag.dto");
 const tag_service_1 = require("./tag.service");
@@ -51,7 +51,7 @@ let TagController = class TagController {
             const keywordRegExp = new RegExp(trimmed, 'i');
             paginateQuery.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }];
         }
-        return this.tagService.paginater(paginateQuery, paginateOptions, isUnauthenticated);
+        return this.tagService.paginator(paginateQuery, paginateOptions, isUnauthenticated);
     }
     getAllTags() {
         return this.tagService.getAllTagsCache();
@@ -72,8 +72,8 @@ let TagController = class TagController {
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.paginate(),
-    responsor_decorator_1.Responsor.handle('Get tags'),
+    responser_decorator_1.Responser.paginate(),
+    responser_decorator_1.Responser.handle('Get tags'),
     __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
     __param(1, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
@@ -82,7 +82,7 @@ __decorate([
 ], TagController.prototype, "getTags", null);
 __decorate([
     (0, common_1.Get)('all'),
-    responsor_decorator_1.Responsor.handle('Get all tags'),
+    responser_decorator_1.Responser.handle('Get all tags'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -90,7 +90,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Create tag'),
+    responser_decorator_1.Responser.handle('Create tag'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [tag_model_1.Tag]),
@@ -99,7 +99,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete tags'),
+    responser_decorator_1.Responser.handle('Delete tags'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [tag_dto_1.TagsDTO]),
@@ -108,7 +108,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update Tag'),
+    responser_decorator_1.Responser.handle('Update Tag'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -118,7 +118,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Delete tag'),
+    responser_decorator_1.Responser.handle('Delete tag'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

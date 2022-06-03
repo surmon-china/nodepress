@@ -42,6 +42,7 @@ const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const helper_service_google_1 = require("./helper.service.google");
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('SEO');
 var SEOAction;
 (function (SEOAction) {
     SEOAction["Push"] = "push";
@@ -54,25 +55,18 @@ let SeoService = class SeoService {
         this.googleService = googleService;
     }
     pingBaidu(action, urls) {
-        const urlKeyMap = {
-            [SEOAction.Push]: 'urls',
-            [SEOAction.Update]: 'update',
-            [SEOAction.Delete]: 'del',
-        };
-        const urlKey = urlKeyMap[action];
-        const actionText = `Baidu ping [${action}] action`;
         this.httpService.axiosRef
             .request({
             method: 'post',
             data: urls.join('\n'),
             headers: { 'Content-Type': 'text/plain' },
-            url: `http://data.zz.baidu.com/${urlKey}?site=${APP_CONFIG.BAIDU_INDEXED.site}&token=${APP_CONFIG.BAIDU_INDEXED.token}`,
+            url: `http://data.zz.baidu.com/urls?site=${APP_CONFIG.BAIDU_INDEXED.site}&token=${APP_CONFIG.BAIDU_INDEXED.token}`,
         })
             .then((response) => {
-            logger_1.default.info(`[SEO]`, `${actionText} succeed:`, urls, response.statusText);
+            log.info(`Baidu ping [${action}] succeed.`, urls, response.statusText);
         })
             .catch((error) => {
-            logger_1.default.warn(`[SEO]`, `${actionText} failed:`, (0, error_transformer_1.getMessageFromAxiosError)(error));
+            log.warn(`Baidu ping [${action}] failed!`, (0, error_transformer_1.getMessageFromAxiosError)(error));
         });
     }
     pingGoogle(action, urls) {
@@ -98,12 +92,12 @@ let SeoService = class SeoService {
                 url: `https://indexing.googleapis.com/v3/urlNotifications:publish`,
             })
                 .then((response) => {
-                logger_1.default.info(`[SEO]`, `${actionText} succeed:`, url, response.statusText);
+                log.info(`${actionText} succeed.`, url, response.statusText);
             })
                 .catch((error) => Promise.reject((0, error_transformer_1.getMessageFromAxiosError)(error)));
         })
             .catch((error) => {
-            logger_1.default.warn(`[SEO]`, `${actionText} failed:`, error);
+            log.warn(`${actionText} failed!`, error);
         });
     }
     humanizedUrl(url) {

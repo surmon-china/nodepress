@@ -15,30 +15,22 @@ const renderTime = () => {
     const now = new Date();
     return `[${now.toLocaleDateString()} ${now.toLocaleTimeString()}]`;
 };
-const renderModule = (message) => {
-    if (typeof message === 'string' && message.startsWith('[') && message.endsWith(']')) {
-        return chalk_1.default.green.underline(message.substr(1, message.length - 2));
-    }
-    else {
-        return message;
-    }
+const renderScope = (scope) => {
+    return chalk_1.default.green.underline(scope);
 };
 const renderMessage = (color, messages) => {
     return messages.map((m) => (typeof m === 'string' ? color(m) : m));
 };
-const renderLog = (method, levelLabel, messageColor) => {
-    return (message, ...args) => {
-        return console[method](chalk_1.default.greenBright(`[NP]`), renderTime(), levelLabel, renderModule(message), ...renderMessage(messageColor, args));
+const renderLog = (method, level, color, scope) => {
+    return (...messages) => {
+        return console[method](chalk_1.default.greenBright(`[NP]`), renderTime(), level, scope ? renderScope(scope) : '', ...renderMessage(color, messages));
     };
 };
-const createLogger = () => {
-    return {
-        debug: renderLog(LoggerLevel.Debug, chalk_1.default.cyan('[DEBUG]'), chalk_1.default.cyanBright),
-        info: renderLog(LoggerLevel.Info, chalk_1.default.blue('[_INFO]'), chalk_1.default.greenBright),
-        warn: renderLog(LoggerLevel.Warn, chalk_1.default.yellow('[_WARN]'), chalk_1.default.yellowBright),
-        error: renderLog(LoggerLevel.Error, chalk_1.default.red('[ERROR]'), chalk_1.default.redBright),
-    };
-};
-const logger = createLogger();
-exports.default = logger;
+const createLogger = (scope) => ({
+    debug: renderLog(LoggerLevel.Debug, chalk_1.default.cyan('[DEBUG]'), chalk_1.default.cyanBright, scope),
+    info: renderLog(LoggerLevel.Info, chalk_1.default.blue('[_INFO]'), chalk_1.default.greenBright, scope),
+    warn: renderLog(LoggerLevel.Warn, chalk_1.default.yellow('[_WARN]'), chalk_1.default.yellowBright, scope),
+    error: renderLog(LoggerLevel.Error, chalk_1.default.red('[ERROR]'), chalk_1.default.redBright, scope),
+});
+exports.default = Object.assign(Object.assign({}, createLogger()), { scope: createLogger });
 //# sourceMappingURL=logger.js.map

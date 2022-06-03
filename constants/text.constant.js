@@ -9,6 +9,6 @@ exports.HTTP_DEFAULT_SUCCESS_TEXT = exports.HTTP_DEFAULT_TEXT + exports.HTTP_SUC
 exports.HTTP_ANONYMOUS_TEXT = 'Who are U?';
 exports.HTTP_UNAUTHORIZED_TEXT_DEFAULT = 'Unauthorized';
 exports.HTTP_PARAMS_PERMISSION_ERROR_DEFAULT = 'Permission denied';
-exports.HTTP_BAD_REQUEST_TEXT_DEFAULT = 'Unknow error';
+exports.HTTP_BAD_REQUEST_TEXT_DEFAULT = 'Unknown error';
 exports.VALIDATION_ERROR_DEFAULT = 'Invalid params';
 //# sourceMappingURL=text.constant.js.map

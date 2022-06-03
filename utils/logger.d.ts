@@ -1,7 +1,13 @@
-declare const logger: {
-    debug: (message: string, ...args: any) => void;
-    info: (message: string, ...args: any) => void;
-    warn: (message: string, ...args: any) => void;
-    error: (message: string, ...args: any) => void;
+declare const _default: {
+    scope: (scope?: string | undefined) => {
+        debug: (...messages: any) => void;
+        info: (...messages: any) => void;
+        warn: (...messages: any) => void;
+        error: (...messages: any) => void;
+    };
+    debug: (...messages: any) => void;
+    info: (...messages: any) => void;
+    warn: (...messages: any) => void;
+    error: (...messages: any) => void;
 };
-export default logger;
+export default _default;

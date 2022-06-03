@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OptionController = void 0;
 const common_1 = require("@nestjs/common");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const option_service_1 = require("./option.service");
@@ -34,7 +34,7 @@ let OptionController = class OptionController {
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.handle('Get site options'),
+    responser_decorator_1.Responser.handle('Get site options'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -43,7 +43,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update site options'),
+    responser_decorator_1.Responser.handle('Update site options'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [option_model_1.Option]),

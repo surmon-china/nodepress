@@ -48,6 +48,7 @@ const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const disqus_service_private_1 = require("./disqus.service.private");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
+const log = logger_1.default.scope('DisqusPublicService');
 let DisqusPublicService = class DisqusPublicService {
     constructor(cacheService, commentService, disqusPrivateService) {
         this.cacheService = cacheService;
@@ -75,13 +76,13 @@ let DisqusPublicService = class DisqusPublicService {
     }
     async getAccessToken(code) {
         return this.disqus.getOAuthAccessToken(code, DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL).catch((error) => {
-            logger_1.default.warn('[disqus]', 'getAccessToken', error);
+            log.warn('getAccessToken failed!', error);
             return Promise.reject(error);
         });
     }
     async refreshAccessToken(refreshToken) {
         return this.disqus.refreshOAuthAccessToken(refreshToken).catch((error) => {
-            logger_1.default.warn('[disqus]', 'refreshAccessToken', error);
+            log.warn('refreshAccessToken failed!', error);
             return Promise.reject(error);
         });
     }
@@ -90,7 +91,7 @@ let DisqusPublicService = class DisqusPublicService {
             .request('users/details', { access_token: accessToken })
             .then((response) => response.response)
             .catch((error) => {
-            logger_1.default.warn('[disqus]', 'getUserInfo', error);
+            log.warn('getUserInfo failed!', error);
             return Promise.reject(error);
         });
     }
@@ -112,13 +113,13 @@ let DisqusPublicService = class DisqusPublicService {
     }
     async voteThread(params) {
         return this.disqus.request('threads/vote', params, true).catch((error) => {
-            logger_1.default.warn('[disqus]', 'voteThread', error);
+            log.warn('voteThread failed!', error);
             return Promise.reject(error);
         });
     }
     async votePost(params) {
         https: return this.disqus.request('posts/vote', params).catch((error) => {
-            logger_1.default.warn('[disqus]', 'votePost', error);
+            log.warn('votePost failed!', error);
             return Promise.reject(error);
         });
     }
@@ -150,7 +151,7 @@ let DisqusPublicService = class DisqusPublicService {
             .request('posts/create', body, !accessToken)
             .then((response) => response.response)
             .catch((error) => {
-            logger_1.default.warn('[disqus]', 'createDisqusComment', error);
+            log.warn('createDisqusComment failed!', error);
             return Promise.reject(error);
         }));
     }
@@ -191,7 +192,7 @@ let DisqusPublicService = class DisqusPublicService {
             .request('posts/remove', params)
             .then((response) => response.response)
             .catch((error) => {
-            logger_1.default.warn('[disqus]', 'deleteDisqusComment', error);
+            log.warn('deleteDisqusComment failed!', error);
             return Promise.reject(error);
         });
     }
@@ -204,7 +205,7 @@ let DisqusPublicService = class DisqusPublicService {
         const commentDisqusPostID = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY];
         const commentDisqusAuthorID = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY];
         if (!commentDisqusAuthorID || !commentDisqusPostID) {
-            throw 'Comment not deleteable';
+            throw 'Comment not deletable';
         }
         const userInfo = await this.getUserInfo(accessToken);
         if (userInfo.id !== commentDisqusAuthorID) {

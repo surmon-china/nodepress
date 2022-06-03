@@ -53,6 +53,6 @@ async function bootstrap() {
     return await app.listen(APP_CONFIG.APP.PORT);
 }
 bootstrap().then(() => {
-    logger_1.default.info(`NodePress Run！port at ${APP_CONFIG.APP.PORT}, env: ${app_environment_1.environment}`);
+    logger_1.default.info(`NodePress is running at ${APP_CONFIG.APP.PORT}, env: ${app_environment_1.environment}.`);
 });
 //# sourceMappingURL=main.js.map

@@ -22,6 +22,7 @@ const feedback_service_1 = require("../feedback/feedback.service");
 const tag_service_1 = require("../tag/tag.service");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const expansion_helper_1 = require("./expansion.helper");
+const log = logger_1.default.scope('ExpansionStatistic');
 const DEFAULT_STATISTIC = Object.freeze({
     tags: null,
     articles: null,
@@ -40,7 +41,7 @@ let StatisticService = class StatisticService {
         this.tagService = tagService;
         node_schedule_1.default.scheduleJob('1 0 0 * * *', () => {
             (0, expansion_helper_1.resetTodayViewsCount)(this.cacheService).catch((error) => {
-                logger_1.default.warn('[expansion]', 'statistic set TODAY_VIEWS Error:', error);
+                log.warn('reset TODAY_VIEWS failed!', error);
             });
         });
     }

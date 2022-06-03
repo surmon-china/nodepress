@@ -18,7 +18,7 @@ const platform_express_1 = require("@nestjs/platform-express");
 const throttler_1 = require("@nestjs/throttler");
 const app_environment_1 = require("../../app.environment");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const comment_model_1 = require("../comment/comment.model");
 const app_config_1 = require("../../app.config");
@@ -99,7 +99,7 @@ let DisqusController = class DisqusController {
 };
 __decorate([
     (0, common_1.Get)('config'),
-    responsor_decorator_1.Responsor.handle('Get Disqus config'),
+    responser_decorator_1.Responser.handle('Get Disqus config'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
@@ -108,7 +108,7 @@ __decorate([
     (0, common_1.Get)('oauth-callback'),
     (0, common_1.Header)('content-type', 'text/html'),
     (0, common_1.Header)('Content-Security-Policy', "script-src 'unsafe-inline'"),
-    responsor_decorator_1.Responsor.handle('Dsiqus OAuth login'),
+    responser_decorator_1.Responser.handle('Disqus OAuth login'),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
@@ -118,7 +118,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('oauth-logout'),
     (0, common_1.Header)('content-type', 'text/plain'),
-    responsor_decorator_1.Responsor.handle('Disqus OAuth logout'),
+    responser_decorator_1.Responser.handle('Disqus OAuth logout'),
     __param(0, (0, disqus_token_1.DisqusToken)()),
     __param(1, (0, common_1.Response)()),
     __metadata("design:type", Function),
@@ -127,7 +127,7 @@ __decorate([
 ], DisqusController.prototype, "oauthLogout", null);
 __decorate([
     (0, common_1.Get)('user-info'),
-    responsor_decorator_1.Responsor.handle('Get Disqus user info'),
+    responser_decorator_1.Responser.handle('Get Disqus user info'),
     __param(0, (0, disqus_token_1.DisqusToken)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -135,7 +135,7 @@ __decorate([
 ], DisqusController.prototype, "getUserInfo", null);
 __decorate([
     (0, common_1.Get)('thread'),
-    responsor_decorator_1.Responsor.handle('Get Disqus thread info'),
+    responser_decorator_1.Responser.handle('Get Disqus thread info'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [disqus_dto_1.ThreadPostIdDTO]),
@@ -144,7 +144,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('comment'),
     (0, throttler_1.Throttle)(6, 30),
-    responsor_decorator_1.Responsor.handle('Create universal comment'),
+    responser_decorator_1.Responser.handle('Create universal comment'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
     __param(2, (0, common_1.Body)()),
@@ -154,7 +154,7 @@ __decorate([
 ], DisqusController.prototype, "createComment", null);
 __decorate([
     (0, common_1.Delete)('comment'),
-    responsor_decorator_1.Responsor.handle('Delete universal comment'),
+    responser_decorator_1.Responser.handle('Delete universal comment'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
     __metadata("design:type", Function),
@@ -164,7 +164,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('threads'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Get Disqus threads'),
+    responser_decorator_1.Responser.handle('Get Disqus threads'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -173,7 +173,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('posts'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Get Disqus posts'),
+    responser_decorator_1.Responser.handle('Get Disqus posts'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -182,7 +182,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('post'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update Disqus post'),
+    responser_decorator_1.Responser.handle('Update Disqus post'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -191,7 +191,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('thread'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update Disqus thread'),
+    responser_decorator_1.Responser.handle('Update Disqus thread'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -200,7 +200,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('export-xml'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Export XML for Disqus import'),
+    responser_decorator_1.Responser.handle('Export XML for Disqus import'),
     __param(0, (0, common_1.Response)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -210,7 +210,7 @@ __decorate([
     (0, common_1.Post)('import-xml'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    responsor_decorator_1.Responsor.handle('Import XML from Dsiqus'),
+    responser_decorator_1.Responser.handle('Import XML from Disqus'),
     __param(0, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

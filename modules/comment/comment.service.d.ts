@@ -23,7 +23,7 @@ export declare class CommentService {
     isNotBlocklisted(comment: Comment): Promise<void>;
     isCommentableTarget(targetPostID: number): Promise<void>;
     getAll(): Promise<Array<Comment>>;
-    paginater(querys: PaginateQuery<Comment>, options: PaginateOptions, hideIPEmail?: boolean): Promise<PaginateResult<Comment>>;
+    paginator(query: PaginateQuery<Comment>, options: PaginateOptions, hideIPEmail?: boolean): Promise<PaginateResult<Comment>>;
     normalizeNewComment(comment: CommentBase, visitor: QueryVisitor): Comment;
     create(comment: Comment): Promise<MongooseDoc<Comment>>;
     createFormClient(comment: CommentBase, visitor: QueryVisitor): Promise<MongooseDoc<Comment>>;

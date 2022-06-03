@@ -40,7 +40,7 @@ const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
-const responsor_decorator_1 = require("../../decorators/responsor.decorator");
+const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
 const helper_service_google_1 = require("../../processors/helper/helper.service.google");
@@ -78,7 +78,7 @@ let ExpansionController = class ExpansionController {
 __decorate([
     (0, common_1.Get)('statistic'),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responsor_decorator_1.Responsor.handle('Get statistic'),
+    responser_decorator_1.Responser.handle('Get statistic'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -87,7 +87,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('google-token'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Get Google credentials'),
+    responser_decorator_1.Responser.handle('Get Google credentials'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -95,7 +95,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)('database-backup'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responsor_decorator_1.Responsor.handle('Update database backup'),
+    responser_decorator_1.Responser.handle('Update database backup'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
@@ -104,7 +104,7 @@ __decorate([
     (0, common_1.Post)('upload'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    responsor_decorator_1.Responsor.handle('Upload file to cloud storage'),
+    responser_decorator_1.Responser.handle('Upload file to cloud storage'),
     __param(0, (0, common_1.UploadedFile)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

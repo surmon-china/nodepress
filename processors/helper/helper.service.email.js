@@ -41,6 +41,7 @@ const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('NodeMailer');
 let EmailService = class EmailService {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({
@@ -59,25 +60,25 @@ let EmailService = class EmailService {
             if (error) {
                 this.clientIsValid = false;
                 setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30);
-                logger_1.default.error(`[NodeMailer]`, `client init failed! retry when after 30 mins`, (0, error_transformer_1.getMessageFromNormalError)(error));
+                log.error(`client init failed! retry when after 30 mins,`, (0, error_transformer_1.getMessageFromNormalError)(error));
             }
             else {
                 this.clientIsValid = true;
-                logger_1.default.info('[NodeMailer]', 'client init succeed!');
+                log.info('client init succeed.');
             }
         });
     }
     sendMail(mailOptions) {
         if (!this.clientIsValid) {
-            logger_1.default.warn('[NodeMailer]', 'send failed! reason: init failed');
+            log.warn('send failed! (init failed)');
             return false;
         }
         this.transporter.sendMail(Object.assign(Object.assign({}, mailOptions), { from: APP_CONFIG.EMAIL.from }), (error, info) => {
             if (error) {
-                logger_1.default.error(`[NodeMailer]`, `send failed! reason:`, (0, error_transformer_1.getMessageFromNormalError)(error));
+                log.error(`send failed!`, (0, error_transformer_1.getMessageFromNormalError)(error));
             }
             else {
-                logger_1.default.info('[NodeMailer]', 'send succeed!', info.messageId, info.response);
+                log.info('send succeed.', info.messageId, info.response);
             }
         });
     }

@@ -65,8 +65,8 @@ let FeedbackService = class FeedbackService {
             html: texts.map((text) => `<p>${text}</p>`).join('\n'),
         });
     }
-    paginater(querys, options) {
-        return this.feedbackModel.paginate(querys, options);
+    paginator(query, options) {
+        return this.feedbackModel.paginate(query, options);
     }
     async create(feedback, visitor) {
         const ip_location = app_environment_1.isProdEnv && visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null;

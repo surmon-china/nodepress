@@ -42,6 +42,7 @@ const value_constant_1 = require("../../constants/value.constant");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('Akismet');
 var AkismetAction;
 (function (AkismetAction) {
     AkismetAction["CheckSpam"] = "checkSpam";
@@ -66,37 +67,37 @@ let AkismetService = class AkismetService {
             .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
             .then(() => {
             this.clientIsValid = true;
-            logger_1.default.info('[Akismet]', 'client init succeed!');
+            log.info('client init succeed.');
         })
             .catch((error) => {
             this.clientIsValid = false;
-            logger_1.default.error('[Akismet]', 'client init failed! reason:', (0, error_transformer_1.getMessageFromNormalError)(error));
+            log.error('client init failed!', (0, error_transformer_1.getMessageFromNormalError)(error));
         });
     }
     makeInterceptor(handleType) {
         return (content) => {
             return new Promise((resolve, reject) => {
                 if (this.clientIsValid === false) {
-                    const message = [`[Akismet]`, `${handleType} failed! reason: init failed`];
-                    logger_1.default.warn(...message);
-                    return resolve(message.join(''));
+                    const message = `${handleType} failed! reason: init failed`;
+                    log.warn(message);
+                    return resolve(message);
                 }
-                logger_1.default.info(`[Akismet]`, `${handleType}...`, new Date());
+                log.info(`${handleType}...`, new Date());
                 this.client[handleType](Object.assign(Object.assign({}, content), { permalink: content.permalink || value_constant_1.UNDEFINED, comment_author: content.comment_author || value_constant_1.UNDEFINED, comment_author_email: content.comment_author_email || value_constant_1.UNDEFINED, comment_author_url: content.comment_author_url || value_constant_1.UNDEFINED, comment_content: content.comment_content || value_constant_1.UNDEFINED }))
                     .then((result) => {
                     if (handleType === AkismetAction.CheckSpam && result) {
-                        logger_1.default.warn(`[Akismet]`, `${handleType} found SPAM！`, new Date(), content);
+                        log.warn(`${handleType} found SPAM!`, new Date(), content);
                         reject('SPAM!');
                     }
                     else {
-                        logger_1.default.info(`[Akismet]`, `${handleType} succeed!`);
+                        log.info(`${handleType} succeed.`);
                         resolve(result);
                     }
                 })
                     .catch((error) => {
-                    const message = [`[Akismet]`, `${handleType} failed!`];
-                    logger_1.default.error(...message, error);
-                    reject(message.join(''));
+                    const message = `${handleType} failed!`;
+                    log.error(message, error);
+                    reject(message);
                 });
             });
         };

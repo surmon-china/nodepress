@@ -12,21 +12,19 @@ export interface CachePromiseOption<T> {
 export interface CachePromiseIOOption<T> extends CachePromiseOption<T> {
     ioMode?: boolean;
 }
-export interface CacheIntervalTimeoutOption {
-    error?: number;
-    success?: number;
-}
-export interface CacheIntervalTimingOption {
-    error: number;
-    schedule: any;
-}
+export declare type CacheIntervalResult<T> = () => CacheResult<T>;
 export interface CacheIntervalOption<T> {
     key: CacheKey;
     promise(): CacheResult<T>;
-    timeout?: CacheIntervalTimeoutOption;
-    timing?: CacheIntervalTimingOption;
+    timeout?: {
+        error?: number;
+        success?: number;
+    };
+    timing?: {
+        error: number;
+        schedule: any;
+    };
 }
-export declare type CacheIntervalResult<T> = () => CacheResult<T>;
 export interface CacheIntervalIOOption<T> extends CacheIntervalOption<T> {
     ioMode?: boolean;
 }
