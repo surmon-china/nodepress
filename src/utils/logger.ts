@@ -28,13 +28,14 @@ const renderMessage = (color: chalk.Chalk, messages: any[]) => {
 
 const renderLog = (method: LoggerLevel, level: string, color: chalk.Chalk, scope?: string) => {
   return (...messages: any) => {
-    return console[method](
-      chalk.greenBright(`[NP]`),
-      renderTime(),
-      level,
-      scope ? renderScope(scope) : '',
-      ...renderMessage(color, messages)
-    )
+    const logs: any[] = []
+    logs.push(chalk.greenBright(`[NP]`))
+    logs.push(renderTime())
+    logs.push(level)
+    if (scope) {
+      logs.push(renderScope(scope))
+    }
+    return console[method](...logs, ...renderMessage(color, messages))
   }
 }
 

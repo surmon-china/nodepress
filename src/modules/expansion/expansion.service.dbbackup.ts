@@ -15,7 +15,7 @@ import { AWSService, UploadResult } from '@app/processors/helper/helper.service.
 import { APP, MONGO_DB, DB_BACKUP } from '@app/app.config'
 import logger from '@app/utils/logger'
 
-const log = logger.scope('ExpansionDB_Backup')
+const log = logger.scope('ExpansionDBBackup')
 
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5
 const UPLOAD_INTERVAL = '0 0 3 * * *'
