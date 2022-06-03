@@ -122,8 +122,8 @@ export class CommentService {
   private updateBlocklistAkismetWithComment(comments: Comment[], state: CommentState, referer?: string) {
     const isSPAM = state === CommentState.Spam
     const action = isSPAM ? AkismetAction.SubmitSpam : AkismetAction.SubmitHam
-    //  SPAM > append to blocklist & submitSpam
-    //  HAM > remove from blocklist & submitHAM
+    // SPAM > append to blocklist & submitSpam
+    // HAM > remove from blocklist & submitHAM
     // Akismet
     comments.forEach((comment) => this.submitCommentAkismet(action, comment, referer))
     // block list
