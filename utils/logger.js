@@ -23,7 +23,14 @@ const renderMessage = (color, messages) => {
 };
 const renderLog = (method, level, color, scope) => {
     return (...messages) => {
-        return console[method](chalk_1.default.greenBright(`[NP]`), renderTime(), level, scope ? renderScope(scope) : '', ...renderMessage(color, messages));
+        const logs = [];
+        logs.push(chalk_1.default.greenBright(`[NP]`));
+        logs.push(renderTime());
+        logs.push(level);
+        if (scope) {
+            logs.push(renderScope(scope));
+        }
+        return console[method](...logs, ...renderMessage(color, messages));
     };
 };
 const createLogger = (scope) => ({
