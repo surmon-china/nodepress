@@ -2,13 +2,13 @@
 
 <p align="center">
   <a href="https://github.com/surmon-china/nodepress" target="blank">
-    <img src="/logo.png" height="90" alt="nodepress Logo" />
+    <img src="https://raw.githubusercontent.com/surmon-china/nodepress/main/logo.png" height="90" alt="nodepress Logo" />
   </a>
 </p>
 
 # NodePress
 
-[![nodepress](/badge.svg)](https://github.com/surmon-china/nodepress)
+[![nodepress](https://raw.githubusercontent.com/surmon-china/nodepress/main/badge.svg)](https://github.com/surmon-china/nodepress)
 &nbsp;
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/stargazers)
 &nbsp;
