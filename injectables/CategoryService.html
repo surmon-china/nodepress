@@ -104,7 +104,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#paginater" >paginater</a>
+                                <a href="#paginator" >paginator</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -575,19 +575,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="paginater"></a>
+                    <a name="paginator"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
                         <span class="modifier">Async</span>
-                        <span ><b>paginater</b></span>
-                        <a href="#paginater"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>paginator</b></span>
+                        <a href="#paginator"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginater(query: <a href="../classes/Category.html" target="_self">PaginateQuery&lt;Category&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>paginator(query: <a href="../classes/Category.html" target="_self">PaginateQuery&lt;Category&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -776,7 +776,7 @@ export class CategoryService {
     @InjectModel(Category) private readonly categoryModel: MongooseModel&lt;Category&gt;
   ) {}
 
-  public async paginater(
+  public async paginator(
     query: PaginateQuery&lt;Category&gt;,
     options: PaginateOptions,
     publicOnly: boolean
@@ -789,8 +789,8 @@ export class CategoryService {
     ])
 
     const hydratedDocs &#x3D; categories.documents.map((category) &#x3D;&gt; {
-      const finded &#x3D; counts.find((item) &#x3D;&gt; String(item._id) &#x3D;&#x3D;&#x3D; String(category._id))
-      return { ...category, articles_count: finded ? finded.count : 0 } as Category
+      const found &#x3D; counts.find((item) &#x3D;&gt; String(item._id) &#x3D;&#x3D;&#x3D; String(category._id))
+      return { ...category, articles_count: found ? found.count : 0 } as Category
     })
 
     return { ...categories, documents: hydratedDocs }
@@ -871,11 +871,11 @@ export class CategoryService {
     this.seoService.delete(getCategoryUrl(category.slug))
     // children categories
     const categories &#x3D; await this.categoryModel.find({ pid: categoryID }).exec()
-    // 如果没有此分类的父分类，则删除 { pid: target.id } -&gt; ok
+    // delete when root category -&gt; { pid: target.id }
     if (!categories.length) {
       return category
     }
-    // 否则递归更改 -&gt; { pid: target.id } -&gt; { pid: target.pid || null }
+    // recursive delete parents -&gt; { pid: target.id } -&gt; { pid: target.pid || null }
     await this.categoryModel.collection
       .initializeOrderedBulkOp()
       .find({ _id: { $in: Array.from(categories, (c) &#x3D;&gt; c._id) } })

@@ -610,7 +610,7 @@ import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
 import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { CategoriesDTO, CategoryPaginateQueryDTO } from &#x27;./category.dto&#x27;
 import { CategoryService } from &#x27;./category.service&#x27;
@@ -622,13 +622,13 @@ export class CategoryController {
 
   @Get()
   @UseGuards(AdminMaybeGuard)
-  @Responsor.paginate()
-  @Responsor.handle(&#x27;Get categories&#x27;)
+  @Responser.paginate()
+  @Responser.handle(&#x27;Get categories&#x27;)
   getCategories(
     @Query(PermissionPipe, ExposePipe) query: CategoryPaginateQueryDTO,
     @QueryParams() { isUnauthenticated }: QueryParamsResult
   ): Promise&lt;PaginateResult&lt;Category&gt;&gt; {
-    return this.categoryService.paginater(
+    return this.categoryService.paginator(
       {},
       { page: query.page, perPage: query.per_page, dateSort: query.sort },
       isUnauthenticated
@@ -637,34 +637,34 @@ export class CategoryController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Create category&#x27;)
+  @Responser.handle(&#x27;Create category&#x27;)
   createCategory(@Body() category: Category): Promise&lt;Category&gt; {
     return this.categoryService.create(category)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Delete categories&#x27;)
+  @Responser.handle(&#x27;Delete categories&#x27;)
   delCategories(@Body() body: CategoriesDTO) {
     return this.categoryService.batchDelete(body.category_ids)
   }
 
   @Get(&#x27;:id&#x27;)
-  @Responsor.handle(&#x27;Get categories tree&#x27;)
+  @Responser.handle(&#x27;Get categories tree&#x27;)
   getCategory(@QueryParams() { params }: QueryParamsResult): Promise&lt;Category[]&gt; {
     return this.categoryService.getGenealogyById(params.id)
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update category&#x27;)
+  @Responser.handle(&#x27;Update category&#x27;)
   putCategory(@QueryParams() { params }: QueryParamsResult, @Body() category: Category): Promise&lt;Category&gt; {
     return this.categoryService.update(params.id, category)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Delete category&#x27;)
+  @Responser.handle(&#x27;Delete category&#x27;)
   delCategory(@QueryParams() { params }: QueryParamsResult) {
     return this.categoryService.delete(params.id)
   }

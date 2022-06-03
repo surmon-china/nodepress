@@ -791,7 +791,7 @@ import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
 import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
-import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { CommentPaginateQueryDTO, CommentsDTO, CommentsStateDTO } from &#x27;./comment.dto&#x27;
@@ -804,8 +804,8 @@ export class CommentController {
 
   @Get()
   @UseGuards(AdminMaybeGuard)
-  @Responsor.paginate()
-  @Responsor.handle(&#x27;Get comments&#x27;)
+  @Responser.paginate()
+  @Responser.handle(&#x27;Get comments&#x27;)
   getComments(
     @Query(PermissionPipe, ExposePipe) query: CommentPaginateQueryDTO,
     @QueryParams() { isUnauthenticated }: QueryParamsResult
@@ -844,13 +844,13 @@ export class CommentController {
       ]
     }
 
-    return this.commentService.paginater(paginateQuery, paginateOptions, isUnauthenticated)
+    return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
   // 30 seconds &gt; limit 6
   @Throttle(6, 30)
   @Post()
-  @Responsor.handle(&#x27;Create comment&#x27;)
+  @Responser.handle(&#x27;Create comment&#x27;)
   createComment(@Body() comment: CommentBase, @QueryParams() { visitor }: QueryParamsResult): Promise&lt;Comment&gt; {
     return comment.author.email
       ? this.commentService.createFormClient(comment, visitor)
@@ -859,21 +859,21 @@ export class CommentController {
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update comments&#x27;)
+  @Responser.handle(&#x27;Update comments&#x27;)
   patchComments(@QueryParams() { visitor }: QueryParamsResult, @Body() body: CommentsStateDTO) {
     return this.commentService.batchPatchState(body, visitor.referer)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Delete comments&#x27;)
+  @Responser.handle(&#x27;Delete comments&#x27;)
   delComments(@Body() body: CommentsDTO) {
     return this.commentService.batchDelete(body.comment_ids, body.post_ids)
   }
 
   @Get(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle({ message: &#x27;Get comment detail&#x27;, error: HttpStatus.NOT_FOUND })
+  @Responser.handle({ message: &#x27;Get comment detail&#x27;, error: HttpStatus.NOT_FOUND })
   getComment(@QueryParams() { params }: QueryParamsResult): Promise&lt;Comment&gt; {
     return this.commentService.getDetailByObjectID(params.id).then((comment) &#x3D;&gt; {
       return comment ? comment : Promise.reject(&#x27;Comment not found&#x27;)
@@ -882,21 +882,21 @@ export class CommentController {
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update comment&#x27;)
+  @Responser.handle(&#x27;Update comment&#x27;)
   putComment(@QueryParams() { params, visitor }: QueryParamsResult, @Body() comment: Comment): Promise&lt;Comment&gt; {
     return this.commentService.update(params.id, comment, visitor.referer)
   }
 
   @Put(&#x27;:id/ip_location&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update comment IP location&#x27;)
+  @Responser.handle(&#x27;Update comment IP location&#x27;)
   putCommentIPLocation(@QueryParams() { params }: QueryParamsResult) {
     return this.commentService.reviseIPLocation(params.id)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Delete comment&#x27;)
+  @Responser.handle(&#x27;Delete comment&#x27;)
   delComment(@QueryParams() { params }: QueryParamsResult) {
     return this.commentService.delete(params.id)
   }

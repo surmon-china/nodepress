@@ -261,6 +261,8 @@ import { getMessageFromNormalError } from &#x27;@app/transformers/error.transfor
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
+const log &#x3D; logger.scope(&#x27;NodeMailer&#x27;)
+
 export interface EmailOptions {
   to: string
   subject: string
@@ -291,17 +293,17 @@ export class EmailService {
       if (error) {
         this.clientIsValid &#x3D; false
         setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(&#x60;[NodeMailer]&#x60;, &#x60;client init failed! retry when after 30 mins&#x60;, getMessageFromNormalError(error))
+        log.error(&#x60;client init failed! retry when after 30 mins,&#x60;, getMessageFromNormalError(error))
       } else {
         this.clientIsValid &#x3D; true
-        logger.info(&#x27;[NodeMailer]&#x27;, &#x27;client init succeed!&#x27;)
+        log.info(&#x27;client init succeed.&#x27;)
       }
     })
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
-      logger.warn(&#x27;[NodeMailer]&#x27;, &#x27;send failed! reason: init failed&#x27;)
+      log.warn(&#x27;send failed! (init failed)&#x27;)
       return false
     }
 
@@ -312,9 +314,9 @@ export class EmailService {
       },
       (error, info) &#x3D;&gt; {
         if (error) {
-          logger.error(&#x60;[NodeMailer]&#x60;, &#x60;send failed! reason:&#x60;, getMessageFromNormalError(error))
+          log.error(&#x60;send failed!&#x60;, getMessageFromNormalError(error))
         } else {
-          logger.info(&#x27;[NodeMailer]&#x27;, &#x27;send succeed!&#x27;, info.messageId, info.response)
+          log.info(&#x27;send succeed.&#x27;, info.messageId, info.response)
         }
       }
     )

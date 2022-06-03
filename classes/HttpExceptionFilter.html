@@ -210,7 +210,7 @@ import { isDevEnv } from &#x27;@app/app.environment&#x27;
 
 /**
  * @class HttpExceptionFilter
- * @classdesc 拦截全局抛出的所有异常，同时任何错误将在这里被规范化输出 HttpErrorResponse
+ * @classdesc catch globally exceptions &amp; formatting error message to &lt;HttpErrorResponse&gt;
  */
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {

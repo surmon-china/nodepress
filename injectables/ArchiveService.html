@@ -141,7 +141,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/archive/archive.service.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/modules/archive/archive.service.ts:32</a></div>
                             </td>
                         </tr>
 
@@ -242,8 +242,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="56"
-                            class="link-to-prism">src/modules/archive/archive.service.ts:56</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">src/modules/archive/archive.service.ts:58</a></div>
                 </td>
             </tr>
 
@@ -281,8 +281,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/modules/archive/archive.service.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="54"
+                            class="link-to-prism">src/modules/archive/archive.service.ts:54</a></div>
                 </td>
             </tr>
 
@@ -320,8 +320,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="48"
-                            class="link-to-prism">src/modules/archive/archive.service.ts:48</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/modules/archive/archive.service.ts:50</a></div>
                 </td>
             </tr>
 
@@ -360,8 +360,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">src/modules/archive/archive.service.ts:63</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/modules/archive/archive.service.ts:65</a></div>
                 </td>
             </tr>
 
@@ -399,8 +399,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="76"
-                            class="link-to-prism">src/modules/archive/archive.service.ts:76</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="78"
+                            class="link-to-prism">src/modules/archive/archive.service.ts:78</a></div>
                 </td>
             </tr>
 
@@ -438,8 +438,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="80"
-                            class="link-to-prism">src/modules/archive/archive.service.ts:80</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/modules/archive/archive.service.ts:82</a></div>
                 </td>
             </tr>
 
@@ -481,7 +481,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/archive/archive.service.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/modules/archive/archive.service.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -509,6 +509,8 @@ import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
 import * as CACHE_KEY from &#x27;@app/constants/cache.constant&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
+const log &#x3D; logger.scope(&#x27;ArchiveService&#x27;)
+
 export interface ArchiveData {
   tags: Tag[]
   categories: Category[]
@@ -531,7 +533,7 @@ export class ArchiveService {
       promise: this.getArchiveData.bind(this),
     })
     this.updateCache().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;[archive]&#x27;, &#x27;init getArchiveData Error:&#x27;, error)
+      log.warn(&#x27;init getArchiveData failed!&#x27;, error)
     })
   }
 
@@ -558,7 +560,7 @@ export class ArchiveService {
         articles: await this.getAllArticles(),
       }
     } catch (error) {
-      logger.warn(&#x27;[archive]&#x27;, &#x27;getArchiveData Error:&#x27;, error)
+      log.warn(&#x27;getArchiveData failed!&#x27;, error)
       return {} as any as ArchiveData
     }
   }

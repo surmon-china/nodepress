@@ -105,7 +105,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:32</a></div>
                             </td>
                         </tr>
 
@@ -218,8 +218,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:46</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="48"
+                            class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:48</a></div>
                 </td>
             </tr>
 
@@ -283,6 +283,8 @@ import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 import { getTodayViewsCount, resetTodayViewsCount } from &#x27;./expansion.helper&#x27;
 
+const log &#x3D; logger.scope(&#x27;ExpansionStatistic&#x27;)
+
 const DEFAULT_STATISTIC &#x3D; Object.freeze({
   tags: null,
   articles: null,
@@ -304,10 +306,10 @@ export class StatisticService {
     private readonly feedbackService: FeedbackService,
     private readonly tagService: TagService
   ) {
-    // clear date when everyday 00:00
+    // daily data cleaning at 00:00
     schedule.scheduleJob(&#x27;1 0 0 * * *&#x27;, () &#x3D;&gt; {
       resetTodayViewsCount(this.cacheService).catch((error) &#x3D;&gt; {
-        logger.warn(&#x27;[expansion]&#x27;, &#x27;statistic set TODAY_VIEWS Error:&#x27;, error)
+        log.warn(&#x27;reset TODAY_VIEWS failed!&#x27;, error)
       })
     })
   }

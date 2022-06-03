@@ -154,7 +154,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IntersectionType } from &#x27;@nestjs/mapped-types&#x27;
 import { Transform } from &#x27;class-transformer&#x27;
 import { IsInt, IsIn, IsNotEmpty, IsOptional, IsArray, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
-import { unknowToNumber } from &#x27;@app/transformers/value.transformer&#x27;
+import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
 import { WhenGuest } from &#x27;@app/decorators/guest.decorator&#x27;
 import { PublishState } from &#x27;@app/constants/biz.constant&#x27;
 import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
@@ -167,7 +167,7 @@ export class AnnouncementPaginateQueryDTO extends IntersectionType(PaginateOptio
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknowToNumber(value))
+  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   state?: PublishState
 }
 

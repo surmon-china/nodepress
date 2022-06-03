@@ -108,7 +108,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#paginater" >paginater</a>
+                                <a href="#paginator" >paginator</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -619,18 +619,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="paginater"></a>
+                    <a name="paginator"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>paginater</b></span>
-                        <a href="#paginater"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>paginator</b></span>
+                        <a href="#paginator"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginater(querys: <a href="../classes/Feedback.html" target="_self">PaginateQuery&lt;Feedback&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
+                    <code>paginator(query: <a href="../classes/Feedback.html" target="_self">PaginateQuery&lt;Feedback&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
@@ -659,7 +659,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>querys</td>
+                                    <td>query</td>
                                     <td>
                                                 <code><a href="../classes/Feedback.html" target="_self" >PaginateQuery&lt;Feedback&gt;</a></code>
                                     </td>
@@ -826,8 +826,8 @@ export class FeedbackService {
     })
   }
 
-  public paginater(querys: PaginateQuery&lt;Feedback&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
-    return this.feedbackModel.paginate(querys, options)
+  public paginator(query: PaginateQuery&lt;Feedback&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
+    return this.feedbackModel.paginate(query, options)
   }
 
   public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {

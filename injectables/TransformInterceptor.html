@@ -191,19 +191,19 @@ import { Observable } from &#x27;rxjs&#x27;
 import { map } from &#x27;rxjs/operators&#x27;
 import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from &#x27;@nestjs/common&#x27;
 import { HttpResponseSuccess, ResponseStatus } from &#x27;@app/interfaces/response.interface&#x27;
-import { getResponsorOptions } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { getResponserOptions } from &#x27;@app/decorators/responser.decorator&#x27;
 import * as TEXT from &#x27;@app/constants/text.constant&#x27;
 
 /**
  * @class TransformInterceptor
- * @classdesc 当控制器所需的 Promise service 成功响应时，将在此被转换为标准的数据结构 HttpResponseSuccess&lt;T&gt;
+ * @classdesc transform &#x60;T&#x60; to &#x60;HttpResponseSuccess&lt;T&gt;&#x60; when controller &#x60;Promise&#x60; resolved
  */
 @Injectable()
 export class TransformInterceptor&lt;T&gt; implements NestInterceptor&lt;T, T | HttpResponseSuccess&lt;T&gt;&gt; {
   intercept(context: ExecutionContext, next: CallHandler&lt;T&gt;): Observable&lt;T | HttpResponseSuccess&lt;T&gt;&gt; {
     const call$ &#x3D; next.handle()
     const target &#x3D; context.getHandler()
-    const { successMessage, transform, paginate } &#x3D; getResponsorOptions(target)
+    const { successMessage, transform, paginate } &#x3D; getResponserOptions(target)
     if (!transform) {
       return call$
     }

@@ -770,12 +770,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/CacheIntervalOption.html" data-type="entity-link" >CacheIntervalOption</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/CacheIntervalTimeoutOption.html" data-type="entity-link" >CacheIntervalTimeoutOption</a>
-                            </li>
-                            <li class="link">
-                                <a href="interfaces/CacheIntervalTimingOption.html" data-type="entity-link" >CacheIntervalTimingOption</a>
-                            </li>
-                            <li class="link">
                                 <a href="interfaces/CacheIOResult.html" data-type="entity-link" >CacheIOResult</a>
                             </li>
                             <li class="link">
@@ -845,7 +839,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/RequestParams.html" data-type="entity-link" >RequestParams</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/ResponsorOptions.html" data-type="entity-link" >ResponsorOptions</a>
+                                <a href="interfaces/ResponserOptions.html" data-type="entity-link" >ResponserOptions</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/TokenResult.html" data-type="entity-link" >TokenResult</a>

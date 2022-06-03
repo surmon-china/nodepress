@@ -929,7 +929,7 @@ import lodash from &#x27;lodash&#x27;
 import { Types } from &#x27;mongoose&#x27;
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from &#x27;@nestjs/common&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
@@ -959,8 +959,8 @@ export class ArticleController {
 
   @Get()
   @UseGuards(AdminMaybeGuard)
-  @Responsor.paginate()
-  @Responsor.handle(&#x27;Get articles&#x27;)
+  @Responser.paginate()
+  @Responser.handle(&#x27;Get articles&#x27;)
   async getArticles(
     @Query(PermissionPipe, ExposePipe) query: ArticlePaginateQueryDTO
   ): Promise&lt;PaginateResult&lt;Article&gt;&gt; {
@@ -1019,12 +1019,12 @@ export class ArticleController {
       paginateQuery.category &#x3D; category._id
     }
 
-    // paginater
-    return this.articleService.paginater(paginateQuery, paginateOptions)
+    // paginate
+    return this.articleService.paginator(paginateQuery, paginateOptions)
   }
 
   @Get(&#x27;hottest&#x27;)
-  @Responsor.handle(&#x27;Get hottest articles&#x27;)
+  @Responser.handle(&#x27;Get hottest articles&#x27;)
   getHottestArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise&lt;Array&lt;Article&gt;&gt; {
     return query.count
       ? this.articleService.getHottestArticles(query.count)
@@ -1033,7 +1033,7 @@ export class ArticleController {
 
   @Get(&#x27;calendar&#x27;)
   @UseGuards(AdminMaybeGuard)
-  @Responsor.handle(&#x27;Get article calendar&#x27;)
+  @Responser.handle(&#x27;Get article calendar&#x27;)
   getArticleCalendar(
     @Query(ExposePipe) query: ArticleCalendarQueryDTO,
     @QueryParams() { isUnauthenticated }: QueryParamsResult
@@ -1042,7 +1042,7 @@ export class ArticleController {
   }
 
   @Get(&#x27;:id/context&#x27;)
-  @Responsor.handle(&#x27;Get context articles&#x27;)
+  @Responser.handle(&#x27;Get context articles&#x27;)
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
     const articleID &#x3D; Number(params.id)
     const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
@@ -1058,7 +1058,7 @@ export class ArticleController {
 
   @Get(&#x27;:id&#x27;)
   @UseGuards(AdminMaybeGuard)
-  @Responsor.handle({
+  @Responser.handle({
     message: &#x27;Get article detail&#x27;,
     error: HttpStatus.NOT_FOUND,
   })
@@ -1076,35 +1076,35 @@ export class ArticleController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Create article&#x27;)
+  @Responser.handle(&#x27;Create article&#x27;)
   createArticle(@Body() article: Article): Promise&lt;Article&gt; {
     return this.articleService.create(article)
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update article&#x27;)
+  @Responser.handle(&#x27;Update article&#x27;)
   putArticle(@QueryParams() { params }: QueryParamsResult, @Body() article: Article): Promise&lt;Article&gt; {
     return this.articleService.update(params.id, article)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Delete article&#x27;)
+  @Responser.handle(&#x27;Delete article&#x27;)
   delArticle(@QueryParams() { params }: QueryParamsResult): Promise&lt;Article&gt; {
     return this.articleService.delete(params.id)
   }
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update articles&#x27;)
+  @Responser.handle(&#x27;Update articles&#x27;)
   patchArticles(@Body() body: ArticlesStateDTO) {
     return this.articleService.batchPatchState(body.article_ids, body.state)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Delete articles&#x27;)
+  @Responser.handle(&#x27;Delete articles&#x27;)
   delArticles(@Body() body: ArticleIDsDTO) {
     return this.articleService.batchDelete(body.article_ids)
   }

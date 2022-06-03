@@ -189,7 +189,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Observable, throwError } from &#x27;rxjs&#x27;
 import { catchError } from &#x27;rxjs/operators&#x27;
 import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from &#x27;@nestjs/common&#x27;
-import { getResponsorOptions } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { getResponserOptions } from &#x27;@app/decorators/responser.decorator&#x27;
 import { CustomError } from &#x27;@app/errors/custom.error&#x27;
 import * as TEXT from &#x27;@app/constants/text.constant&#x27;
 
@@ -202,7 +202,7 @@ export class ErrorInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler&lt;any&gt;): Observable&lt;any&gt; {
     const call$ &#x3D; next.handle()
     const target &#x3D; context.getHandler()
-    const { errorCode, errorMessage } &#x3D; getResponsorOptions(target)
+    const { errorCode, errorMessage } &#x3D; getResponserOptions(target)
     return call$.pipe(
       catchError((error) &#x3D;&gt; {
         return throwError(

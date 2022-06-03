@@ -124,7 +124,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/processors/helper/helper.service.google.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/helper/helper.service.google.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -159,8 +159,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">src/processors/helper/helper.service.google.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">src/processors/helper/helper.service.google.ts:43</a></div>
                 </td>
             </tr>
 
@@ -198,8 +198,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="24"
-                            class="link-to-prism">src/processors/helper/helper.service.google.ts:24</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">src/processors/helper/helper.service.google.ts:25</a></div>
                 </td>
             </tr>
 
@@ -246,7 +246,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/processors/helper/helper.service.google.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/helper/helper.service.google.ts:19</a></div>
                         </td>
                     </tr>
 
@@ -266,6 +266,8 @@ import { getMessageFromNormalError } from &#x27;@app/transformers/error.transfor
 import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
+
+const log &#x3D; logger.scope(&#x27;GoogleAPI&#x27;)
 
 @Injectable()
 export class GoogleService {
@@ -288,7 +290,7 @@ export class GoogleService {
         UNDEFINED
       )
     } catch (error) {
-      logger.warn(&#x27;[GoogleAPI]&#x27;, &#x27;client initialization failed!&#x27;)
+      log.warn(&#x27;client initialization failed!&#x27;)
     }
   }
 
@@ -296,12 +298,12 @@ export class GoogleService {
   public getCredentials(): Promise&lt;Credentials&gt; {
     return new Promise((resolve, reject) &#x3D;&gt; {
       if (!this.jwtClient) {
-        return reject(&#x27;[GoogleAPI] client initialization failed!&#x27;)
+        return reject(&#x27;GoogleAPI client initialization failed!&#x27;)
       }
       this.jwtClient.authorize((error, credentials: Credentials) &#x3D;&gt; {
         const message &#x3D; getMessageFromNormalError(error)
         if (message) {
-          logger.warn(&#x27;[GoogleAPI]&#x27;, &#x27;jwt authorize failed: &#x27;, message)
+          log.warn(&#x27;JWT authorize failed!&#x27;, message)
           reject(message)
         }
         resolve(credentials)

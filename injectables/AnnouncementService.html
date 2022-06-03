@@ -92,7 +92,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#paginater" >paginater</a>
+                                <a href="#paginator" >paginator</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -186,8 +186,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="47"
-                            class="link-to-prism">src/modules/announcement/announcement.service.ts:47</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/modules/announcement/announcement.service.ts:42</a></div>
                 </td>
             </tr>
 
@@ -257,8 +257,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/modules/announcement/announcement.service.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">src/modules/announcement/announcement.service.ts:24</a></div>
                 </td>
             </tr>
 
@@ -328,8 +328,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="39"
-                            class="link-to-prism">src/modules/announcement/announcement.service.ts:39</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/modules/announcement/announcement.service.ts:35</a></div>
                 </td>
             </tr>
 
@@ -381,26 +381,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="paginater"></a>
+                    <a name="paginator"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span ><b>paginater</b></span>
-                        <a href="#paginater"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>paginator</b></span>
+                        <a href="#paginator"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginater(query: <a href="../classes/Announcement.html" target="_self">PaginateQuery&lt;Announcement&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
+                    <code>paginator(query: <a href="../classes/Announcement.html" target="_self">PaginateQuery&lt;Announcement&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/modules/announcement/announcement.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="17"
+                            class="link-to-prism">src/modules/announcement/announcement.service.ts:17</a></div>
                 </td>
             </tr>
 
@@ -482,8 +482,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="31"
-                            class="link-to-prism">src/modules/announcement/announcement.service.ts:31</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="28"
+                            class="link-to-prism">src/modules/announcement/announcement.service.ts:28</a></div>
                 </td>
             </tr>
 
@@ -559,20 +559,17 @@ import { Announcement } from &#x27;./announcement.model&#x27;
 export class AnnouncementService {
   constructor(@InjectModel(Announcement) private readonly announcementModel: MongooseModel&lt;Announcement&gt;) {}
 
-  // 请求公告列表
-  public paginater(
+  public paginator(
     query: PaginateQuery&lt;Announcement&gt;,
     options: PaginateOptions
   ): Promise&lt;PaginateResult&lt;Announcement&gt;&gt; {
     return this.announcementModel.paginate(query, options)
   }
 
-  // 创建公告
   public create(announcement: Announcement): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
     return this.announcementModel.create(announcement)
   }
 
-  // 修改单个公告
   public update(announcementID: MongooseID, announcement: Announcement): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
     return this.announcementModel
       .findByIdAndUpdate(announcementID, announcement, { new: true })
@@ -580,7 +577,6 @@ export class AnnouncementService {
       .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Announcement &#x27;${announcementID}&#x27; not found&#x60;))
   }
 
-  // 删除单个公告
   public delete(announcementID: MongooseID): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
     return this.announcementModel
       .findByIdAndRemove(announcementID)
@@ -588,7 +584,6 @@ export class AnnouncementService {
       .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Announcement &#x27;${announcementID}&#x27; not found&#x60;))
   }
 
-  // 批量删除公告
   public batchDelete(announcementIDs: MongooseID[]) {
     return this.announcementModel.deleteMany({ _id: { $in: announcementIDs } }).exec()
   }

@@ -125,7 +125,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/processors/helper/helper.service.seo.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/processors/helper/helper.service.seo.ts:24</a></div>
                             </td>
                         </tr>
 
@@ -202,8 +202,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="100"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:100</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="94"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:94</a></div>
                 </td>
             </tr>
 
@@ -273,8 +273,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="84"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:84</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="78"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:78</a></div>
                 </td>
             </tr>
 
@@ -344,8 +344,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="28"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:28</a></div>
                 </td>
             </tr>
 
@@ -427,8 +427,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="51"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:51</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:45</a></div>
                 </td>
             </tr>
 
@@ -510,8 +510,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="88"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:88</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:82</a></div>
                 </td>
             </tr>
 
@@ -581,8 +581,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="94"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:94</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="88"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:88</a></div>
                 </td>
             </tr>
 
@@ -643,6 +643,8 @@ import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transform
 import { GoogleService } from &#x27;./helper.service.google&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
+const log &#x3D; logger.scope(&#x27;SEO&#x27;)
+
 export type ActionURL &#x3D; string | string[]
 export enum SEOAction {
   Push &#x3D; &#x27;push&#x27;,
@@ -654,28 +656,20 @@ export enum SEOAction {
 export class SeoService {
   constructor(private readonly httpService: HttpService, private readonly googleService: GoogleService) {}
 
-  // Baidu
+  // Baidu https://ziyuan.baidu.com/linksubmit/index
   private pingBaidu(action: SEOAction, urls: string[]): void {
-    const urlKeyMap &#x3D; {
-      [SEOAction.Push]: &#x27;urls&#x27;,
-      [SEOAction.Update]: &#x27;update&#x27;,
-      [SEOAction.Delete]: &#x27;del&#x27;,
-    }
-    const urlKey &#x3D; urlKeyMap[action]
-    const actionText &#x3D; &#x60;Baidu ping [${action}] action&#x60;
-
     this.httpService.axiosRef
       .request({
         method: &#x27;post&#x27;,
         data: urls.join(&#x27;\n&#x27;),
         headers: { &#x27;Content-Type&#x27;: &#x27;text/plain&#x27; },
-        url: &#x60;http://data.zz.baidu.com/${urlKey}?site&#x3D;${APP_CONFIG.BAIDU_INDEXED.site}&amp;token&#x3D;${APP_CONFIG.BAIDU_INDEXED.token}&#x60;,
+        url: &#x60;http://data.zz.baidu.com/urls?site&#x3D;${APP_CONFIG.BAIDU_INDEXED.site}&amp;token&#x3D;${APP_CONFIG.BAIDU_INDEXED.token}&#x60;,
       })
       .then((response) &#x3D;&gt; {
-        logger.info(&#x60;[SEO]&#x60;, &#x60;${actionText} succeed:&#x60;, urls, response.statusText)
+        log.info(&#x60;Baidu ping [${action}] succeed.&#x60;, urls, response.statusText)
       })
       .catch((error) &#x3D;&gt; {
-        logger.warn(&#x60;[SEO]&#x60;, &#x60;${actionText} failed:&#x60;, getMessageFromAxiosError(error))
+        log.warn(&#x60;Baidu ping [${action}] failed!&#x60;, getMessageFromAxiosError(error))
       })
   }
 
@@ -704,12 +698,12 @@ export class SeoService {
             url: &#x60;https://indexing.googleapis.com/v3/urlNotifications:publish&#x60;,
           })
           .then((response) &#x3D;&gt; {
-            logger.info(&#x60;[SEO]&#x60;, &#x60;${actionText} succeed:&#x60;, url, response.statusText)
+            log.info(&#x60;${actionText} succeed.&#x60;, url, response.statusText)
           })
           .catch((error) &#x3D;&gt; Promise.reject(getMessageFromAxiosError(error)))
       })
       .catch((error) &#x3D;&gt; {
-        logger.warn(&#x60;[SEO]&#x60;, &#x60;${actionText} failed:&#x60;, error)
+        log.warn(&#x60;${actionText} failed!&#x60;, error)
       })
   }
 

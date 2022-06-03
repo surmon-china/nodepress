@@ -132,7 +132,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/processors/helper/helper.service.email.ts:23</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/processors/helper/helper.service.email.ts:25</a></div>
                             </td>
                         </tr>
 
@@ -167,8 +167,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="51"
-                            class="link-to-prism">src/processors/helper/helper.service.email.ts:51</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="53"
+                            class="link-to-prism">src/processors/helper/helper.service.email.ts:53</a></div>
                 </td>
             </tr>
 
@@ -238,8 +238,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="72"
-                            class="link-to-prism">src/processors/helper/helper.service.email.ts:72</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="74"
+                            class="link-to-prism">src/processors/helper/helper.service.email.ts:74</a></div>
                 </td>
             </tr>
 
@@ -321,8 +321,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="38"
-                            class="link-to-prism">src/processors/helper/helper.service.email.ts:38</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/processors/helper/helper.service.email.ts:40</a></div>
                 </td>
             </tr>
 
@@ -364,7 +364,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/processors/helper/helper.service.email.ts:23</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/processors/helper/helper.service.email.ts:25</a></div>
                         </td>
                     </tr>
 
@@ -391,7 +391,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/processors/helper/helper.service.email.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/processors/helper/helper.service.email.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -409,6 +409,8 @@ import { Injectable } from &#x27;@nestjs/common&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
+
+const log &#x3D; logger.scope(&#x27;NodeMailer&#x27;)
 
 export interface EmailOptions {
   to: string
@@ -440,17 +442,17 @@ export class EmailService {
       if (error) {
         this.clientIsValid &#x3D; false
         setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(&#x60;[NodeMailer]&#x60;, &#x60;client init failed! retry when after 30 mins&#x60;, getMessageFromNormalError(error))
+        log.error(&#x60;client init failed! retry when after 30 mins,&#x60;, getMessageFromNormalError(error))
       } else {
         this.clientIsValid &#x3D; true
-        logger.info(&#x27;[NodeMailer]&#x27;, &#x27;client init succeed!&#x27;)
+        log.info(&#x27;client init succeed.&#x27;)
       }
     })
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
-      logger.warn(&#x27;[NodeMailer]&#x27;, &#x27;send failed! reason: init failed&#x27;)
+      log.warn(&#x27;send failed! (init failed)&#x27;)
       return false
     }
 
@@ -461,9 +463,9 @@ export class EmailService {
       },
       (error, info) &#x3D;&gt; {
         if (error) {
-          logger.error(&#x60;[NodeMailer]&#x60;, &#x60;send failed! reason:&#x60;, getMessageFromNormalError(error))
+          log.error(&#x60;send failed!&#x60;, getMessageFromNormalError(error))
         } else {
-          logger.info(&#x27;[NodeMailer]&#x27;, &#x27;send succeed!&#x27;, info.messageId, info.response)
+          log.info(&#x27;send succeed.&#x27;, info.messageId, info.response)
         }
       }
     )

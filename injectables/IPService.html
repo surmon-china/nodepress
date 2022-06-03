@@ -88,7 +88,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#queryLocationByIPAPI" >queryLocationByIPAPI</a>
+                                <a href="#queryLocationByIP_API" >queryLocationByIP_API</a>
                             </li>
                         </ul>
                     </td>
@@ -113,7 +113,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/processors/helper/helper.service.ip.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/processors/helper/helper.service.ip.ts:26</a></div>
                             </td>
                         </tr>
 
@@ -178,8 +178,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/processors/helper/helper.service.ip.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/processors/helper/helper.service.ip.ts:75</a></div>
                 </td>
             </tr>
 
@@ -249,8 +249,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="51"
-                            class="link-to-prism">src/processors/helper/helper.service.ip.ts:51</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="53"
+                            class="link-to-prism">src/processors/helper/helper.service.ip.ts:53</a></div>
                 </td>
             </tr>
 
@@ -302,26 +302,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="queryLocationByIPAPI"></a>
+                    <a name="queryLocationByIP_API"></a>
                     <span class="name">
                         <span class="modifier">Private</span>
-                        <span ><b>queryLocationByIPAPI</b></span>
-                        <a href="#queryLocationByIPAPI"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>queryLocationByIP_API</b></span>
+                        <a href="#queryLocationByIP_API"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>queryLocationByIPAPI(ip: <a href="../undefineds/IP.html" target="_self">IP</a>)</code>
+                    <code>queryLocationByIP_API(ip: <a href="../undefineds/IP.html" target="_self">IP</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/processors/helper/helper.service.ip.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/processors/helper/helper.service.ip.ts:30</a></div>
                 </td>
             </tr>
 
@@ -380,6 +380,8 @@ import { Injectable } from &#x27;@nestjs/common&#x27;
 import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transformer&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
+const log &#x3D; logger.scope(&#x27;IP_Query&#x27;)
+
 export type IP &#x3D; string
 export interface IPLocation {
   country: string
@@ -396,7 +398,7 @@ export class IPService {
   constructor(private readonly httpService: HttpService) {}
 
   // query by https://ip-api.com/docs/api:json
-  private queryLocationByIPAPI(ip: IP): Promise&lt;IPLocation&gt; {
+  private queryLocationByIP_API(ip: IP): Promise&lt;IPLocation&gt; {
     return this.httpService.axiosRef
       .get&lt;any&gt;(&#x60;http://ip-api.com/json/${ip}?fields&#x3D;status,message,country,countryCode,region,regionName,city,zip&#x60;)
       .then((response) &#x3D;&gt; {
@@ -413,7 +415,7 @@ export class IPService {
       })
       .catch((error) &#x3D;&gt; {
         const message &#x3D; getMessageFromAxiosError(error)
-        logger.warn(&#x27;[IP Query]&#x27;, &#x27;queryLocationByIPAPI failed!&#x27;, message)
+        log.warn(&#x27;queryLocationByIPAPI failed!&#x27;, message)
         return Promise.reject(message)
       })
   }
@@ -436,13 +438,13 @@ export class IPService {
       })
       .catch((error) &#x3D;&gt; {
         const message &#x3D; getMessageFromAxiosError(error)
-        logger.warn(&#x27;[IP Query]&#x27;, &#x27;queryLocationByAPICo failed!&#x27;, message)
+        log.warn(&#x27;queryLocationByAPICo failed!&#x27;, message)
         return Promise.reject(message)
       })
   }
 
   public queryLocation(ip: IP): Promise&lt;IPLocation | null&gt; {
-    return this.queryLocationByIPAPI(ip)
+    return this.queryLocationByIP_API(ip)
       .catch(() &#x3D;&gt; this.queryLocationByAPICo(ip))
       .catch(() &#x3D;&gt; null)
   }

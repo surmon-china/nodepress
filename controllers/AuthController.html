@@ -427,7 +427,7 @@ import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from &#x27;@n
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { IPService } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
-import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { AuthLoginDTO, AuthUpdateDTO } from &#x27;./auth.dto&#x27;
 import { AuthService } from &#x27;./auth.service&#x27;
@@ -444,7 +444,7 @@ export class AuthController {
   ) {}
 
   @Post(&#x27;login&#x27;)
-  @Responsor.handle({ message: &#x27;Login&#x27;, error: HttpStatus.BAD_REQUEST })
+  @Responser.handle({ message: &#x27;Login&#x27;, error: HttpStatus.BAD_REQUEST })
   async login(
     @QueryParams() { visitor: { ip } }: QueryParamsResult,
     @Body() body: AuthLoginDTO
@@ -467,14 +467,14 @@ export class AuthController {
   }
 
   @Get(&#x27;admin&#x27;)
-  @Responsor.handle(&#x27;Get admin info&#x27;)
+  @Responser.handle(&#x27;Get admin info&#x27;)
   getAdminInfo(): Promise&lt;Auth&gt; {
     return this.authService.getAdminInfo()
   }
 
   @Put(&#x27;admin&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update admin info&#x27;)
+  @Responser.handle(&#x27;Update admin info&#x27;)
   putAdminInfo(@Body() auth: AuthUpdateDTO): Promise&lt;Auth&gt; {
     return this.authService.putAdminInfo(auth)
   }
@@ -482,7 +482,7 @@ export class AuthController {
   // check token
   @Post(&#x27;check&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Check token&#x27;)
+  @Responser.handle(&#x27;Check token&#x27;)
   checkToken(): string {
     return &#x27;ok&#x27;
   }
@@ -490,7 +490,7 @@ export class AuthController {
   // refresh token
   @Post(&#x27;renewal&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Renewal Token&#x27;)
+  @Responser.handle(&#x27;Renewal Token&#x27;)
   renewalToken(): TokenResult {
     return this.authService.createToken()
   }

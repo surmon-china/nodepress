@@ -189,8 +189,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/processors/cache/cache.config.service.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="38"
+                            class="link-to-prism">src/processors/cache/cache.config.service.ts:38</a></div>
                 </td>
             </tr>
 
@@ -228,8 +228,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">src/processors/cache/cache.config.service.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="27"
+                            class="link-to-prism">src/processors/cache/cache.config.service.ts:27</a></div>
                 </td>
             </tr>
 
@@ -309,7 +309,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/cache/cache.config.service.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/processors/cache/cache.config.service.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -327,13 +327,12 @@ import { CacheOptionsFactory, Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
 import redisStore, { RedisStoreOptions, CacheStoreOptions } from &#x27;./cache.store&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
-import logger from &#x27;@app/utils/logger&#x27;
+import { redisLog } from &#x27;./cache.logger&#x27;
 
 @Injectable()
 export class CacheConfigService implements CacheOptionsFactory {
   constructor(private readonly emailService: EmailService) {}
 
-  // 发送告警邮件（半分钟节流）
   private sendAlarmMail &#x3D; lodash.throttle((error: string) &#x3D;&gt; {
     this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
@@ -343,21 +342,17 @@ export class CacheConfigService implements CacheOptionsFactory {
     })
   }, 1000 * 30)
 
-  // 重试策略
   public retryStrategy(retries: number): number | Error {
     // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#reconnect-strategy
-    const errorMessage &#x3D; [&#x27;[Redis]&#x27;, &#x60;retryStrategy！retries: ${retries}&#x60;]
-    logger.error(...(errorMessage as [any]))
-    this.sendAlarmMail(errorMessage.join(&#x27;&#x27;))
-
+    const errorMessage &#x3D; &#x60;retryStrategy! retries: ${retries}&#x60;
+    redisLog.error(errorMessage)
+    this.sendAlarmMail(errorMessage)
     if (retries &gt; 6) {
-      return new Error(&#x27;[Redis] 尝试次数已达极限！&#x27;)
+      return new Error(&#x27;Redis maximum retries!&#x27;)
     }
-
     return Math.min(retries * 1000, 3000)
   }
 
-  // 缓存配置
   public createCacheOptions(): CacheStoreOptions {
     // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
     const redisOptions: RedisStoreOptions &#x3D; {

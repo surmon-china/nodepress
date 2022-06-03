@@ -156,7 +156,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/disqus/disqus.service.private.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/modules/disqus/disqus.service.private.ts:28</a></div>
                             </td>
                         </tr>
 
@@ -234,8 +234,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="110"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:110</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="112"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:112</a></div>
                 </td>
             </tr>
 
@@ -306,8 +306,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="35"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:35</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:37</a></div>
                 </td>
             </tr>
 
@@ -378,8 +378,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="125"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:125</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="127"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:127</a></div>
                 </td>
             </tr>
 
@@ -418,8 +418,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="70"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:70</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:72</a></div>
                 </td>
             </tr>
 
@@ -490,8 +490,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="56"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:56</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:58</a></div>
                 </td>
             </tr>
 
@@ -562,8 +562,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="164"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:164</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="166"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:166</a></div>
                 </td>
             </tr>
 
@@ -634,8 +634,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="97"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:97</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="99"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:99</a></div>
                 </td>
             </tr>
 
@@ -706,8 +706,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="84"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:84</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:86</a></div>
                 </td>
             </tr>
 
@@ -781,7 +781,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/disqus/disqus.service.private.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/modules/disqus/disqus.service.private.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -811,6 +811,8 @@ import { GeneralDisqusParams } from &#x27;./disqus.dto&#x27;
 import { getDisqusXML } from &#x27;./disqus.xml&#x27;
 import * as DISQUS_CONST from &#x27;./disqus.constant&#x27;
 
+const log &#x3D; logger.scope(&#x27;DisqusPrivateService&#x27;)
+
 @Injectable()
 export class DisqusPrivateService {
   private disqus: Disqus
@@ -838,7 +840,7 @@ export class DisqusPrivateService {
       })
       return response.response
     } catch (error) {
-      logger.warn(&#x27;[disqus]&#x27;, &#x27;createThread&#x27;, postID, error)
+      log.warn(&#x27;createThread failed!&#x27;, postID, error)
       throw error
     }
   }
@@ -852,7 +854,7 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) &#x3D;&gt; {
-        logger.warn(&#x27;[disqus]&#x27;, &#x27;getThreads&#x27;, error)
+        log.warn(&#x27;getThreads failed!&#x27;, error)
         return Promise.reject(error)
       })
   }
@@ -866,7 +868,7 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) &#x3D;&gt; {
-        logger.warn(&#x27;[disqus]&#x27;, &#x27;getPosts&#x27;, error)
+        log.warn(&#x27;getPosts failed!&#x27;, error)
         return Promise.reject(error)
       })
   }
@@ -879,7 +881,7 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) &#x3D;&gt; {
-        logger.warn(&#x27;[disqus]&#x27;, &#x27;updateThread&#x27;, error)
+        log.warn(&#x27;updateThread failed!&#x27;, error)
         return Promise.reject(error)
       })
   }
@@ -892,7 +894,7 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) &#x3D;&gt; {
-        logger.warn(&#x27;[disqus]&#x27;, &#x27;updatePost&#x27;, error)
+        log.warn(&#x27;updatePost failed!&#x27;, error)
         return Promise.reject(error)
       })
   }
@@ -905,12 +907,12 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) &#x3D;&gt; {
-        logger.warn(&#x27;[disqus]&#x27;, &#x27;approvePost&#x27;, error)
+        log.warn(&#x27;approvePost failed!&#x27;, error)
         return Promise.reject(error)
       })
   }
 
-  // export NodePress to Dsiqus
+  // export NodePress to Disqus
   // https://help.disqus.com/en/articles/1717222-custom-xml-import-format
   public async exportXML(): Promise&lt;string&gt; {
     const treeMap &#x3D; new Map&lt;number, { comments: Array&lt;Comment&gt;; article: Article }&gt;()
@@ -1017,7 +1019,7 @@ export class DisqusPrivateService {
       }
     }
 
-    logger.info(&#x27;[disqus]&#x27;, &#x27;import XML&#x27;, { done: done.length, fail: fail.length })
+    log.info(&#x27;import XML&#x27;, { done: done.length, fail: fail.length })
     return { done, fail }
   }
 }

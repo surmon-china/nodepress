@@ -768,7 +768,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;import-xml&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@UseInterceptors(undefined)<br />@(&#x27;Import XML from Dsiqus&#x27;)<br /></code>
+                    <code>@Post(&#x27;import-xml&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@UseInterceptors(undefined)<br />@(&#x27;Import XML from Disqus&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -846,7 +846,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;oauth-callback&#x27;)<br />@Header(&#x27;content-type&#x27;, &#x27;text/html&#x27;)<br />@Header(&#x27;Content-Security-Policy&#x27;, &#x27;script-src &#x27;unsafe-inline&#x27;&#x27;)<br />@(&#x27;Dsiqus OAuth login&#x27;)<br /></code>
+                    <code>@Get(&#x27;oauth-callback&#x27;)<br />@Header(&#x27;content-type&#x27;, &#x27;text/html&#x27;)<br />@Header(&#x27;Content-Security-Policy&#x27;, &#x27;script-src &#x27;unsafe-inline&#x27;&#x27;)<br />@(&#x27;Disqus OAuth login&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -1170,7 +1170,7 @@ import { FileInterceptor } from &#x27;@nestjs/platform-express&#x27;
 import { Throttle } from &#x27;@nestjs/throttler&#x27;
 import { isProdEnv } from &#x27;@app/app.environment&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { CommentBase } from &#x27;@app/modules/comment/comment.model&#x27;
 import { DISQUS } from &#x27;@app/app.config&#x27;
@@ -1188,10 +1188,10 @@ export class DisqusController {
   ) {}
 
   // --------------------------------
-  // for client disqus user
+  // for client Disqus user
 
   @Get(&#x27;config&#x27;)
-  @Responsor.handle(&#x27;Get Disqus config&#x27;)
+  @Responser.handle(&#x27;Get Disqus config&#x27;)
   getConfig() {
     return {
       forum: DISQUS.forum,
@@ -1204,7 +1204,7 @@ export class DisqusController {
   @Get(&#x27;oauth-callback&#x27;)
   @Header(&#x27;content-type&#x27;, &#x27;text/html&#x27;)
   @Header(&#x27;Content-Security-Policy&#x27;, &quot;script-src &#x27;unsafe-inline&#x27;&quot;)
-  @Responsor.handle(&#x27;Dsiqus OAuth login&#x27;)
+  @Responser.handle(&#x27;Disqus OAuth login&#x27;)
   async oauthCallback(@Query() query: CallbackCodeDTO, @Response() response) {
     const accessToken &#x3D; await this.disqusPublicService.getAccessToken(query.code)
     // cache user info
@@ -1224,7 +1224,7 @@ export class DisqusController {
 
   @Get(&#x27;oauth-logout&#x27;)
   @Header(&#x27;content-type&#x27;, &#x27;text/plain&#x27;)
-  @Responsor.handle(&#x27;Disqus OAuth logout&#x27;)
+  @Responser.handle(&#x27;Disqus OAuth logout&#x27;)
   oauthLogout(@DisqusToken() token: AccessToken | null, @Response() response) {
     if (token) {
       this.disqusPublicService.deleteUserInfoCache(token.user_id)
@@ -1234,7 +1234,7 @@ export class DisqusController {
   }
 
   @Get(&#x27;user-info&#x27;)
-  @Responsor.handle(&#x27;Get Disqus user info&#x27;)
+  @Responser.handle(&#x27;Get Disqus user info&#x27;)
   getUserInfo(@DisqusToken() token: AccessToken | null) {
     if (!token) {
       return Promise.reject(&#x60;You are not logged in&#x60;)
@@ -1246,7 +1246,7 @@ export class DisqusController {
   }
 
   @Get(&#x27;thread&#x27;)
-  @Responsor.handle(&#x27;Get Disqus thread info&#x27;)
+  @Responser.handle(&#x27;Get Disqus thread info&#x27;)
   getThread(@Query() query: ThreadPostIdDTO) {
     return this.disqusPublicService.ensureThreadDetailCache(Number(query.post_id))
   }
@@ -1254,7 +1254,7 @@ export class DisqusController {
   // 30 seconds &gt; limit 6
   @Post(&#x27;comment&#x27;)
   @Throttle(6, 30)
-  @Responsor.handle(&#x27;Create universal comment&#x27;)
+  @Responser.handle(&#x27;Create universal comment&#x27;)
   createComment(
     @QueryParams() { visitor }: QueryParamsResult,
     @DisqusToken() token: AccessToken | null,
@@ -1264,7 +1264,7 @@ export class DisqusController {
   }
 
   @Delete(&#x27;comment&#x27;)
-  @Responsor.handle(&#x27;Delete universal comment&#x27;)
+  @Responser.handle(&#x27;Delete universal comment&#x27;)
   deleteComment(@Body() payload: CommentIdDTO, @DisqusToken() token: AccessToken | null) {
     return token
       ? this.disqusPublicService.deleteUniversalComment(payload.comment_id, token.access_token)
@@ -1276,35 +1276,35 @@ export class DisqusController {
 
   @Get(&#x27;threads&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Get Disqus threads&#x27;)
+  @Responser.handle(&#x27;Get Disqus threads&#x27;)
   getThreads(@Query() query: GeneralDisqusParams) {
     return this.disqusPrivateService.getThreads(query)
   }
 
   @Get(&#x27;posts&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Get Disqus posts&#x27;)
+  @Responser.handle(&#x27;Get Disqus posts&#x27;)
   getPosts(@Query() query: GeneralDisqusParams) {
     return this.disqusPrivateService.getPosts(query)
   }
 
   @Post(&#x27;post&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update Disqus post&#x27;)
+  @Responser.handle(&#x27;Update Disqus post&#x27;)
   updatePost(@Body() body) {
     return this.disqusPrivateService.updatePost(body)
   }
 
   @Post(&#x27;thread&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update Disqus thread&#x27;)
+  @Responser.handle(&#x27;Update Disqus thread&#x27;)
   updateThread(@Body() body) {
     return this.disqusPrivateService.updateThread(body)
   }
 
   @Get(&#x27;export-xml&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Export XML for Disqus import&#x27;)
+  @Responser.handle(&#x27;Export XML for Disqus import&#x27;)
   exportXML(@Response() response) {
     return this.disqusPrivateService.exportXML().then((xml) &#x3D;&gt; {
       response.header(&#x27;Content-Type&#x27;, &#x27;application/xml&#x27;)
@@ -1315,7 +1315,7 @@ export class DisqusController {
   @Post(&#x27;import-xml&#x27;)
   @UseGuards(AdminOnlyGuard)
   @UseInterceptors(FileInterceptor(&#x27;file&#x27;))
-  @Responsor.handle(&#x27;Import XML from Dsiqus&#x27;)
+  @Responser.handle(&#x27;Import XML from Disqus&#x27;)
   importXML(@UploadedFile() file: Express.Multer.File) {
     return this.disqusPrivateService.importXML(file)
   }

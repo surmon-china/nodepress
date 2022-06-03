@@ -206,7 +206,7 @@
 
 import { UseGuards, Controller, Get, Patch } from &#x27;@nestjs/common&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { ArchiveService, ArchiveData } from &#x27;./archive.service&#x27;
 
 @Controller(&#x27;archive&#x27;)
@@ -214,14 +214,14 @@ export class ArchiveController {
   constructor(private readonly archiveService: ArchiveService) {}
 
   @Get()
-  @Responsor.handle(&#x27;Get archive&#x27;)
+  @Responser.handle(&#x27;Get archive&#x27;)
   getArchive(): Promise&lt;ArchiveData&gt; {
     return this.archiveService.getCache()
   }
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update archive cache&#x27;)
+  @Responser.handle(&#x27;Update archive cache&#x27;)
   updateArchive(): Promise&lt;any&gt; {
     return this.archiveService.updateCache()
   }

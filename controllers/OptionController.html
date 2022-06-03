@@ -269,7 +269,7 @@
 
 import { Controller, Get, Put, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
 import { OptionService } from &#x27;./option.service&#x27;
@@ -281,14 +281,14 @@ export class OptionController {
 
   @Get()
   @UseGuards(AdminMaybeGuard)
-  @Responsor.handle(&#x27;Get site options&#x27;)
+  @Responser.handle(&#x27;Get site options&#x27;)
   getOption(@QueryParams() { isAuthenticated }: QueryParamsResult) {
     return isAuthenticated ? this.optionService.ensureAppOption() : this.optionService.getOptionCacheForGuest()
   }
 
   @Put()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle(&#x27;Update site options&#x27;)
+  @Responser.handle(&#x27;Update site options&#x27;)
   putOption(@Body() option: Option): Promise&lt;Option&gt; {
     return this.optionService.putOption(option)
   }

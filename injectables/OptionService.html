@@ -145,7 +145,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/option/option.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/modules/option/option.service.ts:20</a></div>
                             </td>
                         </tr>
 
@@ -223,8 +223,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="61"
-                            class="link-to-prism">src/modules/option/option.service.ts:61</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="63"
+                            class="link-to-prism">src/modules/option/option.service.ts:63</a></div>
                 </td>
             </tr>
 
@@ -295,8 +295,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="39"
-                            class="link-to-prism">src/modules/option/option.service.ts:39</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/modules/option/option.service.ts:41</a></div>
                 </td>
             </tr>
 
@@ -334,8 +334,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/modules/option/option.service.ts:44</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/modules/option/option.service.ts:46</a></div>
                 </td>
             </tr>
 
@@ -374,8 +374,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="77"
-                            class="link-to-prism">src/modules/option/option.service.ts:77</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/modules/option/option.service.ts:79</a></div>
                 </td>
             </tr>
 
@@ -414,8 +414,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="48"
-                            class="link-to-prism">src/modules/option/option.service.ts:48</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/modules/option/option.service.ts:50</a></div>
                 </td>
             </tr>
 
@@ -486,8 +486,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="69"
-                            class="link-to-prism">src/modules/option/option.service.ts:69</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="71"
+                            class="link-to-prism">src/modules/option/option.service.ts:71</a></div>
                 </td>
             </tr>
 
@@ -561,7 +561,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/option/option.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/modules/option/option.service.ts:20</a></div>
                         </td>
                     </tr>
 
@@ -583,6 +583,8 @@ import { Option, Blocklist, DEFAULT_OPTION } from &#x27;./option.model&#x27;
 import * as CACHE_KEY from &#x27;@app/constants/cache.constant&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
+const log &#x3D; logger.scope(&#x27;OptionService&#x27;)
+
 @Injectable()
 export class OptionService {
   private optionCache: CacheIOResult&lt;Omit&lt;Option, &#x27;blocklist&#x27;&gt;&gt;
@@ -602,7 +604,7 @@ export class OptionService {
     })
 
     this.optionCache.update().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;[option]&#x27;, &#x27;init getAppOption&#x27;, error)
+      log.warn(&#x27;init getAppOption failed!&#x27;, error)
     })
   }
 
@@ -616,7 +618,7 @@ export class OptionService {
   }
 
   public async putOption(newOption: Option): Promise&lt;Option&gt; {
-    // delete _id, likes fileds
+    // delete _id,likes fields
     Reflect.deleteProperty(newOption, &#x27;_id&#x27;)
     Reflect.deleteProperty(newOption, &#x27;meta&#x27;)
 

@@ -844,7 +844,7 @@
 
 import { Controller, Post, Body } from &#x27;@nestjs/common&#x27;
 import { Throttle } from &#x27;@nestjs/throttler&#x27;
-import { Responsor } from &#x27;@app/decorators/responsor.decorator&#x27;
+import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { IPService, IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
@@ -876,7 +876,7 @@ export class VoteController {
   }
 
   private async getAuthor(author: Author | void, token?: string | null) {
-    // disqus user
+    // Disqus user
     if (token) {
       try {
         const userInfo &#x3D; await this.disqusPublicService.getUserInfo(token)
@@ -924,7 +924,7 @@ export class VoteController {
       &#x60;Location: ${
         message.location
           ? [message.location.country, message.location.region, message.location.city].join(&#x27; · &#x27;)
-          : &#x27;unknow&#x27;
+          : &#x27;unknown&#x27;
       }&#x60;,
     ]
 
@@ -938,7 +938,7 @@ export class VoteController {
     })
   }
 
-  // Disqus logined user or guest user
+  // Disqus logged-in user or guest user
   async voteDisqusThread(articleID: number, vote: number, token?: string) {
     const thread &#x3D; await this.disqusPublicService.ensureThreadDetailCache(articleID)
     const result &#x3D; await this.disqusPublicService.voteThread({
@@ -946,14 +946,14 @@ export class VoteController {
       thread: thread.id,
       vote,
     })
-    // logger.info(&#x27;[disqus]&#x27;, &#x60;like thread ${articleID}&#x60;, result)
+    // console.info(&#x60;Disqus like thread ${articleID}&#x60;, result)
     return result
   }
 
   // 1 hour &gt; limit 10
   @Throttle(10, 60 * 60)
   @Post(&#x27;/site&#x27;)
-  @Responsor.handle(&#x27;Vote site&#x27;)
+  @Responser.handle(&#x27;Vote site&#x27;)
   async likeSite(
     @Body() voteBody: VoteAuthorDTO,
     @DisqusToken() token: AccessToken | null,
@@ -984,7 +984,7 @@ export class VoteController {
   // 1 minute &gt; limit 15
   @Throttle(15, 60)
   @Post(&#x27;/article&#x27;)
-  @Responsor.handle(&#x27;Vote article&#x27;)
+  @Responser.handle(&#x27;Vote article&#x27;)
   async voteArticle(
     @Body() voteBody: PageVoteDTO,
     @DisqusToken() token: AccessToken | null,
@@ -1015,7 +1015,7 @@ export class VoteController {
   // 30 seconds &gt; limit 10
   @Throttle(10, 30)
   @Post(&#x27;/comment&#x27;)
-  @Responsor.handle(&#x27;Vote comment&#x27;)
+  @Responser.handle(&#x27;Vote comment&#x27;)
   async voteComment(
     @Body() voteBody: CommentVoteDTO,
     @DisqusToken() token: AccessToken | null,
@@ -1023,7 +1023,7 @@ export class VoteController {
   ) {
     // NodePress
     const result &#x3D; await this.commentService.vote(voteBody.comment_id, voteBody.vote &gt; 0)
-    // Disqus only logined user
+    // Disqus only logged-in user
     if (token) {
       try {
         const postID &#x3D; await this.disqusPublicService.getDisqusPostIDByCommentID(voteBody.comment_id)
@@ -1033,7 +1033,7 @@ export class VoteController {
             post: postID,
             vote: voteBody.vote,
           })
-          // logger.info(&#x27;[disqus]&#x27;, &#x60;like post ${voteBody.comment_id}&#x60;, result)
+          // console.info(&#x60;Disqus like post ${voteBody.comment_id}&#x60;, result)
         }
       } catch (error) {}
     }
@@ -1041,10 +1041,10 @@ export class VoteController {
     this.getAuthor(voteBody.author, token?.access_token).then((author) &#x3D;&gt; {
       if (author) {
         this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) &#x3D;&gt; {
-          const tagetTitle &#x3D; await this.getTargetTitle(comment.post_id)
+          const targetTitle &#x3D; await this.getTargetTitle(comment.post_id)
           const mailParams &#x3D; {
             vote: voteBody.vote &gt; 0 ? &#x27;+1&#x27; : &#x27;-1&#x27;,
-            on: &#x60;${tagetTitle} #${comment.id}&#x60;,
+            on: &#x60;${targetTitle} #${comment.id}&#x60;,
             author,
             location: await this.queryIPLocation(visitor.ip),
             link: getPermalinkByID(comment.post_id),

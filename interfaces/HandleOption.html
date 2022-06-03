@@ -65,7 +65,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/decorators/responsor.decorator.ts</code>
+            <code>src/decorators/responser.decorator.ts</code>
         </p>
 
 
@@ -281,12 +281,12 @@ import { reflector } from &#x27;@app/constants/reflector.constant&#x27;
 import * as META from &#x27;@app/constants/meta.constant&#x27;
 import * as TEXT from &#x27;@app/constants/text.constant&#x27;
 
-export interface ResponsorOptions extends Omit&lt;DecoratorCreatorOption, &#x27;usePaginate&#x27;&gt; {
+export interface ResponserOptions extends Omit&lt;DecoratorCreatorOption, &#x27;usePaginate&#x27;&gt; {
   transform?: boolean
   paginate?: boolean
 }
 
-export const getResponsorOptions &#x3D; (target: any): ResponsorOptions &#x3D;&gt; {
+export const getResponserOptions &#x3D; (target: any): ResponserOptions &#x3D;&gt; {
   return {
     errorCode: reflector.get(META.HTTP_ERROR_CODE, target),
     successCode: reflector.get(META.HTTP_SUCCESS_CODE, target),
@@ -388,7 +388,7 @@ export const paginate &#x3D; (): MethodDecorator &#x3D;&gt; {
   return createDecorator({ usePaginate: true })
 }
 
-export const Responsor &#x3D; { error, success, handle, paginate }
+export const Responser &#x3D; { error, success, handle, paginate }
 </code></pre>
     </div>
 </div>

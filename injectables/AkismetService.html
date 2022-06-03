@@ -144,7 +144,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:36</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:38</a></div>
                             </td>
                         </tr>
 
@@ -179,8 +179,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="103"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:103</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="104"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:104</a></div>
                 </td>
             </tr>
 
@@ -250,8 +250,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:45</a></div>
                 </td>
             </tr>
 
@@ -289,8 +289,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="51"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:51</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="53"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:53</a></div>
                 </td>
             </tr>
 
@@ -328,8 +328,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="65"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:65</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:67</a></div>
                 </td>
             </tr>
 
@@ -399,8 +399,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="111"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:111</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="112"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:112</a></div>
                 </td>
             </tr>
 
@@ -470,8 +470,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="107"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:107</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:108</a></div>
                 </td>
             </tr>
 
@@ -545,7 +545,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:35</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:37</a></div>
                         </td>
                     </tr>
 
@@ -571,7 +571,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:36</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -590,6 +590,8 @@ import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
+
+const log &#x3D; logger.scope(&#x27;Akismet&#x27;)
 
 export enum AkismetAction {
   CheckSpam &#x3D; &#x27;checkSpam&#x27;,
@@ -634,25 +636,25 @@ export class AkismetService {
       .then((valid) &#x3D;&gt; (valid ? Promise.resolve(valid) : Promise.reject(&#x27;Invalid Akismet key&#x27;)))
       .then(() &#x3D;&gt; {
         this.clientIsValid &#x3D; true
-        logger.info(&#x27;[Akismet]&#x27;, &#x27;client init succeed!&#x27;)
+        log.info(&#x27;client init succeed.&#x27;)
       })
       .catch((error) &#x3D;&gt; {
         this.clientIsValid &#x3D; false
-        logger.error(&#x27;[Akismet]&#x27;, &#x27;client init failed! reason:&#x27;, getMessageFromNormalError(error))
+        log.error(&#x27;client init failed!&#x27;, getMessageFromNormalError(error))
       })
   }
 
   private makeInterceptor(handleType: AkismetAction) {
     return (content: AkismetPayload): Promise&lt;any&gt; &#x3D;&gt; {
       return new Promise((resolve, reject) &#x3D;&gt; {
-        // 确定验证失败的情况下才会拦截验证，未认证或验证通过都继续操作
+        // continue operation only when initialization successful
         if (this.clientIsValid &#x3D;&#x3D;&#x3D; false) {
-          const message &#x3D; [&#x60;[Akismet]&#x60;, &#x60;${handleType} failed! reason: init failed&#x60;]
-          logger.warn(...(message as [any]))
-          return resolve(message.join(&#x27;&#x27;))
+          const message &#x3D; &#x60;${handleType} failed! reason: init failed&#x60;
+          log.warn(message)
+          return resolve(message)
         }
 
-        logger.info(&#x60;[Akismet]&#x60;, &#x60;${handleType}...&#x60;, new Date())
+        log.info(&#x60;${handleType}...&#x60;, new Date())
         this.client[handleType]({
           ...content,
           permalink: content.permalink || UNDEFINED,
@@ -662,19 +664,18 @@ export class AkismetService {
           comment_content: content.comment_content || UNDEFINED,
         })
           .then((result) &#x3D;&gt; {
-            // 如果是检查 spam 且检查结果为 true
             if (handleType &#x3D;&#x3D;&#x3D; AkismetAction.CheckSpam &amp;&amp; result) {
-              logger.warn(&#x60;[Akismet]&#x60;, &#x60;${handleType} found SPAM！&#x60;, new Date(), content)
+              log.warn(&#x60;${handleType} found SPAM!&#x60;, new Date(), content)
               reject(&#x27;SPAM!&#x27;)
             } else {
-              logger.info(&#x60;[Akismet]&#x60;, &#x60;${handleType} succeed!&#x60;)
+              log.info(&#x60;${handleType} succeed.&#x60;)
               resolve(result)
             }
           })
           .catch((error) &#x3D;&gt; {
-            const message &#x3D; [&#x60;[Akismet]&#x60;, &#x60;${handleType} failed!&#x60;]
-            logger.error(...(message as [any]), error)
-            reject(message.join(&#x27;&#x27;))
+            const message &#x3D; &#x60;${handleType} failed!&#x60;
+            log.error(message, error)
+            reject(message)
           })
       })
     }
