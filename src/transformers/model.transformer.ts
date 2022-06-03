@@ -1,7 +1,7 @@
 /**
  * @file Model transform & helper
  * @module transformer/model
- * @description 用于将一个基本的 Typegoose 模型转换为 Model 和 Provider，及模型注入器
+ * @description transform Typegoose Class into model & provider & injecter
  * @link https://github.com/kpfromer/nestjs-typegoose/blob/master/src/typegoose.providers.ts
  * @author Surmon <https://github.com/surmon-china>
  */

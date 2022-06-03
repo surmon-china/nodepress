@@ -21,7 +21,7 @@ import {
 } from 'class-validator'
 import { PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
 import { WhenGuest } from '@app/decorators/guest.decorator'
-import { unknowToNumber } from '@app/transformers/value.transformer'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 import { DateQueryDTO, KeywordQueryDTO } from '@app/models/query.model'
 import { PaginateOptionWithHotSortDTO } from '@app/models/paginate.model'
 import {
@@ -41,7 +41,7 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   state?: PublishState
 
   @WhenGuest({ only: [PublicState.Public], default: PublicState.Public })
@@ -49,14 +49,14 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   public?: PublicState
 
   @IsIn(ARTICLE_ORIGIN_STATES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   origin?: OriginState
 
   @IsString()
@@ -82,7 +82,7 @@ export class ArticleListQueryDTO {
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   count?: number
 }
 

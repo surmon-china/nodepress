@@ -1,6 +1,5 @@
 /**
  * @file Increment ID collection constant
- * @description 用于自增表的配置
  * @module constant/increment
  * @author Surmon <https://github.com/surmon-china>
  */

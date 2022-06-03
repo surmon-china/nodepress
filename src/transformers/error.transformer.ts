@@ -1,6 +1,5 @@
 /**
  * @file Error transform
- * @description 转换各种特定格式的错误数据
  * @module transformer/error
  * @author Surmon <https://github.com/surmon-china>
  */

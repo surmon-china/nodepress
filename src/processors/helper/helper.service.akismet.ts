@@ -11,6 +11,8 @@ import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('Akismet')
+
 export enum AkismetAction {
   CheckSpam = 'checkSpam',
   SubmitSpam = 'submitSpam',
@@ -54,11 +56,11 @@ export class AkismetService {
       .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
       .then(() => {
         this.clientIsValid = true
-        logger.info('[Akismet]', 'client init succeed')
+        log.info('client init succeed.')
       })
       .catch((error) => {
         this.clientIsValid = false
-        logger.error('[Akismet]', 'client init failed! reason:', getMessageFromNormalError(error))
+        log.error('client init failed!', getMessageFromNormalError(error))
       })
   }
 
@@ -67,12 +69,12 @@ export class AkismetService {
       return new Promise((resolve, reject) => {
         // continue operation only when initialization successful
         if (this.clientIsValid === false) {
-          const message = [`[Akismet]`, `${handleType} failed! reason: init failed`]
-          logger.warn(...(message as [any]))
-          return resolve(message.join(''))
+          const message = `${handleType} failed! reason: init failed`
+          log.warn(message)
+          return resolve(message)
         }
 
-        logger.info(`[Akismet]`, `${handleType}...`, new Date())
+        log.info(`${handleType}...`, new Date())
         this.client[handleType]({
           ...content,
           permalink: content.permalink || UNDEFINED,
@@ -83,17 +85,17 @@ export class AkismetService {
         })
           .then((result) => {
             if (handleType === AkismetAction.CheckSpam && result) {
-              logger.warn(`[Akismet]`, `${handleType} found SPAM！`, new Date(), content)
+              log.warn(`${handleType} found SPAM!`, new Date(), content)
               reject('SPAM!')
             } else {
-              logger.info(`[Akismet]`, `${handleType} succeed`)
+              log.info(`${handleType} succeed.`)
               resolve(result)
             }
           })
           .catch((error) => {
-            const message = [`[Akismet]`, `${handleType} failed!`]
-            logger.error(...(message as [any]), error)
-            reject(message.join(''))
+            const message = `${handleType} failed!`
+            log.error(message, error)
+            reject(message)
           })
       })
     }

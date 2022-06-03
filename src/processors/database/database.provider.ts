@@ -10,6 +10,8 @@ import { DB_CONNECTION_TOKEN } from '@app/constants/system.constant'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('MongoDB')
+
 export const databaseProvider = {
   inject: [EmailService],
   provide: DB_CONNECTION_TOKEN,
@@ -17,7 +19,6 @@ export const databaseProvider = {
     let reconnectionTask: NodeJS.Timeout | null = null
     const RECONNECT_INTERVAL = 6000
 
-    // 发送告警邮件（当发送邮件时，数据库已达到万劫不复之地）
     const sendAlarmMail = (error: string) => {
       emailService.sendMailAs(APP_CONFIG.APP.NAME, {
         to: APP_CONFIG.APP.ADMIN_EMAIL,
@@ -32,11 +33,11 @@ export const databaseProvider = {
     }
 
     mongoose.connection.on('connecting', () => {
-      logger.info('[MongoDB]', 'connecting...')
+      log.info('connecting...')
     })
 
     mongoose.connection.on('open', () => {
-      logger.info('[MongoDB]', 'readied!')
+      log.info('readied (open).')
       if (reconnectionTask) {
         clearTimeout(reconnectionTask)
         reconnectionTask = null
@@ -44,12 +45,12 @@ export const databaseProvider = {
     })
 
     mongoose.connection.on('disconnected', () => {
-      logger.error('[MongoDB]', `disconnected! retry when after ${RECONNECT_INTERVAL / 1000}s`)
+      log.error(`disconnected! retry when after ${RECONNECT_INTERVAL / 1000}s`)
       reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL)
     })
 
     mongoose.connection.on('error', (error) => {
-      logger.error('[MongoDB]', 'error!', error)
+      log.error('error!', error)
       mongoose.disconnect()
       sendAlarmMail(String(error))
     })

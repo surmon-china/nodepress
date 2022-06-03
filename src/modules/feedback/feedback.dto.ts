@@ -9,7 +9,7 @@ import { Transform } from 'class-transformer'
 import { IsNotEmpty, IsArray, IsIn, IsInt, IsOptional, Min, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { KeywordQueryDTO, BooleanNumberValue } from '@app/models/query.model'
 import { PaginateOptionDTO } from '@app/models/paginate.model'
-import { unknowToNumber } from '@app/transformers/value.transformer'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 import { FEEDBACK_EMOTION_VALUES } from './feedback.model'
 
 export class FeedbackPaginateQueryDTO extends IntersectionType(PaginateOptionDTO, KeywordQueryDTO) {
@@ -17,21 +17,21 @@ export class FeedbackPaginateQueryDTO extends IntersectionType(PaginateOptionDTO
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   tid?: number
 
   @IsIn(FEEDBACK_EMOTION_VALUES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   emotion?: number
 
   @IsIn([BooleanNumberValue.False, BooleanNumberValue.True])
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   marked?: BooleanNumberValue.True | BooleanNumberValue.False
 }
 

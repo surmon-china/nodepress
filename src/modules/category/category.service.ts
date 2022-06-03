@@ -23,7 +23,7 @@ export class CategoryService {
     @InjectModel(Category) private readonly categoryModel: MongooseModel<Category>
   ) {}
 
-  public async paginater(
+  public async paginator(
     query: PaginateQuery<Category>,
     options: PaginateOptions,
     publicOnly: boolean
@@ -36,8 +36,8 @@ export class CategoryService {
     ])
 
     const hydratedDocs = categories.documents.map((category) => {
-      const finded = counts.find((item) => String(item._id) === String(category._id))
-      return { ...category, articles_count: finded ? finded.count : 0 } as Category
+      const found = counts.find((item) => String(item._id) === String(category._id))
+      return { ...category, articles_count: found ? found.count : 0 } as Category
     })
 
     return { ...categories, documents: hydratedDocs }
@@ -118,11 +118,11 @@ export class CategoryService {
     this.seoService.delete(getCategoryUrl(category.slug))
     // children categories
     const categories = await this.categoryModel.find({ pid: categoryID }).exec()
-    // 如果没有此分类的父分类，则删除 { pid: target.id } -> ok
+    // delete when root category -> { pid: target.id }
     if (!categories.length) {
       return category
     }
-    // 否则递归更改 -> { pid: target.id } -> { pid: target.pid || null }
+    // recursive delete parents -> { pid: target.id } -> { pid: target.pid || null }
     await this.categoryModel.collection
       .initializeOrderedBulkOp()
       .find({ _id: { $in: Array.from(categories, (c) => c._id) } })

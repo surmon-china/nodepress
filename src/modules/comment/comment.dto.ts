@@ -12,7 +12,7 @@ import { CommentState } from '@app/constants/biz.constant'
 import { COMMENT_STATES } from './comment.model'
 import { KeywordQueryDTO } from '@app/models/query.model'
 import { PaginateOptionWithHotSortDTO } from '@app/models/paginate.model'
-import { unknowToNumber } from '@app/transformers/value.transformer'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWithHotSortDTO, KeywordQueryDTO) {
   @WhenGuest({ only: [CommentState.Published], default: CommentState.Published })
@@ -20,14 +20,14 @@ export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWith
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   state?: CommentState
 
   @Min(0)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   post_id?: number
 }
 

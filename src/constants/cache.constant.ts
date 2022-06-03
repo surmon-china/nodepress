@@ -1,6 +1,5 @@
 /**
  * @file Global cache constant
- * @description 用于全局缓存的常量键
  * @module constant/cache
  * @author Surmon <https://github.com/surmon-china>
  */

@@ -9,7 +9,7 @@ import { Controller, Get, Post, Patch, UploadedFile, Body, UseGuards, UseInterce
 import { FileInterceptor } from '@nestjs/platform-express'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
-import { Responsor } from '@app/decorators/responsor.decorator'
+import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { AWSService } from '@app/processors/helper/helper.service.aws'
 import { GoogleService } from '@app/processors/helper/helper.service.google'
@@ -28,21 +28,21 @@ export class ExpansionController {
 
   @Get('statistic')
   @UseGuards(AdminMaybeGuard)
-  @Responsor.handle('Get statistic')
+  @Responser.handle('Get statistic')
   getSystemStatistics(@QueryParams() { isUnauthenticated }: QueryParamsResult): Promise<Statistic> {
     return this.statisticService.getStatistic(isUnauthenticated)
   }
 
   @Get('google-token')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Get Google credentials')
+  @Responser.handle('Get Google credentials')
   getGoogleToken(): Promise<Credentials> {
     return this.googleService.getCredentials()
   }
 
   @Patch('database-backup')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Update database backup')
+  @Responser.handle('Update database backup')
   updateDatabaseBackup() {
     return this.dbBackupService.backup()
   }
@@ -50,7 +50,7 @@ export class ExpansionController {
   @Post('upload')
   @UseGuards(AdminOnlyGuard)
   @UseInterceptors(FileInterceptor('file'))
-  @Responsor.handle('Upload file to cloud storage')
+  @Responser.handle('Upload file to cloud storage')
   uploadStatic(@UploadedFile() file: Express.Multer.File, @Body() body) {
     return this.awsService
       .uploadFile({

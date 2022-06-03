@@ -22,6 +22,8 @@ import { isProdEnv } from '@app/app.environment'
 import logger from '@app/utils/logger'
 import * as APP_CONFIG from '@app/app.config'
 
+const log = logger.scope('CommentService')
+
 @Injectable()
 export class CommentService {
   constructor(
@@ -112,17 +114,17 @@ export class CommentService {
         )
       }
     } catch (error) {
-      logger.warn('[comment]', 'updateCommentCountWithArticle failed!', error)
+      log.warn('updateCommentCountWithArticle failed!', error)
     }
   }
 
-  // 根据操作状态处理评论转移，处理评论状态转移
+  // comment state effects
   private updateBlocklistAkismetWithComment(comments: Comment[], state: CommentState, referer?: string) {
     const isSPAM = state === CommentState.Spam
     const action = isSPAM ? AkismetAction.SubmitSpam : AkismetAction.SubmitHam
     //  SPAM > append to blocklist & submitSpam
     //  HAM > remove from blocklist & submitHAM
-    // akismet
+    // Akismet
     comments.forEach((comment) => this.submitCommentAkismet(action, comment, referer))
     // block list
     const ips: string[] = comments.map((comment) => comment.ip!).filter(Boolean)
@@ -131,8 +133,8 @@ export class CommentService {
       ? this.optionService.appendToBlocklist({ ips, emails })
       : this.optionService.removeFromBlocklist({ ips, emails })
     blocklistAction
-      .then(() => logger.info('[comment]', 'updateBlocklistAkismetWithComment.blocklistAction > succeed'))
-      .catch((error) => logger.warn('[comment]', 'updateBlocklistAkismetWithComment.blocklistAction > failed', error))
+      .then(() => log.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
+      .catch((error) => log.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error))
   }
 
   // validate comment by NodePress IP/email/keywords
@@ -163,15 +165,15 @@ export class CommentService {
   }
 
   // get comment list for client user
-  public async paginater(
-    querys: PaginateQuery<Comment>,
+  public async paginator(
+    query: PaginateQuery<Comment>,
     options: PaginateOptions,
     hideIPEmail = false
   ): Promise<PaginateResult<Comment>> {
     // MARK: can't use 'lean' with virtual 'email_hash'
     // MARK: can't use select('-email') with virtual 'email_hash'
     // https://github.com/Automattic/mongoose/issues/3130#issuecomment-395750197
-    const result = await this.commentModel.paginate(querys, options)
+    const result = await this.commentModel.paginate(query, options)
     if (!hideIPEmail) {
       return result
     }
@@ -283,7 +285,7 @@ export class CommentService {
       const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } })
       this.updateBlocklistAkismetWithComment(todoComments, state, referer)
     } catch (error) {
-      logger.warn('[comment]', `对评论进行改变状态 ${state} 时，出现查询错误！`, error)
+      log.warn(`batchPatchState to ${state} failed!`, error)
     }
     return actionResult
   }

@@ -56,7 +56,7 @@ export class Author {
   @prop({ required: true, validate: /\S+/ })
   name: string
 
-  // MARK: can't get disqus user's email
+  // MARK: can't get Disqus user's email
   @IsEmail()
   @IsString()
   @IsOptional()

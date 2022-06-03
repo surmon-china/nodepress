@@ -9,7 +9,7 @@ import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nes
 import { Throttle } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { ExposePipe } from '@app/pipes/expose.pipe'
-import { Responsor } from '@app/decorators/responsor.decorator'
+import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { numberToBoolean } from '@app/transformers/value.transformer'
@@ -23,8 +23,8 @@ export class FeedbackController {
 
   @Get()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.paginate()
-  @Responsor.handle('Get feedbacks')
+  @Responser.paginate()
+  @Responser.handle('Get feedbacks')
   getFeedbacks(@Query(ExposePipe) query: FeedbackPaginateQueryDTO): Promise<PaginateResult<Feedback>> {
     const { sort, page, per_page, ...filters } = query
     const paginateQuery: PaginateQuery<Feedback> = {}
@@ -53,34 +53,34 @@ export class FeedbackController {
       ]
     }
 
-    return this.feedbackService.paginater(paginateQuery, paginateOptions)
+    return this.feedbackService.paginator(paginateQuery, paginateOptions)
   }
 
   // 30 seconds > limit 3
   @Throttle(3, 30)
   @Post()
-  @Responsor.handle('Create feedback')
+  @Responser.handle('Create feedback')
   createFeedback(@Body() feedback: FeedbackBase, @QueryParams() { visitor }: QueryParamsResult): Promise<Feedback> {
     return this.feedbackService.create(feedback, visitor)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Delete feedbacks')
+  @Responser.handle('Delete feedbacks')
   deleteFeedbacks(@Body() body: FeedbacksDTO) {
     return this.feedbackService.batchDelete(body.feedback_ids)
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Update feedback')
+  @Responser.handle('Update feedback')
   putFeedback(@QueryParams() { params }: QueryParamsResult, @Body() feedback: Feedback): Promise<Feedback> {
     return this.feedbackService.update(params.id, feedback)
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Delete feedback')
+  @Responser.handle('Delete feedback')
   deleteFeedback(@QueryParams() { params }: QueryParamsResult) {
     return this.feedbackService.delete(params.id)
   }

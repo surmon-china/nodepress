@@ -13,6 +13,8 @@ import { Option, Blocklist, DEFAULT_OPTION } from './option.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('OptionService')
+
 @Injectable()
 export class OptionService {
   private optionCache: CacheIOResult<Omit<Option, 'blocklist'>>
@@ -32,7 +34,7 @@ export class OptionService {
     })
 
     this.optionCache.update().catch((error) => {
-      logger.warn('[option]', 'init getAppOption', error)
+      log.warn('init getAppOption failed!', error)
     })
   }
 
@@ -46,7 +48,7 @@ export class OptionService {
   }
 
   public async putOption(newOption: Option): Promise<Option> {
-    // delete _id, likes fileds
+    // delete _id,likes fields
     Reflect.deleteProperty(newOption, '_id')
     Reflect.deleteProperty(newOption, 'meta')
 

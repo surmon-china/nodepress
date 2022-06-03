@@ -13,12 +13,12 @@ import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class OriginMiddleware
- * @classdesc 用于验证是否为非法来源请求
+ * @classdesc verification request origin and referer
  */
 @Injectable()
 export class OriginMiddleware implements NestMiddleware {
   use(request: Request, response: Response, next) {
-    // referer when production
+    // production only
     if (isProdEnv) {
       const { origin, referer } = request.headers
       const isAllowed = (field) => !field || field.includes(CROSS_DOMAIN.allowedReferer)

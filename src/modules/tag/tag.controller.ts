@@ -10,7 +10,7 @@ import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { ExposePipe } from '@app/pipes/expose.pipe'
-import { Responsor } from '@app/decorators/responsor.decorator'
+import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { TagsDTO, TagPaginateQueryDTO } from './tag.dto'
@@ -23,8 +23,8 @@ export class TagController {
 
   @Get()
   @UseGuards(AdminMaybeGuard)
-  @Responsor.paginate()
-  @Responsor.handle('Get tags')
+  @Responser.paginate()
+  @Responser.handle('Get tags')
   getTags(
     @Query(PermissionPipe, ExposePipe) query: TagPaginateQueryDTO,
     @QueryParams() { isUnauthenticated }: QueryParamsResult
@@ -40,40 +40,40 @@ export class TagController {
       paginateQuery.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
     }
 
-    // paginater
-    return this.tagService.paginater(paginateQuery, paginateOptions, isUnauthenticated)
+    // paginate
+    return this.tagService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
   @Get('all')
-  @Responsor.handle('Get all tags')
+  @Responser.handle('Get all tags')
   getAllTags(): Promise<Array<Tag>> {
     return this.tagService.getAllTagsCache()
   }
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Create tag')
+  @Responser.handle('Create tag')
   createTag(@Body() tag: Tag): Promise<Tag> {
     return this.tagService.create(tag)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Delete tags')
+  @Responser.handle('Delete tags')
   delTags(@Body() body: TagsDTO) {
     return this.tagService.batchDelete(body.tag_ids)
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Update Tag')
+  @Responser.handle('Update Tag')
   putTag(@QueryParams() { params }: QueryParamsResult, @Body() tag: Tag): Promise<Tag> {
     return this.tagService.update(params.id, tag)
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Delete tag')
+  @Responser.handle('Delete tag')
   delTag(@QueryParams() { params }: QueryParamsResult): Promise<Tag> {
     return this.tagService.delete(params.id)
   }

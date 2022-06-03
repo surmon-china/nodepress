@@ -18,39 +18,34 @@ const renderTime = () => {
   return `[${now.toLocaleDateString()} ${now.toLocaleTimeString()}]`
 }
 
-const renderModule = (message: string) => {
-  if (typeof message === 'string' && message.startsWith('[') && message.endsWith(']')) {
-    return chalk.green.underline(message.substr(1, message.length - 2))
-  } else {
-    return message
-  }
+const renderScope = (scope: string) => {
+  return chalk.green.underline(scope)
 }
 
 const renderMessage = (color: chalk.Chalk, messages: any[]) => {
   return messages.map((m) => (typeof m === 'string' ? color(m) : m))
 }
 
-const renderLog = (method: LoggerLevel, levelLabel: string, messageColor: chalk.Chalk) => {
-  return (message: string, ...args: any) => {
+const renderLog = (method: LoggerLevel, level: string, color: chalk.Chalk, scope?: string) => {
+  return (...messages: any) => {
     return console[method](
       chalk.greenBright(`[NP]`),
       renderTime(),
-      levelLabel,
-      renderModule(message),
-      ...renderMessage(messageColor, args)
+      level,
+      scope ? renderScope(scope) : '',
+      ...renderMessage(color, messages)
     )
   }
 }
 
-const createLogger = () => {
-  return {
-    debug: renderLog(LoggerLevel.Debug, chalk.cyan('[DEBUG]'), chalk.cyanBright),
-    info: renderLog(LoggerLevel.Info, chalk.blue('[_INFO]'), chalk.greenBright),
-    warn: renderLog(LoggerLevel.Warn, chalk.yellow('[_WARN]'), chalk.yellowBright),
-    error: renderLog(LoggerLevel.Error, chalk.red('[ERROR]'), chalk.redBright),
-  }
+const createLogger = (scope?: string) => ({
+  debug: renderLog(LoggerLevel.Debug, chalk.cyan('[DEBUG]'), chalk.cyanBright, scope),
+  info: renderLog(LoggerLevel.Info, chalk.blue('[_INFO]'), chalk.greenBright, scope),
+  warn: renderLog(LoggerLevel.Warn, chalk.yellow('[_WARN]'), chalk.yellowBright, scope),
+  error: renderLog(LoggerLevel.Error, chalk.red('[ERROR]'), chalk.redBright, scope),
+})
+
+export default {
+  ...createLogger(),
+  scope: createLogger,
 }
-
-const logger = createLogger()
-
-export default logger

@@ -39,5 +39,5 @@ async function bootstrap() {
 }
 
 bootstrap().then(() => {
-  logger.info(`NodePress Run！port at ${APP_CONFIG.APP.PORT}, env: ${environment}`)
+  logger.info(`NodePress is running at ${APP_CONFIG.APP.PORT}, env: ${environment}.`)
 })

@@ -1,6 +1,5 @@
 /**
  * @file URL transformer
- * @description 构造各种链接
  * @module transformer/link
  * @author Surmon <https://github.com/surmon-china>
  */

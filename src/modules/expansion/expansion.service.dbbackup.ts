@@ -15,6 +15,8 @@ import { AWSService, UploadResult } from '@app/processors/helper/helper.service.
 import { APP, MONGO_DB, DB_BACKUP } from '@app/app.config'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('ExpansionDB_Backup')
+
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5
 const UPLOAD_INTERVAL = '0 0 3 * * *'
 const BACKUP_FILE_NAME = 'nodepress.zip'
@@ -23,7 +25,7 @@ const BACKUP_DIR_PATH = path.join(APP.ROOT_PATH, 'dbbackup')
 @Injectable()
 export class DBBackupService {
   constructor(private readonly emailService: EmailService, private readonly awsService: AWSService) {
-    logger.info('[expansion]', 'DB Backup schedule job initialized')
+    log.info('schedule job initialized.')
     schedule.scheduleJob(UPLOAD_INTERVAL, () => {
       this.backup().catch(() => {
         setTimeout(this.backup, UP_FAILED_TIMEOUT)
@@ -64,9 +66,9 @@ export class DBBackupService {
       shell.mkdir('backup')
 
       shell.exec(`mongodump --uri="${MONGO_DB.uri}" --out="backup"`, (code, out) => {
-        logger.info('[expansion]', 'DB Backup mongodump done', code, out)
+        log.info('mongodump done.', code, out)
         if (code !== 0) {
-          logger.warn('[expansion]', 'DB Backup mongodump failed!', out)
+          log.warn('mongodump failed!', out)
           return reject(out)
         }
 
@@ -80,8 +82,8 @@ export class DBBackupService {
         const fileDate = moment(new Date()).format('YYYY-MM-DD-HH:mm')
         const fileName = `nodepress-mongodb/backup-${fileDate}.zip`
         const filePath = path.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME)
-        logger.info('[expansion]', 'DB Backup uploading: ' + fileName)
-        logger.info('[expansion]', 'DB Backup file source: ' + filePath)
+        log.info('uploading: ' + fileName)
+        log.info('file source: ' + filePath)
 
         // upload to cloud storage
         this.awsService
@@ -95,11 +97,11 @@ export class DBBackupService {
             encryption: 'AES256',
           })
           .then((result) => {
-            logger.info('[expansion]', 'DB Backup succeed', result.url)
+            log.info('upload succeed.', result.url)
             resolve(result)
           })
           .catch((error) => {
-            logger.warn('[expansion]', 'DB Backup failed!', error)
+            log.warn('upload failed!', error)
             reject(JSON.stringify(error.message))
           })
       })

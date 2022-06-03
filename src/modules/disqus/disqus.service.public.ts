@@ -19,6 +19,8 @@ import { DisqusPrivateService } from './disqus.service.private'
 import logger from '@app/utils/logger'
 import * as DISQUS_CONST from './disqus.constant'
 
+const log = logger.scope('DisqusPublicService')
+
 @Injectable()
 export class DisqusPublicService {
   private disqus: Disqus
@@ -56,14 +58,14 @@ export class DisqusPublicService {
 
   public async getAccessToken(code: string) {
     return this.disqus.getOAuthAccessToken(code, DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL).catch((error) => {
-      logger.warn('[disqus]', 'getAccessToken', error)
+      log.warn('getAccessToken failed!', error)
       return Promise.reject(error)
     })
   }
 
   public async refreshAccessToken(refreshToken: string) {
     return this.disqus.refreshOAuthAccessToken(refreshToken).catch((error) => {
-      logger.warn('[disqus]', 'refreshAccessToken', error)
+      log.warn('refreshAccessToken failed!', error)
       return Promise.reject(error)
     })
   }
@@ -73,7 +75,7 @@ export class DisqusPublicService {
       .request('users/details', { access_token: accessToken })
       .then((response) => response.response)
       .catch((error) => {
-        logger.warn('[disqus]', 'getUserInfo', error)
+        log.warn('getUserInfo failed!', error)
         return Promise.reject(error)
       })
   }
@@ -100,7 +102,7 @@ export class DisqusPublicService {
   public async voteThread(params: any) {
     // https://disqus.com/api/docs/threads/vote/
     return this.disqus.request('threads/vote', params, true).catch((error) => {
-      logger.warn('[disqus]', 'voteThread', error)
+      log.warn('voteThread failed!', error)
       return Promise.reject(error)
     })
   }
@@ -108,7 +110,7 @@ export class DisqusPublicService {
   public async votePost(params: any) {
     //disqus.com/api/docs/posts/vote/
     https: return this.disqus.request('posts/vote', params).catch((error) => {
-      logger.warn('[disqus]', 'votePost', error)
+      log.warn('votePost failed!', error)
       return Promise.reject(error)
     })
   }
@@ -151,7 +153,7 @@ export class DisqusPublicService {
         .request('posts/create', body, !accessToken)
         .then((response) => response.response)
         .catch((error) => {
-          logger.warn('[disqus]', 'createDisqusComment', error)
+          log.warn('createDisqusComment failed!', error)
           return Promise.reject(error)
         })
     )
@@ -210,7 +212,7 @@ export class DisqusPublicService {
       .request('posts/remove', params)
       .then((response) => response.response)
       .catch((error) => {
-        logger.warn('[disqus]', 'deleteDisqusComment', error)
+        log.warn('deleteDisqusComment failed!', error)
         return Promise.reject(error)
       })
   }
@@ -227,7 +229,7 @@ export class DisqusPublicService {
     const commentDisqusPostID = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
     const commentDisqusAuthorID = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
     if (!commentDisqusAuthorID || !commentDisqusPostID) {
-      throw 'Comment not deleteable'
+      throw 'Comment not deletable'
     }
 
     // user ID === author ID

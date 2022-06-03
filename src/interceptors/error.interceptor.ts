@@ -7,7 +7,7 @@
 import { Observable, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
 import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common'
-import { getResponsorOptions } from '@app/decorators/responsor.decorator'
+import { getResponserOptions } from '@app/decorators/responser.decorator'
 import { CustomError } from '@app/errors/custom.error'
 import * as TEXT from '@app/constants/text.constant'
 
@@ -20,7 +20,7 @@ export class ErrorInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
     const call$ = next.handle()
     const target = context.getHandler()
-    const { errorCode, errorMessage } = getResponsorOptions(target)
+    const { errorCode, errorMessage } = getResponserOptions(target)
     return call$.pipe(
       catchError((error) => {
         return throwError(

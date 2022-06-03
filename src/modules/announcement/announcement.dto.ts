@@ -7,7 +7,7 @@
 import { IntersectionType } from '@nestjs/mapped-types'
 import { Transform } from 'class-transformer'
 import { IsInt, IsIn, IsNotEmpty, IsOptional, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { unknowToNumber } from '@app/transformers/value.transformer'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 import { WhenGuest } from '@app/decorators/guest.decorator'
 import { PublishState } from '@app/constants/biz.constant'
 import { PaginateOptionDTO } from '@app/models/paginate.model'
@@ -20,7 +20,7 @@ export class AnnouncementPaginateQueryDTO extends IntersectionType(PaginateOptio
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   state?: PublishState
 }
 

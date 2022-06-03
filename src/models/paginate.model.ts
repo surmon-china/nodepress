@@ -7,14 +7,14 @@
 import { IsIn, IsInt, IsOptional, IsNotEmpty, Min, Max } from 'class-validator'
 import { Transform } from 'class-transformer'
 import { SortType } from '@app/constants/biz.constant'
-import { unknowToNumber } from '@app/transformers/value.transformer'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export class PaginateBaseOptionDTO {
   @Min(1)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   page?: number
 
   @Min(1)
@@ -22,7 +22,7 @@ export class PaginateBaseOptionDTO {
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   per_page?: number
 }
 
@@ -31,7 +31,7 @@ export class PaginateOptionDTO extends PaginateBaseOptionDTO {
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   sort?: SortType.Asc | SortType.Desc
 }
 
@@ -40,6 +40,6 @@ export class PaginateOptionWithHotSortDTO extends PaginateBaseOptionDTO {
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   sort?: SortType
 }

@@ -6,7 +6,7 @@
 
 import { Controller, Post, Body } from '@nestjs/common'
 import { Throttle } from '@nestjs/throttler'
-import { Responsor } from '@app/decorators/responsor.decorator'
+import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { IPService, IPLocation } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
@@ -38,7 +38,7 @@ export class VoteController {
   }
 
   private async getAuthor(author: Author | void, token?: string | null) {
-    // disqus user
+    // Disqus user
     if (token) {
       try {
         const userInfo = await this.disqusPublicService.getUserInfo(token)
@@ -86,7 +86,7 @@ export class VoteController {
       `Location: ${
         message.location
           ? [message.location.country, message.location.region, message.location.city].join(' · ')
-          : 'unknow'
+          : 'unknown'
       }`,
     ]
 
@@ -100,7 +100,7 @@ export class VoteController {
     })
   }
 
-  // Disqus logined user or guest user
+  // Disqus logged-in user or guest user
   async voteDisqusThread(articleID: number, vote: number, token?: string) {
     const thread = await this.disqusPublicService.ensureThreadDetailCache(articleID)
     const result = await this.disqusPublicService.voteThread({
@@ -108,14 +108,14 @@ export class VoteController {
       thread: thread.id,
       vote,
     })
-    // logger.info('[disqus]', `like thread ${articleID}`, result)
+    // console.info(`Disqus like thread ${articleID}`, result)
     return result
   }
 
   // 1 hour > limit 10
   @Throttle(10, 60 * 60)
   @Post('/site')
-  @Responsor.handle('Vote site')
+  @Responser.handle('Vote site')
   async likeSite(
     @Body() voteBody: VoteAuthorDTO,
     @DisqusToken() token: AccessToken | null,
@@ -146,7 +146,7 @@ export class VoteController {
   // 1 minute > limit 15
   @Throttle(15, 60)
   @Post('/article')
-  @Responsor.handle('Vote article')
+  @Responser.handle('Vote article')
   async voteArticle(
     @Body() voteBody: PageVoteDTO,
     @DisqusToken() token: AccessToken | null,
@@ -177,7 +177,7 @@ export class VoteController {
   // 30 seconds > limit 10
   @Throttle(10, 30)
   @Post('/comment')
-  @Responsor.handle('Vote comment')
+  @Responser.handle('Vote comment')
   async voteComment(
     @Body() voteBody: CommentVoteDTO,
     @DisqusToken() token: AccessToken | null,
@@ -185,7 +185,7 @@ export class VoteController {
   ) {
     // NodePress
     const result = await this.commentService.vote(voteBody.comment_id, voteBody.vote > 0)
-    // Disqus only logined user
+    // Disqus only logged-in user
     if (token) {
       try {
         const postID = await this.disqusPublicService.getDisqusPostIDByCommentID(voteBody.comment_id)
@@ -195,7 +195,7 @@ export class VoteController {
             post: postID,
             vote: voteBody.vote,
           })
-          // logger.info('[disqus]', `like post ${voteBody.comment_id}`, result)
+          // console.info(`Disqus like post ${voteBody.comment_id}`, result)
         }
       } catch (error) {}
     }
@@ -203,10 +203,10 @@ export class VoteController {
     this.getAuthor(voteBody.author, token?.access_token).then((author) => {
       if (author) {
         this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
-          const tagetTitle = await this.getTargetTitle(comment.post_id)
+          const targetTitle = await this.getTargetTitle(comment.post_id)
           const mailParams = {
             vote: voteBody.vote > 0 ? '+1' : '-1',
-            on: `${tagetTitle} #${comment.id}`,
+            on: `${targetTitle} #${comment.id}`,
             author,
             location: await this.queryIPLocation(visitor.ip),
             link: getPermalinkByID(comment.post_id),

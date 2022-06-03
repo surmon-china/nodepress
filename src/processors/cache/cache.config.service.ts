@@ -9,13 +9,12 @@ import { CacheOptionsFactory, Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import redisStore, { RedisStoreOptions, CacheStoreOptions } from './cache.store'
 import * as APP_CONFIG from '@app/app.config'
-import logger from '@app/utils/logger'
+import { redisLog } from './cache.logger'
 
 @Injectable()
 export class CacheConfigService implements CacheOptionsFactory {
   constructor(private readonly emailService: EmailService) {}
 
-  // 发送告警邮件（半分钟节流）
   private sendAlarmMail = lodash.throttle((error: string) => {
     this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
@@ -25,21 +24,17 @@ export class CacheConfigService implements CacheOptionsFactory {
     })
   }, 1000 * 30)
 
-  // 重试策略
   public retryStrategy(retries: number): number | Error {
     // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#reconnect-strategy
-    const errorMessage = ['[Redis]', `retryStrategy！retries: ${retries}`]
-    logger.error(...(errorMessage as [any]))
-    this.sendAlarmMail(errorMessage.join(''))
-
+    const errorMessage = `retryStrategy! retries: ${retries}`
+    redisLog.error(errorMessage)
+    this.sendAlarmMail(errorMessage)
     if (retries > 6) {
-      return new Error('[Redis] 尝试次数已达极限！')
+      return new Error('Redis maximum retries!')
     }
-
     return Math.min(retries * 1000, 3000)
   }
 
-  // 缓存配置
   public createCacheOptions(): CacheStoreOptions {
     // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
     const redisOptions: RedisStoreOptions = {

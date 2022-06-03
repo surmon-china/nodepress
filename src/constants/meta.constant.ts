@@ -1,6 +1,5 @@
 /**
  * @file Global meta constant
- * @description 用于全局装饰器元信息的常量键
  * @module constant/meta
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -8,7 +7,7 @@
 import * as constants from '@nestjs/common/constants'
 import { CACHE_KEY_METADATA } from '@nestjs/common/cache/cache.constants'
 
-// responsor
+// responser
 export const HTTP_ERROR_CODE = '__customHttpErrorCode__'
 export const HTTP_ERROR_MESSAGE = '__customHttpErrorMessage__'
 

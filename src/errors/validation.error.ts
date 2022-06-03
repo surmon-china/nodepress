@@ -9,7 +9,7 @@ import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class ValidationError
- * @classdesc 400 -> 请求有问题，这个错误经常发生在错误内层，所以 code 没有意义
+ * @classdesc 400 -> bad request
  * @example new ValidationError('error message')
  * @example new ValidationError(new Error())
  */

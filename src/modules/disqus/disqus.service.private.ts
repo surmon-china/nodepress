@@ -21,6 +21,8 @@ import { GeneralDisqusParams } from './disqus.dto'
 import { getDisqusXML } from './disqus.xml'
 import * as DISQUS_CONST from './disqus.constant'
 
+const log = logger.scope('DisqusPrivateService')
+
 @Injectable()
 export class DisqusPrivateService {
   private disqus: Disqus
@@ -48,7 +50,7 @@ export class DisqusPrivateService {
       })
       return response.response
     } catch (error) {
-      logger.warn('[disqus]', 'createThread', postID, error)
+      log.warn('createThread failed!', postID, error)
       throw error
     }
   }
@@ -62,7 +64,7 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) => {
-        logger.warn('[disqus]', 'getThreads', error)
+        log.warn('getThreads failed!', error)
         return Promise.reject(error)
       })
   }
@@ -76,7 +78,7 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) => {
-        logger.warn('[disqus]', 'getPosts', error)
+        log.warn('getPosts failed!', error)
         return Promise.reject(error)
       })
   }
@@ -89,7 +91,7 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) => {
-        logger.warn('[disqus]', 'updateThread', error)
+        log.warn('updateThread failed!', error)
         return Promise.reject(error)
       })
   }
@@ -102,7 +104,7 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) => {
-        logger.warn('[disqus]', 'updatePost', error)
+        log.warn('updatePost failed!', error)
         return Promise.reject(error)
       })
   }
@@ -115,12 +117,12 @@ export class DisqusPrivateService {
         ...params,
       })
       .catch((error) => {
-        logger.warn('[disqus]', 'approvePost', error)
+        log.warn('approvePost failed!', error)
         return Promise.reject(error)
       })
   }
 
-  // export NodePress to Dsiqus
+  // export NodePress to Disqus
   // https://help.disqus.com/en/articles/1717222-custom-xml-import-format
   public async exportXML(): Promise<string> {
     const treeMap = new Map<number, { comments: Array<Comment>; article: Article }>()
@@ -227,7 +229,7 @@ export class DisqusPrivateService {
       }
     }
 
-    logger.info('[disqus]', 'import XML', { done: done.length, fail: fail.length })
+    log.info('import XML', { done: done.length, fail: fail.length })
     return { done, fail }
   }
 }

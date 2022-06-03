@@ -11,6 +11,8 @@ import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import { GoogleService } from './helper.service.google'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('SEO')
+
 export type ActionURL = string | string[]
 export enum SEOAction {
   Push = 'push',
@@ -32,10 +34,10 @@ export class SeoService {
         url: `http://data.zz.baidu.com/urls?site=${APP_CONFIG.BAIDU_INDEXED.site}&token=${APP_CONFIG.BAIDU_INDEXED.token}`,
       })
       .then((response) => {
-        logger.info(`[SEO]`, `Baidu ping [${action}] succeed:`, urls, response.statusText)
+        log.info(`Baidu ping [${action}] succeed.`, urls, response.statusText)
       })
       .catch((error) => {
-        logger.warn(`[SEO]`, `Baidu ping [${action}] failed:`, getMessageFromAxiosError(error))
+        log.warn(`Baidu ping [${action}] failed!`, getMessageFromAxiosError(error))
       })
   }
 
@@ -64,12 +66,12 @@ export class SeoService {
             url: `https://indexing.googleapis.com/v3/urlNotifications:publish`,
           })
           .then((response) => {
-            logger.info(`[SEO]`, `${actionText} succeed:`, url, response.statusText)
+            log.info(`${actionText} succeed.`, url, response.statusText)
           })
           .catch((error) => Promise.reject(getMessageFromAxiosError(error)))
       })
       .catch((error) => {
-        logger.warn(`[SEO]`, `${actionText} failed:`, error)
+        log.warn(`${actionText} failed!`, error)
       })
   }
 

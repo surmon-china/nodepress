@@ -10,7 +10,7 @@ import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class HttpUnauthorizedError
- * @classdesc 401 -> 未授权/权限验证失败
+ * @classdesc 401 -> unauthorized
  * @example new HttpUnauthorizedError('unauthorized')
  * @example new HttpUnauthorizedError('error message', new Error())
  */

@@ -8,7 +8,7 @@ import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from '@nestjs
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { IPService } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
-import { Responsor } from '@app/decorators/responsor.decorator'
+import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { AuthLoginDTO, AuthUpdateDTO } from './auth.dto'
 import { AuthService } from './auth.service'
@@ -25,7 +25,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  @Responsor.handle({ message: 'Login', error: HttpStatus.BAD_REQUEST })
+  @Responser.handle({ message: 'Login', error: HttpStatus.BAD_REQUEST })
   async login(
     @QueryParams() { visitor: { ip } }: QueryParamsResult,
     @Body() body: AuthLoginDTO
@@ -48,14 +48,14 @@ export class AuthController {
   }
 
   @Get('admin')
-  @Responsor.handle('Get admin info')
+  @Responser.handle('Get admin info')
   getAdminInfo(): Promise<Auth> {
     return this.authService.getAdminInfo()
   }
 
   @Put('admin')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Update admin info')
+  @Responser.handle('Update admin info')
   putAdminInfo(@Body() auth: AuthUpdateDTO): Promise<Auth> {
     return this.authService.putAdminInfo(auth)
   }
@@ -63,7 +63,7 @@ export class AuthController {
   // check token
   @Post('check')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Check token')
+  @Responser.handle('Check token')
   checkToken(): string {
     return 'ok'
   }
@@ -71,7 +71,7 @@ export class AuthController {
   // refresh token
   @Post('renewal')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Renewal Token')
+  @Responser.handle('Renewal Token')
   renewalToken(): TokenResult {
     return this.authService.createToken()
   }

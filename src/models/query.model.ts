@@ -6,7 +6,7 @@
 
 import { IsIn, IsInt, IsOptional, IsNotEmpty, IsDateString, IsString } from 'class-validator'
 import { Transform } from 'class-transformer'
-import { unknowToNumber } from '@app/transformers/value.transformer'
+import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export const enum BooleanNumberValue {
   False = 0, // Number(false)
@@ -34,6 +34,6 @@ export class BooleanQueryDTO {
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
-  @Transform(({ value }) => unknowToNumber(value))
+  @Transform(({ value }) => unknownToNumber(value))
   boolean?: BooleanNumberValue.True | BooleanNumberValue.False
 }

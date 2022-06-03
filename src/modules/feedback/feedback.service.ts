@@ -42,8 +42,8 @@ export class FeedbackService {
     })
   }
 
-  public paginater(querys: PaginateQuery<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>> {
-    return this.feedbackModel.paginate(querys, options)
+  public paginator(query: PaginateQuery<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>> {
+    return this.feedbackModel.paginate(query, options)
   }
 
   public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise<MongooseDoc<Feedback>> {

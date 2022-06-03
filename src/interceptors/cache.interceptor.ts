@@ -22,7 +22,7 @@ import * as APP_CONFIG from '@app/app.config'
 
 /**
  * @class HttpCacheInterceptor
- * @classdesc 弥补框架不支持单独定义 ttl 参数以及单请求应用的缺陷
+ * @classdesc Cache with ttl
  */
 @Injectable()
 export class HttpCacheInterceptor implements NestInterceptor {
@@ -32,9 +32,9 @@ export class HttpCacheInterceptor implements NestInterceptor {
     private readonly cacheService: CacheService
   ) {}
 
-  // 自定义装饰器，修饰 ttl 参数
   async intercept(context: ExecutionContext, next: CallHandler<any>): Promise<Observable<any>> {
-    // 如果想彻底禁用缓存服务，则直接返回 -> return call$;
+    // MARK: force disable cache
+    // return call$;
     const call$ = next.handle()
     const key = this.trackBy(context)
 
@@ -56,7 +56,9 @@ export class HttpCacheInterceptor implements NestInterceptor {
 
   /**
    * @function trackBy
-   * @description 目前的命中规则是：必须手动设置了 CacheKey 才会启用缓存机制，默认 ttl 为 APP_CONFIG.REDIS.defaultCacheTTL
+   * @description
+   *  1. CacheKey is required
+   *  2. default ttl: APP_CONFIG.REDIS.defaultCacheTTL
    */
   trackBy(context: ExecutionContext): string | undefined {
     const request = context.switchToHttp().getRequest()
@@ -66,8 +68,8 @@ export class HttpCacheInterceptor implements NestInterceptor {
     const cacheKey = getHttpCacheKey(context.getHandler())
     const isMatchedCache = isHttpApp && isGetRequest && cacheKey
     // const requestUrl = httpServer.getRequestUrl(request);
-    // logger.debug('isMatchedCache', isMatchedCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);
-    // 缓存命中策略 -> http -> GET -> cachekey -> url -> undefined
+    // console.debug('isMatchedCache', isMatchedCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);
+    // cache priority strategy: -> http -> GET -> cache key -> url -> undefined
     return isMatchedCache ? cacheKey : undefined
     /*
     return undefined;

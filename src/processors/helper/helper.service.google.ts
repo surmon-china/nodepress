@@ -12,6 +12,8 @@ import { UNDEFINED } from '@app/constants/value.constant'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('GoogleAPI')
+
 @Injectable()
 export class GoogleService {
   private jwtClient: JWT | null = null
@@ -33,7 +35,7 @@ export class GoogleService {
         UNDEFINED
       )
     } catch (error) {
-      logger.warn('[GoogleAPI]', 'client initialization failed!')
+      log.warn('client initialization failed!')
     }
   }
 
@@ -41,12 +43,12 @@ export class GoogleService {
   public getCredentials(): Promise<Credentials> {
     return new Promise((resolve, reject) => {
       if (!this.jwtClient) {
-        return reject('[GoogleAPI] client initialization failed!')
+        return reject('GoogleAPI client initialization failed!')
       }
       this.jwtClient.authorize((error, credentials: Credentials) => {
         const message = getMessageFromNormalError(error)
         if (message) {
-          logger.warn('[GoogleAPI]', 'jwt authorize failed: ', message)
+          log.warn('JWT authorize failed!', message)
           reject(message)
         }
         resolve(credentials)

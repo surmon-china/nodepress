@@ -10,6 +10,8 @@ import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('NodeMailer')
+
 export interface EmailOptions {
   to: string
   subject: string
@@ -40,17 +42,17 @@ export class EmailService {
       if (error) {
         this.clientIsValid = false
         setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(`[NodeMailer]`, `client init failed! retry when after 30 mins`, getMessageFromNormalError(error))
+        log.error(`client init failed! retry when after 30 mins,`, getMessageFromNormalError(error))
       } else {
         this.clientIsValid = true
-        logger.info('[NodeMailer]', 'client init succeed!')
+        log.info('client init succeed.')
       }
     })
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
-      logger.warn('[NodeMailer]', 'send failed! reason: init failed')
+      log.warn('send failed! (init failed)')
       return false
     }
 
@@ -61,9 +63,9 @@ export class EmailService {
       },
       (error, info) => {
         if (error) {
-          logger.error(`[NodeMailer]`, `send failed! reason:`, getMessageFromNormalError(error))
+          log.error(`send failed!`, getMessageFromNormalError(error))
         } else {
-          logger.info('[NodeMailer]', 'send succeed!', info.messageId, info.response)
+          log.info('send succeed.', info.messageId, info.response)
         }
       }
     )

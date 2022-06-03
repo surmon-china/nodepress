@@ -9,6 +9,8 @@ import { Injectable } from '@nestjs/common'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('IP_Query')
+
 export type IP = string
 export interface IPLocation {
   country: string
@@ -25,7 +27,7 @@ export class IPService {
   constructor(private readonly httpService: HttpService) {}
 
   // query by https://ip-api.com/docs/api:json
-  private queryLocationByIPAPI(ip: IP): Promise<IPLocation> {
+  private queryLocationByIP_API(ip: IP): Promise<IPLocation> {
     return this.httpService.axiosRef
       .get<any>(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,region,regionName,city,zip`)
       .then((response) => {
@@ -42,7 +44,7 @@ export class IPService {
       })
       .catch((error) => {
         const message = getMessageFromAxiosError(error)
-        logger.warn('[IP Query]', 'queryLocationByIPAPI failed!', message)
+        log.warn('queryLocationByIPAPI failed!', message)
         return Promise.reject(message)
       })
   }
@@ -65,13 +67,13 @@ export class IPService {
       })
       .catch((error) => {
         const message = getMessageFromAxiosError(error)
-        logger.warn('[IP Query]', 'queryLocationByAPICo failed!', message)
+        log.warn('queryLocationByAPICo failed!', message)
         return Promise.reject(message)
       })
   }
 
   public queryLocation(ip: IP): Promise<IPLocation | null> {
-    return this.queryLocationByIPAPI(ip)
+    return this.queryLocationByIP_API(ip)
       .catch(() => this.queryLocationByAPICo(ip))
       .catch(() => null)
   }

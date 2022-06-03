@@ -1,6 +1,6 @@
 /**
- * @file Responsor
- * @module decorator/responsor
+ * @file Responser
+ * @module decorator/responser
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -12,12 +12,12 @@ import { reflector } from '@app/constants/reflector.constant'
 import * as META from '@app/constants/meta.constant'
 import * as TEXT from '@app/constants/text.constant'
 
-export interface ResponsorOptions extends Omit<DecoratorCreatorOption, 'usePaginate'> {
+export interface ResponserOptions extends Omit<DecoratorCreatorOption, 'usePaginate'> {
   transform?: boolean
   paginate?: boolean
 }
 
-export const getResponsorOptions = (target: any): ResponsorOptions => {
+export const getResponserOptions = (target: any): ResponserOptions => {
   return {
     errorCode: reflector.get(META.HTTP_ERROR_CODE, target),
     successCode: reflector.get(META.HTTP_SUCCESS_CODE, target),
@@ -119,4 +119,4 @@ export const paginate = (): MethodDecorator => {
   return createDecorator({ usePaginate: true })
 }
 
-export const Responsor = { error, success, handle, paginate }
+export const Responser = { error, success, handle, paginate }

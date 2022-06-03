@@ -1,6 +1,5 @@
 /**
  * @file Text constant
- * @description 用于全局路由请求的响应文案
  * @module constant/text
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -14,6 +13,6 @@ export const HTTP_DEFAULT_SUCCESS_TEXT = HTTP_DEFAULT_TEXT + HTTP_SUCCESS_SUFFIX
 export const HTTP_ANONYMOUS_TEXT = 'Who are U?'
 export const HTTP_UNAUTHORIZED_TEXT_DEFAULT = 'Unauthorized'
 export const HTTP_PARAMS_PERMISSION_ERROR_DEFAULT = 'Permission denied'
-export const HTTP_BAD_REQUEST_TEXT_DEFAULT = 'Unknow error'
+export const HTTP_BAD_REQUEST_TEXT_DEFAULT = 'Unknown error'
 
 export const VALIDATION_ERROR_DEFAULT = 'Invalid params'

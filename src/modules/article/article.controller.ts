@@ -8,7 +8,7 @@ import lodash from 'lodash'
 import { Types } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from '@nestjs/common'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
-import { Responsor } from '@app/decorators/responsor.decorator'
+import { Responser } from '@app/decorators/responser.decorator'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
@@ -38,8 +38,8 @@ export class ArticleController {
 
   @Get()
   @UseGuards(AdminMaybeGuard)
-  @Responsor.paginate()
-  @Responsor.handle('Get articles')
+  @Responser.paginate()
+  @Responser.handle('Get articles')
   async getArticles(
     @Query(PermissionPipe, ExposePipe) query: ArticlePaginateQueryDTO
   ): Promise<PaginateResult<Article>> {
@@ -98,12 +98,12 @@ export class ArticleController {
       paginateQuery.category = category._id
     }
 
-    // paginater
-    return this.articleService.paginater(paginateQuery, paginateOptions)
+    // paginate
+    return this.articleService.paginator(paginateQuery, paginateOptions)
   }
 
   @Get('hottest')
-  @Responsor.handle('Get hottest articles')
+  @Responser.handle('Get hottest articles')
   getHottestArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise<Array<Article>> {
     return query.count
       ? this.articleService.getHottestArticles(query.count)
@@ -112,7 +112,7 @@ export class ArticleController {
 
   @Get('calendar')
   @UseGuards(AdminMaybeGuard)
-  @Responsor.handle('Get article calendar')
+  @Responser.handle('Get article calendar')
   getArticleCalendar(
     @Query(ExposePipe) query: ArticleCalendarQueryDTO,
     @QueryParams() { isUnauthenticated }: QueryParamsResult
@@ -121,7 +121,7 @@ export class ArticleController {
   }
 
   @Get(':id/context')
-  @Responsor.handle('Get context articles')
+  @Responser.handle('Get context articles')
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
     const articleID = Number(params.id)
     const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
@@ -137,7 +137,7 @@ export class ArticleController {
 
   @Get(':id')
   @UseGuards(AdminMaybeGuard)
-  @Responsor.handle({
+  @Responser.handle({
     message: 'Get article detail',
     error: HttpStatus.NOT_FOUND,
   })
@@ -155,35 +155,35 @@ export class ArticleController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Create article')
+  @Responser.handle('Create article')
   createArticle(@Body() article: Article): Promise<Article> {
     return this.articleService.create(article)
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Update article')
+  @Responser.handle('Update article')
   putArticle(@QueryParams() { params }: QueryParamsResult, @Body() article: Article): Promise<Article> {
     return this.articleService.update(params.id, article)
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Delete article')
+  @Responser.handle('Delete article')
   delArticle(@QueryParams() { params }: QueryParamsResult): Promise<Article> {
     return this.articleService.delete(params.id)
   }
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Update articles')
+  @Responser.handle('Update articles')
   patchArticles(@Body() body: ArticlesStateDTO) {
     return this.articleService.batchPatchState(body.article_ids, body.state)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responsor.handle('Delete articles')
+  @Responser.handle('Delete articles')
   delArticles(@Body() body: ArticleIDsDTO) {
     return this.articleService.batchDelete(body.article_ids)
   }

@@ -19,6 +19,8 @@ import { Tag } from '@app/modules/tag/tag.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('ArchiveService')
+
 export interface ArchiveData {
   tags: Tag[]
   categories: Category[]
@@ -41,7 +43,7 @@ export class ArchiveService {
       promise: this.getArchiveData.bind(this),
     })
     this.updateCache().catch((error) => {
-      logger.warn('[archive]', 'init getArchiveData Error:', error)
+      log.warn('init getArchiveData failed!', error)
     })
   }
 
@@ -68,7 +70,7 @@ export class ArchiveService {
         articles: await this.getAllArticles(),
       }
     } catch (error) {
-      logger.warn('[archive]', 'getArchiveData Error:', error)
+      log.warn('getArchiveData failed!', error)
       return {} as any as ArchiveData
     }
   }

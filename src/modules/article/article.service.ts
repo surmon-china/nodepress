@@ -41,14 +41,14 @@ export class ArticleService {
       key: CACHE_KEY.HOTTEST_ARTICLES,
       promise: () => this.getHottestArticles(20),
       timeout: {
-        success: 1000 * 60 * 30, // 成功后 30 分钟更新一次数据
-        error: 1000 * 60 * 5, // 失败后 5 分钟更新一次数据
+        success: 1000 * 60 * 30, // 30 mins
+        error: 1000 * 60 * 5, // 5 mins
       },
     })
   }
 
   public getHottestArticles(count: number): Promise<Array<Article>> {
-    return this.paginater(ARTICLE_LIST_QUERY_GUEST_FILTER, {
+    return this.paginator(ARTICLE_LIST_QUERY_GUEST_FILTER, {
       perPage: count,
       sort: ARTICLE_HOTTEST_SORT_PARAMS,
     }).then((result) => result.documents)
@@ -64,14 +64,14 @@ export class ArticleService {
       early: { field: '$lt', sort: -1 },
       later: { field: '$gt', sort: 1 },
     }
-    const trgetType = typeFieldMap[type]
+    const targetType = typeFieldMap[type]
     return this.articleModel
       .find(
-        { ...ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [trgetType.field]: articleID } },
+        { ...ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [targetType.field]: articleID } },
         ARTICLE_LIST_QUERY_PROJECTION
       )
       .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
-      .sort({ id: trgetType.sort })
+      .sort({ id: targetType.sort })
       .limit(count)
       .exec()
   }
@@ -92,7 +92,7 @@ export class ArticleService {
   }
 
   // get paginate articles
-  public paginater(query: PaginateQuery<Article>, options: PaginateOptions): Promise<PaginateResult<Article>> {
+  public paginator(query: PaginateQuery<Article>, options: PaginateOptions): Promise<PaginateResult<Article>> {
     return this.articleModel.paginate(query, {
       ...options,
       projection: ARTICLE_LIST_QUERY_PROJECTION,

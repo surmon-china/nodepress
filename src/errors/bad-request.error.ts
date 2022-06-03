@@ -9,7 +9,7 @@ import * as TEXT from '@app/constants/text.constant'
 
 /**
  * @class HttpBadRequestError
- * @classdesc 400 -> Bad request
+ * @classdesc 400 -> bad request
  * @example new HttpBadRequestError('error message')
  * @example new HttpBadRequestError(new Error())
  */

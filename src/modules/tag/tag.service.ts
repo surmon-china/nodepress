@@ -19,6 +19,8 @@ import { Tag } from './tag.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
 
+const log = logger.scope('TagService')
+
 @Injectable()
 export class TagService {
   private allTagsCache: CacheIOResult<Array<Tag>>
@@ -37,7 +39,7 @@ export class TagService {
     })
 
     this.updateAllTagsCache().catch((error) => {
-      logger.warn('[tag]', 'init tagPaginateCache', error)
+      log.warn('init tagPaginateCache failed!', error)
     })
   }
 
@@ -68,12 +70,12 @@ export class TagService {
     return this.allTagsCache.update()
   }
 
-  public async paginater(
-    querys: PaginateQuery<Tag>,
+  public async paginator(
+    query: PaginateQuery<Tag>,
     options: PaginateOptions,
     publicOnly: boolean
   ): Promise<PaginateResult<Tag>> {
-    const tags = await this.tagModel.paginate(querys, { ...options, lean: true })
+    const tags = await this.tagModel.paginate(query, { ...options, lean: true })
     const documents = await this.aggregate(publicOnly, tags.documents)
     return { ...tags, documents }
   }
