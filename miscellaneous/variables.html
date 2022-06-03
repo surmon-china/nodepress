@@ -1961,7 +1961,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;ExpansionDB_Backup&#x27;)</code>
+                        <i>Default value : </i><code>logger.scope(&#x27;ExpansionDBBackup&#x27;)</code>
                     </td>
                 </tr>
 
@@ -2361,13 +2361,14 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>(method: LoggerLevel, level: string, color: chalk.Chalk, scope?: string) &#x3D;&gt; {
   return (...messages: any) &#x3D;&gt; {
-    return console[method](
-      chalk.greenBright(&#x60;[NP]&#x60;),
-      renderTime(),
-      level,
-      scope ? renderScope(scope) : &#x27;&#x27;,
-      ...renderMessage(color, messages)
-    )
+    const logs: any[] &#x3D; []
+    logs.push(chalk.greenBright(&#x60;[NP]&#x60;))
+    logs.push(renderTime())
+    logs.push(level)
+    if (scope) {
+      logs.push(renderScope(scope))
+    }
+    return console[method](...logs, ...renderMessage(color, messages))
   }
 }</code>
                     </td>
