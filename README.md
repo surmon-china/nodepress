@@ -20,19 +20,21 @@
 
 **RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [NestJS](https://github.com/nestjs/nest), required [MongoDB](https://www.mongodb.com/) & [Redis](https://redis.io/).**
 
+适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [NestJS](https://github.com/nestjs/nest)，需安装 [MongoDB](https://www.mongodb.com/) 和 [Redis](https://redis.io/) 方可完整运行。
+
 - [Changelog](/CHANGELOG.md#changelog)
 - [API Documentation](https://github.surmon.me/nodepress)
 - [Architecture Documentation](/DOCUMENTATION.md)
 
----
-
-**🔥 [Related projects](https://github.com/stars/surmon-china/lists/surmon-me)**
+**Related [Projects](https://github.com/stars/surmon-china/lists/surmon-me)**
 
 - **SSR Blog:** [`surmon.me`](https://github.com/surmon-china/surmon.me) powered by Vue(3)
 - **Blog admin:** [`veact-admin`](https://github.com/surmon-china/veact-admin) powered by React & [`Veact`](https://github.com/veactjs/veact)
 - **Blog native app:** [`surmon.me.native`](https://github.com/surmon-china/surmon.me.native) powered by react-native
 
-### Development Setup
+---
+
+### Development
 
 ```bash
 $ yarn
@@ -54,7 +56,7 @@ $ yarn build
 $ yarn start:prod
 ```
 
-### Actions setup
+### Actions
 
 - `Any PR open` → `CI:Build test`
 - `New tag v*` → `CI:Create release`
