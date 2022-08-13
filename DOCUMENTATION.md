@@ -52,7 +52,7 @@
 - `app.module.ts`：主程序根模块，负责各业务模块的聚合
 - `app.controller.ts`：主程序根控制器
 - `app.config.ts`：主程序配置，数据库、程序、第三方，一切可配置项
-- `app.environment.ts：`全局环境变量
+- `app.environment.ts`：全局环境变量
 
 **请求处理流程**
 
