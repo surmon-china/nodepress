@@ -2,15 +2,8 @@
   "name": "nodepress",
   "version": "3.10.4",
   "description": "RESTful API service for Surmon.me blog",
-  "author": {
-    "name": "Surmon",
-    "url": "https://github.com/surmon-china"
-  },
-  "private": false,
+  "author": "Surmon",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/surmon-china/nodepress/issues"
-  },
   "homepage": "https://github.com/surmon-china/nodepress#readme",
   "documentation": "https://github.surmon.me/nodepress",
   "repository": {
