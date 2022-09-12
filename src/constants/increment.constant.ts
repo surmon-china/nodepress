@@ -15,6 +15,7 @@ export const generalAutoIncrementIDConfig: AutoIncrementIDOptions = {
   // https://github.com/typegoose/auto-increment
   // https://github.com/typegoose/auto-increment/blob/master/src/autoIncrement.ts
   // https://github.com/typegoose/auto-increment/issues/11
+  // https://github.com/typegoose/auto-increment#overwritemodelname
   // fieldKey: 'field',
   // modelNameKey: 'modelName',
 }
