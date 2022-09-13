@@ -5,8 +5,9 @@
  */
 
 import path from 'path'
-import { argv } from 'yargs'
+import yargs from 'yargs'
 
+const argv = yargs.argv as Record<string, string>
 const ROOT_PATH = path.join(__dirname, '..')
 const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 
@@ -29,7 +30,7 @@ export const PROJECT = {
   author: packageJSON.author,
   homepage: packageJSON.homepage,
   documentation: packageJSON.documentation,
-  issues: packageJSON.bugs.url,
+  repository: packageJSON.repository.url,
 }
 
 export const CROSS_DOMAIN = {
@@ -51,7 +52,7 @@ export const REDIS = {
 export const AUTH = {
   expiresIn: argv.auth_expires_in || 3600,
   data: argv.auth_data || { user: 'root' },
-  jwtTokenSecret: argv.auth_key || 'nodepress',
+  jwtSecret: argv.auth_key || 'nodepress',
   defaultPassword: argv.auth_default_password || 'root',
 }
 

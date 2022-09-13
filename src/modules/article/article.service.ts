@@ -5,7 +5,7 @@
  */
 
 import lodash from 'lodash'
-import { Types, FilterQuery } from 'mongoose'
+import { Types, FilterQuery, SortOrder } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
@@ -61,8 +61,8 @@ export class ArticleService {
   // get near articles
   public async getNearArticles(articleID: number, type: 'later' | 'early', count: number): Promise<Article[]> {
     const typeFieldMap = {
-      early: { field: '$lt', sort: -1 },
-      later: { field: '$gt', sort: 1 },
+      early: { field: '$lt', sort: -1 as SortOrder },
+      later: { field: '$gt', sort: 1 as SortOrder },
     }
     const targetType = typeFieldMap[type]
     return this.articleModel
