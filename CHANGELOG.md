@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ### 3.11.0 (2022-09-12)
 
+**Feature**
+
+- Anonymous user vote email.
+- Add to `agent` vote notification email.
+
 **Chore**
 
 - Upgrade deps
