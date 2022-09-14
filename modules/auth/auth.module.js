@@ -45,7 +45,7 @@ AuthModule = __decorate([
         imports: [
             passport_1.PassportModule.register({ defaultStrategy: 'jwt' }),
             jwt_1.JwtModule.register({
-                privateKey: APP_CONFIG.AUTH.jwtTokenSecret,
+                privateKey: APP_CONFIG.AUTH.jwtSecret,
                 signOptions: {
                     expiresIn: APP_CONFIG.AUTH.expiresIn,
                 },

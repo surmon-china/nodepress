@@ -16,7 +16,7 @@ export declare const PROJECT: {
     author: any;
     homepage: any;
     documentation: any;
-    issues: any;
+    repository: any;
 };
 export declare const CROSS_DOMAIN: {
     allowedOrigins: string[];
@@ -26,16 +26,18 @@ export declare const MONGO_DB: {
     uri: string;
 };
 export declare const REDIS: {
-    host: unknown;
-    port: unknown;
-    username: string;
-    password: string;
+    host: string;
+    port: string | number;
+    username: string | null;
+    password: string | null;
 };
 export declare const AUTH: {
-    expiresIn: unknown;
-    data: unknown;
-    jwtTokenSecret: unknown;
-    defaultPassword: unknown;
+    expiresIn: string | number;
+    data: string | {
+        user: string;
+    };
+    jwtSecret: string;
+    defaultPassword: string;
 };
 export declare const EMAIL: {
     port: number;
@@ -52,12 +54,12 @@ export declare const DISQUS: {
     secretKey: string;
 };
 export declare const AKISMET: {
-    key: unknown;
-    blog: unknown;
+    key: string;
+    blog: string;
 };
 export declare const BAIDU_INDEXED: {
-    site: unknown;
-    token: unknown;
+    site: string;
+    token: string;
 };
 export declare const GOOGLE: {
     jwtServiceAccountCredentials: any;

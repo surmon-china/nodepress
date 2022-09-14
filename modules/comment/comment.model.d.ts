@@ -3,7 +3,7 @@ import { IPLocation } from '@app/processors/helper/helper.service.ip';
 import { KeyValueModel } from '@app/models/key-value.model';
 export declare const COMMENT_STATES: readonly [CommentState.Auditing, CommentState.Published, CommentState.Deleted, CommentState.Spam];
 export declare const COMMENT_GUEST_QUERY_FILTER: Readonly<{
-    state: CommentState;
+    state: CommentState.Published;
 }>;
 export declare class Author {
     name: string;

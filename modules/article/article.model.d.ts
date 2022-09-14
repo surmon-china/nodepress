@@ -12,12 +12,12 @@ export declare const ARTICLE_LIST_QUERY_PROJECTION: {
     content: boolean;
 };
 export declare const ARTICLE_LIST_QUERY_GUEST_FILTER: Readonly<{
-    state: PublishState;
-    public: PublicState;
+    state: PublishState.Published;
+    public: PublicState.Public;
 }>;
 export declare const ARTICLE_HOTTEST_SORT_PARAMS: Readonly<{
-    'meta.comments': SortType;
-    'meta.likes': SortType;
+    'meta.comments': SortType.Desc;
+    'meta.likes': SortType.Desc;
 }>;
 export declare class ArticleMeta {
     likes: number;

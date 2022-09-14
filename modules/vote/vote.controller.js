@@ -38,6 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteController = void 0;
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
+const ua_parser_js_1 = require("ua-parser-js");
 const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
@@ -63,22 +64,21 @@ let VoteController = class VoteController {
     async queryIPLocation(ip) {
         return ip ? await this.ipService.queryLocation(ip) : null;
     }
-    async getAuthor(author, token) {
-        if (token) {
+    async getAuthor(payload) {
+        const { guestAuthor, disqusToken } = payload !== null && payload !== void 0 ? payload : {};
+        if (disqusToken) {
             try {
-                const userInfo = await this.disqusPublicService.getUserInfo(token);
+                const userInfo = await this.disqusPublicService.getUserInfo(disqusToken);
                 const isAdmin = userInfo.username === APP_CONFIG.DISQUS.adminUsername;
-                const moderator = isAdmin ? ` / Moderator` : '';
-                return [`${userInfo.name} (Disqus user${moderator})`, userInfo.url, userInfo.profileUrl]
-                    .filter(Boolean)
-                    .join(' · ');
+                const userType = `Disqus ${isAdmin ? `moderator` : 'user'}`;
+                return [`${userInfo.name} (${userType})`, userInfo.profileUrl].filter(Boolean).join(' · ');
             }
             catch (error) { }
         }
-        if (author) {
-            return `${author.name} (Guest user)`;
+        if (guestAuthor) {
+            return [`${guestAuthor.name} (Guest user)`, guestAuthor.site].filter(Boolean).join(' · ');
         }
-        return null;
+        return `Anonymous user`;
     }
     async getTargetTitle(post_id) {
         if (post_id === biz_constant_1.GUESTBOOK_POST_ID) {
@@ -89,20 +89,31 @@ let VoteController = class VoteController {
             return article.toObject().title;
         }
     }
-    emailToTargetVoteMessage(message) {
+    emailToTargetVoteMessage(payload) {
+        const getLocationText = (location) => {
+            return [location.country, location.region, location.city].join(' · ');
+        };
+        const getAgentText = (ua) => {
+            var _a, _b, _c, _d, _e, _f;
+            const uaResult = new ua_parser_js_1.UAParser(ua).getResult();
+            return [
+                `${(_a = uaResult.browser.name) !== null && _a !== void 0 ? _a : 'unknown browser'}@${(_b = uaResult.browser.version) !== null && _b !== void 0 ? _b : 'unknown'}`,
+                `${(_c = uaResult.os.name) !== null && _c !== void 0 ? _c : 'unknown OS'}@${(_d = uaResult.os.version) !== null && _d !== void 0 ? _d : 'unknown'}`,
+                `${(_e = uaResult.device.model) !== null && _e !== void 0 ? _e : 'unknown device'}@${(_f = uaResult.device.vendor) !== null && _f !== void 0 ? _f : 'unknown'}`,
+            ].join(' · ');
+        };
         const mailTexts = [
-            `${message.subject} on "${message.on}".`,
-            `Vote: ${message.vote}`,
-            `Author: ${message.author}`,
-            `Location: ${message.location
-                ? [message.location.country, message.location.region, message.location.city].join(' · ')
-                : 'unknown'}`,
+            `${payload.subject} on "${payload.on}".`,
+            `Vote: ${payload.vote}`,
+            `Author: ${payload.author}`,
+            `Location: ${payload.location ? getLocationText(payload.location) : 'unknown'}`,
+            `Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : 'unknown'}`,
         ];
         const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('');
-        const linkHTML = `<a href="${message.link}" target="_blank">${message.on}</a>`;
+        const linkHTML = `<a href="${payload.link}" target="_blank">${payload.on}</a>`;
         this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
-            to: message.to,
-            subject: message.subject,
+            to: payload.to,
+            subject: payload.subject,
             text: mailTexts.join('\n'),
             html: [textHTML, `<br>`, linkHTML].join('\n'),
         });
@@ -119,36 +130,34 @@ let VoteController = class VoteController {
     async likeSite(voteBody, token, { visitor }) {
         const likes = await this.optionService.incrementLikes();
         this.voteDisqusThread(biz_constant_1.GUESTBOOK_POST_ID, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
-        this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
-            if (author) {
-                this.emailToTargetVoteMessage({
-                    to: APP_CONFIG.APP.ADMIN_EMAIL,
-                    subject: `You have a new site vote`,
-                    on: await this.getTargetTitle(biz_constant_1.GUESTBOOK_POST_ID),
-                    vote: '+1',
-                    author: author || 'Anonymous user',
-                    location: await this.queryIPLocation(visitor.ip),
-                    link: (0, urlmap_transformer_1.getPermalinkByID)(biz_constant_1.GUESTBOOK_POST_ID),
-                });
-            }
+        this.getAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then(async (author) => {
+            this.emailToTargetVoteMessage({
+                to: APP_CONFIG.APP.ADMIN_EMAIL,
+                subject: `You have a new site vote`,
+                on: await this.getTargetTitle(biz_constant_1.GUESTBOOK_POST_ID),
+                vote: '+1',
+                author,
+                userAgent: visitor.ua,
+                location: await this.queryIPLocation(visitor.ip),
+                link: (0, urlmap_transformer_1.getPermalinkByID)(biz_constant_1.GUESTBOOK_POST_ID),
+            });
         });
         return likes;
     }
     async voteArticle(voteBody, token, { visitor }) {
         const likes = await this.articleService.incrementLikes(voteBody.article_id);
         this.voteDisqusThread(voteBody.article_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
-        this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then(async (author) => {
-            if (author) {
-                this.emailToTargetVoteMessage({
-                    to: APP_CONFIG.APP.ADMIN_EMAIL,
-                    subject: `You have a new article vote`,
-                    on: await this.getTargetTitle(voteBody.article_id),
-                    vote: '+1',
-                    author,
-                    location: await this.queryIPLocation(visitor.ip),
-                    link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
-                });
-            }
+        this.getAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then(async (author) => {
+            this.emailToTargetVoteMessage({
+                to: APP_CONFIG.APP.ADMIN_EMAIL,
+                subject: `You have a new article vote`,
+                on: await this.getTargetTitle(voteBody.article_id),
+                vote: '+1',
+                author,
+                userAgent: visitor.ua,
+                location: await this.queryIPLocation(visitor.ip),
+                link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
+            });
         });
         return likes;
     }
@@ -167,23 +176,22 @@ let VoteController = class VoteController {
             }
             catch (error) { }
         }
-        this.getAuthor(voteBody.author, token === null || token === void 0 ? void 0 : token.access_token).then((author) => {
-            if (author) {
-                this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
-                    const targetTitle = await this.getTargetTitle(comment.post_id);
-                    const mailParams = {
-                        vote: voteBody.vote > 0 ? '+1' : '-1',
-                        on: `${targetTitle} #${comment.id}`,
-                        author,
-                        location: await this.queryIPLocation(visitor.ip),
-                        link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
-                    };
-                    this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailParams));
-                    if (comment.author.email) {
-                        this.emailToTargetVoteMessage(Object.assign({ to: comment.author.email, subject: `Your comment #${comment.id} has a new vote` }, mailParams));
-                    }
-                });
-            }
+        this.getAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then((author) => {
+            this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) => {
+                const targetTitle = await this.getTargetTitle(comment.post_id);
+                const mailPayload = {
+                    vote: voteBody.vote > 0 ? '+1' : '-1',
+                    on: `${targetTitle} #${comment.id}`,
+                    author,
+                    userAgent: visitor.ua,
+                    location: await this.queryIPLocation(visitor.ip),
+                    link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
+                };
+                this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailPayload));
+                if (comment.author.email) {
+                    this.emailToTargetVoteMessage(Object.assign({ to: comment.author.email, subject: `Your comment #${comment.id} has a new vote` }, mailPayload));
+                }
+            });
         });
         return result;
     }
