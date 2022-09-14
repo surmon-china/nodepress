@@ -28,7 +28,7 @@
     "release": ". ./scripts/release.sh"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.169.0",
+    "@aws-sdk/client-s3": "^3.170.0",
     "@nestjs/axios": "^0.1.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
@@ -50,7 +50,7 @@
     "cookie-parser": "^1.4.6",
     "cross-env": "^7.0.3",
     "express": "^4.18.1",
-    "fast-xml-parser": "^4.0.9",
+    "fast-xml-parser": "^4.0.10",
     "googleapis": "^107.0.0",
     "helmet": "^6.0.0",
     "js-base64": "^3.7.2",
@@ -81,7 +81,7 @@
     "@types/jest": "29.0.0",
     "@types/lodash": "^4.14.185",
     "@types/multer": "^1.4.7",
-    "@types/node": "^18.7.17",
+    "@types/node": "^18.7.18",
     "@types/node-schedule": "^2.1.0",
     "@types/nodemailer": "^6.4.6",
     "@types/passport-jwt": "^3.0.6",
