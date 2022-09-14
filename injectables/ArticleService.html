@@ -1810,7 +1810,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
-import { Types, FilterQuery } from &#x27;mongoose&#x27;
+import { Types, FilterQuery, SortOrder } from &#x27;mongoose&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getArticleUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
@@ -1866,8 +1866,8 @@ export class ArticleService {
   // get near articles
   public async getNearArticles(articleID: number, type: &#x27;later&#x27; | &#x27;early&#x27;, count: number): Promise&lt;Article[]&gt; {
     const typeFieldMap &#x3D; {
-      early: { field: &#x27;$lt&#x27;, sort: -1 },
-      later: { field: &#x27;$gt&#x27;, sort: 1 },
+      early: { field: &#x27;$lt&#x27;, sort: -1 as SortOrder },
+      later: { field: &#x27;$gt&#x27;, sort: 1 as SortOrder },
     }
     const targetType &#x3D; typeFieldMap[type]
     return this.articleModel

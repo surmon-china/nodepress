@@ -598,7 +598,7 @@ export class OptionService {
       key: CACHE_KEY.OPTION,
       promise: () &#x3D;&gt; {
         return this.ensureAppOption().then((option) &#x3D;&gt; {
-          return lodash.omit(option.toObject(), [&#x27;blocklist&#x27;])
+          return lodash.omit(option.toObject&lt;Option&gt;(), [&#x27;blocklist&#x27;])
         })
       },
     })

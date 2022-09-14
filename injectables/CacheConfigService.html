@@ -357,7 +357,7 @@ export class CacheConfigService implements CacheOptionsFactory {
     // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
     const redisOptions: RedisStoreOptions &#x3D; {
       socket: {
-        host: APP_CONFIG.REDIS.host as string,
+        host: APP_CONFIG.REDIS.host,
         port: APP_CONFIG.REDIS.port as number,
         reconnectStrategy: this.retryStrategy.bind(this),
       },

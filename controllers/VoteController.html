@@ -150,15 +150,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>emailToTargetVoteMessage(message: literal type)</code>
+                    <code>emailToTargetVoteMessage(payload: literal type)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:75</a></div>
                 </td>
             </tr>
 
@@ -179,7 +179,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>message</td>
+                                    <td>payload</td>
                                     <td>
                                             <code>literal type</code>
                                     </td>
@@ -222,15 +222,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAuthor(author: Author | void, token?: string | null)</code>
+                    <code>getAuthor(payload: literal type)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="40"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:40</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:41</a></div>
                 </td>
             </tr>
 
@@ -251,25 +251,13 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>author</td>
+                                    <td>payload</td>
                                     <td>
-                                            <code>Author | void</code>
+                                            <code>literal type</code>
                                     </td>
 
                                     <td>
                                         No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>token</td>
-                                    <td>
-                                            <code>string | null</code>
-                                    </td>
-
-                                    <td>
-                                        Yes
                                     </td>
 
 
@@ -313,8 +301,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="60"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:60</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:62</a></div>
                 </td>
             </tr>
 
@@ -391,8 +379,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="119"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:119</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="132"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:132</a></div>
                 </td>
             </tr>
 
@@ -486,8 +474,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:37</a></div>
                 </td>
             </tr>
 
@@ -564,8 +552,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="150"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:150</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:162</a></div>
                 </td>
             </tr>
 
@@ -665,8 +653,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="181"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:181</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="192"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:192</a></div>
                 </td>
             </tr>
 
@@ -759,8 +747,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="104"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:104</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="117"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:117</a></div>
                 </td>
             </tr>
 
@@ -844,6 +832,7 @@
 
 import { Controller, Post, Body } from &#x27;@nestjs/common&#x27;
 import { Throttle } from &#x27;@nestjs/throttler&#x27;
+import { UAParser } from &#x27;ua-parser-js&#x27;
 import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { IPService, IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
@@ -875,24 +864,25 @@ export class VoteController {
     return ip ? await this.ipService.queryLocation(ip) : null
   }
 
-  private async getAuthor(author: Author | void, token?: string | null) {
+  private async getAuthor(payload: { guestAuthor?: Author; disqusToken?: string }) {
+    const { guestAuthor, disqusToken } &#x3D; payload ?? {}
     // Disqus user
-    if (token) {
+    if (disqusToken) {
       try {
-        const userInfo &#x3D; await this.disqusPublicService.getUserInfo(token)
+        const userInfo &#x3D; await this.disqusPublicService.getUserInfo(disqusToken)
         const isAdmin &#x3D; userInfo.username &#x3D;&#x3D;&#x3D; APP_CONFIG.DISQUS.adminUsername
-        const moderator &#x3D; isAdmin ? &#x60; / Moderator&#x60; : &#x27;&#x27;
-        return [&#x60;${userInfo.name} (Disqus user${moderator})&#x60;, userInfo.url, userInfo.profileUrl]
-          .filter(Boolean)
-          .join(&#x27; · &#x27;)
+        const userType &#x3D; &#x60;Disqus ${isAdmin ? &#x60;moderator&#x60; : &#x27;user&#x27;}&#x60;
+        return [&#x60;${userInfo.name} (${userType})&#x60;, userInfo.profileUrl].filter(Boolean).join(&#x27; · &#x27;)
       } catch (error) {}
     }
-    // local user
-    if (author) {
-      return &#x60;${author.name} (Guest user)&#x60;
+
+    // local guest user
+    if (guestAuthor) {
+      return [&#x60;${guestAuthor.name} (Guest user)&#x60;, guestAuthor.site].filter(Boolean).join(&#x27; · &#x27;)
     }
-    // guest user
-    return null
+
+    // anonymous user
+    return &#x60;Anonymous user&#x60;
   }
 
   private async getTargetTitle(post_id: number) {
@@ -908,31 +898,42 @@ export class VoteController {
   // 1. site vote
   // 2. article vote
   // 3. comment vote
-  private emailToTargetVoteMessage(message: {
+  private emailToTargetVoteMessage(payload: {
     subject: string
     to: string
     on: string
     link: string
     vote: string
     author: string
+    userAgent?: string
     location?: IPLocation | null
   }) {
-    const mailTexts &#x3D; [
-      &#x60;${message.subject} on &quot;${message.on}&quot;.&#x60;,
-      &#x60;Vote: ${message.vote}&#x60;,
-      &#x60;Author: ${message.author}&#x60;,
-      &#x60;Location: ${
-        message.location
-          ? [message.location.country, message.location.region, message.location.city].join(&#x27; · &#x27;)
-          : &#x27;unknown&#x27;
-      }&#x60;,
-    ]
+    const getLocationText &#x3D; (location: IPLocation) &#x3D;&gt; {
+      return [location.country, location.region, location.city].join(&#x27; · &#x27;)
+    }
 
+    const getAgentText &#x3D; (ua: string) &#x3D;&gt; {
+      const uaResult &#x3D; new UAParser(ua).getResult()
+      return [
+        &#x60;${uaResult.browser.name ?? &#x27;unknown browser&#x27;}@${uaResult.browser.version ?? &#x27;unknown&#x27;}&#x60;,
+        &#x60;${uaResult.os.name ?? &#x27;unknown OS&#x27;}@${uaResult.os.version ?? &#x27;unknown&#x27;}&#x60;,
+        &#x60;${uaResult.device.model ?? &#x27;unknown device&#x27;}@${uaResult.device.vendor ?? &#x27;unknown&#x27;}&#x60;,
+      ].join(&#x27; · &#x27;)
+    }
+
+    const mailTexts &#x3D; [
+      &#x60;${payload.subject} on &quot;${payload.on}&quot;.&#x60;,
+      &#x60;Vote: ${payload.vote}&#x60;,
+      &#x60;Author: ${payload.author}&#x60;,
+      &#x60;Location: ${payload.location ? getLocationText(payload.location) : &#x27;unknown&#x27;}&#x60;,
+      &#x60;Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : &#x27;unknown&#x27;}&#x60;,
+    ]
     const textHTML &#x3D; mailTexts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;&#x27;)
-    const linkHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;${message.link}&quot; target&#x3D;&quot;_blank&quot;&gt;${message.on}&lt;/a&gt;&#x60;
+    const linkHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;${payload.link}&quot; target&#x3D;&quot;_blank&quot;&gt;${payload.on}&lt;/a&gt;&#x60;
+
     this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
-      to: message.to,
-      subject: message.subject,
+      to: payload.to,
+      subject: payload.subject,
       text: mailTexts.join(&#x27;\n&#x27;),
       html: [textHTML, &#x60;&lt;br&gt;&#x60;, linkHTML].join(&#x27;\n&#x27;),
     })
@@ -964,18 +965,17 @@ export class VoteController {
     // Disqus
     this.voteDisqusThread(GUESTBOOK_POST_ID, 1, token?.access_token).catch(() &#x3D;&gt; {})
     // email to admin
-    this.getAuthor(voteBody.author, token?.access_token).then(async (author) &#x3D;&gt; {
-      if (author) {
-        this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP.ADMIN_EMAIL,
-          subject: &#x60;You have a new site vote&#x60;,
-          on: await this.getTargetTitle(GUESTBOOK_POST_ID),
-          vote: &#x27;+1&#x27;,
-          author: author || &#x27;Anonymous user&#x27;,
-          location: await this.queryIPLocation(visitor.ip),
-          link: getPermalinkByID(GUESTBOOK_POST_ID),
-        })
-      }
+    this.getAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(async (author) &#x3D;&gt; {
+      this.emailToTargetVoteMessage({
+        to: APP_CONFIG.APP.ADMIN_EMAIL,
+        subject: &#x60;You have a new site vote&#x60;,
+        on: await this.getTargetTitle(GUESTBOOK_POST_ID),
+        vote: &#x27;+1&#x27;,
+        author,
+        userAgent: visitor.ua,
+        location: await this.queryIPLocation(visitor.ip),
+        link: getPermalinkByID(GUESTBOOK_POST_ID),
+      })
     })
 
     return likes
@@ -995,18 +995,17 @@ export class VoteController {
     // Disqus
     this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() &#x3D;&gt; {})
     // email to admin
-    this.getAuthor(voteBody.author, token?.access_token).then(async (author) &#x3D;&gt; {
-      if (author) {
-        this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP.ADMIN_EMAIL,
-          subject: &#x60;You have a new article vote&#x60;,
-          on: await this.getTargetTitle(voteBody.article_id),
-          vote: &#x27;+1&#x27;,
-          author,
-          location: await this.queryIPLocation(visitor.ip),
-          link: getPermalinkByID(voteBody.article_id),
-        })
-      }
+    this.getAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(async (author) &#x3D;&gt; {
+      this.emailToTargetVoteMessage({
+        to: APP_CONFIG.APP.ADMIN_EMAIL,
+        subject: &#x60;You have a new article vote&#x60;,
+        on: await this.getTargetTitle(voteBody.article_id),
+        vote: &#x27;+1&#x27;,
+        author,
+        userAgent: visitor.ua,
+        location: await this.queryIPLocation(visitor.ip),
+        link: getPermalinkByID(voteBody.article_id),
+      })
     })
 
     return likes
@@ -1023,6 +1022,7 @@ export class VoteController {
   ) {
     // NodePress
     const result &#x3D; await this.commentService.vote(voteBody.comment_id, voteBody.vote &gt; 0)
+
     // Disqus only logged-in user
     if (token) {
       try {
@@ -1037,34 +1037,34 @@ export class VoteController {
         }
       } catch (error) {}
     }
+
     // email to user and admin
-    this.getAuthor(voteBody.author, token?.access_token).then((author) &#x3D;&gt; {
-      if (author) {
-        this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) &#x3D;&gt; {
-          const targetTitle &#x3D; await this.getTargetTitle(comment.post_id)
-          const mailParams &#x3D; {
-            vote: voteBody.vote &gt; 0 ? &#x27;+1&#x27; : &#x27;-1&#x27;,
-            on: &#x60;${targetTitle} #${comment.id}&#x60;,
-            author,
-            location: await this.queryIPLocation(visitor.ip),
-            link: getPermalinkByID(comment.post_id),
-          }
-          // email to admin
-          this.emailToTargetVoteMessage({
-            to: APP_CONFIG.APP.ADMIN_EMAIL,
-            subject: &#x60;You have a new comment vote&#x60;,
-            ...mailParams,
-          })
-          // email to author
-          if (comment.author.email) {
-            this.emailToTargetVoteMessage({
-              to: comment.author.email,
-              subject: &#x60;Your comment #${comment.id} has a new vote&#x60;,
-              ...mailParams,
-            })
-          }
+    this.getAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then((author) &#x3D;&gt; {
+      this.commentService.getDetailByNumberID(voteBody.comment_id).then(async (comment) &#x3D;&gt; {
+        const targetTitle &#x3D; await this.getTargetTitle(comment.post_id)
+        const mailPayload &#x3D; {
+          vote: voteBody.vote &gt; 0 ? &#x27;+1&#x27; : &#x27;-1&#x27;,
+          on: &#x60;${targetTitle} #${comment.id}&#x60;,
+          author,
+          userAgent: visitor.ua,
+          location: await this.queryIPLocation(visitor.ip),
+          link: getPermalinkByID(comment.post_id),
+        }
+        // email to admin
+        this.emailToTargetVoteMessage({
+          to: APP_CONFIG.APP.ADMIN_EMAIL,
+          subject: &#x60;You have a new comment vote&#x60;,
+          ...mailPayload,
         })
-      }
+        // email to author
+        if (comment.author.email) {
+          this.emailToTargetVoteMessage({
+            to: comment.author.email,
+            subject: &#x60;Your comment #${comment.id} has a new vote&#x60;,
+            ...mailPayload,
+          })
+        }
+      })
     })
 
     return result

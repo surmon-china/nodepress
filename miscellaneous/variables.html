@@ -82,6 +82,9 @@
                             <a href="#ARCHIVE" title="src/constants/cache.constant.ts" ><b>ARCHIVE</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
+                            <a href="#argv" title="src/app.config.ts" ><b>argv</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
+                        </li>
+                        <li>
                             <a href="#ARTICLE_DEFAULT_META" title="src/modules/article/article.model.ts" ><b>ARTICLE_DEFAULT_META</b>&nbsp;&nbsp;&nbsp;(src/.../article.model.ts)</a>
                         </li>
                         <li>
@@ -763,11 +766,31 @@
   MASTER: &#x27;Surmon&#x27;,
   NAME: &#x27;NodePress&#x27;,
   URL: &#x27;https://api.surmon.me&#x27;,
-  ADMIN_EMAIL: (argv.admin_email as string) || &#x27;admin email, e.g. admin@example.com&#x27;,
+  ADMIN_EMAIL: argv.admin_email || &#x27;admin email, e.g. admin@example.com&#x27;,
   FE_NAME: &#x27;Surmon.me&#x27;,
   FE_URL: &#x27;https://surmon.me&#x27;,
   STATIC_URL: &#x27;https://static.surmon.me&#x27;,
 }</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="argv"></a>
+                    <span class="name">
+                        <span ><b>argv</b></span>
+                        <a href="#argv"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>yargs.argv as Record&lt;string, string | void&gt;</code>
                     </td>
                 </tr>
 
@@ -796,7 +819,7 @@
                         <i>Default value : </i><code>{
   expiresIn: argv.auth_expires_in || 3600,
   data: argv.auth_data || { user: &#x27;root&#x27; },
-  jwtTokenSecret: argv.auth_key || &#x27;nodepress&#x27;,
+  jwtSecret: argv.auth_key || &#x27;nodepress&#x27;,
   defaultPassword: argv.auth_default_password || &#x27;root&#x27;,
 }</code>
                     </td>
@@ -945,12 +968,12 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
   // https://disqus.com/api/applications/&lt;app_id&gt; &amp; Keep permissions: &lt;Read, Write, Manage Forums&gt;
-  adminAccessToken: (argv.disqus_admin_access_token as string) || &#x27;Disqus admin access_token&#x27;,
-  adminUsername: (argv.disqus_admin_username as string) || &#x27;Disqus admin username&#x27;,
-  forum: (argv.disqus_forum_shortname as string) || &#x27;Disqus forum shortname&#x27;,
+  adminAccessToken: argv.disqus_admin_access_token || &#x27;Disqus admin access_token&#x27;,
+  adminUsername: argv.disqus_admin_username || &#x27;Disqus admin username&#x27;,
+  forum: argv.disqus_forum_shortname || &#x27;Disqus forum shortname&#x27;,
   // https://disqus.com/api/applications/
-  publicKey: (argv.disqus_public_key as string) || &#x27;Disqus application public_key&#x27;,
-  secretKey: (argv.disqus_secret_key as string) || &#x27;Disqus application secret_key&#x27;,
+  publicKey: argv.disqus_public_key || &#x27;Disqus application public_key&#x27;,
+  secretKey: argv.disqus_secret_key || &#x27;Disqus application secret_key&#x27;,
 }</code>
                     </td>
                 </tr>
@@ -979,9 +1002,9 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
   port: 587,
-  host: (argv.email_host as string) || &#x27;your email host, e.g. smtp.qq.com&#x27;,
-  account: (argv.email_account as string) || &#x27;your email address, e.g. admin@example.me&#x27;,
-  password: (argv.email_password as string) || &#x27;your email password&#x27;,
+  host: argv.email_host || &#x27;your email host, e.g. smtp.qq.com&#x27;,
+  account: argv.email_account || &#x27;your email address, e.g. admin@example.me&#x27;,
+  password: argv.email_password || &#x27;your email password&#x27;,
   from: &#x60;&quot;${APP.FE_NAME}&quot; &lt;${argv.email_from || argv.email_account}&gt;&#x60;,
 }</code>
                     </td>
@@ -1038,7 +1061,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  uri: (argv.db_uri as string) || &#x60;mongodb://127.0.0.1:27017/NodePress&#x60;,
+  uri: argv.db_uri || &#x60;mongodb://127.0.0.1:27017/NodePress&#x60;,
 }</code>
                     </td>
                 </tr>
@@ -1091,7 +1114,7 @@
   author: packageJSON.author,
   homepage: packageJSON.homepage,
   documentation: packageJSON.documentation,
-  issues: packageJSON.bugs.url,
+  repository: packageJSON.repository.url,
 }</code>
                     </td>
                 </tr>
@@ -1121,8 +1144,8 @@
                         <i>Default value : </i><code>{
   host: argv.redis_host || &#x27;localhost&#x27;,
   port: argv.redis_port || 6379,
-  username: (argv.redis_username || null) as string,
-  password: (argv.redis_password || null) as string,
+  username: argv.redis_username || null,
+  password: argv.redis_password || null,
 }</code>
                     </td>
                 </tr>
@@ -3206,6 +3229,7 @@
   // https://github.com/typegoose/auto-increment
   // https://github.com/typegoose/auto-increment/blob/master/src/autoIncrement.ts
   // https://github.com/typegoose/auto-increment/issues/11
+  // https://github.com/typegoose/auto-increment#overwritemodelname
   // fieldKey: &#x27;field&#x27;,
   // modelNameKey: &#x27;modelName&#x27;,
 }</code>

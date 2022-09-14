@@ -203,7 +203,7 @@ import * as APP_CONFIG from &#x27;@app/app.config&#x27;
   imports: [
     PassportModule.register({ defaultStrategy: &#x27;jwt&#x27; }),
     JwtModule.register({
-      privateKey: APP_CONFIG.AUTH.jwtTokenSecret as jwt.Secret,
+      privateKey: APP_CONFIG.AUTH.jwtSecret as jwt.Secret,
       signOptions: {
         expiresIn: APP_CONFIG.AUTH.expiresIn as number,
       },
