@@ -7,7 +7,7 @@
 import path from 'path'
 import yargs from 'yargs'
 
-const argv = yargs.argv as Record<string, string>
+const argv = yargs.argv as Record<string, string | void>
 const ROOT_PATH = path.join(__dirname, '..')
 const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 
@@ -18,7 +18,7 @@ export const APP = {
   MASTER: 'Surmon',
   NAME: 'NodePress',
   URL: 'https://api.surmon.me',
-  ADMIN_EMAIL: (argv.admin_email as string) || 'admin email, e.g. admin@example.com',
+  ADMIN_EMAIL: argv.admin_email || 'admin email, e.g. admin@example.com',
   FE_NAME: 'Surmon.me',
   FE_URL: 'https://surmon.me',
   STATIC_URL: 'https://static.surmon.me',
@@ -39,14 +39,14 @@ export const CROSS_DOMAIN = {
 }
 
 export const MONGO_DB = {
-  uri: (argv.db_uri as string) || `mongodb://127.0.0.1:27017/NodePress`,
+  uri: argv.db_uri || `mongodb://127.0.0.1:27017/NodePress`,
 }
 
 export const REDIS = {
   host: argv.redis_host || 'localhost',
   port: argv.redis_port || 6379,
-  username: (argv.redis_username || null) as string,
-  password: (argv.redis_password || null) as string,
+  username: argv.redis_username || null,
+  password: argv.redis_password || null,
 }
 
 export const AUTH = {
@@ -58,20 +58,20 @@ export const AUTH = {
 
 export const EMAIL = {
   port: 587,
-  host: (argv.email_host as string) || 'your email host, e.g. smtp.qq.com',
-  account: (argv.email_account as string) || 'your email address, e.g. admin@example.me',
-  password: (argv.email_password as string) || 'your email password',
+  host: argv.email_host || 'your email host, e.g. smtp.qq.com',
+  account: argv.email_account || 'your email address, e.g. admin@example.me',
+  password: argv.email_password || 'your email password',
   from: `"${APP.FE_NAME}" <${argv.email_from || argv.email_account}>`,
 }
 
 export const DISQUS = {
   // https://disqus.com/api/applications/<app_id> & Keep permissions: <Read, Write, Manage Forums>
-  adminAccessToken: (argv.disqus_admin_access_token as string) || 'Disqus admin access_token',
-  adminUsername: (argv.disqus_admin_username as string) || 'Disqus admin username',
-  forum: (argv.disqus_forum_shortname as string) || 'Disqus forum shortname',
+  adminAccessToken: argv.disqus_admin_access_token || 'Disqus admin access_token',
+  adminUsername: argv.disqus_admin_username || 'Disqus admin username',
+  forum: argv.disqus_forum_shortname || 'Disqus forum shortname',
   // https://disqus.com/api/applications/
-  publicKey: (argv.disqus_public_key as string) || 'Disqus application public_key',
-  secretKey: (argv.disqus_secret_key as string) || 'Disqus application secret_key',
+  publicKey: argv.disqus_public_key || 'Disqus application public_key',
+  secretKey: argv.disqus_secret_key || 'Disqus application secret_key',
 }
 
 export const AKISMET = {
