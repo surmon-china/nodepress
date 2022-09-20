@@ -12,14 +12,16 @@ import { ExposePipe } from '@app/pipes/expose.pipe'
 import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { EmailService } from '@app/processors/helper/helper.service.email'
 import { numberToBoolean } from '@app/transformers/value.transformer'
 import { FeedbackPaginateQueryDTO, FeedbacksDTO } from './feedback.dto'
 import { Feedback, FeedbackBase } from './feedback.model'
 import { FeedbackService } from './feedback.service'
+import * as APP_CONFIG from '@app/app.config'
 
 @Controller('feedback')
 export class FeedbackController {
-  constructor(private readonly feedbackService: FeedbackService) {}
+  constructor(private readonly emailService: EmailService, private readonly feedbackService: FeedbackService) {}
 
   @Get()
   @UseGuards(AdminOnlyGuard)
@@ -60,8 +62,27 @@ export class FeedbackController {
   @Throttle(3, 30)
   @Post()
   @Responser.handle('Create feedback')
-  createFeedback(@Body() feedback: FeedbackBase, @QueryParams() { visitor }: QueryParamsResult): Promise<Feedback> {
-    return this.feedbackService.create(feedback, visitor)
+  async createFeedback(
+    @Body() feedback: FeedbackBase,
+    @QueryParams() { visitor }: QueryParamsResult
+  ): Promise<Feedback> {
+    const result = await this.feedbackService.create(feedback, visitor)
+    const subject = `You have a new feedback`
+    const texts = [
+      `${subject} on ${result.tid}.`,
+      `Author: ${result.user_name || 'Anonymous user'}`,
+      `Emotion: ${result.emotion_emoji} ${result.emotion_text} (${result.emotion})`,
+      `Feedback: ${result.content}`,
+    ]
+
+    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
+      to: APP_CONFIG.APP.ADMIN_EMAIL,
+      subject,
+      text: texts.join('\n'),
+      html: texts.map((text) => `<p>${text}</p>`).join('\n'),
+    })
+
+    return result
   }
 
   @Delete()
