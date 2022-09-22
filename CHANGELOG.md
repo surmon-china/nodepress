@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.12.0 (2022-09-23)
+
+**Feature**
+
+- Add vote model.
+
 ### 3.11.0 (2022-09-12)
 
 **Feature**
