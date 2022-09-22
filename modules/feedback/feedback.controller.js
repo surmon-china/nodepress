@@ -1,9 +1,32 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
@@ -34,12 +57,15 @@ const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const expose_pipe_1 = require("../../pipes/expose.pipe");
 const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const helper_service_email_1 = require("../../processors/helper/helper.service.email");
 const value_transformer_1 = require("../../transformers/value.transformer");
 const feedback_dto_1 = require("./feedback.dto");
 const feedback_model_1 = require("./feedback.model");
 const feedback_service_1 = require("./feedback.service");
+const APP_CONFIG = __importStar(require("../../app.config"));
 let FeedbackController = class FeedbackController {
-    constructor(feedbackService) {
+    constructor(emailService, feedbackService) {
+        this.emailService = emailService;
         this.feedbackService = feedbackService;
     }
     getFeedbacks(query) {
@@ -67,8 +93,22 @@ let FeedbackController = class FeedbackController {
         }
         return this.feedbackService.paginator(paginateQuery, paginateOptions);
     }
-    createFeedback(feedback, { visitor }) {
-        return this.feedbackService.create(feedback, visitor);
+    async createFeedback(feedback, { visitor }) {
+        const result = await this.feedbackService.create(feedback, visitor);
+        const subject = `You have a new feedback`;
+        const texts = [
+            `${subject} on ${result.tid}.`,
+            `Author: ${result.user_name || 'Anonymous user'}`,
+            `Emotion: ${result.emotion_emoji} ${result.emotion_text} (${result.emotion})`,
+            `Feedback: ${result.content}`,
+        ];
+        this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
+            to: APP_CONFIG.APP.ADMIN_EMAIL,
+            subject,
+            text: texts.join('\n'),
+            html: texts.map((text) => `<p>${text}</p>`).join('\n'),
+        });
+        return result;
     }
     deleteFeedbacks(body) {
         return this.feedbackService.batchDelete(body.feedback_ids);
@@ -130,7 +170,7 @@ __decorate([
 ], FeedbackController.prototype, "deleteFeedback", null);
 FeedbackController = __decorate([
     (0, common_1.Controller)('feedback'),
-    __metadata("design:paramtypes", [feedback_service_1.FeedbackService])
+    __metadata("design:paramtypes", [helper_service_email_1.EmailService, feedback_service_1.FeedbackService])
 ], FeedbackController);
 exports.FeedbackController = FeedbackController;
 //# sourceMappingURL=feedback.controller.js.map

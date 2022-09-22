@@ -12,12 +12,15 @@ const option_module_1 = require("../option/option.module");
 const article_module_1 = require("../article/article.module");
 const comment_module_1 = require("../comment/comment.module");
 const disqus_module_1 = require("../disqus/disqus.module");
+const vote_model_1 = require("./vote.model");
+const vote_service_1 = require("./vote.service");
 const vote_controller_1 = require("./vote.controller");
 let VoteModule = class VoteModule {
 };
 VoteModule = __decorate([
     (0, common_1.Module)({
         imports: [option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule, disqus_module_1.DisqusModule],
+        providers: [vote_model_1.VoteProvider, vote_service_1.VoteService],
         controllers: [vote_controller_1.VoteController],
     })
 ], VoteModule);
