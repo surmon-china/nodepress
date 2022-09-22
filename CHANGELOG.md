@@ -6,7 +6,8 @@ All notable changes to this project will be documented in this file.
 
 **Feature**
 
-- Add vote model.
+- Add vote model
+- Improve feedback service
 
 ### 3.11.0 (2022-09-12)
 
