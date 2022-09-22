@@ -84,6 +84,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#createFeedback" >createFeedback</a>
                             </li>
                             <li>
@@ -121,6 +122,7 @@
                 <td class="col-md-4">
                     <a name="createFeedback"></a>
                     <span class="name">
+                        <span class="modifier">Async</span>
                         <span ><b>createFeedback</b></span>
                         <a href="#createFeedback"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -128,7 +130,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>createFeedback(feedback: <a href="../classes/FeedbackBase.html" target="_self">FeedbackBase</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createFeedback(feedback: <a href="../classes/FeedbackBase.html" target="_self">FeedbackBase</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -142,8 +145,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:63</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:65</a></div>
                 </td>
             </tr>
 
@@ -229,8 +232,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="84"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:84</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:105</a></div>
                 </td>
             </tr>
 
@@ -304,8 +307,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="70"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:70</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="91"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:91</a></div>
                 </td>
             </tr>
 
@@ -380,8 +383,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:30</a></div>
                 </td>
             </tr>
 
@@ -456,8 +459,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="77"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:77</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="98"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:98</a></div>
                 </td>
             </tr>
 
@@ -534,14 +537,16 @@ import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
 import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
 import { numberToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
 import { FeedbackPaginateQueryDTO, FeedbacksDTO } from &#x27;./feedback.dto&#x27;
 import { Feedback, FeedbackBase } from &#x27;./feedback.model&#x27;
 import { FeedbackService } from &#x27;./feedback.service&#x27;
+import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 @Controller(&#x27;feedback&#x27;)
 export class FeedbackController {
-  constructor(private readonly feedbackService: FeedbackService) {}
+  constructor(private readonly emailService: EmailService, private readonly feedbackService: FeedbackService) {}
 
   @Get()
   @UseGuards(AdminOnlyGuard)
@@ -582,8 +587,27 @@ export class FeedbackController {
   @Throttle(3, 30)
   @Post()
   @Responser.handle(&#x27;Create feedback&#x27;)
-  createFeedback(@Body() feedback: FeedbackBase, @QueryParams() { visitor }: QueryParamsResult): Promise&lt;Feedback&gt; {
-    return this.feedbackService.create(feedback, visitor)
+  async createFeedback(
+    @Body() feedback: FeedbackBase,
+    @QueryParams() { visitor }: QueryParamsResult
+  ): Promise&lt;Feedback&gt; {
+    const result &#x3D; await this.feedbackService.create(feedback, visitor)
+    const subject &#x3D; &#x60;You have a new feedback&#x60;
+    const texts &#x3D; [
+      &#x60;${subject} on ${result.tid}.&#x60;,
+      &#x60;Author: ${result.user_name || &#x27;Anonymous user&#x27;}&#x60;,
+      &#x60;Emotion: ${result.emotion_emoji} ${result.emotion_text} (${result.emotion})&#x60;,
+      &#x60;Feedback: ${result.content}&#x60;,
+    ]
+
+    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
+      to: APP_CONFIG.APP.ADMIN_EMAIL,
+      subject,
+      text: texts.join(&#x27;\n&#x27;),
+      html: texts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;),
+    })
+
+    return result
   }
 
   @Delete()

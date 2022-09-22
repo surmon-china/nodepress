@@ -134,7 +134,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/modules/vote/vote.dto.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/modules/vote/vote.dto.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -153,8 +153,61 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsInt, IsDefined, IsIn, IsOptional, IsObject, ValidateNested } from &#x27;class-validator&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform } from &#x27;class-transformer&#x27;
+import {
+  Min,
+  IsInt,
+  IsDefined,
+  IsIn,
+  IsOptional,
+  IsObject,
+  IsNotEmpty,
+  ValidateNested,
+  IsArray,
+  ArrayNotEmpty,
+  ArrayUnique,
+} from &#x27;class-validator&#x27;
+import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
 import { Author } from &#x27;@app/modules/comment/comment.model&#x27;
+import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
+import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.model&#x27;
+
+export class VotePaginateQueryDTO extends PaginateOptionDTO {
+  @IsIn(VOTE_TARGETS)
+  @IsInt()
+  @IsNotEmpty()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
+  target_type?: number
+
+  @Min(0)
+  @IsInt()
+  @IsNotEmpty()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
+  target_id?: number
+
+  @IsIn(VOTE_TYPES)
+  @IsInt()
+  @IsNotEmpty()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
+  vote_type?: number
+
+  @IsIn(VOTE_AUTHOR_TYPES)
+  @IsInt()
+  @IsNotEmpty()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
+  author_type?: number
+}
+
+export class VotesDTO {
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  vote_ids: string[]
+}
 
 export class VoteAuthorDTO {
   @ValidateNested()
@@ -168,7 +221,7 @@ export class CommentVoteDTO extends VoteAuthorDTO {
   @IsDefined()
   comment_id: number
 
-  @IsIn([1, -1])
+  @IsIn(VOTE_TYPES)
   @IsInt()
   @IsDefined()
   vote: number

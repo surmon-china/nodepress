@@ -388,9 +388,6 @@
                             <a href="#log" title="src/modules/archive/archive.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../archive.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/comment/comment.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../comment.service.ts)</a>
-                        </li>
-                        <li>
                             <a href="#log" title="src/modules/disqus/disqus.service.private.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.service.private.ts)</a>
                         </li>
                         <li>
@@ -404,6 +401,9 @@
                         </li>
                         <li>
                             <a href="#log" title="src/modules/option/option.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../option.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#log" title="src/modules/comment/comment.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../comment.service.ts)</a>
                         </li>
                         <li>
                             <a href="#log" title="src/modules/tag/tag.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../tag.service.ts)</a>
@@ -524,6 +524,21 @@
                         </li>
                         <li>
                             <a href="#VALIDATION_ERROR_DEFAULT" title="src/constants/text.constant.ts" ><b>VALIDATION_ERROR_DEFAULT</b>&nbsp;&nbsp;&nbsp;(src/.../text.constant.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VOTE_AUTHOR_TYPES" title="src/modules/vote/vote.model.ts" ><b>VOTE_AUTHOR_TYPES</b>&nbsp;&nbsp;&nbsp;(src/.../vote.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VOTE_TARGETS" title="src/modules/vote/vote.model.ts" ><b>VOTE_TARGETS</b>&nbsp;&nbsp;&nbsp;(src/.../vote.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VOTE_TYPES" title="src/modules/vote/vote.model.ts" ><b>VOTE_TYPES</b>&nbsp;&nbsp;&nbsp;(src/.../vote.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VoteProvider" title="src/modules/vote/vote.model.ts" ><b>VoteProvider</b>&nbsp;&nbsp;&nbsp;(src/.../vote.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#voteTypeMap" title="src/modules/vote/vote.model.ts" ><b>voteTypeMap</b>&nbsp;&nbsp;&nbsp;(src/.../vote.model.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -4240,29 +4255,6 @@
         </tbody>
     </table>
 </section>
-    <h3>src/modules/comment/comment.service.ts</h3>
-    <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="log"></a>
-                    <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;CommentService&#x27;)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>src/modules/disqus/disqus.service.private.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -4325,6 +4317,29 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>logger.scope(&#x27;OptionService&#x27;)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/modules/comment/comment.service.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="log"></a>
+                    <span class="name">
+                        <span ><b>log</b></span>
+                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>logger.scope(&#x27;CommentService&#x27;)</code>
                     </td>
                 </tr>
 
@@ -4597,6 +4612,112 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>getProviderByTypegooseClass(Tag)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/modules/vote/vote.model.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VOTE_AUTHOR_TYPES"></a>
+                    <span class="name">
+                        <span ><b>VOTE_AUTHOR_TYPES</b></span>
+                        <a href="#VOTE_AUTHOR_TYPES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus] as const</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VOTE_TARGETS"></a>
+                    <span class="name">
+                        <span ><b>VOTE_TARGETS</b></span>
+                        <a href="#VOTE_TARGETS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[VoteTarget.Site, VoteTarget.Article, VoteTarget.Comment] as const</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VOTE_TYPES"></a>
+                    <span class="name">
+                        <span ><b>VOTE_TYPES</b></span>
+                        <a href="#VOTE_TYPES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[VoteType.Upvote, VoteType.Downvote] as const</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VoteProvider"></a>
+                    <span class="name">
+                        <span ><b>VoteProvider</b></span>
+                        <a href="#VoteProvider"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>getProviderByTypegooseClass(Vote)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="voteTypeMap"></a>
+                    <span class="name">
+                        <span ><b>voteTypeMap</b></span>
+                        <a href="#voteTypeMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map([
+  [VoteType.Upvote, &#x27;+1&#x27;],
+  [VoteType.Downvote, &#x27;-1&#x27;],
+])</code>
                     </td>
                 </tr>
 

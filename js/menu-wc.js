@@ -491,18 +491,32 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/VoteModule.html" data-type="entity-link" >VoteModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#controllers-links-module-VoteModule-ea69a31372d5a9acae94f32a63d332720ad91b00bf763b0c6ea092ecc9870dcf64e4b51d90bbc0ea9eb0c5d01d1661228f9b5cd25e1408e9d358ee4bbe22291e"' : 'data-target="#xs-controllers-links-module-VoteModule-ea69a31372d5a9acae94f32a63d332720ad91b00bf763b0c6ea092ecc9870dcf64e4b51d90bbc0ea9eb0c5d01d1661228f9b5cd25e1408e9d358ee4bbe22291e"' }>
+                                            'data-target="#controllers-links-module-VoteModule-97d89d6cedd0f0b8ff32bbe8bf575ca7c4bf25e04db3760429f0f29c9530e673f351e041a588b4b9008a7f6af9e897edefe93c9e43d6bde7a232385c2363f14e"' : 'data-target="#xs-controllers-links-module-VoteModule-97d89d6cedd0f0b8ff32bbe8bf575ca7c4bf25e04db3760429f0f29c9530e673f351e041a588b4b9008a7f6af9e897edefe93c9e43d6bde7a232385c2363f14e"' }>
                                             <span class="icon ion-md-swap"></span>
                                             <span>Controllers</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="controllers-links-module-VoteModule-ea69a31372d5a9acae94f32a63d332720ad91b00bf763b0c6ea092ecc9870dcf64e4b51d90bbc0ea9eb0c5d01d1661228f9b5cd25e1408e9d358ee4bbe22291e"' :
-                                            'id="xs-controllers-links-module-VoteModule-ea69a31372d5a9acae94f32a63d332720ad91b00bf763b0c6ea092ecc9870dcf64e4b51d90bbc0ea9eb0c5d01d1661228f9b5cd25e1408e9d358ee4bbe22291e"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="controllers-links-module-VoteModule-97d89d6cedd0f0b8ff32bbe8bf575ca7c4bf25e04db3760429f0f29c9530e673f351e041a588b4b9008a7f6af9e897edefe93c9e43d6bde7a232385c2363f14e"' :
+                                            'id="xs-controllers-links-module-VoteModule-97d89d6cedd0f0b8ff32bbe8bf575ca7c4bf25e04db3760429f0f29c9530e673f351e041a588b4b9008a7f6af9e897edefe93c9e43d6bde7a232385c2363f14e"' }>
                                             <li class="link">
                                                 <a href="controllers/VoteController.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >VoteController</a>
                                             </li>
                                         </ul>
                                     </li>
+                                <li class="chapter inner">
+                                    <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
+                                        'data-target="#injectables-links-module-VoteModule-97d89d6cedd0f0b8ff32bbe8bf575ca7c4bf25e04db3760429f0f29c9530e673f351e041a588b4b9008a7f6af9e897edefe93c9e43d6bde7a232385c2363f14e"' : 'data-target="#xs-injectables-links-module-VoteModule-97d89d6cedd0f0b8ff32bbe8bf575ca7c4bf25e04db3760429f0f29c9530e673f351e041a588b4b9008a7f6af9e897edefe93c9e43d6bde7a232385c2363f14e"' }>
+                                        <span class="icon ion-md-arrow-round-down"></span>
+                                        <span>Injectables</span>
+                                        <span class="icon ion-ios-arrow-down"></span>
+                                    </div>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-VoteModule-97d89d6cedd0f0b8ff32bbe8bf575ca7c4bf25e04db3760429f0f29c9530e673f351e041a588b4b9008a7f6af9e897edefe93c9e43d6bde7a232385c2363f14e"' :
+                                        'id="xs-injectables-links-module-VoteModule-97d89d6cedd0f0b8ff32bbe8bf575ca7c4bf25e04db3760429f0f29c9530e673f351e041a588b4b9008a7f6af9e897edefe93c9e43d6bde7a232385c2363f14e"' }>
+                                        <li class="link">
+                                            <a href="injectables/VoteService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >VoteService</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </li>
                 </ul>
                 </li>
@@ -681,7 +695,16 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/ValidationError.html" data-type="entity-link" >ValidationError</a>
                             </li>
                             <li class="link">
+                                <a href="classes/Vote.html" data-type="entity-link" >Vote</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/VoteAuthorDTO.html" data-type="entity-link" >VoteAuthorDTO</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/VotePaginateQueryDTO.html" data-type="entity-link" >VotePaginateQueryDTO</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/VotesDTO.html" data-type="entity-link" >VotesDTO</a>
                             </li>
                         </ul>
                     </li>

@@ -40,7 +40,7 @@
 
 <ol class="breadcrumb">
   <li>Injectables</li>
-  <li >FeedbackService</li>
+  <li >VoteService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -58,7 +58,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/feedback/feedback.service.ts</code>
+            <code>src/modules/vote/vote.service.ts</code>
         </p>
 
 
@@ -84,22 +84,12 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#create" >create</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#delete" >delete</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getDetail" >getDetail</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getRootFeedbackAverageEmotion" >getRootFeedbackAverageEmotion</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -128,12 +118,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(ipService: <a href="../injectables/IPService.html" target="_self">IPService</a>, feedbackModel: <a href="../classes/Feedback.html" target="_self">MongooseModel&lt;Feedback&gt;</a>)</code>
+<code>constructor(voteModel: <a href="../classes/Vote.html" target="_self">MongooseModel&lt;Vote&gt;</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/feedback/feedback.service.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/modules/vote/vote.service.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -151,22 +141,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>ipService</td>
+                                                        <td>voteModel</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/IPService.html" target="_self" >IPService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>feedbackModel</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../classes/Feedback.html" target="_self" >MongooseModel&lt;Feedback&gt;</a></code>
+                                                                        <code><a href="../classes/Vote.html" target="_self" >MongooseModel&lt;Vote&gt;</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -203,15 +181,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(feedbackIDs: <a href="../undefineds/MongooseID.html" target="_self">MongooseID[]</a>)</code>
+                    <code>batchDelete(voteIDs: <a href="../undefineds/MongooseID.html" target="_self">MongooseID[]</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="62"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:62</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/modules/vote/vote.service.ts:41</a></div>
                 </td>
             </tr>
 
@@ -232,7 +210,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>feedbackIDs</td>
+                                    <td>voteIDs</td>
                                     <td>
                                                 <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID[]</a></code>
                                     </td>
@@ -266,7 +244,6 @@
                     <a name="create"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
-                        <span class="modifier">Async</span>
                         <span ><b>create</b></span>
                         <a href="#create"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -275,15 +252,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(feedback: <a href="../classes/FeedbackBase.html" target="_self">FeedbackBase</a>, visitor: <a href="../interfaces/QueryVisitor.html" target="_self">QueryVisitor</a>)</code>
+                    <code>create(vote: <a href="../classes/Vote.html" target="_self">Vote</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="21"
+                            class="link-to-prism">src/modules/vote/vote.service.ts:21</a></div>
                 </td>
             </tr>
 
@@ -304,21 +281,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>feedback</td>
+                                    <td>vote</td>
                                     <td>
-                                                <code><a href="../classes/FeedbackBase.html" target="_self" >FeedbackBase</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>visitor</td>
-                                    <td>
-                                                <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
+                                                <code><a href="../classes/Vote.html" target="_self" >Vote</a></code>
                                     </td>
 
                                     <td>
@@ -333,7 +298,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Feedback.html" target="_self" >Promise&lt;MongooseDoc&lt;Feedback&gt;&gt;</a></code>
+                        <b>Returns : </b>        <code><a href="../classes/Vote.html" target="_self" >Promise&lt;MongooseDoc&lt;Vote&gt;&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -359,86 +324,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(feedbackID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
+                    <code>delete(voteID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="54"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:54</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>feedbackID</td>
-                                    <td>
-                                                <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Feedback.html" target="_self" >Promise&lt;MongooseDoc&lt;Feedback&gt;&gt;</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getDetail"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span ><b>getDetail</b></span>
-                        <a href="#getDetail"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetail(feedbackID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="39"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:39</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="33"
+                            class="link-to-prism">src/modules/vote/vote.service.ts:33</a></div>
                 </td>
             </tr>
 
@@ -459,7 +353,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>feedbackID</td>
+                                    <td>voteID</td>
                                     <td>
                                                 <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
                                     </td>
@@ -476,51 +370,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Feedback.html" target="_self" >Promise&lt;MongooseDoc&lt;Feedback&gt;&gt;</a></code>
+                        <b>Returns : </b>        <code><a href="../classes/Vote.html" target="_self" >Promise&lt;MongooseDoc&lt;Vote&gt;&gt;</a></code>
 
                     </div>
                     <div class="io-description">
                         
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getRootFeedbackAverageEmotion"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span class="modifier">Async</span>
-                        <span ><b>getRootFeedbackAverageEmotion</b></span>
-                        <a href="#getRootFeedbackAverageEmotion"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getRootFeedbackAverageEmotion()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="66"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:66</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
-
                     </div>
                 </td>
             </tr>
@@ -541,15 +395,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginator(query: <a href="../classes/Feedback.html" target="_self">PaginateQuery&lt;Feedback&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
+                    <code>paginator(query: <a href="../classes/Vote.html" target="_self">PaginateQuery&lt;Vote&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="25"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:25</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="17"
+                            class="link-to-prism">src/modules/vote/vote.service.ts:17</a></div>
                 </td>
             </tr>
 
@@ -572,7 +426,7 @@
                                 <tr>
                                     <td>query</td>
                                     <td>
-                                                <code><a href="../classes/Feedback.html" target="_self" >PaginateQuery&lt;Feedback&gt;</a></code>
+                                                <code><a href="../classes/Vote.html" target="_self" >PaginateQuery&lt;Vote&gt;</a></code>
                                     </td>
 
                                     <td>
@@ -599,7 +453,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Feedback&gt;&gt;</a></code>
+                        <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Vote&gt;&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -625,15 +479,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(feedbackID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>, newFeedback: <a href="../classes/Feedback.html" target="_self">Partial&lt;Feedback&gt;</a>)</code>
+                    <code>update(voteID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>, newVote: <a href="../classes/Vote.html" target="_self">Partial&lt;Vote&gt;</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:46</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">src/modules/vote/vote.service.ts:25</a></div>
                 </td>
             </tr>
 
@@ -654,7 +508,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>feedbackID</td>
+                                    <td>voteID</td>
                                     <td>
                                                 <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
                                     </td>
@@ -666,9 +520,9 @@
 
                                 </tr>
                                 <tr>
-                                    <td>newFeedback</td>
+                                    <td>newVote</td>
                                     <td>
-                                                <code><a href="../classes/Feedback.html" target="_self" >Partial&lt;Feedback&gt;</a></code>
+                                                <code><a href="../classes/Vote.html" target="_self" >Partial&lt;Vote&gt;</a></code>
                                     </td>
 
                                     <td>
@@ -683,7 +537,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Feedback.html" target="_self" >Promise&lt;MongooseDoc&lt;Feedback&gt;&gt;</a></code>
+                        <b>Returns : </b>        <code><a href="../classes/Vote.html" target="_self" >Promise&lt;MongooseDoc&lt;Vote&gt;&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -699,71 +553,42 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types } from &#x27;mongoose&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { ROOT_FEEDBACK_TID } from &#x27;@app/constants/biz.constant&#x27;
-import { IPService } from &#x27;@app/processors/helper/helper.service.ip&#x27;
-import { QueryVisitor } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { isProdEnv } from &#x27;@app/app.environment&#x27;
-import { Feedback, FeedbackBase } from &#x27;./feedback.model&#x27;
+import { Vote } from &#x27;./vote.model&#x27;
 
 @Injectable()
-export class FeedbackService {
-  constructor(
-    private readonly ipService: IPService,
-    @InjectModel(Feedback) private readonly feedbackModel: MongooseModel&lt;Feedback&gt;
-  ) {}
+export class VoteService {
+  constructor(@InjectModel(Vote) private readonly voteModel: MongooseModel&lt;Vote&gt;) {}
 
-  public paginator(query: PaginateQuery&lt;Feedback&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
-    return this.feedbackModel.paginate(query, options)
+  public paginator(query: PaginateQuery&lt;Vote&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
+    return this.voteModel.paginate(query, options)
   }
 
-  public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    return this.feedbackModel.create({
-      ...feedback,
-      origin: visitor.origin,
-      user_agent: visitor.ua,
-      ip: visitor.ip,
-      ip_location: isProdEnv &amp;&amp; visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null,
-    })
+  public create(vote: Vote): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
+    return this.voteModel.create(vote)
   }
 
-  public getDetail(feedbackID: MongooseID): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    return this.feedbackModel
-      .findById(feedbackID)
-      .exec()
-      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Feedback &#x27;${feedbackID}&#x27; not found&#x60;))
-  }
-
-  public async update(feedbackID: MongooseID, newFeedback: Partial&lt;Feedback&gt;): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    const feedback &#x3D; await this.feedbackModel.findByIdAndUpdate(feedbackID, newFeedback, { new: true }).exec()
-    if (!feedback) {
-      throw &#x60;Feedback &#x27;${feedbackID}&#x27; not found&#x60;
+  public async update(voteID: MongooseID, newVote: Partial&lt;Vote&gt;): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
+    const vote &#x3D; await this.voteModel.findByIdAndUpdate(voteID, newVote, { new: true }).exec()
+    if (!vote) {
+      throw &#x60;Vote &#x27;${voteID}&#x27; not found&#x60;
     }
-    return feedback
+    return vote
   }
 
-  public async delete(feedbackID: MongooseID): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    const feedback &#x3D; await this.feedbackModel.findByIdAndRemove(feedbackID).exec()
-    if (!feedback) {
-      throw &#x60;Feedback &#x27;${feedbackID}&#x27; not found&#x60;
+  public async delete(voteID: MongooseID): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
+    const vote &#x3D; await this.voteModel.findByIdAndRemove(voteID).exec()
+    if (!vote) {
+      throw &#x60;Vote &#x27;${voteID}&#x27; not found&#x60;
     }
-    return feedback
+    return vote
   }
 
-  public batchDelete(feedbackIDs: MongooseID[]) {
-    return this.feedbackModel.deleteMany({ _id: { $in: feedbackIDs } }).exec()
-  }
-
-  public async getRootFeedbackAverageEmotion(): Promise&lt;number&gt; {
-    const [result] &#x3D; await this.feedbackModel.aggregate&lt;{ _id: Types.ObjectId; avgEmotion: number }&gt;([
-      { $match: { tid: ROOT_FEEDBACK_TID } },
-      { $group: { _id: null, avgEmotion: { $avg: &#x27;$emotion&#x27; } } },
-    ])
-    return Math.round(result.avgEmotion * 1000) / 1000
+  public batchDelete(voteIDs: MongooseID[]) {
+    return this.voteModel.deleteMany({ _id: { $in: voteIDs } }).exec()
   }
 }
 </code></pre>
@@ -809,7 +634,7 @@ export class FeedbackService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'FeedbackService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'VoteService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
