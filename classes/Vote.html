@@ -166,7 +166,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/vote/vote.model.ts:83</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/modules/vote/vote.model.ts:82</a></div>
                         </td>
                     </tr>
 
@@ -201,7 +201,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/modules/vote/vote.model.ts:80</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/modules/vote/vote.model.ts:79</a></div>
                         </td>
                     </tr>
 
@@ -237,7 +237,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">src/modules/vote/vote.model.ts:101</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/vote/vote.model.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -273,7 +273,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/vote/vote.model.ts:56</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/vote/vote.model.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -308,7 +308,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/modules/vote/vote.model.ts:89</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/vote/vote.model.ts:88</a></div>
                         </td>
                     </tr>
 
@@ -343,7 +343,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/modules/vote/vote.model.ts:93</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/modules/vote/vote.model.ts:92</a></div>
                         </td>
                     </tr>
 
@@ -378,7 +378,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/vote/vote.model.ts:68</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/modules/vote/vote.model.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -413,7 +413,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/vote/vote.model.ts:62</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/modules/vote/vote.model.ts:61</a></div>
                         </td>
                     </tr>
 
@@ -449,7 +449,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/modules/vote/vote.model.ts:104</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/modules/vote/vote.model.ts:103</a></div>
                         </td>
                     </tr>
 
@@ -485,7 +485,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/modules/vote/vote.model.ts:98</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/modules/vote/vote.model.ts:97</a></div>
                         </td>
                     </tr>
 
@@ -520,7 +520,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/modules/vote/vote.model.ts:74</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/vote/vote.model.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -548,8 +548,7 @@ import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 
 export enum VoteTarget {
-  Site &#x3D; 0,
-  Article &#x3D; 1,
+  Post &#x3D; 1,
   Comment &#x3D; 2,
 }
 
@@ -570,7 +569,7 @@ export enum VoteAuthorType {
 }
 
 export const VOTE_TYPES &#x3D; [VoteType.Upvote, VoteType.Downvote] as const
-export const VOTE_TARGETS &#x3D; [VoteTarget.Site, VoteTarget.Article, VoteTarget.Comment] as const
+export const VOTE_TARGETS &#x3D; [VoteTarget.Post, VoteTarget.Comment] as const
 export const VOTE_AUTHOR_TYPES &#x3D; [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus] as const
 
 @plugin(mongoosePaginate)

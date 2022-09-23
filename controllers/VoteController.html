@@ -84,9 +84,6 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#deleteVote" >deleteVote</a>
-                            </li>
-                            <li>
                                 <a href="#deleteVotes" >deleteVotes</a>
                             </li>
                             <li>
@@ -148,81 +145,6 @@
     <h3 id="methods">
         Methods
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="deleteVote"></a>
-                    <span class="name">
-                        <span ><b>deleteVote</b></span>
-                        <a href="#deleteVote"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>deleteVote(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete vote&#x27;)<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="200"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:200</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -690,8 +612,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="208"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:208</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="201"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:201</a></div>
                 </td>
             </tr>
 
@@ -863,8 +785,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="254"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:254</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="247"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:247</a></div>
                 </td>
             </tr>
 
@@ -964,8 +886,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="300"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:300</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="293"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:293</a></div>
                 </td>
             </tr>
 
@@ -1331,13 +1253,6 @@ export class VoteController {
     return this.voteService.batchDelete(body.vote_ids)
   }
 
-  @Delete(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete vote&#x27;)
-  deleteVote(@QueryParams() { params }: QueryParamsResult) {
-    return this.voteService.delete(params.id)
-  }
-
   // 1 hour &gt; limit 10
   @Throttle(10, 60 * 60)
   @Post(&#x27;/site&#x27;)
@@ -1358,7 +1273,7 @@ export class VoteController {
         const ipLocation &#x3D; await this.queryIPLocation(visitor.ip)
         // database
         await this.voteService.create({
-          target_type: VoteTarget.Site,
+          target_type: VoteTarget.Post,
           target_id: GUESTBOOK_POST_ID,
           vote_type: VoteType.Upvote,
           author_type: voteAuthor.type,
@@ -1404,7 +1319,7 @@ export class VoteController {
         const ipLocation &#x3D; await this.queryIPLocation(visitor.ip)
         // database
         await this.voteService.create({
-          target_type: VoteTarget.Article,
+          target_type: VoteTarget.Post,
           target_id: voteBody.article_id,
           vote_type: VoteType.Upvote,
           author_type: voteAuthor.type,

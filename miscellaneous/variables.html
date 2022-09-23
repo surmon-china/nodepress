@@ -388,6 +388,9 @@
                             <a href="#log" title="src/modules/archive/archive.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../archive.service.ts)</a>
                         </li>
                         <li>
+                            <a href="#log" title="src/modules/comment/comment.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../comment.service.ts)</a>
+                        </li>
+                        <li>
                             <a href="#log" title="src/modules/disqus/disqus.service.private.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.service.private.ts)</a>
                         </li>
                         <li>
@@ -401,9 +404,6 @@
                         </li>
                         <li>
                             <a href="#log" title="src/modules/option/option.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../option.service.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#log" title="src/modules/comment/comment.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../comment.service.ts)</a>
                         </li>
                         <li>
                             <a href="#log" title="src/modules/tag/tag.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../tag.service.ts)</a>
@@ -4255,6 +4255,29 @@
         </tbody>
     </table>
 </section>
+    <h3>src/modules/comment/comment.service.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="log"></a>
+                    <span class="name">
+                        <span ><b>log</b></span>
+                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>logger.scope(&#x27;CommentService&#x27;)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>src/modules/disqus/disqus.service.private.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -4317,29 +4340,6 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>logger.scope(&#x27;OptionService&#x27;)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
-    <h3>src/modules/comment/comment.service.ts</h3>
-    <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="log"></a>
-                    <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;CommentService&#x27;)</code>
                     </td>
                 </tr>
 
@@ -4654,7 +4654,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>[VoteTarget.Site, VoteTarget.Article, VoteTarget.Comment] as const</code>
+                        <i>Default value : </i><code>[VoteTarget.Post, VoteTarget.Comment] as const</code>
                     </td>
                 </tr>
 
