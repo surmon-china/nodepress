@@ -1,7 +1,6 @@
 import { IPLocation } from '@app/processors/helper/helper.service.ip';
 export declare enum VoteTarget {
-    Site = 0,
-    Article = 1,
+    Post = 1,
     Comment = 2
 }
 export declare enum VoteType {
@@ -15,7 +14,7 @@ export declare enum VoteAuthorType {
     Disqus = 2
 }
 export declare const VOTE_TYPES: readonly [VoteType.Upvote, VoteType.Downvote];
-export declare const VOTE_TARGETS: readonly [VoteTarget.Site, VoteTarget.Article, VoteTarget.Comment];
+export declare const VOTE_TARGETS: readonly [VoteTarget.Post, VoteTarget.Comment];
 export declare const VOTE_AUTHOR_TYPES: readonly [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus];
 export declare class Vote {
     id?: number;

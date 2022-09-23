@@ -18,8 +18,7 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 var VoteTarget;
 (function (VoteTarget) {
-    VoteTarget[VoteTarget["Site"] = 0] = "Site";
-    VoteTarget[VoteTarget["Article"] = 1] = "Article";
+    VoteTarget[VoteTarget["Post"] = 1] = "Post";
     VoteTarget[VoteTarget["Comment"] = 2] = "Comment";
 })(VoteTarget = exports.VoteTarget || (exports.VoteTarget = {}));
 var VoteType;
@@ -38,7 +37,7 @@ var VoteAuthorType;
     VoteAuthorType[VoteAuthorType["Disqus"] = 2] = "Disqus";
 })(VoteAuthorType = exports.VoteAuthorType || (exports.VoteAuthorType = {}));
 exports.VOTE_TYPES = [VoteType.Upvote, VoteType.Downvote];
-exports.VOTE_TARGETS = [VoteTarget.Site, VoteTarget.Article, VoteTarget.Comment];
+exports.VOTE_TARGETS = [VoteTarget.Post, VoteTarget.Comment];
 exports.VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus];
 let Vote = class Vote {
 };

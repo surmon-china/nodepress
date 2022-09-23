@@ -30,7 +30,6 @@ export declare class VoteController {
     }>;
     getVotes(query: VotePaginateQueryDTO): Promise<PaginateResult<Vote>>;
     deleteVotes(body: VotesDTO): Promise<import("mongodb").DeleteResult>;
-    deleteVote({ params }: QueryParamsResult): Promise<import("../../interfaces/mongoose.interface").MongooseDoc<Vote>>;
     likeSite(voteBody: VoteAuthorDTO, token: AccessToken | null, { visitor }: QueryParamsResult): Promise<number>;
     voteArticle(voteBody: PageVoteDTO, token: AccessToken | null, { visitor }: QueryParamsResult): Promise<number>;
     voteComment(voteBody: CommentVoteDTO, token: AccessToken | null, { visitor }: QueryParamsResult): Promise<{

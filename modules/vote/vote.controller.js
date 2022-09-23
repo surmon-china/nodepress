@@ -194,16 +194,13 @@ let VoteController = class VoteController {
     deleteVotes(body) {
         return this.voteService.batchDelete(body.vote_ids);
     }
-    deleteVote({ params }) {
-        return this.voteService.delete(params.id);
-    }
     async likeSite(voteBody, token, { visitor }) {
         const likes = await this.optionService.incrementLikes();
         this.voteDisqusThread(biz_constant_1.GUESTBOOK_POST_ID, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then(async (voteAuthor) => {
             const ipLocation = await this.queryIPLocation(visitor.ip);
             await this.voteService.create({
-                target_type: vote_model_1.VoteTarget.Site,
+                target_type: vote_model_1.VoteTarget.Post,
                 target_id: biz_constant_1.GUESTBOOK_POST_ID,
                 vote_type: vote_model_1.VoteType.Upvote,
                 author_type: voteAuthor.type,
@@ -231,7 +228,7 @@ let VoteController = class VoteController {
         this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then(async (voteAuthor) => {
             const ipLocation = await this.queryIPLocation(visitor.ip);
             await this.voteService.create({
-                target_type: vote_model_1.VoteTarget.Article,
+                target_type: vote_model_1.VoteTarget.Post,
                 target_id: voteBody.article_id,
                 vote_type: vote_model_1.VoteType.Upvote,
                 author_type: voteAuthor.type,
@@ -317,15 +314,6 @@ __decorate([
     __metadata("design:paramtypes", [vote_dto_1.VotesDTO]),
     __metadata("design:returntype", void 0)
 ], VoteController.prototype, "deleteVotes", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete vote'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], VoteController.prototype, "deleteVote", null);
 __decorate([
     (0, throttler_1.Throttle)(10, 60 * 60),
     (0, common_1.Post)('/site'),
