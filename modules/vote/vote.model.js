@@ -53,7 +53,6 @@ __decorate([
     __metadata("design:type", Number)
 ], Vote.prototype, "target_type", void 0);
 __decorate([
-    (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true, index: true }),

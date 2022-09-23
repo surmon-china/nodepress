@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PageVoteDTO = exports.CommentVoteDTO = exports.VoteAuthorDTO = exports.VotesDTO = exports.VotePaginateQueryDTO = void 0;
+exports.PostVoteDTO = exports.CommentVoteDTO = exports.VoteAuthorDTO = exports.VotesDTO = exports.VotePaginateQueryDTO = void 0;
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const paginate_model_1 = require("../../models/paginate.model");
@@ -27,7 +27,6 @@ __decorate([
     __metadata("design:type", Number)
 ], VotePaginateQueryDTO.prototype, "target_type", void 0);
 __decorate([
-    (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
@@ -83,18 +82,18 @@ __decorate([
     __metadata("design:type", Number)
 ], CommentVoteDTO.prototype, "vote", void 0);
 exports.CommentVoteDTO = CommentVoteDTO;
-class PageVoteDTO extends VoteAuthorDTO {
+class PostVoteDTO extends VoteAuthorDTO {
 }
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
     __metadata("design:type", Number)
-], PageVoteDTO.prototype, "article_id", void 0);
+], PostVoteDTO.prototype, "post_id", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)([1]),
+    (0, class_validator_1.IsIn)([vote_model_1.VoteType.Upvote]),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
     __metadata("design:type", Number)
-], PageVoteDTO.prototype, "vote", void 0);
-exports.PageVoteDTO = PageVoteDTO;
+], PostVoteDTO.prototype, "vote", void 0);
+exports.PostVoteDTO = PostVoteDTO;
 //# sourceMappingURL=vote.dto.js.map

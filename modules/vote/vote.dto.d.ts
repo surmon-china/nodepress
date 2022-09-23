@@ -16,7 +16,7 @@ export declare class CommentVoteDTO extends VoteAuthorDTO {
     comment_id: number;
     vote: number;
 }
-export declare class PageVoteDTO extends VoteAuthorDTO {
-    article_id: number;
+export declare class PostVoteDTO extends VoteAuthorDTO {
+    post_id: number;
     vote: number;
 }

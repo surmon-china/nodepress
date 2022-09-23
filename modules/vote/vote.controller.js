@@ -84,12 +84,12 @@ let VoteController = class VoteController {
     async queryIPLocation(ip) {
         return ip ? await this.ipService.queryLocation(ip) : null;
     }
-    async getTargetTitle(post_id) {
-        if (post_id === biz_constant_1.GUESTBOOK_POST_ID) {
+    async getPostTitle(postId) {
+        if (postId === biz_constant_1.GUESTBOOK_POST_ID) {
             return 'guestbook';
         }
         else {
-            const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: post_id });
+            const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postId });
             return article.toObject().title;
         }
     }
@@ -164,8 +164,8 @@ let VoteController = class VoteController {
             html: [textHTML, `<br>`, linkHTML].join('\n'),
         });
     }
-    async voteDisqusThread(articleID, vote, token) {
-        const thread = await this.disqusPublicService.ensureThreadDetailCache(articleID);
+    async voteDisqusThread(postId, vote, token) {
+        const thread = await this.disqusPublicService.ensureThreadDetailCache(postId);
         const result = await this.disqusPublicService.voteThread({
             access_token: token || null,
             thread: thread.id,
@@ -194,15 +194,17 @@ let VoteController = class VoteController {
     deleteVotes(body) {
         return this.voteService.batchDelete(body.vote_ids);
     }
-    async likeSite(voteBody, token, { visitor }) {
-        const likes = await this.optionService.incrementLikes();
-        this.voteDisqusThread(biz_constant_1.GUESTBOOK_POST_ID, 1, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
+    async votePost(voteBody, token, { visitor }) {
+        const likes = voteBody.post_id === biz_constant_1.GUESTBOOK_POST_ID
+            ? await this.optionService.incrementLikes()
+            : await this.articleService.incrementLikes(voteBody.post_id);
+        this.voteDisqusThread(voteBody.post_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
         this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then(async (voteAuthor) => {
             const ipLocation = await this.queryIPLocation(visitor.ip);
             await this.voteService.create({
                 target_type: vote_model_1.VoteTarget.Post,
-                target_id: biz_constant_1.GUESTBOOK_POST_ID,
-                vote_type: vote_model_1.VoteType.Upvote,
+                target_id: voteBody.post_id,
+                vote_type: voteBody.vote,
                 author_type: voteAuthor.type,
                 author: voteAuthor.data,
                 user_agent: visitor.ua,
@@ -211,41 +213,13 @@ let VoteController = class VoteController {
             });
             this.emailToTargetVoteMessage({
                 to: APP_CONFIG.APP.ADMIN_EMAIL,
-                subject: `You have a new site vote`,
-                on: await this.getTargetTitle(biz_constant_1.GUESTBOOK_POST_ID),
-                vote: vote_model_1.voteTypeMap.get(vote_model_1.VoteType.Upvote),
+                subject: `You have a new post vote`,
+                on: await this.getPostTitle(voteBody.post_id),
+                vote: vote_model_1.voteTypeMap.get(voteBody.vote),
                 author: this.getAuthorString(voteAuthor),
                 userAgent: visitor.ua,
                 location: ipLocation,
-                link: (0, urlmap_transformer_1.getPermalinkByID)(biz_constant_1.GUESTBOOK_POST_ID),
-            });
-        });
-        return likes;
-    }
-    async voteArticle(voteBody, token, { visitor }) {
-        const likes = await this.articleService.incrementLikes(voteBody.article_id);
-        this.voteDisqusThread(voteBody.article_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
-        this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then(async (voteAuthor) => {
-            const ipLocation = await this.queryIPLocation(visitor.ip);
-            await this.voteService.create({
-                target_type: vote_model_1.VoteTarget.Post,
-                target_id: voteBody.article_id,
-                vote_type: vote_model_1.VoteType.Upvote,
-                author_type: voteAuthor.type,
-                author: voteAuthor.data,
-                user_agent: visitor.ua,
-                ip: visitor.ip,
-                ip_location: ipLocation,
-            });
-            this.emailToTargetVoteMessage({
-                to: APP_CONFIG.APP.ADMIN_EMAIL,
-                subject: `You have a new article vote`,
-                on: await this.getTargetTitle(voteBody.article_id),
-                vote: vote_model_1.voteTypeMap.get(vote_model_1.VoteType.Upvote),
-                author: this.getAuthorString(voteAuthor),
-                userAgent: visitor.ua,
-                location: await this.queryIPLocation(visitor.ip),
-                link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.article_id),
+                link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.post_id),
             });
         });
         return likes;
@@ -278,7 +252,7 @@ let VoteController = class VoteController {
                 ip_location: ipLocation,
             });
             const comment = await this.commentService.getDetailByNumberID(voteBody.comment_id);
-            const targetTitle = await this.getTargetTitle(comment.post_id);
+            const targetTitle = await this.getPostTitle(comment.post_id);
             const mailPayload = {
                 vote: vote_model_1.voteTypeMap.get(voteBody.vote),
                 on: `${targetTitle} #${comment.id}`,
@@ -315,27 +289,16 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], VoteController.prototype, "deleteVotes", null);
 __decorate([
-    (0, throttler_1.Throttle)(10, 60 * 60),
-    (0, common_1.Post)('/site'),
-    responser_decorator_1.Responser.handle('Vote site'),
+    (0, throttler_1.Throttle)(10, 60),
+    (0, common_1.Post)('/post'),
+    responser_decorator_1.Responser.handle('Vote post'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
     __param(2, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [vote_dto_1.VoteAuthorDTO, Object, Object]),
+    __metadata("design:paramtypes", [vote_dto_1.PostVoteDTO, Object, Object]),
     __metadata("design:returntype", Promise)
-], VoteController.prototype, "likeSite", null);
-__decorate([
-    (0, throttler_1.Throttle)(15, 60),
-    (0, common_1.Post)('/article'),
-    responser_decorator_1.Responser.handle('Vote article'),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, disqus_token_1.DisqusToken)()),
-    __param(2, (0, queryparams_decorator_1.QueryParams)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [vote_dto_1.PageVoteDTO, Object, Object]),
-    __metadata("design:returntype", Promise)
-], VoteController.prototype, "voteArticle", null);
+], VoteController.prototype, "votePost", null);
 __decorate([
     (0, throttler_1.Throttle)(10, 30),
     (0, common_1.Post)('/comment'),
