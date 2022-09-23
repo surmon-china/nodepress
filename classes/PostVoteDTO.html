@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >PageVoteDTO</li>
+  <li >PostVoteDTO</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -89,7 +89,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#article_id" >article_id</a>
+                                <a href="#post_id" >post_id</a>
                             </li>
                             <li>
                                 <a href="#vote" >vote</a>
@@ -121,10 +121,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="article_id"></a>
+                    <a name="post_id"></a>
                     <span class="name">
-                        <span ><b>article_id</b></span>
-                        <a href="#article_id"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>post_id</b></span>
+                        <a href="#post_id"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -145,7 +145,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/modules/vote/vote.dto.ts:84</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/modules/vote/vote.dto.ts:82</a></div>
                         </td>
                     </tr>
 
@@ -174,13 +174,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn([&#x27;1&#x27;])<br />@IsInt()<br />@IsDefined()<br />
+                            @IsIn([&#x27;undefined&#x27;])<br />@IsInt()<br />@IsDefined()<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/modules/vote/vote.dto.ts:89</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/modules/vote/vote.dto.ts:87</a></div>
                         </td>
                     </tr>
 
@@ -222,7 +222,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/VoteAuthorDTO.html#source" target="_self" >VoteAuthorDTO:67</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/VoteAuthorDTO.html#source" target="_self" >VoteAuthorDTO:65</a></code>
 </div>
                         </td>
                     </tr>
@@ -244,7 +244,6 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform } from &#x27;class-transformer&#x27;
 import {
-  Min,
   IsInt,
   IsDefined,
   IsIn,
@@ -259,7 +258,7 @@ import {
 import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
 import { Author } from &#x27;@app/modules/comment/comment.model&#x27;
 import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
-import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.model&#x27;
+import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.model&#x27;
 
 export class VotePaginateQueryDTO extends PaginateOptionDTO {
   @IsIn(VOTE_TARGETS)
@@ -269,7 +268,6 @@ export class VotePaginateQueryDTO extends PaginateOptionDTO {
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   target_type?: number
 
-  @Min(0)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
@@ -316,12 +314,12 @@ export class CommentVoteDTO extends VoteAuthorDTO {
   vote: number
 }
 
-export class PageVoteDTO extends VoteAuthorDTO {
+export class PostVoteDTO extends VoteAuthorDTO {
   @IsInt()
   @IsDefined()
-  article_id: number
+  post_id: number
 
-  @IsIn([1])
+  @IsIn([VoteType.Upvote])
   @IsInt()
   @IsDefined()
   vote: number
@@ -364,7 +362,7 @@ export class PageVoteDTO extends VoteAuthorDTO {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'PageVoteDTO.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'PostVoteDTO.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

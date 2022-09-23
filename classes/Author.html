@@ -344,7 +344,6 @@ export class Author {
 }
 
 export class CommentBase {
-  // article ID
   @IsInt()
   @IsNotEmpty({ message: &#x27;post ID?&#x27; })
   @prop({ required: true, index: true })

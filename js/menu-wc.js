@@ -668,9 +668,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/Option.html" data-type="entity-link" >Option</a>
                             </li>
                             <li class="link">
-                                <a href="classes/PageVoteDTO.html" data-type="entity-link" >PageVoteDTO</a>
-                            </li>
-                            <li class="link">
                                 <a href="classes/PaginateBaseOptionDTO.html" data-type="entity-link" >PaginateBaseOptionDTO</a>
                             </li>
                             <li class="link">
@@ -678,6 +675,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="classes/PaginateOptionWithHotSortDTO.html" data-type="entity-link" >PaginateOptionWithHotSortDTO</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/PostVoteDTO.html" data-type="entity-link" >PostVoteDTO</a>
                             </li>
                             <li class="link">
                                 <a href="classes/Tag.html" data-type="entity-link" >Tag</a>

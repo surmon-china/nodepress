@@ -164,7 +164,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/modules/vote/vote.dto.ts:53</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/modules/vote/vote.dto.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -194,13 +194,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @Min(0)<br />@IsInt()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
+                            @IsInt()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/modules/vote/vote.dto.ts:39</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/modules/vote/vote.dto.ts:37</a></div>
                         </td>
                     </tr>
 
@@ -236,7 +236,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/modules/vote/vote.dto.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/vote/vote.dto.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -272,7 +272,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/modules/vote/vote.dto.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/modules/vote/vote.dto.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -422,7 +422,6 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform } from &#x27;class-transformer&#x27;
 import {
-  Min,
   IsInt,
   IsDefined,
   IsIn,
@@ -437,7 +436,7 @@ import {
 import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
 import { Author } from &#x27;@app/modules/comment/comment.model&#x27;
 import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
-import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.model&#x27;
+import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.model&#x27;
 
 export class VotePaginateQueryDTO extends PaginateOptionDTO {
   @IsIn(VOTE_TARGETS)
@@ -447,7 +446,6 @@ export class VotePaginateQueryDTO extends PaginateOptionDTO {
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   target_type?: number
 
-  @Min(0)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
@@ -494,12 +492,12 @@ export class CommentVoteDTO extends VoteAuthorDTO {
   vote: number
 }
 
-export class PageVoteDTO extends VoteAuthorDTO {
+export class PostVoteDTO extends VoteAuthorDTO {
   @IsInt()
   @IsDefined()
-  article_id: number
+  post_id: number
 
-  @IsIn([1])
+  @IsIn([VoteType.Upvote])
   @IsInt()
   @IsDefined()
   vote: number
