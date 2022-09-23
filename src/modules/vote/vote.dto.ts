@@ -6,7 +6,6 @@
 
 import { Transform } from 'class-transformer'
 import {
-  Min,
   IsInt,
   IsDefined,
   IsIn,
@@ -21,7 +20,7 @@ import {
 import { PaginateOptionDTO } from '@app/models/paginate.model'
 import { Author } from '@app/modules/comment/comment.model'
 import { unknownToNumber } from '@app/transformers/value.transformer'
-import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from './vote.model'
+import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from './vote.model'
 
 export class VotePaginateQueryDTO extends PaginateOptionDTO {
   @IsIn(VOTE_TARGETS)
@@ -31,7 +30,6 @@ export class VotePaginateQueryDTO extends PaginateOptionDTO {
   @Transform(({ value }) => unknownToNumber(value))
   target_type?: number
 
-  @Min(0)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
@@ -78,12 +76,12 @@ export class CommentVoteDTO extends VoteAuthorDTO {
   vote: number
 }
 
-export class PageVoteDTO extends VoteAuthorDTO {
+export class PostVoteDTO extends VoteAuthorDTO {
   @IsInt()
   @IsDefined()
-  article_id: number
+  post_id: number
 
-  @IsIn([1])
+  @IsIn([VoteType.Upvote])
   @IsInt()
   @IsDefined()
   vote: number

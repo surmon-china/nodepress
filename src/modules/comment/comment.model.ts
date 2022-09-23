@@ -76,7 +76,6 @@ export class Author {
 }
 
 export class CommentBase {
-  // article ID
   @IsInt()
   @IsNotEmpty({ message: 'post ID?' })
   @prop({ required: true, index: true })

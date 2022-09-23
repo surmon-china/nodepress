@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.13.0 (2022-09-23)
+
+**Feature**
+
+- `/vote/site` and `/vote/article` merged into `/vote/post`
+
 ### 3.12.0 (2022-09-23)
 
 **Feature**

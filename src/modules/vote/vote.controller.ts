@@ -24,8 +24,8 @@ import { DisqusToken } from '@app/modules/disqus/disqus.token'
 import { AccessToken } from '@app/utils/disqus'
 import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
-import { VoteAuthorDTO, CommentVoteDTO, PageVoteDTO, VotePaginateQueryDTO, VotesDTO } from './vote.dto'
-import { Vote, VoteTarget, VoteType, VoteAuthorType, voteTypeMap } from './vote.model'
+import { CommentVoteDTO, PostVoteDTO, VotePaginateQueryDTO, VotesDTO } from './vote.dto'
+import { Vote, VoteTarget, VoteAuthorType, voteTypeMap } from './vote.model'
 import { VoteService } from './vote.service'
 import * as APP_CONFIG from '@app/app.config'
 
@@ -45,11 +45,11 @@ export class VoteController {
     return ip ? await this.ipService.queryLocation(ip) : null
   }
 
-  private async getTargetTitle(post_id: number) {
-    if (post_id === GUESTBOOK_POST_ID) {
+  private async getPostTitle(postId: number) {
+    if (postId === GUESTBOOK_POST_ID) {
       return 'guestbook'
     } else {
-      const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: post_id })
+      const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postId })
       return article.toObject().title
     }
   }
@@ -149,14 +149,14 @@ export class VoteController {
   }
 
   // Disqus logged-in user or guest user
-  async voteDisqusThread(articleID: number, vote: number, token?: string) {
-    const thread = await this.disqusPublicService.ensureThreadDetailCache(articleID)
+  async voteDisqusThread(postId: number, vote: number, token?: string) {
+    const thread = await this.disqusPublicService.ensureThreadDetailCache(postId)
     const result = await this.disqusPublicService.voteThread({
       access_token: token || null,
       thread: thread.id,
       vote,
     })
-    // console.info(`Disqus like thread ${articleID}`, result)
+    // console.info(`Disqus like thread ${postId}`, result)
     return result
   }
 
@@ -194,19 +194,22 @@ export class VoteController {
     return this.voteService.batchDelete(body.vote_ids)
   }
 
-  // 1 hour > limit 10
-  @Throttle(10, 60 * 60)
-  @Post('/site')
-  @Responser.handle('Vote site')
-  async likeSite(
-    @Body() voteBody: VoteAuthorDTO,
+  // 1 minute > limit 10
+  @Throttle(10, 60)
+  @Post('/post')
+  @Responser.handle('Vote post')
+  async votePost(
+    @Body() voteBody: PostVoteDTO,
     @DisqusToken() token: AccessToken | null,
     @QueryParams() { visitor }: QueryParamsResult
   ) {
     // NodePress
-    const likes = await this.optionService.incrementLikes()
+    const likes =
+      voteBody.post_id === GUESTBOOK_POST_ID
+        ? await this.optionService.incrementLikes()
+        : await this.articleService.incrementLikes(voteBody.post_id)
     // Disqus
-    this.voteDisqusThread(GUESTBOOK_POST_ID, 1, token?.access_token).catch(() => {})
+    this.voteDisqusThread(voteBody.post_id, voteBody.vote, token?.access_token).catch(() => {})
     // author
     this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(
       async (voteAuthor) => {
@@ -215,8 +218,8 @@ export class VoteController {
         // database
         await this.voteService.create({
           target_type: VoteTarget.Post,
-          target_id: GUESTBOOK_POST_ID,
-          vote_type: VoteType.Upvote,
+          target_id: voteBody.post_id,
+          vote_type: voteBody.vote,
           author_type: voteAuthor.type,
           author: voteAuthor.data,
           user_agent: visitor.ua,
@@ -226,59 +229,13 @@ export class VoteController {
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP.ADMIN_EMAIL,
-          subject: `You have a new site vote`,
-          on: await this.getTargetTitle(GUESTBOOK_POST_ID),
-          vote: voteTypeMap.get(VoteType.Upvote)!,
+          subject: `You have a new post vote`,
+          on: await this.getPostTitle(voteBody.post_id),
+          vote: voteTypeMap.get(voteBody.vote)!,
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkByID(GUESTBOOK_POST_ID),
-        })
-      }
-    )
-
-    return likes
-  }
-
-  // 1 minute > limit 15
-  @Throttle(15, 60)
-  @Post('/article')
-  @Responser.handle('Vote article')
-  async voteArticle(
-    @Body() voteBody: PageVoteDTO,
-    @DisqusToken() token: AccessToken | null,
-    @QueryParams() { visitor }: QueryParamsResult
-  ) {
-    // NodePress
-    const likes = await this.articleService.incrementLikes(voteBody.article_id)
-    // Disqus
-    this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() => {})
-    // author
-    this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(
-      async (voteAuthor) => {
-        // location
-        const ipLocation = await this.queryIPLocation(visitor.ip)
-        // database
-        await this.voteService.create({
-          target_type: VoteTarget.Post,
-          target_id: voteBody.article_id,
-          vote_type: VoteType.Upvote,
-          author_type: voteAuthor.type,
-          author: voteAuthor.data,
-          user_agent: visitor.ua,
-          ip: visitor.ip,
-          ip_location: ipLocation,
-        })
-        // email to admin
-        this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP.ADMIN_EMAIL,
-          subject: `You have a new article vote`,
-          on: await this.getTargetTitle(voteBody.article_id),
-          vote: voteTypeMap.get(VoteType.Upvote)!,
-          author: this.getAuthorString(voteAuthor),
-          userAgent: visitor.ua,
-          location: await this.queryIPLocation(visitor.ip),
-          link: getPermalinkByID(voteBody.article_id),
+          link: getPermalinkByID(voteBody.post_id),
         })
       }
     )
@@ -330,7 +287,7 @@ export class VoteController {
           ip_location: ipLocation,
         })
         const comment = await this.commentService.getDetailByNumberID(voteBody.comment_id)
-        const targetTitle = await this.getTargetTitle(comment.post_id)
+        const targetTitle = await this.getPostTitle(comment.post_id)
         // email to author and admin
         const mailPayload = {
           vote: voteTypeMap.get(voteBody.vote)!,

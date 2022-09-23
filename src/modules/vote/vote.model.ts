@@ -6,7 +6,7 @@
 
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions, Severity } from '@typegoose/typegoose'
-import { IsString, Min, IsIP, IsIn, IsInt, IsOptional, IsNotEmpty } from 'class-validator'
+import { IsString, IsIP, IsIn, IsInt, IsOptional, IsNotEmpty } from 'class-validator'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -60,7 +60,6 @@ export class Vote {
   @prop({ required: true, index: true })
   target_type: number
 
-  @Min(0)
   @IsInt()
   @IsNotEmpty()
   @prop({ required: true, index: true })
