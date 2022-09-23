@@ -194,13 +194,6 @@ export class VoteController {
     return this.voteService.batchDelete(body.vote_ids)
   }
 
-  @Delete(':id')
-  @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete vote')
-  deleteVote(@QueryParams() { params }: QueryParamsResult) {
-    return this.voteService.delete(params.id)
-  }
-
   // 1 hour > limit 10
   @Throttle(10, 60 * 60)
   @Post('/site')
