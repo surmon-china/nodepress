@@ -13,8 +13,7 @@ import { mongoosePaginate } from '@app/utils/paginate'
 import { IPLocation } from '@app/processors/helper/helper.service.ip'
 
 export enum VoteTarget {
-  Site = 0,
-  Article = 1,
+  Post = 1,
   Comment = 2,
 }
 
@@ -35,7 +34,7 @@ export enum VoteAuthorType {
 }
 
 export const VOTE_TYPES = [VoteType.Upvote, VoteType.Downvote] as const
-export const VOTE_TARGETS = [VoteTarget.Site, VoteTarget.Article, VoteTarget.Comment] as const
+export const VOTE_TARGETS = [VoteTarget.Post, VoteTarget.Comment] as const
 export const VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus] as const
 
 @plugin(mongoosePaginate)

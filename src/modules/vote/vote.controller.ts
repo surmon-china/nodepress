@@ -221,7 +221,7 @@ export class VoteController {
         const ipLocation = await this.queryIPLocation(visitor.ip)
         // database
         await this.voteService.create({
-          target_type: VoteTarget.Site,
+          target_type: VoteTarget.Post,
           target_id: GUESTBOOK_POST_ID,
           vote_type: VoteType.Upvote,
           author_type: voteAuthor.type,
@@ -267,7 +267,7 @@ export class VoteController {
         const ipLocation = await this.queryIPLocation(visitor.ip)
         // database
         await this.voteService.create({
-          target_type: VoteTarget.Article,
+          target_type: VoteTarget.Post,
           target_id: voteBody.article_id,
           vote_type: VoteType.Upvote,
           author_type: voteAuthor.type,
