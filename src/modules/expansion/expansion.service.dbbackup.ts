@@ -11,7 +11,12 @@ import moment from 'moment'
 import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
-import { AWSService, UploadResult } from '@app/processors/helper/helper.service.aws'
+import {
+  UploadResult,
+  AWSService,
+  AWSStorageClass,
+  AWSServerSideEncryption,
+} from '@app/processors/helper/helper.service.aws'
 import { APP, MONGO_DB, DB_BACKUP } from '@app/app.config'
 import logger from '@app/utils/logger'
 
@@ -94,8 +99,8 @@ export class DBBackupService {
             fileContentType: 'application/zip',
             region: DB_BACKUP.s3Region,
             bucket: DB_BACKUP.s3Bucket,
-            classType: 'GLACIER',
-            encryption: 'AES256',
+            classType: AWSStorageClass.GLACIER,
+            encryption: AWSServerSideEncryption.AES256,
           })
           .then((result) => {
             log.info('upload succeed.', result.url)

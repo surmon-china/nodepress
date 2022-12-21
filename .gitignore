@@ -23,6 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# Dev
+dev.js
+
 # Tests
 /coverage
 /.nyc_output

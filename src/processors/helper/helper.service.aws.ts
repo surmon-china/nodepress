@@ -16,6 +16,8 @@ import {
 import { Injectable } from '@nestjs/common'
 import * as APP_CONFIG from '@app/app.config'
 
+export { StorageClass as AWSStorageClass, ServerSideEncryption as AWSServerSideEncryption } from '@aws-sdk/client-s3'
+
 export interface FileUploader {
   name: string
   file: PutObjectRequest['Body'] | string | Uint8Array | Buffer

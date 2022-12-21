@@ -88,7 +88,7 @@ export class ArticleService {
       .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
       .exec()
     const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject())
-    return lodash.sampleSize(filtered, count)
+    return lodash.sampleSize(filtered, count) as Article[]
   }
 
   // get paginate articles

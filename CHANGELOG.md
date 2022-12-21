@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.14.0 (2022-12-22)
+
+**Feature**
+
+- update various dependencies
+
 ### 3.13.1 (2022-12-21)
 
 **Feature**

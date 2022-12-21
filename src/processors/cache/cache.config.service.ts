@@ -8,8 +8,8 @@ import lodash from 'lodash'
 import { CacheOptionsFactory, Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import redisStore, { RedisStoreOptions, CacheStoreOptions } from './cache.store'
-import * as APP_CONFIG from '@app/app.config'
 import { redisLog } from './cache.logger'
+import * as APP_CONFIG from '@app/app.config'
 
 @Injectable()
 export class CacheConfigService implements CacheOptionsFactory {

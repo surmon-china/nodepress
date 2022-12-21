@@ -32,6 +32,12 @@ export const databaseProvider = {
       return mongoose.connect(APP_CONFIG.MONGO_DB.uri, {})
     }
 
+    // DeprecationWarning: Mongoose: the `strictQuery` option will be switched back to `false` by default in Mongoose 7.
+    // Use `mongoose.set('strictQuery', false);` if you want to prepare for this change.
+    // Or use `mongoose.set('strictQuery', true);` to suppress this warning.
+    // https://mongoosejs.com/docs/guide.html#strictQuery
+    mongoose.set('strictQuery', false)
+
     mongoose.connection.on('connecting', () => {
       log.info('connecting...')
     })

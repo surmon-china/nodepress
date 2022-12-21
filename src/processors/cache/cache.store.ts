@@ -37,7 +37,33 @@ const createRedisStore = (options: CacheStoreOptions) => {
     await client.del(key)
   }
 
-  return { set, get, del, client }
+  const todo = {
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async mget(...args: string[]): Promise<unknown[]> {
+      return []
+    },
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async mset(args: [string, unknown][], ttl?: number): Promise<void> {},
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async mdel(...args: string[]): Promise<void> {},
+    /** @deprecated */
+    async reset() {},
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async keys(pattern?: string): Promise<string[]> {
+      return []
+    },
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async ttl(key: string): Promise<number> {
+      return 0
+    },
+  }
+
+  return { client, ...todo, set, get, del }
 }
 
 const redisStoreFactory: CacheStoreFactory = {
