@@ -410,7 +410,8 @@ export class DBBackupService {
       shell.mv(&#x27;./backup&#x27;, &#x27;./backup.prev&#x27;)
       shell.mkdir(&#x27;backup&#x27;)
 
-      shell.exec(&#x60;mongodump --uri&#x3D;&quot;${MONGO_DB.uri}&quot; --out&#x3D;&quot;backup&quot;&#x60;, (code, out) &#x3D;&gt; {
+      // https://dba.stackexchange.com/questions/215534/mongodump-unrecognized-field-snapshot
+      shell.exec(&#x60;mongodump --forceTableScan --uri&#x3D;&quot;${MONGO_DB.uri}&quot; --out&#x3D;&quot;backup&quot;&#x60;, (code, out) &#x3D;&gt; {
         log.info(&#x27;mongodump done.&#x27;, code, out)
         if (code !&#x3D;&#x3D; 0) {
           log.warn(&#x27;mongodump failed!&#x27;, out)
