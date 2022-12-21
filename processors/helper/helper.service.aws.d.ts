@@ -1,5 +1,6 @@
 /// <reference types="node" />
 import { StorageClass, ServerSideEncryption, PutObjectRequest } from '@aws-sdk/client-s3';
+export { StorageClass as AWSStorageClass, ServerSideEncryption as AWSServerSideEncryption } from '@aws-sdk/client-s3';
 export interface FileUploader {
     name: string;
     file: PutObjectRequest['Body'] | string | Uint8Array | Buffer;

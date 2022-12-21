@@ -1,6 +1,6 @@
 import { Cache } from 'cache-manager';
-export declare type CacheKey = string;
-export declare type CacheResult<T> = Promise<T>;
+export type CacheKey = string;
+export type CacheResult<T> = Promise<T>;
 export interface CacheIOResult<T> {
     get(): CacheResult<T>;
     update(): CacheResult<T>;
@@ -12,7 +12,7 @@ export interface CachePromiseOption<T> {
 export interface CachePromiseIOOption<T> extends CachePromiseOption<T> {
     ioMode?: boolean;
 }
-export declare type CacheIntervalResult<T> = () => CacheResult<T>;
+export type CacheIntervalResult<T> = () => CacheResult<T>;
 export interface CacheIntervalOption<T> {
     key: CacheKey;
     promise(): CacheResult<T>;

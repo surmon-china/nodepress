@@ -18,7 +18,7 @@ interface HandleOption {
     message: ResponseMessage;
     usePaginate?: boolean;
 }
-declare type HandleOptionConfig = ResponseMessage | HandleOption;
+type HandleOptionConfig = ResponseMessage | HandleOption;
 export declare const error: (message: ResponseMessage, statusCode?: HttpStatus) => MethodDecorator;
 export declare const success: (message: ResponseMessage, statusCode?: HttpStatus) => MethodDecorator;
 export declare function handle(args: HandleOptionConfig): MethodDecorator;

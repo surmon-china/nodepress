@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-export declare type IP = string;
+export type IP = string;
 export interface IPLocation {
     country: string;
     country_code: string;

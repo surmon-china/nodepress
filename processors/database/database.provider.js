@@ -50,6 +50,7 @@ exports.databaseProvider = {
         const connection = () => {
             return mongoose_1.default.connect(APP_CONFIG.MONGO_DB.uri, {});
         };
+        mongoose_1.default.set('strictQuery', false);
         mongoose_1.default.connection.on('connecting', () => {
             log.info('connecting...');
         });

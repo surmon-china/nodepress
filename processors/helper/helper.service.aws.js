@@ -29,10 +29,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AWSService = void 0;
+exports.AWSService = exports.AWSServerSideEncryption = exports.AWSStorageClass = void 0;
 const client_s3_1 = require("@aws-sdk/client-s3");
 const common_1 = require("@nestjs/common");
 const APP_CONFIG = __importStar(require("../../app.config"));
+var client_s3_2 = require("@aws-sdk/client-s3");
+Object.defineProperty(exports, "AWSStorageClass", { enumerable: true, get: function () { return client_s3_2.StorageClass; } });
+Object.defineProperty(exports, "AWSServerSideEncryption", { enumerable: true, get: function () { return client_s3_2.ServerSideEncryption; } });
 let AWSService = class AWSService {
     createClient(region) {
         return new client_s3_1.S3Client({

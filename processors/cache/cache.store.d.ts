@@ -1,7 +1,7 @@
 import { createClient } from 'redis';
 import { CacheStoreFactory, CacheStoreSetOptions, CacheModuleOptions } from '@nestjs/common';
-export declare type RedisStoreOptions = Parameters<typeof createClient>[0];
-export declare type RedisCacheStore = ReturnType<typeof createRedisStore>;
+export type RedisStoreOptions = Parameters<typeof createClient>[0];
+export type RedisCacheStore = ReturnType<typeof createRedisStore>;
 export interface CacheStoreOptions extends CacheModuleOptions {
     redisOptions: RedisStoreOptions;
 }
@@ -9,6 +9,12 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
     set: <T>(key: string, value: T, options?: CacheStoreSetOptions<T>) => Promise<void>;
     get: <T_1>(key: string) => Promise<T_1>;
     del: (key: string) => Promise<void>;
+    mget(...args: string[]): Promise<unknown[]>;
+    mset(args: [string, unknown][], ttl?: number): Promise<void>;
+    mdel(...args: string[]): Promise<void>;
+    reset(): Promise<void>;
+    keys(pattern?: string): Promise<string[]>;
+    ttl(key: string): Promise<number>;
     client: import("@redis/client").RedisClientType<{
         graph: {
             CONFIG_GET: typeof import("@redis/graph/dist/commands/CONFIG_GET");
@@ -23,10 +29,10 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
             list: typeof import("@redis/graph/dist/commands/LIST");
             PROFILE: typeof import("@redis/graph/dist/commands/PROFILE");
             profile: typeof import("@redis/graph/dist/commands/PROFILE");
-            QUERY_RO: typeof import("@redis/graph/dist/commands/QUERY_RO");
-            queryRo: typeof import("@redis/graph/dist/commands/QUERY_RO");
             QUERY: typeof import("@redis/graph/dist/commands/QUERY");
             query: typeof import("@redis/graph/dist/commands/QUERY");
+            RO_QUERY: typeof import("@redis/graph/dist/commands/RO_QUERY");
+            roQuery: typeof import("@redis/graph/dist/commands/RO_QUERY");
             SLOWLOG: typeof import("@redis/graph/dist/commands/SLOWLOG");
             slowLog: typeof import("@redis/graph/dist/commands/SLOWLOG");
         };
@@ -241,6 +247,36 @@ declare const createRedisStore: (options: CacheStoreOptions) => {
             reserve: typeof import("@redis/bloom/dist/commands/cuckoo/RESERVE");
             SCANDUMP: typeof import("@redis/bloom/dist/commands/cuckoo/SCANDUMP");
             scanDump: typeof import("@redis/bloom/dist/commands/cuckoo/SCANDUMP");
+        };
+        tDigest: {
+            ADD: typeof import("@redis/bloom/dist/commands/t-digest/ADD");
+            add: typeof import("@redis/bloom/dist/commands/t-digest/ADD");
+            BYRANK: typeof import("@redis/bloom/dist/commands/t-digest/BYRANK");
+            byRank: typeof import("@redis/bloom/dist/commands/t-digest/BYRANK");
+            BYREVRANK: typeof import("@redis/bloom/dist/commands/t-digest/BYREVRANK");
+            byRevRank: typeof import("@redis/bloom/dist/commands/t-digest/BYREVRANK");
+            CDF: typeof import("@redis/bloom/dist/commands/t-digest/CDF");
+            cdf: typeof import("@redis/bloom/dist/commands/t-digest/CDF");
+            CREATE: typeof import("@redis/bloom/dist/commands/t-digest/CREATE");
+            create: typeof import("@redis/bloom/dist/commands/t-digest/CREATE");
+            INFO: typeof import("@redis/bloom/dist/commands/t-digest/INFO");
+            info: typeof import("@redis/bloom/dist/commands/t-digest/INFO");
+            MAX: typeof import("@redis/bloom/dist/commands/t-digest/MAX");
+            max: typeof import("@redis/bloom/dist/commands/t-digest/MAX");
+            MERGE: typeof import("@redis/bloom/dist/commands/t-digest/MERGE");
+            merge: typeof import("@redis/bloom/dist/commands/t-digest/MERGE");
+            MIN: typeof import("@redis/bloom/dist/commands/t-digest/MIN");
+            min: typeof import("@redis/bloom/dist/commands/t-digest/MIN");
+            QUANTILE: typeof import("@redis/bloom/dist/commands/t-digest/QUANTILE");
+            quantile: typeof import("@redis/bloom/dist/commands/t-digest/QUANTILE");
+            RANK: typeof import("@redis/bloom/dist/commands/t-digest/RANK");
+            rank: typeof import("@redis/bloom/dist/commands/t-digest/RANK");
+            RESET: typeof import("@redis/bloom/dist/commands/t-digest/RESET");
+            reset: typeof import("@redis/bloom/dist/commands/t-digest/RESET");
+            REVRANK: typeof import("@redis/bloom/dist/commands/t-digest/REVRANK");
+            revRank: typeof import("@redis/bloom/dist/commands/t-digest/REVRANK");
+            TRIMMED_MEAN: typeof import("@redis/bloom/dist/commands/t-digest/TRIMMED_MEAN");
+            trimmedMean: typeof import("@redis/bloom/dist/commands/t-digest/TRIMMED_MEAN");
         };
         topK: {
             ADD: typeof import("@redis/bloom/dist/commands/top-k/ADD");

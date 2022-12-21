@@ -21,7 +21,21 @@ const createRedisStore = (options) => {
     const del = async (key) => {
         await client.del(key);
     };
-    return { set, get, del, client };
+    const todo = {
+        async mget(...args) {
+            return [];
+        },
+        async mset(args, ttl) { },
+        async mdel(...args) { },
+        async reset() { },
+        async keys(pattern) {
+            return [];
+        },
+        async ttl(key) {
+            return 0;
+        },
+    };
+    return Object.assign(Object.assign({ client }, todo), { set, get, del });
 };
 const redisStoreFactory = {
     create: createRedisStore,

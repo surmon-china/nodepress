@@ -40,8 +40,8 @@ const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../helper/helper.service.email");
 const cache_store_1 = __importDefault(require("./cache.store"));
-const APP_CONFIG = __importStar(require("../../app.config"));
 const cache_logger_1 = require("./cache.logger");
+const APP_CONFIG = __importStar(require("../../app.config"));
 let CacheConfigService = class CacheConfigService {
     constructor(emailService) {
         this.emailService = emailService;

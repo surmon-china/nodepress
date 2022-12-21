@@ -6,7 +6,7 @@ export interface PaginateResult<T> {
     perPage: number;
     totalPage: number;
 }
-export declare type PaginateQuery<T = any> = FilterQuery<T>;
+export type PaginateQuery<T = any> = FilterQuery<T>;
 export interface PaginateOptions {
     page?: number;
     perPage?: number;

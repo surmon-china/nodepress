@@ -1,5 +1,5 @@
 import { EmailService } from '@app/processors/helper/helper.service.email';
-import { AWSService, UploadResult } from '@app/processors/helper/helper.service.aws';
+import { UploadResult, AWSService } from '@app/processors/helper/helper.service.aws';
 export declare class DBBackupService {
     private readonly emailService;
     private readonly awsService;

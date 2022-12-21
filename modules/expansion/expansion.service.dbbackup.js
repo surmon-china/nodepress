@@ -90,8 +90,8 @@ let DBBackupService = class DBBackupService {
                     fileContentType: 'application/zip',
                     region: app_config_1.DB_BACKUP.s3Region,
                     bucket: app_config_1.DB_BACKUP.s3Bucket,
-                    classType: 'GLACIER',
-                    encryption: 'AES256',
+                    classType: helper_service_aws_1.AWSStorageClass.GLACIER,
+                    encryption: helper_service_aws_1.AWSServerSideEncryption.AES256,
                 })
                     .then((result) => {
                     log.info('upload succeed.', result.url);

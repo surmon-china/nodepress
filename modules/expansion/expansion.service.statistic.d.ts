@@ -12,7 +12,7 @@ declare const DEFAULT_STATISTIC: Readonly<{
     todayViews: null;
     averageEmotion: null;
 }>;
-export declare type Statistic = Record<keyof typeof DEFAULT_STATISTIC, number | null>;
+export type Statistic = Record<keyof typeof DEFAULT_STATISTIC, number | null>;
 export declare class StatisticService {
     private readonly cacheService;
     private readonly articleService;

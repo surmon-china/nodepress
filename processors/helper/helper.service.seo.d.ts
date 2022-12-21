@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { GoogleService } from './helper.service.google';
-export declare type ActionURL = string | string[];
+export type ActionURL = string | string[];
 export declare enum SEOAction {
     Push = "push",
     Update = "update",
