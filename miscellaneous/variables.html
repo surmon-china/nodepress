@@ -379,7 +379,7 @@
                             <a href="#isUndefined" title="src/constants/value.constant.ts" ><b>isUndefined</b>&nbsp;&nbsp;&nbsp;(src/.../value.constant.ts)</a>
                         </li>
                         <li>
-                            <a href="#isUnverifiableMetatype" title="src/pipes/validation.pipe.ts" ><b>isUnverifiableMetatype</b>&nbsp;&nbsp;&nbsp;(src/.../validation.pipe.ts)</a>
+                            <a href="#isUnverifiableMetaType" title="src/pipes/validation.pipe.ts" ><b>isUnverifiableMetaType</b>&nbsp;&nbsp;&nbsp;(src/.../validation.pipe.ts)</a>
                         </li>
                         <li>
                             <a href="#isVoid" title="src/constants/value.constant.ts" ><b>isVoid</b>&nbsp;&nbsp;&nbsp;(src/.../value.constant.ts)</a>
@@ -403,10 +403,10 @@
                             <a href="#log" title="src/modules/expansion/expansion.service.statistic.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.statistic.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/option/option.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../option.service.ts)</a>
+                            <a href="#log" title="src/modules/tag/tag.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../tag.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/tag/tag.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../tag.service.ts)</a>
+                            <a href="#log" title="src/modules/option/option.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../option.service.ts)</a>
                         </li>
                         <li>
                             <a href="#log" title="src/processors/database/database.provider.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../database.provider.ts)</a>
@@ -418,10 +418,10 @@
                             <a href="#log" title="src/processors/helper/helper.service.email.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.email.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/helper/helper.service.ip.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.ip.ts)</a>
+                            <a href="#log" title="src/processors/helper/helper.service.google.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.google.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/helper/helper.service.google.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.google.ts)</a>
+                            <a href="#log" title="src/processors/helper/helper.service.ip.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.ip.ts)</a>
                         </li>
                         <li>
                             <a href="#log" title="src/processors/helper/helper.service.seo.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.seo.ts)</a>
@@ -2522,7 +2522,33 @@
     await client.del(key)
   }
 
-  return { set, get, del, client }
+  const todo &#x3D; {
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async mget(...args: string[]): Promise&lt;unknown[]&gt; {
+      return []
+    },
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async mset(args: [string, unknown][], ttl?: number): Promise&lt;void&gt; {},
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async mdel(...args: string[]): Promise&lt;void&gt; {},
+    /** @deprecated */
+    async reset() {},
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async keys(pattern?: string): Promise&lt;string[]&gt; {
+      return []
+    },
+    /** @deprecated */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async ttl(key: string): Promise&lt;number&gt; {
+      return 0
+    },
+  }
+
+  return { client, ...todo, set, get, del }
 }</code>
                     </td>
                 </tr>
@@ -2599,6 +2625,12 @@
     const connection &#x3D; () &#x3D;&gt; {
       return mongoose.connect(APP_CONFIG.MONGO_DB.uri, {})
     }
+
+    // DeprecationWarning: Mongoose: the &#x60;strictQuery&#x60; option will be switched back to &#x60;false&#x60; by default in Mongoose 7.
+    // Use &#x60;mongoose.set(&#x27;strictQuery&#x27;, false);&#x60; if you want to prepare for this change.
+    // Or use &#x60;mongoose.set(&#x27;strictQuery&#x27;, true);&#x60; to suppress this warning.
+    // https://mongoosejs.com/docs/guide.html#strictQuery
+    mongoose.set(&#x27;strictQuery&#x27;, false)
 
     mongoose.connection.on(&#x27;connecting&#x27;, () &#x3D;&gt; {
       log.info(&#x27;connecting...&#x27;)
@@ -4212,10 +4244,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="isUnverifiableMetatype"></a>
+                    <a name="isUnverifiableMetaType"></a>
                     <span class="name">
-                        <span ><b>isUnverifiableMetatype</b></span>
-                        <a href="#isUnverifiableMetatype"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>isUnverifiableMetaType</b></span>
+                        <a href="#isUnverifiableMetaType"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -4324,29 +4356,6 @@
         </tbody>
     </table>
 </section>
-    <h3>src/modules/option/option.service.ts</h3>
-    <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="log"></a>
-                    <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;OptionService&#x27;)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>src/modules/tag/tag.service.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -4363,6 +4372,29 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>logger.scope(&#x27;TagService&#x27;)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/modules/option/option.service.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="log"></a>
+                    <span class="name">
+                        <span ><b>log</b></span>
+                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>logger.scope(&#x27;OptionService&#x27;)</code>
                     </td>
                 </tr>
 
@@ -4416,29 +4448,6 @@
         </tbody>
     </table>
 </section>
-    <h3>src/processors/helper/helper.service.ip.ts</h3>
-    <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="log"></a>
-                    <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;IP_Query&#x27;)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>src/processors/helper/helper.service.google.ts</h3>
     <section>
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -4455,6 +4464,29 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>logger.scope(&#x27;GoogleAPI&#x27;)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/processors/helper/helper.service.ip.ts</h3>
+    <section>
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="log"></a>
+                    <span class="name">
+                        <span ><b>log</b></span>
+                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>logger.scope(&#x27;IP_Query&#x27;)</code>
                     </td>
                 </tr>
 

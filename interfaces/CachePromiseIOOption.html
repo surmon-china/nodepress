@@ -211,8 +211,11 @@ export class CacheService {
   private isReadied &#x3D; false
 
   constructor(@Inject(CACHE_MANAGER) cacheManager: Cache) {
+    // https://github.com/node-cache-manager/node-cache-manager
+    // https://github.com/dabroek/node-cache-manager-redis-store/blob/master/index.js
+    this.cacheStore &#x3D; cacheManager.store as unknown as RedisCacheStore
+
     // https://github.com/redis/node-redis#events
-    this.cacheStore &#x3D; cacheManager.store as RedisCacheStore
     this.cacheStore.client.on(&#x27;connect&#x27;, () &#x3D;&gt; {
       redisLog.info(&#x27;connecting...&#x27;)
     })
@@ -231,6 +234,7 @@ export class CacheService {
       this.isReadied &#x3D; false
       redisLog.error(&#x60;client error!&#x60;, error.message)
     })
+
     // connect
     this.cacheStore.client.connect()
   }

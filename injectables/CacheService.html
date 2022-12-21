@@ -226,8 +226,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="99"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:99</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="103"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:103</a></div>
                 </td>
             </tr>
 
@@ -297,8 +297,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="92"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:92</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="96"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:96</a></div>
                 </td>
             </tr>
 
@@ -376,8 +376,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="158"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:158</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:162</a></div>
                 </td>
             </tr>
 
@@ -463,8 +463,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="159"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:159</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="163"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:163</a></div>
                 </td>
             </tr>
 
@@ -542,8 +542,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="160"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:160</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="164"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:164</a></div>
                 </td>
             </tr>
 
@@ -615,8 +615,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="126"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:126</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:130</a></div>
                 </td>
             </tr>
 
@@ -700,8 +700,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="127"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:127</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="131"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:131</a></div>
                 </td>
             </tr>
 
@@ -777,8 +777,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="128"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:128</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="132"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:132</a></div>
                 </td>
             </tr>
 
@@ -844,8 +844,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="106"
-                            class="link-to-prism">src/processors/cache/cache.service.ts:106</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="110"
+                            class="link-to-prism">src/processors/cache/cache.service.ts:110</a></div>
                 </td>
             </tr>
 
@@ -1043,8 +1043,11 @@ export class CacheService {
   private isReadied &#x3D; false
 
   constructor(@Inject(CACHE_MANAGER) cacheManager: Cache) {
+    // https://github.com/node-cache-manager/node-cache-manager
+    // https://github.com/dabroek/node-cache-manager-redis-store/blob/master/index.js
+    this.cacheStore &#x3D; cacheManager.store as unknown as RedisCacheStore
+
     // https://github.com/redis/node-redis#events
-    this.cacheStore &#x3D; cacheManager.store as RedisCacheStore
     this.cacheStore.client.on(&#x27;connect&#x27;, () &#x3D;&gt; {
       redisLog.info(&#x27;connecting...&#x27;)
     })
@@ -1063,6 +1066,7 @@ export class CacheService {
       this.isReadied &#x3D; false
       redisLog.error(&#x60;client error!&#x60;, error.message)
     })
+
     // connect
     this.cacheStore.client.connect()
   }

@@ -1893,7 +1893,7 @@ export class ArticleService {
       .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
       .exec()
     const filtered &#x3D; articles.filter((a) &#x3D;&gt; a.id !&#x3D;&#x3D; article.id).map((a) &#x3D;&gt; a.toObject())
-    return lodash.sampleSize(filtered, count)
+    return lodash.sampleSize(filtered, count) as Article[]
   }
 
   // get paginate articles

@@ -114,7 +114,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:31</a></div>
                             </td>
                         </tr>
 
@@ -192,8 +192,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:41</a></div>
                 </td>
             </tr>
 
@@ -231,8 +231,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="57"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:57</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:62</a></div>
                 </td>
             </tr>
 
@@ -270,8 +270,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="48"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:48</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="53"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:53</a></div>
                 </td>
             </tr>
 
@@ -356,7 +356,12 @@ import moment from &#x27;moment&#x27;
 import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
-import { AWSService, UploadResult } from &#x27;@app/processors/helper/helper.service.aws&#x27;
+import {
+  UploadResult,
+  AWSService,
+  AWSStorageClass,
+  AWSServerSideEncryption,
+} from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { APP, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
@@ -439,8 +444,8 @@ export class DBBackupService {
             fileContentType: &#x27;application/zip&#x27;,
             region: DB_BACKUP.s3Region,
             bucket: DB_BACKUP.s3Bucket,
-            classType: &#x27;GLACIER&#x27;,
-            encryption: &#x27;AES256&#x27;,
+            classType: AWSStorageClass.GLACIER,
+            encryption: AWSServerSideEncryption.AES256,
           })
           .then((result) &#x3D;&gt; {
             log.info(&#x27;upload succeed.&#x27;, result.url)

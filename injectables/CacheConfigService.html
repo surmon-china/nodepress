@@ -326,8 +326,8 @@
 import { CacheOptionsFactory, Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
 import redisStore, { RedisStoreOptions, CacheStoreOptions } from &#x27;./cache.store&#x27;
-import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import { redisLog } from &#x27;./cache.logger&#x27;
+import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 @Injectable()
 export class CacheConfigService implements CacheOptionsFactory {

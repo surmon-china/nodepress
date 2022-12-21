@@ -193,19 +193,19 @@ import { Injectable, PipeTransform, ArgumentMetadata } from &#x27;@nestjs/common
 import { ValidationError } from &#x27;@app/errors/validation.error&#x27;
 import { VALIDATION_ERROR_DEFAULT } from &#x27;@app/constants/text.constant&#x27;
 
-export const isUnverifiableMetatype &#x3D; (metatype: any): metatype is undefined &#x3D;&gt; {
+export const isUnverifiableMetaType &#x3D; (metatype: any): metatype is undefined &#x3D;&gt; {
   const basicTypes &#x3D; [String, Boolean, Number, Array, Object]
   return !metatype || basicTypes.includes(metatype as any)
 }
 
 /**
  * @class ValidationPipe
- * @classdesc validate metatype class format
+ * @classdesc validate meta type class format
  */
 @Injectable()
 export class ValidationPipe implements PipeTransform&lt;any&gt; {
   async transform(value, { metatype }: ArgumentMetadata) {
-    if (isUnverifiableMetatype(metatype)) {
+    if (isUnverifiableMetaType(metatype)) {
       return value
     }
 
