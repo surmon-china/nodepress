@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 3.13.1 (2022-12-21)
+
+**Feature**
+
+- Fix `mongodump` command args
+
 ### 3.13.0 (2022-09-23)
 
 **Feature**
