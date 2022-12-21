@@ -14,7 +14,7 @@
 &nbsp;
 [![GitHub issues](https://img.shields.io/github/issues-raw/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/issues)
 &nbsp;
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/surmon-china/nodepress/Deploy?label=deploy&style=for-the-badge)](https://github.com/surmon-china/nodepress/actions?query=workflow:%22Deploy%22)
+[![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m791570584-8027b44860687b0ac0af7b4c?style=for-the-badge)](https://stats.uptimerobot.com/Q2k7OTXxJN/791570584)
 &nbsp;
 [![GitHub license](https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge)](/LICENSE)
 
