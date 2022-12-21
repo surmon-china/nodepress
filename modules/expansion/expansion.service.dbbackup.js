@@ -68,7 +68,7 @@ let DBBackupService = class DBBackupService {
             shelljs_1.default.rm('-rf', `./backup.prev`);
             shelljs_1.default.mv('./backup', './backup.prev');
             shelljs_1.default.mkdir('backup');
-            shelljs_1.default.exec(`mongodump --uri="${app_config_1.MONGO_DB.uri}" --out="backup"`, (code, out) => {
+            shelljs_1.default.exec(`mongodump --forceTableScan --uri="${app_config_1.MONGO_DB.uri}" --out="backup"`, (code, out) => {
                 log.info('mongodump done.', code, out);
                 if (code !== 0) {
                     log.warn('mongodump failed!', out);
