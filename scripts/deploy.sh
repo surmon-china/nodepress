@@ -1,5 +1,7 @@
 #!/bin/bash
 
+PM2_APP_NAME=nodepress
+
 WEB_PATH=$(dirname $0)
 
 cd $WEB_PATH
@@ -13,21 +15,23 @@ echo "[deploy] pulling source code..."
 git fetch --all && git reset --hard origin/main && git pull
 git checkout main
 
-echo "[deploy] stop service..."
-pm2 stop nodepress
+echo "[deploy] stop pm2 app..."
+pm2 stop $PM2_APP_NAME -s
 
 echo "[deploy] yarn install..."
 yarn install --frozen-lockfile --production
 
-echo "[deploy] fetching release code..."
+echo "[deploy] reload release code..."
 rm -rf dist
 mkdir dist
 cd dist
-git clone -b release git@github.com:surmon-china/nodepress.git .
-rm -rf .git
+curl -OL https://github.com/surmon-china/nodepress/archive/refs/heads/release.zip && unzip release.zip
+mv nodepress-release/* ./
+rm -rf nodepress-release
+rm -rf release.zip
 cd ..
 
-echo "[deploy] restarting..."
-pm2 restart nodepress
+echo "[deploy] restart pm2 app..."
+pm2 restart $PM2_APP_NAME -s
 
 echo "[deploy] finished."
