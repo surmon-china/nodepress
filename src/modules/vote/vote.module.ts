@@ -16,6 +16,6 @@ import { VoteController } from './vote.controller'
 @Module({
   imports: [OptionModule, ArticleModule, CommentModule, DisqusModule],
   providers: [VoteProvider, VoteService],
-  controllers: [VoteController],
+  controllers: [VoteController]
 })
 export class VoteModule {}

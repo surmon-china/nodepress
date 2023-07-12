@@ -1,56 +1,73 @@
 /**
- * @file HttpCache interceptor
+ * @file Cache interceptor
  * @module interceptor/cache
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { tap } from 'rxjs/operators'
 import { Observable, of } from 'rxjs'
+import { HttpAdapterHost } from '@nestjs/core'
 import {
-  HttpAdapterHost,
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-  Inject,
   Injectable,
   RequestMethod,
+  StreamableFile
 } from '@nestjs/common'
-import { getHttpCacheKey, getHttpCacheTTL } from '@app/decorators/cache.decorator'
+import { getCacheKey, getCacheTTL } from '@app/decorators/cache.decorator'
 import { CacheService } from '@app/processors/cache/cache.service'
-import * as SYSTEM from '@app/constants/system.constant'
-import * as APP_CONFIG from '@app/app.config'
+import { UNDEFINED, isNil } from '@app/constants/value.constant'
+import { CACHE_PREFIX } from '@app/constants/cache.constant'
+import logger from '@app/utils/logger'
+
+const log = logger.scope('CacheInterceptor')
 
 /**
- * @class HttpCacheInterceptor
+ * @class CacheInterceptor
  * @classdesc Cache with ttl
+ * @ref https://github.com/nestjs/cache-manager/blob/master/lib/interceptors/cache.interceptor.ts
  */
 @Injectable()
-export class HttpCacheInterceptor implements NestInterceptor {
+export class CacheInterceptor implements NestInterceptor {
   constructor(
-    @Inject(SYSTEM.HTTP_ADAPTER_HOST)
     private readonly httpAdapterHost: HttpAdapterHost,
     private readonly cacheService: CacheService
   ) {}
 
   async intercept(context: ExecutionContext, next: CallHandler<any>): Promise<Observable<any>> {
     // MARK: force disable cache
-    // return call$;
-    const call$ = next.handle()
+    // return next.handle()
     const key = this.trackBy(context)
 
     if (!key) {
-      return call$
+      return next.handle()
     }
 
     const target = context.getHandler()
-    const metaTTL = getHttpCacheTTL(target)
-    const ttl = metaTTL || APP_CONFIG.APP.DEFAULT_CACHE_TTL
+    const ttl = getCacheTTL(target)
 
     try {
-      const value = await this.cacheService.get(key)
-      return value ? of(value) : call$.pipe(tap((response) => this.cacheService.set(key, response, { ttl })))
+      const value = await this.cacheService.get(CACHE_PREFIX + key)
+      if (!isNil(value)) {
+        return of(value)
+      }
+
+      return next.handle().pipe(
+        tap(async (response) => {
+          if (response instanceof StreamableFile) {
+            return
+          }
+
+          try {
+            await this.cacheService.set(CACHE_PREFIX + key, response, ttl)
+          } catch (err) {
+            log.warn(`An error has occurred when inserting "key: ${key}", "value: ${response}"`)
+          }
+        })
+      )
     } catch (error) {
-      return call$
+      return next.handle()
     }
   }
 
@@ -58,23 +75,20 @@ export class HttpCacheInterceptor implements NestInterceptor {
    * @function trackBy
    * @description
    *  1. CacheKey is required
-   *  2. default ttl: APP_CONFIG.REDIS.defaultCacheTTL
+   *  2. HTTP GET request only
    */
   trackBy(context: ExecutionContext): string | undefined {
+    const { httpAdapter } = this.httpAdapterHost
+    const isHttpApp = Boolean(httpAdapter?.getRequestMethod)
+    const cacheKey = getCacheKey(context.getHandler())
     const request = context.switchToHttp().getRequest()
-    const httpServer = this.httpAdapterHost.httpAdapter
-    const isHttpApp = Boolean(httpServer?.getRequestMethod)
-    const isGetRequest = isHttpApp && httpServer.getRequestMethod(request) === RequestMethod[RequestMethod.GET]
-    const cacheKey = getHttpCacheKey(context.getHandler())
-    const isMatchedCache = isHttpApp && isGetRequest && cacheKey
-    // const requestUrl = httpServer.getRequestUrl(request);
-    // console.debug('isMatchedCache', isMatchedCache, 'requestUrl', requestUrl, 'cacheKey', cacheKey);
-    // cache priority strategy: -> http -> GET -> cache key -> url -> undefined
-    return isMatchedCache ? cacheKey : undefined
+    const isGetRequest = isHttpApp && httpAdapter.getRequestMethod(request) === RequestMethod[RequestMethod.GET]
+    return isHttpApp && isGetRequest && cacheKey ? cacheKey : UNDEFINED
     /*
-    return undefined;
-    return isMatchedCache ? requestUrl : undefined;
-    return isMatchedCache ? (cacheKey || requestUrl) : undefined;
+    Cache priority strategy: HTTP > GET > Cache Key -> URL -> undefined
+    const requestUrl = httpAdapter.getRequestUrl(request)
+    console.debug('isMatchedCache', { isHttpApp, isGetRequest, cacheKey, requestUrl })
+    return isHttpApp && isGetRequest ? (cacheKey || requestUrl) : undefined;
     */
   }
 }

@@ -1,4 +1,4 @@
-## v3.x 架构说明
+## v4.x 架构说明
 
 ### 接口概述
 
@@ -41,7 +41,7 @@
 **数据组成的几种可能**
 
 - 数据库真实存在数据
-- 业务计算出的数据，非存储数据，如：统计数据
+- 业务计算出的衍生数据，非存储数据，如：统计数据
 - Mongoose 支持的 virtual 虚拟数据
 
 ### 应用结构
@@ -87,7 +87,7 @@
 
 **拦截器** [`interceptors`](/src/interceptors)
 
-- [缓存拦截器](/src/interceptors/cache.interceptor.ts)：自定义这个拦截器是是要弥补框架不支持 ttl 参数的缺陷
+- [缓存拦截器](/src/interceptors/cache.interceptor.ts)：自定义此拦截器为弥补框架不支持 ttl 参数的缺陷
 - [数据流转换拦截器](/src/interceptors/transform.interceptor.ts)：当控制器所需的 Promise service 成功响应时，将在此被转换为标准的数据结构
 - [数据流异常拦截器](/src/interceptors/error.interceptor.ts)：当控制器所需的 Promise service 发生错误时，错误将在此被捕获
 - [日志拦截器](/src/interceptors/logging.interceptor.ts)：补充默认的全局日志
@@ -136,15 +136,14 @@
 - [`database`](/src/processors/database)
   - 连接数据库和异常管理
 - [`cache`](/src/processors/cache)
-  - 基本的缓存数据 Set、Get
-  - 扩展的 [`Promise` 工作模式](/src/processors/cache/cache.service.ts#L114)（双向同步/被动更新）
-  - 扩展的 [`Interval` 工作模式](/src/processors/cache/cache.service.ts#L147)（超时更新/定时更新）
+  - 基本的缓存数据 `set` `get` `del` 等操作
+  - 扩展的 `once` `manual` `interval` `schedule` 几种缓存模式
 - [`helper`](/src/processors/helper)
   - [搜索引擎实时更新服务](/src/processors/helper/helper.service.seo.ts)：根据入参主动提交搜索引擎收录，支持百度、Google 服务；分别会在动态数据进行 CUD 操作的时候调用
   - [评论过滤服务](/src/processors/helper/helper.service.akismet.ts)：使用 Akismet 过滤 SPAM；暴露三个方法：校验 SPAM、提交 SPAM、提交 HAM
   - [邮件服务](/src/processors/helper/helper.service.email.ts)：根据入参发送邮件；程序启动时会自动校验客户端有效性，校验成功则根据入参发送邮件
   - [IP 地理查询服务](/src/processors/helper/helper.service.ip.ts)：根据入参查询 IP 物理位置；使用一些免费在线服务
-  - [第三方云存储服务](/src/processors/helper/helper.service.cloud-storage.ts)：生成云存储上传 Token（目前服务为 Aliyun OSS），后期可以添加 SDK 的更多支持，如管理文件
+  - [第三方云存储服务](/src/processors/helper/helper.service.aws.ts)：AWS 云存储相关服务
   - Google 证书（鉴权）服务：用于生成各 Google 应用的服务端证书
 
 ## Special issues
@@ -162,6 +161,6 @@
 
 - [完整文档](https://developers.google.com/analytics/devguides/reporting/embed/v1/)
 - [完整示例](https://ga-dev-tools.appspot.com/embed-api/)
-- [服务端签发 token 鉴权示例](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/)
+- [服务端签发 Token 鉴权示例](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/)
 - [客户端 API 文档](https://developers.google.com/analytics/devguides/reporting/embed/v1/core-methods-reference)
 - [将服务账户添加为 GA 的数据阅读者操作页面](https://marketingplatform.google.com/home/accounts)

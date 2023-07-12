@@ -11,7 +11,7 @@ import {
   ObjectAttributes,
   StorageClass,
   ServerSideEncryption,
-  PutObjectRequest,
+  PutObjectRequest
 } from '@aws-sdk/client-s3'
 import { Injectable } from '@nestjs/common'
 import * as APP_CONFIG from '@app/app.config'
@@ -42,8 +42,8 @@ export class AWSService {
       region,
       credentials: {
         accessKeyId: APP_CONFIG.AWS.accessKeyId,
-        secretAccessKey: APP_CONFIG.AWS.secretAccessKey,
-      },
+        secretAccessKey: APP_CONFIG.AWS.secretAccessKey
+      }
     })
   }
 
@@ -52,7 +52,7 @@ export class AWSService {
     const command = new GetObjectAttributesCommand({
       Bucket: payload.bucket,
       Key: payload.key,
-      ObjectAttributes: Object.values(ObjectAttributes),
+      ObjectAttributes: Object.values(ObjectAttributes)
     })
     return s3Client.send(command)
   }
@@ -66,7 +66,7 @@ export class AWSService {
       Body: payload.file,
       ContentType: payload.fileContentType,
       StorageClass: payload.classType ?? 'STANDARD',
-      ServerSideEncryption: payload.encryption,
+      ServerSideEncryption: payload.encryption
     })
     return s3Client.send(command).then(() => {
       return this.getObjectAttributes({ region, bucket, key }).then((attributes) => {
@@ -75,7 +75,7 @@ export class AWSService {
           // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
           url: `https://${bucket}.s3.${region}.amazonaws.com/${key}`,
           eTag: attributes.ETag!,
-          size: attributes.ObjectSize!,
+          size: attributes.ObjectSize!
         }
       })
     })

@@ -11,12 +11,13 @@ import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
-const log = logger.scope('Akismet')
+const log = logger.scope('AkismetService')
 
+// keyof typeof AkismetClient
 export enum AkismetAction {
   CheckSpam = 'checkSpam',
   SubmitSpam = 'submitSpam',
-  SubmitHam = 'submitHam',
+  SubmitHam = 'submitHam'
 }
 
 // https://github.com/chrisfosterelli/akismet-api/blob/master/docs/comments.md
@@ -46,7 +47,7 @@ export class AkismetService {
     // https://github.com/chrisfosterelli/akismet-api
     this.client = new AkismetClient({
       key: APP_CONFIG.AKISMET.key as string,
-      blog: APP_CONFIG.AKISMET.blog as string,
+      blog: APP_CONFIG.AKISMET.blog as string
     })
   }
 
@@ -68,7 +69,7 @@ export class AkismetService {
     return (content: AkismetPayload): Promise<any> => {
       return new Promise((resolve, reject) => {
         // continue operation only when initialization successful
-        if (this.clientIsValid === false) {
+        if (!this.clientIsValid) {
           const message = `${handleType} failed! reason: init failed`
           log.warn(message)
           return resolve(message)
@@ -81,7 +82,7 @@ export class AkismetService {
           comment_author: content.comment_author || UNDEFINED,
           comment_author_email: content.comment_author_email || UNDEFINED,
           comment_author_url: content.comment_author_url || UNDEFINED,
-          comment_content: content.comment_content || UNDEFINED,
+          comment_content: content.comment_content || UNDEFINED
         })
           .then((result) => {
             if (handleType === AkismetAction.CheckSpam && result) {

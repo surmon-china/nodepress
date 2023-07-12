@@ -6,14 +6,14 @@
 
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { CacheService, CacheIOResult } from '@app/processors/cache/cache.service'
+import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { SortType } from '@app/constants/biz.constant'
 import { Category } from '@app/modules/category/category.model'
 import {
   Article,
   ARTICLE_LIST_QUERY_GUEST_FILTER,
-  ARTICLE_LIST_QUERY_PROJECTION,
+  ARTICLE_LIST_QUERY_PROJECTION
 } from '@app/modules/article/article.model'
 import { Tag } from '@app/modules/tag/tag.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
@@ -29,7 +29,7 @@ export interface ArchiveData {
 
 @Injectable()
 export class ArchiveService {
-  private archiveCache: CacheIOResult<ArchiveData>
+  private archiveCache: CacheManualResult<ArchiveData>
 
   constructor(
     private readonly cacheService: CacheService,
@@ -37,10 +37,9 @@ export class ArchiveService {
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
     @InjectModel(Category) private readonly categoryModel: MongooseModel<Category>
   ) {
-    this.archiveCache = this.cacheService.promise({
-      ioMode: true,
+    this.archiveCache = this.cacheService.manual({
       key: CACHE_KEY.ARCHIVE,
-      promise: this.getArchiveData.bind(this),
+      promise: this.getArchiveData.bind(this)
     })
     this.updateCache().catch((error) => {
       log.warn('init getArchiveData failed!', error)
@@ -64,11 +63,12 @@ export class ArchiveService {
 
   private async getArchiveData(): Promise<ArchiveData> {
     try {
-      return {
-        tags: await this.getAllTags(),
-        categories: await this.getAllCategories(),
-        articles: await this.getAllArticles(),
-      }
+      const [tags, categories, articles] = await Promise.all([
+        this.getAllTags(),
+        this.getAllCategories(),
+        this.getAllArticles()
+      ])
+      return { tags, categories, articles }
     } catch (error) {
       log.warn('getArchiveData failed!', error)
       return {} as any as ArchiveData

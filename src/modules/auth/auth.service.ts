@@ -30,7 +30,7 @@ export class AuthService {
   public createToken(): TokenResult {
     return {
       access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
-      expires_in: APP_CONFIG.AUTH.expiresIn as number,
+      expires_in: APP_CONFIG.AUTH.expiresIn as number
     }
   }
 
@@ -47,7 +47,7 @@ export class AuthService {
   public async putAdminInfo(auth: AuthUpdateDTO): Promise<Auth> {
     const { password, new_password, ...restAuth } = auth
 
-    let newPassword: string | void
+    let newPassword: string | void = UNDEFINED
     if (password || new_password) {
       // verify password
       if (!password || !new_password) {

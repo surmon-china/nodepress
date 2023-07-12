@@ -20,12 +20,12 @@ import * as APP_CONFIG from '@app/app.config'
     JwtModule.register({
       privateKey: APP_CONFIG.AUTH.jwtSecret as jwt.Secret,
       signOptions: {
-        expiresIn: APP_CONFIG.AUTH.expiresIn as number,
-      },
-    }),
+        expiresIn: APP_CONFIG.AUTH.expiresIn as number
+      }
+    })
   ],
   controllers: [AuthController],
   providers: [AuthProvider, AuthService, JwtStrategy],
-  exports: [AuthService],
+  exports: [AuthService]
 })
 export class AuthModule {}

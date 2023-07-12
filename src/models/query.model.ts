@@ -10,7 +10,7 @@ import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export const enum BooleanNumberValue {
   False = 0, // Number(false)
-  True = 1, // Number(true)
+  True = 1 // Number(true)
 }
 
 // https://www.progress.com/blogs/understanding-iso-8601-date-and-time-format

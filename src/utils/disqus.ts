@@ -47,7 +47,7 @@ const resourcesRequiringPost = [
   'users/follow',
   'users/unfollow',
   'whitelists/add',
-  'whitelists/remove',
+  'whitelists/remove'
 ]
 
 // https://stackoverflow.com/questions/16444602/creating-an-anonymous-post-with-disqus-api-fails
@@ -84,7 +84,7 @@ export class Disqus {
     this.config = config
   }
 
-  // https://disqus.com/api/docs/
+  // Disqus API v3.0 https://disqus.com/api/docs/
   public request<T = any>(resource: string, params: RequestParams = {}, usePublic = false) {
     const api = getApiURL(resource)
     const queryParams = { ...params }
@@ -123,8 +123,8 @@ export class Disqus {
   public getOAuthAccessToken(code: string, uri: string) {
     const config = {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
     }
     const formData = new URLSearchParams()
     formData.append('code', code)
@@ -138,10 +138,10 @@ export class Disqus {
       .catch((error) => Promise.reject(normalizeAxiosError(error)))
   }
 
-  public refreshOAuthAccessToken<T = any>(refreshtoken: string) {
+  public refreshOAuthAccessToken<T = any>(refreshToken: string) {
     const url = new URL(ACCESS_TOKEN_URL)
     url.searchParams.set('grant_type', 'refresh_token')
-    url.searchParams.set('refresh_token', refreshtoken)
+    url.searchParams.set('refresh_token', refreshToken)
     url.searchParams.set('client_id', this.config.apiKey)
     url.searchParams.set('client_secret', this.config.apiSecret)
     return axios

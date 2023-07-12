@@ -4,26 +4,25 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Types } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getTagUrl } from '@app/transformers/urlmap.transformer'
-import { CacheService, CacheIOResult } from '@app/processors/cache/cache.service'
+import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
-import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { SortType } from '@app/constants/biz.constant'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
+import logger from '@app/utils/logger'
 import { Tag } from './tag.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
-import logger from '@app/utils/logger'
 
 const log = logger.scope('TagService')
 
 @Injectable()
 export class TagService {
-  private allTagsCache: CacheIOResult<Array<Tag>>
+  private allTagsCache: CacheManualResult<Array<Tag>>
 
   constructor(
     private readonly seoService: SeoService,
@@ -32,10 +31,9 @@ export class TagService {
     @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
   ) {
-    this.allTagsCache = this.cacheService.promise({
-      ioMode: true,
+    this.allTagsCache = this.cacheService.manual<Array<Tag>>({
       key: CACHE_KEY.ALL_TAGS,
-      promise: () => this.getAllTags(),
+      promise: () => this.getAllTags()
     })
 
     this.updateAllTagsCache().catch((error) => {
@@ -43,23 +41,21 @@ export class TagService {
     })
   }
 
-  private async aggregate(publicOnly: boolean, documents: Array<Tag>) {
-    const counts = await this.articleModel.aggregate<{ _id: Types.ObjectId; count: number }>([
+  private async aggregate(publicOnly: boolean, tags: Array<WithID<Tag>>) {
+    const counts = await this.articleModel.aggregate<{ _id: MongooseObjectID; count: number }>([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-      { $unwind: '$tag' },
-      { $group: { _id: '$tag', count: { $sum: 1 } } },
+      { $unwind: '$tags' },
+      { $group: { _id: '$tags', count: { $sum: 1 } } }
     ])
-    const hydratedDocs = documents.map((tag) => {
-      const found = counts.find((item) => String(item._id) === String((tag as any)._id))
-      return { ...tag, articles_count: found ? found.count : 0 } as Tag
+    return tags.map<Tag>((tag) => {
+      const found = counts.find((item) => item._id.equals(tag._id))
+      return { ...tag, articles_count: found ? found.count : 0 }
     })
-    return hydratedDocs
   }
 
   public async getAllTags(): Promise<Array<Tag>> {
     const allTags = await this.tagModel.find().lean().sort({ _id: SortType.Desc }).exec()
-    const documents = await this.aggregate(true, allTags)
-    return documents
+    return await this.aggregate(true, allTags)
   }
 
   public getAllTagsCache(): Promise<Array<Tag>> {
@@ -102,7 +98,7 @@ export class TagService {
 
   public async update(tagID: MongooseID, newTag: Tag): Promise<MongooseDoc<Tag>> {
     const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec()
-    if (existedTag && String(existedTag._id) !== String(tagID)) {
+    if (existedTag && !existedTag._id.equals(tagID)) {
       throw `Tag slug '${newTag.slug}' is existed`
     }
 
@@ -130,13 +126,14 @@ export class TagService {
   }
 
   public async batchDelete(tagIDs: MongooseID[]) {
-    // SEO remove
     const tags = await this.tagModel.find({ _id: { $in: tagIDs } }).exec()
-    this.seoService.delete(tags.map((tag) => getTagUrl(tag.slug)))
     // DB remove
     const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIDs } }).exec()
+    // Cache update
     this.archiveService.updateCache()
     this.updateAllTagsCache()
+    // SEO remove
+    this.seoService.delete(tags.map((tag) => getTagUrl(tag.slug)))
     return actionResult
   }
 

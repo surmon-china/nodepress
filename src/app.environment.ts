@@ -13,5 +13,5 @@ export default {
   isDevEnv,
   isProdEnv,
   isTestEnv,
-  environment,
+  environment
 }

@@ -32,7 +32,7 @@ export class DisqusPublicService {
   ) {
     this.disqus = new Disqus({
       apiKey: DISQUS.publicKey,
-      apiSecret: DISQUS.secretKey,
+      apiSecret: DISQUS.secretKey
     })
   }
 
@@ -41,7 +41,7 @@ export class DisqusPublicService {
   }
 
   public setUserInfoCache(uid: string | number, userInfo: any, ttl: number) {
-    return this.cacheService.set(this.getUserInfoCacheKey(uid), userInfo, { ttl })
+    return this.cacheService.set(this.getUserInfoCacheKey(uid), userInfo, ttl)
   }
 
   public getUserInfoCache(uid: string | number) {
@@ -95,7 +95,7 @@ export class DisqusPublicService {
     }
     const result = await this.ensureThreadDetail(postID)
     // cache 24 hours
-    this.cacheService.set(cacheKey, result, { ttl: 60 * 60 * 24 })
+    this.cacheService.set(cacheKey, result, 60 * 60 * 24)
     return result
   }
 
@@ -135,7 +135,7 @@ export class DisqusPublicService {
     const body: any = {
       message: comment.content,
       parent: parentID,
-      thread: threadID,
+      thread: threadID
     }
     if (accessToken) {
       // publish by Disqus user
@@ -177,7 +177,7 @@ export class DisqusPublicService {
       comment: newComment,
       threadID: thread.id,
       parentID,
-      accessToken,
+      accessToken
     })
     // 6. approve guest post
     // https://groups.google.com/g/disqus-dev/c/DcAZqSE0QSc/m/i-Az_1hKcvIJ
@@ -241,7 +241,7 @@ export class DisqusPublicService {
     // disqus delete
     await this.deleteDisqusComment({
       post: commentDisqusPostID,
-      access_token: accessToken,
+      access_token: accessToken
     })
 
     // NodePress delete

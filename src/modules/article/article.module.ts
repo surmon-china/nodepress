@@ -16,6 +16,6 @@ import { ArticleService } from './article.service'
   imports: [ArchiveModule, CategoryModule, TagModule],
   controllers: [ArticleController],
   providers: [ArticleProvider, ArticleService],
-  exports: [ArticleService],
+  exports: [ArticleService]
 })
 export class ArticleModule {}

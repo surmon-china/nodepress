@@ -12,7 +12,7 @@ import { VALIDATION_ERROR_DEFAULT } from '@app/constants/text.constant'
 
 export const isUnverifiableMetaType = (metatype: any): metatype is undefined => {
   const basicTypes = [String, Boolean, Number, Array, Object]
-  return !metatype || basicTypes.includes(metatype as any)
+  return !metatype || basicTypes.includes(metatype)
 }
 
 /**

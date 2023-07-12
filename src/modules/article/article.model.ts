@@ -18,7 +18,7 @@ import {
   MaxLength,
   Matches,
   ArrayNotEmpty,
-  ArrayUnique,
+  ArrayUnique
 } from 'class-validator'
 import { Language, SortType, PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
@@ -33,22 +33,22 @@ export const ARTICLE_PUBLISH_STATES = [PublishState.Draft, PublishState.Publishe
 export const ARTICLE_PUBLIC_STATES = [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
 export const ARTICLE_ORIGIN_STATES = [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
 
-export const ARTICLE_FULL_QUERY_REF_POPULATE = ['category', 'tag']
+export const ARTICLE_FULL_QUERY_REF_POPULATE = ['categories', 'tags']
 export const ARTICLE_LIST_QUERY_PROJECTION = { content: false }
 export const ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
   state: PublishState.Published,
-  public: PublicState.Public,
+  public: PublicState.Public
 })
 
 export const ARTICLE_HOTTEST_SORT_PARAMS = Object.freeze({
   'meta.comments': SortType.Desc,
-  'meta.likes': SortType.Desc,
+  'meta.likes': SortType.Desc
 })
 
 const ARTICLE_DEFAULT_META: ArticleMeta = Object.freeze({
   likes: 0,
   views: 0,
-  comments: 0,
+  comments: 0
 })
 
 export class ArticleMeta {
@@ -73,12 +73,13 @@ export class ArticleMeta {
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     toObject: { getters: true },
     timestamps: {
-      createdAt: 'create_at',
-      updatedAt: 'update_at',
-    },
-  },
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  }
 })
 @index(
   { title: 'text', content: 'text', description: 'text' },
@@ -87,8 +88,8 @@ export class ArticleMeta {
     weights: {
       title: 10,
       description: 18,
-      content: 3,
-    },
+      content: 3
+    }
   }
 )
 export class Article {
@@ -125,7 +126,7 @@ export class Article {
   @IsString()
   @IsOptional()
   @prop({ type: String, default: null })
-  thumb: string | null
+  thumbnail: string | null
 
   // publish state
   @IsIn(ARTICLE_PUBLISH_STATES)
@@ -153,12 +154,12 @@ export class Article {
   @ArrayNotEmpty()
   @IsArray()
   @prop({ ref: () => Category, required: true, index: true })
-  category: Ref<Category>[]
+  categories: Ref<Category>[]
 
   // tag
   // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
   @prop({ ref: () => Tag, index: true })
-  tag: Ref<Tag>[]
+  tags: Ref<Tag>[]
 
   // language
   // MARK: can't use 'language' field
@@ -170,19 +171,19 @@ export class Article {
   @prop({ default: Language.Chinese, index: true })
   lang: Language
 
-  // disabled comment
+  // disabled comments
   @IsBoolean()
   @prop({ default: false })
-  disabled_comment: boolean
+  disabled_comments: boolean
 
   @prop({ _id: false, default: { ...ARTICLE_DEFAULT_META } })
   meta: ArticleMeta
 
   @prop({ default: Date.now, index: true, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 
   @ArrayUnique()
   @IsArray()

@@ -16,7 +16,7 @@ import {
   IsNotEmpty,
   IsArray,
   ValidateNested,
-  ArrayUnique,
+  ArrayUnique
 } from 'class-validator'
 import { KeyValueModel } from '@app/models/key-value.model'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
@@ -24,7 +24,7 @@ import { APP } from '@app/app.config'
 
 export const DEFAULT_OPTION: Option = Object.freeze<Option>({
   title: 'NodePress',
-  sub_title: 'blog server app',
+  sub_title: 'Blog server app',
   description: 'RESTful API service for blog',
   keywords: [],
   statement: '',
@@ -33,16 +33,16 @@ export const DEFAULT_OPTION: Option = Object.freeze<Option>({
   friend_links: [
     {
       name: APP.FE_NAME,
-      value: APP.FE_URL,
-    },
+      value: APP.FE_URL
+    }
   ],
   meta: { likes: 0 },
   blocklist: {
     ips: [],
     mails: [],
-    keywords: [],
+    keywords: []
   },
-  ad_config: '',
+  ad_config: ''
 })
 
 class AppMeta {
@@ -74,11 +74,12 @@ export class Blocklist {
 
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     timestamps: {
       createdAt: false,
-      updatedAt: 'update_at',
-    },
-  },
+      updatedAt: 'updated_at'
+    }
+  }
 })
 export class Option {
   @IsString()
@@ -116,7 +117,6 @@ export class Option {
 
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   @prop({ default: '' })
   statement: string
 
@@ -144,7 +144,7 @@ export class Option {
   ad_config: string | null
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 }
 
 export const OptionProvider = getProviderByTypegooseClass(Option)

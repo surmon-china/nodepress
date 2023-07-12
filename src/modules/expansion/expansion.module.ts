@@ -17,6 +17,6 @@ import { DBBackupService } from './expansion.service.dbbackup'
   imports: [TagModule, ArticleModule, CommentModule, FeedbackModule],
   controllers: [ExpansionController],
   providers: [StatisticService, DBBackupService],
-  exports: [StatisticService, DBBackupService],
+  exports: [StatisticService, DBBackupService]
 })
 export class ExpansionModule {}

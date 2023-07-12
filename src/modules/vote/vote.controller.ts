@@ -67,8 +67,8 @@ export class VoteController {
             name: disqusUserInfo.name,
             username: disqusUserInfo.username,
             url: disqusUserInfo.url,
-            profileUrl: disqusUserInfo.profileUrl,
-          },
+            profileUrl: disqusUserInfo.profileUrl
+          }
         }
       } catch (error) {}
     }
@@ -77,14 +77,14 @@ export class VoteController {
     if (guestAuthor) {
       return {
         type: VoteAuthorType.Guest,
-        data: guestAuthor,
+        data: guestAuthor
       }
     }
 
     // anonymous user
     return {
       type: VoteAuthorType.Anonymous,
-      data: null,
+      data: null
     }
   }
 
@@ -126,7 +126,7 @@ export class VoteController {
       return [
         `${uaResult.browser.name ?? 'unknown_browser'}@${uaResult.browser.version ?? 'unknown'}`,
         `${uaResult.os.name ?? 'unknown_OS'}@${uaResult.os.version ?? 'unknown'}`,
-        `${uaResult.device.model ?? 'unknown_device'}@${uaResult.device.vendor ?? 'unknown'}`,
+        `${uaResult.device.model ?? 'unknown_device'}@${uaResult.device.vendor ?? 'unknown'}`
       ].join(' · ')
     }
 
@@ -135,7 +135,7 @@ export class VoteController {
       `Vote: ${payload.vote}`,
       `Author: ${payload.author}`,
       `Location: ${payload.location ? getLocationText(payload.location) : 'unknown'}`,
-      `Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : 'unknown'}`,
+      `Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : 'unknown'}`
     ]
     const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('')
     const linkHTML = `<a href="${payload.link}" target="_blank">${payload.on}</a>`
@@ -144,7 +144,7 @@ export class VoteController {
       to: payload.to,
       subject: payload.subject,
       text: mailTexts.join('\n'),
-      html: [textHTML, `<br>`, linkHTML].join('\n'),
+      html: [textHTML, `<br>`, linkHTML].join('\n')
     })
   }
 
@@ -154,7 +154,7 @@ export class VoteController {
     const result = await this.disqusPublicService.voteThread({
       access_token: token || null,
       thread: thread.id,
-      vote,
+      vote
     })
     // console.info(`Disqus like thread ${postId}`, result)
     return result
@@ -224,7 +224,7 @@ export class VoteController {
           author: voteAuthor.data,
           user_agent: visitor.ua,
           ip: visitor.ip,
-          ip_location: ipLocation,
+          ip_location: ipLocation
         })
         // email to admin
         this.emailToTargetVoteMessage({
@@ -235,7 +235,7 @@ export class VoteController {
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkByID(voteBody.post_id),
+          link: getPermalinkByID(voteBody.post_id)
         })
       }
     )
@@ -263,7 +263,7 @@ export class VoteController {
           await this.disqusPublicService.votePost({
             access_token: token.access_token,
             post: postID,
-            vote: voteBody.vote,
+            vote: voteBody.vote
           })
           // console.info(`Disqus like post ${voteBody.comment_id}`, result)
         }
@@ -284,7 +284,7 @@ export class VoteController {
           author: voteAuthor.data,
           user_agent: visitor.ua,
           ip: visitor.ip,
-          ip_location: ipLocation,
+          ip_location: ipLocation
         })
         const comment = await this.commentService.getDetailByNumberID(voteBody.comment_id)
         const targetTitle = await this.getPostTitle(comment.post_id)
@@ -295,20 +295,20 @@ export class VoteController {
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkByID(comment.post_id),
+          link: getPermalinkByID(comment.post_id)
         }
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP.ADMIN_EMAIL,
           subject: `You have a new comment vote`,
-          ...mailPayload,
+          ...mailPayload
         })
         // email to author
         if (comment.author.email) {
           this.emailToTargetVoteMessage({
             to: comment.author.email,
             subject: `Your comment #${comment.id} has a new vote`,
-            ...mailPayload,
+            ...mailPayload
           })
         }
       }

@@ -35,7 +35,7 @@ const DEFAULT_OPTIONS: Required<Pick<PaginateOptions, 'page' | 'perPage' | 'date
   page: 1,
   perPage: 16,
   dateSort: -1,
-  lean: false,
+  lean: false
 })
 
 export interface PaginateModel<T extends Document> extends Model<T> {
@@ -54,7 +54,7 @@ export function paginate<T>(this: Model<T>, filterQuery: PaginateQuery<T> = {}, 
 
   const findQueryOptions = {
     ...resetOptions,
-    ...$queryOptions,
+    ...$queryOptions
   }
 
   // query
@@ -63,7 +63,7 @@ export function paginate<T>(this: Model<T>, filterQuery: PaginateQuery<T> = {}, 
     skip: (page - 1) * perPage,
     limit: perPage,
     sort: dateSort ? { _id: dateSort } : findQueryOptions.sort,
-    ...findQueryOptions,
+    ...findQueryOptions
   }).exec()
 
   return Promise.all([countQuery, pageQuery]).then(([countResult, pageResult]) => {
@@ -72,7 +72,7 @@ export function paginate<T>(this: Model<T>, filterQuery: PaginateQuery<T> = {}, 
       total: countResult,
       page,
       perPage,
-      totalPage: Math.ceil(countResult / perPage) || 1,
+      totalPage: Math.ceil(countResult / perPage) || 1
     }
     return result
   })

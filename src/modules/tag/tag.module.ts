@@ -15,6 +15,6 @@ import { TagService } from './tag.service'
   imports: [ArchiveModule],
   controllers: [TagController],
   providers: [ArticleProvider, TagProvider, TagService],
-  exports: [TagService],
+  exports: [TagService]
 })
 export class TagModule {}

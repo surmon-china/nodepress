@@ -10,7 +10,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { AppController } from '@app/app.controller'
 
 // framework
-import { HttpCacheInterceptor } from '@app/interceptors/cache.interceptor'
+import { CacheInterceptor } from '@app/interceptors/cache.interceptor'
 import { ValidationPipe } from '@app/pipes/validation.pipe'
 
 // middlewares
@@ -44,7 +44,7 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     ThrottlerModule.forRoot({
       ttl: 60 * 5, // 5 minutes
       limit: 300, // 300 limit
-      ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
+      ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
     }),
     HelperModule,
     DatabaseModule,
@@ -61,23 +61,23 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     CommentModule,
     DisqusModule,
     ArchiveModule,
-    VoteModule,
+    VoteModule
   ],
   controllers: [AppController],
   providers: [
     {
       provide: APP_INTERCEPTOR,
-      useClass: HttpCacheInterceptor,
+      useClass: CacheInterceptor
     },
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: ThrottlerGuard
     },
     {
       provide: APP_PIPE,
-      useClass: ValidationPipe,
-    },
-  ],
+      useClass: ValidationPipe
+    }
+  ]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

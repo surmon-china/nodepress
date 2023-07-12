@@ -14,14 +14,13 @@ import logger from '@app/utils/logger'
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
-    const call$ = next.handle()
     if (!isDevEnv) {
-      return call$
+      return next.handle()
     }
     const request = context.switchToHttp().getRequest<Request>()
     const content = request.method + ' -> ' + request.url
     logger.debug('+++ req：', content)
     const now = Date.now()
-    return call$.pipe(tap(() => logger.debug('--- res：', content, `${Date.now() - now}ms`)))
+    return next.handle().pipe(tap(() => logger.debug('--- res：', content, `${Date.now() - now}ms`)))
   }
 }

@@ -2,11 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.0 (2023-07-08)
+
+**Feature**
+
+- Upgrade nestjs v9 to v10
+- Update various dependencies
+- Use `pnpm` instead of `yarn` as a package management tool
+- Use `dayjs` instead of `moment`
+- Refactor and improve cache system
+- Remove field `__v` from all models
+- Rename field `create_at` to `created_at` and `update_at` to `updated_at`
+- Rename field `article.thumb` to `article.thumbnail`
+- Rename field `article.tag` to `article.tags`
+- Rename field `article.category` to `article.categories`
+- Rename field `article.disabled_comment` to `article.disabled_comments`
+- Add `Bing` support to `SeoService`
+
+**Fix**
+
+- Fix googleAPI `Credentials` type
+- Fix `Statistic` service error
+
 ### 3.14.0 (2022-12-22)
 
 **Feature**
 
-- update various dependencies
+- Update various dependencies
 
 ### 3.13.1 (2022-12-21)
 

@@ -18,8 +18,8 @@ git checkout main
 echo "[deploy] stop pm2 app..."
 pm2 stop $PM2_APP_NAME -s
 
-echo "[deploy] yarn install..."
-yarn install --frozen-lockfile --production
+echo "[deploy] pnpm install..."
+pnpm install --frozen-lockfile --production
 
 echo "[deploy] reload release code..."
 rm -rf dist

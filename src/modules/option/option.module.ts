@@ -12,6 +12,6 @@ import { OptionService } from './option.service'
 @Module({
   controllers: [OptionController],
   providers: [OptionProvider, OptionService],
-  exports: [OptionService],
+  exports: [OptionService]
 })
 export class OptionModule {}

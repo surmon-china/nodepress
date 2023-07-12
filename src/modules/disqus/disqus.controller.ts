@@ -15,7 +15,7 @@ import {
   Response,
   UseGuards,
   Query,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { Throttle } from '@nestjs/throttler'
@@ -48,7 +48,7 @@ export class DisqusController {
       forum: DISQUS.forum,
       admin_username: DISQUS.adminUsername,
       public_key: DISQUS.publicKey,
-      authorize_url: this.disqusPublicService.getAuthorizeURL(),
+      authorize_url: this.disqusPublicService.getAuthorizeURL()
     }
   }
 
@@ -68,7 +68,7 @@ export class DisqusController {
     response.cookie(TOKEN_COOKIE_KEY, encodeToken(accessToken), {
       maxAge: accessToken.expires_in * 1000,
       httpOnly: true,
-      secure: isProdEnv,
+      secure: isProdEnv
     })
     response.send(`<script>window.close();</script>`)
   }

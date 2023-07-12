@@ -27,7 +27,9 @@ async function bootstrap() {
   app.use(cookieParser())
   app.use(bodyParser.json({ limit: '1mb' }))
   app.use(bodyParser.urlencoded({ extended: true }))
-  // MARK: keep v0.5 https://github.com/jaredhanson/passport/blob/master/CHANGELOG.md#changed
+  // MARK: Beware of upgrades!
+  // v0.5.0 > v0.5.1 > v0.5.3 produced a breaking change!
+  // https://github.com/jaredhanson/passport/blob/master/CHANGELOG.md#changed
   app.use(passport.initialize())
   app.useGlobalFilters(new HttpExceptionFilter())
   app.useGlobalInterceptors(new TransformInterceptor(), new ErrorInterceptor(), new LoggingInterceptor())
@@ -39,5 +41,5 @@ async function bootstrap() {
 }
 
 bootstrap().then(() => {
-  logger.info(`NodePress is running at ${APP_CONFIG.APP.PORT}, env: ${environment}.`)
+  logger.info(`NodePress is running on ${APP_CONFIG.APP.PORT}, env: ${environment}.`)
 })

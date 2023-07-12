@@ -15,7 +15,7 @@ import {
   ValidateNested,
   IsArray,
   ArrayNotEmpty,
-  ArrayUnique,
+  ArrayUnique
 } from 'class-validator'
 import { PaginateOptionDTO } from '@app/models/paginate.model'
 import { Author } from '@app/modules/comment/comment.model'

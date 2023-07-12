@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import logger from '@app/utils/logger'
 
-const log = logger.scope('IP_Query')
+const log = logger.scope('IPService')
 
 export type IP = string
 export interface IPLocation {
@@ -39,7 +39,7 @@ export class IPService {
               region: response.data.regionName,
               region_code: response.data.region,
               city: response.data.city,
-              zip: response.data.zip,
+              zip: response.data.zip
             })
       })
       .catch((error) => {
@@ -62,7 +62,7 @@ export class IPService {
               region: response.data.region,
               region_code: response.data.region_code,
               city: response.data.city,
-              zip: response.data.postal,
+              zip: response.data.postal
             })
       })
       .catch((error) => {

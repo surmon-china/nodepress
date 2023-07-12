@@ -17,11 +17,12 @@ import { KeyValueModel } from '@app/models/key-value.model'
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     timestamps: {
-      createdAt: 'create_at',
-      updatedAt: 'update_at',
-    },
-  },
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  }
 })
 export class Category {
   @prop({ unique: true })
@@ -47,10 +48,10 @@ export class Category {
   pid: Types.ObjectId
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 
   @ArrayUnique()
   @IsArray()

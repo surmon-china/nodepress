@@ -5,50 +5,31 @@
  */
 
 import schedule from 'node-schedule'
-import { Cache } from 'cache-manager'
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common'
-import { RedisCacheStore } from './cache.store'
-import { redisLog, cacheLog } from './cache.logger'
+import { Injectable } from '@nestjs/common'
+import { isNil } from '@app/constants/value.constant'
+import { RedisService } from './redis.service'
+import logger from '@app/utils/logger'
 
-export type CacheKey = string
-export type CacheResult<T> = Promise<T>
+const log = logger.scope('CacheService')
 
-// IO mode result
-export interface CacheIOResult<T> {
-  get(): CacheResult<T>
-  update(): CacheResult<T>
+export interface CacheBaseOptions<T> {
+  key: string
+  promise(): Promise<T>
 }
 
-export interface CachePromiseOption<T> {
-  key: CacheKey
-  promise(): CacheResult<T>
+export interface CacheManualResult<T> {
+  get(): Promise<T>
+  update(): Promise<T>
 }
 
-// IO mode option
-export interface CachePromiseIOOption<T> extends CachePromiseOption<T> {
-  ioMode?: boolean
+export interface CacheIntervalOptions<T> extends CacheBaseOptions<T> {
+  interval: number
+  retry: number
 }
 
-// Interval mode
-export type CacheIntervalResult<T> = () => CacheResult<T>
-export interface CacheIntervalOption<T> {
-  key: CacheKey
-  promise(): CacheResult<T>
-  // interval timeout mode
-  timeout?: {
-    error?: number
-    success?: number
-  }
-  // interval timing mode
-  timing?: {
-    error: number
-    schedule: any
-  }
-}
-
-// Interval IO mode
-export interface CacheIntervalIOOption<T> extends CacheIntervalOption<T> {
-  ioMode?: boolean
+export interface CacheScheduleOptions<T> extends CacheBaseOptions<T> {
+  schedule: string | number | Date
+  retry: number
 }
 
 /**
@@ -56,159 +37,98 @@ export interface CacheIntervalIOOption<T> extends CacheIntervalOption<T> {
  * @classdesc Global cache service
  * @example CacheService.get(CacheKey).then()
  * @example CacheService.set(CacheKey).then()
- * @example CacheService.promise({ option })()
+ * @example CacheService.delete(CacheKey).then()
+ * @example CacheService.once({ option })
+ * @example CacheService.manual({ option }).get()
  * @example CacheService.interval({ option })()
+ * @example CacheService.schedule({ option })()
  */
 @Injectable()
 export class CacheService {
-  private cacheStore!: RedisCacheStore
-  private isReadied = false
-
-  constructor(@Inject(CACHE_MANAGER) cacheManager: Cache) {
-    // https://github.com/node-cache-manager/node-cache-manager
-    // https://github.com/dabroek/node-cache-manager-redis-store/blob/master/index.js
-    this.cacheStore = cacheManager.store as unknown as RedisCacheStore
-
-    // https://github.com/redis/node-redis#events
-    this.cacheStore.client.on('connect', () => {
-      redisLog.info('connecting...')
-    })
-    this.cacheStore.client.on('reconnecting', () => {
-      redisLog.warn('reconnecting...')
-    })
-    this.cacheStore.client.on('ready', () => {
-      this.isReadied = true
-      redisLog.info('readied.')
-    })
-    this.cacheStore.client.on('end', () => {
-      this.isReadied = false
-      redisLog.error('client end!')
-    })
-    this.cacheStore.client.on('error', (error) => {
-      this.isReadied = false
-      redisLog.error(`client error!`, error.message)
-    })
-
-    // connect
-    this.cacheStore.client.connect()
-  }
-
-  public get<T>(key: CacheKey): CacheResult<T> {
-    if (!this.isReadied) {
-      return Promise.reject('Redis has not ready!')
-    }
-    return this.cacheStore.get(key)
-  }
-
-  public delete(key: CacheKey): CacheResult<void> {
-    if (!this.isReadied) {
-      return Promise.reject('Redis has not ready!')
-    }
-    return this.cacheStore.del(key)
-  }
+  constructor(private readonly redisService: RedisService) {}
 
   public set(
-    key: CacheKey,
+    key: string,
     value: any,
-    options?: {
-      /** seconds */
-      ttl: number
-    }
-  ): CacheResult<void> {
-    if (!this.isReadied) {
-      return Promise.reject('Redis has not ready!')
-    }
-    return this.cacheStore.set(key, value, options)
+    /** seconds */
+    ttl?: number
+  ): Promise<void> {
+    return this.redisService.store.set(key, value, ttl)
+  }
+
+  public get<T>(key: string): Promise<T> {
+    return this.redisService.store.get<T>(key) as Promise<T>
+  }
+
+  public delete(key: string): Promise<void> {
+    return this.redisService.store.del(key)
+  }
+
+  /** Execute the Promise and store the data into the cache. */
+  private async execPromise<T>(options: CacheBaseOptions<T>): Promise<T> {
+    const data = await options.promise()
+    await this.set(options.key, data)
+    return data
   }
 
   /**
-   * @function promise
-   * @description passive | sync mode, Promise -> Redis
-   * @example CacheService.promise({ key: CacheKey, promise() }) -> promise()
-   * @example CacheService.promise({ key: CacheKey, promise(), ioMode: true }) -> { get: promise(), update: promise() }
+   * @function once
+   * @description Store data into the cache only once, and always get data from the cache afterwards.
+   * @example CacheService.once({ ... }) -> promise()
    */
-  promise<T>(options: CachePromiseOption<T>): CacheResult<T>
-  promise<T>(options: CachePromiseIOOption<T>): CacheIOResult<T>
-  promise(options) {
-    const { key, promise, ioMode = false } = options
+  public async once<T>(options: CacheBaseOptions<T>): Promise<T> {
+    const data = await this.get<T>(options.key)
+    return isNil(data) ? await this.execPromise<T>(options) : data
+  }
 
-    const doPromiseTask = async () => {
-      const data = await promise()
-      await this.set(key, data)
-      return data
+  /**
+   * @function manual
+   * @description Always need to `get` and `update` the cache manually, if the cache doesn't exist it will do the `CacheService.once` logic itself.
+   * @example CacheService.manual({ ... }) -> { get: promise(), update: promise() }
+   */
+  public manual<T>(options: CacheBaseOptions<T>): CacheManualResult<T> {
+    return {
+      get: () => this.once<T>(options),
+      update: () => this.execPromise<T>(options)
     }
-
-    // passive mode
-    const handlePromiseMode = async () => {
-      const value = await this.get(key)
-      return value !== null && value !== undefined ? value : await doPromiseTask()
-    }
-
-    // sync mode
-    const handleIoMode = () => ({
-      get: handlePromiseMode,
-      update: doPromiseTask,
-    })
-
-    return ioMode ? handleIoMode() : handlePromiseMode()
   }
 
   /**
    * @function interval
-   * @description timeout | timing mode, Promise -> Task -> Redis
-   * @example CacheService.interval({ key: CacheKey, promise(), timeout: {} }) -> promise()
-   * @example CacheService.interval({ key: CacheKey, promise(), timing: {} }) -> promise()
+   * @description By controlling cache updates through time intervals, you can also control the retry time after a failed data fetch.
+   * @example CacheService.interval({ ... }) -> () => promise()
    */
-  public interval<T>(options: CacheIntervalOption<T>): CacheIntervalResult<T>
-  public interval<T>(options: CacheIntervalIOOption<T>): CacheIOResult<T>
-  public interval<T>(options) {
-    const { key, promise, timeout, timing, ioMode = false } = options
-
-    const promiseTask = async (): Promise<T> => {
-      const data = await promise()
-      await this.set(key, data)
-      return data
+  public interval<T>(options: CacheIntervalOptions<T>): () => Promise<T> {
+    const execIntervalTask = () => {
+      this.execPromise(options)
+        .then(() => {
+          setTimeout(execIntervalTask, options.interval)
+        })
+        .catch((error) => {
+          setTimeout(execIntervalTask, options.retry)
+          log.warn(`interval task failed! retry when after ${options.retry / 1000}s,`, error)
+        })
     }
 
-    // timeout mode
-    if (timeout) {
-      const doPromise = () => {
-        promiseTask()
-          .then(() => {
-            setTimeout(doPromise, timeout.success)
-          })
-          .catch((error) => {
-            const time = timeout.error || timeout.success
-            setTimeout(doPromise, time)
-            cacheLog.warn(`timeout task failed! retry when after ${time / 1000}s,`, error)
-          })
-      }
-      doPromise()
+    execIntervalTask()
+    return () => this.get(options.key)
+  }
+
+  /**
+   * @function schedule
+   * @description Using schedule to control cache updates, you can also control the retry time after a failed data fetch.
+   * @example CacheService.schedule({ ... }) -> () => promise()
+   */
+  public schedule<T>(options: CacheScheduleOptions<T>): () => Promise<T> {
+    const execScheduleTask = () => {
+      this.execPromise(options).catch((error) => {
+        log.warn(`schedule task failed! retry when after ${options.retry / 1000}s,`, error)
+        setTimeout(execScheduleTask, options.retry)
+      })
     }
 
-    // timing mode
-    if (timing) {
-      const doPromise = () => {
-        promiseTask()
-          .then((data) => data)
-          .catch((error) => {
-            cacheLog.warn(`timing task failed! retry when after ${timing.error / 1000}s,`, error)
-            setTimeout(doPromise, timing.error)
-          })
-      }
-      doPromise()
-      schedule.scheduleJob(timing.schedule, doPromise)
-    }
-
-    // passive mode
-    const getKeyCache = () => this.get(key)
-
-    // sync mode
-    const handleIoMode = () => ({
-      get: getKeyCache,
-      update: promiseTask,
-    })
-
-    return ioMode ? handleIoMode() : getKeyCache
+    execScheduleTask()
+    schedule.scheduleJob(options.schedule, execScheduleTask)
+    return () => this.get(options.key)
   }
 }

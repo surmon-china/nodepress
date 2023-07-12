@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getCategoryUrl } from '@app/transformers/urlmap.transformer'
-import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
@@ -29,14 +29,14 @@ export class CategoryService {
     publicOnly: boolean
   ): Promise<PaginateResult<Category>> {
     const categories = await this.categoryModel.paginate(query, { ...options, lean: true })
-    const counts = await this.articleModel.aggregate([
+    const counts = await this.articleModel.aggregate<{ _id: MongooseObjectID; count: number }>([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-      { $unwind: '$category' },
-      { $group: { _id: '$category', count: { $sum: 1 } } },
+      { $unwind: '$categories' },
+      { $group: { _id: '$categories', count: { $sum: 1 } } }
     ])
 
     const hydratedDocs = categories.documents.map((category) => {
-      const found = counts.find((item) => String(item._id) === String(category._id))
+      const found = counts.find((item) => item._id.equals(category._id))
       return { ...category, articles_count: found ? found.count : 0 } as Category
     })
 
@@ -82,7 +82,7 @@ export class CategoryService {
             }
             categories.unshift(category.toObject())
             const parentId = category.pid
-            const hasParent = parentId && parentId.toString() !== category._id?.toString()
+            const hasParent = parentId && parentId.toString() !== category._id.toString()
             return hasParent ? findCateItem(parentId) : resolve(categories)
           })
           .catch(reject)
@@ -93,7 +93,7 @@ export class CategoryService {
   // update category
   public async update(categoryID: MongooseID, newCategory: Category): Promise<MongooseDoc<Category>> {
     const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
-    if (existedCategory && String(existedCategory._id) !== String(categoryID)) {
+    if (existedCategory && !existedCategory._id.equals(categoryID)) {
       throw `Category slug '${newCategory.slug}' is existed`
     }
 

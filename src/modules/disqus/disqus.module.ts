@@ -17,6 +17,6 @@ import { DisqusPrivateService } from './disqus.service.private'
   imports: [HttpModule, OptionModule, ArticleModule, CommentModule],
   controllers: [DisqusController],
   providers: [DisqusPublicService, DisqusPrivateService],
-  exports: [DisqusPublicService, DisqusPrivateService],
+  exports: [DisqusPublicService, DisqusPrivateService]
 })
 export class DisqusModule {}

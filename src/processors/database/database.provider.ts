@@ -24,7 +24,7 @@ export const databaseProvider = {
         to: APP_CONFIG.APP.ADMIN_EMAIL,
         subject: `MongoDB Error!`,
         text: error,
-        html: `<pre><code>${error}</code></pre>`,
+        html: `<pre><code>${error}</code></pre>`
       })
     }
 
@@ -62,5 +62,5 @@ export const databaseProvider = {
     })
 
     return await connection()
-  },
+  }
 }

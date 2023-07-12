@@ -22,7 +22,7 @@ import {
   IsArray,
   IsObject,
   ValidateNested,
-  ArrayUnique,
+  ArrayUnique
 } from 'class-validator'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -36,18 +36,19 @@ export const COMMENT_STATES = [
   CommentState.Auditing,
   CommentState.Published,
   CommentState.Deleted,
-  CommentState.Spam,
+  CommentState.Spam
 ] as const
 
 export const COMMENT_GUEST_QUERY_FILTER = Object.freeze({
-  state: CommentState.Published,
+  state: CommentState.Published
 })
 
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  },
+    toObject: { virtuals: true }
+  }
 })
 export class Author {
   @MaxLength(20)
@@ -113,11 +114,12 @@ export class CommentBase {
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    versionKey: false,
     timestamps: {
-      createdAt: 'create_at',
-      updatedAt: 'update_at',
-    },
-  },
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  }
 })
 export class Comment extends CommentBase {
   @prop({ unique: true })
@@ -149,10 +151,10 @@ export class Comment extends CommentBase {
   ip_location: Partial<IPLocation> | null
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 
   @ArrayUnique()
   @IsArray()

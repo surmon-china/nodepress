@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { XMLParser } from 'fast-xml-parser'
 import { Injectable } from '@nestjs/common'
 import { ArticleService } from '@app/modules/article/article.service'
@@ -27,10 +27,13 @@ const log = logger.scope('DisqusPrivateService')
 export class DisqusPrivateService {
   private disqus: Disqus
 
-  constructor(private readonly articleService: ArticleService, private readonly commentService: CommentService) {
+  constructor(
+    private readonly articleService: ArticleService,
+    private readonly commentService: CommentService
+  ) {
     this.disqus = new Disqus({
       apiKey: DISQUS.publicKey,
-      apiSecret: DISQUS.secretKey,
+      apiSecret: DISQUS.secretKey
     })
   }
 
@@ -44,9 +47,9 @@ export class DisqusPrivateService {
         title: article.title,
         message: article.description,
         slug: article.slug || DISQUS_CONST.getThreadIdentifierByID(postID),
-        date: moment(article.create_at).unix(),
+        date: dayjs(article.created_at).unix(),
         url: getPermalinkByID(postID),
-        access_token: DISQUS.adminAccessToken,
+        access_token: DISQUS.adminAccessToken
       })
       return response.response
     } catch (error) {
@@ -61,7 +64,7 @@ export class DisqusPrivateService {
       .request('threads/list', {
         access_token: DISQUS.adminAccessToken,
         forum: DISQUS.forum,
-        ...params,
+        ...params
       })
       .catch((error) => {
         log.warn('getThreads failed!', error)
@@ -75,7 +78,7 @@ export class DisqusPrivateService {
       .request('posts/list', {
         access_token: DISQUS.adminAccessToken,
         forum: DISQUS.forum,
-        ...params,
+        ...params
       })
       .catch((error) => {
         log.warn('getPosts failed!', error)
@@ -88,7 +91,7 @@ export class DisqusPrivateService {
     return this.disqus
       .request('threads/update', {
         access_token: DISQUS.adminAccessToken,
-        ...params,
+        ...params
       })
       .catch((error) => {
         log.warn('updateThread failed!', error)
@@ -101,7 +104,7 @@ export class DisqusPrivateService {
     return this.disqus
       .request('posts/update', {
         access_token: DISQUS.adminAccessToken,
-        ...params,
+        ...params
       })
       .catch((error) => {
         log.warn('updatePost failed!', error)
@@ -114,7 +117,7 @@ export class DisqusPrivateService {
     return this.disqus
       .request('posts/approve', {
         access_token: DISQUS.adminAccessToken,
-        ...params,
+        ...params
       })
       .catch((error) => {
         log.warn('approvePost failed!', error)
@@ -168,7 +171,7 @@ export class DisqusPrivateService {
     const parser = new XMLParser({
       ignoreAttributes: false,
       allowBooleanAttributes: true,
-      attributeNamePrefix: '@',
+      attributeNamePrefix: '@'
     })
     const object = parser.parse(xml)
     // const threads: any[] = object.disqus.thread
@@ -180,7 +183,7 @@ export class DisqusPrivateService {
       postID: post['@dsq:id'] as string,
       threadID: post.thread['@dsq:id'] as string,
       isAnonymous: post.author.isAnonymous as boolean,
-      username: (post.author.username as string) || null,
+      username: (post.author.username as string) || null
     })
 
     const doImport = async (each: ReturnType<typeof getEach>) => {

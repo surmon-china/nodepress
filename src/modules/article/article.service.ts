@@ -10,11 +10,12 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
-import { CacheService, CacheIntervalResult } from '@app/processors/cache/cache.service'
+import { CacheService } from '@app/processors/cache/cache.service'
 import { increaseTodayViewsCount } from '@app/modules/expansion/expansion.helper'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { PublishState } from '@app/constants/biz.constant'
+import { NULL } from '@app/constants/value.constant'
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import {
@@ -22,13 +23,13 @@ import {
   ARTICLE_LIST_QUERY_GUEST_FILTER,
   ARTICLE_LIST_QUERY_PROJECTION,
   ARTICLE_FULL_QUERY_REF_POPULATE,
-  ARTICLE_HOTTEST_SORT_PARAMS,
+  ARTICLE_HOTTEST_SORT_PARAMS
 } from './article.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 
 @Injectable()
 export class ArticleService {
-  private hottestArticlesCache: CacheIntervalResult<Array<Article>>
+  private hottestArticlesCache: () => Promise<Array<Article>>
 
   constructor(
     private readonly seoService: SeoService,
@@ -40,17 +41,15 @@ export class ArticleService {
     this.hottestArticlesCache = this.cacheService.interval({
       key: CACHE_KEY.HOTTEST_ARTICLES,
       promise: () => this.getHottestArticles(20),
-      timeout: {
-        success: 1000 * 60 * 30, // 30 mins
-        error: 1000 * 60 * 5, // 5 mins
-      },
+      interval: 1000 * 60 * 30, // 30 mins,
+      retry: 1000 * 60 * 5 // 5 mins
     })
   }
 
   public getHottestArticles(count: number): Promise<Array<Article>> {
     return this.paginator(ARTICLE_LIST_QUERY_GUEST_FILTER, {
       perPage: count,
-      sort: ARTICLE_HOTTEST_SORT_PARAMS,
+      sort: ARTICLE_HOTTEST_SORT_PARAMS
     }).then((result) => result.documents)
   }
 
@@ -62,7 +61,7 @@ export class ArticleService {
   public async getNearArticles(articleID: number, type: 'later' | 'early', count: number): Promise<Article[]> {
     const typeFieldMap = {
       early: { field: '$lt', sort: -1 as SortOrder },
-      later: { field: '$gt', sort: 1 as SortOrder },
+      later: { field: '$gt', sort: 1 as SortOrder }
     }
     const targetType = typeFieldMap[type]
     return this.articleModel
@@ -80,15 +79,15 @@ export class ArticleService {
   public async getRelatedArticles(article: Article, count: number): Promise<Article[]> {
     const findParams: FilterQuery<Article> = {
       ...ARTICLE_LIST_QUERY_GUEST_FILTER,
-      tag: { $in: article.tag.map((t) => (t as any)._id) },
-      category: { $in: article.category.map((c) => (c as any)._id) },
+      tags: { $in: article.tags },
+      categories: { $in: article.categories }
     }
     const articles = await this.articleModel
-      .find(findParams, ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 3 })
+      .find(findParams, ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 2 })
       .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
       .exec()
     const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject())
-    return lodash.sampleSize(filtered, count) as Article[]
+    return lodash.sampleSize<Article>(filtered, count)
   }
 
   // get paginate articles
@@ -96,7 +95,7 @@ export class ArticleService {
     return this.articleModel.paginate(query, {
       ...options,
       projection: ARTICLE_LIST_QUERY_PROJECTION,
-      populate: ARTICLE_FULL_QUERY_REF_POPULATE,
+      populate: ARTICLE_FULL_QUERY_REF_POPULATE
     })
   }
 
@@ -117,7 +116,7 @@ export class ArticleService {
   public getDetailByNumberIDOrSlug({
     idOrSlug,
     publicOnly = false,
-    populate = false,
+    populate = false
   }: {
     idOrSlug: number | string
     publicOnly?: boolean
@@ -142,7 +141,7 @@ export class ArticleService {
     const article = await this.getDetailByNumberIDOrSlug({
       idOrSlug: target,
       publicOnly: true,
-      populate: true,
+      populate: true
     })
 
     // article views
@@ -158,7 +157,7 @@ export class ArticleService {
   public async incrementLikes(articleID: number) {
     const article = await this.getDetailByNumberIDOrSlug({
       idOrSlug: articleID,
-      publicOnly: true,
+      publicOnly: true
     })
     article.meta.likes++
     await article.save({ timestamps: false })
@@ -183,14 +182,14 @@ export class ArticleService {
   public async update(articleID: MongooseID, newArticle: Article): Promise<MongooseDoc<Article>> {
     if (newArticle.slug) {
       const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec()
-      if (existedArticle && String(existedArticle._id) !== String(articleID)) {
+      if (existedArticle && !existedArticle._id.equals(articleID)) {
         throw `Article slug '${newArticle.slug}' is existed`
       }
     }
 
     Reflect.deleteProperty(newArticle, 'meta')
-    Reflect.deleteProperty(newArticle, 'create_at')
-    Reflect.deleteProperty(newArticle, 'update_at')
+    Reflect.deleteProperty(newArticle, 'created_at')
+    Reflect.deleteProperty(newArticle, 'updated_at')
 
     const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle, { new: true }).exec()
     if (!article) {
@@ -240,9 +239,9 @@ export class ArticleService {
     return this.articleModel
       .aggregate<{ _id: string; count: number }>([
         { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-        { $project: { day: { $dateToString: { date: '$create_at', format: '%Y-%m-%d', timezone } } } },
+        { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
         { $group: { _id: '$day', count: { $sum: 1 } } },
-        { $sort: { _id: 1 } },
+        { $sort: { _id: 1 } }
       ])
       .then((calendar) => calendar.map(({ _id, ...r }) => ({ ...r, date: _id })))
       .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`))
@@ -258,21 +257,25 @@ export class ArticleService {
         $group: {
           _id: null,
           totalViews: { $sum: '$meta.views' },
-          totalLikes: { $sum: '$meta.likes' },
-        },
-      },
+          totalLikes: { $sum: '$meta.likes' }
+        }
+      }
     ])
 
-    return {
-      totalViews: result.totalViews,
-      totalLikes: result.totalLikes,
+    if (!result) {
+      return NULL
+    } else {
+      return {
+        totalViews: result.totalViews,
+        totalLikes: result.totalLikes
+      }
     }
   }
 
   // article commentable state
   public async isCommentableArticle(articleID: number): Promise<boolean> {
     const article = await this.articleModel.findOne({ id: articleID }).exec()
-    return Boolean(article && !article.disabled_comment)
+    return Boolean(article && !article.disabled_comments)
   }
 
   // update article comments count

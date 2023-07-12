@@ -12,7 +12,7 @@ export interface GeneralDisqusParams {
 
 export enum ThreadState {
   Open = 'open',
-  Closed = 'closed',
+  Closed = 'closed'
 }
 
 export class CallbackCodeDTO {

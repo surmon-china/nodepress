@@ -51,7 +51,7 @@ export class CommentService {
       const linkHTML = `<a href="${getPermalinkByID(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`
       return {
         text: texts.join('\n'),
-        html: [textHTML, `<br>`, linkHTML].join('\n'),
+        html: [textHTML, `<br>`, linkHTML].join('\n')
       }
     }
 
@@ -60,7 +60,7 @@ export class CommentService {
     this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
       subject,
-      ...getMailContent(subject),
+      ...getMailContent(subject)
     })
 
     // email to parent comment author
@@ -71,7 +71,7 @@ export class CommentService {
           this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
             to: parentComment.author.email,
             subject,
-            ...getMailContent(subject),
+            ...getMailContent(subject)
           })
         }
       })
@@ -88,7 +88,7 @@ export class CommentService {
       comment_author: comment.author.name,
       comment_author_email: comment.author.email,
       comment_author_url: comment.author.site,
-      comment_content: comment.content,
+      comment_content: comment.content
     })
   }
 
@@ -100,9 +100,9 @@ export class CommentService {
     }
 
     try {
-      const counts = await this.commentModel.aggregate([
+      const counts = await this.commentModel.aggregate<{ _id: number; num_tutorial: number }>([
         { $match: { ...COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIDs } } },
-        { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } },
+        { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } }
       ])
       if (!counts || !counts.length) {
         await this.articleService.updateMetaComments(postIDs[0], 0)
@@ -185,7 +185,7 @@ export class CommentService {
         Reflect.deleteProperty(data, 'ip')
         Reflect.deleteProperty(data.author, 'email')
         return data as Comment
-      }),
+      })
     }
   }
 
@@ -200,7 +200,7 @@ export class CommentService {
       ip: visitor.ip,
       ip_location: {},
       agent: visitor.ua || comment.agent,
-      extends: [],
+      extends: []
     }
   }
 
@@ -209,7 +209,7 @@ export class CommentService {
     const ip_location = isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null
     const succeedComment = await this.commentModel.create({
       ...comment,
-      ip_location,
+      ip_location
     })
     // update aggregate & email notification
     this.updateCommentsCountWithArticles([succeedComment.post_id])
@@ -225,7 +225,7 @@ export class CommentService {
     // 2. block list | akismet
     await Promise.all([
       this.isNotBlocklisted(newComment),
-      this.submitCommentAkismet(AkismetAction.CheckSpam, newComment, visitor.referer),
+      this.submitCommentAkismet(AkismetAction.CheckSpam, newComment, visitor.referer)
     ])
     // 3. create
     return this.create(newComment)
@@ -322,7 +322,7 @@ export class CommentService {
     await comment.save({ timestamps: false })
     return {
       likes: comment.likes,
-      dislikes: comment.dislikes,
+      dislikes: comment.dislikes
     }
   }
 }

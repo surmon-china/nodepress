@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/surmon-china/nodepress" target="blank">
-    <img src="https://raw.githubusercontent.com/surmon-china/nodepress/main/logo.png" height="90" alt="nodepress Logo" />
+    <img src="https://raw.githubusercontent.com/surmon-china/nodepress/main/logo.png" height="96" alt="nodepress Logo" />
   </a>
 </p>
 
@@ -20,7 +20,7 @@
 
 **RESTful API service for [surmon.me](https://github.com/surmon-china/surmon.me) blog, powered by [NestJS](https://github.com/nestjs/nest), required [MongoDB](https://www.mongodb.com/) & [Redis](https://redis.io/).**
 
-适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [NestJS](https://github.com/nestjs/nest)，需安装 [MongoDB](https://www.mongodb.com/) 和 [Redis](https://redis.io/) 方可完整运行。
+适用于 [surmon.me](https://github.com/surmon-china/surmon.me) 的 RESTful API 服务端应用；基于 [NestJS](https://github.com/nestjs/nest) 开发，需安装 [MongoDB](https://www.mongodb.com/) 和 [Redis](https://redis.io/) 方可完整运行。
 
 - [Changelog](/CHANGELOG.md#changelog)
 - [API Documentation](https://github.surmon.me/nodepress)
@@ -37,30 +37,30 @@
 ### Development
 
 ```bash
-$ yarn
+$ pnpm install
 
 # dev
-$ yarn start:dev
+$ pnpm run start:dev
 
 # test
-$ yarn lint
-$ yarn test
-$ yarn test:e2e
-$ yarn test:cov
-$ yarn test:watch
+$ pnpm run lint
+$ pnpm run test
+$ pnpm run test:e2e
+$ pnpm run test:cov
+$ pnpm run test:watch
 
 # build
-$ yarn build
+$ pnpm run build
 
 # run
-$ yarn start:prod
+$ pnpm run start:prod
 ```
 
 ### Actions
 
-- `Any PR open` → `CI:Build test`
-- `New tag v*` → `CI:Create release`
-- `Create create` → `CI:Deploy` → `CI:Execute server script`
+- Any PR open → `CI:Build test`
+- New tag `v*` → `CI:Create release`
+- Release created → `CI:Deploy` → `CI:Execute server deploy script`
 
 ### Changelog
 

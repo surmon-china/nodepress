@@ -18,10 +18,9 @@ import * as TEXT from '@app/constants/text.constant'
 @Injectable()
 export class ErrorInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
-    const call$ = next.handle()
     const target = context.getHandler()
     const { errorCode, errorMessage } = getResponserOptions(target)
-    return call$.pipe(
+    return next.handle().pipe(
       catchError((error) => {
         return throwError(
           () => new CustomError({ message: errorMessage || TEXT.HTTP_DEFAULT_ERROR_TEXT, error }, errorCode)

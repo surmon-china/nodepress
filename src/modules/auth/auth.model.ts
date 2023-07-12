@@ -11,13 +11,13 @@ import { getProviderByTypegooseClass } from '@app/transformers/model.transformer
 export const DEFAULT_AUTH = Object.freeze<Auth>({
   name: '',
   slogan: '',
-  avatar: '',
+  avatar: ''
 })
 
 @modelOptions({
   schemaOptions: {
-    versionKey: false,
-  },
+    versionKey: false
+  }
 })
 export class Auth {
   @IsString({ message: "what's your name?" })

@@ -8,7 +8,7 @@ import lodash from 'lodash'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
-import { CacheService, CacheIOResult } from '@app/processors/cache/cache.service'
+import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
 import { Option, Blocklist, DEFAULT_OPTION } from './option.model'
 import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
@@ -17,20 +17,19 @@ const log = logger.scope('OptionService')
 
 @Injectable()
 export class OptionService {
-  private optionCache: CacheIOResult<Omit<Option, 'blocklist'>>
+  private optionCache: CacheManualResult<Omit<Option, 'blocklist'>>
 
   constructor(
     @InjectModel(Option) private readonly optionModel: MongooseModel<Option>,
     private readonly cacheService: CacheService
   ) {
-    this.optionCache = this.cacheService.promise({
-      ioMode: true,
+    this.optionCache = this.cacheService.manual({
       key: CACHE_KEY.OPTION,
       promise: () => {
         return this.ensureAppOption().then((option) => {
           return lodash.omit(option.toObject<Option>(), ['blocklist'])
         })
-      },
+      }
     })
 
     this.optionCache.update().catch((error) => {

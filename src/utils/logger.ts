@@ -4,13 +4,15 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+// MARK: keep chalk v4.x
+// https://stackoverflow.com/questions/70309135/chalk-error-err-require-esm-require-of-es-module
 import chalk from 'chalk'
 
 enum LoggerLevel {
   Debug = 'debug',
   Info = 'info',
   Warn = 'warn',
-  Error = 'error',
+  Error = 'error'
 }
 
 const renderTime = () => {
@@ -43,10 +45,10 @@ const createLogger = (scope?: string) => ({
   debug: renderLog(LoggerLevel.Debug, chalk.cyan('[DEBUG]'), chalk.cyanBright, scope),
   info: renderLog(LoggerLevel.Info, chalk.blue('[_INFO]'), chalk.greenBright, scope),
   warn: renderLog(LoggerLevel.Warn, chalk.yellow('[_WARN]'), chalk.yellowBright, scope),
-  error: renderLog(LoggerLevel.Error, chalk.red('[ERROR]'), chalk.redBright, scope),
+  error: renderLog(LoggerLevel.Error, chalk.red('[ERROR]'), chalk.redBright, scope)
 })
 
 export default {
   ...createLogger(),
-  scope: createLogger,
+  scope: createLogger
 }

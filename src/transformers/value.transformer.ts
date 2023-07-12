@@ -13,7 +13,7 @@ export function unknownToNumber(value: unknown): number | unknown {
 export function numberToBoolean(value: number): boolean | number {
   return isNumber(value, {
     allowNaN: false,
-    allowInfinity: false,
+    allowInfinity: false
   })
     ? Boolean(value)
     : value

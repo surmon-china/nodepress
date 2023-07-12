@@ -17,7 +17,7 @@ import {
   Min,
   Max,
   ArrayNotEmpty,
-  ArrayUnique,
+  ArrayUnique
 } from 'class-validator'
 import { PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
 import { WhenGuest } from '@app/decorators/guest.decorator'
@@ -28,7 +28,7 @@ import {
   ARTICLE_PUBLISH_STATES,
   ARTICLE_PUBLIC_STATES,
   ARTICLE_ORIGIN_STATES,
-  ARTICLE_LANGUAGES,
+  ARTICLE_LANGUAGES
 } from './article.model'
 
 export class ArticlePaginateQueryDTO extends IntersectionType(

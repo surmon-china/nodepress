@@ -60,7 +60,7 @@ export const QueryParams = createParamDecorator(
       ip: ip.replace('::ffff:', '').replace('::1', '') || null,
       ua: request.headers['user-agent'],
       origin: request.headers.origin,
-      referer: request.headers.referer,
+      referer: request.headers.referer
     }
 
     const result = {
@@ -70,7 +70,7 @@ export const QueryParams = createParamDecorator(
       query: request.query as any,
       cookies: request.cookies,
       visitor,
-      request,
+      request
     }
 
     return field ? result[field] : result

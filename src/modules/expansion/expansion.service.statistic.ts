@@ -14,7 +14,7 @@ import { TagService } from '@app/modules/tag/tag.service'
 import logger from '@app/utils/logger'
 import { getTodayViewsCount, resetTodayViewsCount } from './expansion.helper'
 
-const log = logger.scope('ExpansionStatistic')
+const log = logger.scope('StatisticService')
 
 const DEFAULT_STATISTIC = Object.freeze({
   tags: null,
@@ -23,7 +23,7 @@ const DEFAULT_STATISTIC = Object.freeze({
   totalViews: null,
   totalLikes: null,
   todayViews: null,
-  averageEmotion: null,
+  averageEmotion: null
 })
 
 export type Statistic = Record<keyof typeof DEFAULT_STATISTIC, number | null>
@@ -47,7 +47,7 @@ export class StatisticService {
 
   public getStatistic(publicOnly: boolean) {
     const resultData: Statistic = { ...DEFAULT_STATISTIC }
-    return Promise.all([
+    const tasks = Promise.all([
       this.tagService.getTotalCount().then((value) => {
         resultData.tags = value
       }),
@@ -57,18 +57,23 @@ export class StatisticService {
       this.commentService.getTotalCount(publicOnly).then((value) => {
         resultData.comments = value
       }),
+      this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
+        resultData.averageEmotion = value ?? 0
+      }),
       this.articleService.getMetaStatistic().then((value) => {
-        resultData.totalViews = value.totalViews
-        resultData.totalLikes = value.totalLikes
+        resultData.totalViews = value?.totalViews ?? 0
+        resultData.totalLikes = value?.totalLikes ?? 0
       }),
       getTodayViewsCount(this.cacheService).then((value) => {
         resultData.todayViews = value
-      }),
-      this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
-        resultData.averageEmotion = value
-      }),
+      })
     ])
-      .then(() => Promise.resolve(resultData))
-      .catch(() => Promise.resolve(resultData))
+
+    return tasks
+      .then(() => resultData)
+      .catch((error) => {
+        log.warn('getStatistic task partial failed!', error)
+        return Promise.resolve(resultData)
+      })
   }
 }

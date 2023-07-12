@@ -24,7 +24,7 @@ export function getProviderByTypegooseClass(typegooseClass: TypegooseClass): Pro
   return {
     provide: getModelToken(typegooseClass.name),
     useFactory: (connection: Connection) => getModelForClass(typegooseClass, { existingConnection: connection }),
-    inject: [DB_CONNECTION_TOKEN],
+    inject: [DB_CONNECTION_TOKEN]
   }
 }
 

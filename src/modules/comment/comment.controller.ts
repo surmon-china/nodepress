@@ -61,7 +61,7 @@ export class CommentController {
       paginateQuery.$or = [
         { content: keywordRegExp },
         { 'author.name': keywordRegExp },
-        { 'author.email': keywordRegExp },
+        { 'author.email': keywordRegExp }
       ]
     }
 

@@ -10,6 +10,7 @@ import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { ROOT_FEEDBACK_TID } from '@app/constants/biz.constant'
+import { NULL } from '@app/constants/value.constant'
 import { IPService } from '@app/processors/helper/helper.service.ip'
 import { QueryVisitor } from '@app/decorators/queryparams.decorator'
 import { isProdEnv } from '@app/app.environment'
@@ -32,7 +33,7 @@ export class FeedbackService {
       origin: visitor.origin,
       user_agent: visitor.ua,
       ip: visitor.ip,
-      ip_location: isProdEnv && visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null,
+      ip_location: isProdEnv && visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
     })
   }
 
@@ -63,11 +64,11 @@ export class FeedbackService {
     return this.feedbackModel.deleteMany({ _id: { $in: feedbackIDs } }).exec()
   }
 
-  public async getRootFeedbackAverageEmotion(): Promise<number> {
+  public async getRootFeedbackAverageEmotion(): Promise<number | null> {
     const [result] = await this.feedbackModel.aggregate<{ _id: Types.ObjectId; avgEmotion: number }>([
       { $match: { tid: ROOT_FEEDBACK_TID } },
-      { $group: { _id: null, avgEmotion: { $avg: '$emotion' } } },
+      { $group: { _id: null, avgEmotion: { $avg: '$emotion' } } }
     ])
-    return Math.round(result.avgEmotion * 1000) / 1000
+    return result ? Math.round(result.avgEmotion * 1000) / 1000 : NULL
   }
 }

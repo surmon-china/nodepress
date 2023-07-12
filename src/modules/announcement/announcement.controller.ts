@@ -46,7 +46,7 @@ export class AnnouncementController {
     return this.announcementService.paginator(paginateQuery, {
       page,
       perPage: per_page,
-      dateSort: sort,
+      dateSort: sort
     })
   }
 

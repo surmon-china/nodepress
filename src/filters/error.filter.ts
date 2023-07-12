@@ -28,7 +28,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       status: ResponseStatus.Error,
       message: errorMessage,
       error: errorInfo?.message || (lodash.isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
-      debug: isDevEnv ? errorInfo?.stack || exception.stack : UNDEFINED,
+      debug: isDevEnv ? errorInfo?.stack || exception.stack : UNDEFINED
     }
 
     // default 404

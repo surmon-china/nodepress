@@ -19,15 +19,14 @@ import * as TEXT from '@app/constants/text.constant'
 @Injectable()
 export class TransformInterceptor<T> implements NestInterceptor<T, T | HttpResponseSuccess<T>> {
   intercept(context: ExecutionContext, next: CallHandler<T>): Observable<T | HttpResponseSuccess<T>> {
-    const call$ = next.handle()
     const target = context.getHandler()
     const { successMessage, transform, paginate } = getResponserOptions(target)
     if (!transform) {
-      return call$
+      return next.handle()
     }
 
     const request = context.switchToHttp().getRequest<Request>()
-    return call$.pipe(
+    return next.handle().pipe(
       map((data: any) => {
         return {
           status: ResponseStatus.Success,
@@ -38,7 +37,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, T | HttpRespo
             url: request.url,
             method: request.method,
             routes: request.params,
-            payload: request.$validatedPayload || {},
+            payload: request.$validatedPayload || {}
           },
           result: paginate
             ? {
@@ -47,10 +46,10 @@ export class TransformInterceptor<T> implements NestInterceptor<T, T | HttpRespo
                   total: data.total,
                   current_page: data.page,
                   per_page: data.perPage,
-                  total_page: data.totalPage,
-                },
+                  total_page: data.totalPage
+                }
               }
-            : data,
+            : data
         }
       })
     )

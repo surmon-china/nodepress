@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Credentials } from 'google-auth-library'
+import { Auth } from 'googleapis'
 import { Controller, Get, Post, Patch, UploadedFile, Body, UseGuards, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
@@ -36,7 +36,7 @@ export class ExpansionController {
   @Get('google-token')
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Get Google credentials')
-  getGoogleToken(): Promise<Credentials> {
+  getGoogleToken(): Promise<Auth.Credentials> {
     return this.googleService.getCredentials()
   }
 
@@ -58,11 +58,11 @@ export class ExpansionController {
         file: file.buffer,
         fileContentType: file.mimetype,
         region: APP_CONFIG.AWS.s3StaticRegion,
-        bucket: APP_CONFIG.AWS.s3StaticBucket,
+        bucket: APP_CONFIG.AWS.s3StaticBucket
       })
       .then((result) => ({
         ...result,
-        url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}`,
+        url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}`
       }))
   }
 }

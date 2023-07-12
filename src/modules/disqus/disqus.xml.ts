@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { Comment } from '@app/modules/comment/comment.model'
 import { Article } from '@app/modules/article/article.model'
 import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
@@ -24,7 +24,7 @@ const getCommentItemXML = (comment: Comment) => {
       <wp:comment_author_email>${comment.author.email || ''}</wp:comment_author_email>
       <wp:comment_author_url>${comment.author.site || ''}</wp:comment_author_url>
       <wp:comment_author_IP>${comment.ip || ''}</wp:comment_author_IP>
-      <wp:comment_date_gmt>${moment(comment.create_at).format('YYYY-MM-DD HH:mm:ss')}</wp:comment_date_gmt>
+      <wp:comment_date_gmt>${dayjs(comment.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:comment_date_gmt>
       <wp:comment_content><![CDATA[${comment.content || ''}]]></wp:comment_content>
       <wp:comment_approved>${comment.state === CommentState.Published ? 1 : 0}</wp:comment_approved>
     </wp:comment>
@@ -61,9 +61,9 @@ export const getDisqusXML = (data: XMLItemData[], guestbook: Array<Comment>) => 
               <link>${getPermalinkByID(item.article.id)}</link>
               <content:encoded><![CDATA[${item.article.description || ''}]]></content:encoded>
               <dsq:thread_identifier>${getThreadIdentifierByID(item.article.id)}</dsq:thread_identifier>
-              <wp:post_date_gmt>${moment(item.article.create_at).format('YYYY-MM-DD HH:mm:ss')}</wp:post_date_gmt>
+              <wp:post_date_gmt>${dayjs(item.article.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:post_date_gmt>
               <wp:comment_status>${
-                item.article.disabled_comment ? ThreadState.Closed : ThreadState.Open
+                item.article.disabled_comments ? ThreadState.Closed : ThreadState.Open
               }</wp:comment_status>
               ${item.comments.map(getCommentItemXML).join('\n')}
             </item>

@@ -10,7 +10,7 @@ import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import * as APP_CONFIG from '@app/app.config'
 import logger from '@app/utils/logger'
 
-const log = logger.scope('NodeMailer')
+const log = logger.scope('EmailService')
 
 export interface EmailOptions {
   to: string
@@ -31,8 +31,8 @@ export class EmailService {
       secure: false,
       auth: {
         user: APP_CONFIG.EMAIL.account,
-        pass: APP_CONFIG.EMAIL.password,
-      },
+        pass: APP_CONFIG.EMAIL.password
+      }
     })
     this.verifyClient()
   }
@@ -59,7 +59,7 @@ export class EmailService {
     this.transporter.sendMail(
       {
         ...mailOptions,
-        from: APP_CONFIG.EMAIL.from,
+        from: APP_CONFIG.EMAIL.from
       },
       (error, info) => {
         if (error) {
@@ -74,7 +74,7 @@ export class EmailService {
   public sendMailAs(prefix: string, mailOptions: EmailOptions) {
     return this.sendMail({
       ...mailOptions,
-      subject: `[${prefix}] ${mailOptions.subject}`,
+      subject: `[${prefix}] ${mailOptions.subject}`
     })
   }
 }

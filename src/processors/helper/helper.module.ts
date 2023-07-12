@@ -19,6 +19,6 @@ const services = [GoogleService, AkismetService, AWSService, EmailService, SeoSe
 @Module({
   imports: [HttpModule],
   providers: services,
-  exports: services,
+  exports: services
 })
 export class HelperModule {}

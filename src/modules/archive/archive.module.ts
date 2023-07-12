@@ -14,6 +14,6 @@ import { ArchiveService } from './archive.service'
 @Module({
   controllers: [ArchiveController],
   providers: [TagProvider, CategoryProvider, ArticleProvider, ArchiveService],
-  exports: [ArchiveService],
+  exports: [ArchiveService]
 })
 export class ArchiveModule {}

@@ -40,7 +40,7 @@ export class AuthController {
           to: APP.ADMIN_EMAIL,
           subject,
           text: content,
-          html: content,
+          html: content
         })
       })
     }

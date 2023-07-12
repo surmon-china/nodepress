@@ -13,7 +13,7 @@ export const TOKEN_COOKIE_KEY = '_disqus'
 
 export const encodeToken = (token: AccessToken) => {
   return jwt.sign(token, DISQUS.adminAccessToken, {
-    expiresIn: token.expires_in,
+    expiresIn: token.expires_in
   })
 }
 

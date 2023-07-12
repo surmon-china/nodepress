@@ -14,23 +14,23 @@ import { IPLocation } from '@app/processors/helper/helper.service.ip'
 
 export enum VoteTarget {
   Post = 1,
-  Comment = 2,
+  Comment = 2
 }
 
 export enum VoteType {
   Upvote = 1,
-  Downvote = -1,
+  Downvote = -1
 }
 
 export const voteTypeMap = new Map([
   [VoteType.Upvote, '+1'],
-  [VoteType.Downvote, '-1'],
+  [VoteType.Downvote, '-1']
 ])
 
 export enum VoteAuthorType {
   Anonymous = 0,
   Guest = 1,
-  Disqus = 2,
+  Disqus = 2
 }
 
 export const VOTE_TYPES = [VoteType.Upvote, VoteType.Downvote] as const
@@ -42,13 +42,14 @@ export const VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    versionKey: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
     timestamps: {
-      createdAt: 'create_at',
-      updatedAt: 'update_at',
-    },
-  },
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  }
 })
 export class Vote {
   @prop({ unique: true })
@@ -96,10 +97,10 @@ export class Vote {
   user_agent?: string | null
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 }
 
 export const VoteProvider = getProviderByTypegooseClass(Vote)

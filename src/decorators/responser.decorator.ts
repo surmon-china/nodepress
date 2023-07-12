@@ -24,7 +24,7 @@ export const getResponserOptions = (target: any): ResponserOptions => {
     errorMessage: reflector.get(META.HTTP_ERROR_MESSAGE, target),
     successMessage: reflector.get(META.HTTP_SUCCESS_MESSAGE, target),
     transform: reflector.get(META.HTTP_RESPONSE_TRANSFORM, target),
-    paginate: reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target),
+    paginate: reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target)
   }
 }
 
@@ -83,14 +83,14 @@ export const error = (message: ResponseMessage, statusCode?: HttpStatus): Method
 export const success = (message: ResponseMessage, statusCode?: HttpStatus): MethodDecorator => {
   return createDecorator({
     successMessage: message,
-    successCode: statusCode,
+    successCode: statusCode
   })
 }
 
 /**
  * @function handle
  * @example ```@HttpProcessor.handle('Some request')```
- * @example ```@HttpProcessor.handle({ message: 'Some request', error: error, success: 200, usePaginate: true })``
+ * @example ```@HttpProcessor.handle({ message: 'Some request', error: error, success: 200, usePaginate: true })```
  */
 export function handle(args: HandleOptionConfig): MethodDecorator
 export function handle(...args) {
@@ -107,7 +107,7 @@ export function handle(...args) {
     successCode,
     errorMessage,
     successMessage,
-    usePaginate,
+    usePaginate
   })
 }
 

@@ -17,7 +17,7 @@ import {
   IsIn,
   IsInt,
   IsOptional,
-  IsNotEmpty,
+  IsNotEmpty
 } from 'class-validator'
 import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
@@ -29,7 +29,7 @@ export enum FeedbackEmotion {
   Bad = 2,
   Neutral = 3,
   Great = 4,
-  Amazing = 5,
+  Amazing = 5
 }
 
 const emotionMap = new Map(
@@ -37,28 +37,28 @@ const emotionMap = new Map(
     {
       value: FeedbackEmotion.Terrible,
       text: FeedbackEmotion[FeedbackEmotion.Terrible],
-      emoji: '😠',
+      emoji: '😠'
     },
     {
       value: FeedbackEmotion.Bad,
       text: FeedbackEmotion[FeedbackEmotion.Bad],
-      emoji: '🙁',
+      emoji: '🙁'
     },
     {
       value: FeedbackEmotion.Neutral,
       text: FeedbackEmotion[FeedbackEmotion.Neutral],
-      emoji: '😐',
+      emoji: '😐'
     },
     {
       value: FeedbackEmotion.Great,
       text: FeedbackEmotion[FeedbackEmotion.Great],
-      emoji: '😃',
+      emoji: '😃'
     },
     {
       value: FeedbackEmotion.Amazing,
       text: FeedbackEmotion[FeedbackEmotion.Amazing],
-      emoji: '🥰',
-    },
+      emoji: '🥰'
+    }
   ].map((item) => [item.value, item])
 )
 
@@ -111,13 +111,14 @@ export class FeedbackBase {
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    versionKey: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
     timestamps: {
-      createdAt: 'create_at',
-      updatedAt: 'update_at',
-    },
-  },
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  }
 })
 export class Feedback extends FeedbackBase {
   @prop({ unique: true })
@@ -150,10 +151,10 @@ export class Feedback extends FeedbackBase {
   ip_location: Partial<IPLocation> | null
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 }
 
 export const FeedbackProvider = getProviderByTypegooseClass(Feedback)

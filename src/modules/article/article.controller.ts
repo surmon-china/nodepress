@@ -22,7 +22,7 @@ import {
   ArticleListQueryDTO,
   ArticleCalendarQueryDTO,
   ArticleIDsDTO,
-  ArticlesStateDTO,
+  ArticlesStateDTO
 } from './article.dto'
 import { ARTICLE_HOTTEST_SORT_PARAMS } from './article.model'
 import { ArticleService } from './article.service'
@@ -82,20 +82,20 @@ export class ArticleController {
     // date
     if (filters.date) {
       const queryDateMS = new Date(filters.date).getTime()
-      paginateQuery.create_at = {
+      paginateQuery.created_at = {
         $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
-        $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000),
+        $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000)
       }
     }
 
     // tag | category
     if (filters.tag_slug) {
       const tag = await this.tagService.getDetailBySlug(filters.tag_slug)
-      paginateQuery.tag = tag._id
+      paginateQuery.tags = tag._id
     }
     if (filters.category_slug) {
       const category = await this.categoryService.getDetailBySlug(filters.category_slug)
-      paginateQuery.category = category._id
+      paginateQuery.categories = category._id
     }
 
     // paginate
@@ -124,14 +124,17 @@ export class ArticleController {
   @Responser.handle('Get context articles')
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
     const articleID = Number(params.id)
-    const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
-    const [prev_article] = await this.articleService.getNearArticles(articleID, 'early', 1)
-    const [next_article] = await this.articleService.getNearArticles(articleID, 'later', 1)
-    const related_articles = await this.articleService.getRelatedArticles(article, 20)
+    const [prevArticle, nextArticle, relatedArticles] = await Promise.all([
+      this.articleService.getNearArticles(articleID, 'early', 1),
+      this.articleService.getNearArticles(articleID, 'later', 1),
+      this.articleService
+        .getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
+        .then((article) => this.articleService.getRelatedArticles(article, 20))
+    ])
     return {
-      prev_article: prev_article || null,
-      next_article: next_article || null,
-      related_articles,
+      prev_article: prevArticle || null,
+      next_article: nextArticle || null,
+      related_articles: relatedArticles || []
     }
   }
 
@@ -139,7 +142,7 @@ export class ArticleController {
   @UseGuards(AdminMaybeGuard)
   @Responser.handle({
     message: 'Get article detail',
-    error: HttpStatus.NOT_FOUND,
+    error: HttpStatus.NOT_FOUND
   })
   getArticle(@QueryParams() { params, isUnauthenticated }: QueryParamsResult): Promise<Article> {
     // guest user > number ID | slug

@@ -27,7 +27,7 @@ export class CorsMiddleware implements NestMiddleware {
       RequestMethod.PUT,
       RequestMethod.PATCH,
       RequestMethod.POST,
-      RequestMethod.DELETE,
+      RequestMethod.DELETE
     ]
     const allowedHeaders = [
       'Authorization',
@@ -40,7 +40,7 @@ export class CorsMiddleware implements NestMiddleware {
       'Cache-Control',
       'Expires',
       'Content-Type',
-      'X-E4M-With',
+      'X-E4M-With'
     ]
 
     // Allow Origin

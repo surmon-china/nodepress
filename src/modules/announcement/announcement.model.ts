@@ -18,11 +18,12 @@ export const ANNOUNCEMENT_STATES = [PublishState.Draft, PublishState.Published] 
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     timestamps: {
-      createdAt: 'create_at',
-      updatedAt: 'update_at',
-    },
-  },
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    }
+  }
 })
 export class Announcement {
   @prop({ unique: true })
@@ -40,10 +41,10 @@ export class Announcement {
   state: PublishState
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 }
 
 export const AnnouncementProvider = getProviderByTypegooseClass(Announcement)

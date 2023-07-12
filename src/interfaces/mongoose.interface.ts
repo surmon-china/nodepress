@@ -16,3 +16,6 @@ export type MongooseModel<T> = Model<MongooseDoc<T>> & PaginateModel<MongooseDoc
 // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndDelete
 // `id «Object|Number|String» value of _id to query by.`
 export type MongooseID = Types.ObjectId | string
+export type MongooseObjectID = Types.ObjectId
+
+export type WithID<T> = T & { _id: Types.ObjectId }

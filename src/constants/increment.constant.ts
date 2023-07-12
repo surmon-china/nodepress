@@ -11,7 +11,7 @@ export const generalAutoIncrementIDConfig: AutoIncrementIDOptions = {
   startAt: 1,
   incrementBy: 1,
   trackerCollection: 'identitycounters',
-  trackerModelName: 'identitycounter',
+  trackerModelName: 'identitycounter'
   // https://github.com/typegoose/auto-increment
   // https://github.com/typegoose/auto-increment/blob/master/src/autoIncrement.ts
   // https://github.com/typegoose/auto-increment/issues/11
