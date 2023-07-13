@@ -45,11 +45,11 @@ jobs:
           publish_branch: release
           publish_dir: ./dist
 
-      - name: Exec deploy script with SSH
-        uses: appleboy/ssh-action@master
-        with:
-          command_timeout: 10m
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.KEY }}
-          script: sh ${{ secrets.WWW_PATH }}/scripts/deploy.sh
+#       - name: Exec deploy script with SSH
+#         uses: appleboy/ssh-action@master
+#         with:
+#           command_timeout: 10m
+#           host: ${{ secrets.HOST }}
+#           username: ${{ secrets.USER }}
+#           key: ${{ secrets.KEY }}
+#           script: sh ${{ secrets.WWW_PATH }}/scripts/deploy.sh
