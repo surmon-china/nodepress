@@ -14,7 +14,7 @@ const common_1 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const responser_decorator_1 = require("../../decorators/responser.decorator");
 const archive_service_1 = require("./archive.service");
-let ArchiveController = class ArchiveController {
+let ArchiveController = exports.ArchiveController = class ArchiveController {
     constructor(archiveService) {
         this.archiveService = archiveService;
     }
@@ -40,9 +40,8 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ArchiveController.prototype, "updateArchive", null);
-ArchiveController = __decorate([
+exports.ArchiveController = ArchiveController = __decorate([
     (0, common_1.Controller)('archive'),
     __metadata("design:paramtypes", [archive_service_1.ArchiveService])
 ], ArchiveController);
-exports.ArchiveController = ArchiveController;
 //# sourceMappingURL=archive.controller.js.map

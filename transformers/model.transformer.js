@@ -12,7 +12,7 @@ function getProviderByTypegooseClass(typegooseClass) {
     return {
         provide: getModelToken(typegooseClass.name),
         useFactory: (connection) => (0, typegoose_1.getModelForClass)(typegooseClass, { existingConnection: connection }),
-        inject: [system_constant_1.DB_CONNECTION_TOKEN],
+        inject: [system_constant_1.DB_CONNECTION_TOKEN]
     };
 }
 exports.getProviderByTypegooseClass = getProviderByTypegooseClass;

@@ -22,7 +22,7 @@ const queryparams_decorator_1 = require("../../decorators/queryparams.decorator"
 const auth_dto_1 = require("./auth.dto");
 const auth_service_1 = require("./auth.service");
 const app_config_1 = require("../../app.config");
-let AuthController = class AuthController {
+let AuthController = exports.AuthController = class AuthController {
     constructor(ipService, emailService, authService) {
         this.ipService = ipService;
         this.emailService = emailService;
@@ -39,7 +39,7 @@ let AuthController = class AuthController {
                     to: app_config_1.APP.ADMIN_EMAIL,
                     subject,
                     text: content,
-                    html: content,
+                    html: content
                 });
             });
         }
@@ -99,11 +99,10 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Object)
 ], AuthController.prototype, "renewalToken", null);
-AuthController = __decorate([
+exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [helper_service_ip_1.IPService,
         helper_service_email_1.EmailService,
         auth_service_1.AuthService])
 ], AuthController);
-exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

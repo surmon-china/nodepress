@@ -18,7 +18,7 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 const biz_constant_1 = require("../../constants/biz.constant");
 exports.ANNOUNCEMENT_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published];
-let Announcement = class Announcement {
+let Announcement = exports.Announcement = class Announcement {
 };
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
@@ -40,23 +40,23 @@ __decorate([
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
     __metadata("design:type", Date)
-], Announcement.prototype, "create_at", void 0);
+], Announcement.prototype, "created_at", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
-], Announcement.prototype, "update_at", void 0);
-Announcement = __decorate([
+], Announcement.prototype, "updated_at", void 0);
+exports.Announcement = Announcement = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.generalAutoIncrementIDConfig),
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
+            versionKey: false,
             timestamps: {
-                createdAt: 'create_at',
-                updatedAt: 'update_at',
-            },
-        },
+                createdAt: 'created_at',
+                updatedAt: 'updated_at'
+            }
+        }
     })
 ], Announcement);
-exports.Announcement = Announcement;
 exports.AnnouncementProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Announcement);
 //# sourceMappingURL=announcement.model.js.map

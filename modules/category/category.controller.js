@@ -23,7 +23,7 @@ const responser_decorator_1 = require("../../decorators/responser.decorator");
 const category_dto_1 = require("./category.dto");
 const category_service_1 = require("./category.service");
 const category_model_1 = require("./category.model");
-let CategoryController = class CategoryController {
+let CategoryController = exports.CategoryController = class CategoryController {
     constructor(categoryService) {
         this.categoryService = categoryService;
     }
@@ -102,9 +102,8 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], CategoryController.prototype, "delCategory", null);
-CategoryController = __decorate([
+exports.CategoryController = CategoryController = __decorate([
     (0, common_1.Controller)('category'),
     __metadata("design:paramtypes", [category_service_1.CategoryService])
 ], CategoryController);
-exports.CategoryController = CategoryController;
 //# sourceMappingURL=category.controller.js.map

@@ -42,14 +42,14 @@ const value_constant_1 = require("../../constants/value.constant");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('Akismet');
+const log = logger_1.default.scope('AkismetService');
 var AkismetAction;
 (function (AkismetAction) {
     AkismetAction["CheckSpam"] = "checkSpam";
     AkismetAction["SubmitSpam"] = "submitSpam";
     AkismetAction["SubmitHam"] = "submitHam";
-})(AkismetAction = exports.AkismetAction || (exports.AkismetAction = {}));
-let AkismetService = class AkismetService {
+})(AkismetAction || (exports.AkismetAction = AkismetAction = {}));
+let AkismetService = exports.AkismetService = class AkismetService {
     constructor() {
         this.clientIsValid = false;
         this.initClient();
@@ -58,7 +58,7 @@ let AkismetService = class AkismetService {
     initClient() {
         this.client = new akismet_api_1.AkismetClient({
             key: APP_CONFIG.AKISMET.key,
-            blog: APP_CONFIG.AKISMET.blog,
+            blog: APP_CONFIG.AKISMET.blog
         });
     }
     initVerify() {
@@ -77,7 +77,7 @@ let AkismetService = class AkismetService {
     makeInterceptor(handleType) {
         return (content) => {
             return new Promise((resolve, reject) => {
-                if (this.clientIsValid === false) {
+                if (!this.clientIsValid) {
                     const message = `${handleType} failed! reason: init failed`;
                     log.warn(message);
                     return resolve(message);
@@ -112,9 +112,8 @@ let AkismetService = class AkismetService {
         return this.makeInterceptor(AkismetAction.SubmitHam)(payload);
     }
 };
-AkismetService = __decorate([
+exports.AkismetService = AkismetService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], AkismetService);
-exports.AkismetService = AkismetService;
 //# sourceMappingURL=helper.service.akismet.js.map

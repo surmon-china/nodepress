@@ -24,12 +24,12 @@ exports.COMMENT_STATES = [
     biz_constant_1.CommentState.Auditing,
     biz_constant_1.CommentState.Published,
     biz_constant_1.CommentState.Deleted,
-    biz_constant_1.CommentState.Spam,
+    biz_constant_1.CommentState.Spam
 ];
 exports.COMMENT_GUEST_QUERY_FILTER = Object.freeze({
-    state: biz_constant_1.CommentState.Published,
+    state: biz_constant_1.CommentState.Published
 });
-let Author = class Author {
+let Author = exports.Author = class Author {
     get email_hash() {
         var _a;
         const email = (_a = this.email) === null || _a === void 0 ? void 0 : _a.trim().toLowerCase();
@@ -57,17 +57,18 @@ __decorate([
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Author.prototype, "site", void 0);
-Author = __decorate([
+exports.Author = Author = __decorate([
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
+            versionKey: false,
             toJSON: { virtuals: true },
-            toObject: { virtuals: true },
-        },
+            toObject: { virtuals: true }
+        }
     })
 ], Author);
-exports.Author = Author;
 class CommentBase {
 }
+exports.CommentBase = CommentBase;
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)({ message: 'post ID?' }),
@@ -101,8 +102,7 @@ __decorate([
     (0, typegoose_1.prop)({ required: true, _id: false }),
     __metadata("design:type", Author)
 ], CommentBase.prototype, "author", void 0);
-exports.CommentBase = CommentBase;
-let Comment = class Comment extends CommentBase {
+let Comment = exports.Comment = class Comment extends CommentBase {
 };
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
@@ -137,30 +137,30 @@ __decorate([
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
     __metadata("design:type", Date)
-], Comment.prototype, "create_at", void 0);
+], Comment.prototype, "created_at", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
-], Comment.prototype, "update_at", void 0);
+], Comment.prototype, "updated_at", void 0);
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
     (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
     __metadata("design:type", Array)
 ], Comment.prototype, "extends", void 0);
-Comment = __decorate([
+exports.Comment = Comment = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.generalAutoIncrementIDConfig),
     (0, typegoose_1.modelOptions)({
         options: { allowMixed: typegoose_1.Severity.ALLOW },
         schemaOptions: {
+            versionKey: false,
             timestamps: {
-                createdAt: 'create_at',
-                updatedAt: 'update_at',
-            },
-        },
+                createdAt: 'created_at',
+                updatedAt: 'updated_at'
+            }
+        }
     })
 ], Comment);
-exports.Comment = Comment;
 exports.CommentProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Comment);
 //# sourceMappingURL=comment.model.js.map

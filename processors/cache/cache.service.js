@@ -8,9 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -18,111 +15,66 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CacheService = void 0;
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
-const cache_logger_1 = require("./cache.logger");
-let CacheService = class CacheService {
-    constructor(cacheManager) {
-        this.isReadied = false;
-        this.cacheStore = cacheManager.store;
-        this.cacheStore.client.on('connect', () => {
-            cache_logger_1.redisLog.info('connecting...');
-        });
-        this.cacheStore.client.on('reconnecting', () => {
-            cache_logger_1.redisLog.warn('reconnecting...');
-        });
-        this.cacheStore.client.on('ready', () => {
-            this.isReadied = true;
-            cache_logger_1.redisLog.info('readied.');
-        });
-        this.cacheStore.client.on('end', () => {
-            this.isReadied = false;
-            cache_logger_1.redisLog.error('client end!');
-        });
-        this.cacheStore.client.on('error', (error) => {
-            this.isReadied = false;
-            cache_logger_1.redisLog.error(`client error!`, error.message);
-        });
-        this.cacheStore.client.connect();
+const value_constant_1 = require("../../constants/value.constant");
+const redis_service_1 = require("./redis.service");
+const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('CacheService');
+let CacheService = exports.CacheService = class CacheService {
+    constructor(redisService) {
+        this.redisService = redisService;
+    }
+    set(key, value, ttl) {
+        return this.redisService.store.set(key, value, ttl);
     }
     get(key) {
-        if (!this.isReadied) {
-            return Promise.reject('Redis has not ready!');
-        }
-        return this.cacheStore.get(key);
+        return this.redisService.store.get(key);
     }
     delete(key) {
-        if (!this.isReadied) {
-            return Promise.reject('Redis has not ready!');
-        }
-        return this.cacheStore.del(key);
+        return this.redisService.store.del(key);
     }
-    set(key, value, options) {
-        if (!this.isReadied) {
-            return Promise.reject('Redis has not ready!');
-        }
-        return this.cacheStore.set(key, value, options);
+    async execPromise(options) {
+        const data = await options.promise();
+        await this.set(options.key, data);
+        return data;
     }
-    promise(options) {
-        const { key, promise, ioMode = false } = options;
-        const doPromiseTask = async () => {
-            const data = await promise();
-            await this.set(key, data);
-            return data;
+    async once(options) {
+        const data = await this.get(options.key);
+        return (0, value_constant_1.isNil)(data) ? await this.execPromise(options) : data;
+    }
+    manual(options) {
+        return {
+            get: () => this.once(options),
+            update: () => this.execPromise(options)
         };
-        const handlePromiseMode = async () => {
-            const value = await this.get(key);
-            return value !== null && value !== undefined ? value : await doPromiseTask();
-        };
-        const handleIoMode = () => ({
-            get: handlePromiseMode,
-            update: doPromiseTask,
-        });
-        return ioMode ? handleIoMode() : handlePromiseMode();
     }
     interval(options) {
-        const { key, promise, timeout, timing, ioMode = false } = options;
-        const promiseTask = async () => {
-            const data = await promise();
-            await this.set(key, data);
-            return data;
+        const execIntervalTask = () => {
+            this.execPromise(options)
+                .then(() => {
+                setTimeout(execIntervalTask, options.interval);
+            })
+                .catch((error) => {
+                setTimeout(execIntervalTask, options.retry);
+                log.warn(`interval task failed! retry when after ${options.retry / 1000}s,`, error);
+            });
         };
-        if (timeout) {
-            const doPromise = () => {
-                promiseTask()
-                    .then(() => {
-                    setTimeout(doPromise, timeout.success);
-                })
-                    .catch((error) => {
-                    const time = timeout.error || timeout.success;
-                    setTimeout(doPromise, time);
-                    cache_logger_1.cacheLog.warn(`timeout task failed! retry when after ${time / 1000}s,`, error);
-                });
-            };
-            doPromise();
-        }
-        if (timing) {
-            const doPromise = () => {
-                promiseTask()
-                    .then((data) => data)
-                    .catch((error) => {
-                    cache_logger_1.cacheLog.warn(`timing task failed! retry when after ${timing.error / 1000}s,`, error);
-                    setTimeout(doPromise, timing.error);
-                });
-            };
-            doPromise();
-            node_schedule_1.default.scheduleJob(timing.schedule, doPromise);
-        }
-        const getKeyCache = () => this.get(key);
-        const handleIoMode = () => ({
-            get: getKeyCache,
-            update: promiseTask,
-        });
-        return ioMode ? handleIoMode() : getKeyCache;
+        execIntervalTask();
+        return () => this.get(options.key);
+    }
+    schedule(options) {
+        const execScheduleTask = () => {
+            this.execPromise(options).catch((error) => {
+                log.warn(`schedule task failed! retry when after ${options.retry / 1000}s,`, error);
+                setTimeout(execScheduleTask, options.retry);
+            });
+        };
+        execScheduleTask();
+        node_schedule_1.default.scheduleJob(options.schedule, execScheduleTask);
+        return () => this.get(options.key);
     }
 };
-CacheService = __decorate([
+exports.CacheService = CacheService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(common_1.CACHE_MANAGER)),
-    __metadata("design:paramtypes", [Object])
+    __metadata("design:paramtypes", [redis_service_1.RedisService])
 ], CacheService);
-exports.CacheService = CacheService;
 //# sourceMappingURL=cache.service.js.map

@@ -21,6 +21,7 @@ const paginate_model_1 = require("../../models/paginate.model");
 const article_model_1 = require("./article.model");
 class ArticlePaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionWithHotSortDTO, query_model_1.KeywordQueryDTO, query_model_1.DateQueryDTO) {
 }
+exports.ArticlePaginateQueryDTO = ArticlePaginateQueryDTO;
 __decorate([
     (0, guest_decorator_1.WhenGuest)({ only: [biz_constant_1.PublishState.Published], default: biz_constant_1.PublishState.Published }),
     (0, class_validator_1.IsIn)(article_model_1.ARTICLE_PUBLISH_STATES),
@@ -66,9 +67,9 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], ArticlePaginateQueryDTO.prototype, "lang", void 0);
-exports.ArticlePaginateQueryDTO = ArticlePaginateQueryDTO;
 class ArticleListQueryDTO {
 }
+exports.ArticleListQueryDTO = ArticleListQueryDTO;
 __decorate([
     (0, class_validator_1.Min)(1),
     (0, class_validator_1.Max)(50),
@@ -78,32 +79,31 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], ArticleListQueryDTO.prototype, "count", void 0);
-exports.ArticleListQueryDTO = ArticleListQueryDTO;
 class ArticleCalendarQueryDTO {
 }
+exports.ArticleCalendarQueryDTO = ArticleCalendarQueryDTO;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], ArticleCalendarQueryDTO.prototype, "timezone", void 0);
-exports.ArticleCalendarQueryDTO = ArticleCalendarQueryDTO;
 class ArticleIDsDTO {
 }
+exports.ArticleIDsDTO = ArticleIDsDTO;
 __decorate([
     (0, class_validator_1.ArrayNotEmpty)(),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
 ], ArticleIDsDTO.prototype, "article_ids", void 0);
-exports.ArticleIDsDTO = ArticleIDsDTO;
 class ArticlesStateDTO extends ArticleIDsDTO {
 }
+exports.ArticlesStateDTO = ArticlesStateDTO;
 __decorate([
     (0, class_validator_1.IsIn)(article_model_1.ARTICLE_PUBLISH_STATES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
     __metadata("design:type", Number)
 ], ArticlesStateDTO.prototype, "state", void 0);
-exports.ArticlesStateDTO = ArticlesStateDTO;
 //# sourceMappingURL=article.dto.js.map

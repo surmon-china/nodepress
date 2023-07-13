@@ -38,23 +38,22 @@ const auth_model_1 = require("./auth.model");
 const auth_service_1 = require("./auth.service");
 const jwt_strategy_1 = require("./jwt.strategy");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let AuthModule = class AuthModule {
+let AuthModule = exports.AuthModule = class AuthModule {
 };
-AuthModule = __decorate([
+exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
             passport_1.PassportModule.register({ defaultStrategy: 'jwt' }),
             jwt_1.JwtModule.register({
                 privateKey: APP_CONFIG.AUTH.jwtSecret,
                 signOptions: {
-                    expiresIn: APP_CONFIG.AUTH.expiresIn,
-                },
-            }),
+                    expiresIn: APP_CONFIG.AUTH.expiresIn
+                }
+            })
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_model_1.AuthProvider, auth_service_1.AuthService, jwt_strategy_1.JwtStrategy],
-        exports: [auth_service_1.AuthService],
+        exports: [auth_service_1.AuthService]
     })
 ], AuthModule);
-exports.AuthModule = AuthModule;
 //# sourceMappingURL=auth.module.js.map

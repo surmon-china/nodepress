@@ -30,18 +30,18 @@ const comment_module_1 = require("./modules/comment/comment.module");
 const disqus_module_1 = require("./modules/disqus/disqus.module");
 const archive_module_1 = require("./modules/archive/archive.module");
 const vote_module_1 = require("./modules/vote/vote.module");
-let AppModule = class AppModule {
+let AppModule = exports.AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(cors_middleware_1.CorsMiddleware, origin_middleware_1.OriginMiddleware).forRoutes('*');
     }
 };
-AppModule = __decorate([
+exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             throttler_1.ThrottlerModule.forRoot({
                 ttl: 60 * 5,
                 limit: 300,
-                ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
+                ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
             }),
             helper_module_1.HelperModule,
             database_module_1.DatabaseModule,
@@ -57,24 +57,23 @@ AppModule = __decorate([
             comment_module_1.CommentModule,
             disqus_module_1.DisqusModule,
             archive_module_1.ArchiveModule,
-            vote_module_1.VoteModule,
+            vote_module_1.VoteModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [
             {
                 provide: core_1.APP_INTERCEPTOR,
-                useClass: cache_interceptor_1.HttpCacheInterceptor,
+                useClass: cache_interceptor_1.CacheInterceptor
             },
             {
                 provide: core_1.APP_GUARD,
-                useClass: throttler_1.ThrottlerGuard,
+                useClass: throttler_1.ThrottlerGuard
             },
             {
                 provide: core_1.APP_PIPE,
-                useClass: validation_pipe_1.ValidationPipe,
-            },
-        ],
+                useClass: validation_pipe_1.ValidationPipe
+            }
+        ]
     })
 ], AppModule);
-exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

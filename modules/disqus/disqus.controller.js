@@ -26,7 +26,7 @@ const disqus_service_public_1 = require("./disqus.service.public");
 const disqus_service_private_1 = require("./disqus.service.private");
 const disqus_token_1 = require("./disqus.token");
 const disqus_dto_1 = require("./disqus.dto");
-let DisqusController = class DisqusController {
+let DisqusController = exports.DisqusController = class DisqusController {
     constructor(disqusPublicService, disqusPrivateService) {
         this.disqusPublicService = disqusPublicService;
         this.disqusPrivateService = disqusPrivateService;
@@ -36,7 +36,7 @@ let DisqusController = class DisqusController {
             forum: app_config_1.DISQUS.forum,
             admin_username: app_config_1.DISQUS.adminUsername,
             public_key: app_config_1.DISQUS.publicKey,
-            authorize_url: this.disqusPublicService.getAuthorizeURL(),
+            authorize_url: this.disqusPublicService.getAuthorizeURL()
         };
     }
     async oauthCallback(query, response) {
@@ -45,7 +45,7 @@ let DisqusController = class DisqusController {
         response.cookie(disqus_token_1.TOKEN_COOKIE_KEY, (0, disqus_token_1.encodeToken)(accessToken), {
             maxAge: accessToken.expires_in * 1000,
             httpOnly: true,
-            secure: app_environment_1.isProdEnv,
+            secure: app_environment_1.isProdEnv
         });
         response.send(`<script>window.close();</script>`);
     }
@@ -216,10 +216,9 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], DisqusController.prototype, "importXML", null);
-DisqusController = __decorate([
+exports.DisqusController = DisqusController = __decorate([
     (0, common_1.Controller)('disqus'),
     __metadata("design:paramtypes", [disqus_service_public_1.DisqusPublicService,
         disqus_service_private_1.DisqusPrivateService])
 ], DisqusController);
-exports.DisqusController = DisqusController;
 //# sourceMappingURL=disqus.controller.js.map

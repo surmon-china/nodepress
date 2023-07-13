@@ -14,13 +14,13 @@ const class_validator_1 = require("class-validator");
 const auth_model_1 = require("./auth.model");
 class AuthLoginDTO {
 }
+exports.AuthLoginDTO = AuthLoginDTO;
 __decorate([
     (0, class_validator_1.IsString)({ message: 'password must be string type' }),
     (0, class_validator_1.IsNotEmpty)({ message: 'password?' }),
     (0, class_validator_1.IsDefined)(),
     __metadata("design:type", String)
 ], AuthLoginDTO.prototype, "password", void 0);
-exports.AuthLoginDTO = AuthLoginDTO;
 class AuthUpdateDTO extends auth_model_1.Auth {
 }
 exports.AuthUpdateDTO = AuthUpdateDTO;

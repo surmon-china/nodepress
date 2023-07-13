@@ -18,7 +18,7 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const app_config_1 = require("../../app.config");
 exports.DEFAULT_OPTION = Object.freeze({
     title: 'NodePress',
-    sub_title: 'blog server app',
+    sub_title: 'Blog server app',
     description: 'RESTful API service for blog',
     keywords: [],
     statement: '',
@@ -27,16 +27,16 @@ exports.DEFAULT_OPTION = Object.freeze({
     friend_links: [
         {
             name: app_config_1.APP.FE_NAME,
-            value: app_config_1.APP.FE_URL,
-        },
+            value: app_config_1.APP.FE_URL
+        }
     ],
     meta: { likes: 0 },
     blocklist: {
         ips: [],
         mails: [],
-        keywords: [],
+        keywords: []
     },
-    ad_config: '',
+    ad_config: ''
 });
 class AppMeta {
 }
@@ -47,6 +47,7 @@ __decorate([
 ], AppMeta.prototype, "likes", void 0);
 class Blocklist {
 }
+exports.Blocklist = Blocklist;
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
@@ -68,8 +69,7 @@ __decorate([
     (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
 ], Blocklist.prototype, "keywords", void 0);
-exports.Blocklist = Blocklist;
-let Option = class Option {
+let Option = exports.Option = class Option {
 };
 __decorate([
     (0, class_validator_1.IsString)(),
@@ -113,7 +113,6 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ default: '' }),
     __metadata("design:type", String)
 ], Option.prototype, "statement", void 0);
@@ -144,17 +143,17 @@ __decorate([
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
-], Option.prototype, "update_at", void 0);
-Option = __decorate([
+], Option.prototype, "updated_at", void 0);
+exports.Option = Option = __decorate([
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
+            versionKey: false,
             timestamps: {
                 createdAt: false,
-                updatedAt: 'update_at',
-            },
-        },
+                updatedAt: 'updated_at'
+            }
+        }
     })
 ], Option);
-exports.Option = Option;
 exports.OptionProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Option);
 //# sourceMappingURL=option.model.js.map

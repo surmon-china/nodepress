@@ -15,29 +15,29 @@ var ThreadState;
 (function (ThreadState) {
     ThreadState["Open"] = "open";
     ThreadState["Closed"] = "closed";
-})(ThreadState = exports.ThreadState || (exports.ThreadState = {}));
+})(ThreadState || (exports.ThreadState = ThreadState = {}));
 class CallbackCodeDTO {
 }
+exports.CallbackCodeDTO = CallbackCodeDTO;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CallbackCodeDTO.prototype, "code", void 0);
-exports.CallbackCodeDTO = CallbackCodeDTO;
 class ThreadPostIdDTO {
 }
+exports.ThreadPostIdDTO = ThreadPostIdDTO;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumberString)(),
     __metadata("design:type", String)
 ], ThreadPostIdDTO.prototype, "post_id", void 0);
-exports.ThreadPostIdDTO = ThreadPostIdDTO;
 class CommentIdDTO {
 }
+exports.CommentIdDTO = CommentIdDTO;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], CommentIdDTO.prototype, "comment_id", void 0);
-exports.CommentIdDTO = CommentIdDTO;
 //# sourceMappingURL=disqus.dto.js.map

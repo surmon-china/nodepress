@@ -40,7 +40,7 @@ const queryparams_decorator_1 = require("../../decorators/queryparams.decorator"
 const comment_dto_1 = require("./comment.dto");
 const comment_service_1 = require("./comment.service");
 const comment_model_1 = require("./comment.model");
-let CommentController = class CommentController {
+let CommentController = exports.CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
     }
@@ -68,7 +68,7 @@ let CommentController = class CommentController {
             paginateQuery.$or = [
                 { content: keywordRegExp },
                 { 'author.name': keywordRegExp },
-                { 'author.email': keywordRegExp },
+                { 'author.email': keywordRegExp }
             ];
         }
         return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated);
@@ -176,9 +176,8 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], CommentController.prototype, "delComment", null);
-CommentController = __decorate([
+exports.CommentController = CommentController = __decorate([
     (0, common_1.Controller)('comment'),
     __metadata("design:paramtypes", [comment_service_1.CommentService])
 ], CommentController);
-exports.CommentController = CommentController;
 //# sourceMappingURL=comment.controller.js.map

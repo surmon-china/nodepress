@@ -20,7 +20,7 @@ const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const option_service_1 = require("./option.service");
 const option_model_1 = require("./option.model");
-let OptionController = class OptionController {
+let OptionController = exports.OptionController = class OptionController {
     constructor(optionService) {
         this.optionService = optionService;
     }
@@ -49,9 +49,8 @@ __decorate([
     __metadata("design:paramtypes", [option_model_1.Option]),
     __metadata("design:returntype", Promise)
 ], OptionController.prototype, "putOption", null);
-OptionController = __decorate([
+exports.OptionController = OptionController = __decorate([
     (0, common_1.Controller)('option'),
     __metadata("design:paramtypes", [option_service_1.OptionService])
 ], OptionController);
-exports.OptionController = OptionController;
 //# sourceMappingURL=option.controller.js.map

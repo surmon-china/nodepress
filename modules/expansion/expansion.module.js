@@ -15,15 +15,14 @@ const feedback_module_1 = require("../feedback/feedback.module");
 const expansion_controller_1 = require("./expansion.controller");
 const expansion_service_statistic_1 = require("./expansion.service.statistic");
 const expansion_service_dbbackup_1 = require("./expansion.service.dbbackup");
-let ExpansionModule = class ExpansionModule {
+let ExpansionModule = exports.ExpansionModule = class ExpansionModule {
 };
-ExpansionModule = __decorate([
+exports.ExpansionModule = ExpansionModule = __decorate([
     (0, common_1.Module)({
         imports: [tag_module_1.TagModule, article_module_1.ArticleModule, comment_module_1.CommentModule, feedback_module_1.FeedbackModule],
         controllers: [expansion_controller_1.ExpansionController],
         providers: [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService],
-        exports: [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService],
+        exports: [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService]
     })
 ], ExpansionModule);
-exports.ExpansionModule = ExpansionModule;
 //# sourceMappingURL=expansion.module.js.map

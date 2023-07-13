@@ -63,7 +63,7 @@ const feedback_dto_1 = require("./feedback.dto");
 const feedback_model_1 = require("./feedback.model");
 const feedback_service_1 = require("./feedback.service");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let FeedbackController = class FeedbackController {
+let FeedbackController = exports.FeedbackController = class FeedbackController {
     constructor(emailService, feedbackService) {
         this.emailService = emailService;
         this.feedbackService = feedbackService;
@@ -88,7 +88,7 @@ let FeedbackController = class FeedbackController {
                 { content: keywordRegExp },
                 { user_name: keywordRegExp },
                 { user_email: keywordRegExp },
-                { remark: keywordRegExp },
+                { remark: keywordRegExp }
             ];
         }
         return this.feedbackService.paginator(paginateQuery, paginateOptions);
@@ -100,13 +100,13 @@ let FeedbackController = class FeedbackController {
             `${subject} on ${result.tid}.`,
             `Author: ${result.user_name || 'Anonymous user'}`,
             `Emotion: ${result.emotion_emoji} ${result.emotion_text} (${result.emotion})`,
-            `Feedback: ${result.content}`,
+            `Feedback: ${result.content}`
         ];
         this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
             to: APP_CONFIG.APP.ADMIN_EMAIL,
             subject,
             text: texts.join('\n'),
-            html: texts.map((text) => `<p>${text}</p>`).join('\n'),
+            html: texts.map((text) => `<p>${text}</p>`).join('\n')
         });
         return result;
     }
@@ -168,9 +168,9 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], FeedbackController.prototype, "deleteFeedback", null);
-FeedbackController = __decorate([
+exports.FeedbackController = FeedbackController = __decorate([
     (0, common_1.Controller)('feedback'),
-    __metadata("design:paramtypes", [helper_service_email_1.EmailService, feedback_service_1.FeedbackService])
+    __metadata("design:paramtypes", [helper_service_email_1.EmailService,
+        feedback_service_1.FeedbackService])
 ], FeedbackController);
-exports.FeedbackController = FeedbackController;
 //# sourceMappingURL=feedback.controller.js.map

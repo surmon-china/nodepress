@@ -33,7 +33,7 @@ exports.CorsMiddleware = void 0;
 const common_1 = require("@nestjs/common");
 const app_environment_1 = require("../app.environment");
 const APP_CONFIG = __importStar(require("../app.config"));
-let CorsMiddleware = class CorsMiddleware {
+let CorsMiddleware = exports.CorsMiddleware = class CorsMiddleware {
     use(request, response, next) {
         const getMethod = (method) => common_1.RequestMethod[method];
         const origins = request.headers.origin;
@@ -45,7 +45,7 @@ let CorsMiddleware = class CorsMiddleware {
             common_1.RequestMethod.PUT,
             common_1.RequestMethod.PATCH,
             common_1.RequestMethod.POST,
-            common_1.RequestMethod.DELETE,
+            common_1.RequestMethod.DELETE
         ];
         const allowedHeaders = [
             'Authorization',
@@ -58,7 +58,7 @@ let CorsMiddleware = class CorsMiddleware {
             'Cache-Control',
             'Expires',
             'Content-Type',
-            'X-E4M-With',
+            'X-E4M-With'
         ];
         if (!origin || allowedOrigins.includes(origin) || app_environment_1.isDevEnv) {
             response.setHeader('Access-Control-Allow-Origin', origin || '*');
@@ -77,8 +77,7 @@ let CorsMiddleware = class CorsMiddleware {
         }
     }
 };
-CorsMiddleware = __decorate([
+exports.CorsMiddleware = CorsMiddleware = __decorate([
     (0, common_1.Injectable)()
 ], CorsMiddleware);
-exports.CorsMiddleware = CorsMiddleware;
 //# sourceMappingURL=cors.middleware.js.map

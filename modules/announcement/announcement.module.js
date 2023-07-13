@@ -11,14 +11,13 @@ const common_1 = require("@nestjs/common");
 const announcement_model_1 = require("./announcement.model");
 const announcement_service_1 = require("./announcement.service");
 const announcement_controller_1 = require("./announcement.controller");
-let AnnouncementModule = class AnnouncementModule {
+let AnnouncementModule = exports.AnnouncementModule = class AnnouncementModule {
 };
-AnnouncementModule = __decorate([
+exports.AnnouncementModule = AnnouncementModule = __decorate([
     (0, common_1.Module)({
         controllers: [announcement_controller_1.AnnouncementController],
         providers: [announcement_model_1.AnnouncementProvider, announcement_service_1.AnnouncementService],
-        exports: [announcement_service_1.AnnouncementService],
+        exports: [announcement_service_1.AnnouncementService]
     })
 ], AnnouncementModule);
-exports.AnnouncementModule = AnnouncementModule;
 //# sourceMappingURL=announcement.module.js.map

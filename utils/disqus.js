@@ -45,7 +45,7 @@ const resourcesRequiringPost = [
     'users/follow',
     'users/unfollow',
     'whitelists/add',
-    'whitelists/remove',
+    'whitelists/remove'
 ];
 exports.DISQUS_PUBKEY = `E8Uh5l5fHZ6gD8U3KycjAIAk46f68Zw7C6eW8WSjZvCLXebZ7p0r1yrYDrLilk2F`;
 class Disqus {
@@ -87,8 +87,8 @@ class Disqus {
     getOAuthAccessToken(code, uri) {
         const config = {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
         };
         const formData = new URLSearchParams();
         formData.append('code', code);
@@ -101,10 +101,10 @@ class Disqus {
             .then((response) => response.data)
             .catch((error) => Promise.reject(normalizeAxiosError(error)));
     }
-    refreshOAuthAccessToken(refreshtoken) {
+    refreshOAuthAccessToken(refreshToken) {
         const url = new URL(ACCESS_TOKEN_URL);
         url.searchParams.set('grant_type', 'refresh_token');
-        url.searchParams.set('refresh_token', refreshtoken);
+        url.searchParams.set('refresh_token', refreshToken);
         url.searchParams.set('client_id', this.config.apiKey);
         url.searchParams.set('client_secret', this.config.apiSecret);
         return axios_1.default

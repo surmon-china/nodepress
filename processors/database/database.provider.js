@@ -44,7 +44,7 @@ exports.databaseProvider = {
                 to: APP_CONFIG.APP.ADMIN_EMAIL,
                 subject: `MongoDB Error!`,
                 text: error,
-                html: `<pre><code>${error}</code></pre>`,
+                html: `<pre><code>${error}</code></pre>`
             });
         };
         const connection = () => {
@@ -71,6 +71,6 @@ exports.databaseProvider = {
             sendAlarmMail(String(error));
         });
         return await connection();
-    },
+    }
 };
 //# sourceMappingURL=database.provider.js.map

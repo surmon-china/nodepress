@@ -6,6 +6,6 @@ exports.generalAutoIncrementIDConfig = {
     startAt: 1,
     incrementBy: 1,
     trackerCollection: 'identitycounters',
-    trackerModelName: 'identitycounter',
+    trackerModelName: 'identitycounter'
 };
 //# sourceMappingURL=increment.constant.js.map

@@ -38,7 +38,7 @@ const queryparams_decorator_1 = require("../../decorators/queryparams.decorator"
 const announcement_dto_1 = require("./announcement.dto");
 const announcement_service_1 = require("./announcement.service");
 const announcement_model_1 = require("./announcement.model");
-let AnnouncementController = class AnnouncementController {
+let AnnouncementController = exports.AnnouncementController = class AnnouncementController {
     constructor(announcementService) {
         this.announcementService = announcementService;
     }
@@ -55,7 +55,7 @@ let AnnouncementController = class AnnouncementController {
         return this.announcementService.paginator(paginateQuery, {
             page,
             perPage: per_page,
-            dateSort: sort,
+            dateSort: sort
         });
     }
     createAnnouncement(announcement) {
@@ -118,9 +118,8 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AnnouncementController.prototype, "delAnnouncement", null);
-AnnouncementController = __decorate([
+exports.AnnouncementController = AnnouncementController = __decorate([
     (0, common_1.Controller)('announcement'),
     __metadata("design:paramtypes", [announcement_service_1.AnnouncementService])
 ], AnnouncementController);
-exports.AnnouncementController = AnnouncementController;
 //# sourceMappingURL=announcement.controller.js.map

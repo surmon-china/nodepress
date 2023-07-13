@@ -58,7 +58,7 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
 const auth_model_1 = require("./auth.model");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let AuthService = class AuthService {
+let AuthService = exports.AuthService = class AuthService {
     constructor(jwtService, authModel) {
         this.jwtService = jwtService;
         this.authModel = authModel;
@@ -70,7 +70,7 @@ let AuthService = class AuthService {
     createToken() {
         return {
             access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
-            expires_in: APP_CONFIG.AUTH.expiresIn,
+            expires_in: APP_CONFIG.AUTH.expiresIn
         };
     }
     validateAuthData(payload) {
@@ -83,7 +83,7 @@ let AuthService = class AuthService {
     }
     async putAdminInfo(auth) {
         const { password, new_password } = auth, restAuth = __rest(auth, ["password", "new_password"]);
-        let newPassword;
+        let newPassword = value_constant_1.UNDEFINED;
         if (password || new_password) {
             if (!password || !new_password) {
                 throw 'Incomplete passwords';
@@ -124,10 +124,9 @@ let AuthService = class AuthService {
         }
     }
 };
-AuthService = __decorate([
+exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, model_transformer_1.InjectModel)(auth_model_1.Auth)),
     __metadata("design:paramtypes", [jwt_1.JwtService, Object])
 ], AuthService);
-exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

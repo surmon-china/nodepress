@@ -47,7 +47,7 @@ const helper_service_google_1 = require("../../processors/helper/helper.service.
 const expansion_service_statistic_1 = require("./expansion.service.statistic");
 const expansion_service_dbbackup_1 = require("./expansion.service.dbbackup");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let ExpansionController = class ExpansionController {
+let ExpansionController = exports.ExpansionController = class ExpansionController {
     constructor(awsService, googleService, dbBackupService, statisticService) {
         this.awsService = awsService;
         this.googleService = googleService;
@@ -70,7 +70,7 @@ let ExpansionController = class ExpansionController {
             file: file.buffer,
             fileContentType: file.mimetype,
             region: APP_CONFIG.AWS.s3StaticRegion,
-            bucket: APP_CONFIG.AWS.s3StaticBucket,
+            bucket: APP_CONFIG.AWS.s3StaticBucket
         })
             .then((result) => (Object.assign(Object.assign({}, result), { url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}` })));
     }
@@ -111,12 +111,11 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], ExpansionController.prototype, "uploadStatic", null);
-ExpansionController = __decorate([
+exports.ExpansionController = ExpansionController = __decorate([
     (0, common_1.Controller)('expansion'),
     __metadata("design:paramtypes", [helper_service_aws_1.AWSService,
         helper_service_google_1.GoogleService,
         expansion_service_dbbackup_1.DBBackupService,
         expansion_service_statistic_1.StatisticService])
 ], ExpansionController);
-exports.ExpansionController = ExpansionController;
 //# sourceMappingURL=expansion.controller.js.map

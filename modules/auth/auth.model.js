@@ -16,9 +16,9 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 exports.DEFAULT_AUTH = Object.freeze({
     name: '',
     slogan: '',
-    avatar: '',
+    avatar: ''
 });
-let Auth = class Auth {
+let Auth = exports.Auth = class Auth {
 };
 __decorate([
     (0, class_validator_1.IsString)({ message: "what's your name?" }),
@@ -43,13 +43,12 @@ __decorate([
     (0, typegoose_1.prop)({ select: false }),
     __metadata("design:type", String)
 ], Auth.prototype, "password", void 0);
-Auth = __decorate([
+exports.Auth = Auth = __decorate([
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
-            versionKey: false,
-        },
+            versionKey: false
+        }
     })
 ], Auth);
-exports.Auth = Auth;
 exports.AuthProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Auth);
 //# sourceMappingURL=auth.model.js.map

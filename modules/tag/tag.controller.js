@@ -38,7 +38,7 @@ const queryparams_decorator_1 = require("../../decorators/queryparams.decorator"
 const tag_dto_1 = require("./tag.dto");
 const tag_service_1 = require("./tag.service");
 const tag_model_1 = require("./tag.model");
-let TagController = class TagController {
+let TagController = exports.TagController = class TagController {
     constructor(tagService) {
         this.tagService = tagService;
     }
@@ -124,9 +124,8 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], TagController.prototype, "delTag", null);
-TagController = __decorate([
+exports.TagController = TagController = __decorate([
     (0, common_1.Controller)('tag'),
     __metadata("design:paramtypes", [tag_service_1.TagService])
 ], TagController);
-exports.TagController = TagController;
 //# sourceMappingURL=tag.controller.js.map

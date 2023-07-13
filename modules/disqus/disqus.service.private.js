@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DisqusPrivateService = void 0;
-const moment_1 = __importDefault(require("moment"));
+const dayjs_1 = __importDefault(require("dayjs"));
 const fast_xml_parser_1 = require("fast-xml-parser");
 const common_1 = require("@nestjs/common");
 const article_service_1 = require("../article/article.service");
@@ -50,13 +50,13 @@ const logger_1 = __importDefault(require("../../utils/logger"));
 const disqus_xml_1 = require("./disqus.xml");
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
 const log = logger_1.default.scope('DisqusPrivateService');
-let DisqusPrivateService = class DisqusPrivateService {
+let DisqusPrivateService = exports.DisqusPrivateService = class DisqusPrivateService {
     constructor(articleService, commentService) {
         this.articleService = articleService;
         this.commentService = commentService;
         this.disqus = new disqus_1.Disqus({
             apiKey: app_config_1.DISQUS.publicKey,
-            apiSecret: app_config_1.DISQUS.secretKey,
+            apiSecret: app_config_1.DISQUS.secretKey
         });
     }
     async createThread(postID) {
@@ -68,9 +68,9 @@ let DisqusPrivateService = class DisqusPrivateService {
                 title: article.title,
                 message: article.description,
                 slug: article.slug || DISQUS_CONST.getThreadIdentifierByID(postID),
-                date: (0, moment_1.default)(article.create_at).unix(),
+                date: (0, dayjs_1.default)(article.created_at).unix(),
                 url: (0, urlmap_transformer_1.getPermalinkByID)(postID),
-                access_token: app_config_1.DISQUS.adminAccessToken,
+                access_token: app_config_1.DISQUS.adminAccessToken
             });
             return response.response;
         }
@@ -154,7 +154,7 @@ let DisqusPrivateService = class DisqusPrivateService {
         const parser = new fast_xml_parser_1.XMLParser({
             ignoreAttributes: false,
             allowBooleanAttributes: true,
-            attributeNamePrefix: '@',
+            attributeNamePrefix: '@'
         });
         const object = parser.parse(xml);
         const posts = object.disqus.post;
@@ -164,7 +164,7 @@ let DisqusPrivateService = class DisqusPrivateService {
             postID: post['@dsq:id'],
             threadID: post.thread['@dsq:id'],
             isAnonymous: post.author.isAnonymous,
-            username: post.author.username || null,
+            username: post.author.username || null
         });
         const doImport = async (each) => {
             if (!Number.isFinite(each.commentID)) {
@@ -211,9 +211,9 @@ let DisqusPrivateService = class DisqusPrivateService {
         return { done, fail };
     }
 };
-DisqusPrivateService = __decorate([
+exports.DisqusPrivateService = DisqusPrivateService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [article_service_1.ArticleService, comment_service_1.CommentService])
+    __metadata("design:paramtypes", [article_service_1.ArticleService,
+        comment_service_1.CommentService])
 ], DisqusPrivateService);
-exports.DisqusPrivateService = DisqusPrivateService;
 //# sourceMappingURL=disqus.service.private.js.map

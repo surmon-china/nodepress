@@ -17,8 +17,8 @@ const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('IP_Query');
-let IPService = class IPService {
+const log = logger_1.default.scope('IPService');
+let IPService = exports.IPService = class IPService {
     constructor(httpService) {
         this.httpService = httpService;
     }
@@ -35,7 +35,7 @@ let IPService = class IPService {
                     region: response.data.regionName,
                     region_code: response.data.region,
                     city: response.data.city,
-                    zip: response.data.zip,
+                    zip: response.data.zip
                 });
         })
             .catch((error) => {
@@ -57,7 +57,7 @@ let IPService = class IPService {
                     region: response.data.region,
                     region_code: response.data.region_code,
                     city: response.data.city,
-                    zip: response.data.postal,
+                    zip: response.data.postal
                 });
         })
             .catch((error) => {
@@ -72,9 +72,8 @@ let IPService = class IPService {
             .catch(() => null);
     }
 };
-IPService = __decorate([
+exports.IPService = IPService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [axios_1.HttpService])
 ], IPService);
-exports.IPService = IPService;
 //# sourceMappingURL=helper.service.ip.js.map

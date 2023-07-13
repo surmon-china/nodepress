@@ -53,7 +53,7 @@ const app_environment_1 = require("../../app.environment");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const APP_CONFIG = __importStar(require("../../app.config"));
 const log = logger_1.default.scope('CommentService');
-let CommentService = class CommentService {
+let CommentService = exports.CommentService = class CommentService {
     constructor(ipService, emailService, akismetService, optionService, articleService, commentModel) {
         this.ipService = ipService;
         this.emailService = emailService;
@@ -78,7 +78,7 @@ let CommentService = class CommentService {
             const linkHTML = `<a href="${(0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`;
             return {
                 text: texts.join('\n'),
-                html: [textHTML, `<br>`, linkHTML].join('\n'),
+                html: [textHTML, `<br>`, linkHTML].join('\n')
             };
         };
         const subject = `You have a new comment`;
@@ -102,7 +102,7 @@ let CommentService = class CommentService {
             comment_author: comment.author.name,
             comment_author_email: comment.author.email,
             comment_author_url: comment.author.site,
-            comment_content: comment.content,
+            comment_content: comment.content
         });
     }
     async updateCommentsCountWithArticles(postIDs) {
@@ -113,7 +113,7 @@ let CommentService = class CommentService {
         try {
             const counts = await this.commentModel.aggregate([
                 { $match: Object.assign(Object.assign({}, comment_model_1.COMMENT_GUEST_QUERY_FILTER), { post_id: { $in: postIDs } }) },
-                { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } },
+                { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } }
             ]);
             if (!counts || !counts.length) {
                 await this.articleService.updateMetaComments(postIDs[0], 0);
@@ -190,7 +190,7 @@ let CommentService = class CommentService {
         await this.isCommentableTarget(newComment.post_id);
         await Promise.all([
             this.isNotBlocklisted(newComment),
-            this.submitCommentAkismet(helper_service_akismet_1.AkismetAction.CheckSpam, newComment, visitor.referer),
+            this.submitCommentAkismet(helper_service_akismet_1.AkismetAction.CheckSpam, newComment, visitor.referer)
         ]);
         return this.create(newComment);
     }
@@ -264,11 +264,11 @@ let CommentService = class CommentService {
         await comment.save({ timestamps: false });
         return {
             likes: comment.likes,
-            dislikes: comment.dislikes,
+            dislikes: comment.dislikes
         };
     }
 };
-CommentService = __decorate([
+exports.CommentService = CommentService = __decorate([
     (0, common_1.Injectable)(),
     __param(5, (0, model_transformer_1.InjectModel)(comment_model_1.Comment)),
     __metadata("design:paramtypes", [helper_service_ip_1.IPService,
@@ -277,5 +277,4 @@ CommentService = __decorate([
         option_service_1.OptionService,
         article_service_1.ArticleService, Object])
 ], CommentService);
-exports.CommentService = CommentService;
 //# sourceMappingURL=comment.service.js.map

@@ -9,6 +9,6 @@ exports.default = {
     isDevEnv: exports.isDevEnv,
     isProdEnv: exports.isProdEnv,
     isTestEnv: exports.isTestEnv,
-    environment: exports.environment,
+    environment: exports.environment
 };
 //# sourceMappingURL=app.environment.js.map

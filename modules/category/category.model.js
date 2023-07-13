@@ -19,7 +19,7 @@ const increment_constant_1 = require("../../constants/increment.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 const key_value_model_1 = require("../../models/key-value.model");
-let Category = Category_1 = class Category {
+let Category = exports.Category = Category_1 = class Category {
 };
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
@@ -51,29 +51,29 @@ __decorate([
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
     __metadata("design:type", Date)
-], Category.prototype, "create_at", void 0);
+], Category.prototype, "created_at", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
-], Category.prototype, "update_at", void 0);
+], Category.prototype, "updated_at", void 0);
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
     (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
     __metadata("design:type", Array)
 ], Category.prototype, "extends", void 0);
-Category = Category_1 = __decorate([
+exports.Category = Category = Category_1 = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.generalAutoIncrementIDConfig),
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
+            versionKey: false,
             timestamps: {
-                createdAt: 'create_at',
-                updatedAt: 'update_at',
-            },
-        },
+                createdAt: 'created_at',
+                updatedAt: 'updated_at'
+            }
+        }
     })
 ], Category);
-exports.Category = Category;
 exports.CategoryProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Category);
 //# sourceMappingURL=category.model.js.map

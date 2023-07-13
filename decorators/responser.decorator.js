@@ -40,7 +40,7 @@ const getResponserOptions = (target) => {
         errorMessage: reflector_constant_1.reflector.get(META.HTTP_ERROR_MESSAGE, target),
         successMessage: reflector_constant_1.reflector.get(META.HTTP_SUCCESS_MESSAGE, target),
         transform: reflector_constant_1.reflector.get(META.HTTP_RESPONSE_TRANSFORM, target),
-        paginate: reflector_constant_1.reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target),
+        paginate: reflector_constant_1.reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target)
     };
 };
 exports.getResponserOptions = getResponserOptions;
@@ -73,7 +73,7 @@ exports.error = error;
 const success = (message, statusCode) => {
     return createDecorator({
         successMessage: message,
-        successCode: statusCode,
+        successCode: statusCode
     });
 };
 exports.success = success;
@@ -91,7 +91,7 @@ function handle(...args) {
         successCode,
         errorMessage,
         successMessage,
-        usePaginate,
+        usePaginate
     });
 }
 exports.handle = handle;

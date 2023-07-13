@@ -35,16 +35,15 @@ const common_1 = require("@nestjs/common");
 const response_interface_1 = require("../interfaces/response.interface");
 const responser_decorator_1 = require("../decorators/responser.decorator");
 const TEXT = __importStar(require("../constants/text.constant"));
-let TransformInterceptor = class TransformInterceptor {
+let TransformInterceptor = exports.TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
-        const call$ = next.handle();
         const target = context.getHandler();
         const { successMessage, transform, paginate } = (0, responser_decorator_1.getResponserOptions)(target);
         if (!transform) {
-            return call$;
+            return next.handle();
         }
         const request = context.switchToHttp().getRequest();
-        return call$.pipe((0, operators_1.map)((data) => {
+        return next.handle().pipe((0, operators_1.map)((data) => {
             return {
                 status: response_interface_1.ResponseStatus.Success,
                 message: successMessage || TEXT.HTTP_DEFAULT_SUCCESS_TEXT,
@@ -54,7 +53,7 @@ let TransformInterceptor = class TransformInterceptor {
                     url: request.url,
                     method: request.method,
                     routes: request.params,
-                    payload: request.$validatedPayload || {},
+                    payload: request.$validatedPayload || {}
                 },
                 result: paginate
                     ? {
@@ -63,16 +62,15 @@ let TransformInterceptor = class TransformInterceptor {
                             total: data.total,
                             current_page: data.page,
                             per_page: data.perPage,
-                            total_page: data.totalPage,
-                        },
+                            total_page: data.totalPage
+                        }
                     }
-                    : data,
+                    : data
             };
         }));
     }
 };
-TransformInterceptor = __decorate([
+exports.TransformInterceptor = TransformInterceptor = __decorate([
     (0, common_1.Injectable)()
 ], TransformInterceptor);
-exports.TransformInterceptor = TransformInterceptor;
 //# sourceMappingURL=transform.interceptor.js.map

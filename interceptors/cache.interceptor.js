@@ -1,84 +1,73 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HttpCacheInterceptor = void 0;
+exports.CacheInterceptor = void 0;
 const operators_1 = require("rxjs/operators");
 const rxjs_1 = require("rxjs");
+const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
 const cache_decorator_1 = require("../decorators/cache.decorator");
 const cache_service_1 = require("../processors/cache/cache.service");
-const SYSTEM = __importStar(require("../constants/system.constant"));
-const APP_CONFIG = __importStar(require("../app.config"));
-let HttpCacheInterceptor = class HttpCacheInterceptor {
+const value_constant_1 = require("../constants/value.constant");
+const cache_constant_1 = require("../constants/cache.constant");
+const logger_1 = __importDefault(require("../utils/logger"));
+const log = logger_1.default.scope('CacheInterceptor');
+let CacheInterceptor = exports.CacheInterceptor = class CacheInterceptor {
     constructor(httpAdapterHost, cacheService) {
         this.httpAdapterHost = httpAdapterHost;
         this.cacheService = cacheService;
     }
     async intercept(context, next) {
-        const call$ = next.handle();
         const key = this.trackBy(context);
         if (!key) {
-            return call$;
+            return next.handle();
         }
         const target = context.getHandler();
-        const metaTTL = (0, cache_decorator_1.getHttpCacheTTL)(target);
-        const ttl = metaTTL || APP_CONFIG.APP.DEFAULT_CACHE_TTL;
+        const ttl = (0, cache_decorator_1.getCacheTTL)(target);
         try {
-            const value = await this.cacheService.get(key);
-            return value ? (0, rxjs_1.of)(value) : call$.pipe((0, operators_1.tap)((response) => this.cacheService.set(key, response, { ttl })));
+            const value = await this.cacheService.get(cache_constant_1.CACHE_PREFIX + key);
+            if (!(0, value_constant_1.isNil)(value)) {
+                return (0, rxjs_1.of)(value);
+            }
+            return next.handle().pipe((0, operators_1.tap)(async (response) => {
+                if (response instanceof common_1.StreamableFile) {
+                    return;
+                }
+                try {
+                    await this.cacheService.set(cache_constant_1.CACHE_PREFIX + key, response, ttl);
+                }
+                catch (err) {
+                    log.warn(`An error has occurred when inserting "key: ${key}", "value: ${response}"`);
+                }
+            }));
         }
         catch (error) {
-            return call$;
+            return next.handle();
         }
     }
     trackBy(context) {
+        const { httpAdapter } = this.httpAdapterHost;
+        const isHttpApp = Boolean(httpAdapter === null || httpAdapter === void 0 ? void 0 : httpAdapter.getRequestMethod);
+        const cacheKey = (0, cache_decorator_1.getCacheKey)(context.getHandler());
         const request = context.switchToHttp().getRequest();
-        const httpServer = this.httpAdapterHost.httpAdapter;
-        const isHttpApp = Boolean(httpServer === null || httpServer === void 0 ? void 0 : httpServer.getRequestMethod);
-        const isGetRequest = isHttpApp && httpServer.getRequestMethod(request) === common_1.RequestMethod[common_1.RequestMethod.GET];
-        const cacheKey = (0, cache_decorator_1.getHttpCacheKey)(context.getHandler());
-        const isMatchedCache = isHttpApp && isGetRequest && cacheKey;
-        return isMatchedCache ? cacheKey : undefined;
+        const isGetRequest = isHttpApp && httpAdapter.getRequestMethod(request) === common_1.RequestMethod[common_1.RequestMethod.GET];
+        return isHttpApp && isGetRequest && cacheKey ? cacheKey : value_constant_1.UNDEFINED;
     }
 };
-HttpCacheInterceptor = __decorate([
+exports.CacheInterceptor = CacheInterceptor = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(SYSTEM.HTTP_ADAPTER_HOST)),
-    __metadata("design:paramtypes", [Object, cache_service_1.CacheService])
-], HttpCacheInterceptor);
-exports.HttpCacheInterceptor = HttpCacheInterceptor;
+    __metadata("design:paramtypes", [core_1.HttpAdapterHost,
+        cache_service_1.CacheService])
+], CacheInterceptor);
 //# sourceMappingURL=cache.interceptor.js.map

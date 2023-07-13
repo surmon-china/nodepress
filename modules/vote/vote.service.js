@@ -16,7 +16,7 @@ exports.VoteService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const vote_model_1 = require("./vote.model");
-let VoteService = class VoteService {
+let VoteService = exports.VoteService = class VoteService {
     constructor(voteModel) {
         this.voteModel = voteModel;
     }
@@ -44,10 +44,9 @@ let VoteService = class VoteService {
         return this.voteModel.deleteMany({ _id: { $in: voteIDs } }).exec();
     }
 };
-VoteService = __decorate([
+exports.VoteService = VoteService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, model_transformer_1.InjectModel)(vote_model_1.Vote)),
     __metadata("design:paramtypes", [Object])
 ], VoteService);
-exports.VoteService = VoteService;
 //# sourceMappingURL=vote.service.js.map

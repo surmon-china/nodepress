@@ -17,11 +17,11 @@ class CategoryPaginateQueryDTO extends paginate_model_1.PaginateOptionDTO {
 exports.CategoryPaginateQueryDTO = CategoryPaginateQueryDTO;
 class CategoriesDTO {
 }
+exports.CategoriesDTO = CategoriesDTO;
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.ArrayNotEmpty)(),
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
 ], CategoriesDTO.prototype, "category_ids", void 0);
-exports.CategoriesDTO = CategoriesDTO;
 //# sourceMappingURL=category.dto.js.map

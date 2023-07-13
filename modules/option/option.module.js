@@ -11,14 +11,13 @@ const common_1 = require("@nestjs/common");
 const option_controller_1 = require("./option.controller");
 const option_model_1 = require("./option.model");
 const option_service_1 = require("./option.service");
-let OptionModule = class OptionModule {
+let OptionModule = exports.OptionModule = class OptionModule {
 };
-OptionModule = __decorate([
+exports.OptionModule = OptionModule = __decorate([
     (0, common_1.Module)({
         controllers: [option_controller_1.OptionController],
         providers: [option_model_1.OptionProvider, option_service_1.OptionService],
-        exports: [option_service_1.OptionService],
+        exports: [option_service_1.OptionService]
     })
 ], OptionModule);
-exports.OptionModule = OptionModule;
 //# sourceMappingURL=option.module.js.map

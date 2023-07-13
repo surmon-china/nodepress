@@ -35,14 +35,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CacheConfigService = void 0;
+exports.RedisService = void 0;
 const lodash_1 = __importDefault(require("lodash"));
+const redis_1 = require("redis");
 const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../helper/helper.service.email");
-const cache_store_1 = __importDefault(require("./cache.store"));
-const cache_logger_1 = require("./cache.logger");
+const redis_store_1 = require("./redis.store");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let CacheConfigService = class CacheConfigService {
+const logger_1 = __importDefault(require("../../utils/logger"));
+const log = logger_1.default.scope('RedisService');
+let RedisService = exports.RedisService = class RedisService {
     constructor(emailService) {
         this.emailService = emailService;
         this.sendAlarmMail = lodash_1.default.throttle((error) => {
@@ -50,26 +52,34 @@ let CacheConfigService = class CacheConfigService {
                 to: APP_CONFIG.APP.ADMIN_EMAIL,
                 subject: `Redis Error!`,
                 text: error,
-                html: `<pre><code>${error}</code></pre>`,
+                html: `<pre><code>${error}</code></pre>`
             });
         }, 1000 * 30);
+        this.redisClient = (0, redis_1.createClient)(this.getOptions());
+        this.redisStore = (0, redis_store_1.createRedisStore)(this.redisClient, APP_CONFIG.APP.DEFAULT_CACHE_TTL);
+        this.redisClient.on('connect', () => log.info('connecting...'));
+        this.redisClient.on('reconnecting', () => log.warn('reconnecting...'));
+        this.redisClient.on('ready', () => log.info('readied (connected).'));
+        this.redisClient.on('end', () => log.error('client end!'));
+        this.redisClient.on('error', (error) => log.error(`client error!`, error.message));
+        this.redisClient.connect();
     }
     retryStrategy(retries) {
         const errorMessage = `retryStrategy! retries: ${retries}`;
-        cache_logger_1.redisLog.error(errorMessage);
+        log.error(errorMessage);
         this.sendAlarmMail(errorMessage);
         if (retries > 6) {
             return new Error('Redis maximum retries!');
         }
         return Math.min(retries * 1000, 3000);
     }
-    createCacheOptions() {
+    getOptions() {
         const redisOptions = {
             socket: {
                 host: APP_CONFIG.REDIS.host,
                 port: APP_CONFIG.REDIS.port,
-                reconnectStrategy: this.retryStrategy.bind(this),
-            },
+                reconnectStrategy: this.retryStrategy.bind(this)
+            }
         };
         if (APP_CONFIG.REDIS.username) {
             redisOptions.username = APP_CONFIG.REDIS.username;
@@ -77,16 +87,17 @@ let CacheConfigService = class CacheConfigService {
         if (APP_CONFIG.REDIS.password) {
             redisOptions.password = APP_CONFIG.REDIS.password;
         }
-        return {
-            isGlobal: true,
-            store: cache_store_1.default,
-            redisOptions,
-        };
+        return redisOptions;
+    }
+    get client() {
+        return this.redisClient;
+    }
+    get store() {
+        return this.redisStore;
     }
 };
-CacheConfigService = __decorate([
+exports.RedisService = RedisService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [helper_service_email_1.EmailService])
-], CacheConfigService);
-exports.CacheConfigService = CacheConfigService;
-//# sourceMappingURL=cache.config.service.js.map
+], RedisService);
+//# sourceMappingURL=redis.service.js.map

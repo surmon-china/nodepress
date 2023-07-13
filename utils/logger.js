@@ -37,7 +37,7 @@ const createLogger = (scope) => ({
     debug: renderLog(LoggerLevel.Debug, chalk_1.default.cyan('[DEBUG]'), chalk_1.default.cyanBright, scope),
     info: renderLog(LoggerLevel.Info, chalk_1.default.blue('[_INFO]'), chalk_1.default.greenBright, scope),
     warn: renderLog(LoggerLevel.Warn, chalk_1.default.yellow('[_WARN]'), chalk_1.default.yellowBright, scope),
-    error: renderLog(LoggerLevel.Error, chalk_1.default.red('[ERROR]'), chalk_1.default.redBright, scope),
+    error: renderLog(LoggerLevel.Error, chalk_1.default.red('[ERROR]'), chalk_1.default.redBright, scope)
 });
 exports.default = Object.assign(Object.assign({}, createLogger()), { scope: createLogger });
 //# sourceMappingURL=logger.js.map

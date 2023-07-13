@@ -36,14 +36,14 @@ const APP_CONFIG = __importStar(require("../../app.config"));
 var client_s3_2 = require("@aws-sdk/client-s3");
 Object.defineProperty(exports, "AWSStorageClass", { enumerable: true, get: function () { return client_s3_2.StorageClass; } });
 Object.defineProperty(exports, "AWSServerSideEncryption", { enumerable: true, get: function () { return client_s3_2.ServerSideEncryption; } });
-let AWSService = class AWSService {
+let AWSService = exports.AWSService = class AWSService {
     createClient(region) {
         return new client_s3_1.S3Client({
             region,
             credentials: {
                 accessKeyId: APP_CONFIG.AWS.accessKeyId,
-                secretAccessKey: APP_CONFIG.AWS.secretAccessKey,
-            },
+                secretAccessKey: APP_CONFIG.AWS.secretAccessKey
+            }
         });
     }
     getObjectAttributes(payload) {
@@ -51,7 +51,7 @@ let AWSService = class AWSService {
         const command = new client_s3_1.GetObjectAttributesCommand({
             Bucket: payload.bucket,
             Key: payload.key,
-            ObjectAttributes: Object.values(client_s3_1.ObjectAttributes),
+            ObjectAttributes: Object.values(client_s3_1.ObjectAttributes)
         });
         return s3Client.send(command);
     }
@@ -65,7 +65,7 @@ let AWSService = class AWSService {
             Body: payload.file,
             ContentType: payload.fileContentType,
             StorageClass: (_a = payload.classType) !== null && _a !== void 0 ? _a : 'STANDARD',
-            ServerSideEncryption: payload.encryption,
+            ServerSideEncryption: payload.encryption
         });
         return s3Client.send(command).then(() => {
             return this.getObjectAttributes({ region, bucket, key }).then((attributes) => {
@@ -73,14 +73,13 @@ let AWSService = class AWSService {
                     key,
                     url: `https://${bucket}.s3.${region}.amazonaws.com/${key}`,
                     eTag: attributes.ETag,
-                    size: attributes.ObjectSize,
+                    size: attributes.ObjectSize
                 };
             });
         });
     }
 };
-AWSService = __decorate([
+exports.AWSService = AWSService = __decorate([
     (0, common_1.Injectable)()
 ], AWSService);
-exports.AWSService = AWSService;
 //# sourceMappingURL=helper.service.aws.js.map

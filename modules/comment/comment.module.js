@@ -13,15 +13,14 @@ const article_module_1 = require("../article/article.module");
 const comment_controller_1 = require("./comment.controller");
 const comment_model_1 = require("./comment.model");
 const comment_service_1 = require("./comment.service");
-let CommentModule = class CommentModule {
+let CommentModule = exports.CommentModule = class CommentModule {
 };
-CommentModule = __decorate([
+exports.CommentModule = CommentModule = __decorate([
     (0, common_1.Module)({
         imports: [option_module_1.OptionModule, article_module_1.ArticleModule],
         controllers: [comment_controller_1.CommentController],
         providers: [comment_model_1.CommentProvider, comment_service_1.CommentService],
-        exports: [comment_service_1.CommentService],
+        exports: [comment_service_1.CommentService]
     })
 ], CommentModule);
-exports.CommentModule = CommentModule;
 //# sourceMappingURL=comment.module.js.map

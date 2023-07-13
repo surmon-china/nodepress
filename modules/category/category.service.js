@@ -20,7 +20,7 @@ const archive_service_1 = require("../archive/archive.service");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
 const article_model_1 = require("../article/article.model");
 const category_model_1 = require("./category.model");
-let CategoryService = class CategoryService {
+let CategoryService = exports.CategoryService = class CategoryService {
     constructor(seoService, archiveService, articleModel, categoryModel) {
         this.seoService = seoService;
         this.archiveService = archiveService;
@@ -31,11 +31,11 @@ let CategoryService = class CategoryService {
         const categories = await this.categoryModel.paginate(query, Object.assign(Object.assign({}, options), { lean: true }));
         const counts = await this.articleModel.aggregate([
             { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-            { $unwind: '$category' },
-            { $group: { _id: '$category', count: { $sum: 1 } } },
+            { $unwind: '$categories' },
+            { $group: { _id: '$categories', count: { $sum: 1 } } }
         ]);
         const hydratedDocs = categories.documents.map((category) => {
-            const found = counts.find((item) => String(item._id) === String(category._id));
+            const found = counts.find((item) => item._id.equals(category._id));
             return Object.assign(Object.assign({}, category), { articles_count: found ? found.count : 0 });
         });
         return Object.assign(Object.assign({}, categories), { documents: hydratedDocs });
@@ -64,7 +64,6 @@ let CategoryService = class CategoryService {
             (function findCateItem(id) {
                 findById(id)
                     .then((category) => {
-                    var _a;
                     if (!category) {
                         if (id === categoryID) {
                             return reject(`Category '${categoryID}' not found`);
@@ -75,7 +74,7 @@ let CategoryService = class CategoryService {
                     }
                     categories.unshift(category.toObject());
                     const parentId = category.pid;
-                    const hasParent = parentId && parentId.toString() !== ((_a = category._id) === null || _a === void 0 ? void 0 : _a.toString());
+                    const hasParent = parentId && parentId.toString() !== category._id.toString();
                     return hasParent ? findCateItem(parentId) : resolve(categories);
                 })
                     .catch(reject);
@@ -84,7 +83,7 @@ let CategoryService = class CategoryService {
     }
     async update(categoryID, newCategory) {
         const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
-        if (existedCategory && String(existedCategory._id) !== String(categoryID)) {
+        if (existedCategory && !existedCategory._id.equals(categoryID)) {
             throw `Category slug '${newCategory.slug}' is existed`;
         }
         const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory, { new: true }).exec();
@@ -121,12 +120,11 @@ let CategoryService = class CategoryService {
         return actionResult;
     }
 };
-CategoryService = __decorate([
+exports.CategoryService = CategoryService = __decorate([
     (0, common_1.Injectable)(),
     __param(2, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
     __param(3, (0, model_transformer_1.InjectModel)(category_model_1.Category)),
     __metadata("design:paramtypes", [helper_service_seo_1.SeoService,
         archive_service_1.ArchiveService, Object, Object])
 ], CategoryService);
-exports.CategoryService = CategoryService;
 //# sourceMappingURL=category.service.js.map

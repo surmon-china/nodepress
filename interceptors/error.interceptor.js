@@ -36,18 +36,16 @@ const common_1 = require("@nestjs/common");
 const responser_decorator_1 = require("../decorators/responser.decorator");
 const custom_error_1 = require("../errors/custom.error");
 const TEXT = __importStar(require("../constants/text.constant"));
-let ErrorInterceptor = class ErrorInterceptor {
+let ErrorInterceptor = exports.ErrorInterceptor = class ErrorInterceptor {
     intercept(context, next) {
-        const call$ = next.handle();
         const target = context.getHandler();
         const { errorCode, errorMessage } = (0, responser_decorator_1.getResponserOptions)(target);
-        return call$.pipe((0, operators_1.catchError)((error) => {
+        return next.handle().pipe((0, operators_1.catchError)((error) => {
             return (0, rxjs_1.throwError)(() => new custom_error_1.CustomError({ message: errorMessage || TEXT.HTTP_DEFAULT_ERROR_TEXT, error }, errorCode));
         }));
     }
 };
-ErrorInterceptor = __decorate([
+exports.ErrorInterceptor = ErrorInterceptor = __decorate([
     (0, common_1.Injectable)()
 ], ErrorInterceptor);
-exports.ErrorInterceptor = ErrorInterceptor;
 //# sourceMappingURL=error.interceptor.js.map

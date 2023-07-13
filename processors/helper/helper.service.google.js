@@ -42,8 +42,8 @@ const error_transformer_1 = require("../../transformers/error.transformer");
 const value_constant_1 = require("../../constants/value.constant");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('GoogleAPI');
-let GoogleService = class GoogleService {
+const log = logger_1.default.scope('GoogleService');
+let GoogleService = exports.GoogleService = class GoogleService {
     constructor() {
         this.jwtClient = null;
         this.initClient();
@@ -53,7 +53,7 @@ let GoogleService = class GoogleService {
         try {
             this.jwtClient = new googleapis_1.google.auth.JWT((_a = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _a === void 0 ? void 0 : _a.client_email, value_constant_1.UNDEFINED, (_b = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _b === void 0 ? void 0 : _b.private_key, [
                 'https://www.googleapis.com/auth/indexing',
-                'https://www.googleapis.com/auth/analytics.readonly',
+                'https://www.googleapis.com/auth/analytics.readonly'
             ], value_constant_1.UNDEFINED);
         }
         catch (error) {
@@ -76,9 +76,8 @@ let GoogleService = class GoogleService {
         });
     }
 };
-GoogleService = __decorate([
+exports.GoogleService = GoogleService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], GoogleService);
-exports.GoogleService = GoogleService;
 //# sourceMappingURL=helper.service.google.js.map

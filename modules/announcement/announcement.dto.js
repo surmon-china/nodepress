@@ -21,6 +21,7 @@ const query_model_1 = require("../../models/query.model");
 const announcement_model_1 = require("./announcement.model");
 class AnnouncementPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionDTO, query_model_1.KeywordQueryDTO) {
 }
+exports.AnnouncementPaginateQueryDTO = AnnouncementPaginateQueryDTO;
 __decorate([
     (0, guest_decorator_1.WhenGuest)({ only: [biz_constant_1.PublishState.Published], default: biz_constant_1.PublishState.Published }),
     (0, class_validator_1.IsIn)(announcement_model_1.ANNOUNCEMENT_STATES),
@@ -30,14 +31,13 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], AnnouncementPaginateQueryDTO.prototype, "state", void 0);
-exports.AnnouncementPaginateQueryDTO = AnnouncementPaginateQueryDTO;
 class AnnouncementsDTO {
 }
+exports.AnnouncementsDTO = AnnouncementsDTO;
 __decorate([
     (0, class_validator_1.ArrayNotEmpty)(),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
 ], AnnouncementsDTO.prototype, "announcement_ids", void 0);
-exports.AnnouncementsDTO = AnnouncementsDTO;
 //# sourceMappingURL=announcement.dto.js.map

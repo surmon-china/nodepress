@@ -41,8 +41,8 @@ const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('NodeMailer');
-let EmailService = class EmailService {
+const log = logger_1.default.scope('EmailService');
+let EmailService = exports.EmailService = class EmailService {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({
             host: APP_CONFIG.EMAIL.host,
@@ -50,8 +50,8 @@ let EmailService = class EmailService {
             secure: false,
             auth: {
                 user: APP_CONFIG.EMAIL.account,
-                pass: APP_CONFIG.EMAIL.password,
-            },
+                pass: APP_CONFIG.EMAIL.password
+            }
         });
         this.verifyClient();
     }
@@ -86,9 +86,8 @@ let EmailService = class EmailService {
         return this.sendMail(Object.assign(Object.assign({}, mailOptions), { subject: `[${prefix}] ${mailOptions.subject}` }));
     }
 };
-EmailService = __decorate([
+exports.EmailService = EmailService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], EmailService);
-exports.EmailService = EmailService;
 //# sourceMappingURL=helper.service.email.js.map

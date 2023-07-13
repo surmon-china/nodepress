@@ -10,7 +10,7 @@ const app_config_1 = require("../../app.config");
 exports.TOKEN_COOKIE_KEY = '_disqus';
 const encodeToken = (token) => {
     return jsonwebtoken_1.default.sign(token, app_config_1.DISQUS.adminAccessToken, {
-        expiresIn: token.expires_in,
+        expiresIn: token.expires_in
     });
 };
 exports.encodeToken = encodeToken;

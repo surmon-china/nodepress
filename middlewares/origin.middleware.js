@@ -35,7 +35,7 @@ const response_interface_1 = require("../interfaces/response.interface");
 const app_environment_1 = require("../app.environment");
 const app_config_1 = require("../app.config");
 const TEXT = __importStar(require("../constants/text.constant"));
-let OriginMiddleware = class OriginMiddleware {
+let OriginMiddleware = exports.OriginMiddleware = class OriginMiddleware {
     use(request, response, next) {
         if (app_environment_1.isProdEnv) {
             const { origin, referer } = request.headers;
@@ -46,15 +46,14 @@ let OriginMiddleware = class OriginMiddleware {
                 return response.status(common_1.HttpStatus.UNAUTHORIZED).jsonp({
                     status: response_interface_1.ResponseStatus.Error,
                     message: TEXT.HTTP_ANONYMOUS_TEXT,
-                    error: null,
+                    error: null
                 });
             }
         }
         return next();
     }
 };
-OriginMiddleware = __decorate([
+exports.OriginMiddleware = OriginMiddleware = __decorate([
     (0, common_1.Injectable)()
 ], OriginMiddleware);
-exports.OriginMiddleware = OriginMiddleware;
 //# sourceMappingURL=origin.middleware.js.map

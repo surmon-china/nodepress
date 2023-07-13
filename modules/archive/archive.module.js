@@ -13,14 +13,13 @@ const article_model_1 = require("../article/article.model");
 const tag_model_1 = require("../tag/tag.model");
 const archive_controller_1 = require("./archive.controller");
 const archive_service_1 = require("./archive.service");
-let ArchiveModule = class ArchiveModule {
+let ArchiveModule = exports.ArchiveModule = class ArchiveModule {
 };
-ArchiveModule = __decorate([
+exports.ArchiveModule = ArchiveModule = __decorate([
     (0, common_1.Module)({
         controllers: [archive_controller_1.ArchiveController],
         providers: [tag_model_1.TagProvider, category_model_1.CategoryProvider, article_model_1.ArticleProvider, archive_service_1.ArchiveService],
-        exports: [archive_service_1.ArchiveService],
+        exports: [archive_service_1.ArchiveService]
     })
 ], ArchiveModule);
-exports.ArchiveModule = ArchiveModule;
 //# sourceMappingURL=archive.module.js.map

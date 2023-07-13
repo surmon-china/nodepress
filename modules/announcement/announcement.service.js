@@ -16,7 +16,7 @@ exports.AnnouncementService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const announcement_model_1 = require("./announcement.model");
-let AnnouncementService = class AnnouncementService {
+let AnnouncementService = exports.AnnouncementService = class AnnouncementService {
     constructor(announcementModel) {
         this.announcementModel = announcementModel;
     }
@@ -42,10 +42,9 @@ let AnnouncementService = class AnnouncementService {
         return this.announcementModel.deleteMany({ _id: { $in: announcementIDs } }).exec();
     }
 };
-AnnouncementService = __decorate([
+exports.AnnouncementService = AnnouncementService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, model_transformer_1.InjectModel)(announcement_model_1.Announcement)),
     __metadata("design:paramtypes", [Object])
 ], AnnouncementService);
-exports.AnnouncementService = AnnouncementService;
 //# sourceMappingURL=announcement.service.js.map

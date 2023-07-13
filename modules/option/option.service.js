@@ -47,18 +47,17 @@ const option_model_1 = require("./option.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('OptionService');
-let OptionService = class OptionService {
+let OptionService = exports.OptionService = class OptionService {
     constructor(optionModel, cacheService) {
         this.optionModel = optionModel;
         this.cacheService = cacheService;
-        this.optionCache = this.cacheService.promise({
-            ioMode: true,
+        this.optionCache = this.cacheService.manual({
             key: CACHE_KEY.OPTION,
             promise: () => {
                 return this.ensureAppOption().then((option) => {
                     return lodash_1.default.omit(option.toObject(), ['blocklist']);
                 });
-            },
+            }
         });
         this.optionCache.update().catch((error) => {
             log.warn('init getAppOption failed!', error);
@@ -101,10 +100,9 @@ let OptionService = class OptionService {
         return option.meta.likes;
     }
 };
-OptionService = __decorate([
+exports.OptionService = OptionService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, model_transformer_1.InjectModel)(option_model_1.Option)),
     __metadata("design:paramtypes", [Object, cache_service_1.CacheService])
 ], OptionService);
-exports.OptionService = OptionService;
 //# sourceMappingURL=option.service.js.map

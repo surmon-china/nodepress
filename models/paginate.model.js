@@ -16,6 +16,7 @@ const biz_constant_1 = require("../constants/biz.constant");
 const value_transformer_1 = require("../transformers/value.transformer");
 class PaginateBaseOptionDTO {
 }
+exports.PaginateBaseOptionDTO = PaginateBaseOptionDTO;
 __decorate([
     (0, class_validator_1.Min)(1),
     (0, class_validator_1.IsInt)(),
@@ -33,9 +34,9 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], PaginateBaseOptionDTO.prototype, "per_page", void 0);
-exports.PaginateBaseOptionDTO = PaginateBaseOptionDTO;
 class PaginateOptionDTO extends PaginateBaseOptionDTO {
 }
+exports.PaginateOptionDTO = PaginateOptionDTO;
 __decorate([
     (0, class_validator_1.IsIn)([biz_constant_1.SortType.Asc, biz_constant_1.SortType.Desc]),
     (0, class_validator_1.IsInt)(),
@@ -44,9 +45,9 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], PaginateOptionDTO.prototype, "sort", void 0);
-exports.PaginateOptionDTO = PaginateOptionDTO;
 class PaginateOptionWithHotSortDTO extends PaginateBaseOptionDTO {
 }
+exports.PaginateOptionWithHotSortDTO = PaginateOptionWithHotSortDTO;
 __decorate([
     (0, class_validator_1.IsIn)([biz_constant_1.SortType.Asc, biz_constant_1.SortType.Desc, biz_constant_1.SortType.Hottest]),
     (0, class_validator_1.IsInt)(),
@@ -55,5 +56,4 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], PaginateOptionWithHotSortDTO.prototype, "sort", void 0);
-exports.PaginateOptionWithHotSortDTO = PaginateOptionWithHotSortDTO;
 //# sourceMappingURL=paginate.model.js.map

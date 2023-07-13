@@ -19,6 +19,7 @@ const value_transformer_1 = require("../../transformers/value.transformer");
 const feedback_model_1 = require("./feedback.model");
 class FeedbackPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionDTO, query_model_1.KeywordQueryDTO) {
 }
+exports.FeedbackPaginateQueryDTO = FeedbackPaginateQueryDTO;
 __decorate([
     (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsInt)(),
@@ -43,14 +44,13 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], FeedbackPaginateQueryDTO.prototype, "marked", void 0);
-exports.FeedbackPaginateQueryDTO = FeedbackPaginateQueryDTO;
 class FeedbacksDTO {
 }
+exports.FeedbacksDTO = FeedbacksDTO;
 __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayNotEmpty)(),
     (0, class_validator_1.ArrayUnique)(),
     __metadata("design:type", Array)
 ], FeedbacksDTO.prototype, "feedback_ids", void 0);
-exports.FeedbacksDTO = FeedbacksDTO;
 //# sourceMappingURL=feedback.dto.js.map

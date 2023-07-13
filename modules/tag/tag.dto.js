@@ -19,11 +19,11 @@ class TagPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_
 exports.TagPaginateQueryDTO = TagPaginateQueryDTO;
 class TagsDTO {
 }
+exports.TagsDTO = TagsDTO;
 __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayNotEmpty)(),
     (0, class_validator_1.ArrayUnique)(),
     __metadata("design:type", Array)
 ], TagsDTO.prototype, "tag_ids", void 0);
-exports.TagsDTO = TagsDTO;
 //# sourceMappingURL=tag.dto.js.map

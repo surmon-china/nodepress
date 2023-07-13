@@ -18,6 +18,7 @@ const value_transformer_1 = require("../../transformers/value.transformer");
 const vote_model_1 = require("./vote.model");
 class VotePaginateQueryDTO extends paginate_model_1.PaginateOptionDTO {
 }
+exports.VotePaginateQueryDTO = VotePaginateQueryDTO;
 __decorate([
     (0, class_validator_1.IsIn)(vote_model_1.VOTE_TARGETS),
     (0, class_validator_1.IsInt)(),
@@ -49,27 +50,27 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], VotePaginateQueryDTO.prototype, "author_type", void 0);
-exports.VotePaginateQueryDTO = VotePaginateQueryDTO;
 class VotesDTO {
 }
+exports.VotesDTO = VotesDTO;
 __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayNotEmpty)(),
     (0, class_validator_1.ArrayUnique)(),
     __metadata("design:type", Array)
 ], VotesDTO.prototype, "vote_ids", void 0);
-exports.VotesDTO = VotesDTO;
 class VoteAuthorDTO {
 }
+exports.VoteAuthorDTO = VoteAuthorDTO;
 __decorate([
     (0, class_validator_1.ValidateNested)(),
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", comment_model_1.Author)
 ], VoteAuthorDTO.prototype, "author", void 0);
-exports.VoteAuthorDTO = VoteAuthorDTO;
 class CommentVoteDTO extends VoteAuthorDTO {
 }
+exports.CommentVoteDTO = CommentVoteDTO;
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
@@ -81,9 +82,9 @@ __decorate([
     (0, class_validator_1.IsDefined)(),
     __metadata("design:type", Number)
 ], CommentVoteDTO.prototype, "vote", void 0);
-exports.CommentVoteDTO = CommentVoteDTO;
 class PostVoteDTO extends VoteAuthorDTO {
 }
+exports.PostVoteDTO = PostVoteDTO;
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
@@ -95,5 +96,4 @@ __decorate([
     (0, class_validator_1.IsDefined)(),
     __metadata("design:type", Number)
 ], PostVoteDTO.prototype, "vote", void 0);
-exports.PostVoteDTO = PostVoteDTO;
 //# sourceMappingURL=vote.dto.js.map

@@ -59,9 +59,10 @@ const cache_service_1 = require("../../processors/cache/cache.service");
 const expansion_helper_1 = require("../expansion/expansion.helper");
 const archive_service_1 = require("../archive/archive.service");
 const tag_service_1 = require("../tag/tag.service");
+const value_constant_1 = require("../../constants/value.constant");
 const article_model_1 = require("./article.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
-let ArticleService = class ArticleService {
+let ArticleService = exports.ArticleService = class ArticleService {
     constructor(seoService, tagService, cacheService, archiveService, articleModel) {
         this.seoService = seoService;
         this.tagService = tagService;
@@ -71,16 +72,14 @@ let ArticleService = class ArticleService {
         this.hottestArticlesCache = this.cacheService.interval({
             key: CACHE_KEY.HOTTEST_ARTICLES,
             promise: () => this.getHottestArticles(20),
-            timeout: {
-                success: 1000 * 60 * 30,
-                error: 1000 * 60 * 5,
-            },
+            interval: 1000 * 60 * 30,
+            retry: 1000 * 60 * 5
         });
     }
     getHottestArticles(count) {
         return this.paginator(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, {
             perPage: count,
-            sort: article_model_1.ARTICLE_HOTTEST_SORT_PARAMS,
+            sort: article_model_1.ARTICLE_HOTTEST_SORT_PARAMS
         }).then((result) => result.documents);
     }
     getHottestArticlesCache() {
@@ -89,7 +88,7 @@ let ArticleService = class ArticleService {
     async getNearArticles(articleID, type, count) {
         const typeFieldMap = {
             early: { field: '$lt', sort: -1 },
-            later: { field: '$gt', sort: 1 },
+            later: { field: '$gt', sort: 1 }
         };
         const targetType = typeFieldMap[type];
         return this.articleModel
@@ -100,9 +99,9 @@ let ArticleService = class ArticleService {
             .exec();
     }
     async getRelatedArticles(article, count) {
-        const findParams = Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { tag: { $in: article.tag.map((t) => t._id) }, category: { $in: article.category.map((c) => c._id) } });
+        const findParams = Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { tags: { $in: article.tags }, categories: { $in: article.categories } });
         const articles = await this.articleModel
-            .find(findParams, article_model_1.ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 3 })
+            .find(findParams, article_model_1.ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 2 })
             .populate(article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE)
             .exec();
         const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject());
@@ -120,7 +119,7 @@ let ArticleService = class ArticleService {
             .exec()
             .then((result) => result || Promise.reject(`Article '${articleID}' not found`));
     }
-    getDetailByNumberIDOrSlug({ idOrSlug, publicOnly = false, populate = false, }) {
+    getDetailByNumberIDOrSlug({ idOrSlug, publicOnly = false, populate = false }) {
         const params = {};
         if (typeof idOrSlug === 'string') {
             params.slug = idOrSlug;
@@ -138,7 +137,7 @@ let ArticleService = class ArticleService {
         const article = await this.getDetailByNumberIDOrSlug({
             idOrSlug: target,
             publicOnly: true,
-            populate: true,
+            populate: true
         });
         article.meta.views++;
         article.save({ timestamps: false });
@@ -148,7 +147,7 @@ let ArticleService = class ArticleService {
     async incrementLikes(articleID) {
         const article = await this.getDetailByNumberIDOrSlug({
             idOrSlug: articleID,
-            publicOnly: true,
+            publicOnly: true
         });
         article.meta.likes++;
         await article.save({ timestamps: false });
@@ -170,13 +169,13 @@ let ArticleService = class ArticleService {
     async update(articleID, newArticle) {
         if (newArticle.slug) {
             const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec();
-            if (existedArticle && String(existedArticle._id) !== String(articleID)) {
+            if (existedArticle && !existedArticle._id.equals(articleID)) {
                 throw `Article slug '${newArticle.slug}' is existed`;
             }
         }
         Reflect.deleteProperty(newArticle, 'meta');
-        Reflect.deleteProperty(newArticle, 'create_at');
-        Reflect.deleteProperty(newArticle, 'update_at');
+        Reflect.deleteProperty(newArticle, 'created_at');
+        Reflect.deleteProperty(newArticle, 'updated_at');
         const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle, { new: true }).exec();
         if (!article) {
             throw `Article '${articleID}' not found`;
@@ -219,9 +218,9 @@ let ArticleService = class ArticleService {
         return this.articleModel
             .aggregate([
             { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-            { $project: { day: { $dateToString: { date: '$create_at', format: '%Y-%m-%d', timezone } } } },
+            { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
             { $group: { _id: '$day', count: { $sum: 1 } } },
-            { $sort: { _id: 1 } },
+            { $sort: { _id: 1 } }
         ])
             .then((calendar) => calendar.map((_a) => {
             var { _id } = _a, r = __rest(_a, ["_id"]);
@@ -235,18 +234,23 @@ let ArticleService = class ArticleService {
                 $group: {
                     _id: null,
                     totalViews: { $sum: '$meta.views' },
-                    totalLikes: { $sum: '$meta.likes' },
-                },
-            },
+                    totalLikes: { $sum: '$meta.likes' }
+                }
+            }
         ]);
-        return {
-            totalViews: result.totalViews,
-            totalLikes: result.totalLikes,
-        };
+        if (!result) {
+            return value_constant_1.NULL;
+        }
+        else {
+            return {
+                totalViews: result.totalViews,
+                totalLikes: result.totalLikes
+            };
+        }
     }
     async isCommentableArticle(articleID) {
         const article = await this.articleModel.findOne({ id: articleID }).exec();
-        return Boolean(article && !article.disabled_comment);
+        return Boolean(article && !article.disabled_comments);
     }
     async updateMetaComments(articleID, commentCount) {
         const findParams = { id: articleID };
@@ -254,7 +258,7 @@ let ArticleService = class ArticleService {
         return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec();
     }
 };
-ArticleService = __decorate([
+exports.ArticleService = ArticleService = __decorate([
     (0, common_1.Injectable)(),
     __param(4, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
     __metadata("design:paramtypes", [helper_service_seo_1.SeoService,
@@ -262,5 +266,4 @@ ArticleService = __decorate([
         cache_service_1.CacheService,
         archive_service_1.ArchiveService, Object])
 ], ArticleService);
-exports.ArticleService = ArticleService;
 //# sourceMappingURL=article.service.js.map

@@ -5,5 +5,5 @@ var ResponseStatus;
 (function (ResponseStatus) {
     ResponseStatus["Error"] = "error";
     ResponseStatus["Success"] = "success";
-})(ResponseStatus = exports.ResponseStatus || (exports.ResponseStatus = {}));
+})(ResponseStatus || (exports.ResponseStatus = ResponseStatus = {}));
 //# sourceMappingURL=response.interface.js.map

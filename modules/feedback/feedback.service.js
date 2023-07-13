@@ -16,10 +16,11 @@ exports.FeedbackService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const biz_constant_1 = require("../../constants/biz.constant");
+const value_constant_1 = require("../../constants/value.constant");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const app_environment_1 = require("../../app.environment");
 const feedback_model_1 = require("./feedback.model");
-let FeedbackService = class FeedbackService {
+let FeedbackService = exports.FeedbackService = class FeedbackService {
     constructor(ipService, feedbackModel) {
         this.ipService = ipService;
         this.feedbackModel = feedbackModel;
@@ -56,15 +57,14 @@ let FeedbackService = class FeedbackService {
     async getRootFeedbackAverageEmotion() {
         const [result] = await this.feedbackModel.aggregate([
             { $match: { tid: biz_constant_1.ROOT_FEEDBACK_TID } },
-            { $group: { _id: null, avgEmotion: { $avg: '$emotion' } } },
+            { $group: { _id: null, avgEmotion: { $avg: '$emotion' } } }
         ]);
-        return Math.round(result.avgEmotion * 1000) / 1000;
+        return result ? Math.round(result.avgEmotion * 1000) / 1000 : value_constant_1.NULL;
     }
 };
-FeedbackService = __decorate([
+exports.FeedbackService = FeedbackService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, model_transformer_1.InjectModel)(feedback_model_1.Feedback)),
     __metadata("design:paramtypes", [helper_service_ip_1.IPService, Object])
 ], FeedbackService);
-exports.FeedbackService = FeedbackService;
 //# sourceMappingURL=feedback.service.js.map

@@ -9,7 +9,7 @@ exports.unknownToNumber = unknownToNumber;
 function numberToBoolean(value) {
     return (0, class_validator_1.isNumber)(value, {
         allowNaN: false,
-        allowInfinity: false,
+        allowInfinity: false
     })
         ? Boolean(value)
         : value;

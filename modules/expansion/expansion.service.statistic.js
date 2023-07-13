@@ -22,7 +22,7 @@ const feedback_service_1 = require("../feedback/feedback.service");
 const tag_service_1 = require("../tag/tag.service");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const expansion_helper_1 = require("./expansion.helper");
-const log = logger_1.default.scope('ExpansionStatistic');
+const log = logger_1.default.scope('StatisticService');
 const DEFAULT_STATISTIC = Object.freeze({
     tags: null,
     articles: null,
@@ -30,9 +30,9 @@ const DEFAULT_STATISTIC = Object.freeze({
     totalViews: null,
     totalLikes: null,
     todayViews: null,
-    averageEmotion: null,
+    averageEmotion: null
 });
-let StatisticService = class StatisticService {
+let StatisticService = exports.StatisticService = class StatisticService {
     constructor(cacheService, articleService, commentService, feedbackService, tagService) {
         this.cacheService = cacheService;
         this.articleService = articleService;
@@ -47,7 +47,7 @@ let StatisticService = class StatisticService {
     }
     getStatistic(publicOnly) {
         const resultData = Object.assign({}, DEFAULT_STATISTIC);
-        return Promise.all([
+        const tasks = Promise.all([
             this.tagService.getTotalCount().then((value) => {
                 resultData.tags = value;
             }),
@@ -57,22 +57,27 @@ let StatisticService = class StatisticService {
             this.commentService.getTotalCount(publicOnly).then((value) => {
                 resultData.comments = value;
             }),
+            this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
+                resultData.averageEmotion = value !== null && value !== void 0 ? value : 0;
+            }),
             this.articleService.getMetaStatistic().then((value) => {
-                resultData.totalViews = value.totalViews;
-                resultData.totalLikes = value.totalLikes;
+                var _a, _b;
+                resultData.totalViews = (_a = value === null || value === void 0 ? void 0 : value.totalViews) !== null && _a !== void 0 ? _a : 0;
+                resultData.totalLikes = (_b = value === null || value === void 0 ? void 0 : value.totalLikes) !== null && _b !== void 0 ? _b : 0;
             }),
             (0, expansion_helper_1.getTodayViewsCount)(this.cacheService).then((value) => {
                 resultData.todayViews = value;
-            }),
-            this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
-                resultData.averageEmotion = value;
-            }),
-        ])
-            .then(() => Promise.resolve(resultData))
-            .catch(() => Promise.resolve(resultData));
+            })
+        ]);
+        return tasks
+            .then(() => resultData)
+            .catch((error) => {
+            log.warn('getStatistic task partial failed!', error);
+            return Promise.resolve(resultData);
+        });
     }
 };
-StatisticService = __decorate([
+exports.StatisticService = StatisticService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [cache_service_1.CacheService,
         article_service_1.ArticleService,
@@ -80,5 +85,4 @@ StatisticService = __decorate([
         feedback_service_1.FeedbackService,
         tag_service_1.TagService])
 ], StatisticService);
-exports.StatisticService = StatisticService;
 //# sourceMappingURL=expansion.service.statistic.js.map

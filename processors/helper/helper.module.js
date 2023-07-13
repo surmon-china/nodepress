@@ -16,15 +16,14 @@ const helper_service_email_1 = require("./helper.service.email");
 const helper_service_seo_1 = require("./helper.service.seo");
 const helper_service_ip_1 = require("./helper.service.ip");
 const services = [helper_service_google_1.GoogleService, helper_service_akismet_1.AkismetService, helper_service_aws_1.AWSService, helper_service_email_1.EmailService, helper_service_seo_1.SeoService, helper_service_ip_1.IPService];
-let HelperModule = class HelperModule {
+let HelperModule = exports.HelperModule = class HelperModule {
 };
-HelperModule = __decorate([
+exports.HelperModule = HelperModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
         imports: [axios_1.HttpModule],
         providers: services,
-        exports: services,
+        exports: services
     })
 ], HelperModule);
-exports.HelperModule = HelperModule;
 //# sourceMappingURL=helper.module.js.map

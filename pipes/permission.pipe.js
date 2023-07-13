@@ -19,7 +19,7 @@ const common_1 = require("@nestjs/common");
 const text_constant_1 = require("../constants/text.constant");
 const forbidden_error_1 = require("../errors/forbidden.error");
 const guest_decorator_1 = require("../decorators/guest.decorator");
-let PermissionPipe = class PermissionPipe {
+let PermissionPipe = exports.PermissionPipe = class PermissionPipe {
     constructor(request) {
         this.request = request;
     }
@@ -55,10 +55,9 @@ let PermissionPipe = class PermissionPipe {
         return value;
     }
 };
-PermissionPipe = __decorate([
+exports.PermissionPipe = PermissionPipe = __decorate([
     (0, common_1.Injectable)({ scope: common_1.Scope.REQUEST }),
     __param(0, (0, common_1.Inject)(core_1.REQUEST)),
     __metadata("design:paramtypes", [Object])
 ], PermissionPipe);
-exports.PermissionPipe = PermissionPipe;
 //# sourceMappingURL=permission.pipe.js.map

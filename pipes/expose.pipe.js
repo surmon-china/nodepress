@@ -16,7 +16,7 @@ exports.ExposePipe = void 0;
 const lodash_1 = require("lodash");
 const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
-let ExposePipe = class ExposePipe {
+let ExposePipe = exports.ExposePipe = class ExposePipe {
     constructor(request) {
         this.request = request;
     }
@@ -25,10 +25,9 @@ let ExposePipe = class ExposePipe {
         return value;
     }
 };
-ExposePipe = __decorate([
+exports.ExposePipe = ExposePipe = __decorate([
     (0, common_1.Injectable)({ scope: common_1.Scope.REQUEST }),
     __param(0, (0, common_1.Inject)(core_1.REQUEST)),
     __metadata("design:paramtypes", [Object])
 ], ExposePipe);
-exports.ExposePipe = ExposePipe;
 //# sourceMappingURL=expose.pipe.js.map

@@ -16,19 +16,19 @@ exports.DBBackupService = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const shelljs_1 = __importDefault(require("shelljs"));
-const moment_1 = __importDefault(require("moment"));
+const dayjs_1 = __importDefault(require("dayjs"));
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
 const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
 const app_config_1 = require("../../app.config");
 const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('ExpansionDBBackup');
+const log = logger_1.default.scope('DBBackupService');
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
 const UPLOAD_INTERVAL = '0 0 3 * * *';
 const BACKUP_FILE_NAME = 'nodepress.zip';
 const BACKUP_DIR_PATH = path_1.default.join(app_config_1.APP.ROOT_PATH, 'dbbackup');
-let DBBackupService = class DBBackupService {
+let DBBackupService = exports.DBBackupService = class DBBackupService {
     constructor(emailService, awsService) {
         this.emailService = emailService;
         this.awsService = awsService;
@@ -56,7 +56,7 @@ let DBBackupService = class DBBackupService {
             to: app_config_1.APP.ADMIN_EMAIL,
             subject,
             text: `${subject}, detail: ${content}`,
-            html: `${subject} <br> ${isCode ? `<pre>${content}</pre>` : content}`,
+            html: `${subject} <br> ${isCode ? `<pre>${content}</pre>` : content}`
         });
     }
     doBackup() {
@@ -78,7 +78,7 @@ let DBBackupService = class DBBackupService {
                     return reject('DB Backup script requires [zip]');
                 }
                 shelljs_1.default.exec(`zip -r -P ${app_config_1.DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup`);
-                const fileDate = (0, moment_1.default)(new Date()).format('YYYY-MM-DD-HH:mm');
+                const fileDate = (0, dayjs_1.default)(new Date()).format('YYYY-MM-DD-HH:mm');
                 const fileName = `nodepress-mongodb/backup-${fileDate}.zip`;
                 const filePath = path_1.default.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME);
                 log.info('uploading: ' + fileName);
@@ -91,7 +91,7 @@ let DBBackupService = class DBBackupService {
                     region: app_config_1.DB_BACKUP.s3Region,
                     bucket: app_config_1.DB_BACKUP.s3Bucket,
                     classType: helper_service_aws_1.AWSStorageClass.GLACIER,
-                    encryption: helper_service_aws_1.AWSServerSideEncryption.AES256,
+                    encryption: helper_service_aws_1.AWSServerSideEncryption.AES256
                 })
                     .then((result) => {
                     log.info('upload succeed.', result.url);
@@ -105,9 +105,9 @@ let DBBackupService = class DBBackupService {
         });
     }
 };
-DBBackupService = __decorate([
+exports.DBBackupService = DBBackupService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [helper_service_email_1.EmailService, helper_service_aws_1.AWSService])
+    __metadata("design:paramtypes", [helper_service_email_1.EmailService,
+        helper_service_aws_1.AWSService])
 ], DBBackupService);
-exports.DBBackupService = DBBackupService;
 //# sourceMappingURL=expansion.service.dbbackup.js.map

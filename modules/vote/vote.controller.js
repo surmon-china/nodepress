@@ -71,7 +71,7 @@ const vote_dto_1 = require("./vote.dto");
 const vote_model_1 = require("./vote.model");
 const vote_service_1 = require("./vote.service");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let VoteController = class VoteController {
+let VoteController = exports.VoteController = class VoteController {
     constructor(ipService, emailService, disqusPublicService, commentService, articleService, optionService, voteService) {
         this.ipService = ipService;
         this.emailService = emailService;
@@ -105,8 +105,8 @@ let VoteController = class VoteController {
                         name: disqusUserInfo.name,
                         username: disqusUserInfo.username,
                         url: disqusUserInfo.url,
-                        profileUrl: disqusUserInfo.profileUrl,
-                    },
+                        profileUrl: disqusUserInfo.profileUrl
+                    }
                 };
             }
             catch (error) { }
@@ -114,12 +114,12 @@ let VoteController = class VoteController {
         if (guestAuthor) {
             return {
                 type: vote_model_1.VoteAuthorType.Guest,
-                data: guestAuthor,
+                data: guestAuthor
             };
         }
         return {
             type: vote_model_1.VoteAuthorType.Anonymous,
-            data: null,
+            data: null
         };
     }
     getAuthorString(voteAuthor) {
@@ -145,7 +145,7 @@ let VoteController = class VoteController {
             return [
                 `${(_a = uaResult.browser.name) !== null && _a !== void 0 ? _a : 'unknown_browser'}@${(_b = uaResult.browser.version) !== null && _b !== void 0 ? _b : 'unknown'}`,
                 `${(_c = uaResult.os.name) !== null && _c !== void 0 ? _c : 'unknown_OS'}@${(_d = uaResult.os.version) !== null && _d !== void 0 ? _d : 'unknown'}`,
-                `${(_e = uaResult.device.model) !== null && _e !== void 0 ? _e : 'unknown_device'}@${(_f = uaResult.device.vendor) !== null && _f !== void 0 ? _f : 'unknown'}`,
+                `${(_e = uaResult.device.model) !== null && _e !== void 0 ? _e : 'unknown_device'}@${(_f = uaResult.device.vendor) !== null && _f !== void 0 ? _f : 'unknown'}`
             ].join(' · ');
         };
         const mailTexts = [
@@ -153,7 +153,7 @@ let VoteController = class VoteController {
             `Vote: ${payload.vote}`,
             `Author: ${payload.author}`,
             `Location: ${payload.location ? getLocationText(payload.location) : 'unknown'}`,
-            `Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : 'unknown'}`,
+            `Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : 'unknown'}`
         ];
         const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('');
         const linkHTML = `<a href="${payload.link}" target="_blank">${payload.on}</a>`;
@@ -161,7 +161,7 @@ let VoteController = class VoteController {
             to: payload.to,
             subject: payload.subject,
             text: mailTexts.join('\n'),
-            html: [textHTML, `<br>`, linkHTML].join('\n'),
+            html: [textHTML, `<br>`, linkHTML].join('\n')
         });
     }
     async voteDisqusThread(postId, vote, token) {
@@ -169,7 +169,7 @@ let VoteController = class VoteController {
         const result = await this.disqusPublicService.voteThread({
             access_token: token || null,
             thread: thread.id,
-            vote,
+            vote
         });
         return result;
     }
@@ -209,7 +209,7 @@ let VoteController = class VoteController {
                 author: voteAuthor.data,
                 user_agent: visitor.ua,
                 ip: visitor.ip,
-                ip_location: ipLocation,
+                ip_location: ipLocation
             });
             this.emailToTargetVoteMessage({
                 to: APP_CONFIG.APP.ADMIN_EMAIL,
@@ -219,7 +219,7 @@ let VoteController = class VoteController {
                 author: this.getAuthorString(voteAuthor),
                 userAgent: visitor.ua,
                 location: ipLocation,
-                link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.post_id),
+                link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.post_id)
             });
         });
         return likes;
@@ -233,7 +233,7 @@ let VoteController = class VoteController {
                     await this.disqusPublicService.votePost({
                         access_token: token.access_token,
                         post: postID,
-                        vote: voteBody.vote,
+                        vote: voteBody.vote
                     });
                 }
             }
@@ -249,7 +249,7 @@ let VoteController = class VoteController {
                 author: voteAuthor.data,
                 user_agent: visitor.ua,
                 ip: visitor.ip,
-                ip_location: ipLocation,
+                ip_location: ipLocation
             });
             const comment = await this.commentService.getDetailByNumberID(voteBody.comment_id);
             const targetTitle = await this.getPostTitle(comment.post_id);
@@ -259,7 +259,7 @@ let VoteController = class VoteController {
                 author: this.getAuthorString(voteAuthor),
                 userAgent: visitor.ua,
                 location: ipLocation,
-                link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
+                link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)
             };
             this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailPayload));
             if (comment.author.email) {
@@ -310,7 +310,7 @@ __decorate([
     __metadata("design:paramtypes", [vote_dto_1.CommentVoteDTO, Object, Object]),
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "voteComment", null);
-VoteController = __decorate([
+exports.VoteController = VoteController = __decorate([
     (0, common_1.Controller)('vote'),
     __metadata("design:paramtypes", [helper_service_ip_1.IPService,
         helper_service_email_1.EmailService,
@@ -320,5 +320,4 @@ VoteController = __decorate([
         option_service_1.OptionService,
         vote_service_1.VoteService])
 ], VoteController);
-exports.VoteController = VoteController;
 //# sourceMappingURL=vote.controller.js.map

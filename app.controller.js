@@ -35,7 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const APP_CONFIG = __importStar(require("./app.config"));
-let AppController = class AppController {
+let AppController = exports.AppController = class AppController {
     root() {
         return APP_CONFIG.PROJECT;
     }
@@ -46,8 +46,7 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Object)
 ], AppController.prototype, "root", null);
-AppController = __decorate([
+exports.AppController = AppController = __decorate([
     (0, common_1.Controller)()
 ], AppController);
-exports.AppController = AppController;
 //# sourceMappingURL=app.controller.js.map

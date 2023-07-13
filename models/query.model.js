@@ -15,24 +15,25 @@ const class_transformer_1 = require("class-transformer");
 const value_transformer_1 = require("../transformers/value.transformer");
 class DateQueryDTO {
 }
+exports.DateQueryDTO = DateQueryDTO;
 __decorate([
     (0, class_validator_1.IsDateString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], DateQueryDTO.prototype, "date", void 0);
-exports.DateQueryDTO = DateQueryDTO;
 class KeywordQueryDTO {
 }
+exports.KeywordQueryDTO = KeywordQueryDTO;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], KeywordQueryDTO.prototype, "keyword", void 0);
-exports.KeywordQueryDTO = KeywordQueryDTO;
 class BooleanQueryDTO {
 }
+exports.BooleanQueryDTO = BooleanQueryDTO;
 __decorate([
     (0, class_validator_1.IsIn)([1, 0]),
     (0, class_validator_1.IsInt)(),
@@ -41,5 +42,4 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], BooleanQueryDTO.prototype, "boolean", void 0);
-exports.BooleanQueryDTO = BooleanQueryDTO;
 //# sourceMappingURL=query.model.js.map

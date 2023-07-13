@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS = Object.freeze({
     page: 1,
     perPage: 16,
     dateSort: -1,
-    lean: false,
+    lean: false
 });
 function mongoosePaginate(schema) {
     schema.statics.paginate = paginate;
@@ -37,7 +37,7 @@ function paginate(filterQuery = {}, options = {}) {
             total: countResult,
             page,
             perPage,
-            totalPage: Math.ceil(countResult / perPage) || 1,
+            totalPage: Math.ceil(countResult / perPage) || 1
         };
         return result;
     });

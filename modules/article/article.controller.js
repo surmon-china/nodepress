@@ -43,7 +43,7 @@ const article_dto_1 = require("./article.dto");
 const article_model_1 = require("./article.model");
 const article_service_1 = require("./article.service");
 const article_model_2 = require("./article.model");
-let ArticleController = class ArticleController {
+let ArticleController = exports.ArticleController = class ArticleController {
     constructor(tagService, categoryService, articleService) {
         this.tagService = tagService;
         this.categoryService = categoryService;
@@ -80,18 +80,18 @@ let ArticleController = class ArticleController {
         }
         if (filters.date) {
             const queryDateMS = new Date(filters.date).getTime();
-            paginateQuery.create_at = {
+            paginateQuery.created_at = {
                 $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
-                $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000),
+                $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000)
             };
         }
         if (filters.tag_slug) {
             const tag = await this.tagService.getDetailBySlug(filters.tag_slug);
-            paginateQuery.tag = tag._id;
+            paginateQuery.tags = tag._id;
         }
         if (filters.category_slug) {
             const category = await this.categoryService.getDetailBySlug(filters.category_slug);
-            paginateQuery.category = category._id;
+            paginateQuery.categories = category._id;
         }
         return this.articleService.paginator(paginateQuery, paginateOptions);
     }
@@ -105,14 +105,17 @@ let ArticleController = class ArticleController {
     }
     async getArticleContext({ params }) {
         const articleID = Number(params.id);
-        const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true });
-        const [prev_article] = await this.articleService.getNearArticles(articleID, 'early', 1);
-        const [next_article] = await this.articleService.getNearArticles(articleID, 'later', 1);
-        const related_articles = await this.articleService.getRelatedArticles(article, 20);
+        const [prevArticle, nextArticle, relatedArticles] = await Promise.all([
+            this.articleService.getNearArticles(articleID, 'early', 1),
+            this.articleService.getNearArticles(articleID, 'later', 1),
+            this.articleService
+                .getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
+                .then((article) => this.articleService.getRelatedArticles(article, 20))
+        ]);
         return {
-            prev_article: prev_article || null,
-            next_article: next_article || null,
-            related_articles,
+            prev_article: prevArticle || null,
+            next_article: nextArticle || null,
+            related_articles: relatedArticles || []
         };
     }
     getArticle({ params, isUnauthenticated }) {
@@ -181,7 +184,7 @@ __decorate([
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
     responser_decorator_1.Responser.handle({
         message: 'Get article detail',
-        error: common_1.HttpStatus.NOT_FOUND,
+        error: common_1.HttpStatus.NOT_FOUND
     }),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
@@ -234,11 +237,10 @@ __decorate([
     __metadata("design:paramtypes", [article_dto_1.ArticleIDsDTO]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "delArticles", null);
-ArticleController = __decorate([
+exports.ArticleController = ArticleController = __decorate([
     (0, common_1.Controller)('article'),
     __metadata("design:paramtypes", [tag_service_1.TagService,
         category_service_1.CategoryService,
         article_service_1.ArticleService])
 ], ArticleController);
-exports.ArticleController = ArticleController;
 //# sourceMappingURL=article.controller.js.map

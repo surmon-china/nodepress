@@ -13,15 +13,14 @@ const article_model_1 = require("../article/article.model");
 const category_controller_1 = require("./category.controller");
 const category_model_1 = require("./category.model");
 const category_service_1 = require("./category.service");
-let CategoryModule = class CategoryModule {
+let CategoryModule = exports.CategoryModule = class CategoryModule {
 };
-CategoryModule = __decorate([
+exports.CategoryModule = CategoryModule = __decorate([
     (0, common_1.Module)({
         imports: [archive_module_1.ArchiveModule],
         controllers: [category_controller_1.CategoryController],
         providers: [article_model_1.ArticleProvider, category_model_1.CategoryProvider, category_service_1.CategoryService],
-        exports: [category_service_1.CategoryService],
+        exports: [category_service_1.CategoryService]
     })
 ], CategoryModule);
-exports.CategoryModule = CategoryModule;
 //# sourceMappingURL=category.module.js.map

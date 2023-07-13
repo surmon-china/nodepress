@@ -11,14 +11,13 @@ const common_1 = require("@nestjs/common");
 const feedback_model_1 = require("./feedback.model");
 const feedback_service_1 = require("./feedback.service");
 const feedback_controller_1 = require("./feedback.controller");
-let FeedbackModule = class FeedbackModule {
+let FeedbackModule = exports.FeedbackModule = class FeedbackModule {
 };
-FeedbackModule = __decorate([
+exports.FeedbackModule = FeedbackModule = __decorate([
     (0, common_1.Module)({
         controllers: [feedback_controller_1.FeedbackController],
         providers: [feedback_model_1.FeedbackProvider, feedback_service_1.FeedbackService],
-        exports: [feedback_service_1.FeedbackService],
+        exports: [feedback_service_1.FeedbackService]
     })
 ], FeedbackModule);
-exports.FeedbackModule = FeedbackModule;
 //# sourceMappingURL=feedback.module.js.map

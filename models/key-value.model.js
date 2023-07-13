@@ -14,6 +14,7 @@ const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
 class KeyValueModel {
 }
+exports.KeyValueModel = KeyValueModel;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -26,5 +27,4 @@ __decorate([
     (0, typegoose_1.prop)({ required: false, validate: /\S+/ }),
     __metadata("design:type", String)
 ], KeyValueModel.prototype, "value", void 0);
-exports.KeyValueModel = KeyValueModel;
 //# sourceMappingURL=key-value.model.js.map

@@ -21,6 +21,7 @@ const paginate_model_1 = require("../../models/paginate.model");
 const value_transformer_1 = require("../../transformers/value.transformer");
 class CommentPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionWithHotSortDTO, query_model_1.KeywordQueryDTO) {
 }
+exports.CommentPaginateQueryDTO = CommentPaginateQueryDTO;
 __decorate([
     (0, guest_decorator_1.WhenGuest)({ only: [biz_constant_1.CommentState.Published], default: biz_constant_1.CommentState.Published }),
     (0, class_validator_1.IsIn)(comment_model_1.COMMENT_STATES),
@@ -38,9 +39,9 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], CommentPaginateQueryDTO.prototype, "post_id", void 0);
-exports.CommentPaginateQueryDTO = CommentPaginateQueryDTO;
 class CommentsDTO {
 }
+exports.CommentsDTO = CommentsDTO;
 __decorate([
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ArrayNotEmpty)(),
@@ -52,13 +53,12 @@ __decorate([
     (0, class_validator_1.ArrayUnique)(),
     __metadata("design:type", Array)
 ], CommentsDTO.prototype, "post_ids", void 0);
-exports.CommentsDTO = CommentsDTO;
 class CommentsStateDTO extends CommentsDTO {
 }
+exports.CommentsStateDTO = CommentsStateDTO;
 __decorate([
     (0, class_validator_1.IsIn)(comment_model_1.COMMENT_STATES),
     (0, class_validator_1.IsInt)(),
     __metadata("design:type", Number)
 ], CommentsStateDTO.prototype, "state", void 0);
-exports.CommentsStateDTO = CommentsStateDTO;
 //# sourceMappingURL=comment.dto.js.map

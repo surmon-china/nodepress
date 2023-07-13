@@ -13,15 +13,14 @@ const article_model_1 = require("../article/article.model");
 const tag_controller_1 = require("./tag.controller");
 const tag_model_1 = require("./tag.model");
 const tag_service_1 = require("./tag.service");
-let TagModule = class TagModule {
+let TagModule = exports.TagModule = class TagModule {
 };
-TagModule = __decorate([
+exports.TagModule = TagModule = __decorate([
     (0, common_1.Module)({
         imports: [archive_module_1.ArchiveModule],
         controllers: [tag_controller_1.TagController],
         providers: [article_model_1.ArticleProvider, tag_model_1.TagProvider, tag_service_1.TagService],
-        exports: [tag_service_1.TagService],
+        exports: [tag_service_1.TagService]
     })
 ], TagModule);
-exports.TagModule = TagModule;
 //# sourceMappingURL=tag.module.js.map

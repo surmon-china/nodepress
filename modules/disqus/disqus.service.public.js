@@ -49,21 +49,21 @@ const disqus_service_private_1 = require("./disqus.service.private");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
 const log = logger_1.default.scope('DisqusPublicService');
-let DisqusPublicService = class DisqusPublicService {
+let DisqusPublicService = exports.DisqusPublicService = class DisqusPublicService {
     constructor(cacheService, commentService, disqusPrivateService) {
         this.cacheService = cacheService;
         this.commentService = commentService;
         this.disqusPrivateService = disqusPrivateService;
         this.disqus = new disqus_1.Disqus({
             apiKey: app_config_1.DISQUS.publicKey,
-            apiSecret: app_config_1.DISQUS.secretKey,
+            apiSecret: app_config_1.DISQUS.secretKey
         });
     }
     getUserInfoCacheKey(uid) {
         return (0, cache_constant_1.getDisqusCacheKey)(`userinfo-${uid}`);
     }
     setUserInfoCache(uid, userInfo, ttl) {
-        return this.cacheService.set(this.getUserInfoCacheKey(uid), userInfo, { ttl });
+        return this.cacheService.set(this.getUserInfoCacheKey(uid), userInfo, ttl);
     }
     getUserInfoCache(uid) {
         return this.cacheService.get(this.getUserInfoCacheKey(uid));
@@ -108,7 +108,7 @@ let DisqusPublicService = class DisqusPublicService {
             return cached;
         }
         const result = await this.ensureThreadDetail(postID);
-        this.cacheService.set(cacheKey, result, { ttl: 60 * 60 * 24 });
+        this.cacheService.set(cacheKey, result, 60 * 60 * 24);
         return result;
     }
     async voteThread(params) {
@@ -137,7 +137,7 @@ let DisqusPublicService = class DisqusPublicService {
         const body = {
             message: comment.content,
             parent: parentID,
-            thread: threadID,
+            thread: threadID
         };
         if (accessToken) {
             body.access_token = accessToken;
@@ -168,7 +168,7 @@ let DisqusPublicService = class DisqusPublicService {
             comment: newComment,
             threadID: thread.id,
             parentID,
-            accessToken,
+            accessToken
         });
         if (disqusPost.author.isAnonymous && !disqusPost.isApproved) {
             try {
@@ -213,16 +213,15 @@ let DisqusPublicService = class DisqusPublicService {
         }
         await this.deleteDisqusComment({
             post: commentDisqusPostID,
-            access_token: accessToken,
+            access_token: accessToken
         });
         return await this.commentService.update(comment._id, { state: biz_constant_1.CommentState.Deleted });
     }
 };
-DisqusPublicService = __decorate([
+exports.DisqusPublicService = DisqusPublicService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [cache_service_1.CacheService,
         comment_service_1.CommentService,
         disqus_service_private_1.DisqusPrivateService])
 ], DisqusPublicService);
-exports.DisqusPublicService = DisqusPublicService;
 //# sourceMappingURL=disqus.service.public.js.map

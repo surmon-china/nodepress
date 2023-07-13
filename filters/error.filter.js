@@ -15,7 +15,7 @@ const common_1 = require("@nestjs/common");
 const response_interface_1 = require("../interfaces/response.interface");
 const value_constant_1 = require("../constants/value.constant");
 const app_environment_1 = require("../app.environment");
-let HttpExceptionFilter = class HttpExceptionFilter {
+let HttpExceptionFilter = exports.HttpExceptionFilter = class HttpExceptionFilter {
     catch(exception, host) {
         const request = host.switchToHttp().getRequest();
         const response = host.switchToHttp().getResponse();
@@ -27,7 +27,7 @@ let HttpExceptionFilter = class HttpExceptionFilter {
             status: response_interface_1.ResponseStatus.Error,
             message: errorMessage,
             error: (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.message) || (lodash_1.default.isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
-            debug: app_environment_1.isDevEnv ? (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.stack) || exception.stack : value_constant_1.UNDEFINED,
+            debug: app_environment_1.isDevEnv ? (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.stack) || exception.stack : value_constant_1.UNDEFINED
         };
         if (exceptionStatus === common_1.HttpStatus.NOT_FOUND) {
             data.error = data.error || `Not found`;
@@ -36,8 +36,7 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         return response.status((errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.status) || exceptionStatus).jsonp(data);
     }
 };
-HttpExceptionFilter = __decorate([
+exports.HttpExceptionFilter = HttpExceptionFilter = __decorate([
     (0, common_1.Catch)()
 ], HttpExceptionFilter);
-exports.HttpExceptionFilter = HttpExceptionFilter;
 //# sourceMappingURL=error.filter.js.map

@@ -23,33 +23,33 @@ var FeedbackEmotion;
     FeedbackEmotion[FeedbackEmotion["Neutral"] = 3] = "Neutral";
     FeedbackEmotion[FeedbackEmotion["Great"] = 4] = "Great";
     FeedbackEmotion[FeedbackEmotion["Amazing"] = 5] = "Amazing";
-})(FeedbackEmotion = exports.FeedbackEmotion || (exports.FeedbackEmotion = {}));
+})(FeedbackEmotion || (exports.FeedbackEmotion = FeedbackEmotion = {}));
 const emotionMap = new Map([
     {
         value: FeedbackEmotion.Terrible,
         text: FeedbackEmotion[FeedbackEmotion.Terrible],
-        emoji: '😠',
+        emoji: '😠'
     },
     {
         value: FeedbackEmotion.Bad,
         text: FeedbackEmotion[FeedbackEmotion.Bad],
-        emoji: '🙁',
+        emoji: '🙁'
     },
     {
         value: FeedbackEmotion.Neutral,
         text: FeedbackEmotion[FeedbackEmotion.Neutral],
-        emoji: '😐',
+        emoji: '😐'
     },
     {
         value: FeedbackEmotion.Great,
         text: FeedbackEmotion[FeedbackEmotion.Great],
-        emoji: '😃',
+        emoji: '😃'
     },
     {
         value: FeedbackEmotion.Amazing,
         text: FeedbackEmotion[FeedbackEmotion.Amazing],
-        emoji: '🥰',
-    },
+        emoji: '🥰'
+    }
 ].map((item) => [item.value, item]));
 exports.FEEDBACK_EMOTIONS = Array.from(emotionMap.values());
 exports.FEEDBACK_EMOTION_VALUES = exports.FEEDBACK_EMOTIONS.map((e) => e.value);
@@ -61,6 +61,7 @@ class FeedbackBase {
         return emotionMap.get(this.emotion).emoji;
     }
 }
+exports.FeedbackBase = FeedbackBase;
 __decorate([
     (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsInt)(),
@@ -97,8 +98,7 @@ __decorate([
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], FeedbackBase.prototype, "user_email", void 0);
-exports.FeedbackBase = FeedbackBase;
-let Feedback = class Feedback extends FeedbackBase {
+let Feedback = exports.Feedback = class Feedback extends FeedbackBase {
 };
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
@@ -139,26 +139,26 @@ __decorate([
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
     __metadata("design:type", Date)
-], Feedback.prototype, "create_at", void 0);
+], Feedback.prototype, "created_at", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
-], Feedback.prototype, "update_at", void 0);
-Feedback = __decorate([
+], Feedback.prototype, "updated_at", void 0);
+exports.Feedback = Feedback = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.generalAutoIncrementIDConfig),
     (0, typegoose_1.modelOptions)({
         options: { allowMixed: typegoose_1.Severity.ALLOW },
         schemaOptions: {
+            versionKey: false,
             toJSON: { virtuals: true },
             toObject: { virtuals: true },
             timestamps: {
-                createdAt: 'create_at',
-                updatedAt: 'update_at',
-            },
-        },
+                createdAt: 'created_at',
+                updatedAt: 'updated_at'
+            }
+        }
     })
 ], Feedback);
-exports.Feedback = Feedback;
 exports.FeedbackProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Feedback);
 //# sourceMappingURL=feedback.model.js.map

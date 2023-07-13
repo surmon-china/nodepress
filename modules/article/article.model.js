@@ -24,23 +24,24 @@ exports.ARTICLE_LANGUAGES = [biz_constant_1.Language.English, biz_constant_1.Lan
 exports.ARTICLE_PUBLISH_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published, biz_constant_1.PublishState.Recycle];
 exports.ARTICLE_PUBLIC_STATES = [biz_constant_1.PublicState.Public, biz_constant_1.PublicState.Secret, biz_constant_1.PublicState.Reserve];
 exports.ARTICLE_ORIGIN_STATES = [biz_constant_1.OriginState.Original, biz_constant_1.OriginState.Reprint, biz_constant_1.OriginState.Hybrid];
-exports.ARTICLE_FULL_QUERY_REF_POPULATE = ['category', 'tag'];
+exports.ARTICLE_FULL_QUERY_REF_POPULATE = ['categories', 'tags'];
 exports.ARTICLE_LIST_QUERY_PROJECTION = { content: false };
 exports.ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
     state: biz_constant_1.PublishState.Published,
-    public: biz_constant_1.PublicState.Public,
+    public: biz_constant_1.PublicState.Public
 });
 exports.ARTICLE_HOTTEST_SORT_PARAMS = Object.freeze({
     'meta.comments': biz_constant_1.SortType.Desc,
-    'meta.likes': biz_constant_1.SortType.Desc,
+    'meta.likes': biz_constant_1.SortType.Desc
 });
 const ARTICLE_DEFAULT_META = Object.freeze({
     likes: 0,
     views: 0,
-    comments: 0,
+    comments: 0
 });
 class ArticleMeta {
 }
+exports.ArticleMeta = ArticleMeta;
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, typegoose_1.prop)({ default: 0 }),
@@ -56,8 +57,7 @@ __decorate([
     (0, typegoose_1.prop)({ default: 0 }),
     __metadata("design:type", Number)
 ], ArticleMeta.prototype, "comments", void 0);
-exports.ArticleMeta = ArticleMeta;
-let Article = class Article {
+let Article = exports.Article = class Article {
 };
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
@@ -100,7 +100,7 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
-], Article.prototype, "thumb", void 0);
+], Article.prototype, "thumbnail", void 0);
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_PUBLISH_STATES),
     (0, class_validator_1.IsInt)(),
@@ -128,11 +128,11 @@ __decorate([
     (0, class_validator_1.IsArray)(),
     (0, typegoose_1.prop)({ ref: () => category_model_1.Category, required: true, index: true }),
     __metadata("design:type", Array)
-], Article.prototype, "category", void 0);
+], Article.prototype, "categories", void 0);
 __decorate([
     (0, typegoose_1.prop)({ ref: () => tag_model_1.Tag, index: true }),
     __metadata("design:type", Array)
-], Article.prototype, "tag", void 0);
+], Article.prototype, "tags", void 0);
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_LANGUAGES),
     (0, class_validator_1.IsString)(),
@@ -144,7 +144,7 @@ __decorate([
     (0, class_validator_1.IsBoolean)(),
     (0, typegoose_1.prop)({ default: false }),
     __metadata("design:type", Boolean)
-], Article.prototype, "disabled_comment", void 0);
+], Article.prototype, "disabled_comments", void 0);
 __decorate([
     (0, typegoose_1.prop)({ _id: false, default: Object.assign({}, ARTICLE_DEFAULT_META) }),
     __metadata("design:type", ArticleMeta)
@@ -152,38 +152,38 @@ __decorate([
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now, index: true, immutable: true }),
     __metadata("design:type", Date)
-], Article.prototype, "create_at", void 0);
+], Article.prototype, "created_at", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
-], Article.prototype, "update_at", void 0);
+], Article.prototype, "updated_at", void 0);
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
     (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
     __metadata("design:type", Array)
 ], Article.prototype, "extends", void 0);
-Article = __decorate([
+exports.Article = Article = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.generalAutoIncrementIDConfig),
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
+            versionKey: false,
             toObject: { getters: true },
             timestamps: {
-                createdAt: 'create_at',
-                updatedAt: 'update_at',
-            },
-        },
+                createdAt: 'created_at',
+                updatedAt: 'updated_at'
+            }
+        }
     }),
     (0, typegoose_1.index)({ title: 'text', content: 'text', description: 'text' }, {
         name: 'SearchIndex',
         weights: {
             title: 10,
             description: 18,
-            content: 3,
-        },
+            content: 3
+        }
     })
 ], Article);
-exports.Article = Article;
 exports.ArticleProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Article);
 //# sourceMappingURL=article.model.js.map

@@ -47,42 +47,39 @@ const helper_service_seo_1 = require("../../processors/helper/helper.service.seo
 const biz_constant_1 = require("../../constants/biz.constant");
 const archive_service_1 = require("../archive/archive.service");
 const article_model_1 = require("../article/article.model");
+const logger_1 = __importDefault(require("../../utils/logger"));
 const tag_model_1 = require("./tag.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
-const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('TagService');
-let TagService = class TagService {
+let TagService = exports.TagService = class TagService {
     constructor(seoService, cacheService, archiveService, tagModel, articleModel) {
         this.seoService = seoService;
         this.cacheService = cacheService;
         this.archiveService = archiveService;
         this.tagModel = tagModel;
         this.articleModel = articleModel;
-        this.allTagsCache = this.cacheService.promise({
-            ioMode: true,
+        this.allTagsCache = this.cacheService.manual({
             key: CACHE_KEY.ALL_TAGS,
-            promise: () => this.getAllTags(),
+            promise: () => this.getAllTags()
         });
         this.updateAllTagsCache().catch((error) => {
             log.warn('init tagPaginateCache failed!', error);
         });
     }
-    async aggregate(publicOnly, documents) {
+    async aggregate(publicOnly, tags) {
         const counts = await this.articleModel.aggregate([
             { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-            { $unwind: '$tag' },
-            { $group: { _id: '$tag', count: { $sum: 1 } } },
+            { $unwind: '$tags' },
+            { $group: { _id: '$tags', count: { $sum: 1 } } }
         ]);
-        const hydratedDocs = documents.map((tag) => {
-            const found = counts.find((item) => String(item._id) === String(tag._id));
+        return tags.map((tag) => {
+            const found = counts.find((item) => item._id.equals(tag._id));
             return Object.assign(Object.assign({}, tag), { articles_count: found ? found.count : 0 });
         });
-        return hydratedDocs;
     }
     async getAllTags() {
         const allTags = await this.tagModel.find().lean().sort({ _id: biz_constant_1.SortType.Desc }).exec();
-        const documents = await this.aggregate(true, allTags);
-        return documents;
+        return await this.aggregate(true, allTags);
     }
     getAllTagsCache() {
         return this.allTagsCache.get();
@@ -114,7 +111,7 @@ let TagService = class TagService {
     }
     async update(tagID, newTag) {
         const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
-        if (existedTag && String(existedTag._id) !== String(tagID)) {
+        if (existedTag && !existedTag._id.equals(tagID)) {
             throw `Tag slug '${newTag.slug}' is existed`;
         }
         const tag = await this.tagModel.findByIdAndUpdate(tagID, newTag, { new: true }).exec();
@@ -138,17 +135,17 @@ let TagService = class TagService {
     }
     async batchDelete(tagIDs) {
         const tags = await this.tagModel.find({ _id: { $in: tagIDs } }).exec();
-        this.seoService.delete(tags.map((tag) => (0, urlmap_transformer_1.getTagUrl)(tag.slug)));
         const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIDs } }).exec();
         this.archiveService.updateCache();
         this.updateAllTagsCache();
+        this.seoService.delete(tags.map((tag) => (0, urlmap_transformer_1.getTagUrl)(tag.slug)));
         return actionResult;
     }
     async getTotalCount() {
         return await this.tagModel.countDocuments().exec();
     }
 };
-TagService = __decorate([
+exports.TagService = TagService = __decorate([
     (0, common_1.Injectable)(),
     __param(3, (0, model_transformer_1.InjectModel)(tag_model_1.Tag)),
     __param(4, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
@@ -156,5 +153,4 @@ TagService = __decorate([
         cache_service_1.CacheService,
         archive_service_1.ArchiveService, Object, Object])
 ], TagService);
-exports.TagService = TagService;
 //# sourceMappingURL=tag.service.js.map

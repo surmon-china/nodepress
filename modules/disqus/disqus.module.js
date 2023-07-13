@@ -15,15 +15,14 @@ const comment_module_1 = require("../comment/comment.module");
 const disqus_controller_1 = require("./disqus.controller");
 const disqus_service_public_1 = require("./disqus.service.public");
 const disqus_service_private_1 = require("./disqus.service.private");
-let DisqusModule = class DisqusModule {
+let DisqusModule = exports.DisqusModule = class DisqusModule {
 };
-DisqusModule = __decorate([
+exports.DisqusModule = DisqusModule = __decorate([
     (0, common_1.Module)({
         imports: [axios_1.HttpModule, option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule],
         controllers: [disqus_controller_1.DisqusController],
         providers: [disqus_service_public_1.DisqusPublicService, disqus_service_private_1.DisqusPrivateService],
-        exports: [disqus_service_public_1.DisqusPublicService, disqus_service_private_1.DisqusPrivateService],
+        exports: [disqus_service_public_1.DisqusPublicService, disqus_service_private_1.DisqusPrivateService]
     })
 ], DisqusModule);
-exports.DisqusModule = DisqusModule;
 //# sourceMappingURL=disqus.module.js.map

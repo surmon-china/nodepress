@@ -49,16 +49,15 @@ const tag_model_1 = require("../tag/tag.model");
 const CACHE_KEY = __importStar(require("../../constants/cache.constant"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('ArchiveService');
-let ArchiveService = class ArchiveService {
+let ArchiveService = exports.ArchiveService = class ArchiveService {
     constructor(cacheService, tagModel, articleModel, categoryModel) {
         this.cacheService = cacheService;
         this.tagModel = tagModel;
         this.articleModel = articleModel;
         this.categoryModel = categoryModel;
-        this.archiveCache = this.cacheService.promise({
-            ioMode: true,
+        this.archiveCache = this.cacheService.manual({
             key: CACHE_KEY.ARCHIVE,
-            promise: this.getArchiveData.bind(this),
+            promise: this.getArchiveData.bind(this)
         });
         this.updateCache().catch((error) => {
             log.warn('init getArchiveData failed!', error);
@@ -78,11 +77,12 @@ let ArchiveService = class ArchiveService {
     }
     async getArchiveData() {
         try {
-            return {
-                tags: await this.getAllTags(),
-                categories: await this.getAllCategories(),
-                articles: await this.getAllArticles(),
-            };
+            const [tags, categories, articles] = await Promise.all([
+                this.getAllTags(),
+                this.getAllCategories(),
+                this.getAllArticles()
+            ]);
+            return { tags, categories, articles };
         }
         catch (error) {
             log.warn('getArchiveData failed!', error);
@@ -96,12 +96,11 @@ let ArchiveService = class ArchiveService {
         return this.archiveCache.update();
     }
 };
-ArchiveService = __decorate([
+exports.ArchiveService = ArchiveService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, model_transformer_1.InjectModel)(tag_model_1.Tag)),
     __param(2, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
     __param(3, (0, model_transformer_1.InjectModel)(category_model_1.Category)),
     __metadata("design:paramtypes", [cache_service_1.CacheService, Object, Object, Object])
 ], ArchiveService);
-exports.ArchiveService = ArchiveService;
 //# sourceMappingURL=archive.service.js.map

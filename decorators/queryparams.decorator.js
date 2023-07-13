@@ -15,7 +15,7 @@ exports.QueryParams = (0, common_1.createParamDecorator)((field, context) => {
         ip: ip.replace('::ffff:', '').replace('::1', '') || null,
         ua: request.headers['user-agent'],
         origin: request.headers.origin,
-        referer: request.headers.referer,
+        referer: request.headers.referer
     };
     const result = {
         isAuthenticated,
@@ -24,7 +24,7 @@ exports.QueryParams = (0, common_1.createParamDecorator)((field, context) => {
         query: request.query,
         cookies: request.cookies,
         visitor,
-        request,
+        request
     };
     return field ? result[field] : result;
 });
