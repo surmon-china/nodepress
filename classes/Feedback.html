@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -43,21 +43,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li >Feedback</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >Feedback</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -76,7 +82,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -89,48 +95,86 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#create_at" >create_at</a>
+                                <a href="#created_at" >created_at</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                 <a href="#id" >id</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#ip" >ip</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                 <a href="#ip_location" >ip_location</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#marked" >marked</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#origin" >origin</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#remark" >remark</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#update_at" >update_at</a>
+                                <a href="#updated_at" >updated_at</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#user_agent" >user_agent</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#content" >content</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#emotion" >emotion</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#tid" >tid</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#user_email" >user_email</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#user_name" >user_name</a>
                             </li>
                         </ul>
@@ -147,7 +191,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -156,11 +200,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="create_at"></a>
+                    <a name="created_at"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>create_at</b></span>
-                        <a href="#create_at"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>created_at</b></span>
+                        <a href="#created_at"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -181,7 +226,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="153" class="link-to-prism">src/modules/feedback/feedback.model.ts:153</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="154" class="link-to-prism">src/modules/feedback/feedback.model.ts:154</a></div>
                         </td>
                     </tr>
 
@@ -194,6 +239,7 @@
                 <td class="col-md-4">
                     <a name="id"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                         <span ><b>id</b></span>
                         <a href="#id"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -216,7 +262,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/modules/feedback/feedback.model.ts:124</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="125" class="link-to-prism">src/modules/feedback/feedback.model.ts:125</a></div>
                         </td>
                     </tr>
 
@@ -229,6 +275,9 @@
                 <td class="col-md-4">
                     <a name="ip"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>ip</b></span>
                         <a href="#ip"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -251,7 +300,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="147" class="link-to-prism">src/modules/feedback/feedback.model.ts:147</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/modules/feedback/feedback.model.ts:148</a></div>
                         </td>
                     </tr>
 
@@ -264,6 +313,7 @@
                 <td class="col-md-4">
                     <a name="ip_location"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                         <span ><b>ip_location</b></span>
                         <a href="#ip_location"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -286,7 +336,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="150" class="link-to-prism">src/modules/feedback/feedback.model.ts:150</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="151" class="link-to-prism">src/modules/feedback/feedback.model.ts:151</a></div>
                         </td>
                     </tr>
 
@@ -299,6 +349,8 @@
                 <td class="col-md-4">
                     <a name="marked"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>marked</b></span>
                         <a href="#marked"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -321,7 +373,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="128" class="link-to-prism">src/modules/feedback/feedback.model.ts:128</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">src/modules/feedback/feedback.model.ts:129</a></div>
                         </td>
                     </tr>
 
@@ -334,6 +386,9 @@
                 <td class="col-md-4">
                     <a name="origin"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>origin</b></span>
                         <a href="#origin"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -356,7 +411,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/modules/feedback/feedback.model.ts:138</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">src/modules/feedback/feedback.model.ts:139</a></div>
                         </td>
                     </tr>
 
@@ -369,6 +424,9 @@
                 <td class="col-md-4">
                     <a name="remark"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>remark</b></span>
                         <a href="#remark"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -391,7 +449,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/modules/feedback/feedback.model.ts:133</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="134" class="link-to-prism">src/modules/feedback/feedback.model.ts:134</a></div>
                         </td>
                     </tr>
 
@@ -402,11 +460,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="update_at"></a>
+                    <a name="updated_at"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>update_at</b></span>
-                        <a href="#update_at"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updated_at</b></span>
+                        <a href="#updated_at"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -427,7 +486,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="156" class="link-to-prism">src/modules/feedback/feedback.model.ts:156</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="157" class="link-to-prism">src/modules/feedback/feedback.model.ts:157</a></div>
                         </td>
                     </tr>
 
@@ -440,6 +499,8 @@
                 <td class="col-md-4">
                     <a name="user_agent"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
                         <span ><b>user_agent</b></span>
                         <a href="#user_agent"><span class="icon ion-ios-link"></span></a>
@@ -463,7 +524,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/modules/feedback/feedback.model.ts:142</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/feedback/feedback.model.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -476,6 +537,11 @@
                 <td class="col-md-4">
                     <a name="content"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>content</b></span>
                         <a href="#content"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -518,6 +584,10 @@
                 <td class="col-md-4">
                     <a name="emotion"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>emotion</b></span>
                         <a href="#emotion"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -560,6 +630,10 @@
                 <td class="col-md-4">
                     <a name="tid"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>tid</b></span>
                         <a href="#tid"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -602,6 +676,10 @@
                 <td class="col-md-4">
                     <a name="user_email"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>user_email</b></span>
                         <a href="#user_email"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -644,6 +722,10 @@
                 <td class="col-md-4">
                     <a name="user_name"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>user_name</b></span>
                         <a href="#user_name"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -691,7 +773,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
 import {
@@ -705,7 +787,7 @@ import {
   IsIn,
   IsInt,
   IsOptional,
-  IsNotEmpty,
+  IsNotEmpty
 } from &#x27;class-validator&#x27;
 import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
@@ -717,7 +799,7 @@ export enum FeedbackEmotion {
   Bad &#x3D; 2,
   Neutral &#x3D; 3,
   Great &#x3D; 4,
-  Amazing &#x3D; 5,
+  Amazing &#x3D; 5
 }
 
 const emotionMap &#x3D; new Map(
@@ -725,28 +807,28 @@ const emotionMap &#x3D; new Map(
     {
       value: FeedbackEmotion.Terrible,
       text: FeedbackEmotion[FeedbackEmotion.Terrible],
-      emoji: &#x27;😠&#x27;,
+      emoji: &#x27;😠&#x27;
     },
     {
       value: FeedbackEmotion.Bad,
       text: FeedbackEmotion[FeedbackEmotion.Bad],
-      emoji: &#x27;🙁&#x27;,
+      emoji: &#x27;🙁&#x27;
     },
     {
       value: FeedbackEmotion.Neutral,
       text: FeedbackEmotion[FeedbackEmotion.Neutral],
-      emoji: &#x27;😐&#x27;,
+      emoji: &#x27;😐&#x27;
     },
     {
       value: FeedbackEmotion.Great,
       text: FeedbackEmotion[FeedbackEmotion.Great],
-      emoji: &#x27;😃&#x27;,
+      emoji: &#x27;😃&#x27;
     },
     {
       value: FeedbackEmotion.Amazing,
       text: FeedbackEmotion[FeedbackEmotion.Amazing],
-      emoji: &#x27;🥰&#x27;,
-    },
+      emoji: &#x27;🥰&#x27;
+    }
   ].map((item) &#x3D;&gt; [item.value, item])
 )
 
@@ -799,13 +881,14 @@ export class FeedbackBase {
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    versionKey: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
     timestamps: {
-      createdAt: &#x27;create_at&#x27;,
-      updatedAt: &#x27;update_at&#x27;,
-    },
-  },
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
 })
 export class Feedback extends FeedbackBase {
   @prop({ unique: true })
@@ -838,10 +921,10 @@ export class Feedback extends FeedbackBase {
   ip_location: Partial&lt;IPLocation&gt; | null
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 }
 
 export const FeedbackProvider &#x3D; getProviderByTypegooseClass(Feedback)

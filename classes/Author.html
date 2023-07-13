@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -43,21 +43,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li >Author</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >Author</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -83,13 +89,25 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#email" >email</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#name" >name</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#site" >site</a>
                             </li>
@@ -121,7 +139,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -132,6 +150,10 @@
                 <td class="col-md-4">
                     <a name="email"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
                         <span ><b>email</b></span>
                         <a href="#email"><span class="icon ion-ios-link"></span></a>
@@ -155,7 +177,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/modules/comment/comment.model.ts:64</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/comment/comment.model.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -168,6 +190,10 @@
                 <td class="col-md-4">
                     <a name="name"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>name</b></span>
                         <a href="#name"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -190,7 +216,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/comment/comment.model.ts:57</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/modules/comment/comment.model.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -203,6 +229,10 @@
                 <td class="col-md-4">
                     <a name="site"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
                         <span ><b>site</b></span>
                         <a href="#site"><span class="icon ion-ios-link"></span></a>
@@ -226,7 +256,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/comment/comment.model.ts:70</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/modules/comment/comment.model.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -241,7 +271,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-accessors">
     <h3 id="accessors">
         Accessors
     </h3>
@@ -261,7 +291,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/modules/comment/comment.model.ts:72</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/comment/comment.model.ts:73</a></div>
                                 </td>
                             </tr>
 
@@ -271,7 +301,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
@@ -290,7 +320,7 @@ import {
   IsArray,
   IsObject,
   ValidateNested,
-  ArrayUnique,
+  ArrayUnique
 } from &#x27;class-validator&#x27;
 import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.constant&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
@@ -304,18 +334,19 @@ export const COMMENT_STATES &#x3D; [
   CommentState.Auditing,
   CommentState.Published,
   CommentState.Deleted,
-  CommentState.Spam,
+  CommentState.Spam
 ] as const
 
 export const COMMENT_GUEST_QUERY_FILTER &#x3D; Object.freeze({
-  state: CommentState.Published,
+  state: CommentState.Published
 })
 
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  },
+    toObject: { virtuals: true }
+  }
 })
 export class Author {
   @MaxLength(20)
@@ -381,11 +412,12 @@ export class CommentBase {
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    versionKey: false,
     timestamps: {
-      createdAt: &#x27;create_at&#x27;,
-      updatedAt: &#x27;update_at&#x27;,
-    },
-  },
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
 })
 export class Comment extends CommentBase {
   @prop({ unique: true })
@@ -417,10 +449,10 @@ export class Comment extends CommentBase {
   ip_location: Partial&lt;IPLocation&gt; | null
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 
   @ArrayUnique()
   @IsArray()

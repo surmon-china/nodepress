@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >DisqusPublicService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >DisqusPublicService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -183,7 +189,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -256,7 +262,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -1507,7 +1513,7 @@
         </tbody>
     </table>
 </section>
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -1544,7 +1550,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { Comment, CommentBase } from &#x27;@app/modules/comment/comment.model&#x27;
@@ -1573,7 +1579,7 @@ export class DisqusPublicService {
   ) {
     this.disqus &#x3D; new Disqus({
       apiKey: DISQUS.publicKey,
-      apiSecret: DISQUS.secretKey,
+      apiSecret: DISQUS.secretKey
     })
   }
 
@@ -1582,7 +1588,7 @@ export class DisqusPublicService {
   }
 
   public setUserInfoCache(uid: string | number, userInfo: any, ttl: number) {
-    return this.cacheService.set(this.getUserInfoCacheKey(uid), userInfo, { ttl })
+    return this.cacheService.set(this.getUserInfoCacheKey(uid), userInfo, ttl)
   }
 
   public getUserInfoCache(uid: string | number) {
@@ -1636,7 +1642,7 @@ export class DisqusPublicService {
     }
     const result &#x3D; await this.ensureThreadDetail(postID)
     // cache 24 hours
-    this.cacheService.set(cacheKey, result, { ttl: 60 * 60 * 24 })
+    this.cacheService.set(cacheKey, result, 60 * 60 * 24)
     return result
   }
 
@@ -1676,7 +1682,7 @@ export class DisqusPublicService {
     const body: any &#x3D; {
       message: comment.content,
       parent: parentID,
-      thread: threadID,
+      thread: threadID
     }
     if (accessToken) {
       // publish by Disqus user
@@ -1718,7 +1724,7 @@ export class DisqusPublicService {
       comment: newComment,
       threadID: thread.id,
       parentID,
-      accessToken,
+      accessToken
     })
     // 6. approve guest post
     // https://groups.google.com/g/disqus-dev/c/DcAZqSE0QSc/m/i-Az_1hKcvIJ
@@ -1782,7 +1788,7 @@ export class DisqusPublicService {
     // disqus delete
     await this.deleteDisqusComment({
       post: commentDisqusPostID,
-      access_token: accessToken,
+      access_token: accessToken
     })
 
     // NodePress delete

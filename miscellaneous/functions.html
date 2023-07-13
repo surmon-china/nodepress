@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -49,11 +49,11 @@
 
 
 <ol class="breadcrumb">
-  <li>Miscellaneous</li>
-  <li>Functions</li>
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Functions</li>
 </ol>
 
-<section>
+<section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -62,6 +62,15 @@
                     <ul class="index-list">
                         <li>
                             <a href="#bootstrap" title="src/main.ts" ><b>bootstrap</b>&nbsp;&nbsp;&nbsp;(src/.../main.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Cache" title="src/decorators/cache.decorator.ts" ><b>Cache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Cache" title="src/decorators/cache.decorator.ts" ><b>Cache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Cache" title="src/decorators/cache.decorator.ts" ><b>Cache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
                         </li>
                         <li>
                             <a href="#decodeBase64" title="src/transformers/codec.transformer.ts" ><b>decodeBase64</b>&nbsp;&nbsp;&nbsp;(src/.../codec.transformer.ts)</a>
@@ -103,15 +112,6 @@
                             <a href="#handle" title="src/decorators/responser.decorator.ts" ><b>handle</b>&nbsp;&nbsp;&nbsp;(src/.../responser.decorator.ts)</a>
                         </li>
                         <li>
-                            <a href="#HttpCache" title="src/decorators/cache.decorator.ts" ><b>HttpCache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#HttpCache" title="src/decorators/cache.decorator.ts" ><b>HttpCache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#HttpCache" title="src/decorators/cache.decorator.ts" ><b>HttpCache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
-                        </li>
-                        <li>
                             <a href="#InjectModel" title="src/transformers/model.transformer.ts" ><b>InjectModel</b>&nbsp;&nbsp;&nbsp;(src/.../model.transformer.ts)</a>
                         </li>
                         <li>
@@ -140,7 +140,7 @@
 </section>
 
     <h3>src/main.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -163,8 +163,211 @@
 
         </tbody>
     </table>
+</section>    <h3>src/decorators/cache.decorator.ts</h3>
+    <section data-compodoc="block-methods">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Cache"></a>
+                    <span class="name">
+                        <span ><b>Cache</b></span>
+                        <a href="#Cache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>Cache(option: <a href="../interfaces/CacheOptions.html" target="_self">CacheOptions</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>option</td>
+                                    <td>
+                                                <code><a href="../interfaces/CacheOptions.html" target="_self" >CacheOptions</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">&lt;code&gt;@Cache(CACHE_KEY, 60 * 60)&lt;/code&gt;</code></pre>
+                        </div>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">&lt;code&gt;@Cache({ key: CACHE_KEY, ttl: 60 * 60 })&lt;/code&gt;</code></pre>
+                        </div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>MethodDecorator</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Cache"></a>
+                    <span class="name">
+                        <span ><b>Cache</b></span>
+                        <a href="#Cache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>Cache(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ttl?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>key</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>ttl</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>MethodDecorator</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Cache"></a>
+                    <span class="name">
+                        <span ><b>Cache</b></span>
+                        <a href="#Cache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>Cache(...args: any[])</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>args</td>
+                                    <td>
+                                            <code>any[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>    <h3>src/transformers/codec.transformer.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -292,7 +495,7 @@
         </tbody>
     </table>
 </section>    <h3>src/transformers/urlmap.transformer.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -573,7 +776,7 @@
         </tbody>
     </table>
 </section>    <h3>src/transformers/error.transformer.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -701,7 +904,7 @@
         </tbody>
     </table>
 </section>    <h3>src/transformers/model.transformer.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -818,7 +1021,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://angular.io/api/core/Provider" target="_blank" >Provider</a></code>
+                        <b>Returns : </b>    <code>Provider</code>
 
                     </div>
                     <div class="io-description">
@@ -885,7 +1088,7 @@
         </tbody>
     </table>
 </section>    <h3>src/decorators/responser.decorator.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -899,7 +1102,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>handle(args: <a href="../interfaces/HandleOption.html" target="_self">HandleOptionConfig</a>)</code>
+<code>handle(args: <a href="../undefineds/HandleOptionConfig.html" target="_self">HandleOptionConfig</a>)</code>
                 </td>
             </tr>
 
@@ -924,7 +1127,7 @@
                                 <tr>
                                     <td>args</td>
                                     <td>
-                                                <code><a href="../interfaces/HandleOption.html" target="_self" >HandleOptionConfig</a></code>
+                                                <code><a href="../miscellaneous/typealiases.html#HandleOptionConfig" target="_self" >HandleOptionConfig</a></code>
                                     </td>
 
                                     <td>
@@ -942,7 +1145,7 @@
                             <pre class="line-numbers"><code class="language-html">&lt;code&gt;@HttpProcessor.handle(&amp;#39;Some request&amp;#39;)&lt;/code&gt;</code></pre>
                         </div>
                         <div>
-                            <pre class="line-numbers"><code class="language-html">```@HttpProcessor.handle({ message: &amp;#39;Some request&amp;#39;, error: error, success: 200, usePaginate: true })``</code></pre>
+                            <pre class="line-numbers"><code class="language-html">&lt;code&gt;@HttpProcessor.handle({ message: &amp;#39;Some request&amp;#39;, error: error, success: 200, usePaginate: true })&lt;/code&gt;</code></pre>
                         </div>
                     </div>
                     <div class="io-description">
@@ -1012,211 +1215,8 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/decorators/cache.decorator.ts</h3>
-    <section>
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="HttpCache"></a>
-                    <span class="name">
-                        <span ><b>HttpCache</b></span>
-                        <a href="#HttpCache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>HttpCache(option: <a href="../interfaces/HttpCacheOption.html" target="_self">HttpCacheOption</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>option</td>
-                                    <td>
-                                                <code><a href="../interfaces/HttpCacheOption.html" target="_self" >HttpCacheOption</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                        <b>Example :</b>
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">&lt;code&gt;@HttpCache(CACHE_KEY, 60 * 60)&lt;/code&gt;</code></pre>
-                        </div>
-                        <div>
-                            <pre class="line-numbers"><code class="language-html">&lt;code&gt;@HttpCache({ key: CACHE_KEY, ttl: 60 * 60 })&lt;/code&gt;</code></pre>
-                        </div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>MethodDecorator</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="HttpCache"></a>
-                    <span class="name">
-                        <span ><b>HttpCache</b></span>
-                        <a href="#HttpCache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>HttpCache(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ttl?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>key</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>ttl</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        Yes
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>MethodDecorator</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="HttpCache"></a>
-                    <span class="name">
-                        <span ><b>HttpCache</b></span>
-                        <a href="#HttpCache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>HttpCache(...args: any[])</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>args</td>
-                                    <td>
-                                            <code>any[]</code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </section>    <h3>src/utils/paginate.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1363,7 +1363,7 @@
         </tbody>
     </table>
 </section>    <h3>src/transformers/value.transformer.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -1546,7 +1546,7 @@
         </tbody>
     </table>
 </section>    <h3>src/decorators/guest.decorator.ts</h3>
-    <section>
+    <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>

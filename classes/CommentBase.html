@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -43,21 +43,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li >CommentBase</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >CommentBase</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -83,19 +89,37 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#agent" >agent</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#author" >author</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#content" >content</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#pid" >pid</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#post_id" >post_id</a>
                             </li>
                         </ul>
@@ -112,7 +136,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -123,6 +147,8 @@
                 <td class="col-md-4">
                     <a name="agent"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
                         <span ><b>agent</b></span>
                         <a href="#agent"><span class="icon ion-ios-link"></span></a>
@@ -146,7 +172,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/modules/comment/comment.model.ts:99</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/comment/comment.model.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -159,6 +185,12 @@
                 <td class="col-md-4">
                     <a name="author"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>author</b></span>
                         <a href="#author"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -181,7 +213,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/modules/comment/comment.model.ts:107</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/modules/comment/comment.model.ts:108</a></div>
                         </td>
                     </tr>
 
@@ -194,6 +226,11 @@
                 <td class="col-md-4">
                     <a name="content"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>content</b></span>
                         <a href="#content"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -216,7 +253,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/modules/comment/comment.model.ts:94</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/modules/comment/comment.model.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -229,6 +266,8 @@
                 <td class="col-md-4">
                     <a name="pid"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>pid</b></span>
                         <a href="#pid"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -251,7 +290,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/modules/comment/comment.model.ts:87</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/comment/comment.model.ts:88</a></div>
                         </td>
                     </tr>
 
@@ -264,6 +303,9 @@
                 <td class="col-md-4">
                     <a name="post_id"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>post_id</b></span>
                         <a href="#post_id"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -286,7 +328,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/modules/comment/comment.model.ts:82</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/comment/comment.model.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -304,7 +346,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
@@ -323,7 +365,7 @@ import {
   IsArray,
   IsObject,
   ValidateNested,
-  ArrayUnique,
+  ArrayUnique
 } from &#x27;class-validator&#x27;
 import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.constant&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
@@ -337,18 +379,19 @@ export const COMMENT_STATES &#x3D; [
   CommentState.Auditing,
   CommentState.Published,
   CommentState.Deleted,
-  CommentState.Spam,
+  CommentState.Spam
 ] as const
 
 export const COMMENT_GUEST_QUERY_FILTER &#x3D; Object.freeze({
-  state: CommentState.Published,
+  state: CommentState.Published
 })
 
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  },
+    toObject: { virtuals: true }
+  }
 })
 export class Author {
   @MaxLength(20)
@@ -414,11 +457,12 @@ export class CommentBase {
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    versionKey: false,
     timestamps: {
-      createdAt: &#x27;create_at&#x27;,
-      updatedAt: &#x27;update_at&#x27;,
-    },
-  },
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
 })
 export class Comment extends CommentBase {
   @prop({ unique: true })
@@ -450,10 +494,10 @@ export class Comment extends CommentBase {
   ip_location: Partial&lt;IPLocation&gt; | null
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 
   @ArrayUnique()
   @IsArray()

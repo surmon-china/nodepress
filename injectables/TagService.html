@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >TagService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >TagService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -157,7 +163,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -168,7 +174,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/tag/tag.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/modules/tag/tag.service.ts:25</a></div>
                             </td>
                         </tr>
 
@@ -254,7 +260,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -275,15 +281,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>aggregate(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, documents: <a href="../classes/Tag.html" target="_self">Array&lt;Tag&gt;</a>)</code>
+                    <code>aggregate(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, tags: <a href="../classes/Tag.html" target="_self">Array&lt;WithID&lt;Tag&gt;&gt;</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:46</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:44</a></div>
                 </td>
             </tr>
 
@@ -316,9 +322,9 @@
 
                                 </tr>
                                 <tr>
-                                    <td>documents</td>
+                                    <td>tags</td>
                                     <td>
-                                                <code><a href="../classes/Tag.html" target="_self" >Array&lt;Tag&gt;</a></code>
+                                                <code><a href="../classes/Tag.html" target="_self" >Array&lt;WithID&lt;Tag&gt;&gt;</a></code>
                                     </td>
 
                                     <td>
@@ -366,8 +372,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="132"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:132</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:128</a></div>
                 </td>
             </tr>
 
@@ -438,8 +444,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="90"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:90</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:86</a></div>
                 </td>
             </tr>
 
@@ -510,8 +516,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="120"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:120</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:116</a></div>
                 </td>
             </tr>
 
@@ -582,8 +588,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:56</a></div>
                 </td>
             </tr>
 
@@ -621,8 +627,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="65"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:65</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:61</a></div>
                 </td>
             </tr>
 
@@ -660,8 +666,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="83"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:83</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:79</a></div>
                 </td>
             </tr>
 
@@ -732,8 +738,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="143"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:143</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="140"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:140</a></div>
                 </td>
             </tr>
 
@@ -772,8 +778,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="69"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:69</a></div>
                 </td>
             </tr>
 
@@ -868,8 +874,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="103"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:103</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="99"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:99</a></div>
                 </td>
             </tr>
 
@@ -951,8 +957,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="69"
-                            class="link-to-prism">src/modules/tag/tag.service.ts:69</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/modules/tag/tag.service.ts:65</a></div>
                 </td>
             </tr>
 
@@ -969,7 +975,7 @@
         </tbody>
     </table>
 </section>
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -988,13 +994,13 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../interfaces/CacheIOResult.html" target="_self" >CacheIOResult&lt;Array&lt;Tag&gt;&gt;</a></code>
+                        <i>Type : </i>        <code><a href="../interfaces/CacheManualResult.html" target="_self" >CacheManualResult&lt;Array&lt;Tag&gt;&gt;</a></code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/tag/tag.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/modules/tag/tag.service.ts:25</a></div>
                         </td>
                     </tr>
 
@@ -1006,27 +1012,26 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types } from &#x27;mongoose&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getTagUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { CacheService, CacheIOResult } from &#x27;@app/processors/cache/cache.service&#x27;
+import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
 import { SeoService } from &#x27;@app/processors/helper/helper.service.seo&#x27;
-import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.model&#x27;
+import logger from &#x27;@app/utils/logger&#x27;
 import { Tag } from &#x27;./tag.model&#x27;
 import * as CACHE_KEY from &#x27;@app/constants/cache.constant&#x27;
-import logger from &#x27;@app/utils/logger&#x27;
 
 const log &#x3D; logger.scope(&#x27;TagService&#x27;)
 
 @Injectable()
 export class TagService {
-  private allTagsCache: CacheIOResult&lt;Array&lt;Tag&gt;&gt;
+  private allTagsCache: CacheManualResult&lt;Array&lt;Tag&gt;&gt;
 
   constructor(
     private readonly seoService: SeoService,
@@ -1035,10 +1040,9 @@ export class TagService {
     @InjectModel(Tag) private readonly tagModel: MongooseModel&lt;Tag&gt;,
     @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;
   ) {
-    this.allTagsCache &#x3D; this.cacheService.promise({
-      ioMode: true,
+    this.allTagsCache &#x3D; this.cacheService.manual&lt;Array&lt;Tag&gt;&gt;({
       key: CACHE_KEY.ALL_TAGS,
-      promise: () &#x3D;&gt; this.getAllTags(),
+      promise: () &#x3D;&gt; this.getAllTags()
     })
 
     this.updateAllTagsCache().catch((error) &#x3D;&gt; {
@@ -1046,23 +1050,21 @@ export class TagService {
     })
   }
 
-  private async aggregate(publicOnly: boolean, documents: Array&lt;Tag&gt;) {
-    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: Types.ObjectId; count: number }&gt;([
+  private async aggregate(publicOnly: boolean, tags: Array&lt;WithID&lt;Tag&gt;&gt;) {
+    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseObjectID; count: number }&gt;([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-      { $unwind: &#x27;$tag&#x27; },
-      { $group: { _id: &#x27;$tag&#x27;, count: { $sum: 1 } } },
+      { $unwind: &#x27;$tags&#x27; },
+      { $group: { _id: &#x27;$tags&#x27;, count: { $sum: 1 } } }
     ])
-    const hydratedDocs &#x3D; documents.map((tag) &#x3D;&gt; {
-      const found &#x3D; counts.find((item) &#x3D;&gt; String(item._id) &#x3D;&#x3D;&#x3D; String((tag as any)._id))
-      return { ...tag, articles_count: found ? found.count : 0 } as Tag
+    return tags.map&lt;Tag&gt;((tag) &#x3D;&gt; {
+      const found &#x3D; counts.find((item) &#x3D;&gt; item._id.equals(tag._id))
+      return { ...tag, articles_count: found ? found.count : 0 }
     })
-    return hydratedDocs
   }
 
   public async getAllTags(): Promise&lt;Array&lt;Tag&gt;&gt; {
     const allTags &#x3D; await this.tagModel.find().lean().sort({ _id: SortType.Desc }).exec()
-    const documents &#x3D; await this.aggregate(true, allTags)
-    return documents
+    return await this.aggregate(true, allTags)
   }
 
   public getAllTagsCache(): Promise&lt;Array&lt;Tag&gt;&gt; {
@@ -1105,7 +1107,7 @@ export class TagService {
 
   public async update(tagID: MongooseID, newTag: Tag): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
     const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).exec()
-    if (existedTag &amp;&amp; String(existedTag._id) !&#x3D;&#x3D; String(tagID)) {
+    if (existedTag &amp;&amp; !existedTag._id.equals(tagID)) {
       throw &#x60;Tag slug &#x27;${newTag.slug}&#x27; is existed&#x60;
     }
 
@@ -1133,13 +1135,14 @@ export class TagService {
   }
 
   public async batchDelete(tagIDs: MongooseID[]) {
-    // SEO remove
     const tags &#x3D; await this.tagModel.find({ _id: { $in: tagIDs } }).exec()
-    this.seoService.delete(tags.map((tag) &#x3D;&gt; getTagUrl(tag.slug)))
     // DB remove
     const actionResult &#x3D; await this.tagModel.deleteMany({ _id: { $in: tagIDs } }).exec()
+    // Cache update
     this.archiveService.updateCache()
     this.updateAllTagsCache()
+    // SEO remove
+    this.seoService.delete(tags.map((tag) &#x3D;&gt; getTagUrl(tag.slug)))
     return actionResult
   }
 

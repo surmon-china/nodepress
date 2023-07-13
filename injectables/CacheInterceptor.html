@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >HttpCacheInterceptor</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >CacheInterceptor</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -97,7 +103,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -108,7 +114,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/interceptors/cache.interceptor.ts:28</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/interceptors/cache.interceptor.ts:32</a></div>
                             </td>
                         </tr>
 
@@ -158,7 +164,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -185,8 +191,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="35"
-                            class="link-to-prism">src/interceptors/cache.interceptor.ts:35</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="38"
+                            class="link-to-prism">src/interceptors/cache.interceptor.ts:38</a></div>
                 </td>
             </tr>
 
@@ -266,8 +272,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">src/interceptors/cache.interceptor.ts:63</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="80"
+                            class="link-to-prism">src/interceptors/cache.interceptor.ts:80</a></div>
                 </td>
             </tr>
 
@@ -276,7 +282,7 @@
                 <td class="col-md-4">
                     <div class="io-description"><ol>
 <li>CacheKey is required</li>
-<li>default ttl: APP_CONFIG.REDIS.defaultCacheTTL</li>
+<li>HTTP GET request only</li>
 </ol>
 </div>
 
@@ -325,54 +331,71 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { tap } from &#x27;rxjs/operators&#x27;
 import { Observable, of } from &#x27;rxjs&#x27;
+import { HttpAdapterHost } from &#x27;@nestjs/core&#x27;
 import {
-  HttpAdapterHost,
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-  Inject,
   Injectable,
   RequestMethod,
+  StreamableFile
 } from &#x27;@nestjs/common&#x27;
-import { getHttpCacheKey, getHttpCacheTTL } from &#x27;@app/decorators/cache.decorator&#x27;
+import { getCacheKey, getCacheTTL } from &#x27;@app/decorators/cache.decorator&#x27;
 import { CacheService } from &#x27;@app/processors/cache/cache.service&#x27;
-import * as SYSTEM from &#x27;@app/constants/system.constant&#x27;
-import * as APP_CONFIG from &#x27;@app/app.config&#x27;
+import { UNDEFINED, isNil } from &#x27;@app/constants/value.constant&#x27;
+import { CACHE_PREFIX } from &#x27;@app/constants/cache.constant&#x27;
+import logger from &#x27;@app/utils/logger&#x27;
+
+const log &#x3D; logger.scope(&#x27;CacheInterceptor&#x27;)
 
 /**
- * @class HttpCacheInterceptor
+ * @class CacheInterceptor
  * @classdesc Cache with ttl
+ * @ref https://github.com/nestjs/cache-manager/blob/master/lib/interceptors/cache.interceptor.ts
  */
 @Injectable()
-export class HttpCacheInterceptor implements NestInterceptor {
+export class CacheInterceptor implements NestInterceptor {
   constructor(
-    @Inject(SYSTEM.HTTP_ADAPTER_HOST)
     private readonly httpAdapterHost: HttpAdapterHost,
     private readonly cacheService: CacheService
   ) {}
 
   async intercept(context: ExecutionContext, next: CallHandler&lt;any&gt;): Promise&lt;Observable&lt;any&gt;&gt; {
     // MARK: force disable cache
-    // return call$;
-    const call$ &#x3D; next.handle()
+    // return next.handle()
     const key &#x3D; this.trackBy(context)
 
     if (!key) {
-      return call$
+      return next.handle()
     }
 
     const target &#x3D; context.getHandler()
-    const metaTTL &#x3D; getHttpCacheTTL(target)
-    const ttl &#x3D; metaTTL || APP_CONFIG.APP.DEFAULT_CACHE_TTL
+    const ttl &#x3D; getCacheTTL(target)
 
     try {
-      const value &#x3D; await this.cacheService.get(key)
-      return value ? of(value) : call$.pipe(tap((response) &#x3D;&gt; this.cacheService.set(key, response, { ttl })))
+      const value &#x3D; await this.cacheService.get(CACHE_PREFIX + key)
+      if (!isNil(value)) {
+        return of(value)
+      }
+
+      return next.handle().pipe(
+        tap(async (response) &#x3D;&gt; {
+          if (response instanceof StreamableFile) {
+            return
+          }
+
+          try {
+            await this.cacheService.set(CACHE_PREFIX + key, response, ttl)
+          } catch (err) {
+            log.warn(&#x60;An error has occurred when inserting &quot;key: ${key}&quot;, &quot;value: ${response}&quot;&#x60;)
+          }
+        })
+      )
     } catch (error) {
-      return call$
+      return next.handle()
     }
   }
 
@@ -380,23 +403,20 @@ export class HttpCacheInterceptor implements NestInterceptor {
    * @function trackBy
    * @description
    *  1. CacheKey is required
-   *  2. default ttl: APP_CONFIG.REDIS.defaultCacheTTL
+   *  2. HTTP GET request only
    */
   trackBy(context: ExecutionContext): string | undefined {
+    const { httpAdapter } &#x3D; this.httpAdapterHost
+    const isHttpApp &#x3D; Boolean(httpAdapter?.getRequestMethod)
+    const cacheKey &#x3D; getCacheKey(context.getHandler())
     const request &#x3D; context.switchToHttp().getRequest()
-    const httpServer &#x3D; this.httpAdapterHost.httpAdapter
-    const isHttpApp &#x3D; Boolean(httpServer?.getRequestMethod)
-    const isGetRequest &#x3D; isHttpApp &amp;&amp; httpServer.getRequestMethod(request) &#x3D;&#x3D;&#x3D; RequestMethod[RequestMethod.GET]
-    const cacheKey &#x3D; getHttpCacheKey(context.getHandler())
-    const isMatchedCache &#x3D; isHttpApp &amp;&amp; isGetRequest &amp;&amp; cacheKey
-    // const requestUrl &#x3D; httpServer.getRequestUrl(request);
-    // console.debug(&#x27;isMatchedCache&#x27;, isMatchedCache, &#x27;requestUrl&#x27;, requestUrl, &#x27;cacheKey&#x27;, cacheKey);
-    // cache priority strategy: -&gt; http -&gt; GET -&gt; cache key -&gt; url -&gt; undefined
-    return isMatchedCache ? cacheKey : undefined
+    const isGetRequest &#x3D; isHttpApp &amp;&amp; httpAdapter.getRequestMethod(request) &#x3D;&#x3D;&#x3D; RequestMethod[RequestMethod.GET]
+    return isHttpApp &amp;&amp; isGetRequest &amp;&amp; cacheKey ? cacheKey : UNDEFINED
     /*
-    return undefined;
-    return isMatchedCache ? requestUrl : undefined;
-    return isMatchedCache ? (cacheKey || requestUrl) : undefined;
+    Cache priority strategy: HTTP &gt; GET &gt; Cache Key -&gt; URL -&gt; undefined
+    const requestUrl &#x3D; httpAdapter.getRequestUrl(request)
+    console.debug(&#x27;isMatchedCache&#x27;, { isHttpApp, isGetRequest, cacheKey, requestUrl })
+    return isHttpApp &amp;&amp; isGetRequest ? (cacheKey || requestUrl) : undefined;
     */
   }
 }
@@ -443,7 +463,7 @@ export class HttpCacheInterceptor implements NestInterceptor {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'HttpCacheInterceptor.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'CacheInterceptor.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

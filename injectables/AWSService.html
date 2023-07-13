@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >AWSService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >AWSService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -103,7 +109,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -326,7 +332,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
   S3Client,
   PutObjectCommand,
@@ -334,7 +340,7 @@
   ObjectAttributes,
   StorageClass,
   ServerSideEncryption,
-  PutObjectRequest,
+  PutObjectRequest
 } from &#x27;@aws-sdk/client-s3&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -365,8 +371,8 @@ export class AWSService {
       region,
       credentials: {
         accessKeyId: APP_CONFIG.AWS.accessKeyId,
-        secretAccessKey: APP_CONFIG.AWS.secretAccessKey,
-      },
+        secretAccessKey: APP_CONFIG.AWS.secretAccessKey
+      }
     })
   }
 
@@ -375,7 +381,7 @@ export class AWSService {
     const command &#x3D; new GetObjectAttributesCommand({
       Bucket: payload.bucket,
       Key: payload.key,
-      ObjectAttributes: Object.values(ObjectAttributes),
+      ObjectAttributes: Object.values(ObjectAttributes)
     })
     return s3Client.send(command)
   }
@@ -389,7 +395,7 @@ export class AWSService {
       Body: payload.file,
       ContentType: payload.fileContentType,
       StorageClass: payload.classType ?? &#x27;STANDARD&#x27;,
-      ServerSideEncryption: payload.encryption,
+      ServerSideEncryption: payload.encryption
     })
     return s3Client.send(command).then(() &#x3D;&gt; {
       return this.getObjectAttributes({ region, bucket, key }).then((attributes) &#x3D;&gt; {
@@ -398,7 +404,7 @@ export class AWSService {
           // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
           url: &#x60;https://${bucket}.s3.${region}.amazonaws.com/${key}&#x60;,
           eTag: attributes.ETag!,
-          size: attributes.ObjectSize!,
+          size: attributes.ObjectSize!
         }
       })
     })

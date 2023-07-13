@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -36,21 +36,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Controllers</li>
-  <li >FeedbackController</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >FeedbackController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -84,19 +90,35 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#createFeedback" >createFeedback</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#deleteFeedback" >deleteFeedback</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#deleteFeedbacks" >deleteFeedbacks</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getFeedbacks" >getFeedbacks</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#putFeedback" >putFeedback</a>
                             </li>
                         </ul>
@@ -111,7 +133,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -122,6 +144,9 @@
                 <td class="col-md-4">
                     <a name="createFeedback"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span class="modifier">Async</span>
                         <span ><b>createFeedback</b></span>
                         <a href="#createFeedback"><span class="icon ion-ios-link"></span></a>
@@ -145,8 +170,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="65"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:65</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:68</a></div>
                 </td>
             </tr>
 
@@ -211,6 +236,9 @@
                 <td class="col-md-4">
                     <a name="deleteFeedback"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>deleteFeedback</b></span>
                         <a href="#deleteFeedback"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -218,7 +246,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>deleteFeedback(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteFeedback(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -232,8 +261,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="105"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:105</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:108</a></div>
                 </td>
             </tr>
 
@@ -286,6 +315,9 @@
                 <td class="col-md-4">
                     <a name="deleteFeedbacks"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>deleteFeedbacks</b></span>
                         <a href="#deleteFeedbacks"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -293,7 +325,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>deleteFeedbacks(body: <a href="../classes/FeedbacksDTO.html" target="_self">FeedbacksDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteFeedbacks(body: <a href="../classes/FeedbacksDTO.html" target="_self">FeedbacksDTO</a>)</code>
                 </td>
             </tr>
 
@@ -307,8 +340,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="91"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:91</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="94"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:94</a></div>
                 </td>
             </tr>
 
@@ -362,6 +395,10 @@
                 <td class="col-md-4">
                     <a name="getFeedbacks"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getFeedbacks</b></span>
                         <a href="#getFeedbacks"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -369,7 +406,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getFeedbacks(query: <a href="../classes/FeedbackPaginateQueryDTO.html" target="_self">FeedbackPaginateQueryDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFeedbacks(query: <a href="../classes/FeedbackPaginateQueryDTO.html" target="_self">FeedbackPaginateQueryDTO</a>)</code>
                 </td>
             </tr>
 
@@ -383,8 +421,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="30"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:30</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="33"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:33</a></div>
                 </td>
             </tr>
 
@@ -438,6 +476,9 @@
                 <td class="col-md-4">
                     <a name="putFeedback"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>putFeedback</b></span>
                         <a href="#putFeedback"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -445,7 +486,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>putFeedback(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, feedback: <a href="../classes/Feedback.html" target="_self">Feedback</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>putFeedback(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, feedback: <a href="../classes/Feedback.html" target="_self">Feedback</a>)</code>
                 </td>
             </tr>
 
@@ -459,8 +501,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="98"
-                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:98</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/modules/feedback/feedback.controller.ts:101</a></div>
                 </td>
             </tr>
 
@@ -522,7 +564,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
  * @file Feedback controller
  * @module module/feedback/controller
@@ -546,7 +588,10 @@ import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 @Controller(&#x27;feedback&#x27;)
 export class FeedbackController {
-  constructor(private readonly emailService: EmailService, private readonly feedbackService: FeedbackService) {}
+  constructor(
+    private readonly emailService: EmailService,
+    private readonly feedbackService: FeedbackService
+  ) {}
 
   @Get()
   @UseGuards(AdminOnlyGuard)
@@ -576,7 +621,7 @@ export class FeedbackController {
         { content: keywordRegExp },
         { user_name: keywordRegExp },
         { user_email: keywordRegExp },
-        { remark: keywordRegExp },
+        { remark: keywordRegExp }
       ]
     }
 
@@ -597,14 +642,14 @@ export class FeedbackController {
       &#x60;${subject} on ${result.tid}.&#x60;,
       &#x60;Author: ${result.user_name || &#x27;Anonymous user&#x27;}&#x60;,
       &#x60;Emotion: ${result.emotion_emoji} ${result.emotion_text} (${result.emotion})&#x60;,
-      &#x60;Feedback: ${result.content}&#x60;,
+      &#x60;Feedback: ${result.content}&#x60;
     ]
 
     this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
       subject,
       text: texts.join(&#x27;\n&#x27;),
-      html: texts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;),
+      html: texts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;)
     })
 
     return result

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >CategoryService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >CategoryService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -123,7 +129,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -208,7 +214,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -756,11 +762,11 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getCategoryUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { SeoService } from &#x27;@app/processors/helper/helper.service.seo&#x27;
@@ -782,14 +788,14 @@ export class CategoryService {
     publicOnly: boolean
   ): Promise&lt;PaginateResult&lt;Category&gt;&gt; {
     const categories &#x3D; await this.categoryModel.paginate(query, { ...options, lean: true })
-    const counts &#x3D; await this.articleModel.aggregate([
+    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseObjectID; count: number }&gt;([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-      { $unwind: &#x27;$category&#x27; },
-      { $group: { _id: &#x27;$category&#x27;, count: { $sum: 1 } } },
+      { $unwind: &#x27;$categories&#x27; },
+      { $group: { _id: &#x27;$categories&#x27;, count: { $sum: 1 } } }
     ])
 
     const hydratedDocs &#x3D; categories.documents.map((category) &#x3D;&gt; {
-      const found &#x3D; counts.find((item) &#x3D;&gt; String(item._id) &#x3D;&#x3D;&#x3D; String(category._id))
+      const found &#x3D; counts.find((item) &#x3D;&gt; item._id.equals(category._id))
       return { ...category, articles_count: found ? found.count : 0 } as Category
     })
 
@@ -835,7 +841,7 @@ export class CategoryService {
             }
             categories.unshift(category.toObject())
             const parentId &#x3D; category.pid
-            const hasParent &#x3D; parentId &amp;&amp; parentId.toString() !&#x3D;&#x3D; category._id?.toString()
+            const hasParent &#x3D; parentId &amp;&amp; parentId.toString() !&#x3D;&#x3D; category._id.toString()
             return hasParent ? findCateItem(parentId) : resolve(categories)
           })
           .catch(reject)
@@ -846,7 +852,7 @@ export class CategoryService {
   // update category
   public async update(categoryID: MongooseID, newCategory: Category): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
     const existedCategory &#x3D; await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
-    if (existedCategory &amp;&amp; String(existedCategory._id) !&#x3D;&#x3D; String(categoryID)) {
+    if (existedCategory &amp;&amp; !existedCategory._id.equals(categoryID)) {
       throw &#x60;Category slug &#x27;${newCategory.slug}&#x27; is existed&#x60;
     }
 

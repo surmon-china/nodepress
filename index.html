@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="./" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -35,11 +35,11 @@
 
 <p align="center">
   <a href="https://github.com/surmon-china/nodepress" target="blank">
-    <img src="https://raw.githubusercontent.com/surmon-china/nodepress/main/logo.png" height="90" alt="nodepress Logo" />
+    <img src="https://raw.githubusercontent.com/surmon-china/nodepress/main/logo.png" height="96" alt="nodepress Logo" />
   </a>
 </p>
 
-<h1 id="nodepress">NodePress</h1>
+<h1>NodePress</h1>
 <p><a href="https://github.com/surmon-china/nodepress"><img src="https://raw.githubusercontent.com/surmon-china/nodepress/main/badge.svg" alt="nodepress" class="img-responsive"></a>
 &nbsp;
 <a href="https://github.com/surmon-china/nodepress/stargazers"><img src="https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=for-the-badge" alt="GitHub stars" class="img-responsive"></a>
@@ -50,7 +50,7 @@
 &nbsp;
 <a href="/LICENSE"><img src="https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge" alt="GitHub license" class="img-responsive"></a></p>
 <p><strong>RESTful API service for <a href="https://github.com/surmon-china/surmon.me">surmon.me</a> blog, powered by <a href="https://github.com/nestjs/nest">NestJS</a>, required <a href="https://www.mongodb.com/">MongoDB</a> &amp; <a href="https://redis.io/">Redis</a>.</strong></p>
-<p>适用于 <a href="https://github.com/surmon-china/surmon.me">surmon.me</a> 的 RESTful API 服务端应用；基于 <a href="https://github.com/nestjs/nest">NestJS</a>，需安装 <a href="https://www.mongodb.com/">MongoDB</a> 和 <a href="https://redis.io/">Redis</a> 方可完整运行。</p>
+<p>适用于 <a href="https://github.com/surmon-china/surmon.me">surmon.me</a> 的 RESTful API 服务端应用；基于 <a href="https://github.com/nestjs/nest">NestJS</a> 开发，需安装 <a href="https://www.mongodb.com/">MongoDB</a> 和 <a href="https://redis.io/">Redis</a> 方可完整运行。</p>
 <ul>
 <li><a href="/CHANGELOG.md#changelog">Changelog</a></li>
 <li><a href="https://github.surmon.me/nodepress">API Documentation</a></li>
@@ -63,32 +63,32 @@
 <li><strong>Blog native app:</strong> <a href="https://github.com/surmon-china/surmon.me.native"><code>surmon.me.native</code></a> powered by react-native</li>
 </ul>
 <hr>
-<h3 id="development">Development</h3>
-<div><pre class="line-numbers"><code class="language-bash">$ yarn
+<h3>Development</h3>
+<div><pre class="line-numbers"><code class="language-bash">$ pnpm install
 
 # dev
-$ yarn start:dev
+$ pnpm run start:dev
 
 # test
-$ yarn lint
-$ yarn test
-$ yarn test:e2e
-$ yarn test:cov
-$ yarn test:watch
+$ pnpm run lint
+$ pnpm run test
+$ pnpm run test:e2e
+$ pnpm run test:cov
+$ pnpm run test:watch
 
 # build
-$ yarn build
+$ pnpm run build
 
 # run
-$ yarn start:prod</code></pre></div><h3 id="actions">Actions</h3>
+$ pnpm run start:prod</code></pre></div><h3>Actions</h3>
 <ul>
-<li><code>Any PR open</code> → <code>CI:Build test</code></li>
-<li><code>New tag v*</code> → <code>CI:Create release</code></li>
-<li><code>Create create</code> → <code>CI:Deploy</code> → <code>CI:Execute server script</code></li>
+<li>Any PR open → <code>CI:Build test</code></li>
+<li>New tag <code>v*</code> → <code>CI:Create release</code></li>
+<li>Release created → <code>CI:Deploy</code> → <code>CI:Execute server deploy script</code></li>
 </ul>
-<h3 id="changelog">Changelog</h3>
+<h3>Changelog</h3>
 <p>Detailed changes for each release are documented in the <a href="/CHANGELOG.md">release notes</a>.</p>
-<h3 id="license">License</h3>
+<h3>License</h3>
 <p>Licensed under the <a href="/LICENSE">MIT</a> License.</p>
 
 

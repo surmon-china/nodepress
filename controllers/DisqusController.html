@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -36,21 +36,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Controllers</li>
-  <li >DisqusController</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >DisqusController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -84,43 +90,80 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#createComment" >createComment</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#deleteComment" >deleteComment</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#exportXML" >exportXML</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getConfig" >getConfig</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getPosts" >getPosts</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getThread" >getThread</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getThreads" >getThreads</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getUserInfo" >getUserInfo</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#importXML" >importXML</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#oauthCallback" >oauthCallback</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#oauthLogout" >oauthLogout</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#updatePost" >updatePost</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#updateThread" >updateThread</a>
                             </li>
                         </ul>
@@ -135,7 +178,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -146,6 +189,9 @@
                 <td class="col-md-4">
                     <a name="createComment"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>createComment</b></span>
                         <a href="#createComment"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -153,7 +199,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>createComment(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, comment: <a href="../classes/CommentBase.html" target="_self">CommentBase</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createComment(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, comment: <a href="../classes/CommentBase.html" target="_self">CommentBase</a>)</code>
                 </td>
             </tr>
 
@@ -245,6 +292,8 @@
                 <td class="col-md-4">
                     <a name="deleteComment"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>deleteComment</b></span>
                         <a href="#deleteComment"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -252,7 +301,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>deleteComment(payload: <a href="../classes/CommentIdDTO.html" target="_self">CommentIdDTO</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteComment(payload: <a href="../classes/CommentIdDTO.html" target="_self">CommentIdDTO</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>)</code>
                 </td>
             </tr>
 
@@ -333,6 +383,9 @@
                 <td class="col-md-4">
                     <a name="exportXML"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>exportXML</b></span>
                         <a href="#exportXML"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -340,7 +393,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>exportXML(response)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>exportXML(response)</code>
                 </td>
             </tr>
 
@@ -405,6 +459,8 @@
                 <td class="col-md-4">
                     <a name="getConfig"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getConfig</b></span>
                         <a href="#getConfig"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -412,7 +468,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getConfig()</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getConfig()</code>
                 </td>
             </tr>
 
@@ -449,6 +506,9 @@
                 <td class="col-md-4">
                     <a name="getPosts"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getPosts</b></span>
                         <a href="#getPosts"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -456,7 +516,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getPosts(query: <a href="../interfaces/GeneralDisqusParams.html" target="_self">GeneralDisqusParams</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPosts(query: <a href="../interfaces/GeneralDisqusParams.html" target="_self">GeneralDisqusParams</a>)</code>
                 </td>
             </tr>
 
@@ -525,6 +586,8 @@
                 <td class="col-md-4">
                     <a name="getThread"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getThread</b></span>
                         <a href="#getThread"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -532,7 +595,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getThread(query: <a href="../classes/ThreadPostIdDTO.html" target="_self">ThreadPostIdDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getThread(query: <a href="../classes/ThreadPostIdDTO.html" target="_self">ThreadPostIdDTO</a>)</code>
                 </td>
             </tr>
 
@@ -601,6 +665,9 @@
                 <td class="col-md-4">
                     <a name="getThreads"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getThreads</b></span>
                         <a href="#getThreads"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -608,7 +675,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getThreads(query: <a href="../interfaces/GeneralDisqusParams.html" target="_self">GeneralDisqusParams</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getThreads(query: <a href="../interfaces/GeneralDisqusParams.html" target="_self">GeneralDisqusParams</a>)</code>
                 </td>
             </tr>
 
@@ -677,6 +745,8 @@
                 <td class="col-md-4">
                     <a name="getUserInfo"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getUserInfo</b></span>
                         <a href="#getUserInfo"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -684,7 +754,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getUserInfo(token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUserInfo(token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>)</code>
                 </td>
             </tr>
 
@@ -753,6 +824,10 @@
                 <td class="col-md-4">
                     <a name="importXML"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>importXML</b></span>
                         <a href="#importXML"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -760,7 +835,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>importXML(file: Express.Multer.File)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>importXML(file: Express.Multer.File)</code>
                 </td>
             </tr>
 
@@ -829,6 +905,10 @@
                 <td class="col-md-4">
                     <a name="oauthCallback"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span class="modifier">Async</span>
                         <span ><b>oauthCallback</b></span>
                         <a href="#oauthCallback"><span class="icon ion-ios-link"></span></a>
@@ -918,6 +998,9 @@
                 <td class="col-md-4">
                     <a name="oauthLogout"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>oauthLogout</b></span>
                         <a href="#oauthLogout"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -925,7 +1008,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>oauthLogout(token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, response)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>oauthLogout(token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, response)</code>
                 </td>
             </tr>
 
@@ -1005,6 +1089,9 @@
                 <td class="col-md-4">
                     <a name="updatePost"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>updatePost</b></span>
                         <a href="#updatePost"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1012,7 +1099,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>updatePost(body)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updatePost(body)</code>
                 </td>
             </tr>
 
@@ -1077,6 +1165,9 @@
                 <td class="col-md-4">
                     <a name="updateThread"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>updateThread</b></span>
                         <a href="#updateThread"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1084,7 +1175,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>updateThread(body)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateThread(body)</code>
                 </td>
             </tr>
 
@@ -1146,7 +1238,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
  * @file Disqus controller
  * @module module/disqus/controller
@@ -1164,7 +1256,7 @@ import {
   Response,
   UseGuards,
   Query,
-  UseInterceptors,
+  UseInterceptors
 } from &#x27;@nestjs/common&#x27;
 import { FileInterceptor } from &#x27;@nestjs/platform-express&#x27;
 import { Throttle } from &#x27;@nestjs/throttler&#x27;
@@ -1197,7 +1289,7 @@ export class DisqusController {
       forum: DISQUS.forum,
       admin_username: DISQUS.adminUsername,
       public_key: DISQUS.publicKey,
-      authorize_url: this.disqusPublicService.getAuthorizeURL(),
+      authorize_url: this.disqusPublicService.getAuthorizeURL()
     }
   }
 
@@ -1217,7 +1309,7 @@ export class DisqusController {
     response.cookie(TOKEN_COOKIE_KEY, encodeToken(accessToken), {
       maxAge: accessToken.expires_in * 1000,
       httpOnly: true,
-      secure: isProdEnv,
+      secure: isProdEnv
     })
     response.send(&#x60;&lt;script&gt;window.close();&lt;/script&gt;&#x60;)
   }

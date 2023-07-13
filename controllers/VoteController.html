@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -36,21 +36,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Controllers</li>
-  <li >VoteController</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >VoteController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -84,6 +90,9 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#deleteVotes" >deleteVotes</a>
                             </li>
                             <li>
@@ -105,6 +114,10 @@
                                 <a href="#getVoteAuthor" >getVoteAuthor</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getVotes" >getVotes</a>
                             </li>
                             <li>
@@ -113,6 +126,9 @@
                                 <a href="#queryIPLocation" >queryIPLocation</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#voteComment" >voteComment</a>
                             </li>
@@ -121,6 +137,9 @@
                                 <a href="#voteDisqusThread" >voteDisqusThread</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#votePost" >votePost</a>
                             </li>
@@ -136,7 +155,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -147,6 +166,9 @@
                 <td class="col-md-4">
                     <a name="deleteVotes"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>deleteVotes</b></span>
                         <a href="#deleteVotes"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -154,7 +176,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>deleteVotes(body: <a href="../classes/VotesDTO.html" target="_self">VotesDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteVotes(body: <a href="../classes/VotesDTO.html" target="_self">VotesDTO</a>)</code>
                 </td>
             </tr>
 
@@ -509,6 +532,10 @@
                 <td class="col-md-4">
                     <a name="getVotes"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getVotes</b></span>
                         <a href="#getVotes"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -516,7 +543,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getVotes(query: <a href="../classes/VotePaginateQueryDTO.html" target="_self">VotePaginateQueryDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getVotes(query: <a href="../classes/VotePaginateQueryDTO.html" target="_self">VotePaginateQueryDTO</a>)</code>
                 </td>
             </tr>
 
@@ -657,6 +685,9 @@
                 <td class="col-md-4">
                     <a name="voteComment"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span class="modifier">Async</span>
                         <span ><b>voteComment</b></span>
                         <a href="#voteComment"><span class="icon ion-ios-link"></span></a>
@@ -853,6 +884,9 @@
                 <td class="col-md-4">
                     <a name="votePost"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span class="modifier">Async</span>
                         <span ><b>votePost</b></span>
                         <a href="#votePost"><span class="icon ion-ios-link"></span></a>
@@ -951,7 +985,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
  * @file Vote controller
  * @module module/vote/controller
@@ -1021,8 +1055,8 @@ export class VoteController {
             name: disqusUserInfo.name,
             username: disqusUserInfo.username,
             url: disqusUserInfo.url,
-            profileUrl: disqusUserInfo.profileUrl,
-          },
+            profileUrl: disqusUserInfo.profileUrl
+          }
         }
       } catch (error) {}
     }
@@ -1031,14 +1065,14 @@ export class VoteController {
     if (guestAuthor) {
       return {
         type: VoteAuthorType.Guest,
-        data: guestAuthor,
+        data: guestAuthor
       }
     }
 
     // anonymous user
     return {
       type: VoteAuthorType.Anonymous,
-      data: null,
+      data: null
     }
   }
 
@@ -1080,7 +1114,7 @@ export class VoteController {
       return [
         &#x60;${uaResult.browser.name ?? &#x27;unknown_browser&#x27;}@${uaResult.browser.version ?? &#x27;unknown&#x27;}&#x60;,
         &#x60;${uaResult.os.name ?? &#x27;unknown_OS&#x27;}@${uaResult.os.version ?? &#x27;unknown&#x27;}&#x60;,
-        &#x60;${uaResult.device.model ?? &#x27;unknown_device&#x27;}@${uaResult.device.vendor ?? &#x27;unknown&#x27;}&#x60;,
+        &#x60;${uaResult.device.model ?? &#x27;unknown_device&#x27;}@${uaResult.device.vendor ?? &#x27;unknown&#x27;}&#x60;
       ].join(&#x27; · &#x27;)
     }
 
@@ -1089,7 +1123,7 @@ export class VoteController {
       &#x60;Vote: ${payload.vote}&#x60;,
       &#x60;Author: ${payload.author}&#x60;,
       &#x60;Location: ${payload.location ? getLocationText(payload.location) : &#x27;unknown&#x27;}&#x60;,
-      &#x60;Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : &#x27;unknown&#x27;}&#x60;,
+      &#x60;Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : &#x27;unknown&#x27;}&#x60;
     ]
     const textHTML &#x3D; mailTexts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;&#x27;)
     const linkHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;${payload.link}&quot; target&#x3D;&quot;_blank&quot;&gt;${payload.on}&lt;/a&gt;&#x60;
@@ -1098,7 +1132,7 @@ export class VoteController {
       to: payload.to,
       subject: payload.subject,
       text: mailTexts.join(&#x27;\n&#x27;),
-      html: [textHTML, &#x60;&lt;br&gt;&#x60;, linkHTML].join(&#x27;\n&#x27;),
+      html: [textHTML, &#x60;&lt;br&gt;&#x60;, linkHTML].join(&#x27;\n&#x27;)
     })
   }
 
@@ -1108,7 +1142,7 @@ export class VoteController {
     const result &#x3D; await this.disqusPublicService.voteThread({
       access_token: token || null,
       thread: thread.id,
-      vote,
+      vote
     })
     // console.info(&#x60;Disqus like thread ${postId}&#x60;, result)
     return result
@@ -1178,7 +1212,7 @@ export class VoteController {
           author: voteAuthor.data,
           user_agent: visitor.ua,
           ip: visitor.ip,
-          ip_location: ipLocation,
+          ip_location: ipLocation
         })
         // email to admin
         this.emailToTargetVoteMessage({
@@ -1189,7 +1223,7 @@ export class VoteController {
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkByID(voteBody.post_id),
+          link: getPermalinkByID(voteBody.post_id)
         })
       }
     )
@@ -1217,7 +1251,7 @@ export class VoteController {
           await this.disqusPublicService.votePost({
             access_token: token.access_token,
             post: postID,
-            vote: voteBody.vote,
+            vote: voteBody.vote
           })
           // console.info(&#x60;Disqus like post ${voteBody.comment_id}&#x60;, result)
         }
@@ -1238,7 +1272,7 @@ export class VoteController {
           author: voteAuthor.data,
           user_agent: visitor.ua,
           ip: visitor.ip,
-          ip_location: ipLocation,
+          ip_location: ipLocation
         })
         const comment &#x3D; await this.commentService.getDetailByNumberID(voteBody.comment_id)
         const targetTitle &#x3D; await this.getPostTitle(comment.post_id)
@@ -1249,20 +1283,20 @@ export class VoteController {
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkByID(comment.post_id),
+          link: getPermalinkByID(comment.post_id)
         }
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP.ADMIN_EMAIL,
           subject: &#x60;You have a new comment vote&#x60;,
-          ...mailPayload,
+          ...mailPayload
         })
         // email to author
         if (comment.author.email) {
           this.emailToTargetVoteMessage({
             to: comment.author.email,
             subject: &#x60;Your comment #${comment.id} has a new vote&#x60;,
-            ...mailPayload,
+            ...mailPayload
           })
         }
       }

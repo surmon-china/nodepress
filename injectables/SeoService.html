@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >SeoService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >SeoService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -92,6 +98,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
+                                <a href="#pingBing" >pingBing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
                                 <a href="#pingGoogle" >pingGoogle</a>
                             </li>
                             <li>
@@ -114,7 +124,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -175,7 +185,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -202,8 +212,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="94"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:94</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:116</a></div>
                 </td>
             </tr>
 
@@ -273,8 +283,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="78"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:78</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="98"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:98</a></div>
                 </td>
             </tr>
 
@@ -344,8 +354,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:82</a></div>
                 </td>
             </tr>
 
@@ -409,6 +419,77 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="pingBing"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span ><b>pingBing</b></span>
+                        <a href="#pingBing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>pingBing(urls: string[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:62</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>urls</td>
+                                    <td>
+                                            <code>string[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="pingGoogle"></a>
                     <span class="name">
                         <span class="modifier">Private</span>
@@ -427,8 +508,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="45"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:45</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:31</a></div>
                 </td>
             </tr>
 
@@ -510,8 +591,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="82"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:82</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:102</a></div>
                 </td>
             </tr>
 
@@ -581,8 +662,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="88"
-                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:88</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="109"
+                            class="link-to-prism">src/processors/helper/helper.service.seo.ts:109</a></div>
                 </td>
             </tr>
 
@@ -635,7 +716,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import { HttpService } from &#x27;@nestjs/axios&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
@@ -643,42 +724,28 @@ import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transform
 import { GoogleService } from &#x27;./helper.service.google&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
-const log &#x3D; logger.scope(&#x27;SEO&#x27;)
+const log &#x3D; logger.scope(&#x27;SeoService&#x27;)
 
 export type ActionURL &#x3D; string | string[]
 export enum SEOAction {
   Push &#x3D; &#x27;push&#x27;,
   Update &#x3D; &#x27;update&#x27;,
-  Delete &#x3D; &#x27;delete&#x27;,
+  Delete &#x3D; &#x27;delete&#x27;
 }
 
 @Injectable()
 export class SeoService {
-  constructor(private readonly httpService: HttpService, private readonly googleService: GoogleService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly googleService: GoogleService
+  ) {}
 
-  // Baidu https://ziyuan.baidu.com/linksubmit/index
-  private pingBaidu(action: SEOAction, urls: string[]): void {
-    this.httpService.axiosRef
-      .request({
-        method: &#x27;post&#x27;,
-        data: urls.join(&#x27;\n&#x27;),
-        headers: { &#x27;Content-Type&#x27;: &#x27;text/plain&#x27; },
-        url: &#x60;http://data.zz.baidu.com/urls?site&#x3D;${APP_CONFIG.BAIDU_INDEXED.site}&amp;token&#x3D;${APP_CONFIG.BAIDU_INDEXED.token}&#x60;,
-      })
-      .then((response) &#x3D;&gt; {
-        log.info(&#x60;Baidu ping [${action}] succeed.&#x60;, urls, response.statusText)
-      })
-      .catch((error) &#x3D;&gt; {
-        log.warn(&#x60;Baidu ping [${action}] failed!&#x60;, getMessageFromAxiosError(error))
-      })
-  }
-
-  // Google
+  // Google: https://developers.google.com/search/apis/indexing-api
   private pingGoogle(action: SEOAction, urls: string[]): void {
     const pingActionMap &#x3D; {
       [SEOAction.Push]: &#x27;URL_UPDATED&#x27;,
       [SEOAction.Update]: &#x27;URL_UPDATED&#x27;,
-      [SEOAction.Delete]: &#x27;URL_DELETED&#x27;,
+      [SEOAction.Delete]: &#x27;URL_DELETED&#x27;
     }
     const [url] &#x3D; urls
     const type &#x3D; pingActionMap[action]
@@ -690,20 +757,54 @@ export class SeoService {
         return this.httpService.axiosRef
           .request({
             method: &#x27;post&#x27;,
+            url: &#x60;https://indexing.googleapis.com/v3/urlNotifications:publish&#x60;,
             data: { url, type },
             headers: {
               &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
-              Authorization: &#x27; Bearer &#x27; + credentials.access_token,
-            },
-            url: &#x60;https://indexing.googleapis.com/v3/urlNotifications:publish&#x60;,
+              Authorization: &#x60;Bearer ${credentials.access_token}&#x60;
+            }
           })
-          .then((response) &#x3D;&gt; {
-            log.info(&#x60;${actionText} succeed.&#x60;, url, response.statusText)
-          })
+          .then((response) &#x3D;&gt; log.info(&#x60;${actionText} succeed.&#x60;, url, response.statusText))
           .catch((error) &#x3D;&gt; Promise.reject(getMessageFromAxiosError(error)))
       })
+      .catch((error) &#x3D;&gt; log.warn(&#x60;${actionText} failed!&#x60;, error))
+  }
+
+  // Bing: https://www.bing.com/webmasters/help/url-submission-62f2860b
+  // IWebmasterApi.SubmitUrlBatch: https://learn.microsoft.com/en-us/dotnet/api/microsoft.bing.webmaster.api.interfaces.iwebmasterapi.submiturlbatch?view&#x3D;bing-webmaster-dotnet
+  private pingBing(urls: string[]): void {
+    this.httpService.axiosRef
+      .request({
+        method: &#x27;post&#x27;,
+        url: &#x60;https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlbatch?apikey&#x3D;${APP_CONFIG.BING_INDEXED.apiKey}&#x60;,
+        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+        data: {
+          siteUrl: APP_CONFIG.BING_INDEXED.site,
+          urlList: urls
+        }
+      })
+      .then((response) &#x3D;&gt; {
+        log.info(&#x60;Bing ping action succeed.&#x60;, urls, response.statusText)
+      })
       .catch((error) &#x3D;&gt; {
-        log.warn(&#x60;${actionText} failed!&#x60;, error)
+        log.warn(&#x60;Bing ping action failed!&#x60;, getMessageFromAxiosError(error))
+      })
+  }
+
+  // Baidu: https://ziyuan.baidu.com/linksubmit/index
+  private pingBaidu(action: SEOAction, urls: string[]): void {
+    this.httpService.axiosRef
+      .request({
+        method: &#x27;post&#x27;,
+        data: urls.join(&#x27;\n&#x27;),
+        headers: { &#x27;Content-Type&#x27;: &#x27;text/plain&#x27; },
+        url: &#x60;http://data.zz.baidu.com/urls?site&#x3D;${APP_CONFIG.BAIDU_INDEXED.site}&amp;token&#x3D;${APP_CONFIG.BAIDU_INDEXED.token}&#x60;
+      })
+      .then((response) &#x3D;&gt; {
+        log.info(&#x60;Baidu ping [${action}] succeed.&#x60;, urls, response.statusText)
+      })
+      .catch((error) &#x3D;&gt; {
+        log.warn(&#x60;Baidu ping [${action}] failed!&#x60;, getMessageFromAxiosError(error))
       })
   }
 
@@ -713,20 +814,23 @@ export class SeoService {
 
   public push(url: ActionURL) {
     const urls &#x3D; this.humanizedUrl(url)
-    this.pingBaidu(SEOAction.Push, urls)
     this.pingGoogle(SEOAction.Push, urls)
+    this.pingBaidu(SEOAction.Push, urls)
+    this.pingBing(urls)
   }
 
   public update(url: ActionURL) {
     const urls &#x3D; this.humanizedUrl(url)
     this.pingBaidu(SEOAction.Update, urls)
     this.pingGoogle(SEOAction.Update, urls)
+    this.pingBing(urls)
   }
 
   public delete(url: ActionURL) {
     const urls &#x3D; this.humanizedUrl(url)
     this.pingBaidu(SEOAction.Delete, urls)
     this.pingGoogle(SEOAction.Delete, urls)
+    this.pingBing(urls)
   }
 }
 </code></pre>

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="./" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -31,30 +31,51 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<h1 id="changelog">Changelog</h1>
+<h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
-<h3 id="3140-2022-12-22">3.14.0 (2022-12-22)</h3>
+<h3>4.0.0 (2023-07-08)</h3>
 <p><strong>Feature</strong></p>
 <ul>
-<li>update various dependencies</li>
+<li>Upgrade nestjs v9 to v10</li>
+<li>Update various dependencies</li>
+<li>Use <code>pnpm</code> instead of <code>yarn</code> as a package management tool</li>
+<li>Use <code>dayjs</code> instead of <code>moment</code></li>
+<li>Refactor and improve cache system</li>
+<li>Remove field <code>__v</code> from all models</li>
+<li>Rename field <code>create_at</code> to <code>created_at</code> and <code>update_at</code> to <code>updated_at</code></li>
+<li>Rename field <code>article.thumb</code> to <code>article.thumbnail</code></li>
+<li>Rename field <code>article.tag</code> to <code>article.tags</code></li>
+<li>Rename field <code>article.category</code> to <code>article.categories</code></li>
+<li>Rename field <code>article.disabled_comment</code> to <code>article.disabled_comments</code></li>
+<li>Add <code>Bing</code> support to <code>SeoService</code></li>
 </ul>
-<h3 id="3131-2022-12-21">3.13.1 (2022-12-21)</h3>
+<p><strong>Fix</strong></p>
+<ul>
+<li>Fix googleAPI <code>Credentials</code> type</li>
+<li>Fix <code>Statistic</code> service error</li>
+</ul>
+<h3>3.14.0 (2022-12-22)</h3>
+<p><strong>Feature</strong></p>
+<ul>
+<li>Update various dependencies</li>
+</ul>
+<h3>3.13.1 (2022-12-21)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>Fix <code>mongodump</code> command args</li>
 </ul>
-<h3 id="3130-2022-09-23">3.13.0 (2022-09-23)</h3>
+<h3>3.13.0 (2022-09-23)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><code>/vote/site</code> and <code>/vote/article</code> merged into <code>/vote/post</code></li>
 </ul>
-<h3 id="3120-2022-09-23">3.12.0 (2022-09-23)</h3>
+<h3>3.12.0 (2022-09-23)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>Add vote model</li>
 <li>Improve feedback service</li>
 </ul>
-<h3 id="3110-2022-09-12">3.11.0 (2022-09-12)</h3>
+<h3>3.11.0 (2022-09-12)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>Anonymous user vote email.</li>
@@ -64,19 +85,19 @@
 <ul>
 <li>Upgrade deps</li>
 </ul>
-<h3 id="3101-2022-05-16">3.10.1 (2022-05-16)</h3>
+<h3>3.10.1 (2022-05-16)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>Remove classified dir.</li>
 <li>Improve DB backup mail context</li>
 </ul>
-<h3 id="3100-2022-05-15">3.10.0 (2022-05-15)</h3>
+<h3>3.10.0 (2022-05-15)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>AliYun OSS to AWS S3</li>
 <li>Remove STSToken API for cloud storage</li>
 </ul>
-<h3 id="394-2022-04-12">3.9.4 (2022-04-12)</h3>
+<h3>3.9.4 (2022-04-12)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><strong>[Helper]</strong> improve <code>nodemailer</code> config</li>
@@ -86,18 +107,18 @@
 <ul>
 <li>Upgrade deps</li>
 </ul>
-<h3 id="390-2022-02-28">3.9.0 (2022-02-28)</h3>
+<h3>3.9.0 (2022-02-28)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><strong>[Option]</strong> add <code>statement</code> <code>friend_links</code> field</li>
 <li>Add <code>feedback</code> module</li>
 </ul>
-<h3 id="384-2022-02-19">3.8.4 (2022-02-19)</h3>
+<h3>3.8.4 (2022-02-19)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><strong>[Article]</strong> add <code>lang</code> field</li>
 </ul>
-<h3 id="382-2022-02-15">3.8.2 (2022-02-15)</h3>
+<h3>3.8.2 (2022-02-15)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>New API <code>/article/calendar</code></li>
@@ -105,7 +126,7 @@
 <li>Rename API <code>/article/hot</code> to <code>/article/hottest</code></li>
 <li>Improve <code>Article</code> module</li>
 </ul>
-<h3 id="381-2022-02-15">3.8.1 (2022-02-15)</h3>
+<h3>3.8.1 (2022-02-15)</h3>
 <p><strong>BugFix</strong></p>
 <ul>
 <li>fix <code>{ timestamps: false }</code> for<ul>
@@ -117,7 +138,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="380-2022-02-14">3.8.0 (2022-02-14)</h3>
+<h3>3.8.0 (2022-02-14)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>improve <code>guards</code></li>
@@ -133,12 +154,12 @@
 <li>Rename <code>HttpProcessor</code> to <code>Responsor</code></li>
 <li>Generate documentation by <code>compodoc</code></li>
 </ul>
-<h3 id="3715-2022-02-01">3.7.15 (2022-02-01)</h3>
+<h3>3.7.15 (2022-02-01)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><strong>[MongoDB]</strong> improve MongoDB config &amp; backup</li>
 </ul>
-<h3 id="3714-2022-01-19">3.7.14 (2022-01-19)</h3>
+<h3>3.7.14 (2022-01-19)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><code>express-rate-limit</code> &gt; <code>@nestjs/throttler</code></li>
@@ -146,29 +167,29 @@
 <li><strong>[Disqus]</strong> add throttler</li>
 <li><strong>[Comment]</strong> add throttler</li>
 </ul>
-<h3 id="3711-2022-01-06">3.7.11 (2022-01-06)</h3>
+<h3>3.7.11 (2022-01-06)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><strong>[Disqus]</strong> cache for userinfo &amp; thread</li>
 </ul>
-<h3 id="376-2022-01-05">3.7.6 (2022-01-05)</h3>
+<h3>3.7.6 (2022-01-05)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><strong>[Article]</strong> random related articles</li>
 <li><strong>[Comment]</strong> improve email content</li>
 <li><strong>[Vote]</strong> send email to admin when new vote</li>
 </ul>
-<h3 id="374-2022-01-01">3.7.4 (2022-01-01)</h3>
+<h3>3.7.4 (2022-01-01)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><strong>[Comment]</strong> add <code>reviseIPLocation</code> service</li>
 </ul>
-<h3 id="372-2021-12-31">3.7.2 (2021-12-31)</h3>
+<h3>3.7.2 (2021-12-31)</h3>
 <p><strong>Chore</strong></p>
 <ul>
 <li>email text</li>
 </ul>
-<h3 id="v370-2021-12-31">v3.7.0 (2021-12-31)</h3>
+<h3>v3.7.0 (2021-12-31)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li><strong>[Like]</strong> rename <code>Like</code> module to <code>Vote</code></li>
@@ -189,17 +210,17 @@
 <li>Upgrade deps</li>
 <li>Remove <code>geoip-lite</code> dep</li>
 </ul>
-<h3 id="v364-2021-12-21">v3.6.4 (2021-12-21)</h3>
+<h3>v3.6.4 (2021-12-21)</h3>
 <p><strong>Chore</strong></p>
 <ul>
 <li>Improve deploy logic</li>
 </ul>
-<h3 id="v363-2021-12-07">v3.6.3 (2021-12-07)</h3>
+<h3>v3.6.3 (2021-12-07)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>Fix archive article query options</li>
 </ul>
-<h3 id="v362-2021-12-07">v3.6.2 (2021-12-07)</h3>
+<h3>v3.6.2 (2021-12-07)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>Remove <code>mongoose-paginate</code></li>
@@ -207,7 +228,7 @@
 <li>Improve <code>AutoIncrementID.Config</code></li>
 <li>Improve global paginate config</li>
 </ul>
-<h3 id="v360-2021-12-06">v3.6.0 (2021-12-06)</h3>
+<h3>v3.6.0 (2021-12-06)</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>Remove <code>syndication</code> module</li>
@@ -225,20 +246,20 @@
 </ul>
 </li>
 </ul>
-<h3 id="v352-2021-07-27">v3.5.2 (2021-07-27)</h3>
+<h3>v3.5.2 (2021-07-27)</h3>
 <p><strong>Chore</strong></p>
 <ul>
 <li>Upgrade deps</li>
 <li>Update CI scripts</li>
 <li>Update ESLint config &amp; format</li>
 </ul>
-<h3 id="v344">v3.4.4</h3>
+<h3>v3.4.4</h3>
 <p><strong>Feature</strong></p>
 <ul>
 <li>DB backup shell &amp; path</li>
 <li>Support patch API to backup DB &amp; recover DB</li>
 </ul>
-<h3 id="v343">v3.4.3</h3>
+<h3>v3.4.3</h3>
 <p><strong>Chore</strong></p>
 <ul>
 <li>Upgrade all deps</li>
@@ -251,7 +272,7 @@
 <ul>
 <li>Remove <code>Vlog</code> <code>Music</code> <code>GitHub</code> modules to BFF server</li>
 </ul>
-<h3 id="v342">v3.4.2</h3>
+<h3>v3.4.2</h3>
 <p><strong>Chore</strong></p>
 <ul>
 <li>Upgrade all deps</li>
@@ -261,7 +282,7 @@
 <li>comment content HTML -&gt; markdown text</li>
 <li>remove marked module</li>
 </ul>
-<h3 id="v341">v3.4.1</h3>
+<h3>v3.4.1</h3>
 <p><strong>Chore</strong></p>
 <ul>
 <li>Upgrade all deps</li>
@@ -275,7 +296,7 @@
 <li>add fe public path</li>
 <li>remove legacy folder file path for syndication</li>
 </ul>
-<h3 id="v340">v3.4.0</h3>
+<h3>v3.4.0</h3>
 <ul>
 <li>Upgrade deps</li>
 <li>Fix bilibili video API url</li>
@@ -287,18 +308,18 @@
 <li><a href="https://typegoose.github.io/typegoose/docs/api/decorators/prop#_id">Improve sub documents <code>_id: false</code> option</a></li>
 <li><a href="https://typegoose.github.io/typegoose/docs/api/decorators/prop#enum">Improve documents <code>enum</code> option</a></li>
 </ul>
-<h3 id="v333">v3.3.3</h3>
+<h3>v3.3.3</h3>
 <ul>
 <li>Wallpaper module support <code>en</code></li>
 <li>Enable <code>esModuleInterop</code> for <code>tsconfig</code></li>
 </ul>
-<h3 id="v332">v3.3.2</h3>
+<h3>v3.3.2</h3>
 <ul>
 <li>Fix article/hotList <code>query.state</code></li>
 <li>Upgrade TypeScript deep</li>
 <li>Update <code>Optional Chaining</code></li>
 </ul>
-<h3 id="v330">v3.3.0</h3>
+<h3>v3.3.0</h3>
 <ul>
 <li>Rename Sitemap module to Syndication module</li>
 <li>Add RSS service with Syndication module</li>
@@ -312,28 +333,28 @@
 <li>Upgrade all dependencies</li>
 <li>Replace ESLint with TSLint</li>
 </ul>
-<h3 id="v326">v3.2.6</h3>
+<h3>v3.2.6</h3>
 <ul>
 <li>Upgrade mongoose</li>
 <li>Update README.md</li>
 <li>Update FUNDING.yml</li>
 </ul>
-<h3 id="v324">v3.2.4</h3>
+<h3>v3.2.4</h3>
 <ul>
 <li>Replace QINIU to Aliyun OSS</li>
 <li>Update uptoken and dbbackup module</li>
 </ul>
-<h3 id="v323">v3.2.3</h3>
+<h3>v3.2.3</h3>
 <ul>
 <li>Remove project page with sitemap</li>
 </ul>
-<h3 id="v322">v3.2.2</h3>
+<h3>v3.2.2</h3>
 <ul>
 <li>Add datebase backup service</li>
 <li>Add actions</li>
 <li>Update global console method</li>
 </ul>
-<h3 id="v320">v3.2.0</h3>
+<h3>v3.2.0</h3>
 <ul>
 <li>更新 所有依赖</li>
 <li>更新 sitemap 模块及进行优化</li>
@@ -352,7 +373,7 @@
 <li>去除 对 nestjs-typegoose 模块的依赖</li>
 <li>废弃 枚举常量接口</li>
 </ul>
-<h3 id="v310">v3.1.0</h3>
+<h3>v3.1.0</h3>
 <ul>
 <li>Update nestjs to v6.0</li>
 <li>修正邮件服务文案错误</li>
@@ -361,27 +382,27 @@
 <li>修正配置读取类型错误问题</li>
 <li>升级 Wallpaper 业务</li>
 </ul>
-<h3 id="v300">v3.0.0</h3>
+<h3>v3.0.0</h3>
 <ul>
 <li>使用 <a href="https://github.com/nestjs/nest">Nest</a> 进行重构</li>
 <li>增加 Bilibili Vlog 业务模块</li>
 </ul>
-<h3 id="v220">v2.2.0</h3>
+<h3>v2.2.0</h3>
 <ul>
 <li>opeitime logic</li>
 <li>add constants api</li>
 </ul>
-<h3 id="v214">v2.1.4</h3>
+<h3>v2.1.4</h3>
 <ul>
 <li>增加统计数据接口</li>
 <li>优化密码更新机制</li>
 </ul>
-<h3 id="v212">v2.1.2</h3>
+<h3>v2.1.2</h3>
 <ul>
 <li>升级完善全站缓存机制</li>
 <li>增加时间定点任务库</li>
 </ul>
-<h3 id="v210">v2.1.0</h3>
+<h3>v2.1.0</h3>
 <ul>
 <li>优化编码风格</li>
 <li>完善项目信息</li>
@@ -392,7 +413,7 @@
 <li>使用更友好的 consola 日志模块</li>
 <li>为控制器和 Model 抽象出单独的状态常量</li>
 </ul>
-<h3 id="v200">v2.0.0</h3>
+<h3>v2.0.0</h3>
 <ul>
 <li>文章增加原创、转载字段</li>
 <li>优化评论系统的业务<ul>
@@ -415,15 +436,15 @@
 <li>更新密码加密机制</li>
 <li>增加检查 Token 有效性接口</li>
 </ul>
-<h3 id="v120">v1.2.0</h3>
+<h3>v1.2.0</h3>
 <ul>
 <li>重构了播放器 API</li>
 </ul>
-<h3 id="v110">v1.1.0</h3>
+<h3>v1.1.0</h3>
 <ul>
 <li>修复了评论数 bug</li>
 </ul>
-<h3 id="v100">v1.0.0</h3>
+<h3>v1.0.0</h3>
 <ul>
 <li>驱动搜索引擎 ping 接口 文章发布后自动 ping 给搜索引擎 xml</li>
 <li>增加评论功能+黑名单，评论可自动校验 spam，及黑名单 (ip、邮箱、关键字的校验)</li>

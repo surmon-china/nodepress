@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -43,21 +43,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li >AppMeta</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >AppMeta</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -83,6 +89,8 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#likes" >likes</a>
                             </li>
                         </ul>
@@ -99,7 +107,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -110,6 +118,8 @@
                 <td class="col-md-4">
                     <a name="likes"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>likes</b></span>
                         <a href="#likes"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -150,7 +160,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { prop, modelOptions } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
 import {
@@ -163,7 +173,7 @@ import {
   IsNotEmpty,
   IsArray,
   ValidateNested,
-  ArrayUnique,
+  ArrayUnique
 } from &#x27;class-validator&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
@@ -171,7 +181,7 @@ import { APP } from &#x27;@app/app.config&#x27;
 
 export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   title: &#x27;NodePress&#x27;,
-  sub_title: &#x27;blog server app&#x27;,
+  sub_title: &#x27;Blog server app&#x27;,
   description: &#x27;RESTful API service for blog&#x27;,
   keywords: [],
   statement: &#x27;&#x27;,
@@ -180,16 +190,16 @@ export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   friend_links: [
     {
       name: APP.FE_NAME,
-      value: APP.FE_URL,
-    },
+      value: APP.FE_URL
+    }
   ],
   meta: { likes: 0 },
   blocklist: {
     ips: [],
     mails: [],
-    keywords: [],
+    keywords: []
   },
-  ad_config: &#x27;&#x27;,
+  ad_config: &#x27;&#x27;
 })
 
 class AppMeta {
@@ -221,11 +231,12 @@ export class Blocklist {
 
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     timestamps: {
       createdAt: false,
-      updatedAt: &#x27;update_at&#x27;,
-    },
-  },
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
 })
 export class Option {
   @IsString()
@@ -263,7 +274,6 @@ export class Option {
 
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   @prop({ default: &#x27;&#x27; })
   statement: string
 
@@ -291,7 +301,7 @@ export class Option {
   ad_config: string | null
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 }
 
 export const OptionProvider &#x3D; getProviderByTypegooseClass(Option)

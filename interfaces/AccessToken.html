@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -44,23 +44,29 @@
 
 
 <ol class="breadcrumb">
-  <li>Interfaces</li>
-  <li
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
   >
   AccessToken</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -71,7 +77,7 @@
 
 
 
-        <section>
+        <section data-compodoc="block-index">
             <h3 id="index">Index</h3>
             <table class="table table-sm table-bordered index-table">
                 <tbody>
@@ -140,7 +146,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-properties">
                 <h3 id="inputs">Properties</h3>
                     <table class="table table-sm table-bordered">
                         <tbody>
@@ -416,7 +422,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import axios from &#x27;axios&#x27;
 
 const AUTHORIZE_URL &#x3D; &#x27;https://disqus.com/api/oauth/2.0/authorize&#x27;
@@ -460,7 +466,7 @@ const resourcesRequiringPost &#x3D; [
   &#x27;users/follow&#x27;,
   &#x27;users/unfollow&#x27;,
   &#x27;whitelists/add&#x27;,
-  &#x27;whitelists/remove&#x27;,
+  &#x27;whitelists/remove&#x27;
 ]
 
 // https://stackoverflow.com/questions/16444602/creating-an-anonymous-post-with-disqus-api-fails
@@ -497,7 +503,7 @@ export class Disqus {
     this.config &#x3D; config
   }
 
-  // https://disqus.com/api/docs/
+  // Disqus API v3.0 https://disqus.com/api/docs/
   public request&lt;T &#x3D; any&gt;(resource: string, params: RequestParams &#x3D; {}, usePublic &#x3D; false) {
     const api &#x3D; getApiURL(resource)
     const queryParams &#x3D; { ...params }
@@ -536,8 +542,8 @@ export class Disqus {
   public getOAuthAccessToken(code: string, uri: string) {
     const config &#x3D; {
       headers: {
-        &#x27;Content-Type&#x27;: &#x27;application/x-www-form-urlencoded&#x27;,
-      },
+        &#x27;Content-Type&#x27;: &#x27;application/x-www-form-urlencoded&#x27;
+      }
     }
     const formData &#x3D; new URLSearchParams()
     formData.append(&#x27;code&#x27;, code)
@@ -551,10 +557,10 @@ export class Disqus {
       .catch((error) &#x3D;&gt; Promise.reject(normalizeAxiosError(error)))
   }
 
-  public refreshOAuthAccessToken&lt;T &#x3D; any&gt;(refreshtoken: string) {
+  public refreshOAuthAccessToken&lt;T &#x3D; any&gt;(refreshToken: string) {
     const url &#x3D; new URL(ACCESS_TOKEN_URL)
     url.searchParams.set(&#x27;grant_type&#x27;, &#x27;refresh_token&#x27;)
-    url.searchParams.set(&#x27;refresh_token&#x27;, refreshtoken)
+    url.searchParams.set(&#x27;refresh_token&#x27;, refreshToken)
     url.searchParams.set(&#x27;client_id&#x27;, this.config.apiKey)
     url.searchParams.set(&#x27;client_secret&#x27;, this.config.apiSecret)
     return axios

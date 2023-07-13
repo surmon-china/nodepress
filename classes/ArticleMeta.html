@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -43,21 +43,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li >ArticleMeta</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >ArticleMeta</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -83,12 +89,18 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#comments" >comments</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#likes" >likes</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#views" >views</a>
                             </li>
                         </ul>
@@ -105,7 +117,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -116,6 +128,8 @@
                 <td class="col-md-4">
                     <a name="comments"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>comments</b></span>
                         <a href="#comments"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -151,6 +165,8 @@
                 <td class="col-md-4">
                     <a name="likes"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>likes</b></span>
                         <a href="#likes"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -186,6 +202,8 @@
                 <td class="col-md-4">
                     <a name="views"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>views</b></span>
                         <a href="#views"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -226,7 +244,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, index, plugin, Ref, modelOptions } from &#x27;@typegoose/typegoose&#x27;
 import {
@@ -241,7 +259,7 @@ import {
   MaxLength,
   Matches,
   ArrayNotEmpty,
-  ArrayUnique,
+  ArrayUnique
 } from &#x27;class-validator&#x27;
 import { Language, SortType, PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
 import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.constant&#x27;
@@ -256,22 +274,22 @@ export const ARTICLE_PUBLISH_STATES &#x3D; [PublishState.Draft, PublishState.Pub
 export const ARTICLE_PUBLIC_STATES &#x3D; [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
 export const ARTICLE_ORIGIN_STATES &#x3D; [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
 
-export const ARTICLE_FULL_QUERY_REF_POPULATE &#x3D; [&#x27;category&#x27;, &#x27;tag&#x27;]
+export const ARTICLE_FULL_QUERY_REF_POPULATE &#x3D; [&#x27;categories&#x27;, &#x27;tags&#x27;]
 export const ARTICLE_LIST_QUERY_PROJECTION &#x3D; { content: false }
 export const ARTICLE_LIST_QUERY_GUEST_FILTER &#x3D; Object.freeze({
   state: PublishState.Published,
-  public: PublicState.Public,
+  public: PublicState.Public
 })
 
 export const ARTICLE_HOTTEST_SORT_PARAMS &#x3D; Object.freeze({
   &#x27;meta.comments&#x27;: SortType.Desc,
-  &#x27;meta.likes&#x27;: SortType.Desc,
+  &#x27;meta.likes&#x27;: SortType.Desc
 })
 
 const ARTICLE_DEFAULT_META: ArticleMeta &#x3D; Object.freeze({
   likes: 0,
   views: 0,
-  comments: 0,
+  comments: 0
 })
 
 export class ArticleMeta {
@@ -296,12 +314,13 @@ export class ArticleMeta {
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     toObject: { getters: true },
     timestamps: {
-      createdAt: &#x27;create_at&#x27;,
-      updatedAt: &#x27;update_at&#x27;,
-    },
-  },
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
 })
 @index(
   { title: &#x27;text&#x27;, content: &#x27;text&#x27;, description: &#x27;text&#x27; },
@@ -310,8 +329,8 @@ export class ArticleMeta {
     weights: {
       title: 10,
       description: 18,
-      content: 3,
-    },
+      content: 3
+    }
   }
 )
 export class Article {
@@ -348,7 +367,7 @@ export class Article {
   @IsString()
   @IsOptional()
   @prop({ type: String, default: null })
-  thumb: string | null
+  thumbnail: string | null
 
   // publish state
   @IsIn(ARTICLE_PUBLISH_STATES)
@@ -376,12 +395,12 @@ export class Article {
   @ArrayNotEmpty()
   @IsArray()
   @prop({ ref: () &#x3D;&gt; Category, required: true, index: true })
-  category: Ref&lt;Category&gt;[]
+  categories: Ref&lt;Category&gt;[]
 
   // tag
   // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
   @prop({ ref: () &#x3D;&gt; Tag, index: true })
-  tag: Ref&lt;Tag&gt;[]
+  tags: Ref&lt;Tag&gt;[]
 
   // language
   // MARK: can&#x27;t use &#x27;language&#x27; field
@@ -393,19 +412,19 @@ export class Article {
   @prop({ default: Language.Chinese, index: true })
   lang: Language
 
-  // disabled comment
+  // disabled comments
   @IsBoolean()
   @prop({ default: false })
-  disabled_comment: boolean
+  disabled_comments: boolean
 
   @prop({ _id: false, default: { ...ARTICLE_DEFAULT_META } })
   meta: ArticleMeta
 
   @prop({ default: Date.now, index: true, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 
   @ArrayUnique()
   @IsArray()

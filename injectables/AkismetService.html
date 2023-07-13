@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >AkismetService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >AkismetService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -133,7 +139,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -144,7 +150,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:38</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:39</a></div>
                             </td>
                         </tr>
 
@@ -152,7 +158,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -179,8 +185,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="104"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:104</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="105"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:105</a></div>
                 </td>
             </tr>
 
@@ -250,8 +256,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="45"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:45</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:46</a></div>
                 </td>
             </tr>
 
@@ -289,8 +295,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="53"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:53</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="54"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:54</a></div>
                 </td>
             </tr>
 
@@ -328,8 +334,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="67"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:67</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:68</a></div>
                 </td>
             </tr>
 
@@ -399,8 +405,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="112"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:112</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="113"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:113</a></div>
                 </td>
             </tr>
 
@@ -470,8 +476,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="108"
-                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:108</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="109"
+                            class="link-to-prism">src/processors/helper/helper.service.akismet.ts:109</a></div>
                 </td>
             </tr>
 
@@ -520,7 +526,7 @@
         </tbody>
     </table>
 </section>
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -545,7 +551,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -571,7 +577,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:38</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -583,7 +589,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AkismetClient } from &#x27;akismet-api&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
@@ -591,12 +597,13 @@ import { getMessageFromNormalError } from &#x27;@app/transformers/error.transfor
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
-const log &#x3D; logger.scope(&#x27;Akismet&#x27;)
+const log &#x3D; logger.scope(&#x27;AkismetService&#x27;)
 
+// keyof typeof AkismetClient
 export enum AkismetAction {
   CheckSpam &#x3D; &#x27;checkSpam&#x27;,
   SubmitSpam &#x3D; &#x27;submitSpam&#x27;,
-  SubmitHam &#x3D; &#x27;submitHam&#x27;,
+  SubmitHam &#x3D; &#x27;submitHam&#x27;
 }
 
 // https://github.com/chrisfosterelli/akismet-api/blob/master/docs/comments.md
@@ -626,7 +633,7 @@ export class AkismetService {
     // https://github.com/chrisfosterelli/akismet-api
     this.client &#x3D; new AkismetClient({
       key: APP_CONFIG.AKISMET.key as string,
-      blog: APP_CONFIG.AKISMET.blog as string,
+      blog: APP_CONFIG.AKISMET.blog as string
     })
   }
 
@@ -648,7 +655,7 @@ export class AkismetService {
     return (content: AkismetPayload): Promise&lt;any&gt; &#x3D;&gt; {
       return new Promise((resolve, reject) &#x3D;&gt; {
         // continue operation only when initialization successful
-        if (this.clientIsValid &#x3D;&#x3D;&#x3D; false) {
+        if (!this.clientIsValid) {
           const message &#x3D; &#x60;${handleType} failed! reason: init failed&#x60;
           log.warn(message)
           return resolve(message)
@@ -661,7 +668,7 @@ export class AkismetService {
           comment_author: content.comment_author || UNDEFINED,
           comment_author_email: content.comment_author_email || UNDEFINED,
           comment_author_url: content.comment_author_url || UNDEFINED,
-          comment_content: content.comment_content || UNDEFINED,
+          comment_content: content.comment_content || UNDEFINED
         })
           .then((result) &#x3D;&gt; {
             if (handleType &#x3D;&#x3D;&#x3D; AkismetAction.CheckSpam &amp;&amp; result) {

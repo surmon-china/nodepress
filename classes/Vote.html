@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -43,21 +43,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li >Vote</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >Vote</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -83,40 +89,65 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
                                 <a href="#author" >author</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#author_type" >author_type</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#create_at" >create_at</a>
+                                <a href="#created_at" >created_at</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#id" >id</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#ip" >ip</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                 <a href="#ip_location" >ip_location</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#target_id" >target_id</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#target_type" >target_type</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#update_at" >update_at</a>
+                                <a href="#updated_at" >updated_at</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#user_agent" >user_agent</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#vote_type" >vote_type</a>
                             </li>
                         </ul>
@@ -133,7 +164,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -144,6 +175,7 @@
                 <td class="col-md-4">
                     <a name="author"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                         <span ><b>author</b></span>
                         <a href="#author"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -166,7 +198,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/modules/vote/vote.model.ts:81</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/modules/vote/vote.model.ts:82</a></div>
                         </td>
                     </tr>
 
@@ -179,6 +211,10 @@
                 <td class="col-md-4">
                     <a name="author_type"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>author_type</b></span>
                         <a href="#author_type"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -201,7 +237,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/modules/vote/vote.model.ts:78</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/modules/vote/vote.model.ts:79</a></div>
                         </td>
                     </tr>
 
@@ -212,11 +248,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="create_at"></a>
+                    <a name="created_at"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>create_at</b></span>
-                        <a href="#create_at"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>created_at</b></span>
+                        <a href="#created_at"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -237,7 +274,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/modules/vote/vote.model.ts:99</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/vote/vote.model.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -250,6 +287,7 @@
                 <td class="col-md-4">
                     <a name="id"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
                         <span ><b>id</b></span>
                         <a href="#id"><span class="icon ion-ios-link"></span></a>
@@ -273,7 +311,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/vote/vote.model.ts:55</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/vote/vote.model.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -286,6 +324,9 @@
                 <td class="col-md-4">
                     <a name="ip"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>ip</b></span>
                         <a href="#ip"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -308,7 +349,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/modules/vote/vote.model.ts:87</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/vote/vote.model.ts:88</a></div>
                         </td>
                     </tr>
 
@@ -321,6 +362,7 @@
                 <td class="col-md-4">
                     <a name="ip_location"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                         <span ><b>ip_location</b></span>
                         <a href="#ip_location"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -343,7 +385,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="91" class="link-to-prism">src/modules/vote/vote.model.ts:91</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/modules/vote/vote.model.ts:92</a></div>
                         </td>
                     </tr>
 
@@ -356,6 +398,9 @@
                 <td class="col-md-4">
                     <a name="target_id"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>target_id</b></span>
                         <a href="#target_id"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -378,7 +423,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/modules/vote/vote.model.ts:66</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/modules/vote/vote.model.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -391,6 +436,10 @@
                 <td class="col-md-4">
                     <a name="target_type"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>target_type</b></span>
                         <a href="#target_type"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -413,7 +462,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/modules/vote/vote.model.ts:61</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/vote/vote.model.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -424,11 +473,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="update_at"></a>
+                    <a name="updated_at"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>update_at</b></span>
-                        <a href="#update_at"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updated_at</b></span>
+                        <a href="#updated_at"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -449,7 +499,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/modules/vote/vote.model.ts:102</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/modules/vote/vote.model.ts:103</a></div>
                         </td>
                     </tr>
 
@@ -462,6 +512,8 @@
                 <td class="col-md-4">
                     <a name="user_agent"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
                         <span ><b>user_agent</b></span>
                         <a href="#user_agent"><span class="icon ion-ios-link"></span></a>
@@ -485,7 +537,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/modules/vote/vote.model.ts:96</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/modules/vote/vote.model.ts:97</a></div>
                         </td>
                     </tr>
 
@@ -498,6 +550,10 @@
                 <td class="col-md-4">
                     <a name="vote_type"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>vote_type</b></span>
                         <a href="#vote_type"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -520,7 +576,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/modules/vote/vote.model.ts:72</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/vote/vote.model.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -538,7 +594,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
 import { IsString, IsIP, IsIn, IsInt, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
@@ -549,23 +605,23 @@ import { IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 
 export enum VoteTarget {
   Post &#x3D; 1,
-  Comment &#x3D; 2,
+  Comment &#x3D; 2
 }
 
 export enum VoteType {
   Upvote &#x3D; 1,
-  Downvote &#x3D; -1,
+  Downvote &#x3D; -1
 }
 
 export const voteTypeMap &#x3D; new Map([
   [VoteType.Upvote, &#x27;+1&#x27;],
-  [VoteType.Downvote, &#x27;-1&#x27;],
+  [VoteType.Downvote, &#x27;-1&#x27;]
 ])
 
 export enum VoteAuthorType {
   Anonymous &#x3D; 0,
   Guest &#x3D; 1,
-  Disqus &#x3D; 2,
+  Disqus &#x3D; 2
 }
 
 export const VOTE_TYPES &#x3D; [VoteType.Upvote, VoteType.Downvote] as const
@@ -577,13 +633,14 @@ export const VOTE_AUTHOR_TYPES &#x3D; [VoteAuthorType.Anonymous, VoteAuthorType.
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    versionKey: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
     timestamps: {
-      createdAt: &#x27;create_at&#x27;,
-      updatedAt: &#x27;update_at&#x27;,
-    },
-  },
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
 })
 export class Vote {
   @prop({ unique: true })
@@ -631,10 +688,10 @@ export class Vote {
   user_agent?: string | null
 
   @prop({ default: Date.now, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 }
 
 export const VoteProvider &#x3D; getProviderByTypegooseClass(Vote)

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -36,21 +36,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Controllers</li>
-  <li >ArticleController</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >ArticleController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -84,35 +90,64 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#createArticle" >createArticle</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#delArticle" >delArticle</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#delArticles" >delArticles</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getArticle" >getArticle</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getArticleCalendar" >getArticleCalendar</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#getArticleContext" >getArticleContext</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#getArticles" >getArticles</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getHottestArticles" >getHottestArticles</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#patchArticles" >patchArticles</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#putArticle" >putArticle</a>
                             </li>
                         </ul>
@@ -127,7 +162,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -138,6 +173,9 @@
                 <td class="col-md-4">
                     <a name="createArticle"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>createArticle</b></span>
                         <a href="#createArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -145,7 +183,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>createArticle(article: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createArticle(article: <a href="../classes/Article.html" target="_self">Article</a>)</code>
                 </td>
             </tr>
 
@@ -159,8 +198,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="159"
-                            class="link-to-prism">src/modules/article/article.controller.ts:159</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/modules/article/article.controller.ts:162</a></div>
                 </td>
             </tr>
 
@@ -214,6 +253,9 @@
                 <td class="col-md-4">
                     <a name="delArticle"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>delArticle</b></span>
                         <a href="#delArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -221,7 +263,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>delArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>delArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -235,8 +278,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="173"
-                            class="link-to-prism">src/modules/article/article.controller.ts:173</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="176"
+                            class="link-to-prism">src/modules/article/article.controller.ts:176</a></div>
                 </td>
             </tr>
 
@@ -289,6 +332,9 @@
                 <td class="col-md-4">
                     <a name="delArticles"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>delArticles</b></span>
                         <a href="#delArticles"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -296,7 +342,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>delArticles(body: <a href="../classes/ArticleIDsDTO.html" target="_self">ArticleIDsDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>delArticles(body: <a href="../classes/ArticleIDsDTO.html" target="_self">ArticleIDsDTO</a>)</code>
                 </td>
             </tr>
 
@@ -310,8 +357,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="187"
-                            class="link-to-prism">src/modules/article/article.controller.ts:187</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="190"
+                            class="link-to-prism">src/modules/article/article.controller.ts:190</a></div>
                 </td>
             </tr>
 
@@ -365,6 +412,9 @@
                 <td class="col-md-4">
                     <a name="getArticle"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getArticle</b></span>
                         <a href="#getArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -372,7 +422,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -386,8 +437,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="144"
-                            class="link-to-prism">src/modules/article/article.controller.ts:144</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="147"
+                            class="link-to-prism">src/modules/article/article.controller.ts:147</a></div>
                 </td>
             </tr>
 
@@ -440,6 +491,9 @@
                 <td class="col-md-4">
                     <a name="getArticleCalendar"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getArticleCalendar</b></span>
                         <a href="#getArticleCalendar"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -447,7 +501,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getArticleCalendar(query: <a href="../classes/ArticleCalendarQueryDTO.html" target="_self">ArticleCalendarQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getArticleCalendar(query: <a href="../classes/ArticleCalendarQueryDTO.html" target="_self">ArticleCalendarQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -527,6 +582,8 @@
                 <td class="col-md-4">
                     <a name="getArticleContext"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span class="modifier">Async</span>
                         <span ><b>getArticleContext</b></span>
                         <a href="#getArticleContext"><span class="icon ion-ios-link"></span></a>
@@ -604,6 +661,10 @@
                 <td class="col-md-4">
                     <a name="getArticles"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span class="modifier">Async</span>
                         <span ><b>getArticles</b></span>
                         <a href="#getArticles"><span class="icon ion-ios-link"></span></a>
@@ -682,6 +743,8 @@
                 <td class="col-md-4">
                     <a name="getHottestArticles"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getHottestArticles</b></span>
                         <a href="#getHottestArticles"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -689,7 +752,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getHottestArticles(query: <a href="../classes/ArticleListQueryDTO.html" target="_self">ArticleListQueryDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getHottestArticles(query: <a href="../classes/ArticleListQueryDTO.html" target="_self">ArticleListQueryDTO</a>)</code>
                 </td>
             </tr>
 
@@ -758,6 +822,9 @@
                 <td class="col-md-4">
                     <a name="patchArticles"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>patchArticles</b></span>
                         <a href="#patchArticles"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -765,7 +832,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>patchArticles(body: <a href="../classes/ArticlesStateDTO.html" target="_self">ArticlesStateDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>patchArticles(body: <a href="../classes/ArticlesStateDTO.html" target="_self">ArticlesStateDTO</a>)</code>
                 </td>
             </tr>
 
@@ -779,8 +847,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="180"
-                            class="link-to-prism">src/modules/article/article.controller.ts:180</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="183"
+                            class="link-to-prism">src/modules/article/article.controller.ts:183</a></div>
                 </td>
             </tr>
 
@@ -834,6 +902,9 @@
                 <td class="col-md-4">
                     <a name="putArticle"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>putArticle</b></span>
                         <a href="#putArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -841,7 +912,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>putArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, article: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>putArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, article: <a href="../classes/Article.html" target="_self">Article</a>)</code>
                 </td>
             </tr>
 
@@ -855,8 +927,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="166"
-                            class="link-to-prism">src/modules/article/article.controller.ts:166</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/modules/article/article.controller.ts:169</a></div>
                 </td>
             </tr>
 
@@ -918,7 +990,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
  * @file Article controller
  * @module module/article/controller
@@ -943,7 +1015,7 @@ import {
   ArticleListQueryDTO,
   ArticleCalendarQueryDTO,
   ArticleIDsDTO,
-  ArticlesStateDTO,
+  ArticlesStateDTO
 } from &#x27;./article.dto&#x27;
 import { ARTICLE_HOTTEST_SORT_PARAMS } from &#x27;./article.model&#x27;
 import { ArticleService } from &#x27;./article.service&#x27;
@@ -1003,20 +1075,20 @@ export class ArticleController {
     // date
     if (filters.date) {
       const queryDateMS &#x3D; new Date(filters.date).getTime()
-      paginateQuery.create_at &#x3D; {
+      paginateQuery.created_at &#x3D; {
         $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
-        $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000),
+        $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000)
       }
     }
 
     // tag | category
     if (filters.tag_slug) {
       const tag &#x3D; await this.tagService.getDetailBySlug(filters.tag_slug)
-      paginateQuery.tag &#x3D; tag._id
+      paginateQuery.tags &#x3D; tag._id
     }
     if (filters.category_slug) {
       const category &#x3D; await this.categoryService.getDetailBySlug(filters.category_slug)
-      paginateQuery.category &#x3D; category._id
+      paginateQuery.categories &#x3D; category._id
     }
 
     // paginate
@@ -1045,14 +1117,17 @@ export class ArticleController {
   @Responser.handle(&#x27;Get context articles&#x27;)
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
     const articleID &#x3D; Number(params.id)
-    const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
-    const [prev_article] &#x3D; await this.articleService.getNearArticles(articleID, &#x27;early&#x27;, 1)
-    const [next_article] &#x3D; await this.articleService.getNearArticles(articleID, &#x27;later&#x27;, 1)
-    const related_articles &#x3D; await this.articleService.getRelatedArticles(article, 20)
+    const [prevArticle, nextArticle, relatedArticles] &#x3D; await Promise.all([
+      this.articleService.getNearArticles(articleID, &#x27;early&#x27;, 1),
+      this.articleService.getNearArticles(articleID, &#x27;later&#x27;, 1),
+      this.articleService
+        .getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
+        .then((article) &#x3D;&gt; this.articleService.getRelatedArticles(article, 20))
+    ])
     return {
-      prev_article: prev_article || null,
-      next_article: next_article || null,
-      related_articles,
+      prev_article: prevArticle || null,
+      next_article: nextArticle || null,
+      related_articles: relatedArticles || []
     }
   }
 
@@ -1060,7 +1135,7 @@ export class ArticleController {
   @UseGuards(AdminMaybeGuard)
   @Responser.handle({
     message: &#x27;Get article detail&#x27;,
-    error: HttpStatus.NOT_FOUND,
+    error: HttpStatus.NOT_FOUND
   })
   getArticle(@QueryParams() { params, isUnauthenticated }: QueryParamsResult): Promise&lt;Article&gt; {
     // guest user &gt; number ID | slug

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -43,21 +43,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li >Article</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >Article</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -83,60 +89,110 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#category" >category</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#categories" >categories</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#content" >content</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#create_at" >create_at</a>
+                                <a href="#created_at" >created_at</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#description" >description</a>
                             </li>
                             <li>
-                                <a href="#disabled_comment" >disabled_comment</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#disabled_comments" >disabled_comments</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#extends" >extends</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                 <a href="#id" >id</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#keywords" >keywords</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#lang" >lang</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                 <a href="#meta" >meta</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#origin" >origin</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#public" >public</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#slug" >slug</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#state" >state</a>
                             </li>
                             <li>
-                                <a href="#tag" >tag</a>
+                                    <span class="modifier"></span>
+                                <a href="#tags" >tags</a>
                             </li>
                             <li>
-                                <a href="#thumb" >thumb</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#thumbnail" >thumbnail</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#title" >title</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#update_at" >update_at</a>
+                                <a href="#updated_at" >updated_at</a>
                             </li>
                         </ul>
                     </td>
@@ -152,7 +208,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -161,10 +217,14 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="category"></a>
+                    <a name="categories"></a>
                     <span class="name">
-                        <span ><b>category</b></span>
-                        <a href="#category"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>categories</b></span>
+                        <a href="#categories"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -185,7 +245,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="156" class="link-to-prism">src/modules/article/article.model.ts:156</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="157" class="link-to-prism">src/modules/article/article.model.ts:157</a></div>
                         </td>
                     </tr>
 
@@ -198,6 +258,9 @@
                 <td class="col-md-4">
                     <a name="content"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>content</b></span>
                         <a href="#content"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -220,7 +283,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">src/modules/article/article.model.ts:113</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="114" class="link-to-prism">src/modules/article/article.model.ts:114</a></div>
                         </td>
                     </tr>
 
@@ -231,11 +294,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="create_at"></a>
+                    <a name="created_at"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>create_at</b></span>
-                        <a href="#create_at"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>created_at</b></span>
+                        <a href="#created_at"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -256,7 +320,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="182" class="link-to-prism">src/modules/article/article.model.ts:182</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="183" class="link-to-prism">src/modules/article/article.model.ts:183</a></div>
                         </td>
                     </tr>
 
@@ -269,6 +333,8 @@
                 <td class="col-md-4">
                     <a name="description"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>description</b></span>
                         <a href="#description"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -291,7 +357,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/modules/article/article.model.ts:117</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/modules/article/article.model.ts:118</a></div>
                         </td>
                     </tr>
 
@@ -302,10 +368,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="disabled_comment"></a>
+                    <a name="disabled_comments"></a>
                     <span class="name">
-                        <span ><b>disabled_comment</b></span>
-                        <a href="#disabled_comment"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>disabled_comments</b></span>
+                        <a href="#disabled_comments"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -326,7 +394,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="176" class="link-to-prism">src/modules/article/article.model.ts:176</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="177" class="link-to-prism">src/modules/article/article.model.ts:177</a></div>
                         </td>
                     </tr>
 
@@ -339,6 +407,9 @@
                 <td class="col-md-4">
                     <a name="extends"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>extends</b></span>
                         <a href="#extends"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -361,7 +432,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="190" class="link-to-prism">src/modules/article/article.model.ts:190</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="191" class="link-to-prism">src/modules/article/article.model.ts:191</a></div>
                         </td>
                     </tr>
 
@@ -374,6 +445,7 @@
                 <td class="col-md-4">
                     <a name="id"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                         <span ><b>id</b></span>
                         <a href="#id"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -396,7 +468,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/modules/article/article.model.ts:96</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/modules/article/article.model.ts:97</a></div>
                         </td>
                     </tr>
 
@@ -409,6 +481,10 @@
                 <td class="col-md-4">
                     <a name="keywords"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>keywords</b></span>
                         <a href="#keywords"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -431,7 +507,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="123" class="link-to-prism">src/modules/article/article.model.ts:123</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/modules/article/article.model.ts:124</a></div>
                         </td>
                     </tr>
 
@@ -444,6 +520,10 @@
                 <td class="col-md-4">
                     <a name="lang"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>lang</b></span>
                         <a href="#lang"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -466,7 +546,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="171" class="link-to-prism">src/modules/article/article.model.ts:171</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="172" class="link-to-prism">src/modules/article/article.model.ts:172</a></div>
                         </td>
                     </tr>
 
@@ -479,6 +559,7 @@
                 <td class="col-md-4">
                     <a name="meta"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                         <span ><b>meta</b></span>
                         <a href="#meta"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -501,7 +582,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="179" class="link-to-prism">src/modules/article/article.model.ts:179</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="180" class="link-to-prism">src/modules/article/article.model.ts:180</a></div>
                         </td>
                     </tr>
 
@@ -514,6 +595,10 @@
                 <td class="col-md-4">
                     <a name="origin"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>origin</b></span>
                         <a href="#origin"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -536,7 +621,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="149" class="link-to-prism">src/modules/article/article.model.ts:149</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="150" class="link-to-prism">src/modules/article/article.model.ts:150</a></div>
                         </td>
                     </tr>
 
@@ -549,6 +634,10 @@
                 <td class="col-md-4">
                     <a name="public"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>public</b></span>
                         <a href="#public"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -571,7 +660,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/modules/article/article.model.ts:142</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/article/article.model.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -584,6 +673,11 @@
                 <td class="col-md-4">
                     <a name="slug"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>slug</b></span>
                         <a href="#slug"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -606,7 +700,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/modules/article/article.model.ts:103</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/modules/article/article.model.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -619,6 +713,10 @@
                 <td class="col-md-4">
                     <a name="state"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>state</b></span>
                         <a href="#state"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -641,7 +739,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">src/modules/article/article.model.ts:135</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">src/modules/article/article.model.ts:136</a></div>
                         </td>
                     </tr>
 
@@ -652,10 +750,11 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="tag"></a>
+                    <a name="tags"></a>
                     <span class="name">
-                        <span ><b>tag</b></span>
-                        <a href="#tag"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                        <span ><b>tags</b></span>
+                        <a href="#tags"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -676,7 +775,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="161" class="link-to-prism">src/modules/article/article.model.ts:161</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="162" class="link-to-prism">src/modules/article/article.model.ts:162</a></div>
                         </td>
                     </tr>
 
@@ -687,10 +786,13 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="thumb"></a>
+                    <a name="thumbnail"></a>
                     <span class="name">
-                        <span ><b>thumb</b></span>
-                        <a href="#thumb"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>thumbnail</b></span>
+                        <a href="#thumbnail"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -711,7 +813,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="128" class="link-to-prism">src/modules/article/article.model.ts:128</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">src/modules/article/article.model.ts:129</a></div>
                         </td>
                     </tr>
 
@@ -724,6 +826,9 @@
                 <td class="col-md-4">
                     <a name="title"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>title</b></span>
                         <a href="#title"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -746,7 +851,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/modules/article/article.model.ts:108</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/modules/article/article.model.ts:109</a></div>
                         </td>
                     </tr>
 
@@ -757,11 +862,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="update_at"></a>
+                    <a name="updated_at"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>update_at</b></span>
-                        <a href="#update_at"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updated_at</b></span>
+                        <a href="#updated_at"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -782,7 +888,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="185" class="link-to-prism">src/modules/article/article.model.ts:185</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="186" class="link-to-prism">src/modules/article/article.model.ts:186</a></div>
                         </td>
                     </tr>
 
@@ -800,7 +906,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, index, plugin, Ref, modelOptions } from &#x27;@typegoose/typegoose&#x27;
 import {
@@ -815,7 +921,7 @@ import {
   MaxLength,
   Matches,
   ArrayNotEmpty,
-  ArrayUnique,
+  ArrayUnique
 } from &#x27;class-validator&#x27;
 import { Language, SortType, PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
 import { generalAutoIncrementIDConfig } from &#x27;@app/constants/increment.constant&#x27;
@@ -830,22 +936,22 @@ export const ARTICLE_PUBLISH_STATES &#x3D; [PublishState.Draft, PublishState.Pub
 export const ARTICLE_PUBLIC_STATES &#x3D; [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
 export const ARTICLE_ORIGIN_STATES &#x3D; [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
 
-export const ARTICLE_FULL_QUERY_REF_POPULATE &#x3D; [&#x27;category&#x27;, &#x27;tag&#x27;]
+export const ARTICLE_FULL_QUERY_REF_POPULATE &#x3D; [&#x27;categories&#x27;, &#x27;tags&#x27;]
 export const ARTICLE_LIST_QUERY_PROJECTION &#x3D; { content: false }
 export const ARTICLE_LIST_QUERY_GUEST_FILTER &#x3D; Object.freeze({
   state: PublishState.Published,
-  public: PublicState.Public,
+  public: PublicState.Public
 })
 
 export const ARTICLE_HOTTEST_SORT_PARAMS &#x3D; Object.freeze({
   &#x27;meta.comments&#x27;: SortType.Desc,
-  &#x27;meta.likes&#x27;: SortType.Desc,
+  &#x27;meta.likes&#x27;: SortType.Desc
 })
 
 const ARTICLE_DEFAULT_META: ArticleMeta &#x3D; Object.freeze({
   likes: 0,
   views: 0,
-  comments: 0,
+  comments: 0
 })
 
 export class ArticleMeta {
@@ -870,12 +976,13 @@ export class ArticleMeta {
 @plugin(AutoIncrementID, generalAutoIncrementIDConfig)
 @modelOptions({
   schemaOptions: {
+    versionKey: false,
     toObject: { getters: true },
     timestamps: {
-      createdAt: &#x27;create_at&#x27;,
-      updatedAt: &#x27;update_at&#x27;,
-    },
-  },
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
 })
 @index(
   { title: &#x27;text&#x27;, content: &#x27;text&#x27;, description: &#x27;text&#x27; },
@@ -884,8 +991,8 @@ export class ArticleMeta {
     weights: {
       title: 10,
       description: 18,
-      content: 3,
-    },
+      content: 3
+    }
   }
 )
 export class Article {
@@ -922,7 +1029,7 @@ export class Article {
   @IsString()
   @IsOptional()
   @prop({ type: String, default: null })
-  thumb: string | null
+  thumbnail: string | null
 
   // publish state
   @IsIn(ARTICLE_PUBLISH_STATES)
@@ -950,12 +1057,12 @@ export class Article {
   @ArrayNotEmpty()
   @IsArray()
   @prop({ ref: () &#x3D;&gt; Category, required: true, index: true })
-  category: Ref&lt;Category&gt;[]
+  categories: Ref&lt;Category&gt;[]
 
   // tag
   // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
   @prop({ ref: () &#x3D;&gt; Tag, index: true })
-  tag: Ref&lt;Tag&gt;[]
+  tags: Ref&lt;Tag&gt;[]
 
   // language
   // MARK: can&#x27;t use &#x27;language&#x27; field
@@ -967,19 +1074,19 @@ export class Article {
   @prop({ default: Language.Chinese, index: true })
   lang: Language
 
-  // disabled comment
+  // disabled comments
   @IsBoolean()
   @prop({ default: false })
-  disabled_comment: boolean
+  disabled_comments: boolean
 
   @prop({ _id: false, default: { ...ARTICLE_DEFAULT_META } })
   meta: ArticleMeta
 
   @prop({ default: Date.now, index: true, immutable: true })
-  create_at?: Date
+  created_at?: Date
 
   @prop({ default: Date.now })
-  update_at?: Date
+  updated_at?: Date
 
   @ArrayUnique()
   @IsArray()

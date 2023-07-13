@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >EmailService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >EmailService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -121,7 +127,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -140,7 +146,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -339,7 +345,7 @@
         </tbody>
     </table>
 </section>
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -403,14 +409,14 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import nodemailer from &#x27;nodemailer&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
-const log &#x3D; logger.scope(&#x27;NodeMailer&#x27;)
+const log &#x3D; logger.scope(&#x27;EmailService&#x27;)
 
 export interface EmailOptions {
   to: string
@@ -431,8 +437,8 @@ export class EmailService {
       secure: false,
       auth: {
         user: APP_CONFIG.EMAIL.account,
-        pass: APP_CONFIG.EMAIL.password,
-      },
+        pass: APP_CONFIG.EMAIL.password
+      }
     })
     this.verifyClient()
   }
@@ -459,7 +465,7 @@ export class EmailService {
     this.transporter.sendMail(
       {
         ...mailOptions,
-        from: APP_CONFIG.EMAIL.from,
+        from: APP_CONFIG.EMAIL.from
       },
       (error, info) &#x3D;&gt; {
         if (error) {
@@ -474,7 +480,7 @@ export class EmailService {
   public sendMailAs(prefix: string, mailOptions: EmailOptions) {
     return this.sendMail({
       ...mailOptions,
-      subject: &#x60;[${prefix}] ${mailOptions.subject}&#x60;,
+      subject: &#x60;[${prefix}] ${mailOptions.subject}&#x60;
     })
   }
 }

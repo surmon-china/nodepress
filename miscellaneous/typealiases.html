@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -49,11 +49,11 @@
 
 
 <ol class="breadcrumb">
-  <li>Miscellaneous</li>
-  <li>Type aliases</li>
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Type aliases</li>
 </ol>
 
-<section>
+<section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -62,15 +62,6 @@
                     <ul class="index-list">
                         <li>
                             <a href="#ActionURL" title="src/processors/helper/helper.service.seo.ts" ><b>ActionURL</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.seo.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#CacheIntervalResult" title="src/processors/cache/cache.service.ts" ><b>CacheIntervalResult</b>&nbsp;&nbsp;&nbsp;(src/.../cache.service.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#CacheKey" title="src/processors/cache/cache.service.ts" ><b>CacheKey</b>&nbsp;&nbsp;&nbsp;(src/.../cache.service.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#CacheResult" title="src/processors/cache/cache.service.ts" ><b>CacheResult</b>&nbsp;&nbsp;&nbsp;(src/.../cache.service.ts)</a>
                         </li>
                         <li>
                             <a href="#ExceptionInfo" title="src/interfaces/response.interface.ts" ><b>ExceptionInfo</b>&nbsp;&nbsp;&nbsp;(src/.../response.interface.ts)</a>
@@ -100,19 +91,22 @@
                             <a href="#MongooseModel" title="src/interfaces/mongoose.interface.ts" ><b>MongooseModel</b>&nbsp;&nbsp;&nbsp;(src/.../mongoose.interface.ts)</a>
                         </li>
                         <li>
+                            <a href="#MongooseObjectID" title="src/interfaces/mongoose.interface.ts" ><b>MongooseObjectID</b>&nbsp;&nbsp;&nbsp;(src/.../mongoose.interface.ts)</a>
+                        </li>
+                        <li>
                             <a href="#PaginateQuery" title="src/utils/paginate.ts" ><b>PaginateQuery</b>&nbsp;&nbsp;&nbsp;(src/.../paginate.ts)</a>
                         </li>
                         <li>
-                            <a href="#RedisCacheStore" title="src/processors/cache/cache.store.ts" ><b>RedisCacheStore</b>&nbsp;&nbsp;&nbsp;(src/.../cache.store.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#RedisStoreOptions" title="src/processors/cache/cache.store.ts" ><b>RedisStoreOptions</b>&nbsp;&nbsp;&nbsp;(src/.../cache.store.ts)</a>
+                            <a href="#RedisStore" title="src/processors/cache/redis.store.ts" ><b>RedisStore</b>&nbsp;&nbsp;&nbsp;(src/.../redis.store.ts)</a>
                         </li>
                         <li>
                             <a href="#ResponseMessage" title="src/interfaces/response.interface.ts" ><b>ResponseMessage</b>&nbsp;&nbsp;&nbsp;(src/.../response.interface.ts)</a>
                         </li>
                         <li>
                             <a href="#Statistic" title="src/modules/expansion/expansion.service.statistic.ts" ><b>Statistic</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.statistic.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#WithID" title="src/interfaces/mongoose.interface.ts" ><b>WithID</b>&nbsp;&nbsp;&nbsp;(src/.../mongoose.interface.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -122,7 +116,7 @@
 </section>
 
     <h3>src/processors/helper/helper.service.seo.ts</h3>
-    <section>
+    <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -139,58 +133,8 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/processors/cache/cache.service.ts</h3>
-    <section>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="CacheIntervalResult"></a>
-                    <span class="name "><b>CacheIntervalResult</b><a href="#CacheIntervalResult"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="CacheKey"></a>
-                    <span class="name "><b>CacheKey</b><a href="#CacheKey"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="CacheResult"></a>
-                    <span class="name "><b>CacheResult</b><a href="#CacheResult"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>    <code>Promise&lt;T&gt;</code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </section>    <h3>src/interfaces/response.interface.ts</h3>
-    <section>
+    <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -272,7 +216,7 @@
         </tbody>
     </table>
 </section>    <h3>src/decorators/responser.decorator.ts</h3>
-    <section>
+    <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -290,7 +234,7 @@
         </tbody>
     </table>
 </section>    <h3>src/processors/helper/helper.service.ip.ts</h3>
-    <section>
+    <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -308,7 +252,7 @@
         </tbody>
     </table>
 </section>    <h3>src/interfaces/mongoose.interface.ts</h3>
-    <section>
+    <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -357,8 +301,40 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MongooseObjectID"></a>
+                    <span class="name "><b>MongooseObjectID</b><a href="#MongooseObjectID"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>Types.ObjectId</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="WithID"></a>
+                    <span class="name "><b>WithID</b><a href="#WithID"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>    <h3>src/utils/paginate.ts</h3>
-    <section>
+    <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -375,14 +351,14 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/processors/cache/cache.store.ts</h3>
-    <section>
+</section>    <h3>src/processors/cache/redis.store.ts</h3>
+    <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="RedisCacheStore"></a>
-                    <span class="name "><b>RedisCacheStore</b><a href="#RedisCacheStore"><span class="icon ion-ios-link"></span></a></span>
+                    <a name="RedisStore"></a>
+                    <span class="name "><b>RedisStore</b><a href="#RedisStore"><span class="icon ion-ios-link"></span></a></span>
                 </td>
             </tr>
             <tr>
@@ -393,24 +369,8 @@
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="RedisStoreOptions"></a>
-                    <span class="name "><b>RedisStoreOptions</b><a href="#RedisStoreOptions"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>    <code></code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </section>    <h3>src/modules/expansion/expansion.service.statistic.ts</h3>
-    <section>
+    <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>

@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -44,23 +44,29 @@
 
 
 <ol class="breadcrumb">
-  <li>Interfaces</li>
-  <li
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
   >
-  HttpCacheOption</li>
+  CacheOptions</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -71,7 +77,7 @@
 
 
 
-        <section>
+        <section data-compodoc="block-index">
             <h3 id="index">Index</h3>
             <table class="table table-sm table-bordered index-table">
                 <tbody>
@@ -84,7 +90,6 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                            <span class="modifier">Optional</span>
                                         <a href="#key" 
 >
                                             key
@@ -106,7 +111,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-properties">
                 <h3 id="inputs">Properties</h3>
                     <table class="table table-sm table-bordered">
                         <tbody>
@@ -135,15 +140,16 @@
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
 
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>This field to be used as a cache key</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -182,53 +188,61 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>set the cache expiration time (seconds)</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
 import { SetMetadata } from &#x27;@nestjs/common&#x27;
 import { reflector } from &#x27;@app/constants/reflector.constant&#x27;
+import { NULL } from &#x27;@app/constants/value.constant&#x27;
 import * as META from &#x27;@app/constants/meta.constant&#x27;
 
-export interface HttpCacheOption {
+export interface CacheOptions {
+  /** This field to be used as a cache key */
+  key: string
+  /** set the cache expiration time (seconds) */
   ttl?: number
-  key?: string
 }
 
 /**
- * @function HttpCache
- * @example &#x60;@HttpCache(CACHE_KEY, 60 * 60)&#x60;
- * @example &#x60;@HttpCache({ key: CACHE_KEY, ttl: 60 * 60 })&#x60;
+ * @function Cache
+ * @example &#x60;&#x60;&#x60;@Cache(CACHE_KEY, 60 * 60)&#x60;&#x60;&#x60;
+ * @example &#x60;&#x60;&#x60;@Cache({ key: CACHE_KEY, ttl: 60 * 60 })&#x60;&#x60;&#x60;
  */
-export function HttpCache(option: HttpCacheOption): MethodDecorator
-export function HttpCache(key: string, ttl?: number): MethodDecorator
-export function HttpCache(...args) {
+export function Cache(option: CacheOptions): MethodDecorator
+export function Cache(key: string, ttl?: number): MethodDecorator
+export function Cache(...args) {
   const option &#x3D; args[0]
-  const isOption &#x3D; (value): value is HttpCacheOption &#x3D;&gt; lodash.isObject(value)
+  const isOption &#x3D; (value): value is CacheOptions &#x3D;&gt; lodash.isObject(value)
   const key: string &#x3D; isOption(option) ? option.key : option
-  const ttl: number &#x3D; isOption(option) ? option.ttl : args[1] || null
+  const ttl: number &#x3D; isOption(option) ? option.ttl : args[1] || NULL
   return (_, __, descriptor: PropertyDescriptor) &#x3D;&gt; {
     if (key) {
-      // CacheKey(key)(descriptor.value)
-      SetMetadata(META.HTTP_CACHE_KEY_METADATA, key)(descriptor.value)
+      SetMetadata(META.CACHE_KEY_METADATA, key)(descriptor.value)
     }
     if (ttl) {
-      SetMetadata(META.HTTP_CACHE_TTL_METADATA, ttl)(descriptor.value)
+      SetMetadata(META.CACHE_TTL_METADATA, ttl)(descriptor.value)
     }
     return descriptor
   }
 }
 
-export const getHttpCacheKey &#x3D; (target: any): HttpCacheOption[&#x27;key&#x27;] &#x3D;&gt; {
-  return reflector.get(META.HTTP_CACHE_KEY_METADATA, target)
+export const getCacheKey &#x3D; (target: any): CacheOptions[&#x27;key&#x27;] &#x3D;&gt; {
+  return reflector.get(META.CACHE_KEY_METADATA, target)
 }
 
-export const getHttpCacheTTL &#x3D; (target: any): HttpCacheOption[&#x27;ttl&#x27;] &#x3D;&gt; {
-  return reflector.get(META.HTTP_CACHE_TTL_METADATA, target)
+export const getCacheTTL &#x3D; (target: any): CacheOptions[&#x27;ttl&#x27;] &#x3D;&gt; {
+  return reflector.get(META.CACHE_TTL_METADATA, target)
 }
 </code></pre>
     </div>
@@ -267,7 +281,7 @@ export const getHttpCacheTTL &#x3D; (target: any): HttpCacheOption[&#x27;ttl&#x2
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'HttpCacheOption.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'CacheOptions.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

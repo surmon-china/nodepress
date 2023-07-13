@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >DisqusPrivateService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >DisqusPrivateService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -145,7 +151,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -206,7 +212,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -234,8 +240,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="112"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:112</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="115"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:115</a></div>
                 </td>
             </tr>
 
@@ -306,8 +312,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="37"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:37</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:40</a></div>
                 </td>
             </tr>
 
@@ -378,8 +384,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="127"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:127</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:130</a></div>
                 </td>
             </tr>
 
@@ -418,8 +424,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="72"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:72</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:75</a></div>
                 </td>
             </tr>
 
@@ -490,8 +496,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:61</a></div>
                 </td>
             </tr>
 
@@ -562,8 +568,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="166"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:166</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:169</a></div>
                 </td>
             </tr>
 
@@ -634,8 +640,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="99"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:99</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:102</a></div>
                 </td>
             </tr>
 
@@ -706,8 +712,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="86"
-                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:86</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="89"
+                            class="link-to-prism">src/modules/disqus/disqus.service.private.ts:89</a></div>
                 </td>
             </tr>
 
@@ -756,7 +762,7 @@
         </tbody>
     </table>
 </section>
-            <section>
+            <section data-compodoc="block-properties">
     
     <h3 id="inputs">
         Properties
@@ -793,8 +799,8 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import moment from &#x27;moment&#x27;
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import dayjs from &#x27;dayjs&#x27;
 import { XMLParser } from &#x27;fast-xml-parser&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
@@ -817,10 +823,13 @@ const log &#x3D; logger.scope(&#x27;DisqusPrivateService&#x27;)
 export class DisqusPrivateService {
   private disqus: Disqus
 
-  constructor(private readonly articleService: ArticleService, private readonly commentService: CommentService) {
+  constructor(
+    private readonly articleService: ArticleService,
+    private readonly commentService: CommentService
+  ) {
     this.disqus &#x3D; new Disqus({
       apiKey: DISQUS.publicKey,
-      apiSecret: DISQUS.secretKey,
+      apiSecret: DISQUS.secretKey
     })
   }
 
@@ -834,9 +843,9 @@ export class DisqusPrivateService {
         title: article.title,
         message: article.description,
         slug: article.slug || DISQUS_CONST.getThreadIdentifierByID(postID),
-        date: moment(article.create_at).unix(),
+        date: dayjs(article.created_at).unix(),
         url: getPermalinkByID(postID),
-        access_token: DISQUS.adminAccessToken,
+        access_token: DISQUS.adminAccessToken
       })
       return response.response
     } catch (error) {
@@ -851,7 +860,7 @@ export class DisqusPrivateService {
       .request(&#x27;threads/list&#x27;, {
         access_token: DISQUS.adminAccessToken,
         forum: DISQUS.forum,
-        ...params,
+        ...params
       })
       .catch((error) &#x3D;&gt; {
         log.warn(&#x27;getThreads failed!&#x27;, error)
@@ -865,7 +874,7 @@ export class DisqusPrivateService {
       .request(&#x27;posts/list&#x27;, {
         access_token: DISQUS.adminAccessToken,
         forum: DISQUS.forum,
-        ...params,
+        ...params
       })
       .catch((error) &#x3D;&gt; {
         log.warn(&#x27;getPosts failed!&#x27;, error)
@@ -878,7 +887,7 @@ export class DisqusPrivateService {
     return this.disqus
       .request(&#x27;threads/update&#x27;, {
         access_token: DISQUS.adminAccessToken,
-        ...params,
+        ...params
       })
       .catch((error) &#x3D;&gt; {
         log.warn(&#x27;updateThread failed!&#x27;, error)
@@ -891,7 +900,7 @@ export class DisqusPrivateService {
     return this.disqus
       .request(&#x27;posts/update&#x27;, {
         access_token: DISQUS.adminAccessToken,
-        ...params,
+        ...params
       })
       .catch((error) &#x3D;&gt; {
         log.warn(&#x27;updatePost failed!&#x27;, error)
@@ -904,7 +913,7 @@ export class DisqusPrivateService {
     return this.disqus
       .request(&#x27;posts/approve&#x27;, {
         access_token: DISQUS.adminAccessToken,
-        ...params,
+        ...params
       })
       .catch((error) &#x3D;&gt; {
         log.warn(&#x27;approvePost failed!&#x27;, error)
@@ -958,7 +967,7 @@ export class DisqusPrivateService {
     const parser &#x3D; new XMLParser({
       ignoreAttributes: false,
       allowBooleanAttributes: true,
-      attributeNamePrefix: &#x27;@&#x27;,
+      attributeNamePrefix: &#x27;@&#x27;
     })
     const object &#x3D; parser.parse(xml)
     // const threads: any[] &#x3D; object.disqus.thread
@@ -970,7 +979,7 @@ export class DisqusPrivateService {
       postID: post[&#x27;@dsq:id&#x27;] as string,
       threadID: post.thread[&#x27;@dsq:id&#x27;] as string,
       isAnonymous: post.author.isAnonymous as boolean,
-      username: (post.author.username as string) || null,
+      username: (post.author.username as string) || null
     })
 
     const doImport &#x3D; async (each: ReturnType&lt;typeof getEach&gt;) &#x3D;&gt; {

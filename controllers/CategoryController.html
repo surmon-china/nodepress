@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -36,21 +36,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Controllers</li>
-  <li >CategoryController</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >CategoryController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -70,7 +76,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -84,21 +90,39 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#createCategory" >createCategory</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#delCategories" >delCategories</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#delCategory" >delCategory</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getCategories" >getCategories</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getCategory" >getCategory</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#putCategory" >putCategory</a>
                             </li>
                         </ul>
@@ -113,7 +137,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -124,6 +148,9 @@
                 <td class="col-md-4">
                     <a name="createCategory"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>createCategory</b></span>
                         <a href="#createCategory"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -131,7 +158,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>createCategory(category: <a href="../classes/Category.html" target="_self">Category</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createCategory(category: <a href="../classes/Category.html" target="_self">Category</a>)</code>
                 </td>
             </tr>
 
@@ -200,6 +228,9 @@
                 <td class="col-md-4">
                     <a name="delCategories"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>delCategories</b></span>
                         <a href="#delCategories"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -207,7 +238,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>delCategories(body: <a href="../classes/CategoriesDTO.html" target="_self">CategoriesDTO</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>delCategories(body: <a href="../classes/CategoriesDTO.html" target="_self">CategoriesDTO</a>)</code>
                 </td>
             </tr>
 
@@ -276,6 +308,9 @@
                 <td class="col-md-4">
                     <a name="delCategory"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>delCategory</b></span>
                         <a href="#delCategory"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -283,7 +318,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>delCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>delCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -351,6 +387,10 @@
                 <td class="col-md-4">
                     <a name="getCategories"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getCategories</b></span>
                         <a href="#getCategories"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -358,7 +398,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getCategories(query: <a href="../classes/CategoryPaginateQueryDTO.html" target="_self">CategoryPaginateQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCategories(query: <a href="../classes/CategoryPaginateQueryDTO.html" target="_self">CategoryPaginateQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -438,6 +479,8 @@
                 <td class="col-md-4">
                     <a name="getCategory"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>getCategory</b></span>
                         <a href="#getCategory"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -445,7 +488,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -513,6 +557,9 @@
                 <td class="col-md-4">
                     <a name="putCategory"></a>
                     <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
                         <span ><b>putCategory</b></span>
                         <a href="#putCategory"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -520,7 +567,8 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>putCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, category: <a href="../classes/Category.html" target="_self">Category</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>putCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, category: <a href="../classes/Category.html" target="_self">Category</a>)</code>
                 </td>
             </tr>
 
@@ -597,7 +645,7 @@
 </section>    </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
  * @file Category controller
  * @module module/category/controller

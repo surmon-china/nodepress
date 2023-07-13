@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -44,23 +44,29 @@
 
 
 <ol class="breadcrumb">
-  <li>Interfaces</li>
-  <li
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
   >
   DecoratorCreatorOption</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -71,7 +77,7 @@
 
 
 
-        <section>
+        <section data-compodoc="block-index">
             <h3 id="index">Index</h3>
             <table class="table table-sm table-bordered index-table">
                 <tbody>
@@ -127,7 +133,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-properties">
                 <h3 id="inputs">Properties</h3>
                     <table class="table table-sm table-bordered">
                         <tbody>
@@ -323,7 +329,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
 import { SetMetadata, HttpStatus } from &#x27;@nestjs/common&#x27;
 import { ResponseMessage } from &#x27;@app/interfaces/response.interface&#x27;
@@ -344,7 +350,7 @@ export const getResponserOptions &#x3D; (target: any): ResponserOptions &#x3D;&g
     errorMessage: reflector.get(META.HTTP_ERROR_MESSAGE, target),
     successMessage: reflector.get(META.HTTP_SUCCESS_MESSAGE, target),
     transform: reflector.get(META.HTTP_RESPONSE_TRANSFORM, target),
-    paginate: reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target),
+    paginate: reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target)
   }
 }
 
@@ -403,14 +409,14 @@ export const error &#x3D; (message: ResponseMessage, statusCode?: HttpStatus): M
 export const success &#x3D; (message: ResponseMessage, statusCode?: HttpStatus): MethodDecorator &#x3D;&gt; {
   return createDecorator({
     successMessage: message,
-    successCode: statusCode,
+    successCode: statusCode
   })
 }
 
 /**
  * @function handle
  * @example &#x60;&#x60;&#x60;@HttpProcessor.handle(&#x27;Some request&#x27;)&#x60;&#x60;&#x60;
- * @example &#x60;&#x60;&#x60;@HttpProcessor.handle({ message: &#x27;Some request&#x27;, error: error, success: 200, usePaginate: true })&#x60;&#x60;
+ * @example &#x60;&#x60;&#x60;@HttpProcessor.handle({ message: &#x27;Some request&#x27;, error: error, success: 200, usePaginate: true })&#x60;&#x60;&#x60;
  */
 export function handle(args: HandleOptionConfig): MethodDecorator
 export function handle(...args) {
@@ -427,7 +433,7 @@ export function handle(...args) {
     successCode,
     errorMessage,
     successMessage,
-    usePaginate,
+    usePaginate
   })
 }
 

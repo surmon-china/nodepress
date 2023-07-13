@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -44,23 +44,29 @@
 
 
 <ol class="breadcrumb">
-  <li>Interfaces</li>
-  <li
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
   >
   XMLItemData</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -71,7 +77,7 @@
 
 
 
-        <section>
+        <section data-compodoc="block-index">
             <h3 id="index">Index</h3>
             <table class="table table-sm table-bordered index-table">
                 <tbody>
@@ -104,7 +110,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-properties">
                 <h3 id="inputs">Properties</h3>
                     <table class="table table-sm table-bordered">
                         <tbody>
@@ -176,8 +182,8 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import moment from &#x27;moment&#x27;
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import dayjs from &#x27;dayjs&#x27;
 import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
 import { Article } from &#x27;@app/modules/article/article.model&#x27;
 import { GUESTBOOK_POST_ID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
@@ -197,7 +203,7 @@ const getCommentItemXML &#x3D; (comment: Comment) &#x3D;&gt; {
       &lt;wp:comment_author_email&gt;${comment.author.email || &#x27;&#x27;}&lt;/wp:comment_author_email&gt;
       &lt;wp:comment_author_url&gt;${comment.author.site || &#x27;&#x27;}&lt;/wp:comment_author_url&gt;
       &lt;wp:comment_author_IP&gt;${comment.ip || &#x27;&#x27;}&lt;/wp:comment_author_IP&gt;
-      &lt;wp:comment_date_gmt&gt;${moment(comment.create_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:comment_date_gmt&gt;
+      &lt;wp:comment_date_gmt&gt;${dayjs(comment.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:comment_date_gmt&gt;
       &lt;wp:comment_content&gt;&lt;![CDATA[${comment.content || &#x27;&#x27;}]]&gt;&lt;/wp:comment_content&gt;
       &lt;wp:comment_approved&gt;${comment.state &#x3D;&#x3D;&#x3D; CommentState.Published ? 1 : 0}&lt;/wp:comment_approved&gt;
     &lt;/wp:comment&gt;
@@ -234,9 +240,9 @@ export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comme
               &lt;link&gt;${getPermalinkByID(item.article.id)}&lt;/link&gt;
               &lt;content:encoded&gt;&lt;![CDATA[${item.article.description || &#x27;&#x27;}]]&gt;&lt;/content:encoded&gt;
               &lt;dsq:thread_identifier&gt;${getThreadIdentifierByID(item.article.id)}&lt;/dsq:thread_identifier&gt;
-              &lt;wp:post_date_gmt&gt;${moment(item.article.create_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:post_date_gmt&gt;
+              &lt;wp:post_date_gmt&gt;${dayjs(item.article.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:post_date_gmt&gt;
               &lt;wp:comment_status&gt;${
-                item.article.disabled_comment ? ThreadState.Closed : ThreadState.Open
+                item.article.disabled_comments ? ThreadState.Closed : ThreadState.Open
               }&lt;/wp:comment_status&gt;
               ${item.comments.map(getCommentItemXML).join(&#x27;\n&#x27;)}
             &lt;/item&gt;

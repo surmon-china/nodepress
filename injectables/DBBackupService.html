@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >DBBackupService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >DBBackupService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -103,7 +109,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -164,7 +170,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -192,8 +198,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="41"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:41</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:44</a></div>
                 </td>
             </tr>
 
@@ -231,8 +237,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="62"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:62</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:65</a></div>
                 </td>
             </tr>
 
@@ -270,8 +276,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="53"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:53</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:56</a></div>
                 </td>
             </tr>
 
@@ -348,11 +354,11 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import fs from &#x27;fs&#x27;
 import path from &#x27;path&#x27;
 import shell from &#x27;shelljs&#x27;
-import moment from &#x27;moment&#x27;
+import dayjs from &#x27;dayjs&#x27;
 import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
@@ -360,12 +366,12 @@ import {
   UploadResult,
   AWSService,
   AWSStorageClass,
-  AWSServerSideEncryption,
+  AWSServerSideEncryption
 } from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { APP, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
-const log &#x3D; logger.scope(&#x27;ExpansionDBBackup&#x27;)
+const log &#x3D; logger.scope(&#x27;DBBackupService&#x27;)
 
 const UP_FAILED_TIMEOUT &#x3D; 1000 * 60 * 5
 const UPLOAD_INTERVAL &#x3D; &#x27;0 0 3 * * *&#x27;
@@ -374,7 +380,10 @@ const BACKUP_DIR_PATH &#x3D; path.join(APP.ROOT_PATH, &#x27;dbbackup&#x27;)
 
 @Injectable()
 export class DBBackupService {
-  constructor(private readonly emailService: EmailService, private readonly awsService: AWSService) {
+  constructor(
+    private readonly emailService: EmailService,
+    private readonly awsService: AWSService
+  ) {
     log.info(&#x27;schedule job initialized.&#x27;)
     schedule.scheduleJob(UPLOAD_INTERVAL, () &#x3D;&gt; {
       this.backup().catch(() &#x3D;&gt; {
@@ -400,7 +409,7 @@ export class DBBackupService {
       to: APP.ADMIN_EMAIL,
       subject,
       text: &#x60;${subject}, detail: ${content}&#x60;,
-      html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${content}&lt;/pre&gt;&#x60; : content}&#x60;,
+      html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${content}&lt;/pre&gt;&#x60; : content}&#x60;
     })
   }
 
@@ -430,7 +439,7 @@ export class DBBackupService {
         // tar -czf - backup | openssl des3 -salt -k &lt;password&gt; -out target.tar.gz
         // shell.exec(&#x60;tar -czf ${BACKUP_FILE_NAME} ./backup&#x60;)
         shell.exec(&#x60;zip -r -P ${DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup&#x60;)
-        const fileDate &#x3D; moment(new Date()).format(&#x27;YYYY-MM-DD-HH:mm&#x27;)
+        const fileDate &#x3D; dayjs(new Date()).format(&#x27;YYYY-MM-DD-HH:mm&#x27;)
         const fileName &#x3D; &#x60;nodepress-mongodb/backup-${fileDate}.zip&#x60;
         const filePath &#x3D; path.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME)
         log.info(&#x27;uploading: &#x27; + fileName)
@@ -445,7 +454,7 @@ export class DBBackupService {
             region: DB_BACKUP.s3Region,
             bucket: DB_BACKUP.s3Bucket,
             classType: AWSStorageClass.GLACIER,
-            encryption: AWSServerSideEncryption.AES256,
+            encryption: AWSServerSideEncryption.AES256
           })
           .then((result) &#x3D;&gt; {
             log.info(&#x27;upload succeed.&#x27;, result.url)

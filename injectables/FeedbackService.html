@@ -13,7 +13,7 @@
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -39,21 +39,27 @@
 
 
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li >FeedbackService</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >FeedbackService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -65,7 +71,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -122,7 +128,7 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -133,7 +139,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/feedback/feedback.service.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/modules/feedback/feedback.service.ts:20</a></div>
                             </td>
                         </tr>
 
@@ -183,7 +189,7 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -210,8 +216,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="62"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:62</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="63"
+                            class="link-to-prism">src/modules/feedback/feedback.service.ts:63</a></div>
                 </td>
             </tr>
 
@@ -282,8 +288,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/modules/feedback/feedback.service.ts:30</a></div>
                 </td>
             </tr>
 
@@ -366,8 +372,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="54"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:54</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="55"
+                            class="link-to-prism">src/modules/feedback/feedback.service.ts:55</a></div>
                 </td>
             </tr>
 
@@ -437,8 +443,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="39"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:39</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/modules/feedback/feedback.service.ts:40</a></div>
                 </td>
             </tr>
 
@@ -509,8 +515,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="66"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:66</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/modules/feedback/feedback.service.ts:67</a></div>
                 </td>
             </tr>
 
@@ -519,7 +525,7 @@
                 <td class="col-md-4">
 
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
+                        <b>Returns : </b>    <code>Promise&lt;number | null&gt;</code>
 
                     </div>
                 </td>
@@ -548,8 +554,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="25"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:25</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">src/modules/feedback/feedback.service.ts:26</a></div>
                 </td>
             </tr>
 
@@ -632,8 +638,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">src/modules/feedback/feedback.service.ts:46</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="47"
+                            class="link-to-prism">src/modules/feedback/feedback.service.ts:47</a></div>
                 </td>
             </tr>
 
@@ -698,13 +704,14 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types } from &#x27;mongoose&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { ROOT_FEEDBACK_TID } from &#x27;@app/constants/biz.constant&#x27;
+import { NULL } from &#x27;@app/constants/value.constant&#x27;
 import { IPService } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { isProdEnv } from &#x27;@app/app.environment&#x27;
@@ -727,7 +734,7 @@ export class FeedbackService {
       origin: visitor.origin,
       user_agent: visitor.ua,
       ip: visitor.ip,
-      ip_location: isProdEnv &amp;&amp; visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null,
+      ip_location: isProdEnv &amp;&amp; visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
     })
   }
 
@@ -758,12 +765,12 @@ export class FeedbackService {
     return this.feedbackModel.deleteMany({ _id: { $in: feedbackIDs } }).exec()
   }
 
-  public async getRootFeedbackAverageEmotion(): Promise&lt;number&gt; {
+  public async getRootFeedbackAverageEmotion(): Promise&lt;number | null&gt; {
     const [result] &#x3D; await this.feedbackModel.aggregate&lt;{ _id: Types.ObjectId; avgEmotion: number }&gt;([
       { $match: { tid: ROOT_FEEDBACK_TID } },
-      { $group: { _id: null, avgEmotion: { $avg: &#x27;$emotion&#x27; } } },
+      { $group: { _id: null, avgEmotion: { $avg: &#x27;$emotion&#x27; } } }
     ])
-    return Math.round(result.avgEmotion * 1000) / 1000
+    return result ? Math.round(result.avgEmotion * 1000) / 1000 : NULL
   }
 }
 </code></pre>
