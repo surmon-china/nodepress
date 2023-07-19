@@ -1058,7 +1058,7 @@ export class TagService {
     ])
     return tags.map&lt;Tag&gt;((tag) &#x3D;&gt; {
       const found &#x3D; counts.find((item) &#x3D;&gt; item._id.equals(tag._id))
-      return { ...tag, articles_count: found ? found.count : 0 }
+      return { ...tag, article_count: found ? found.count : 0 }
     })
   }
 

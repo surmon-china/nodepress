@@ -90,7 +90,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Optional</span>
-                                <a href="#articles_count" >articles_count</a>
+                                <a href="#article_count" >article_count</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -158,11 +158,11 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="articles_count"></a>
+                    <a name="article_count"></a>
                     <span class="name">
                             <span class="modifier">Optional</span>
-                        <span ><b>articles_count</b></span>
-                        <a href="#articles_count"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>article_count</b></span>
+                        <a href="#article_count"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -547,7 +547,7 @@ export class Category {
   extends: KeyValueModel[]
 
   // for article aggregate
-  articles_count?: number
+  article_count?: number
 }
 
 export const CategoryProvider &#x3D; getProviderByTypegooseClass(Category)

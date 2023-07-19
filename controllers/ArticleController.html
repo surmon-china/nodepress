@@ -1117,7 +1117,7 @@ export class ArticleController {
   @Responser.handle(&#x27;Get context articles&#x27;)
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
     const articleID &#x3D; Number(params.id)
-    const [prevArticle, nextArticle, relatedArticles] &#x3D; await Promise.all([
+    const [prevArticles, nextArticles, relatedArticles] &#x3D; await Promise.all([
       this.articleService.getNearArticles(articleID, &#x27;early&#x27;, 1),
       this.articleService.getNearArticles(articleID, &#x27;later&#x27;, 1),
       this.articleService
@@ -1125,8 +1125,8 @@ export class ArticleController {
         .then((article) &#x3D;&gt; this.articleService.getRelatedArticles(article, 20))
     ])
     return {
-      prev_article: prevArticle || null,
-      next_article: nextArticle || null,
+      prev_article: prevArticles?.[0] || null,
+      next_article: nextArticles?.[0] || null,
       related_articles: relatedArticles || []
     }
   }
