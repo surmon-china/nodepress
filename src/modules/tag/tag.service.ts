@@ -49,7 +49,7 @@ export class TagService {
     ])
     return tags.map<Tag>((tag) => {
       const found = counts.find((item) => item._id.equals(tag._id))
-      return { ...tag, articles_count: found ? found.count : 0 }
+      return { ...tag, article_count: found ? found.count : 0 }
     })
   }
 

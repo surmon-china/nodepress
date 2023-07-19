@@ -36,7 +36,7 @@ export class DBBackupService {
     log.info('schedule job initialized.')
     schedule.scheduleJob(UPLOAD_INTERVAL, () => {
       this.backup().catch(() => {
-        setTimeout(this.backup, UP_FAILED_TIMEOUT)
+        setTimeout(this.backup.bind(this), UP_FAILED_TIMEOUT)
       })
     })
   }

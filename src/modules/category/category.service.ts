@@ -37,7 +37,7 @@ export class CategoryService {
 
     const hydratedDocs = categories.documents.map((category) => {
       const found = counts.find((item) => item._id.equals(category._id))
-      return { ...category, articles_count: found ? found.count : 0 } as Category
+      return { ...category, article_count: found ? found.count : 0 } as Category
     })
 
     return { ...categories, documents: hydratedDocs }

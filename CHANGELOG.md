@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.0.1 (2023-07-17)
+
+**Feature**
+
+- Rename field `tag.articles_count` to `tag.article_count`
+- Rename field `category.articles_count` to `category.article_count`
+
+**Fix**
+
+- Fix `ArticleContext` data type
+- Fix `DBBackupService` error
+
 ### 4.0.0 (2023-07-08)
 
 **Feature**

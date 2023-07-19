@@ -59,7 +59,7 @@ export class Category {
   extends: KeyValueModel[]
 
   // for article aggregate
-  articles_count?: number
+  article_count?: number
 }
 
 export const CategoryProvider = getProviderByTypegooseClass(Category)
