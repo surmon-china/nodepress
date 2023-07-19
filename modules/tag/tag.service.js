@@ -74,7 +74,7 @@ let TagService = exports.TagService = class TagService {
         ]);
         return tags.map((tag) => {
             const found = counts.find((item) => item._id.equals(tag._id));
-            return Object.assign(Object.assign({}, tag), { articles_count: found ? found.count : 0 });
+            return Object.assign(Object.assign({}, tag), { article_count: found ? found.count : 0 });
         });
     }
     async getAllTags() {

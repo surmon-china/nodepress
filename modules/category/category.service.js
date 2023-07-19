@@ -36,7 +36,7 @@ let CategoryService = exports.CategoryService = class CategoryService {
         ]);
         const hydratedDocs = categories.documents.map((category) => {
             const found = counts.find((item) => item._id.equals(category._id));
-            return Object.assign(Object.assign({}, category), { articles_count: found ? found.count : 0 });
+            return Object.assign(Object.assign({}, category), { article_count: found ? found.count : 0 });
         });
         return Object.assign(Object.assign({}, categories), { documents: hydratedDocs });
     }
