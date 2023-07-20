@@ -67,9 +67,6 @@
                             <a href="#AKISMET" title="src/app.config.ts" ><b>AKISMET</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
-                            <a href="#ALL_TAGS" title="src/constants/cache.constant.ts" ><b>ALL_TAGS</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
-                        </li>
-                        <li>
                             <a href="#ANNOUNCEMENT_STATES" title="src/modules/announcement/announcement.model.ts" ><b>ANNOUNCEMENT_STATES</b>&nbsp;&nbsp;&nbsp;(src/.../announcement.model.ts)</a>
                         </li>
                         <li>
@@ -77,9 +74,6 @@
                         </li>
                         <li>
                             <a href="#APP" title="src/app.config.ts" ><b>APP</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#ARCHIVE" title="src/constants/cache.constant.ts" ><b>ARCHIVE</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#argv" title="src/app.config.ts" ><b>argv</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
@@ -146,9 +140,6 @@
                         </li>
                         <li>
                             <a href="#CACHE_KEY_METADATA" title="src/constants/meta.constant.ts" ><b>CACHE_KEY_METADATA</b>&nbsp;&nbsp;&nbsp;(src/.../meta.constant.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#CACHE_PREFIX" title="src/constants/cache.constant.ts" ><b>CACHE_PREFIX</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#CACHE_TTL_METADATA" title="src/constants/meta.constant.ts" ><b>CACHE_TTL_METADATA</b>&nbsp;&nbsp;&nbsp;(src/.../meta.constant.ts)</a>
@@ -271,6 +262,9 @@
                             <a href="#getCommentItemXML" title="src/modules/disqus/disqus.xml.ts" ><b>getCommentItemXML</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.xml.ts)</a>
                         </li>
                         <li>
+                            <a href="#getDecoratorCacheKey" title="src/constants/cache.constant.ts" ><b>getDecoratorCacheKey</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
+                        </li>
+                        <li>
                             <a href="#getDisqusCacheKey" title="src/constants/cache.constant.ts" ><b>getDisqusCacheKey</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
@@ -308,9 +302,6 @@
                         </li>
                         <li>
                             <a href="#GUESTBOOK_POST_ID" title="src/constants/biz.constant.ts" ><b>GUESTBOOK_POST_ID</b>&nbsp;&nbsp;&nbsp;(src/.../biz.constant.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#HOTTEST_ARTICLES" title="src/constants/cache.constant.ts" ><b>HOTTEST_ARTICLES</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#HTTP_ANONYMOUS_TEXT" title="src/constants/text.constant.ts" ><b>HTTP_ANONYMOUS_TEXT</b>&nbsp;&nbsp;&nbsp;(src/.../text.constant.ts)</a>
@@ -442,9 +433,6 @@
                             <a href="#NULL" title="src/constants/value.constant.ts" ><b>NULL</b>&nbsp;&nbsp;&nbsp;(src/.../value.constant.ts)</a>
                         </li>
                         <li>
-                            <a href="#OPTION" title="src/constants/cache.constant.ts" ><b>OPTION</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
-                        </li>
-                        <li>
                             <a href="#OptionProvider" title="src/modules/option/option.model.ts" ><b>OptionProvider</b>&nbsp;&nbsp;&nbsp;(src/.../option.model.ts)</a>
                         </li>
                         <li>
@@ -509,9 +497,6 @@
                         </li>
                         <li>
                             <a href="#TagProvider" title="src/modules/tag/tag.model.ts" ><b>TagProvider</b>&nbsp;&nbsp;&nbsp;(src/.../tag.model.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#TODAY_VIEWS" title="src/constants/cache.constant.ts" ><b>TODAY_VIEWS</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#TOKEN_COOKIE_KEY" title="src/modules/disqus/disqus.token.ts" ><b>TOKEN_COOKIE_KEY</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.token.ts)</a>
@@ -1189,6 +1174,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
+  namespace: argv.redis_namespace || &#x27;nodepress&#x27;,
   host: argv.redis_host || &#x27;localhost&#x27;,
   port: argv.redis_port || 6379,
   username: argv.redis_username || null,
@@ -1214,157 +1200,6 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>path.join(__dirname, &#x27;..&#x27;)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
-    <h3>src/constants/cache.constant.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ALL_TAGS"></a>
-                    <span class="name">
-                        <span ><b>ALL_TAGS</b></span>
-                        <a href="#ALL_TAGS"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>CACHE_PREFIX + &#x27;all-tags&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ARCHIVE"></a>
-                    <span class="name">
-                        <span ><b>ARCHIVE</b></span>
-                        <a href="#ARCHIVE"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>CACHE_PREFIX + &#x27;archive&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="CACHE_PREFIX"></a>
-                    <span class="name">
-                        <span ><b>CACHE_PREFIX</b></span>
-                        <a href="#CACHE_PREFIX"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;__nodepress_cache_&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getDisqusCacheKey"></a>
-                    <span class="name">
-                        <span ><b>getDisqusCacheKey</b></span>
-                        <a href="#getDisqusCacheKey"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>(key: string) &#x3D;&gt; {
-  return &#x60;${CACHE_PREFIX}-disqus-${key}&#x60;
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="HOTTEST_ARTICLES"></a>
-                    <span class="name">
-                        <span ><b>HOTTEST_ARTICLES</b></span>
-                        <a href="#HOTTEST_ARTICLES"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>CACHE_PREFIX + &#x27;hottest-articles&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="OPTION"></a>
-                    <span class="name">
-                        <span ><b>OPTION</b></span>
-                        <a href="#OPTION"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>CACHE_PREFIX + &#x27;option&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="TODAY_VIEWS"></a>
-                    <span class="name">
-                        <span ><b>TODAY_VIEWS</b></span>
-                        <a href="#TODAY_VIEWS"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>CACHE_PREFIX + &#x27;today-views&#x27;</code>
                     </td>
                 </tr>
 
@@ -2718,74 +2553,85 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>(redisClient: RedisClientType, defaultTTL?: number) &#x3D;&gt; {
+                        <i>Default value : </i><code>(redisClient: RedisClientType, options?: RedisStoreOptions) &#x3D;&gt; {
+  const getKeyName &#x3D; (key: string): string &#x3D;&gt; {
+    return options?.namespace ? &#x60;${options.namespace}:${key}&#x60; : key
+  }
+
   const get &#x3D; async &lt;T&gt;(key: string) &#x3D;&gt; {
-    const value &#x3D; await redisClient.get(key)
+    const value &#x3D; await redisClient.get(getKeyName(key))
     return parseValue&lt;T&gt;(value)
   }
 
   // https://redis.io/commands/set/
   const set &#x3D; async (key: string, value: any, ttl?: number): Promise&lt;void&gt; &#x3D;&gt; {
+    const _key &#x3D; getKeyName(key)
     const _value &#x3D; stringifyValue(value)
-    const _ttl &#x3D; isUndefined(ttl) ? defaultTTL : ttl
+    const _ttl &#x3D; isUndefined(ttl) ? options?.defaultTTL : ttl
     if (!isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
       // EX — Set the specified expire time, in seconds.
-      await redisClient.set(key, _value, { EX: _ttl })
+      await redisClient.set(_key, _value, { EX: _ttl })
     } else {
-      await redisClient.set(key, _value)
+      await redisClient.set(_key, _value)
     }
   }
 
-  const mset &#x3D; async (args, ttl?: number): Promise&lt;void&gt; &#x3D;&gt; {
-    const _ttl &#x3D; isUndefined(ttl) ? defaultTTL : ttl
+  const mset &#x3D; async (kvs: [string, any][], ttl?: number): Promise&lt;void&gt; &#x3D;&gt; {
+    const _ttl &#x3D; isUndefined(ttl) ? options?.defaultTTL : ttl
     if (!isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
       const multi &#x3D; redisClient.multi()
-      for (const [key, value] of args) {
+      for (const [key, value] of kvs) {
         // EX — Set the specified expire time, in seconds.
-        multi.set(key, stringifyValue(value), { EX: _ttl })
+        multi.set(getKeyName(key), stringifyValue(value), { EX: _ttl })
       }
       await multi.exec()
     } else {
       await redisClient.mSet(
-        args.map(([key, value]) &#x3D;&gt; {
-          return [key, stringifyValue(value)] as [string, string]
+        kvs.map(([key, value]) &#x3D;&gt; {
+          return [getKeyName(key), stringifyValue(value)] as [string, string]
         })
       )
     }
   }
 
-  const mget &#x3D; (...args) &#x3D;&gt; {
-    return redisClient.mGet(args).then((values) &#x3D;&gt; {
+  const mget &#x3D; (...keys: string[]) &#x3D;&gt; {
+    return redisClient.mGet(keys.map(getKeyName)).then((values) &#x3D;&gt; {
       return values.map((value) &#x3D;&gt; parseValue&lt;unknown&gt;(value))
     })
   }
 
-  const mdel &#x3D; async (...args) &#x3D;&gt; {
-    await redisClient.del(args)
+  const mdel &#x3D; async (...keys: string[]) &#x3D;&gt; {
+    await redisClient.del(keys.map(getKeyName))
   }
 
   const del &#x3D; async (key: string) &#x3D;&gt; {
-    await redisClient.del(key)
+    const deleted &#x3D; await redisClient.del(getKeyName(key))
+    return deleted &gt; 0
   }
 
-  const reset &#x3D; async () &#x3D;&gt; {
-    await redisClient.flushDb()
+  const has &#x3D; async (key: string) &#x3D;&gt; {
+    const count &#x3D; await redisClient.exists(getKeyName(key))
+    return count !&#x3D;&#x3D; 0
   }
 
-  const ttl &#x3D; (key: string) &#x3D;&gt; redisClient.pTTL(key)
+  const ttl &#x3D; (key: string) &#x3D;&gt; redisClient.ttl(getKeyName(key))
+  const keys &#x3D; (pattern &#x3D; getKeyName(&#x27;*&#x27;)) &#x3D;&gt; redisClient.keys(pattern)
 
-  const keys &#x3D; (pattern &#x3D; &#x27;*&#x27;) &#x3D;&gt; redisClient.keys(pattern)
+  const clear &#x3D; async () &#x3D;&gt; {
+    await redisClient.del(await keys())
+  }
 
   return {
+    has,
     get,
     set,
+    delete: del,
     mset,
     mget,
     mdel,
-    del,
-    reset,
     ttl,
-    keys
+    keys,
+    clear
   }
 }</code>
                     </td>
@@ -3630,6 +3476,53 @@
         </tbody>
     </table>
 </section>
+    <h3>src/constants/cache.constant.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDecoratorCacheKey"></a>
+                    <span class="name">
+                        <span ><b>getDecoratorCacheKey</b></span>
+                        <a href="#getDecoratorCacheKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(key: string) &#x3D;&gt; {
+  return &#x60;decorator:${key}&#x60;
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDisqusCacheKey"></a>
+                    <span class="name">
+                        <span ><b>getDisqusCacheKey</b></span>
+                        <a href="#getDisqusCacheKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(key: string) &#x3D;&gt; {
+  return &#x60;disqus:${key}&#x60;
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
     <h3>src/transformers/extend.transformer.ts</h3>
     <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -3718,7 +3611,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>async (cache: CacheService) &#x3D;&gt; {
-  const count &#x3D; await cache.get&lt;number&gt;(CACHE_KEY.TODAY_VIEWS)
+  const count &#x3D; await cache.get&lt;number&gt;(CacheKeys.TodayViewCount)
   return count ? Number(count) : 0
 }</code>
                     </td>
@@ -3742,7 +3635,7 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>async (cache: CacheService) &#x3D;&gt; {
   const views &#x3D; await getTodayViewsCount(cache)
-  await cache.set(CACHE_KEY.TODAY_VIEWS, views + 1)
+  await cache.set(CacheKeys.TodayViewCount, views + 1)
   return views + 1
 }</code>
                     </td>
@@ -3765,7 +3658,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>(cache: CacheService) &#x3D;&gt; {
-  return cache.set(CACHE_KEY.TODAY_VIEWS, 0)
+  return cache.set(CacheKeys.TodayViewCount, 0)
 }</code>
                     </td>
                 </tr>

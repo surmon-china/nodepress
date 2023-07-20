@@ -586,7 +586,7 @@ import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
 import { Option, Blocklist, DEFAULT_OPTION } from &#x27;./option.model&#x27;
-import * as CACHE_KEY from &#x27;@app/constants/cache.constant&#x27;
+import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
 const log &#x3D; logger.scope(&#x27;OptionService&#x27;)
@@ -600,7 +600,7 @@ export class OptionService {
     private readonly cacheService: CacheService
   ) {
     this.optionCache &#x3D; this.cacheService.manual({
-      key: CACHE_KEY.OPTION,
+      key: CacheKeys.Option,
       promise: () &#x3D;&gt; {
         return this.ensureAppOption().then((option) &#x3D;&gt; {
           return lodash.omit(option.toObject&lt;Option&gt;(), [&#x27;blocklist&#x27;])

@@ -1826,6 +1826,7 @@ import { increaseTodayViewsCount } from &#x27;@app/modules/expansion/expansion.h
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import { PublishState } from &#x27;@app/constants/biz.constant&#x27;
+import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { NULL } from &#x27;@app/constants/value.constant&#x27;
 import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
@@ -1836,7 +1837,6 @@ import {
   ARTICLE_FULL_QUERY_REF_POPULATE,
   ARTICLE_HOTTEST_SORT_PARAMS
 } from &#x27;./article.model&#x27;
-import * as CACHE_KEY from &#x27;@app/constants/cache.constant&#x27;
 
 @Injectable()
 export class ArticleService {
@@ -1850,7 +1850,7 @@ export class ArticleService {
     @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;
   ) {
     this.hottestArticlesCache &#x3D; this.cacheService.interval({
-      key: CACHE_KEY.HOTTEST_ARTICLES,
+      key: CacheKeys.HottestArticles,
       promise: () &#x3D;&gt; this.getHottestArticles(20),
       interval: 1000 * 60 * 30, // 30 mins,
       retry: 1000 * 60 * 5 // 5 mins

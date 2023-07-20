@@ -47,7 +47,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  ArchiveData</li>
+  RedisStoreOptions</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -71,7 +71,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/archive/archive.service.ts</code>
+            <code>src/processors/cache/redis.store.ts</code>
         </p>
 
 
@@ -90,21 +90,17 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#articles" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#defaultTTL" 
 >
-                                            articles
+                                            defaultTTL
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#categories" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#namespace" 
 >
-                                            categories
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#tags" 
->
-                                            tags
+                                            namespace
                                         </a>
                                 </li>
                             </ul>
@@ -122,9 +118,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="articles"></a>
-                                        <span class="name "><b>articles</b>
-                                            <a href="#articles">
+                                        <a name="defaultTTL"></a>
+                                        <span class="name "><b>defaultTTL</b>
+                                            <a href="#defaultTTL">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -132,7 +128,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>articles:         <code><a href="../classes/Article.html" target="_self" >Article[]</a></code>
+                                        <code>defaultTTL:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -140,11 +136,16 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/Article.html" target="_self" >Article[]</a></code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -155,9 +156,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="categories"></a>
-                                        <span class="name "><b>categories</b>
-                                            <a href="#categories">
+                                        <a name="namespace"></a>
+                                        <span class="name "><b>namespace</b>
+                                            <a href="#namespace">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -165,7 +166,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>categories:         <code><a href="../classes/Category.html" target="_self" >Category[]</a></code>
+                                        <code>namespace:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -173,44 +174,16 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/Category.html" target="_self" >Category[]</a></code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="tags"></a>
-                                        <span class="name "><b>tags</b>
-                                            <a href="#tags">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>tags:         <code><a href="../classes/Tag.html" target="_self" >Tag[]</a></code>
-</code>
-                                    </td>
-                                </tr>
-
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/Tag.html" target="_self" >Tag[]</a></code>
-
+                                            <i>Optional</i>
                                         </td>
                                     </tr>
-
 
 
 
@@ -222,83 +195,104 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
-import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
-import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
-import { SortType } from &#x27;@app/constants/biz.constant&#x27;
-import { Category } from &#x27;@app/modules/category/category.model&#x27;
-import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
-import {
-  Article,
-  ARTICLE_LIST_QUERY_GUEST_FILTER,
-  ARTICLE_LIST_QUERY_PROJECTION
-} from &#x27;@app/modules/article/article.model&#x27;
-import logger from &#x27;@app/utils/logger&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { RedisClientType } from &#x27;redis&#x27;
+import { isNil, isUndefined, UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 
-const log &#x3D; logger.scope(&#x27;ArchiveService&#x27;)
+export type { RedisClientOptions } from &#x27;redis&#x27;
+export type RedisStore &#x3D; ReturnType&lt;typeof createRedisStore&gt;
 
-export interface ArchiveData {
-  tags: Tag[]
-  categories: Category[]
-  articles: Article[]
+const stringifyValue &#x3D; (value: unknown) &#x3D;&gt; {
+  return isNil(value) ? &#x27;&#x27; : JSON.stringify(value)
 }
 
-@Injectable()
-export class ArchiveService {
-  private archiveCache: CacheManualResult&lt;ArchiveData&gt;
+const parseValue &#x3D; &lt;T&gt;(value: string | null | void) &#x3D;&gt; {
+  return isNil(value) ? UNDEFINED : (JSON.parse(value) as T)
+}
 
-  constructor(
-    private readonly cacheService: CacheService,
-    @InjectModel(Tag) private readonly tagModel: MongooseModel&lt;Tag&gt;,
-    @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;,
-    @InjectModel(Category) private readonly categoryModel: MongooseModel&lt;Category&gt;
-  ) {
-    this.archiveCache &#x3D; this.cacheService.manual({
-      key: CacheKeys.Archive,
-      promise: this.getArchiveData.bind(this)
-    })
-    this.updateCache().catch((error) &#x3D;&gt; {
-      log.warn(&#x27;init getArchiveData failed!&#x27;, error)
-    })
+export interface RedisStoreOptions {
+  namespace?: string
+  defaultTTL?: number
+}
+
+export const createRedisStore &#x3D; (redisClient: RedisClientType, options?: RedisStoreOptions) &#x3D;&gt; {
+  const getKeyName &#x3D; (key: string): string &#x3D;&gt; {
+    return options?.namespace ? &#x60;${options.namespace}:${key}&#x60; : key
   }
 
-  private getAllTags(): Promise&lt;Tag[]&gt; {
-    return this.tagModel.find().sort({ _id: SortType.Desc }).exec()
+  const get &#x3D; async &lt;T&gt;(key: string) &#x3D;&gt; {
+    const value &#x3D; await redisClient.get(getKeyName(key))
+    return parseValue&lt;T&gt;(value)
   }
 
-  private getAllCategories(): Promise&lt;Category[]&gt; {
-    return this.categoryModel.find().sort({ _id: SortType.Desc }).exec()
-  }
-
-  private getAllArticles(): Promise&lt;Article[]&gt; {
-    return this.articleModel
-      .find(ARTICLE_LIST_QUERY_GUEST_FILTER, ARTICLE_LIST_QUERY_PROJECTION)
-      .sort({ _id: SortType.Desc })
-      .exec()
-  }
-
-  private async getArchiveData(): Promise&lt;ArchiveData&gt; {
-    try {
-      const [tags, categories, articles] &#x3D; await Promise.all([
-        this.getAllTags(),
-        this.getAllCategories(),
-        this.getAllArticles()
-      ])
-      return { tags, categories, articles }
-    } catch (error) {
-      log.warn(&#x27;getArchiveData failed!&#x27;, error)
-      return {} as any as ArchiveData
+  // https://redis.io/commands/set/
+  const set &#x3D; async (key: string, value: any, ttl?: number): Promise&lt;void&gt; &#x3D;&gt; {
+    const _key &#x3D; getKeyName(key)
+    const _value &#x3D; stringifyValue(value)
+    const _ttl &#x3D; isUndefined(ttl) ? options?.defaultTTL : ttl
+    if (!isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
+      // EX — Set the specified expire time, in seconds.
+      await redisClient.set(_key, _value, { EX: _ttl })
+    } else {
+      await redisClient.set(_key, _value)
     }
   }
 
-  public getCache() {
-    return this.archiveCache.get()
+  const mset &#x3D; async (kvs: [string, any][], ttl?: number): Promise&lt;void&gt; &#x3D;&gt; {
+    const _ttl &#x3D; isUndefined(ttl) ? options?.defaultTTL : ttl
+    if (!isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
+      const multi &#x3D; redisClient.multi()
+      for (const [key, value] of kvs) {
+        // EX — Set the specified expire time, in seconds.
+        multi.set(getKeyName(key), stringifyValue(value), { EX: _ttl })
+      }
+      await multi.exec()
+    } else {
+      await redisClient.mSet(
+        kvs.map(([key, value]) &#x3D;&gt; {
+          return [getKeyName(key), stringifyValue(value)] as [string, string]
+        })
+      )
+    }
   }
 
-  public updateCache() {
-    return this.archiveCache.update()
+  const mget &#x3D; (...keys: string[]) &#x3D;&gt; {
+    return redisClient.mGet(keys.map(getKeyName)).then((values) &#x3D;&gt; {
+      return values.map((value) &#x3D;&gt; parseValue&lt;unknown&gt;(value))
+    })
+  }
+
+  const mdel &#x3D; async (...keys: string[]) &#x3D;&gt; {
+    await redisClient.del(keys.map(getKeyName))
+  }
+
+  const del &#x3D; async (key: string) &#x3D;&gt; {
+    const deleted &#x3D; await redisClient.del(getKeyName(key))
+    return deleted &gt; 0
+  }
+
+  const has &#x3D; async (key: string) &#x3D;&gt; {
+    const count &#x3D; await redisClient.exists(getKeyName(key))
+    return count !&#x3D;&#x3D; 0
+  }
+
+  const ttl &#x3D; (key: string) &#x3D;&gt; redisClient.ttl(getKeyName(key))
+  const keys &#x3D; (pattern &#x3D; getKeyName(&#x27;*&#x27;)) &#x3D;&gt; redisClient.keys(pattern)
+
+  const clear &#x3D; async () &#x3D;&gt; {
+    await redisClient.del(await keys())
+  }
+
+  return {
+    has,
+    get,
+    set,
+    delete: del,
+    mset,
+    mget,
+    mdel,
+    ttl,
+    keys,
+    clear
   }
 }
 </code></pre>
@@ -338,7 +332,7 @@ export class ArchiveService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'ArchiveData.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'RedisStoreOptions.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

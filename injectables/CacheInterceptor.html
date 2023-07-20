@@ -346,7 +346,7 @@ import {
 import { getCacheKey, getCacheTTL } from &#x27;@app/decorators/cache.decorator&#x27;
 import { CacheService } from &#x27;@app/processors/cache/cache.service&#x27;
 import { UNDEFINED, isNil } from &#x27;@app/constants/value.constant&#x27;
-import { CACHE_PREFIX } from &#x27;@app/constants/cache.constant&#x27;
+import { getDecoratorCacheKey } from &#x27;@app/constants/cache.constant&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 
 const log &#x3D; logger.scope(&#x27;CacheInterceptor&#x27;)
@@ -376,7 +376,7 @@ export class CacheInterceptor implements NestInterceptor {
     const ttl &#x3D; getCacheTTL(target)
 
     try {
-      const value &#x3D; await this.cacheService.get(CACHE_PREFIX + key)
+      const value &#x3D; await this.cacheService.get(getDecoratorCacheKey(key))
       if (!isNil(value)) {
         return of(value)
       }
@@ -388,7 +388,7 @@ export class CacheInterceptor implements NestInterceptor {
           }
 
           try {
-            await this.cacheService.set(CACHE_PREFIX + key, response, ttl)
+            await this.cacheService.set(getDecoratorCacheKey(key), response, ttl)
           } catch (err) {
             log.warn(&#x60;An error has occurred when inserting &quot;key: ${key}&quot;, &quot;value: ${response}&quot;&#x60;)
           }

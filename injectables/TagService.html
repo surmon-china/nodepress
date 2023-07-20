@@ -1020,12 +1020,12 @@ import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cach
 import { SeoService } from &#x27;@app/processors/helper/helper.service.seo&#x27;
 import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.model&#x27;
 import logger from &#x27;@app/utils/logger&#x27;
 import { Tag } from &#x27;./tag.model&#x27;
-import * as CACHE_KEY from &#x27;@app/constants/cache.constant&#x27;
 
 const log &#x3D; logger.scope(&#x27;TagService&#x27;)
 
@@ -1041,7 +1041,7 @@ export class TagService {
     @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;
   ) {
     this.allTagsCache &#x3D; this.cacheService.manual&lt;Array&lt;Tag&gt;&gt;({
-      key: CACHE_KEY.ALL_TAGS,
+      key: CacheKeys.AllTags,
       promise: () &#x3D;&gt; this.getAllTags()
     })
 

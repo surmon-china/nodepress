@@ -133,16 +133,6 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#isCommentableTarget" >isCommentableTarget</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#isNotBlocklisted" >isNotBlocklisted</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
                                 <a href="#normalizeNewComment" >normalizeNewComment</a>
                             </li>
                             <li>
@@ -172,6 +162,16 @@
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#updateCommentsCountWithArticles" >updateCommentsCountWithArticles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#verifyCommentValidity" >verifyCommentValidity</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#verifyTargetCommentable" >verifyTargetCommentable</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -327,8 +327,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="293"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:293</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="294"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:294</a></div>
                 </td>
             </tr>
 
@@ -411,8 +411,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="277"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:277</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="278"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:278</a></div>
                 </td>
             </tr>
 
@@ -651,8 +651,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="267"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:267</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="268"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:268</a></div>
                 </td>
             </tr>
 
@@ -833,8 +833,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="243"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:243</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="244"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:244</a></div>
                 </td>
             </tr>
 
@@ -904,8 +904,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="235"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:235</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="236"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:236</a></div>
                 </td>
             </tr>
 
@@ -976,8 +976,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="299"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:299</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="300"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:300</a></div>
                 </td>
             </tr>
 
@@ -1016,150 +1016,6 @@
                     </div>
                     <div class="io-description">
                         <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="isCommentableTarget"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span class="modifier">Async</span>
-                        <span ><b>isCommentableTarget</b></span>
-                        <a href="#isCommentableTarget"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>isCommentableTarget(targetPostID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="154"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:154</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>targetPostID</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="isNotBlocklisted"></a>
-                    <span class="name">
-                        <span class="modifier">Public</span>
-                        <span class="modifier">Async</span>
-                        <span ><b>isNotBlocklisted</b></span>
-                        <a href="#isNotBlocklisted"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>isNotBlocklisted(comment: <a href="../classes/Comment.html" target="_self">Comment</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="141"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:141</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>comment</td>
-                                    <td>
-                                                <code><a href="../classes/Comment.html" target="_self" >Comment</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                     </div>
                     <div class="io-description">
@@ -1378,8 +1234,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="303"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:303</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="304"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:304</a></div>
                 </td>
             </tr>
 
@@ -1545,8 +1401,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="251"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:251</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="252"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:252</a></div>
                 </td>
             </tr>
 
@@ -1789,6 +1645,150 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="verifyCommentValidity"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>verifyCommentValidity</b></span>
+                        <a href="#verifyCommentValidity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>verifyCommentValidity(comment: <a href="../classes/Comment.html" target="_self">Comment</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="141"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:141</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>comment</td>
+                                    <td>
+                                                <code><a href="../classes/Comment.html" target="_self" >Comment</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verifyTargetCommentable"></a>
+                    <span class="name">
+                        <span class="modifier">Public</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>verifyTargetCommentable</b></span>
+                        <a href="#verifyTargetCommentable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>verifyTargetCommentable(targetPostID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="154"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:154</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>targetPostID</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="vote"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -1808,8 +1808,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="319"
-                            class="link-to-prism">src/modules/comment/comment.service.ts:319</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="320"
+                            class="link-to-prism">src/modules/comment/comment.service.ts:320</a></div>
                 </td>
             </tr>
 
@@ -2009,7 +2009,7 @@ export class CommentService {
   }
 
   // validate comment by NodePress IP/email/keywords
-  public async isNotBlocklisted(comment: Comment): Promise&lt;void&gt; {
+  public async verifyCommentValidity(comment: Comment): Promise&lt;void&gt; {
     const { blocklist } &#x3D; await this.optionService.ensureAppOption()
     const { keywords, mails, ips } &#x3D; blocklist
     const blockIP &#x3D; ips.includes(comment.ip!)
@@ -2022,7 +2022,7 @@ export class CommentService {
   }
 
   // validate comment target commentable
-  public async isCommentableTarget(targetPostID: number): Promise&lt;void&gt; {
+  public async verifyTargetCommentable(targetPostID: number): Promise&lt;void&gt; {
     if (targetPostID !&#x3D;&#x3D; GUESTBOOK_POST_ID) {
       const isCommentable &#x3D; await this.articleService.isCommentableArticle(targetPostID)
       if (!isCommentable) {
@@ -2090,15 +2090,16 @@ export class CommentService {
 
   // create comment from client
   public async createFormClient(comment: CommentBase, visitor: QueryVisitor): Promise&lt;MongooseDoc&lt;Comment&gt;&gt; {
+    // 1. Standardize comment data to ensure that some fields cannot be overwritten by users
     const newComment &#x3D; this.normalizeNewComment(comment, visitor)
-    // 1. check commentable
-    await this.isCommentableTarget(newComment.post_id)
-    // 2. block list | akismet
+    // 2. check commentable
+    await this.verifyTargetCommentable(newComment.post_id)
+    // 3. block list | akismet
     await Promise.all([
-      this.isNotBlocklisted(newComment),
+      this.verifyCommentValidity(newComment),
       this.submitCommentAkismet(AkismetAction.CheckSpam, newComment, visitor.referer)
     ])
-    // 3. create
+    // 4. create data in DB
     return this.create(newComment)
   }
 

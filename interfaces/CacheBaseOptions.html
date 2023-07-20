@@ -259,8 +259,8 @@ export class CacheService {
     return this.redisService.store.get&lt;T&gt;(key) as Promise&lt;T&gt;
   }
 
-  public delete(key: string): Promise&lt;void&gt; {
-    return this.redisService.store.del(key)
+  public delete(key: string): Promise&lt;boolean&gt; {
+    return this.redisService.store.delete(key)
   }
 
   /** Execute the Promise and store the data into the cache. */

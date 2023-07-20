@@ -850,6 +850,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/QueryVisitor.html" data-type="entity-link" >QueryVisitor</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/RedisStoreOptions.html" data-type="entity-link" >RedisStoreOptions</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/Request.html" data-type="entity-link" >Request</a>
                             </li>
                             <li class="link">
