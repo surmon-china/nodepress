@@ -8,15 +8,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
+import { CacheKeys } from '@app/constants/cache.constant'
 import { SortType } from '@app/constants/biz.constant'
 import { Category } from '@app/modules/category/category.model'
+import { Tag } from '@app/modules/tag/tag.model'
 import {
   Article,
   ARTICLE_LIST_QUERY_GUEST_FILTER,
   ARTICLE_LIST_QUERY_PROJECTION
 } from '@app/modules/article/article.model'
-import { Tag } from '@app/modules/tag/tag.model'
-import * as CACHE_KEY from '@app/constants/cache.constant'
 import logger from '@app/utils/logger'
 
 const log = logger.scope('ArchiveService')
@@ -38,7 +38,7 @@ export class ArchiveService {
     @InjectModel(Category) private readonly categoryModel: MongooseModel<Category>
   ) {
     this.archiveCache = this.cacheService.manual({
-      key: CACHE_KEY.ARCHIVE,
+      key: CacheKeys.Archive,
       promise: this.getArchiveData.bind(this)
     })
     this.updateCache().catch((error) => {

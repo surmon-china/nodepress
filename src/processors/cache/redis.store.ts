@@ -22,73 +22,84 @@ const parseValue = <T>(value: string | null | void) => {
   return isNil(value) ? UNDEFINED : (JSON.parse(value) as T)
 }
 
-export const createRedisStore = (redisClient: RedisClientType, defaultTTL?: number) => {
+export interface RedisStoreOptions {
+  namespace?: string
+  defaultTTL?: number
+}
+
+export const createRedisStore = (redisClient: RedisClientType, options?: RedisStoreOptions) => {
+  const getKeyName = (key: string): string => {
+    return options?.namespace ? `${options.namespace}:${key}` : key
+  }
+
   const get = async <T>(key: string) => {
-    const value = await redisClient.get(key)
+    const value = await redisClient.get(getKeyName(key))
     return parseValue<T>(value)
   }
 
   // https://redis.io/commands/set/
   const set = async (key: string, value: any, ttl?: number): Promise<void> => {
+    const _key = getKeyName(key)
     const _value = stringifyValue(value)
-    const _ttl = isUndefined(ttl) ? defaultTTL : ttl
+    const _ttl = isUndefined(ttl) ? options?.defaultTTL : ttl
     if (!isNil(_ttl) && _ttl !== 0) {
       // EX — Set the specified expire time, in seconds.
-      await redisClient.set(key, _value, { EX: _ttl })
+      await redisClient.set(_key, _value, { EX: _ttl })
     } else {
-      await redisClient.set(key, _value)
+      await redisClient.set(_key, _value)
     }
   }
 
-  const mset = async (args, ttl?: number): Promise<void> => {
-    const _ttl = isUndefined(ttl) ? defaultTTL : ttl
+  const mset = async (kvs: [string, any][], ttl?: number): Promise<void> => {
+    const _ttl = isUndefined(ttl) ? options?.defaultTTL : ttl
     if (!isNil(_ttl) && _ttl !== 0) {
       const multi = redisClient.multi()
-      for (const [key, value] of args) {
+      for (const [key, value] of kvs) {
         // EX — Set the specified expire time, in seconds.
-        multi.set(key, stringifyValue(value), { EX: _ttl })
+        multi.set(getKeyName(key), stringifyValue(value), { EX: _ttl })
       }
       await multi.exec()
     } else {
       await redisClient.mSet(
-        args.map(([key, value]) => {
-          return [key, stringifyValue(value)] as [string, string]
+        kvs.map(([key, value]) => {
+          return [getKeyName(key), stringifyValue(value)] as [string, string]
         })
       )
     }
   }
 
-  const mget = (...args) => {
-    return redisClient.mGet(args).then((values) => {
+  const mget = (...keys: string[]) => {
+    return redisClient.mGet(keys.map(getKeyName)).then((values) => {
       return values.map((value) => parseValue<unknown>(value))
     })
   }
 
-  const mdel = async (...args) => {
-    await redisClient.del(args)
+  const mdel = async (...keys: string[]) => {
+    await redisClient.del(keys.map(getKeyName))
   }
 
   const del = async (key: string) => {
-    await redisClient.del(key)
+    await redisClient.del(getKeyName(key))
   }
 
-  const reset = async () => {
-    await redisClient.flushDb()
+  const has = (key: string) => redisClient.exists(getKeyName(key))
+  const ttl = (key: string) => redisClient.ttl(getKeyName(key))
+  const keys = (pattern = getKeyName('*')) => redisClient.keys(pattern)
+
+  const clear = async () => {
+    await redisClient.del(await keys())
   }
-
-  const ttl = (key: string) => redisClient.pTTL(key)
-
-  const keys = (pattern = '*') => redisClient.keys(pattern)
 
   return {
+    has,
     get,
     set,
+    delete: del,
     mset,
     mget,
     mdel,
-    del,
-    reset,
     ttl,
-    keys
+    keys,
+    clear
   }
 }

@@ -4,13 +4,18 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-export const CACHE_PREFIX = '__nodepress_cache_'
-export const OPTION = CACHE_PREFIX + 'option'
-export const ALL_TAGS = CACHE_PREFIX + 'all-tags'
-export const HOTTEST_ARTICLES = CACHE_PREFIX + 'hottest-articles'
-export const ARCHIVE = CACHE_PREFIX + 'archive'
-export const TODAY_VIEWS = CACHE_PREFIX + 'today-views'
+export enum CacheKeys {
+  Option = 'option',
+  Archive = 'archive',
+  AllTags = 'all-tags',
+  HottestArticles = 'hottest-articles',
+  TodayViewCount = 'today-view-count'
+}
+
+export const getDecoratorCacheKey = (key: string) => {
+  return `decorator:${key}`
+}
 
 export const getDisqusCacheKey = (key: string) => {
-  return `${CACHE_PREFIX}-disqus-${key}`
+  return `disqus:${key}`
 }

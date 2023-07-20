@@ -43,6 +43,7 @@ export const MONGO_DB = {
 }
 
 export const REDIS = {
+  namespace: argv.redis_namespace || 'nodepress',
   host: argv.redis_host || 'localhost',
   port: argv.redis_port || 6379,
   username: argv.redis_username || null,

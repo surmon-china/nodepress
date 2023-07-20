@@ -162,11 +162,11 @@ export class DisqusPublicService {
   public async createUniversalComment(comment: CommentBase, visitor: QueryVisitor, accessToken?: string) {
     const newComment = this.commentService.normalizeNewComment(comment, visitor)
     // 1. commentable
-    await this.commentService.isCommentableTarget(newComment.post_id)
+    await this.commentService.verifyTargetCommentable(newComment.post_id)
     // 2. make sure disqus thread
     const thread = await this.ensureThreadDetailCache(newComment.post_id)
     // 3. nodepress blocklist
-    await this.commentService.isNotBlocklisted(newComment)
+    await this.commentService.verifyCommentValidity(newComment)
     // 4. disqus parent comment post ID
     let parentID: string | null = null
     if (Boolean(newComment.pid)) {

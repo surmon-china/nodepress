@@ -25,7 +25,10 @@ export class RedisService {
 
   constructor(private readonly emailService: EmailService) {
     this.redisClient = createClient(this.getOptions()) as RedisClientType
-    this.redisStore = createRedisStore(this.redisClient, APP_CONFIG.APP.DEFAULT_CACHE_TTL)
+    this.redisStore = createRedisStore(this.redisClient, {
+      defaultTTL: APP_CONFIG.APP.DEFAULT_CACHE_TTL,
+      namespace: APP_CONFIG.REDIS.namespace
+    })
     // https://github.com/redis/node-redis#events
     this.redisClient.on('connect', () => log.info('connecting...'))
     this.redisClient.on('reconnecting', () => log.warn('reconnecting...'))

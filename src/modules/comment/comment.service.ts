@@ -138,7 +138,7 @@ export class CommentService {
   }
 
   // validate comment by NodePress IP/email/keywords
-  public async isNotBlocklisted(comment: Comment): Promise<void> {
+  public async verifyCommentValidity(comment: Comment): Promise<void> {
     const { blocklist } = await this.optionService.ensureAppOption()
     const { keywords, mails, ips } = blocklist
     const blockIP = ips.includes(comment.ip!)
@@ -151,7 +151,7 @@ export class CommentService {
   }
 
   // validate comment target commentable
-  public async isCommentableTarget(targetPostID: number): Promise<void> {
+  public async verifyTargetCommentable(targetPostID: number): Promise<void> {
     if (targetPostID !== GUESTBOOK_POST_ID) {
       const isCommentable = await this.articleService.isCommentableArticle(targetPostID)
       if (!isCommentable) {
@@ -219,15 +219,16 @@ export class CommentService {
 
   // create comment from client
   public async createFormClient(comment: CommentBase, visitor: QueryVisitor): Promise<MongooseDoc<Comment>> {
+    // 1. Standardize comment data to ensure that some fields cannot be overwritten by users
     const newComment = this.normalizeNewComment(comment, visitor)
-    // 1. check commentable
-    await this.isCommentableTarget(newComment.post_id)
-    // 2. block list | akismet
+    // 2. check commentable
+    await this.verifyTargetCommentable(newComment.post_id)
+    // 3. block list | akismet
     await Promise.all([
-      this.isNotBlocklisted(newComment),
+      this.verifyCommentValidity(newComment),
       this.submitCommentAkismet(AkismetAction.CheckSpam, newComment, visitor.referer)
     ])
-    // 3. create
+    // 4. create data in DB
     return this.create(newComment)
   }
 
