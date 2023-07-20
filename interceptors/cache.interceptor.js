@@ -36,7 +36,7 @@ let CacheInterceptor = exports.CacheInterceptor = class CacheInterceptor {
         const target = context.getHandler();
         const ttl = (0, cache_decorator_1.getCacheTTL)(target);
         try {
-            const value = await this.cacheService.get(cache_constant_1.CACHE_PREFIX + key);
+            const value = await this.cacheService.get((0, cache_constant_1.getDecoratorCacheKey)(key));
             if (!(0, value_constant_1.isNil)(value)) {
                 return (0, rxjs_1.of)(value);
             }
@@ -45,7 +45,7 @@ let CacheInterceptor = exports.CacheInterceptor = class CacheInterceptor {
                     return;
                 }
                 try {
-                    await this.cacheService.set(cache_constant_1.CACHE_PREFIX + key, response, ttl);
+                    await this.cacheService.set((0, cache_constant_1.getDecoratorCacheKey)(key), response, ttl);
                 }
                 catch (err) {
                     log.warn(`An error has occurred when inserting "key: ${key}", "value: ${response}"`);

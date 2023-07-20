@@ -30,7 +30,7 @@ let CacheService = exports.CacheService = class CacheService {
         return this.redisService.store.get(key);
     }
     delete(key) {
-        return this.redisService.store.del(key);
+        return this.redisService.store.delete(key);
     }
     async execPromise(options) {
         const data = await options.promise();

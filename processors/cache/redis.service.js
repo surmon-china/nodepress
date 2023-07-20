@@ -56,7 +56,10 @@ let RedisService = exports.RedisService = class RedisService {
             });
         }, 1000 * 30);
         this.redisClient = (0, redis_1.createClient)(this.getOptions());
-        this.redisStore = (0, redis_store_1.createRedisStore)(this.redisClient, APP_CONFIG.APP.DEFAULT_CACHE_TTL);
+        this.redisStore = (0, redis_store_1.createRedisStore)(this.redisClient, {
+            defaultTTL: APP_CONFIG.APP.DEFAULT_CACHE_TTL,
+            namespace: APP_CONFIG.REDIS.namespace
+        });
         this.redisClient.on('connect', () => log.info('connecting...'));
         this.redisClient.on('reconnecting', () => log.warn('reconnecting...'));
         this.redisClient.on('ready', () => log.info('readied (connected).'));

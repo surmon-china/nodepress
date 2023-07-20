@@ -141,7 +141,7 @@ let CommentService = exports.CommentService = class CommentService {
             .then(() => log.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
             .catch((error) => log.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error));
     }
-    async isNotBlocklisted(comment) {
+    async verifyCommentValidity(comment) {
         const { blocklist } = await this.optionService.ensureAppOption();
         const { keywords, mails, ips } = blocklist;
         const blockIP = ips.includes(comment.ip);
@@ -152,7 +152,7 @@ let CommentService = exports.CommentService = class CommentService {
             return Promise.reject('content | email | IP > blocked');
         }
     }
-    async isCommentableTarget(targetPostID) {
+    async verifyTargetCommentable(targetPostID) {
         if (targetPostID !== biz_constant_1.GUESTBOOK_POST_ID) {
             const isCommentable = await this.articleService.isCommentableArticle(targetPostID);
             if (!isCommentable) {
@@ -187,9 +187,9 @@ let CommentService = exports.CommentService = class CommentService {
     }
     async createFormClient(comment, visitor) {
         const newComment = this.normalizeNewComment(comment, visitor);
-        await this.isCommentableTarget(newComment.post_id);
+        await this.verifyTargetCommentable(newComment.post_id);
         await Promise.all([
-            this.isNotBlocklisted(newComment),
+            this.verifyCommentValidity(newComment),
             this.submitCommentAkismet(helper_service_akismet_1.AkismetAction.CheckSpam, newComment, visitor.referer)
         ]);
         return this.create(newComment);

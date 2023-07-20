@@ -157,9 +157,9 @@ let DisqusPublicService = exports.DisqusPublicService = class DisqusPublicServic
     }
     async createUniversalComment(comment, visitor, accessToken) {
         const newComment = this.commentService.normalizeNewComment(comment, visitor);
-        await this.commentService.isCommentableTarget(newComment.post_id);
+        await this.commentService.verifyTargetCommentable(newComment.post_id);
         const thread = await this.ensureThreadDetailCache(newComment.post_id);
-        await this.commentService.isNotBlocklisted(newComment);
+        await this.commentService.verifyCommentValidity(newComment);
         let parentID = null;
         if (Boolean(newComment.pid)) {
             parentID = await this.getDisqusPostIDByCommentID(newComment.pid);

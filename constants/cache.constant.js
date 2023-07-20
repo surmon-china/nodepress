@@ -1,14 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDisqusCacheKey = exports.TODAY_VIEWS = exports.ARCHIVE = exports.HOTTEST_ARTICLES = exports.ALL_TAGS = exports.OPTION = exports.CACHE_PREFIX = void 0;
-exports.CACHE_PREFIX = '__nodepress_cache_';
-exports.OPTION = exports.CACHE_PREFIX + 'option';
-exports.ALL_TAGS = exports.CACHE_PREFIX + 'all-tags';
-exports.HOTTEST_ARTICLES = exports.CACHE_PREFIX + 'hottest-articles';
-exports.ARCHIVE = exports.CACHE_PREFIX + 'archive';
-exports.TODAY_VIEWS = exports.CACHE_PREFIX + 'today-views';
+exports.getDisqusCacheKey = exports.getDecoratorCacheKey = exports.CacheKeys = void 0;
+var CacheKeys;
+(function (CacheKeys) {
+    CacheKeys["Option"] = "option";
+    CacheKeys["Archive"] = "archive";
+    CacheKeys["AllTags"] = "all-tags";
+    CacheKeys["HottestArticles"] = "hottest-articles";
+    CacheKeys["TodayViewCount"] = "today-view-count";
+})(CacheKeys || (exports.CacheKeys = CacheKeys = {}));
+const getDecoratorCacheKey = (key) => {
+    return `decorator:${key}`;
+};
+exports.getDecoratorCacheKey = getDecoratorCacheKey;
 const getDisqusCacheKey = (key) => {
-    return `${exports.CACHE_PREFIX}-disqus-${key}`;
+    return `disqus:${key}`;
 };
 exports.getDisqusCacheKey = getDisqusCacheKey;
 //# sourceMappingURL=cache.constant.js.map

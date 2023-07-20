@@ -37,6 +37,7 @@ exports.MONGO_DB = {
     uri: argv.db_uri || `mongodb://127.0.0.1:27017/NodePress`
 };
 exports.REDIS = {
+    namespace: argv.redis_namespace || 'nodepress',
     host: argv.redis_host || 'localhost',
     port: argv.redis_port || 6379,
     username: argv.redis_username || null,
