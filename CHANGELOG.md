@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.1.0 (2023-07-20)
+
+**Feature**
+
+- Add config `REDIS.namespace`
+- Improve Redis Store
+
 ### 4.0.1 (2023-07-17)
 
 **Feature**
