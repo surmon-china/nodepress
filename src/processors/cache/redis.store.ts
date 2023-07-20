@@ -79,10 +79,15 @@ export const createRedisStore = (redisClient: RedisClientType, options?: RedisSt
   }
 
   const del = async (key: string) => {
-    await redisClient.del(getKeyName(key))
+    const deleted = await redisClient.del(getKeyName(key))
+    return deleted > 0
   }
 
-  const has = (key: string) => redisClient.exists(getKeyName(key))
+  const has = async (key: string) => {
+    const count = await redisClient.exists(getKeyName(key))
+    return count !== 0
+  }
+
   const ttl = (key: string) => redisClient.ttl(getKeyName(key))
   const keys = (pattern = getKeyName('*')) => redisClient.keys(pattern)
 

@@ -60,7 +60,7 @@ export class CacheService {
     return this.redisService.store.get<T>(key) as Promise<T>
   }
 
-  public delete(key: string): Promise<void> {
+  public delete(key: string): Promise<boolean> {
     return this.redisService.store.delete(key)
   }
 
