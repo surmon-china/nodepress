@@ -239,7 +239,10 @@ export class CorsMiddleware implements NestMiddleware {
       &#x27;Cache-Control&#x27;,
       &#x27;Expires&#x27;,
       &#x27;Content-Type&#x27;,
-      &#x27;X-E4M-With&#x27;
+      &#x27;X-E4M-With&#x27;,
+      // https://docs.sentry.io/platforms/javascript/performance/instrumentation/automatic-instrumentation/#tracepropagationtargets
+      &#x27;Sentry-Trace&#x27;,
+      &#x27;Baggage&#x27;
     ]
 
     // Allow Origin
