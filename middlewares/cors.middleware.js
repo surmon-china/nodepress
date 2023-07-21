@@ -58,7 +58,9 @@ let CorsMiddleware = exports.CorsMiddleware = class CorsMiddleware {
             'Cache-Control',
             'Expires',
             'Content-Type',
-            'X-E4M-With'
+            'X-E4M-With',
+            'Sentry-Trace',
+            'Baggage'
         ];
         if (!origin || allowedOrigins.includes(origin) || app_environment_1.isDevEnv) {
             response.setHeader('Access-Control-Allow-Origin', origin || '*');
