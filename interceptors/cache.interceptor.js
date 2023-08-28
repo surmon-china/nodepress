@@ -23,7 +23,7 @@ const value_constant_1 = require("../constants/value.constant");
 const cache_constant_1 = require("../constants/cache.constant");
 const logger_1 = __importDefault(require("../utils/logger"));
 const log = logger_1.default.scope('CacheInterceptor');
-let CacheInterceptor = exports.CacheInterceptor = class CacheInterceptor {
+let CacheInterceptor = class CacheInterceptor {
     constructor(httpAdapterHost, cacheService) {
         this.httpAdapterHost = httpAdapterHost;
         this.cacheService = cacheService;
@@ -65,6 +65,7 @@ let CacheInterceptor = exports.CacheInterceptor = class CacheInterceptor {
         return isHttpApp && isGetRequest && cacheKey ? cacheKey : value_constant_1.UNDEFINED;
     }
 };
+exports.CacheInterceptor = CacheInterceptor;
 exports.CacheInterceptor = CacheInterceptor = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [core_1.HttpAdapterHost,

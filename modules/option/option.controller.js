@@ -20,7 +20,7 @@ const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const option_service_1 = require("./option.service");
 const option_model_1 = require("./option.model");
-let OptionController = exports.OptionController = class OptionController {
+let OptionController = class OptionController {
     constructor(optionService) {
         this.optionService = optionService;
     }
@@ -31,6 +31,7 @@ let OptionController = exports.OptionController = class OptionController {
         return this.optionService.putOption(option);
     }
 };
+exports.OptionController = OptionController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

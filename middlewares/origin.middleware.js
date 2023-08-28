@@ -35,7 +35,7 @@ const response_interface_1 = require("../interfaces/response.interface");
 const app_environment_1 = require("../app.environment");
 const app_config_1 = require("../app.config");
 const TEXT = __importStar(require("../constants/text.constant"));
-let OriginMiddleware = exports.OriginMiddleware = class OriginMiddleware {
+let OriginMiddleware = class OriginMiddleware {
     use(request, response, next) {
         if (app_environment_1.isProdEnv) {
             const { origin, referer } = request.headers;
@@ -53,6 +53,7 @@ let OriginMiddleware = exports.OriginMiddleware = class OriginMiddleware {
         return next();
     }
 };
+exports.OriginMiddleware = OriginMiddleware;
 exports.OriginMiddleware = OriginMiddleware = __decorate([
     (0, common_1.Injectable)()
 ], OriginMiddleware);

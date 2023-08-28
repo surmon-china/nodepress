@@ -49,7 +49,7 @@ var SEOAction;
     SEOAction["Update"] = "update";
     SEOAction["Delete"] = "delete";
 })(SEOAction || (exports.SEOAction = SEOAction = {}));
-let SeoService = exports.SeoService = class SeoService {
+let SeoService = class SeoService {
     constructor(httpService, googleService) {
         this.httpService = httpService;
         this.googleService = googleService;
@@ -136,6 +136,7 @@ let SeoService = exports.SeoService = class SeoService {
         this.pingBing(urls);
     }
 };
+exports.SeoService = SeoService;
 exports.SeoService = SeoService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [axios_1.HttpService,

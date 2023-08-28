@@ -32,7 +32,7 @@ const DEFAULT_STATISTIC = Object.freeze({
     todayViews: null,
     averageEmotion: null
 });
-let StatisticService = exports.StatisticService = class StatisticService {
+let StatisticService = class StatisticService {
     constructor(cacheService, articleService, commentService, feedbackService, tagService) {
         this.cacheService = cacheService;
         this.articleService = articleService;
@@ -77,6 +77,7 @@ let StatisticService = exports.StatisticService = class StatisticService {
         });
     }
 };
+exports.StatisticService = StatisticService;
 exports.StatisticService = StatisticService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [cache_service_1.CacheService,

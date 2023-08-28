@@ -44,7 +44,7 @@ const redis_store_1 = require("./redis.store");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('RedisService');
-let RedisService = exports.RedisService = class RedisService {
+let RedisService = class RedisService {
     constructor(emailService) {
         this.emailService = emailService;
         this.sendAlarmMail = lodash_1.default.throttle((error) => {
@@ -99,6 +99,7 @@ let RedisService = exports.RedisService = class RedisService {
         return this.redisStore;
     }
 };
+exports.RedisService = RedisService;
 exports.RedisService = RedisService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [helper_service_email_1.EmailService])

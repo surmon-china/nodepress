@@ -18,8 +18,9 @@ exports.DEFAULT_AUTH = Object.freeze({
     slogan: '',
     avatar: ''
 });
-let Auth = exports.Auth = class Auth {
+let Auth = class Auth {
 };
+exports.Auth = Auth;
 __decorate([
     (0, class_validator_1.IsString)({ message: "what's your name?" }),
     (0, class_validator_1.IsDefined)(),

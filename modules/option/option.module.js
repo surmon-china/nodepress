@@ -11,8 +11,9 @@ const common_1 = require("@nestjs/common");
 const option_controller_1 = require("./option.controller");
 const option_model_1 = require("./option.model");
 const option_service_1 = require("./option.service");
-let OptionModule = exports.OptionModule = class OptionModule {
+let OptionModule = class OptionModule {
 };
+exports.OptionModule = OptionModule;
 exports.OptionModule = OptionModule = __decorate([
     (0, common_1.Module)({
         controllers: [option_controller_1.OptionController],

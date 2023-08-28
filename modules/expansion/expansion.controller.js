@@ -47,7 +47,7 @@ const helper_service_google_1 = require("../../processors/helper/helper.service.
 const expansion_service_statistic_1 = require("./expansion.service.statistic");
 const expansion_service_dbbackup_1 = require("./expansion.service.dbbackup");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let ExpansionController = exports.ExpansionController = class ExpansionController {
+let ExpansionController = class ExpansionController {
     constructor(awsService, googleService, dbBackupService, statisticService) {
         this.awsService = awsService;
         this.googleService = googleService;
@@ -75,6 +75,7 @@ let ExpansionController = exports.ExpansionController = class ExpansionControlle
             .then((result) => (Object.assign(Object.assign({}, result), { url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}` })));
     }
 };
+exports.ExpansionController = ExpansionController;
 __decorate([
     (0, common_1.Get)('statistic'),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

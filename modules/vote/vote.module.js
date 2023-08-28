@@ -15,8 +15,9 @@ const disqus_module_1 = require("../disqus/disqus.module");
 const vote_model_1 = require("./vote.model");
 const vote_service_1 = require("./vote.service");
 const vote_controller_1 = require("./vote.controller");
-let VoteModule = exports.VoteModule = class VoteModule {
+let VoteModule = class VoteModule {
 };
+exports.VoteModule = VoteModule;
 exports.VoteModule = VoteModule = __decorate([
     (0, common_1.Module)({
         imports: [option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule, disqus_module_1.DisqusModule],

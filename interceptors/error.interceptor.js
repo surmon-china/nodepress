@@ -36,7 +36,7 @@ const common_1 = require("@nestjs/common");
 const responser_decorator_1 = require("../decorators/responser.decorator");
 const custom_error_1 = require("../errors/custom.error");
 const TEXT = __importStar(require("../constants/text.constant"));
-let ErrorInterceptor = exports.ErrorInterceptor = class ErrorInterceptor {
+let ErrorInterceptor = class ErrorInterceptor {
     intercept(context, next) {
         const target = context.getHandler();
         const { errorCode, errorMessage } = (0, responser_decorator_1.getResponserOptions)(target);
@@ -45,6 +45,7 @@ let ErrorInterceptor = exports.ErrorInterceptor = class ErrorInterceptor {
         }));
     }
 };
+exports.ErrorInterceptor = ErrorInterceptor;
 exports.ErrorInterceptor = ErrorInterceptor = __decorate([
     (0, common_1.Injectable)()
 ], ErrorInterceptor);

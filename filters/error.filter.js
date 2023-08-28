@@ -15,7 +15,7 @@ const common_1 = require("@nestjs/common");
 const response_interface_1 = require("../interfaces/response.interface");
 const value_constant_1 = require("../constants/value.constant");
 const app_environment_1 = require("../app.environment");
-let HttpExceptionFilter = exports.HttpExceptionFilter = class HttpExceptionFilter {
+let HttpExceptionFilter = class HttpExceptionFilter {
     catch(exception, host) {
         const request = host.switchToHttp().getRequest();
         const response = host.switchToHttp().getResponse();
@@ -36,6 +36,7 @@ let HttpExceptionFilter = exports.HttpExceptionFilter = class HttpExceptionFilte
         return response.status((errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.status) || exceptionStatus).jsonp(data);
     }
 };
+exports.HttpExceptionFilter = HttpExceptionFilter;
 exports.HttpExceptionFilter = HttpExceptionFilter = __decorate([
     (0, common_1.Catch)()
 ], HttpExceptionFilter);

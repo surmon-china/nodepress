@@ -20,7 +20,7 @@ const value_constant_1 = require("../../constants/value.constant");
 const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
 const app_environment_1 = require("../../app.environment");
 const feedback_model_1 = require("./feedback.model");
-let FeedbackService = exports.FeedbackService = class FeedbackService {
+let FeedbackService = class FeedbackService {
     constructor(ipService, feedbackModel) {
         this.ipService = ipService;
         this.feedbackModel = feedbackModel;
@@ -62,6 +62,7 @@ let FeedbackService = exports.FeedbackService = class FeedbackService {
         return result ? Math.round(result.avgEmotion * 1000) / 1000 : value_constant_1.NULL;
     }
 };
+exports.FeedbackService = FeedbackService;
 exports.FeedbackService = FeedbackService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, model_transformer_1.InjectModel)(feedback_model_1.Feedback)),

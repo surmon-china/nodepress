@@ -30,11 +30,12 @@ const comment_module_1 = require("./modules/comment/comment.module");
 const disqus_module_1 = require("./modules/disqus/disqus.module");
 const archive_module_1 = require("./modules/archive/archive.module");
 const vote_module_1 = require("./modules/vote/vote.module");
-let AppModule = exports.AppModule = class AppModule {
+let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(cors_middleware_1.CorsMiddleware, origin_middleware_1.OriginMiddleware).forRoutes('*');
     }
 };
+exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [

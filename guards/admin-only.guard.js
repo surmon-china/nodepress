@@ -11,7 +11,7 @@ const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
 const unauthorized_error_1 = require("../errors/unauthorized.error");
 const value_constant_1 = require("../constants/value.constant");
-let AdminOnlyGuard = exports.AdminOnlyGuard = class AdminOnlyGuard extends (0, passport_1.AuthGuard)('jwt') {
+let AdminOnlyGuard = class AdminOnlyGuard extends (0, passport_1.AuthGuard)('jwt') {
     canActivate(context) {
         return super.canActivate(context);
     }
@@ -24,6 +24,7 @@ let AdminOnlyGuard = exports.AdminOnlyGuard = class AdminOnlyGuard extends (0, p
         }
     }
 };
+exports.AdminOnlyGuard = AdminOnlyGuard;
 exports.AdminOnlyGuard = AdminOnlyGuard = __decorate([
     (0, common_1.Injectable)()
 ], AdminOnlyGuard);

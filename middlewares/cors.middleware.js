@@ -33,7 +33,7 @@ exports.CorsMiddleware = void 0;
 const common_1 = require("@nestjs/common");
 const app_environment_1 = require("../app.environment");
 const APP_CONFIG = __importStar(require("../app.config"));
-let CorsMiddleware = exports.CorsMiddleware = class CorsMiddleware {
+let CorsMiddleware = class CorsMiddleware {
     use(request, response, next) {
         const getMethod = (method) => common_1.RequestMethod[method];
         const origins = request.headers.origin;
@@ -79,6 +79,7 @@ let CorsMiddleware = exports.CorsMiddleware = class CorsMiddleware {
         }
     }
 };
+exports.CorsMiddleware = CorsMiddleware;
 exports.CorsMiddleware = CorsMiddleware = __decorate([
     (0, common_1.Injectable)()
 ], CorsMiddleware);

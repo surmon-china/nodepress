@@ -43,7 +43,7 @@ const value_constant_1 = require("../../constants/value.constant");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('GoogleService');
-let GoogleService = exports.GoogleService = class GoogleService {
+let GoogleService = class GoogleService {
     constructor() {
         this.jwtClient = null;
         this.initClient();
@@ -76,6 +76,7 @@ let GoogleService = exports.GoogleService = class GoogleService {
         });
     }
 };
+exports.GoogleService = GoogleService;
 exports.GoogleService = GoogleService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])

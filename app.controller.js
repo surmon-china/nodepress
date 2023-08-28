@@ -35,11 +35,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const APP_CONFIG = __importStar(require("./app.config"));
-let AppController = exports.AppController = class AppController {
+let AppController = class AppController {
     root() {
         return APP_CONFIG.PROJECT;
     }
 };
+exports.AppController = AppController;
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

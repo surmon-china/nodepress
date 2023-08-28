@@ -98,8 +98,9 @@ __decorate([
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], FeedbackBase.prototype, "user_email", void 0);
-let Feedback = exports.Feedback = class Feedback extends FeedbackBase {
+let Feedback = class Feedback extends FeedbackBase {
 };
+exports.Feedback = Feedback;
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
     __metadata("design:type", Number)

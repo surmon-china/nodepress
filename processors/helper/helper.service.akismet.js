@@ -49,7 +49,7 @@ var AkismetAction;
     AkismetAction["SubmitSpam"] = "submitSpam";
     AkismetAction["SubmitHam"] = "submitHam";
 })(AkismetAction || (exports.AkismetAction = AkismetAction = {}));
-let AkismetService = exports.AkismetService = class AkismetService {
+let AkismetService = class AkismetService {
     constructor() {
         this.clientIsValid = false;
         this.initClient();
@@ -112,6 +112,7 @@ let AkismetService = exports.AkismetService = class AkismetService {
         return this.makeInterceptor(AkismetAction.SubmitHam)(payload);
     }
 };
+exports.AkismetService = AkismetService;
 exports.AkismetService = AkismetService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])

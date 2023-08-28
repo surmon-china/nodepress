@@ -71,7 +71,7 @@ const vote_dto_1 = require("./vote.dto");
 const vote_model_1 = require("./vote.model");
 const vote_service_1 = require("./vote.service");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let VoteController = exports.VoteController = class VoteController {
+let VoteController = class VoteController {
     constructor(ipService, emailService, disqusPublicService, commentService, articleService, optionService, voteService) {
         this.ipService = ipService;
         this.emailService = emailService;
@@ -269,6 +269,7 @@ let VoteController = exports.VoteController = class VoteController {
         return result;
     }
 };
+exports.VoteController = VoteController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),

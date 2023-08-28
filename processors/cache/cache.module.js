@@ -10,8 +10,9 @@ exports.CacheModule = void 0;
 const common_1 = require("@nestjs/common");
 const redis_service_1 = require("./redis.service");
 const cache_service_1 = require("./cache.service");
-let CacheModule = exports.CacheModule = class CacheModule {
+let CacheModule = class CacheModule {
 };
+exports.CacheModule = CacheModule;
 exports.CacheModule = CacheModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({

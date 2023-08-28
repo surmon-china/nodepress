@@ -53,7 +53,7 @@ const app_environment_1 = require("../../app.environment");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const APP_CONFIG = __importStar(require("../../app.config"));
 const log = logger_1.default.scope('CommentService');
-let CommentService = exports.CommentService = class CommentService {
+let CommentService = class CommentService {
     constructor(ipService, emailService, akismetService, optionService, articleService, commentModel) {
         this.ipService = ipService;
         this.emailService = emailService;
@@ -268,6 +268,7 @@ let CommentService = exports.CommentService = class CommentService {
         };
     }
 };
+exports.CommentService = CommentService;
 exports.CommentService = CommentService = __decorate([
     (0, common_1.Injectable)(),
     __param(5, (0, model_transformer_1.InjectModel)(comment_model_1.Comment)),

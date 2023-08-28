@@ -16,7 +16,7 @@ exports.AnnouncementService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const announcement_model_1 = require("./announcement.model");
-let AnnouncementService = exports.AnnouncementService = class AnnouncementService {
+let AnnouncementService = class AnnouncementService {
     constructor(announcementModel) {
         this.announcementModel = announcementModel;
     }
@@ -42,6 +42,7 @@ let AnnouncementService = exports.AnnouncementService = class AnnouncementServic
         return this.announcementModel.deleteMany({ _id: { $in: announcementIDs } }).exec();
     }
 };
+exports.AnnouncementService = AnnouncementService;
 exports.AnnouncementService = AnnouncementService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, model_transformer_1.InjectModel)(announcement_model_1.Announcement)),

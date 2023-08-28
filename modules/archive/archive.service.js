@@ -26,7 +26,7 @@ const tag_model_1 = require("../tag/tag.model");
 const article_model_1 = require("../article/article.model");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('ArchiveService');
-let ArchiveService = exports.ArchiveService = class ArchiveService {
+let ArchiveService = class ArchiveService {
     constructor(cacheService, tagModel, articleModel, categoryModel) {
         this.cacheService = cacheService;
         this.tagModel = tagModel;
@@ -73,6 +73,7 @@ let ArchiveService = exports.ArchiveService = class ArchiveService {
         return this.archiveCache.update();
     }
 };
+exports.ArchiveService = ArchiveService;
 exports.ArchiveService = ArchiveService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, model_transformer_1.InjectModel)(tag_model_1.Tag)),

@@ -17,8 +17,9 @@ const increment_constant_1 = require("../../constants/increment.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 const key_value_model_1 = require("../../models/key-value.model");
-let Tag = exports.Tag = class Tag {
+let Tag = class Tag {
 };
+exports.Tag = Tag;
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
     __metadata("design:type", Number)

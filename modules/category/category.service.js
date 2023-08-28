@@ -20,7 +20,7 @@ const archive_service_1 = require("../archive/archive.service");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
 const article_model_1 = require("../article/article.model");
 const category_model_1 = require("./category.model");
-let CategoryService = exports.CategoryService = class CategoryService {
+let CategoryService = class CategoryService {
     constructor(seoService, archiveService, articleModel, categoryModel) {
         this.seoService = seoService;
         this.archiveService = archiveService;
@@ -120,6 +120,7 @@ let CategoryService = exports.CategoryService = class CategoryService {
         return actionResult;
     }
 };
+exports.CategoryService = CategoryService;
 exports.CategoryService = CategoryService = __decorate([
     (0, common_1.Injectable)(),
     __param(2, (0, model_transformer_1.InjectModel)(article_model_1.Article)),

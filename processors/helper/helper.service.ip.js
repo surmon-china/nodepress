@@ -18,7 +18,7 @@ const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('IPService');
-let IPService = exports.IPService = class IPService {
+let IPService = class IPService {
     constructor(httpService) {
         this.httpService = httpService;
     }
@@ -72,6 +72,7 @@ let IPService = exports.IPService = class IPService {
             .catch(() => null);
     }
 };
+exports.IPService = IPService;
 exports.IPService = IPService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [axios_1.HttpService])

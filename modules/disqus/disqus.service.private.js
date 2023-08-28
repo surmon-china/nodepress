@@ -50,7 +50,7 @@ const logger_1 = __importDefault(require("../../utils/logger"));
 const disqus_xml_1 = require("./disqus.xml");
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
 const log = logger_1.default.scope('DisqusPrivateService');
-let DisqusPrivateService = exports.DisqusPrivateService = class DisqusPrivateService {
+let DisqusPrivateService = class DisqusPrivateService {
     constructor(articleService, commentService) {
         this.articleService = articleService;
         this.commentService = commentService;
@@ -211,6 +211,7 @@ let DisqusPrivateService = exports.DisqusPrivateService = class DisqusPrivateSer
         return { done, fail };
     }
 };
+exports.DisqusPrivateService = DisqusPrivateService;
 exports.DisqusPrivateService = DisqusPrivateService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [article_service_1.ArticleService,

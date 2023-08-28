@@ -39,7 +39,7 @@ const tag_service_1 = require("../tag/tag.service");
 const cache_constant_1 = require("../../constants/cache.constant");
 const value_constant_1 = require("../../constants/value.constant");
 const article_model_1 = require("./article.model");
-let ArticleService = exports.ArticleService = class ArticleService {
+let ArticleService = class ArticleService {
     constructor(seoService, tagService, cacheService, archiveService, articleModel) {
         this.seoService = seoService;
         this.tagService = tagService;
@@ -235,6 +235,7 @@ let ArticleService = exports.ArticleService = class ArticleService {
         return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec();
     }
 };
+exports.ArticleService = ArticleService;
 exports.ArticleService = ArticleService = __decorate([
     (0, common_1.Injectable)(),
     __param(4, (0, model_transformer_1.InjectModel)(article_model_1.Article)),

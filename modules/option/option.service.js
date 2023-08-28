@@ -24,7 +24,7 @@ const option_model_1 = require("./option.model");
 const cache_constant_1 = require("../../constants/cache.constant");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('OptionService');
-let OptionService = exports.OptionService = class OptionService {
+let OptionService = class OptionService {
     constructor(optionModel, cacheService) {
         this.optionModel = optionModel;
         this.cacheService = cacheService;
@@ -77,6 +77,7 @@ let OptionService = exports.OptionService = class OptionService {
         return option.meta.likes;
     }
 };
+exports.OptionService = OptionService;
 exports.OptionService = OptionService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, model_transformer_1.InjectModel)(option_model_1.Option)),

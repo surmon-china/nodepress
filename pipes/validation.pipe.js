@@ -17,7 +17,7 @@ const isUnverifiableMetaType = (metatype) => {
     return !metatype || basicTypes.includes(metatype);
 };
 exports.isUnverifiableMetaType = isUnverifiableMetaType;
-let ValidationPipe = exports.ValidationPipe = class ValidationPipe {
+let ValidationPipe = class ValidationPipe {
     async transform(value, { metatype }) {
         if ((0, exports.isUnverifiableMetaType)(metatype)) {
             return value;
@@ -42,6 +42,7 @@ let ValidationPipe = exports.ValidationPipe = class ValidationPipe {
         return object;
     }
 };
+exports.ValidationPipe = ValidationPipe;
 exports.ValidationPipe = ValidationPipe = __decorate([
     (0, common_1.Injectable)()
 ], ValidationPipe);

@@ -58,7 +58,7 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
 const auth_model_1 = require("./auth.model");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let AuthService = exports.AuthService = class AuthService {
+let AuthService = class AuthService {
     constructor(jwtService, authModel) {
         this.jwtService = jwtService;
         this.authModel = authModel;
@@ -124,6 +124,7 @@ let AuthService = exports.AuthService = class AuthService {
         }
     }
 };
+exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, model_transformer_1.InjectModel)(auth_model_1.Auth)),

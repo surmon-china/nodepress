@@ -49,7 +49,7 @@ const disqus_service_private_1 = require("./disqus.service.private");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
 const log = logger_1.default.scope('DisqusPublicService');
-let DisqusPublicService = exports.DisqusPublicService = class DisqusPublicService {
+let DisqusPublicService = class DisqusPublicService {
     constructor(cacheService, commentService, disqusPrivateService) {
         this.cacheService = cacheService;
         this.commentService = commentService;
@@ -218,6 +218,7 @@ let DisqusPublicService = exports.DisqusPublicService = class DisqusPublicServic
         return await this.commentService.update(comment._id, { state: biz_constant_1.CommentState.Deleted });
     }
 };
+exports.DisqusPublicService = DisqusPublicService;
 exports.DisqusPublicService = DisqusPublicService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [cache_service_1.CacheService,

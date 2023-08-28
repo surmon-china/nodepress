@@ -35,7 +35,7 @@ const common_1 = require("@nestjs/common");
 const response_interface_1 = require("../interfaces/response.interface");
 const responser_decorator_1 = require("../decorators/responser.decorator");
 const TEXT = __importStar(require("../constants/text.constant"));
-let TransformInterceptor = exports.TransformInterceptor = class TransformInterceptor {
+let TransformInterceptor = class TransformInterceptor {
     intercept(context, next) {
         const target = context.getHandler();
         const { successMessage, transform, paginate } = (0, responser_decorator_1.getResponserOptions)(target);
@@ -70,6 +70,7 @@ let TransformInterceptor = exports.TransformInterceptor = class TransformInterce
         }));
     }
 };
+exports.TransformInterceptor = TransformInterceptor;
 exports.TransformInterceptor = TransformInterceptor = __decorate([
     (0, common_1.Injectable)()
 ], TransformInterceptor);

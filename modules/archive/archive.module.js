@@ -13,8 +13,9 @@ const article_model_1 = require("../article/article.model");
 const tag_model_1 = require("../tag/tag.model");
 const archive_controller_1 = require("./archive.controller");
 const archive_service_1 = require("./archive.service");
-let ArchiveModule = exports.ArchiveModule = class ArchiveModule {
+let ArchiveModule = class ArchiveModule {
 };
+exports.ArchiveModule = ArchiveModule;
 exports.ArchiveModule = ArchiveModule = __decorate([
     (0, common_1.Module)({
         controllers: [archive_controller_1.ArchiveController],

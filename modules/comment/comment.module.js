@@ -13,8 +13,9 @@ const article_module_1 = require("../article/article.module");
 const comment_controller_1 = require("./comment.controller");
 const comment_model_1 = require("./comment.model");
 const comment_service_1 = require("./comment.service");
-let CommentModule = exports.CommentModule = class CommentModule {
+let CommentModule = class CommentModule {
 };
+exports.CommentModule = CommentModule;
 exports.CommentModule = CommentModule = __decorate([
     (0, common_1.Module)({
         imports: [option_module_1.OptionModule, article_module_1.ArticleModule],

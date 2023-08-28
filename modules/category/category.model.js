@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var Category_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryProvider = exports.Category = void 0;
 const mongoose_1 = require("mongoose");
@@ -19,8 +18,9 @@ const increment_constant_1 = require("../../constants/increment.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 const key_value_model_1 = require("../../models/key-value.model");
-let Category = exports.Category = Category_1 = class Category {
+let Category = class Category {
 };
+exports.Category = Category;
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
     __metadata("design:type", Number)
@@ -45,7 +45,7 @@ __decorate([
     __metadata("design:type", String)
 ], Category.prototype, "description", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ ref: Category_1, default: null }),
+    (0, typegoose_1.prop)({ ref: Category, default: null }),
     __metadata("design:type", mongoose_1.Types.ObjectId)
 ], Category.prototype, "pid", void 0);
 __decorate([
@@ -62,7 +62,7 @@ __decorate([
     (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
     __metadata("design:type", Array)
 ], Category.prototype, "extends", void 0);
-exports.Category = Category = Category_1 = __decorate([
+exports.Category = Category = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.generalAutoIncrementIDConfig),
     (0, typegoose_1.modelOptions)({

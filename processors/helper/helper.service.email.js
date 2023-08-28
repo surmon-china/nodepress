@@ -42,7 +42,7 @@ const error_transformer_1 = require("../../transformers/error.transformer");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('EmailService');
-let EmailService = exports.EmailService = class EmailService {
+let EmailService = class EmailService {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({
             host: APP_CONFIG.EMAIL.host,
@@ -86,6 +86,7 @@ let EmailService = exports.EmailService = class EmailService {
         return this.sendMail(Object.assign(Object.assign({}, mailOptions), { subject: `[${prefix}] ${mailOptions.subject}` }));
     }
 };
+exports.EmailService = EmailService;
 exports.EmailService = EmailService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])

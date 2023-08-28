@@ -13,8 +13,9 @@ const article_model_1 = require("../article/article.model");
 const category_controller_1 = require("./category.controller");
 const category_model_1 = require("./category.model");
 const category_service_1 = require("./category.service");
-let CategoryModule = exports.CategoryModule = class CategoryModule {
+let CategoryModule = class CategoryModule {
 };
+exports.CategoryModule = CategoryModule;
 exports.CategoryModule = CategoryModule = __decorate([
     (0, common_1.Module)({
         imports: [archive_module_1.ArchiveModule],

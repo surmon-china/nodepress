@@ -11,8 +11,9 @@ const common_1 = require("@nestjs/common");
 const announcement_model_1 = require("./announcement.model");
 const announcement_service_1 = require("./announcement.service");
 const announcement_controller_1 = require("./announcement.controller");
-let AnnouncementModule = exports.AnnouncementModule = class AnnouncementModule {
+let AnnouncementModule = class AnnouncementModule {
 };
+exports.AnnouncementModule = AnnouncementModule;
 exports.AnnouncementModule = AnnouncementModule = __decorate([
     (0, common_1.Module)({
         controllers: [announcement_controller_1.AnnouncementController],

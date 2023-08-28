@@ -38,7 +38,7 @@ const queryparams_decorator_1 = require("../../decorators/queryparams.decorator"
 const announcement_dto_1 = require("./announcement.dto");
 const announcement_service_1 = require("./announcement.service");
 const announcement_model_1 = require("./announcement.model");
-let AnnouncementController = exports.AnnouncementController = class AnnouncementController {
+let AnnouncementController = class AnnouncementController {
     constructor(announcementService) {
         this.announcementService = announcementService;
     }
@@ -71,6 +71,7 @@ let AnnouncementController = exports.AnnouncementController = class Announcement
         return this.announcementService.delete(params.id);
     }
 };
+exports.AnnouncementController = AnnouncementController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

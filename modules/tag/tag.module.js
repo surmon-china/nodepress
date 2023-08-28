@@ -13,8 +13,9 @@ const article_model_1 = require("../article/article.model");
 const tag_controller_1 = require("./tag.controller");
 const tag_model_1 = require("./tag.model");
 const tag_service_1 = require("./tag.service");
-let TagModule = exports.TagModule = class TagModule {
+let TagModule = class TagModule {
 };
+exports.TagModule = TagModule;
 exports.TagModule = TagModule = __decorate([
     (0, common_1.Module)({
         imports: [archive_module_1.ArchiveModule],

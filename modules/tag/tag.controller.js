@@ -38,7 +38,7 @@ const queryparams_decorator_1 = require("../../decorators/queryparams.decorator"
 const tag_dto_1 = require("./tag.dto");
 const tag_service_1 = require("./tag.service");
 const tag_model_1 = require("./tag.model");
-let TagController = exports.TagController = class TagController {
+let TagController = class TagController {
     constructor(tagService) {
         this.tagService = tagService;
     }
@@ -69,6 +69,7 @@ let TagController = exports.TagController = class TagController {
         return this.tagService.delete(params.id);
     }
 };
+exports.TagController = TagController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

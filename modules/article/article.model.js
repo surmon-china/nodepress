@@ -57,8 +57,9 @@ __decorate([
     (0, typegoose_1.prop)({ default: 0 }),
     __metadata("design:type", Number)
 ], ArticleMeta.prototype, "comments", void 0);
-let Article = exports.Article = class Article {
+let Article = class Article {
 };
+exports.Article = Article;
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
     __metadata("design:type", Number)

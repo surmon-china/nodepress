@@ -22,7 +22,7 @@ const queryparams_decorator_1 = require("../../decorators/queryparams.decorator"
 const auth_dto_1 = require("./auth.dto");
 const auth_service_1 = require("./auth.service");
 const app_config_1 = require("../../app.config");
-let AuthController = exports.AuthController = class AuthController {
+let AuthController = class AuthController {
     constructor(ipService, emailService, authService) {
         this.ipService = ipService;
         this.emailService = emailService;
@@ -58,6 +58,7 @@ let AuthController = exports.AuthController = class AuthController {
         return this.authService.createToken();
     }
 };
+exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('login'),
     responser_decorator_1.Responser.handle({ message: 'Login', error: common_1.HttpStatus.BAD_REQUEST }),

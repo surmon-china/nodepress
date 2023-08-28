@@ -15,8 +15,9 @@ const feedback_module_1 = require("../feedback/feedback.module");
 const expansion_controller_1 = require("./expansion.controller");
 const expansion_service_statistic_1 = require("./expansion.service.statistic");
 const expansion_service_dbbackup_1 = require("./expansion.service.dbbackup");
-let ExpansionModule = exports.ExpansionModule = class ExpansionModule {
+let ExpansionModule = class ExpansionModule {
 };
+exports.ExpansionModule = ExpansionModule;
 exports.ExpansionModule = ExpansionModule = __decorate([
     (0, common_1.Module)({
         imports: [tag_module_1.TagModule, article_module_1.ArticleModule, comment_module_1.CommentModule, feedback_module_1.FeedbackModule],

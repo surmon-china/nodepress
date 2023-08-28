@@ -14,7 +14,7 @@ const operators_1 = require("rxjs/operators");
 const common_1 = require("@nestjs/common");
 const app_environment_1 = require("../app.environment");
 const logger_1 = __importDefault(require("../utils/logger"));
-let LoggingInterceptor = exports.LoggingInterceptor = class LoggingInterceptor {
+let LoggingInterceptor = class LoggingInterceptor {
     intercept(context, next) {
         if (!app_environment_1.isDevEnv) {
             return next.handle();
@@ -26,6 +26,7 @@ let LoggingInterceptor = exports.LoggingInterceptor = class LoggingInterceptor {
         return next.handle().pipe((0, operators_1.tap)(() => logger_1.default.debug('--- res：', content, `${Date.now() - now}ms`)));
     }
 };
+exports.LoggingInterceptor = LoggingInterceptor;
 exports.LoggingInterceptor = LoggingInterceptor = __decorate([
     (0, common_1.Injectable)()
 ], LoggingInterceptor);

@@ -28,7 +28,7 @@ const article_model_1 = require("../article/article.model");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const tag_model_1 = require("./tag.model");
 const log = logger_1.default.scope('TagService');
-let TagService = exports.TagService = class TagService {
+let TagService = class TagService {
     constructor(seoService, cacheService, archiveService, tagModel, articleModel) {
         this.seoService = seoService;
         this.cacheService = cacheService;
@@ -122,6 +122,7 @@ let TagService = exports.TagService = class TagService {
         return await this.tagModel.countDocuments().exec();
     }
 };
+exports.TagService = TagService;
 exports.TagService = TagService = __decorate([
     (0, common_1.Injectable)(),
     __param(3, (0, model_transformer_1.InjectModel)(tag_model_1.Tag)),

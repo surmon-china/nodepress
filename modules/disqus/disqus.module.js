@@ -15,8 +15,9 @@ const comment_module_1 = require("../comment/comment.module");
 const disqus_controller_1 = require("./disqus.controller");
 const disqus_service_public_1 = require("./disqus.service.public");
 const disqus_service_private_1 = require("./disqus.service.private");
-let DisqusModule = exports.DisqusModule = class DisqusModule {
+let DisqusModule = class DisqusModule {
 };
+exports.DisqusModule = DisqusModule;
 exports.DisqusModule = DisqusModule = __decorate([
     (0, common_1.Module)({
         imports: [axios_1.HttpModule, option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule],

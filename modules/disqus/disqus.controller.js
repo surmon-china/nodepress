@@ -26,7 +26,7 @@ const disqus_service_public_1 = require("./disqus.service.public");
 const disqus_service_private_1 = require("./disqus.service.private");
 const disqus_token_1 = require("./disqus.token");
 const disqus_dto_1 = require("./disqus.dto");
-let DisqusController = exports.DisqusController = class DisqusController {
+let DisqusController = class DisqusController {
     constructor(disqusPublicService, disqusPrivateService) {
         this.disqusPublicService = disqusPublicService;
         this.disqusPrivateService = disqusPrivateService;
@@ -97,6 +97,7 @@ let DisqusController = exports.DisqusController = class DisqusController {
         return this.disqusPrivateService.importXML(file);
     }
 };
+exports.DisqusController = DisqusController;
 __decorate([
     (0, common_1.Get)('config'),
     responser_decorator_1.Responser.handle('Get Disqus config'),

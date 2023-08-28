@@ -69,8 +69,9 @@ __decorate([
     (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
 ], Blocklist.prototype, "keywords", void 0);
-let Option = exports.Option = class Option {
+let Option = class Option {
 };
+exports.Option = Option;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)({ message: 'title?' }),

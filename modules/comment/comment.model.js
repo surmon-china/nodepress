@@ -29,13 +29,14 @@ exports.COMMENT_STATES = [
 exports.COMMENT_GUEST_QUERY_FILTER = Object.freeze({
     state: biz_constant_1.CommentState.Published
 });
-let Author = exports.Author = class Author {
+let Author = class Author {
     get email_hash() {
         var _a;
         const email = (_a = this.email) === null || _a === void 0 ? void 0 : _a.trim().toLowerCase();
         return email ? (0, codec_transformer_1.decodeMD5)(email) : null;
     }
 };
+exports.Author = Author;
 __decorate([
     (0, class_validator_1.MaxLength)(20),
     (0, class_validator_1.IsString)(),
@@ -102,8 +103,9 @@ __decorate([
     (0, typegoose_1.prop)({ required: true, _id: false }),
     __metadata("design:type", Author)
 ], CommentBase.prototype, "author", void 0);
-let Comment = exports.Comment = class Comment extends CommentBase {
+let Comment = class Comment extends CommentBase {
 };
+exports.Comment = Comment;
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
     __metadata("design:type", Number)

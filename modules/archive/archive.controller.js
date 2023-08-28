@@ -14,7 +14,7 @@ const common_1 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const responser_decorator_1 = require("../../decorators/responser.decorator");
 const archive_service_1 = require("./archive.service");
-let ArchiveController = exports.ArchiveController = class ArchiveController {
+let ArchiveController = class ArchiveController {
     constructor(archiveService) {
         this.archiveService = archiveService;
     }
@@ -25,6 +25,7 @@ let ArchiveController = exports.ArchiveController = class ArchiveController {
         return this.archiveService.updateCache();
     }
 };
+exports.ArchiveController = ArchiveController;
 __decorate([
     (0, common_1.Get)(),
     responser_decorator_1.Responser.handle('Get archive'),

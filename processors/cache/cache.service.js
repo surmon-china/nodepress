@@ -19,7 +19,7 @@ const value_constant_1 = require("../../constants/value.constant");
 const redis_service_1 = require("./redis.service");
 const logger_1 = __importDefault(require("../../utils/logger"));
 const log = logger_1.default.scope('CacheService');
-let CacheService = exports.CacheService = class CacheService {
+let CacheService = class CacheService {
     constructor(redisService) {
         this.redisService = redisService;
     }
@@ -73,6 +73,7 @@ let CacheService = exports.CacheService = class CacheService {
         return () => this.get(options.key);
     }
 };
+exports.CacheService = CacheService;
 exports.CacheService = CacheService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [redis_service_1.RedisService])

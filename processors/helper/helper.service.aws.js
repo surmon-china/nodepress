@@ -36,7 +36,7 @@ const APP_CONFIG = __importStar(require("../../app.config"));
 var client_s3_2 = require("@aws-sdk/client-s3");
 Object.defineProperty(exports, "AWSStorageClass", { enumerable: true, get: function () { return client_s3_2.StorageClass; } });
 Object.defineProperty(exports, "AWSServerSideEncryption", { enumerable: true, get: function () { return client_s3_2.ServerSideEncryption; } });
-let AWSService = exports.AWSService = class AWSService {
+let AWSService = class AWSService {
     createClient(region) {
         return new client_s3_1.S3Client({
             region,
@@ -79,6 +79,7 @@ let AWSService = exports.AWSService = class AWSService {
         });
     }
 };
+exports.AWSService = AWSService;
 exports.AWSService = AWSService = __decorate([
     (0, common_1.Injectable)()
 ], AWSService);

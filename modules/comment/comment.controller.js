@@ -40,7 +40,7 @@ const queryparams_decorator_1 = require("../../decorators/queryparams.decorator"
 const comment_dto_1 = require("./comment.dto");
 const comment_service_1 = require("./comment.service");
 const comment_model_1 = require("./comment.model");
-let CommentController = exports.CommentController = class CommentController {
+let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
     }
@@ -99,6 +99,7 @@ let CommentController = exports.CommentController = class CommentController {
         return this.commentService.delete(params.id);
     }
 };
+exports.CommentController = CommentController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

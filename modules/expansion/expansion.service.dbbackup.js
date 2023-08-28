@@ -28,7 +28,7 @@ const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
 const UPLOAD_INTERVAL = '0 0 3 * * *';
 const BACKUP_FILE_NAME = 'nodepress.zip';
 const BACKUP_DIR_PATH = path_1.default.join(app_config_1.APP.ROOT_PATH, 'dbbackup');
-let DBBackupService = exports.DBBackupService = class DBBackupService {
+let DBBackupService = class DBBackupService {
     constructor(emailService, awsService) {
         this.emailService = emailService;
         this.awsService = awsService;
@@ -105,6 +105,7 @@ let DBBackupService = exports.DBBackupService = class DBBackupService {
         });
     }
 };
+exports.DBBackupService = DBBackupService;
 exports.DBBackupService = DBBackupService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [helper_service_email_1.EmailService,

@@ -23,7 +23,7 @@ const responser_decorator_1 = require("../../decorators/responser.decorator");
 const category_dto_1 = require("./category.dto");
 const category_service_1 = require("./category.service");
 const category_model_1 = require("./category.model");
-let CategoryController = exports.CategoryController = class CategoryController {
+let CategoryController = class CategoryController {
     constructor(categoryService) {
         this.categoryService = categoryService;
     }
@@ -46,6 +46,7 @@ let CategoryController = exports.CategoryController = class CategoryController {
         return this.categoryService.delete(params.id);
     }
 };
+exports.CategoryController = CategoryController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

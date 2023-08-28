@@ -43,7 +43,7 @@ const article_dto_1 = require("./article.dto");
 const article_model_1 = require("./article.model");
 const article_service_1 = require("./article.service");
 const article_model_2 = require("./article.model");
-let ArticleController = exports.ArticleController = class ArticleController {
+let ArticleController = class ArticleController {
     constructor(tagService, categoryService, articleService) {
         this.tagService = tagService;
         this.categoryService = categoryService;
@@ -143,6 +143,7 @@ let ArticleController = exports.ArticleController = class ArticleController {
         return this.articleService.batchDelete(body.article_ids);
     }
 };
+exports.ArticleController = ArticleController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

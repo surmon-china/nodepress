@@ -18,8 +18,9 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 const biz_constant_1 = require("../../constants/biz.constant");
 exports.ANNOUNCEMENT_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published];
-let Announcement = exports.Announcement = class Announcement {
+let Announcement = class Announcement {
 };
+exports.Announcement = Announcement;
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
     __metadata("design:type", Number)

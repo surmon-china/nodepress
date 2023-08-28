@@ -39,8 +39,9 @@ var VoteAuthorType;
 exports.VOTE_TYPES = [VoteType.Upvote, VoteType.Downvote];
 exports.VOTE_TARGETS = [VoteTarget.Post, VoteTarget.Comment];
 exports.VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus];
-let Vote = exports.Vote = class Vote {
+let Vote = class Vote {
 };
+exports.Vote = Vote;
 __decorate([
     (0, typegoose_1.prop)({ unique: true }),
     __metadata("design:type", Number)

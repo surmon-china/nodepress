@@ -63,7 +63,7 @@ const feedback_dto_1 = require("./feedback.dto");
 const feedback_model_1 = require("./feedback.model");
 const feedback_service_1 = require("./feedback.service");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let FeedbackController = exports.FeedbackController = class FeedbackController {
+let FeedbackController = class FeedbackController {
     constructor(emailService, feedbackService) {
         this.emailService = emailService;
         this.feedbackService = feedbackService;
@@ -120,6 +120,7 @@ let FeedbackController = exports.FeedbackController = class FeedbackController {
         return this.feedbackService.delete(params.id);
     }
 };
+exports.FeedbackController = FeedbackController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
