@@ -85,6 +85,11 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#dailyStatisticsTask" >dailyStatisticsTask</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Public</span>
                                 <a href="#getStatistic" >getStatistic</a>
                             </li>
@@ -106,12 +111,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>, feedbackService: <a href="../injectables/FeedbackService.html" target="_self">FeedbackService</a>, tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
+<code>constructor(cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>, feedbackService: <a href="../injectables/FeedbackService.html" target="_self">FeedbackService</a>, tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:34</a></div>
                             </td>
                         </tr>
 
@@ -133,6 +138,18 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/CacheService.html" target="_self" >CacheService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>emailService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/EmailService.html" target="_self" >EmailService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -206,6 +223,78 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="dailyStatisticsTask"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>dailyStatisticsTask</b></span>
+                        <a href="#dailyStatisticsTask"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>dailyStatisticsTask(todayViews: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="56"
+                            class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:56</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>todayViews</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getStatistic"></a>
                     <span class="name">
                         <span class="modifier">Public</span>
@@ -224,8 +313,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="48"
-                            class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:48</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="76"
+                            class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:76</a></div>
                 </td>
             </tr>
 
@@ -282,12 +371,14 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { CacheService } from &#x27;@app/processors/cache/cache.service&#x27;
+import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { FeedbackService } from &#x27;@app/modules/feedback/feedback.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import logger from &#x27;@app/utils/logger&#x27;
 import { getTodayViewsCount, resetTodayViewsCount } from &#x27;./expansion.helper&#x27;
+import logger from &#x27;@app/utils/logger&#x27;
+import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 const log &#x3D; logger.scope(&#x27;StatisticService&#x27;)
 
@@ -307,16 +398,42 @@ export type Statistic &#x3D; Record&lt;keyof typeof DEFAULT_STATISTIC, number | 
 export class StatisticService {
   constructor(
     private readonly cacheService: CacheService,
+    private readonly emailService: EmailService,
     private readonly articleService: ArticleService,
     private readonly commentService: CommentService,
     private readonly feedbackService: FeedbackService,
     private readonly tagService: TagService
   ) {
-    // daily data cleaning at 00:00
-    schedule.scheduleJob(&#x27;1 0 0 * * *&#x27;, () &#x3D;&gt; {
-      resetTodayViewsCount(this.cacheService).catch((error) &#x3D;&gt; {
-        log.warn(&#x27;reset TODAY_VIEWS failed!&#x27;, error)
-      })
+    // daily data cleaning at 00:01
+    schedule.scheduleJob(&#x27;1 0 0 * * *&#x27;, async () &#x3D;&gt; {
+      try {
+        const todayViewsCount &#x3D; await getTodayViewsCount(this.cacheService)
+        await this.dailyStatisticsTask(todayViewsCount)
+      } finally {
+        resetTodayViewsCount(this.cacheService).catch((error) &#x3D;&gt; {
+          log.warn(&#x27;reset TODAY_VIEWS failed!&#x27;, error)
+        })
+      }
+    })
+  }
+
+  private async dailyStatisticsTask(todayViews: number) {
+    const now &#x3D; new Date()
+    const oneDayAgo &#x3D; new Date(now.getTime() - 24 * 60 * 60 * 1000)
+    const todayNewComments &#x3D; await this.commentService.countDocuments({
+      created_at: { $gte: oneDayAgo, $lt: now }
+    })
+    const emailContents &#x3D; [
+      &#x60;Today views: ${todayViews}&#x60;,
+      &#x60;Today new comments: ${todayNewComments}&#x60;
+      // &#x60;Today Post votes: TODO&#x60;,
+      // &#x60;Today Comment votes: TODO&#x60;,
+    ]
+    this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
+      to: APP_CONFIG.APP.ADMIN_EMAIL,
+      subject: &#x27;Daily Statistics&#x27;,
+      text: emailContents.join(&#x27;\n&#x27;),
+      html: emailContents.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;)
     })
   }
 

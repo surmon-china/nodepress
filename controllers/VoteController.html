@@ -705,14 +705,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Throttle(10, 30)<br />@Post(&#x27;/comment&#x27;)<br />@(&#x27;Vote comment&#x27;)<br /></code>
+                    <code>@Post(&#x27;/comment&#x27;)<br />@Throttle({default: undefined})<br />@(&#x27;Vote comment&#x27;)<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="250"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:250</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="248"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:248</a></div>
                 </td>
             </tr>
 
@@ -904,14 +904,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Throttle(10, 60)<br />@Post(&#x27;/post&#x27;)<br />@(&#x27;Vote post&#x27;)<br /></code>
+                    <code>@Post(&#x27;/post&#x27;)<br />@Throttle({default: undefined})<br />@(&#x27;Vote post&#x27;)<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="201"
-                            class="link-to-prism">src/modules/vote/vote.controller.ts:201</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="200"
+                            class="link-to-prism">src/modules/vote/vote.controller.ts:200</a></div>
                 </td>
             </tr>
 
@@ -995,7 +995,7 @@
 import lodash from &#x27;lodash&#x27;
 import { UAParser } from &#x27;ua-parser-js&#x27;
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from &#x27;@nestjs/common&#x27;
-import { Throttle } from &#x27;@nestjs/throttler&#x27;
+import { Throttle, minutes, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
 import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
@@ -1182,9 +1182,8 @@ export class VoteController {
     return this.voteService.batchDelete(body.vote_ids)
   }
 
-  // 1 minute &gt; limit 10
-  @Throttle(10, 60)
   @Post(&#x27;/post&#x27;)
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
   @Responser.handle(&#x27;Vote post&#x27;)
   async votePost(
     @Body() voteBody: PostVoteDTO,
@@ -1231,9 +1230,8 @@ export class VoteController {
     return likes
   }
 
-  // 30 seconds &gt; limit 10
-  @Throttle(10, 30)
   @Post(&#x27;/comment&#x27;)
+  @Throttle({ default: { ttl: seconds(30), limit: 10 } })
   @Responser.handle(&#x27;Vote comment&#x27;)
   async voteComment(
     @Body() voteBody: CommentVoteDTO,

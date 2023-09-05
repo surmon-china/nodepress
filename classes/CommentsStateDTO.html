@@ -159,7 +159,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/comment/comment.dto.ts:48</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/comment/comment.dto.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -203,7 +203,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/CommentsDTO.html#source" target="_self" >CommentsDTO:38</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CommentsDTO.html#source" target="_self" >CommentsDTO:55</a></code>
 </div>
                         </td>
                     </tr>
@@ -247,7 +247,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/CommentsDTO.html#source" target="_self" >CommentsDTO:42</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CommentsDTO.html#source" target="_self" >CommentsDTO:59</a></code>
 </div>
                         </td>
                     </tr>
@@ -268,7 +268,17 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IntersectionType } from &#x27;@nestjs/mapped-types&#x27;
-import { IsNotEmpty, IsArray, IsIn, IsInt, IsOptional, Min, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
+import {
+  IsNotEmpty,
+  IsString,
+  IsArray,
+  IsIn,
+  IsInt,
+  IsOptional,
+  Min,
+  ArrayNotEmpty,
+  ArrayUnique
+} from &#x27;class-validator&#x27;
 import { Transform } from &#x27;class-transformer&#x27;
 import { WhenGuest } from &#x27;@app/decorators/guest.decorator&#x27;
 import { CommentState } from &#x27;@app/constants/biz.constant&#x27;
@@ -292,6 +302,13 @@ export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWith
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   post_id?: number
+}
+
+export class CommentCalendarQueryDTO {
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  timezone?: string
 }
 
 export class CommentsDTO {

@@ -117,6 +117,12 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                <a href="#getCommentCalendar" >getCommentCalendar</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#getComments" >getComments</a>
                             </li>
@@ -180,14 +186,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Throttle(6, 30)<br />@Post()<br />@(&#x27;Create comment&#x27;)<br /></code>
+                    <code>@Post()<br />@Throttle({default: undefined})<br />@(&#x27;Create comment&#x27;)<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="75"
-                            class="link-to-prism">src/modules/comment/comment.controller.ts:75</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="84"
+                            class="link-to-prism">src/modules/comment/comment.controller.ts:84</a></div>
                 </td>
             </tr>
 
@@ -277,8 +283,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="121"
-                            class="link-to-prism">src/modules/comment/comment.controller.ts:121</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/modules/comment/comment.controller.ts:130</a></div>
                 </td>
             </tr>
 
@@ -356,8 +362,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="91"
-                            class="link-to-prism">src/modules/comment/comment.controller.ts:91</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="100"
+                            class="link-to-prism">src/modules/comment/comment.controller.ts:100</a></div>
                 </td>
             </tr>
 
@@ -436,8 +442,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="98"
-                            class="link-to-prism">src/modules/comment/comment.controller.ts:98</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="107"
+                            class="link-to-prism">src/modules/comment/comment.controller.ts:107</a></div>
                 </td>
             </tr>
 
@@ -475,6 +481,97 @@
                     </div>
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;Comment&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCommentCalendar"></a>
+                    <span class="name">
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span class="modifier"></span>
+                        <span ><b>getCommentCalendar</b></span>
+                        <a href="#getCommentCalendar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCommentCalendar(query: <a href="../classes/CommentCalendarQueryDTO.html" target="_self">CommentCalendarQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;calendar&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get comment calendar&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="74"
+                            class="link-to-prism">src/modules/comment/comment.controller.ts:74</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>query</td>
+                                    <td>
+                                                <code><a href="../classes/CommentCalendarQueryDTO.html" target="_self" >CommentCalendarQueryDTO</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                                <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
@@ -607,8 +704,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="84"
-                            class="link-to-prism">src/modules/comment/comment.controller.ts:84</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="93"
+                            class="link-to-prism">src/modules/comment/comment.controller.ts:93</a></div>
                 </td>
             </tr>
 
@@ -698,8 +795,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="107"
-                            class="link-to-prism">src/modules/comment/comment.controller.ts:107</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/modules/comment/comment.controller.ts:116</a></div>
                 </td>
             </tr>
 
@@ -789,8 +886,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="114"
-                            class="link-to-prism">src/modules/comment/comment.controller.ts:114</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">src/modules/comment/comment.controller.ts:123</a></div>
                 </td>
             </tr>
 
@@ -849,7 +946,7 @@
 
 import lodash from &#x27;lodash&#x27;
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from &#x27;@nestjs/common&#x27;
-import { Throttle } from &#x27;@nestjs/throttler&#x27;
+import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
@@ -858,7 +955,7 @@ import { SortType } from &#x27;@app/constants/biz.constant&#x27;
 import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { CommentPaginateQueryDTO, CommentsDTO, CommentsStateDTO } from &#x27;./comment.dto&#x27;
+import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStateDTO } from &#x27;./comment.dto&#x27;
 import { CommentService } from &#x27;./comment.service&#x27;
 import { Comment, CommentBase } from &#x27;./comment.model&#x27;
 
@@ -911,9 +1008,18 @@ export class CommentController {
     return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
-  // 30 seconds &gt; limit 6
-  @Throttle(6, 30)
+  @Get(&#x27;calendar&#x27;)
+  @UseGuards(AdminMaybeGuard)
+  @Responser.handle(&#x27;Get comment calendar&#x27;)
+  getCommentCalendar(
+    @Query(ExposePipe) query: CommentCalendarQueryDTO,
+    @QueryParams() { isUnauthenticated }: QueryParamsResult
+  ) {
+    return this.commentService.getCalendar(isUnauthenticated, query.timezone)
+  }
+
   @Post()
+  @Throttle({ default: { ttl: seconds(30), limit: 6 } })
   @Responser.handle(&#x27;Create comment&#x27;)
   createComment(@Body() comment: CommentBase, @QueryParams() { visitor }: QueryParamsResult): Promise&lt;Comment&gt; {
     return comment.author.email

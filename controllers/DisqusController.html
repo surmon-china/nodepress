@@ -208,14 +208,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;comment&#x27;)<br />@Throttle(6, 30)<br />@(&#x27;Create universal comment&#x27;)<br /></code>
+                    <code>@Post(&#x27;comment&#x27;)<br />@Throttle({default: undefined})<br />@(&#x27;Create universal comment&#x27;)<br /></code>
                 </td>
             </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="109"
-                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:109</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="108"
+                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:108</a></div>
                 </td>
             </tr>
 
@@ -316,8 +316,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="119"
-                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:119</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="118"
+                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:118</a></div>
                 </td>
             </tr>
 
@@ -408,8 +408,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="159"
-                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:159</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:158</a></div>
                 </td>
             </tr>
 
@@ -531,8 +531,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="138"
-                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:138</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="137"
+                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:137</a></div>
                 </td>
             </tr>
 
@@ -690,8 +690,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="131"
-                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:131</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:130</a></div>
                 </td>
             </tr>
 
@@ -850,8 +850,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="170"
-                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:170</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:169</a></div>
                 </td>
             </tr>
 
@@ -1114,8 +1114,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="145"
-                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:145</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="144"
+                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:144</a></div>
                 </td>
             </tr>
 
@@ -1190,8 +1190,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="152"
-                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:152</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="151"
+                            class="link-to-prism">src/modules/disqus/disqus.controller.ts:151</a></div>
                 </td>
             </tr>
 
@@ -1259,7 +1259,7 @@ import {
   UseInterceptors
 } from &#x27;@nestjs/common&#x27;
 import { FileInterceptor } from &#x27;@nestjs/platform-express&#x27;
-import { Throttle } from &#x27;@nestjs/throttler&#x27;
+import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { isProdEnv } from &#x27;@app/app.environment&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
@@ -1343,9 +1343,8 @@ export class DisqusController {
     return this.disqusPublicService.ensureThreadDetailCache(Number(query.post_id))
   }
 
-  // 30 seconds &gt; limit 6
   @Post(&#x27;comment&#x27;)
-  @Throttle(6, 30)
+  @Throttle({ default: { ttl: seconds(30), limit: 6 } })
   @Responser.handle(&#x27;Create universal comment&#x27;)
   createComment(
     @QueryParams() { visitor }: QueryParamsResult,

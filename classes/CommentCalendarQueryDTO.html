@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >CommentsDTO</li>
+  <li class="breadcrumb-item" >CommentCalendarQueryDTO</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -92,12 +92,8 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#comment_ids" >comment_ids</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#post_ids" >post_ids</a>
+                                    <span class="modifier">Optional</span>
+                                <a href="#timezone" >timezone</a>
                             </li>
                         </ul>
                     </td>
@@ -122,19 +118,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="comment_ids"></a>
+                    <a name="timezone"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>comment_ids</b></span>
-                        <a href="#comment_ids"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Optional</span>
+                        <span ><b>timezone</b></span>
+                        <a href="#timezone"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>string[]</code>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                     </td>
                 </tr>
@@ -143,50 +140,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsArray()<br />@ArrayNotEmpty()<br />@ArrayUnique()<br />
+                            @IsString()<br />@IsNotEmpty()<br />@IsOptional()<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/comment/comment.dto.ts:55</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="post_ids"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>post_ids</b></span>
-                        <a href="#post_ids"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>number[]</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @IsArray()<br />@ArrayUnique()<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/modules/comment/comment.dto.ts:59</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/comment/comment.dto.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -303,7 +263,7 @@ export class CommentsStateDTO extends CommentsDTO {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'CommentsDTO.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'CommentCalendarQueryDTO.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
