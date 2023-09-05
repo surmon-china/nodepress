@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.3.0 (2023-09-06)
+
+**Feature**
+
+- **[Article]** Add `mixed` language option
+- **[Comment]** Add `/calendar` API
+- **[Expansion]** Add daily statistics
+- Upgrade dependencies
+
 ### 4.1.0 (2023-07-20)
 
 **Feature**

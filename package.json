@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "RESTful API service for Surmon.me blog",
   "author": "Surmon",
   "license": "MIT",
