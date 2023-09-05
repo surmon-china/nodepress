@@ -18,7 +18,7 @@ import {
   UseInterceptors
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { Throttle } from '@nestjs/throttler'
+import { Throttle, seconds } from '@nestjs/throttler'
 import { isProdEnv } from '@app/app.environment'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { Responser } from '@app/decorators/responser.decorator'
@@ -102,9 +102,8 @@ export class DisqusController {
     return this.disqusPublicService.ensureThreadDetailCache(Number(query.post_id))
   }
 
-  // 30 seconds > limit 6
   @Post('comment')
-  @Throttle(6, 30)
+  @Throttle({ default: { ttl: seconds(30), limit: 6 } })
   @Responser.handle('Create universal comment')
   createComment(
     @QueryParams() { visitor }: QueryParamsResult,

@@ -6,7 +6,7 @@
 
 import lodash from 'lodash'
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
-import { Throttle } from '@nestjs/throttler'
+import { Throttle, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { ExposePipe } from '@app/pipes/expose.pipe'
 import { Responser } from '@app/decorators/responser.decorator'
@@ -61,9 +61,8 @@ export class FeedbackController {
     return this.feedbackService.paginator(paginateQuery, paginateOptions)
   }
 
-  // 30 seconds > limit 3
-  @Throttle(3, 30)
   @Post()
+  @Throttle({ default: { ttl: seconds(30), limit: 3 } })
   @Responser.handle('Create feedback')
   async createFeedback(
     @Body() feedback: FeedbackBase,

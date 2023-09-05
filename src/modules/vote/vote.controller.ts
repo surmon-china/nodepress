@@ -7,7 +7,7 @@
 import lodash from 'lodash'
 import { UAParser } from 'ua-parser-js'
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from '@nestjs/common'
-import { Throttle } from '@nestjs/throttler'
+import { Throttle, minutes, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { ExposePipe } from '@app/pipes/expose.pipe'
 import { Responser } from '@app/decorators/responser.decorator'
@@ -194,9 +194,8 @@ export class VoteController {
     return this.voteService.batchDelete(body.vote_ids)
   }
 
-  // 1 minute > limit 10
-  @Throttle(10, 60)
   @Post('/post')
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
   @Responser.handle('Vote post')
   async votePost(
     @Body() voteBody: PostVoteDTO,
@@ -243,9 +242,8 @@ export class VoteController {
     return likes
   }
 
-  // 30 seconds > limit 10
-  @Throttle(10, 30)
   @Post('/comment')
+  @Throttle({ default: { ttl: seconds(30), limit: 10 } })
   @Responser.handle('Vote comment')
   async voteComment(
     @Body() voteBody: CommentVoteDTO,

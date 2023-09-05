@@ -6,7 +6,7 @@
 
 import lodash from 'lodash'
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from '@nestjs/common'
-import { Throttle } from '@nestjs/throttler'
+import { Throttle, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
@@ -68,9 +68,8 @@ export class CommentController {
     return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
-  // 30 seconds > limit 6
-  @Throttle(6, 30)
   @Post()
+  @Throttle({ default: { ttl: seconds(30), limit: 6 } })
   @Responser.handle('Create comment')
   createComment(@Body() comment: CommentBase, @QueryParams() { visitor }: QueryParamsResult): Promise<Comment> {
     return comment.author.email

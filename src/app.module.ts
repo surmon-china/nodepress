@@ -6,7 +6,7 @@
 
 import { APP_INTERCEPTOR, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
+import { ThrottlerGuard, ThrottlerModule, minutes } from '@nestjs/throttler'
 import { AppController } from '@app/app.controller'
 
 // framework
@@ -41,11 +41,13 @@ import { VoteModule } from '@app/modules/vote/vote.module'
 @Module({
   imports: [
     // https://github.com/nestjs/throttler#readme
-    ThrottlerModule.forRoot({
-      ttl: 60 * 5, // 5 minutes
-      limit: 300, // 300 limit
-      ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
-    }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: minutes(5), // 5 minutes = 300s
+        limit: 300, // 300 limit
+        ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
+      }
+    ]),
     HelperModule,
     DatabaseModule,
     CacheModule,
