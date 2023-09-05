@@ -28,7 +28,7 @@ import { Category } from '@app/modules/category/category.model'
 import { KeyValueModel } from '@app/models/key-value.model'
 import { Tag } from '@app/modules/tag/tag.model'
 
-export const ARTICLE_LANGUAGES = [Language.English, Language.Chinese] as const
+export const ARTICLE_LANGUAGES = [Language.English, Language.Chinese, Language.Mixed] as const
 export const ARTICLE_PUBLISH_STATES = [PublishState.Draft, PublishState.Published, PublishState.Recycle] as const
 export const ARTICLE_PUBLIC_STATES = [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
 export const ARTICLE_ORIGIN_STATES = [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const

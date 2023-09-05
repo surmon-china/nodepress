@@ -7,7 +7,8 @@
 // language: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 export enum Language {
   English = 'en', // English
-  Chinese = 'zh' // 简体中文
+  Chinese = 'zh', // 简体中文
+  Mixed = 'mix' // 多语言混合
 }
 
 // sort
