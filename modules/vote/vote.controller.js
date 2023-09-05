@@ -290,8 +290,8 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], VoteController.prototype, "deleteVotes", null);
 __decorate([
-    (0, throttler_1.Throttle)(10, 60),
     (0, common_1.Post)('/post'),
+    (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.minutes)(1), limit: 10 } }),
     responser_decorator_1.Responser.handle('Vote post'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
@@ -301,8 +301,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "votePost", null);
 __decorate([
-    (0, throttler_1.Throttle)(10, 30),
     (0, common_1.Post)('/comment'),
+    (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 10 } }),
     responser_decorator_1.Responser.handle('Vote comment'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),

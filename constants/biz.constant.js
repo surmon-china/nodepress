@@ -5,6 +5,7 @@ var Language;
 (function (Language) {
     Language["English"] = "en";
     Language["Chinese"] = "zh";
+    Language["Mixed"] = "mix";
 })(Language || (exports.Language = Language = {}));
 var SortType;
 (function (SortType) {

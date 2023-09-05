@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentsStateDTO = exports.CommentsDTO = exports.CommentPaginateQueryDTO = void 0;
+exports.CommentsStateDTO = exports.CommentsDTO = exports.CommentCalendarQueryDTO = exports.CommentPaginateQueryDTO = void 0;
 const mapped_types_1 = require("@nestjs/mapped-types");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
@@ -39,6 +39,15 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], CommentPaginateQueryDTO.prototype, "post_id", void 0);
+class CommentCalendarQueryDTO {
+}
+exports.CommentCalendarQueryDTO = CommentCalendarQueryDTO;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CommentCalendarQueryDTO.prototype, "timezone", void 0);
 class CommentsDTO {
 }
 exports.CommentsDTO = CommentsDTO;

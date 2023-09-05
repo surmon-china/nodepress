@@ -144,7 +144,7 @@ __decorate([
 ], DisqusController.prototype, "getThread", null);
 __decorate([
     (0, common_1.Post)('comment'),
-    (0, throttler_1.Throttle)(6, 30),
+    (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 6 } }),
     responser_decorator_1.Responser.handle('Create universal comment'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),

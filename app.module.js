@@ -39,11 +39,13 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            throttler_1.ThrottlerModule.forRoot({
-                ttl: 60 * 5,
-                limit: 300,
-                ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
-            }),
+            throttler_1.ThrottlerModule.forRoot([
+                {
+                    ttl: (0, throttler_1.minutes)(5),
+                    limit: 300,
+                    ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
+                }
+            ]),
             helper_module_1.HelperModule,
             database_module_1.DatabaseModule,
             cache_module_1.CacheModule,

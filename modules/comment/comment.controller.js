@@ -73,6 +73,9 @@ let CommentController = class CommentController {
         }
         return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated);
     }
+    getCommentCalendar(query, { isUnauthenticated }) {
+        return this.commentService.getCalendar(isUnauthenticated, query.timezone);
+    }
     createComment(comment, { visitor }) {
         return comment.author.email
             ? this.commentService.createFormClient(comment, visitor)
@@ -112,8 +115,18 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getComments", null);
 __decorate([
-    (0, throttler_1.Throttle)(6, 30),
+    (0, common_1.Get)('calendar'),
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
+    responser_decorator_1.Responser.handle('Get comment calendar'),
+    __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
+    __param(1, (0, queryparams_decorator_1.QueryParams)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [comment_dto_1.CommentCalendarQueryDTO, Object]),
+    __metadata("design:returntype", void 0)
+], CommentController.prototype, "getCommentCalendar", null);
+__decorate([
     (0, common_1.Post)(),
+    (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 6 } }),
     responser_decorator_1.Responser.handle('Create comment'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, queryparams_decorator_1.QueryParams)()),

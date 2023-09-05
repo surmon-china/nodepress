@@ -132,8 +132,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], FeedbackController.prototype, "getFeedbacks", null);
 __decorate([
-    (0, throttler_1.Throttle)(3, 30),
     (0, common_1.Post)(),
+    (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 3 } }),
     responser_decorator_1.Responser.handle('Create feedback'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, queryparams_decorator_1.QueryParams)()),

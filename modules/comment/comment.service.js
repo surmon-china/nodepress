@@ -34,6 +34,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -243,8 +254,25 @@ let CommentService = class CommentService {
         this.updateCommentsCountWithArticles(postIDs);
         return result;
     }
+    async countDocuments(filter, options) {
+        return await this.commentModel.countDocuments(filter, options).exec();
+    }
     async getTotalCount(publicOnly) {
-        return await this.commentModel.countDocuments(publicOnly ? comment_model_1.COMMENT_GUEST_QUERY_FILTER : {}).exec();
+        return await this.countDocuments(publicOnly ? comment_model_1.COMMENT_GUEST_QUERY_FILTER : {});
+    }
+    getCalendar(publicOnly, timezone = 'GMT') {
+        return this.commentModel
+            .aggregate([
+            { $match: publicOnly ? comment_model_1.COMMENT_GUEST_QUERY_FILTER : {} },
+            { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
+            { $group: { _id: '$day', count: { $sum: 1 } } },
+            { $sort: { _id: 1 } }
+        ])
+            .then((calendar) => calendar.map((_a) => {
+            var { _id } = _a, r = __rest(_a, ["_id"]);
+            return (Object.assign(Object.assign({}, r), { date: _id }));
+        }))
+            .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`));
     }
     async reviseIPLocation(commentID) {
         const comment = await this.getDetailByObjectID(commentID);
