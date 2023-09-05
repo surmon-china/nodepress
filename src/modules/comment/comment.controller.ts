@@ -15,7 +15,7 @@ import { SortType } from '@app/constants/biz.constant'
 import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import { CommentPaginateQueryDTO, CommentsDTO, CommentsStateDTO } from './comment.dto'
+import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStateDTO } from './comment.dto'
 import { CommentService } from './comment.service'
 import { Comment, CommentBase } from './comment.model'
 
@@ -66,6 +66,16 @@ export class CommentController {
     }
 
     return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
+  }
+
+  @Get('calendar')
+  @UseGuards(AdminMaybeGuard)
+  @Responser.handle('Get comment calendar')
+  getCommentCalendar(
+    @Query(ExposePipe) query: CommentCalendarQueryDTO,
+    @QueryParams() { isUnauthenticated }: QueryParamsResult
+  ) {
+    return this.commentService.getCalendar(isUnauthenticated, query.timezone)
   }
 
   @Post()

@@ -5,7 +5,17 @@
  */
 
 import { IntersectionType } from '@nestjs/mapped-types'
-import { IsNotEmpty, IsArray, IsIn, IsInt, IsOptional, Min, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import {
+  IsNotEmpty,
+  IsString,
+  IsArray,
+  IsIn,
+  IsInt,
+  IsOptional,
+  Min,
+  ArrayNotEmpty,
+  ArrayUnique
+} from 'class-validator'
 import { Transform } from 'class-transformer'
 import { WhenGuest } from '@app/decorators/guest.decorator'
 import { CommentState } from '@app/constants/biz.constant'
@@ -29,6 +39,13 @@ export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWith
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
   post_id?: number
+}
+
+export class CommentCalendarQueryDTO {
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  timezone?: string
 }
 
 export class CommentsDTO {

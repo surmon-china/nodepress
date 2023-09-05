@@ -306,6 +306,18 @@ export class CommentService {
     return await this.countDocuments(publicOnly ? COMMENT_GUEST_QUERY_FILTER : {})
   }
 
+  public getCalendar(publicOnly: boolean, timezone = 'GMT') {
+    return this.commentModel
+      .aggregate<{ _id: string; count: number }>([
+        { $match: publicOnly ? COMMENT_GUEST_QUERY_FILTER : {} },
+        { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
+        { $group: { _id: '$day', count: { $sum: 1 } } },
+        { $sort: { _id: 1 } }
+      ])
+      .then((calendar) => calendar.map(({ _id, ...r }) => ({ ...r, date: _id })))
+      .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`))
+  }
+
   public async reviseIPLocation(commentID: MongooseID) {
     const comment = await this.getDetailByObjectID(commentID)
     if (!comment.ip) {
