@@ -100,6 +100,14 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#featured" >featured</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#lang" >lang</a>
                             </li>
                             <li>
@@ -189,7 +197,47 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/article/article.dto.ts:70</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/modules/article/article.dto.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="featured"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>featured</b></span>
+                        <a href="#featured"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsBoolean()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/article/article.dto.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -228,7 +276,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/modules/article/article.dto.ts:76</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/modules/article/article.dto.ts:81</a></div>
                         </td>
                     </tr>
 
@@ -269,7 +317,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/article/article.dto.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/modules/article/article.dto.ts:59</a></div>
                         </td>
                     </tr>
 
@@ -311,7 +359,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/modules/article/article.dto.ts:53</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/modules/article/article.dto.ts:52</a></div>
                         </td>
                     </tr>
 
@@ -353,7 +401,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/article/article.dto.ts:45</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/modules/article/article.dto.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -392,7 +440,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/article/article.dto.ts:65</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/article/article.dto.ts:70</a></div>
                         </td>
                     </tr>
 
@@ -419,16 +467,15 @@ import {
   IsArray,
   IsOptional,
   IsDefined,
+  IsBoolean,
   IsIn,
   IsInt,
-  Min,
-  Max,
   ArrayNotEmpty,
   ArrayUnique
 } from &#x27;class-validator&#x27;
 import { PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
 import { WhenGuest } from &#x27;@app/decorators/guest.decorator&#x27;
-import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
+import { unknownToNumber, unknownToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
 import { DateQueryDTO, KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
 import {
@@ -466,6 +513,12 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   origin?: OriginState
 
+  @IsBoolean()
+  @IsNotEmpty()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToBoolean(value))
+  featured?: boolean
+
   @IsString()
   @IsNotEmpty()
   @IsOptional()
@@ -481,16 +534,6 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsNotEmpty()
   @IsOptional()
   lang: string
-}
-
-export class ArticleListQueryDTO {
-  @Min(1)
-  @Max(50)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  count?: number
 }
 
 export class ArticleCalendarQueryDTO {

@@ -144,7 +144,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/article/article.dto.ts:100</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/modules/article/article.dto.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -171,16 +171,15 @@ import {
   IsArray,
   IsOptional,
   IsDefined,
+  IsBoolean,
   IsIn,
   IsInt,
-  Min,
-  Max,
   ArrayNotEmpty,
   ArrayUnique
 } from &#x27;class-validator&#x27;
 import { PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
 import { WhenGuest } from &#x27;@app/decorators/guest.decorator&#x27;
-import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
+import { unknownToNumber, unknownToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
 import { DateQueryDTO, KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
 import {
@@ -218,6 +217,12 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   origin?: OriginState
 
+  @IsBoolean()
+  @IsNotEmpty()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToBoolean(value))
+  featured?: boolean
+
   @IsString()
   @IsNotEmpty()
   @IsOptional()
@@ -233,16 +238,6 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsNotEmpty()
   @IsOptional()
   lang: string
-}
-
-export class ArticleListQueryDTO {
-  @Min(1)
-  @Max(50)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  count?: number
 }
 
 export class ArticleCalendarQueryDTO {

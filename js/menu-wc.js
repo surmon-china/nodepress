@@ -563,9 +563,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/ArticleIDsDTO.html" data-type="entity-link" >ArticleIDsDTO</a>
                             </li>
                             <li class="link">
-                                <a href="classes/ArticleListQueryDTO.html" data-type="entity-link" >ArticleListQueryDTO</a>
-                            </li>
-                            <li class="link">
                                 <a href="classes/ArticleMeta.html" data-type="entity-link" >ArticleMeta</a>
                             </li>
                             <li class="link">
