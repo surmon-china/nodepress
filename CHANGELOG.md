@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.4.0 (2023-10-09)
+
+**Breaking Change**
+
+- Remove `/article/hottest` API
+
+**Feature**
+
+- **[Article]** Add `featured` field
+- Upgrade dependencies
+
 ### 4.3.0 (2023-09-06)
 
 **Feature**
