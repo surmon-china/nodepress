@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticlesStateDTO = exports.ArticleIDsDTO = exports.ArticleCalendarQueryDTO = exports.ArticleListQueryDTO = exports.ArticlePaginateQueryDTO = void 0;
+exports.ArticlesStateDTO = exports.ArticleIDsDTO = exports.ArticleCalendarQueryDTO = exports.ArticlePaginateQueryDTO = void 0;
 const mapped_types_1 = require("@nestjs/mapped-types");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
@@ -49,6 +49,13 @@ __decorate([
     __metadata("design:type", Number)
 ], ArticlePaginateQueryDTO.prototype, "origin", void 0);
 __decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToBoolean)(value)),
+    __metadata("design:type", Boolean)
+], ArticlePaginateQueryDTO.prototype, "featured", void 0);
+__decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),
@@ -67,18 +74,6 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], ArticlePaginateQueryDTO.prototype, "lang", void 0);
-class ArticleListQueryDTO {
-}
-exports.ArticleListQueryDTO = ArticleListQueryDTO;
-__decorate([
-    (0, class_validator_1.Min)(1),
-    (0, class_validator_1.Max)(50),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
-    __metadata("design:type", Number)
-], ArticleListQueryDTO.prototype, "count", void 0);
 class ArticleCalendarQueryDTO {
 }
 exports.ArticleCalendarQueryDTO = ArticleCalendarQueryDTO;

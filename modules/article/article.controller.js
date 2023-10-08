@@ -61,6 +61,9 @@ let ArticleController = class ArticleController {
                 paginateOptions.dateSort = sort;
             }
         }
+        if (!lodash_1.default.isUndefined(filters.featured)) {
+            paginateQuery.featured = filters.featured;
+        }
         if (!lodash_1.default.isUndefined(filters.lang)) {
             paginateQuery.lang = filters.lang;
         }
@@ -94,11 +97,6 @@ let ArticleController = class ArticleController {
             paginateQuery.categories = category._id;
         }
         return this.articleService.paginator(paginateQuery, paginateOptions);
-    }
-    getHottestArticles(query) {
-        return query.count
-            ? this.articleService.getHottestArticles(query.count)
-            : this.articleService.getHottestArticlesCache();
     }
     getArticleCalendar(query, { isUnauthenticated }) {
         return this.articleService.getCalendar(isUnauthenticated, query.timezone);
@@ -154,14 +152,6 @@ __decorate([
     __metadata("design:paramtypes", [article_dto_1.ArticlePaginateQueryDTO]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticles", null);
-__decorate([
-    (0, common_1.Get)('hottest'),
-    responser_decorator_1.Responser.handle('Get hottest articles'),
-    __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_dto_1.ArticleListQueryDTO]),
-    __metadata("design:returntype", Promise)
-], ArticleController.prototype, "getHottestArticles", null);
 __decorate([
     (0, common_1.Get)('calendar'),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),

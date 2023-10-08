@@ -143,6 +143,11 @@ __decorate([
 ], Article.prototype, "lang", void 0);
 __decorate([
     (0, class_validator_1.IsBoolean)(),
+    (0, typegoose_1.prop)({ default: false, index: true }),
+    __metadata("design:type", Boolean)
+], Article.prototype, "featured", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
     (0, typegoose_1.prop)({ default: false }),
     __metadata("design:type", Boolean)
 ], Article.prototype, "disabled_comments", void 0);

@@ -36,7 +36,6 @@ const cache_service_1 = require("../../processors/cache/cache.service");
 const expansion_helper_1 = require("../expansion/expansion.helper");
 const archive_service_1 = require("../archive/archive.service");
 const tag_service_1 = require("../tag/tag.service");
-const cache_constant_1 = require("../../constants/cache.constant");
 const value_constant_1 = require("../../constants/value.constant");
 const article_model_1 = require("./article.model");
 let ArticleService = class ArticleService {
@@ -46,21 +45,6 @@ let ArticleService = class ArticleService {
         this.cacheService = cacheService;
         this.archiveService = archiveService;
         this.articleModel = articleModel;
-        this.hottestArticlesCache = this.cacheService.interval({
-            key: cache_constant_1.CacheKeys.HottestArticles,
-            promise: () => this.getHottestArticles(20),
-            interval: 1000 * 60 * 30,
-            retry: 1000 * 60 * 5
-        });
-    }
-    getHottestArticles(count) {
-        return this.paginator(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, {
-            perPage: count,
-            sort: article_model_1.ARTICLE_HOTTEST_SORT_PARAMS
-        }).then((result) => result.documents);
-    }
-    getHottestArticlesCache() {
-        return this.hottestArticlesCache();
     }
     async getNearArticles(articleID, type, count) {
         const typeFieldMap = {
