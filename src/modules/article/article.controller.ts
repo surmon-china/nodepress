@@ -17,13 +17,7 @@ import { SortType } from '@app/constants/biz.constant'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import {
-  ArticlePaginateQueryDTO,
-  ArticleListQueryDTO,
-  ArticleCalendarQueryDTO,
-  ArticleIDsDTO,
-  ArticlesStateDTO
-} from './article.dto'
+import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIDsDTO, ArticlesStateDTO } from './article.dto'
 import { ARTICLE_HOTTEST_SORT_PARAMS } from './article.model'
 import { ArticleService } from './article.service'
 import { Article } from './article.model'
@@ -54,6 +48,11 @@ export class ArticleController {
       } else {
         paginateOptions.dateSort = sort
       }
+    }
+
+    // featured
+    if (!lodash.isUndefined(filters.featured)) {
+      paginateQuery.featured = filters.featured
     }
 
     // language
@@ -100,14 +99,6 @@ export class ArticleController {
 
     // paginate
     return this.articleService.paginator(paginateQuery, paginateOptions)
-  }
-
-  @Get('hottest')
-  @Responser.handle('Get hottest articles')
-  getHottestArticles(@Query(ExposePipe) query: ArticleListQueryDTO): Promise<Array<Article>> {
-    return query.count
-      ? this.articleService.getHottestArticles(query.count)
-      : this.articleService.getHottestArticlesCache()
   }
 
   @Get('calendar')

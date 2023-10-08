@@ -171,6 +171,11 @@ export class Article {
   @prop({ default: Language.Chinese, index: true })
   lang: Language
 
+  // featured
+  @IsBoolean()
+  @prop({ default: false, index: true })
+  featured: boolean
+
   // disabled comments
   @IsBoolean()
   @prop({ default: false })

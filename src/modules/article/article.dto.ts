@@ -12,16 +12,15 @@ import {
   IsArray,
   IsOptional,
   IsDefined,
+  IsBoolean,
   IsIn,
   IsInt,
-  Min,
-  Max,
   ArrayNotEmpty,
   ArrayUnique
 } from 'class-validator'
 import { PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
 import { WhenGuest } from '@app/decorators/guest.decorator'
-import { unknownToNumber } from '@app/transformers/value.transformer'
+import { unknownToNumber, unknownToBoolean } from '@app/transformers/value.transformer'
 import { DateQueryDTO, KeywordQueryDTO } from '@app/models/query.model'
 import { PaginateOptionWithHotSortDTO } from '@app/models/paginate.model'
 import {
@@ -59,6 +58,12 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @Transform(({ value }) => unknownToNumber(value))
   origin?: OriginState
 
+  @IsBoolean()
+  @IsNotEmpty()
+  @IsOptional()
+  @Transform(({ value }) => unknownToBoolean(value))
+  featured?: boolean
+
   @IsString()
   @IsNotEmpty()
   @IsOptional()
@@ -74,16 +79,6 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsNotEmpty()
   @IsOptional()
   lang: string
-}
-
-export class ArticleListQueryDTO {
-  @Min(1)
-  @Max(50)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) => unknownToNumber(value))
-  count?: number
 }
 
 export class ArticleCalendarQueryDTO {

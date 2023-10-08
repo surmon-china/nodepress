@@ -8,7 +8,6 @@ export enum CacheKeys {
   Option = 'option',
   Archive = 'archive',
   AllTags = 'all-tags',
-  HottestArticles = 'hottest-articles',
   TodayViewCount = 'today-view-count'
 }
 

@@ -15,7 +15,6 @@ import { increaseTodayViewsCount } from '@app/modules/expansion/expansion.helper
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { PublishState } from '@app/constants/biz.constant'
-import { CacheKeys } from '@app/constants/cache.constant'
 import { NULL } from '@app/constants/value.constant'
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
@@ -23,39 +22,18 @@ import {
   Article,
   ARTICLE_LIST_QUERY_GUEST_FILTER,
   ARTICLE_LIST_QUERY_PROJECTION,
-  ARTICLE_FULL_QUERY_REF_POPULATE,
-  ARTICLE_HOTTEST_SORT_PARAMS
+  ARTICLE_FULL_QUERY_REF_POPULATE
 } from './article.model'
 
 @Injectable()
 export class ArticleService {
-  private hottestArticlesCache: () => Promise<Array<Article>>
-
   constructor(
     private readonly seoService: SeoService,
     private readonly tagService: TagService,
     private readonly cacheService: CacheService,
     private readonly archiveService: ArchiveService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
-  ) {
-    this.hottestArticlesCache = this.cacheService.interval({
-      key: CacheKeys.HottestArticles,
-      promise: () => this.getHottestArticles(20),
-      interval: 1000 * 60 * 30, // 30 mins,
-      retry: 1000 * 60 * 5 // 5 mins
-    })
-  }
-
-  public getHottestArticles(count: number): Promise<Array<Article>> {
-    return this.paginator(ARTICLE_LIST_QUERY_GUEST_FILTER, {
-      perPage: count,
-      sort: ARTICLE_HOTTEST_SORT_PARAMS
-    }).then((result) => result.documents)
-  }
-
-  public getHottestArticlesCache(): Promise<Array<Article>> {
-    return this.hottestArticlesCache()
-  }
+  ) {}
 
   // get near articles
   public async getNearArticles(articleID: number, type: 'later' | 'early', count: number): Promise<Article[]> {
