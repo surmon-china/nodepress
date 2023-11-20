@@ -23,7 +23,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -49,7 +49,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           command_timeout: 10m
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          key: ${{ secrets.KEY }}
-          script: sh ${{ secrets.WWW_PATH }}/scripts/deploy.sh
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: sh ${{ secrets.DEPLOY_ROOT_PATH }}/scripts/deploy.sh
