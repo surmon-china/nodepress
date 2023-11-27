@@ -8,9 +8,10 @@ import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
 import { isNil } from '@app/constants/value.constant'
 import { RedisService } from './redis.service'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 
-const log = logger.scope('CacheService')
+const logger = createLogger({ scope: 'CacheService', time: isDevEnv })
 
 export interface CacheBaseOptions<T> {
   key: string
@@ -106,7 +107,7 @@ export class CacheService {
         })
         .catch((error) => {
           setTimeout(execIntervalTask, options.retry)
-          log.warn(`interval task failed! retry when after ${options.retry / 1000}s,`, error)
+          logger.failure(`interval task failed! retry after ${options.retry / 1000}s,`, '|', error)
         })
     }
 
@@ -122,7 +123,7 @@ export class CacheService {
   public schedule<T>(options: CacheScheduleOptions<T>): () => Promise<T> {
     const execScheduleTask = () => {
       this.execPromise(options).catch((error) => {
-        log.warn(`schedule task failed! retry when after ${options.retry / 1000}s,`, error)
+        logger.failure(`schedule task failed! retry after ${options.retry / 1000}s,`, '|', error)
         setTimeout(execScheduleTask, options.retry)
       })
     }

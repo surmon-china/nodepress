@@ -7,9 +7,10 @@
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 
-const log = logger.scope('IPService')
+const logger = createLogger({ scope: 'IPService', time: isDevEnv })
 
 export type IP = string
 export interface IPLocation {
@@ -44,7 +45,7 @@ export class IPService {
       })
       .catch((error) => {
         const message = getMessageFromAxiosError(error)
-        log.warn('queryLocationByIPAPI failed!', message)
+        logger.warn('queryLocationByIPAPI failed!', message)
         return Promise.reject(message)
       })
   }
@@ -67,7 +68,7 @@ export class IPService {
       })
       .catch((error) => {
         const message = getMessageFromAxiosError(error)
-        log.warn('queryLocationByAPICo failed!', message)
+        logger.warn('queryLocationByAPICo failed!', message)
         return Promise.reject(message)
       })
   }

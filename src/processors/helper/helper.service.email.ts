@@ -7,10 +7,11 @@
 import nodemailer from 'nodemailer'
 import { Injectable } from '@nestjs/common'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
-import logger from '@app/utils/logger'
 
-const log = logger.scope('EmailService')
+const logger = createLogger({ scope: 'EmailService', time: isDevEnv })
 
 export interface EmailOptions {
   to: string
@@ -42,17 +43,17 @@ export class EmailService {
       if (error) {
         this.clientIsValid = false
         setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        log.error(`client init failed! retry when after 30 mins,`, getMessageFromNormalError(error))
+        logger.error(`client init failed! retry after 30 mins`, '|', getMessageFromNormalError(error))
       } else {
         this.clientIsValid = true
-        log.info('client init succeed.')
+        logger.success('client init succeed.')
       }
     })
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
-      log.warn('send failed! (init failed)')
+      logger.warn('send failed! (init failed)')
       return false
     }
 
@@ -63,9 +64,9 @@ export class EmailService {
       },
       (error, info) => {
         if (error) {
-          log.error(`send failed!`, getMessageFromNormalError(error))
+          logger.failure(`send failed!`, getMessageFromNormalError(error))
         } else {
-          log.info('send succeed.', info.messageId, info.response)
+          logger.success('send succeed.', info.messageId, info.response)
         }
       }
     )

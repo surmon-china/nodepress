@@ -16,12 +16,13 @@ import { getExtendObject } from '@app/transformers/extend.transformer'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
-import logger from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
+import { createLogger } from '@app/utils/logger'
 import { GeneralDisqusParams } from './disqus.dto'
 import { getDisqusXML } from './disqus.xml'
 import * as DISQUS_CONST from './disqus.constant'
 
-const log = logger.scope('DisqusPrivateService')
+const logger = createLogger({ scope: 'DisqusPrivateService', time: isDevEnv })
 
 @Injectable()
 export class DisqusPrivateService {
@@ -53,7 +54,7 @@ export class DisqusPrivateService {
       })
       return response.response
     } catch (error) {
-      log.warn('createThread failed!', postID, error)
+      logger.warn('createThread failed!', postID, error)
       throw error
     }
   }
@@ -67,7 +68,7 @@ export class DisqusPrivateService {
         ...params
       })
       .catch((error) => {
-        log.warn('getThreads failed!', error)
+        logger.warn('getThreads failed!', error)
         return Promise.reject(error)
       })
   }
@@ -81,7 +82,7 @@ export class DisqusPrivateService {
         ...params
       })
       .catch((error) => {
-        log.warn('getPosts failed!', error)
+        logger.warn('getPosts failed!', error)
         return Promise.reject(error)
       })
   }
@@ -94,7 +95,7 @@ export class DisqusPrivateService {
         ...params
       })
       .catch((error) => {
-        log.warn('updateThread failed!', error)
+        logger.warn('updateThread failed!', error)
         return Promise.reject(error)
       })
   }
@@ -107,7 +108,7 @@ export class DisqusPrivateService {
         ...params
       })
       .catch((error) => {
-        log.warn('updatePost failed!', error)
+        logger.warn('updatePost failed!', error)
         return Promise.reject(error)
       })
   }
@@ -120,7 +121,7 @@ export class DisqusPrivateService {
         ...params
       })
       .catch((error) => {
-        log.warn('approvePost failed!', error)
+        logger.warn('approvePost failed!', error)
         return Promise.reject(error)
       })
   }
@@ -232,7 +233,7 @@ export class DisqusPrivateService {
       }
     }
 
-    log.info('import XML', { done: done.length, fail: fail.length })
+    logger.info('import XML', { done: done.length, fail: fail.length })
     return { done, fail }
   }
 }

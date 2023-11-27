@@ -15,10 +15,11 @@ import { CacheKeys } from '@app/constants/cache.constant'
 import { SortType } from '@app/constants/biz.constant'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 import { Tag } from './tag.model'
 
-const log = logger.scope('TagService')
+const logger = createLogger({ scope: 'TagService', time: isDevEnv })
 
 @Injectable()
 export class TagService {
@@ -37,7 +38,7 @@ export class TagService {
     })
 
     this.updateAllTagsCache().catch((error) => {
-      log.warn('init tagPaginateCache failed!', error)
+      logger.warn('init tagPaginateCache failed!', error)
     })
   }
 

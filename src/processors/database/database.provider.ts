@@ -7,10 +7,11 @@
 import mongoose from 'mongoose'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import { DB_CONNECTION_TOKEN } from '@app/constants/system.constant'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
-import logger from '@app/utils/logger'
 
-const log = logger.scope('MongoDB')
+const logger = createLogger({ scope: 'MongoDB', time: isDevEnv })
 
 export const databaseProvider = {
   inject: [EmailService],
@@ -39,11 +40,11 @@ export const databaseProvider = {
     mongoose.set('strictQuery', false)
 
     mongoose.connection.on('connecting', () => {
-      log.info('connecting...')
+      logger.log('connecting...')
     })
 
     mongoose.connection.on('open', () => {
-      log.info('readied (open).')
+      logger.success('readied (open).')
       if (reconnectionTask) {
         clearTimeout(reconnectionTask)
         reconnectionTask = null
@@ -51,12 +52,12 @@ export const databaseProvider = {
     })
 
     mongoose.connection.on('disconnected', () => {
-      log.error(`disconnected! retry when after ${RECONNECT_INTERVAL / 1000}s`)
+      logger.error(`disconnected! retry after ${RECONNECT_INTERVAL / 1000}s`)
       reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL)
     })
 
     mongoose.connection.on('error', (error) => {
-      log.error('error!', error)
+      logger.error('error!', error)
       mongoose.disconnect()
       sendAlarmMail(String(error))
     })

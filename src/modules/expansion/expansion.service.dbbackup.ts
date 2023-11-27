@@ -18,9 +18,10 @@ import {
   AWSServerSideEncryption
 } from '@app/processors/helper/helper.service.aws'
 import { APP, MONGO_DB, DB_BACKUP } from '@app/app.config'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 
-const log = logger.scope('DBBackupService')
+const logger = createLogger({ scope: 'DBBackupService', time: isDevEnv })
 
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5
 const UPLOAD_INTERVAL = '0 0 3 * * *'
@@ -33,7 +34,7 @@ export class DBBackupService {
     private readonly emailService: EmailService,
     private readonly awsService: AWSService
   ) {
-    log.info('schedule job initialized.')
+    logger.info('schedule job initialized.')
     schedule.scheduleJob(UPLOAD_INTERVAL, () => {
       this.backup().catch(() => {
         setTimeout(this.backup.bind(this), UP_FAILED_TIMEOUT)
@@ -78,9 +79,9 @@ export class DBBackupService {
       shell.exec(`mongodump --quiet --forceTableScan --uri="${MONGO_DB.uri}" --out="backup"`, (code, out, err) => {
         if (code === 0) {
           const filesCount = shell.ls('./backup/*')
-          log.info('mongodump done.', `${filesCount.length} files`)
+          logger.log('mongodump done.', `${filesCount.length} files`)
         } else {
-          log.warn('mongodump failed!', out, err)
+          logger.failure('mongodump failed!', out, err)
           return reject(out)
         }
 
@@ -94,8 +95,8 @@ export class DBBackupService {
         const fileDate = dayjs(new Date()).format('YYYY-MM-DD-HH:mm')
         const fileName = `nodepress-mongodb/backup-${fileDate}.zip`
         const filePath = path.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME)
-        log.info('uploading: ' + fileName)
-        log.info('file source: ' + filePath)
+        logger.log(`uploading: ${fileName}`)
+        logger.log(`file source: ${filePath}`)
 
         // upload to cloud storage
         this.awsService
@@ -109,12 +110,13 @@ export class DBBackupService {
             encryption: AWSServerSideEncryption.AES256
           })
           .then((result) => {
-            log.info('upload succeed.', result.url)
+            logger.success('upload succeed.', result.url)
             resolve(result)
           })
           .catch((error) => {
-            log.warn('upload failed!', error)
-            reject(JSON.stringify(error.message))
+            const errorMessage = JSON.stringify(error.message ?? error)
+            logger.failure('upload failed!', errorMessage)
+            reject(errorMessage)
           })
       })
     })

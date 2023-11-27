@@ -13,10 +13,11 @@ import { createClient, RedisClientType } from 'redis'
 import { Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import { createRedisStore, RedisStore, RedisClientOptions } from './redis.store'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
-import logger from '@app/utils/logger'
 
-const log = logger.scope('RedisService')
+const logger = createLogger({ scope: 'RedisService', time: isDevEnv })
 
 @Injectable()
 export class RedisService {
@@ -30,11 +31,11 @@ export class RedisService {
       namespace: APP_CONFIG.REDIS.namespace
     })
     // https://github.com/redis/node-redis#events
-    this.redisClient.on('connect', () => log.info('connecting...'))
-    this.redisClient.on('reconnecting', () => log.warn('reconnecting...'))
-    this.redisClient.on('ready', () => log.info('readied (connected).'))
-    this.redisClient.on('end', () => log.error('client end!'))
-    this.redisClient.on('error', (error) => log.error(`client error!`, error.message))
+    this.redisClient.on('connect', () => logger.log('connecting...'))
+    this.redisClient.on('reconnecting', () => logger.log('reconnecting...'))
+    this.redisClient.on('ready', () => logger.success('readied (connected).'))
+    this.redisClient.on('end', () => logger.info('client end!'))
+    this.redisClient.on('error', (error) => logger.failure(`client error!`, error.message))
     // connect
     this.redisClient.connect()
   }
@@ -51,7 +52,7 @@ export class RedisService {
   // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#reconnect-strategy
   private retryStrategy(retries: number): number | Error {
     const errorMessage = `retryStrategy! retries: ${retries}`
-    log.error(errorMessage)
+    logger.error(errorMessage)
     this.sendAlarmMail(errorMessage)
     if (retries > 6) {
       return new Error('Redis maximum retries!')

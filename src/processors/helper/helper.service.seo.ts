@@ -9,9 +9,10 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import { GoogleService } from './helper.service.google'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 
-const log = logger.scope('SeoService')
+const logger = createLogger({ scope: 'SeoService', time: isDevEnv })
 
 export type ActionURL = string | string[]
 export enum SEOAction {
@@ -51,10 +52,10 @@ export class SeoService {
               Authorization: `Bearer ${credentials.access_token}`
             }
           })
-          .then((response) => log.info(`${actionText} succeed.`, url, response.statusText))
+          .then((response) => logger.info(`${actionText} succeed.`, url, response.statusText))
           .catch((error) => Promise.reject(getMessageFromAxiosError(error)))
       })
-      .catch((error) => log.warn(`${actionText} failed!`, error))
+      .catch((error) => logger.warn(`${actionText} failed!`, error))
   }
 
   // Bing: https://www.bing.com/webmasters/help/url-submission-62f2860b
@@ -71,10 +72,10 @@ export class SeoService {
         }
       })
       .then((response) => {
-        log.info(`Bing ping action succeed.`, urls, response.statusText)
+        logger.info(`Bing ping action succeed.`, urls, response.statusText)
       })
       .catch((error) => {
-        log.warn(`Bing ping action failed!`, getMessageFromAxiosError(error))
+        logger.warn(`Bing ping action failed!`, getMessageFromAxiosError(error))
       })
   }
 

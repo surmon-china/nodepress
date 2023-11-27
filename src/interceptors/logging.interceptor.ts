@@ -9,7 +9,9 @@ import { Observable } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common'
 import { isDevEnv } from '@app/app.environment'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+
+const logger = createLogger({ scope: 'LoggingInterceptor', time: isDevEnv })
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {

@@ -8,10 +8,11 @@ import { google, Auth } from 'googleapis'
 import { Injectable } from '@nestjs/common'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import { UNDEFINED } from '@app/constants/value.constant'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
-import logger from '@app/utils/logger'
 
-const log = logger.scope('GoogleService')
+const logger = createLogger({ scope: 'GoogleService', time: isDevEnv })
 
 @Injectable()
 export class GoogleService {
@@ -34,7 +35,7 @@ export class GoogleService {
         UNDEFINED
       )
     } catch (error) {
-      log.warn('client initialization failed!')
+      logger.failure('client initialization failed!')
     }
   }
 
@@ -47,7 +48,7 @@ export class GoogleService {
       this.jwtClient.authorize((error, credentials: Auth.Credentials) => {
         const message = getMessageFromNormalError(error)
         if (message) {
-          log.warn('JWT authorize failed!', message)
+          logger.warn('JWT authorize failed!', message)
           reject(message)
         }
         resolve(credentials)

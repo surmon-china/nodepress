@@ -16,10 +16,11 @@ import { Disqus } from '@app/utils/disqus'
 import { getExtendObject, getExtendValue } from '@app/transformers/extend.transformer'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { DisqusPrivateService } from './disqus.service.private'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 import * as DISQUS_CONST from './disqus.constant'
 
-const log = logger.scope('DisqusPublicService')
+const logger = createLogger({ scope: 'DisqusPublicService', time: isDevEnv })
 
 @Injectable()
 export class DisqusPublicService {
@@ -58,14 +59,14 @@ export class DisqusPublicService {
 
   public async getAccessToken(code: string) {
     return this.disqus.getOAuthAccessToken(code, DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL).catch((error) => {
-      log.warn('getAccessToken failed!', error)
+      logger.warn('getAccessToken failed!', error)
       return Promise.reject(error)
     })
   }
 
   public async refreshAccessToken(refreshToken: string) {
     return this.disqus.refreshOAuthAccessToken(refreshToken).catch((error) => {
-      log.warn('refreshAccessToken failed!', error)
+      logger.warn('refreshAccessToken failed!', error)
       return Promise.reject(error)
     })
   }
@@ -75,7 +76,7 @@ export class DisqusPublicService {
       .request('users/details', { access_token: accessToken })
       .then((response) => response.response)
       .catch((error) => {
-        log.warn('getUserInfo failed!', error)
+        logger.warn('getUserInfo failed!', error)
         return Promise.reject(error)
       })
   }
@@ -102,7 +103,7 @@ export class DisqusPublicService {
   public async voteThread(params: any) {
     // https://disqus.com/api/docs/threads/vote/
     return this.disqus.request('threads/vote', params, true).catch((error) => {
-      log.warn('voteThread failed!', error)
+      logger.warn('voteThread failed!', error)
       return Promise.reject(error)
     })
   }
@@ -110,7 +111,7 @@ export class DisqusPublicService {
   public async votePost(params: any) {
     //disqus.com/api/docs/posts/vote/
     https: return this.disqus.request('posts/vote', params).catch((error) => {
-      log.warn('votePost failed!', error)
+      logger.warn('votePost failed!', error)
       return Promise.reject(error)
     })
   }
@@ -153,7 +154,7 @@ export class DisqusPublicService {
         .request('posts/create', body, !accessToken)
         .then((response) => response.response)
         .catch((error) => {
-          log.warn('createDisqusComment failed!', error)
+          logger.warn('createDisqusComment failed!', error)
           return Promise.reject(error)
         })
     )
@@ -212,7 +213,7 @@ export class DisqusPublicService {
       .request('posts/remove', params)
       .then((response) => response.response)
       .catch((error) => {
-        log.warn('deleteDisqusComment failed!', error)
+        logger.warn('deleteDisqusComment failed!', error)
         return Promise.reject(error)
       })
   }

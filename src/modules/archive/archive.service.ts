@@ -17,9 +17,10 @@ import {
   ARTICLE_LIST_QUERY_GUEST_FILTER,
   ARTICLE_LIST_QUERY_PROJECTION
 } from '@app/modules/article/article.model'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 
-const log = logger.scope('ArchiveService')
+const logger = createLogger({ scope: 'ArchiveService', time: isDevEnv })
 
 export interface ArchiveData {
   tags: Tag[]
@@ -42,7 +43,7 @@ export class ArchiveService {
       promise: this.getArchiveData.bind(this)
     })
     this.updateCache().catch((error) => {
-      log.warn('init getArchiveData failed!', error)
+      logger.warn('init getArchiveData failed!', error)
     })
   }
 
@@ -70,7 +71,7 @@ export class ArchiveService {
       ])
       return { tags, categories, articles }
     } catch (error) {
-      log.warn('getArchiveData failed!', error)
+      logger.warn('getArchiveData failed!', error)
       return {} as any as ArchiveData
     }
   }

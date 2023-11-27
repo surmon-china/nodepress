@@ -19,11 +19,11 @@ import { OptionService } from '@app/modules/option/option.service'
 import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
 import { Comment, CommentBase, COMMENT_GUEST_QUERY_FILTER } from './comment.model'
 import { CommentsStateDTO } from './comment.dto'
-import { isProdEnv } from '@app/app.environment'
-import logger from '@app/utils/logger'
+import { isDevEnv, isProdEnv } from '@app/app.environment'
+import { createLogger } from '@app/utils/logger'
 import * as APP_CONFIG from '@app/app.config'
 
-const log = logger.scope('CommentService')
+const logger = createLogger({ scope: 'CommentService', time: isDevEnv })
 
 @Injectable()
 export class CommentService {
@@ -115,7 +115,7 @@ export class CommentService {
         )
       }
     } catch (error) {
-      log.warn('updateCommentCountWithArticle failed!', error)
+      logger.warn('updateCommentCountWithArticle failed!', error)
     }
   }
 
@@ -134,8 +134,8 @@ export class CommentService {
       ? this.optionService.appendToBlocklist({ ips, emails })
       : this.optionService.removeFromBlocklist({ ips, emails })
     blocklistAction
-      .then(() => log.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
-      .catch((error) => log.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error))
+      .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
+      .catch((error) => logger.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error))
   }
 
   // validate comment by NodePress IP/email/keywords
@@ -287,7 +287,7 @@ export class CommentService {
       const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } })
       this.updateBlocklistAkismetWithComment(todoComments, state, referer)
     } catch (error) {
-      log.warn(`batchPatchState to ${state} failed!`, error)
+      logger.warn(`batchPatchState to ${state} failed!`, error)
     }
     return actionResult
   }

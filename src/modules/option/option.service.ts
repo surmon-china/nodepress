@@ -11,9 +11,10 @@ import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
 import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
 import { Option, Blocklist, DEFAULT_OPTION } from './option.model'
 import { CacheKeys } from '@app/constants/cache.constant'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 
-const log = logger.scope('OptionService')
+const logger = createLogger({ scope: 'OptionService', time: isDevEnv })
 
 @Injectable()
 export class OptionService {
@@ -33,7 +34,7 @@ export class OptionService {
     })
 
     this.optionCache.update().catch((error) => {
-      log.warn('init getAppOption failed!', error)
+      logger.warn('init getAppOption failed!', error)
     })
   }
 

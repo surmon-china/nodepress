@@ -19,9 +19,10 @@ import { getCacheKey, getCacheTTL } from '@app/decorators/cache.decorator'
 import { CacheService } from '@app/processors/cache/cache.service'
 import { UNDEFINED, isNil } from '@app/constants/value.constant'
 import { getDecoratorCacheKey } from '@app/constants/cache.constant'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 
-const log = logger.scope('CacheInterceptor')
+const logger = createLogger({ scope: 'CacheInterceptor', time: isDevEnv })
 
 /**
  * @class CacheInterceptor
@@ -62,7 +63,7 @@ export class CacheInterceptor implements NestInterceptor {
           try {
             await this.cacheService.set(getDecoratorCacheKey(key), response, ttl)
           } catch (err) {
-            log.warn(`An error has occurred when inserting "key: ${key}", "value: ${response}"`)
+            logger.warn(`An error has occurred when inserting "key: ${key}", "value: ${response}"`)
           }
         })
       )

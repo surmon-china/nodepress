@@ -8,13 +8,6 @@
 // https://stackoverflow.com/questions/70309135/chalk-error-err-require-esm-require-of-es-module
 import chalk from 'chalk'
 
-enum LoggerLevel {
-  Debug = 'debug',
-  Info = 'info',
-  Warn = 'warn',
-  Error = 'error'
-}
-
 const renderTime = () => {
   const now = new Date()
   return `[${now.toLocaleDateString()} ${now.toLocaleTimeString()}]`
@@ -28,27 +21,43 @@ const renderMessage = (color: chalk.Chalk, messages: any[]) => {
   return messages.map((m) => (typeof m === 'string' ? color(m) : m))
 }
 
-const renderLog = (method: LoggerLevel, level: string, color: chalk.Chalk, scope?: string) => {
+interface LoggerRenderOptions {
+  consoler: (...messages: any[]) => void
+  label: string
+  color: chalk.Chalk
+  scope?: string
+  time?: boolean
+}
+
+const renderLogger = (options: LoggerRenderOptions) => {
   return (...messages: any) => {
     const logs: any[] = []
-    logs.push(chalk.greenBright(`[NP]`))
-    logs.push(renderTime())
-    logs.push(level)
-    if (scope) {
-      logs.push(renderScope(scope))
+    logs.push(options.label)
+    if (options.time) {
+      logs.push(renderTime())
     }
-    return console[method](...logs, ...renderMessage(color, messages))
+    if (options.scope) {
+      logs.push(renderScope(options.scope))
+    }
+    return options.consoler(...logs, ...renderMessage(options.color, messages))
   }
 }
 
-const createLogger = (scope?: string) => ({
-  debug: renderLog(LoggerLevel.Debug, chalk.cyan('[DEBUG]'), chalk.cyanBright, scope),
-  info: renderLog(LoggerLevel.Info, chalk.blue('[_INFO]'), chalk.greenBright, scope),
-  warn: renderLog(LoggerLevel.Warn, chalk.yellow('[_WARN]'), chalk.yellowBright, scope),
-  error: renderLog(LoggerLevel.Error, chalk.red('[ERROR]'), chalk.redBright, scope)
+export interface LoggerOptions {
+  scope?: string
+  time?: boolean
+}
+
+export const createLogger = (opts?: LoggerOptions) => ({
+  // levels
+  log: renderLogger({ label: '⚪', consoler: console.log, color: chalk.cyanBright, ...opts }),
+  info: renderLogger({ label: '🔵', consoler: console.info, color: chalk.greenBright, ...opts }),
+  warn: renderLogger({ label: '🟠', consoler: console.warn, color: chalk.yellowBright, ...opts }),
+  error: renderLogger({ label: '🔴', consoler: console.error, color: chalk.redBright, ...opts }),
+  debug: renderLogger({ label: '🟤', consoler: console.debug, color: chalk.cyanBright, ...opts }),
+  // aliases
+  success: renderLogger({ label: '🟢', consoler: console.log, color: chalk.greenBright, ...opts }),
+  failure: renderLogger({ label: '🔴', consoler: console.warn, color: chalk.redBright, ...opts })
 })
 
-export default {
-  ...createLogger(),
-  scope: createLogger
-}
+export default createLogger()

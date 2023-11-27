@@ -8,10 +8,11 @@ import { AkismetClient } from 'akismet-api'
 import { Injectable } from '@nestjs/common'
 import { UNDEFINED } from '@app/constants/value.constant'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
-import logger from '@app/utils/logger'
 
-const log = logger.scope('AkismetService')
+const logger = createLogger({ scope: 'AkismetService', time: isDevEnv })
 
 // keyof typeof AkismetClient
 export enum AkismetAction {
@@ -57,11 +58,11 @@ export class AkismetService {
       .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
       .then(() => {
         this.clientIsValid = true
-        log.info('client init succeed.')
+        logger.success('client init succeed.')
       })
       .catch((error) => {
         this.clientIsValid = false
-        log.error('client init failed!', getMessageFromNormalError(error))
+        logger.failure('client init failed!', '|', getMessageFromNormalError(error))
       })
   }
 
@@ -71,11 +72,11 @@ export class AkismetService {
         // continue operation only when initialization successful
         if (!this.clientIsValid) {
           const message = `${handleType} failed! reason: init failed`
-          log.warn(message)
+          logger.warn(message)
           return resolve(message)
         }
 
-        log.info(`${handleType}...`, new Date())
+        logger.log(`${handleType}...`, new Date())
         this.client[handleType]({
           ...content,
           permalink: content.permalink || UNDEFINED,
@@ -86,16 +87,16 @@ export class AkismetService {
         })
           .then((result) => {
             if (handleType === AkismetAction.CheckSpam && result) {
-              log.warn(`${handleType} found SPAM!`, new Date(), content)
+              logger.info(`${handleType} found SPAM!`, new Date(), content)
               reject('SPAM!')
             } else {
-              log.info(`${handleType} succeed.`)
+              logger.info(`${handleType} succeed.`)
               resolve(result)
             }
           })
           .catch((error) => {
             const message = `${handleType} failed!`
-            log.error(message, error)
+            logger.warn(message, error)
             reject(message)
           })
       })

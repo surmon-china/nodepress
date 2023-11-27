@@ -13,10 +13,11 @@ import { CommentService } from '@app/modules/comment/comment.service'
 import { FeedbackService } from '@app/modules/feedback/feedback.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { getTodayViewsCount, resetTodayViewsCount } from './expansion.helper'
-import logger from '@app/utils/logger'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
 
-const log = logger.scope('StatisticService')
+const logger = createLogger({ scope: 'StatisticService', time: isDevEnv })
 
 const DEFAULT_STATISTIC = Object.freeze({
   tags: null,
@@ -47,7 +48,7 @@ export class StatisticService {
         await this.dailyStatisticsTask(todayViewsCount)
       } finally {
         resetTodayViewsCount(this.cacheService).catch((error) => {
-          log.warn('reset TODAY_VIEWS failed!', error)
+          logger.warn('reset TODAY_VIEWS failed!', error)
         })
       }
     })
@@ -100,7 +101,7 @@ export class StatisticService {
     return tasks
       .then(() => resultData)
       .catch((error) => {
-        log.warn('getStatistic task partial failed!', error)
+        logger.warn('getStatistic task partial failed!', error)
         return Promise.resolve(resultData)
       })
   }
