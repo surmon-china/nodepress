@@ -74,10 +74,13 @@ export class DBBackupService {
       shell.mkdir('backup')
 
       // https://dba.stackexchange.com/questions/215534/mongodump-unrecognized-field-snapshot
-      shell.exec(`mongodump --forceTableScan --uri="${MONGO_DB.uri}" --out="backup"`, (code, out) => {
-        log.info('mongodump done.', code, out)
-        if (code !== 0) {
-          log.warn('mongodump failed!', out)
+      // https://www.mongodb.com/docs/database-tools/mongodump/#std-option-mongodump.--quiet
+      shell.exec(`mongodump --quiet --forceTableScan --uri="${MONGO_DB.uri}" --out="backup"`, (code, out, err) => {
+        if (code === 0) {
+          const filesCount = shell.ls('./backup/*')
+          log.info('mongodump done.', `${filesCount.length} files`)
+        } else {
+          log.warn('mongodump failed!', out, err)
           return reject(out)
         }
 
@@ -87,7 +90,7 @@ export class DBBackupService {
 
         // tar -czf - backup | openssl des3 -salt -k <password> -out target.tar.gz
         // shell.exec(`tar -czf ${BACKUP_FILE_NAME} ./backup`)
-        shell.exec(`zip -r -P ${DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup`)
+        shell.exec(`zip -q -r -P ${DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup`)
         const fileDate = dayjs(new Date()).format('YYYY-MM-DD-HH:mm')
         const fileName = `nodepress-mongodb/backup-${fileDate}.zip`
         const filePath = path.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME)
