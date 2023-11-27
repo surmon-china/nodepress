@@ -22,8 +22,9 @@ const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
 const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
 const app_config_1 = require("../../app.config");
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('DBBackupService');
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
+const logger = (0, logger_1.createLogger)({ scope: 'DBBackupService', time: app_environment_1.isDevEnv });
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
 const UPLOAD_INTERVAL = '0 0 3 * * *';
 const BACKUP_FILE_NAME = 'nodepress.zip';
@@ -32,7 +33,7 @@ let DBBackupService = class DBBackupService {
     constructor(emailService, awsService) {
         this.emailService = emailService;
         this.awsService = awsService;
-        log.info('schedule job initialized.');
+        logger.info('schedule job initialized.');
         node_schedule_1.default.scheduleJob(UPLOAD_INTERVAL, () => {
             this.backup().catch(() => {
                 setTimeout(this.backup.bind(this), UP_FAILED_TIMEOUT);
@@ -68,21 +69,24 @@ let DBBackupService = class DBBackupService {
             shelljs_1.default.rm('-rf', `./backup.prev`);
             shelljs_1.default.mv('./backup', './backup.prev');
             shelljs_1.default.mkdir('backup');
-            shelljs_1.default.exec(`mongodump --forceTableScan --uri="${app_config_1.MONGO_DB.uri}" --out="backup"`, (code, out) => {
-                log.info('mongodump done.', code, out);
-                if (code !== 0) {
-                    log.warn('mongodump failed!', out);
+            shelljs_1.default.exec(`mongodump --quiet --forceTableScan --uri="${app_config_1.MONGO_DB.uri}" --out="backup"`, (code, out, err) => {
+                if (code === 0) {
+                    const filesCount = shelljs_1.default.ls('./backup/*');
+                    logger.log('mongodump done.', `${filesCount.length} files`);
+                }
+                else {
+                    logger.failure('mongodump failed!', out, err);
                     return reject(out);
                 }
                 if (!shelljs_1.default.which('zip')) {
                     return reject('DB Backup script requires [zip]');
                 }
-                shelljs_1.default.exec(`zip -r -P ${app_config_1.DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup`);
+                shelljs_1.default.exec(`zip -q -r -P ${app_config_1.DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup`);
                 const fileDate = (0, dayjs_1.default)(new Date()).format('YYYY-MM-DD-HH:mm');
                 const fileName = `nodepress-mongodb/backup-${fileDate}.zip`;
                 const filePath = path_1.default.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME);
-                log.info('uploading: ' + fileName);
-                log.info('file source: ' + filePath);
+                logger.log(`uploading: ${fileName}`);
+                logger.log(`file source: ${filePath}`);
                 this.awsService
                     .uploadFile({
                     name: fileName,
@@ -94,12 +98,14 @@ let DBBackupService = class DBBackupService {
                     encryption: helper_service_aws_1.AWSServerSideEncryption.AES256
                 })
                     .then((result) => {
-                    log.info('upload succeed.', result.url);
+                    logger.success('upload succeed.', result.url);
                     resolve(result);
                 })
                     .catch((error) => {
-                    log.warn('upload failed!', error);
-                    reject(JSON.stringify(error.message));
+                    var _a;
+                    const errorMessage = JSON.stringify((_a = error.message) !== null && _a !== void 0 ? _a : error);
+                    logger.failure('upload failed!', errorMessage);
+                    reject(errorMessage);
                 });
             });
         });

@@ -8,9 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CacheInterceptor = void 0;
 const operators_1 = require("rxjs/operators");
@@ -21,8 +18,9 @@ const cache_decorator_1 = require("../decorators/cache.decorator");
 const cache_service_1 = require("../processors/cache/cache.service");
 const value_constant_1 = require("../constants/value.constant");
 const cache_constant_1 = require("../constants/cache.constant");
-const logger_1 = __importDefault(require("../utils/logger"));
-const log = logger_1.default.scope('CacheInterceptor');
+const logger_1 = require("../utils/logger");
+const app_environment_1 = require("../app.environment");
+const logger = (0, logger_1.createLogger)({ scope: 'CacheInterceptor', time: app_environment_1.isDevEnv });
 let CacheInterceptor = class CacheInterceptor {
     constructor(httpAdapterHost, cacheService) {
         this.httpAdapterHost = httpAdapterHost;
@@ -48,7 +46,7 @@ let CacheInterceptor = class CacheInterceptor {
                     await this.cacheService.set((0, cache_constant_1.getDecoratorCacheKey)(key), response, ttl);
                 }
                 catch (err) {
-                    log.warn(`An error has occurred when inserting "key: ${key}", "value: ${response}"`);
+                    logger.warn(`An error has occurred when inserting "key: ${key}", "value: ${response}"`);
                 }
             }));
         }

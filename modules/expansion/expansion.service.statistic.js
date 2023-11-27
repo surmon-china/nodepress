@@ -45,9 +45,10 @@ const comment_service_1 = require("../comment/comment.service");
 const feedback_service_1 = require("../feedback/feedback.service");
 const tag_service_1 = require("../tag/tag.service");
 const expansion_helper_1 = require("./expansion.helper");
-const logger_1 = __importDefault(require("../../utils/logger"));
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const log = logger_1.default.scope('StatisticService');
+const logger = (0, logger_1.createLogger)({ scope: 'StatisticService', time: app_environment_1.isDevEnv });
 const DEFAULT_STATISTIC = Object.freeze({
     tags: null,
     articles: null,
@@ -72,7 +73,7 @@ let StatisticService = class StatisticService {
             }
             finally {
                 (0, expansion_helper_1.resetTodayViewsCount)(this.cacheService).catch((error) => {
-                    log.warn('reset TODAY_VIEWS failed!', error);
+                    logger.warn('reset TODAY_VIEWS failed!', error);
                 });
             }
         });
@@ -121,7 +122,7 @@ let StatisticService = class StatisticService {
         return tasks
             .then(() => resultData)
             .catch((error) => {
-            log.warn('getStatistic task partial failed!', error);
+            logger.warn('getStatistic task partial failed!', error);
             return Promise.resolve(resultData);
         });
     }

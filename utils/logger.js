@@ -3,14 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createLogger = void 0;
 const chalk_1 = __importDefault(require("chalk"));
-var LoggerLevel;
-(function (LoggerLevel) {
-    LoggerLevel["Debug"] = "debug";
-    LoggerLevel["Info"] = "info";
-    LoggerLevel["Warn"] = "warn";
-    LoggerLevel["Error"] = "error";
-})(LoggerLevel || (LoggerLevel = {}));
 const renderTime = () => {
     const now = new Date();
     return `[${now.toLocaleDateString()} ${now.toLocaleTimeString()}]`;
@@ -21,23 +15,28 @@ const renderScope = (scope) => {
 const renderMessage = (color, messages) => {
     return messages.map((m) => (typeof m === 'string' ? color(m) : m));
 };
-const renderLog = (method, level, color, scope) => {
+const renderLogger = (options) => {
     return (...messages) => {
         const logs = [];
-        logs.push(chalk_1.default.greenBright(`[NP]`));
-        logs.push(renderTime());
-        logs.push(level);
-        if (scope) {
-            logs.push(renderScope(scope));
+        logs.push(options.label);
+        if (options.time) {
+            logs.push(renderTime());
         }
-        return console[method](...logs, ...renderMessage(color, messages));
+        if (options.scope) {
+            logs.push(renderScope(options.scope));
+        }
+        return options.consoler(...logs, ...renderMessage(options.color, messages));
     };
 };
-const createLogger = (scope) => ({
-    debug: renderLog(LoggerLevel.Debug, chalk_1.default.cyan('[DEBUG]'), chalk_1.default.cyanBright, scope),
-    info: renderLog(LoggerLevel.Info, chalk_1.default.blue('[_INFO]'), chalk_1.default.greenBright, scope),
-    warn: renderLog(LoggerLevel.Warn, chalk_1.default.yellow('[_WARN]'), chalk_1.default.yellowBright, scope),
-    error: renderLog(LoggerLevel.Error, chalk_1.default.red('[ERROR]'), chalk_1.default.redBright, scope)
+const createLogger = (opts) => ({
+    log: renderLogger(Object.assign({ label: '⚪', consoler: console.log, color: chalk_1.default.cyanBright }, opts)),
+    info: renderLogger(Object.assign({ label: '🔵', consoler: console.info, color: chalk_1.default.greenBright }, opts)),
+    warn: renderLogger(Object.assign({ label: '🟠', consoler: console.warn, color: chalk_1.default.yellowBright }, opts)),
+    error: renderLogger(Object.assign({ label: '🔴', consoler: console.error, color: chalk_1.default.redBright }, opts)),
+    debug: renderLogger(Object.assign({ label: '🟤', consoler: console.debug, color: chalk_1.default.cyanBright }, opts)),
+    success: renderLogger(Object.assign({ label: '🟢', consoler: console.log, color: chalk_1.default.greenBright }, opts)),
+    failure: renderLogger(Object.assign({ label: '🔴', consoler: console.warn, color: chalk_1.default.redBright }, opts))
 });
-exports.default = Object.assign(Object.assign({}, createLogger()), { scope: createLogger });
+exports.createLogger = createLogger;
+exports.default = (0, exports.createLogger)();
 //# sourceMappingURL=logger.js.map

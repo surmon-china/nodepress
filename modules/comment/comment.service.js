@@ -45,9 +45,6 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentService = void 0;
 const common_1 = require("@nestjs/common");
@@ -61,9 +58,9 @@ const option_service_1 = require("../option/option.service");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const comment_model_1 = require("./comment.model");
 const app_environment_1 = require("../../app.environment");
-const logger_1 = __importDefault(require("../../utils/logger"));
+const logger_1 = require("../../utils/logger");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const log = logger_1.default.scope('CommentService');
+const logger = (0, logger_1.createLogger)({ scope: 'CommentService', time: app_environment_1.isDevEnv });
 let CommentService = class CommentService {
     constructor(ipService, emailService, akismetService, optionService, articleService, commentModel) {
         this.ipService = ipService;
@@ -136,7 +133,7 @@ let CommentService = class CommentService {
             }
         }
         catch (error) {
-            log.warn('updateCommentCountWithArticle failed!', error);
+            logger.warn('updateCommentCountWithArticle failed!', error);
         }
     }
     updateBlocklistAkismetWithComment(comments, state, referer) {
@@ -149,8 +146,8 @@ let CommentService = class CommentService {
             ? this.optionService.appendToBlocklist({ ips, emails })
             : this.optionService.removeFromBlocklist({ ips, emails });
         blocklistAction
-            .then(() => log.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
-            .catch((error) => log.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error));
+            .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
+            .catch((error) => logger.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error));
     }
     async verifyCommentValidity(comment) {
         const { blocklist } = await this.optionService.ensureAppOption();
@@ -245,7 +242,7 @@ let CommentService = class CommentService {
             this.updateBlocklistAkismetWithComment(todoComments, state, referer);
         }
         catch (error) {
-            log.warn(`batchPatchState to ${state} failed!`, error);
+            logger.warn(`batchPatchState to ${state} failed!`, error);
         }
         return actionResult;
     }

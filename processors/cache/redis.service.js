@@ -41,9 +41,10 @@ const redis_1 = require("redis");
 const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../helper/helper.service.email");
 const redis_store_1 = require("./redis.store");
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('RedisService');
+const logger = (0, logger_1.createLogger)({ scope: 'RedisService', time: app_environment_1.isDevEnv });
 let RedisService = class RedisService {
     constructor(emailService) {
         this.emailService = emailService;
@@ -60,16 +61,16 @@ let RedisService = class RedisService {
             defaultTTL: APP_CONFIG.APP.DEFAULT_CACHE_TTL,
             namespace: APP_CONFIG.REDIS.namespace
         });
-        this.redisClient.on('connect', () => log.info('connecting...'));
-        this.redisClient.on('reconnecting', () => log.warn('reconnecting...'));
-        this.redisClient.on('ready', () => log.info('readied (connected).'));
-        this.redisClient.on('end', () => log.error('client end!'));
-        this.redisClient.on('error', (error) => log.error(`client error!`, error.message));
+        this.redisClient.on('connect', () => logger.log('connecting...'));
+        this.redisClient.on('reconnecting', () => logger.log('reconnecting...'));
+        this.redisClient.on('ready', () => logger.success('readied (connected).'));
+        this.redisClient.on('end', () => logger.info('client end!'));
+        this.redisClient.on('error', (error) => logger.failure(`client error!`, error.message));
         this.redisClient.connect();
     }
     retryStrategy(retries) {
         const errorMessage = `retryStrategy! retries: ${retries}`;
-        log.error(errorMessage);
+        logger.error(errorMessage);
         this.sendAlarmMail(errorMessage);
         if (retries > 6) {
             return new Error('Redis maximum retries!');

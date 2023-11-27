@@ -39,9 +39,10 @@ exports.EmailService = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('EmailService');
+const logger = (0, logger_1.createLogger)({ scope: 'EmailService', time: app_environment_1.isDevEnv });
 let EmailService = class EmailService {
     constructor() {
         this.transporter = nodemailer_1.default.createTransport({
@@ -60,25 +61,25 @@ let EmailService = class EmailService {
             if (error) {
                 this.clientIsValid = false;
                 setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30);
-                log.error(`client init failed! retry when after 30 mins,`, (0, error_transformer_1.getMessageFromNormalError)(error));
+                logger.error(`client init failed! retry after 30 mins`, '|', (0, error_transformer_1.getMessageFromNormalError)(error));
             }
             else {
                 this.clientIsValid = true;
-                log.info('client init succeed.');
+                logger.success('client init succeed.');
             }
         });
     }
     sendMail(mailOptions) {
         if (!this.clientIsValid) {
-            log.warn('send failed! (init failed)');
+            logger.warn('send failed! (init failed)');
             return false;
         }
         this.transporter.sendMail(Object.assign(Object.assign({}, mailOptions), { from: APP_CONFIG.EMAIL.from }), (error, info) => {
             if (error) {
-                log.error(`send failed!`, (0, error_transformer_1.getMessageFromNormalError)(error));
+                logger.failure(`send failed!`, (0, error_transformer_1.getMessageFromNormalError)(error));
             }
             else {
-                log.info('send succeed.', info.messageId, info.response);
+                logger.success('send succeed.', info.messageId, info.response);
             }
         });
     }

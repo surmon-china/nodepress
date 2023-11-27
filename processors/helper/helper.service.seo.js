@@ -31,9 +31,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SeoService = exports.SEOAction = void 0;
 const APP_CONFIG = __importStar(require("../../app.config"));
@@ -41,8 +38,9 @@ const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const helper_service_google_1 = require("./helper.service.google");
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('SeoService');
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
+const logger = (0, logger_1.createLogger)({ scope: 'SeoService', time: app_environment_1.isDevEnv });
 var SEOAction;
 (function (SEOAction) {
     SEOAction["Push"] = "push";
@@ -76,10 +74,10 @@ let SeoService = class SeoService {
                     Authorization: `Bearer ${credentials.access_token}`
                 }
             })
-                .then((response) => log.info(`${actionText} succeed.`, url, response.statusText))
+                .then((response) => logger.info(`${actionText} succeed.`, url, response.statusText))
                 .catch((error) => Promise.reject((0, error_transformer_1.getMessageFromAxiosError)(error)));
         })
-            .catch((error) => log.warn(`${actionText} failed!`, error));
+            .catch((error) => logger.warn(`${actionText} failed!`, error));
     }
     pingBing(urls) {
         this.httpService.axiosRef
@@ -93,25 +91,10 @@ let SeoService = class SeoService {
             }
         })
             .then((response) => {
-            log.info(`Bing ping action succeed.`, urls, response.statusText);
+            logger.info(`Bing ping action succeed.`, urls, response.statusText);
         })
             .catch((error) => {
-            log.warn(`Bing ping action failed!`, (0, error_transformer_1.getMessageFromAxiosError)(error));
-        });
-    }
-    pingBaidu(action, urls) {
-        this.httpService.axiosRef
-            .request({
-            method: 'post',
-            data: urls.join('\n'),
-            headers: { 'Content-Type': 'text/plain' },
-            url: `http://data.zz.baidu.com/urls?site=${APP_CONFIG.BAIDU_INDEXED.site}&token=${APP_CONFIG.BAIDU_INDEXED.token}`
-        })
-            .then((response) => {
-            log.info(`Baidu ping [${action}] succeed.`, urls, response.statusText);
-        })
-            .catch((error) => {
-            log.warn(`Baidu ping [${action}] failed!`, (0, error_transformer_1.getMessageFromAxiosError)(error));
+            logger.warn(`Bing ping action failed!`, (0, error_transformer_1.getMessageFromAxiosError)(error));
         });
     }
     humanizedUrl(url) {
@@ -120,18 +103,15 @@ let SeoService = class SeoService {
     push(url) {
         const urls = this.humanizedUrl(url);
         this.pingGoogle(SEOAction.Push, urls);
-        this.pingBaidu(SEOAction.Push, urls);
         this.pingBing(urls);
     }
     update(url) {
         const urls = this.humanizedUrl(url);
-        this.pingBaidu(SEOAction.Update, urls);
         this.pingGoogle(SEOAction.Update, urls);
         this.pingBing(urls);
     }
     delete(url) {
         const urls = this.humanizedUrl(url);
-        this.pingBaidu(SEOAction.Delete, urls);
         this.pingGoogle(SEOAction.Delete, urls);
         this.pingBing(urls);
     }

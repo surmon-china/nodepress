@@ -11,9 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TagService = void 0;
 const common_1 = require("@nestjs/common");
@@ -25,9 +22,10 @@ const cache_constant_1 = require("../../constants/cache.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
 const archive_service_1 = require("../archive/archive.service");
 const article_model_1 = require("../article/article.model");
-const logger_1 = __importDefault(require("../../utils/logger"));
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
 const tag_model_1 = require("./tag.model");
-const log = logger_1.default.scope('TagService');
+const logger = (0, logger_1.createLogger)({ scope: 'TagService', time: app_environment_1.isDevEnv });
 let TagService = class TagService {
     constructor(seoService, cacheService, archiveService, tagModel, articleModel) {
         this.seoService = seoService;
@@ -40,7 +38,7 @@ let TagService = class TagService {
             promise: () => this.getAllTags()
         });
         this.updateAllTagsCache().catch((error) => {
-            log.warn('init tagPaginateCache failed!', error);
+            logger.warn('init tagPaginateCache failed!', error);
         });
     }
     async aggregate(publicOnly, tags) {

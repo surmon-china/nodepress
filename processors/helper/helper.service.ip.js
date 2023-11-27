@@ -8,16 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IPService = void 0;
 const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('IPService');
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
+const logger = (0, logger_1.createLogger)({ scope: 'IPService', time: app_environment_1.isDevEnv });
 let IPService = class IPService {
     constructor(httpService) {
         this.httpService = httpService;
@@ -40,7 +38,7 @@ let IPService = class IPService {
         })
             .catch((error) => {
             const message = (0, error_transformer_1.getMessageFromAxiosError)(error);
-            log.warn('queryLocationByIPAPI failed!', message);
+            logger.warn('queryLocationByIPAPI failed!', message);
             return Promise.reject(message);
         });
     }
@@ -62,7 +60,7 @@ let IPService = class IPService {
         })
             .catch((error) => {
             const message = (0, error_transformer_1.getMessageFromAxiosError)(error);
-            log.warn('queryLocationByAPICo failed!', message);
+            logger.warn('queryLocationByAPICo failed!', message);
             return Promise.reject(message);
         });
     }

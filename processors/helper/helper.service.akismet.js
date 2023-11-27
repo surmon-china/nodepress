@@ -31,18 +31,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AkismetService = exports.AkismetAction = void 0;
 const akismet_api_1 = require("akismet-api");
 const common_1 = require("@nestjs/common");
 const value_constant_1 = require("../../constants/value.constant");
 const error_transformer_1 = require("../../transformers/error.transformer");
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('AkismetService');
+const logger = (0, logger_1.createLogger)({ scope: 'AkismetService', time: app_environment_1.isDevEnv });
 var AkismetAction;
 (function (AkismetAction) {
     AkismetAction["CheckSpam"] = "checkSpam";
@@ -67,11 +65,11 @@ let AkismetService = class AkismetService {
             .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
             .then(() => {
             this.clientIsValid = true;
-            log.info('client init succeed.');
+            logger.success('client init succeed.');
         })
             .catch((error) => {
             this.clientIsValid = false;
-            log.error('client init failed!', (0, error_transformer_1.getMessageFromNormalError)(error));
+            logger.failure('client init failed!', '|', (0, error_transformer_1.getMessageFromNormalError)(error));
         });
     }
     makeInterceptor(handleType) {
@@ -79,24 +77,24 @@ let AkismetService = class AkismetService {
             return new Promise((resolve, reject) => {
                 if (!this.clientIsValid) {
                     const message = `${handleType} failed! reason: init failed`;
-                    log.warn(message);
+                    logger.warn(message);
                     return resolve(message);
                 }
-                log.info(`${handleType}...`, new Date());
+                logger.log(`${handleType}...`, new Date());
                 this.client[handleType](Object.assign(Object.assign({}, content), { permalink: content.permalink || value_constant_1.UNDEFINED, comment_author: content.comment_author || value_constant_1.UNDEFINED, comment_author_email: content.comment_author_email || value_constant_1.UNDEFINED, comment_author_url: content.comment_author_url || value_constant_1.UNDEFINED, comment_content: content.comment_content || value_constant_1.UNDEFINED }))
                     .then((result) => {
                     if (handleType === AkismetAction.CheckSpam && result) {
-                        log.warn(`${handleType} found SPAM!`, new Date(), content);
+                        logger.info(`${handleType} found SPAM!`, new Date(), content);
                         reject('SPAM!');
                     }
                     else {
-                        log.info(`${handleType} succeed.`);
+                        logger.info(`${handleType} succeed.`);
                         resolve(result);
                     }
                 })
                     .catch((error) => {
                     const message = `${handleType} failed!`;
-                    log.error(message, error);
+                    logger.warn(message, error);
                     reject(message);
                 });
             });

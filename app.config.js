@@ -3,12 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DB_BACKUP = exports.AWS = exports.GOOGLE = exports.BING_INDEXED = exports.BAIDU_INDEXED = exports.AKISMET = exports.DISQUS = exports.EMAIL = exports.AUTH = exports.REDIS = exports.MONGO_DB = exports.CROSS_DOMAIN = exports.PROJECT = exports.APP = void 0;
+exports.DB_BACKUP = exports.AWS = exports.GOOGLE = exports.BING_INDEXED = exports.AKISMET = exports.DISQUS = exports.EMAIL = exports.AUTH = exports.REDIS = exports.MONGO_DB = exports.CROSS_DOMAIN = exports.PROJECT = exports.APP = void 0;
 const path_1 = __importDefault(require("path"));
 const yargs_1 = __importDefault(require("yargs"));
-const argv = yargs_1.default.argv;
 const ROOT_PATH = path_1.default.join(__dirname, '..');
 const packageJSON = require(path_1.default.resolve(ROOT_PATH, 'package.json'));
+const argv = yargs_1.default.argv;
 exports.APP = {
     PORT: 8000,
     ROOT_PATH,
@@ -66,10 +66,6 @@ exports.DISQUS = {
 exports.AKISMET = {
     key: argv.akismet_key || 'your Akismet Key',
     blog: argv.akismet_blog || 'your Akismet blog site, e.g. https://surmon.me'
-};
-exports.BAIDU_INDEXED = {
-    site: argv.baidu_site || 'your baidu site domain. e.g. surmon.me',
-    token: argv.baidu_token || 'your baidu seo push token'
 };
 exports.BING_INDEXED = {
     site: argv.bing_site || 'your bing site url. e.g. https://surmon.me',

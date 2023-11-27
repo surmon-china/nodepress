@@ -31,18 +31,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GoogleService = void 0;
 const googleapis_1 = require("googleapis");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const value_constant_1 = require("../../constants/value.constant");
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('GoogleService');
+const logger = (0, logger_1.createLogger)({ scope: 'GoogleService', time: app_environment_1.isDevEnv });
 let GoogleService = class GoogleService {
     constructor() {
         this.jwtClient = null;
@@ -57,7 +55,7 @@ let GoogleService = class GoogleService {
             ], value_constant_1.UNDEFINED);
         }
         catch (error) {
-            log.warn('client initialization failed!');
+            logger.failure('client initialization failed!');
         }
     }
     getCredentials() {
@@ -68,7 +66,7 @@ let GoogleService = class GoogleService {
             this.jwtClient.authorize((error, credentials) => {
                 const message = (0, error_transformer_1.getMessageFromNormalError)(error);
                 if (message) {
-                    log.warn('JWT authorize failed!', message);
+                    logger.warn('JWT authorize failed!', message);
                     reject(message);
                 }
                 resolve(credentials);

@@ -11,9 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArchiveService = void 0;
 const common_1 = require("@nestjs/common");
@@ -24,8 +21,9 @@ const biz_constant_1 = require("../../constants/biz.constant");
 const category_model_1 = require("../category/category.model");
 const tag_model_1 = require("../tag/tag.model");
 const article_model_1 = require("../article/article.model");
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('ArchiveService');
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
+const logger = (0, logger_1.createLogger)({ scope: 'ArchiveService', time: app_environment_1.isDevEnv });
 let ArchiveService = class ArchiveService {
     constructor(cacheService, tagModel, articleModel, categoryModel) {
         this.cacheService = cacheService;
@@ -37,7 +35,7 @@ let ArchiveService = class ArchiveService {
             promise: this.getArchiveData.bind(this)
         });
         this.updateCache().catch((error) => {
-            log.warn('init getArchiveData failed!', error);
+            logger.warn('init getArchiveData failed!', error);
         });
     }
     getAllTags() {
@@ -62,7 +60,7 @@ let ArchiveService = class ArchiveService {
             return { tags, categories, articles };
         }
         catch (error) {
-            log.warn('getArchiveData failed!', error);
+            logger.warn('getArchiveData failed!', error);
             return {};
         }
     }

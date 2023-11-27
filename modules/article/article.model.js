@@ -171,7 +171,7 @@ __decorate([
 ], Article.prototype, "extends", void 0);
 exports.Article = Article = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
-    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.generalAutoIncrementIDConfig),
+    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.GENERAL_AUTO_INCREMENT_ID_CONFIG),
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
             versionKey: false,

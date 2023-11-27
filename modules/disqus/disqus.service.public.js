@@ -31,9 +31,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DisqusPublicService = void 0;
 const common_1 = require("@nestjs/common");
@@ -46,9 +43,10 @@ const disqus_1 = require("../../utils/disqus");
 const extend_transformer_1 = require("../../transformers/extend.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const disqus_service_private_1 = require("./disqus.service.private");
-const logger_1 = __importDefault(require("../../utils/logger"));
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
-const log = logger_1.default.scope('DisqusPublicService');
+const logger = (0, logger_1.createLogger)({ scope: 'DisqusPublicService', time: app_environment_1.isDevEnv });
 let DisqusPublicService = class DisqusPublicService {
     constructor(cacheService, commentService, disqusPrivateService) {
         this.cacheService = cacheService;
@@ -76,13 +74,13 @@ let DisqusPublicService = class DisqusPublicService {
     }
     async getAccessToken(code) {
         return this.disqus.getOAuthAccessToken(code, DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL).catch((error) => {
-            log.warn('getAccessToken failed!', error);
+            logger.warn('getAccessToken failed!', error);
             return Promise.reject(error);
         });
     }
     async refreshAccessToken(refreshToken) {
         return this.disqus.refreshOAuthAccessToken(refreshToken).catch((error) => {
-            log.warn('refreshAccessToken failed!', error);
+            logger.warn('refreshAccessToken failed!', error);
             return Promise.reject(error);
         });
     }
@@ -91,7 +89,7 @@ let DisqusPublicService = class DisqusPublicService {
             .request('users/details', { access_token: accessToken })
             .then((response) => response.response)
             .catch((error) => {
-            log.warn('getUserInfo failed!', error);
+            logger.warn('getUserInfo failed!', error);
             return Promise.reject(error);
         });
     }
@@ -113,13 +111,13 @@ let DisqusPublicService = class DisqusPublicService {
     }
     async voteThread(params) {
         return this.disqus.request('threads/vote', params, true).catch((error) => {
-            log.warn('voteThread failed!', error);
+            logger.warn('voteThread failed!', error);
             return Promise.reject(error);
         });
     }
     async votePost(params) {
         https: return this.disqus.request('posts/vote', params).catch((error) => {
-            log.warn('votePost failed!', error);
+            logger.warn('votePost failed!', error);
             return Promise.reject(error);
         });
     }
@@ -151,7 +149,7 @@ let DisqusPublicService = class DisqusPublicService {
             .request('posts/create', body, !accessToken)
             .then((response) => response.response)
             .catch((error) => {
-            log.warn('createDisqusComment failed!', error);
+            logger.warn('createDisqusComment failed!', error);
             return Promise.reject(error);
         }));
     }
@@ -192,7 +190,7 @@ let DisqusPublicService = class DisqusPublicService {
             .request('posts/remove', params)
             .then((response) => response.response)
             .catch((error) => {
-            log.warn('deleteDisqusComment failed!', error);
+            logger.warn('deleteDisqusComment failed!', error);
             return Promise.reject(error);
         });
     }

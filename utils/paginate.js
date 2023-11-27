@@ -29,7 +29,7 @@ exports.mongoosePaginate = mongoosePaginate;
 function paginate(filterQuery = {}, options = {}) {
     const _a = (0, merge_1.default)(Object.assign({}, DEFAULT_OPTIONS), Object.assign({}, options)), { page, perPage, dateSort, projection, $queryOptions } = _a, resetOptions = __rest(_a, ["page", "perPage", "dateSort", "projection", "$queryOptions"]);
     const findQueryOptions = Object.assign(Object.assign({}, resetOptions), $queryOptions);
-    const countQuery = this.countDocuments ? this.countDocuments(filterQuery).exec() : this.count(filterQuery).exec();
+    const countQuery = this.countDocuments(filterQuery).exec();
     const pageQuery = this.find(filterQuery, projection, Object.assign({ skip: (page - 1) * perPage, limit: perPage, sort: dateSort ? { _id: dateSort } : findQueryOptions.sort }, findQueryOptions)).exec();
     return Promise.all([countQuery, pageQuery]).then(([countResult, pageResult]) => {
         const result = {

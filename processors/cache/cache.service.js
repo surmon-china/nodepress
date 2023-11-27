@@ -17,8 +17,9 @@ const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const value_constant_1 = require("../../constants/value.constant");
 const redis_service_1 = require("./redis.service");
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('CacheService');
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
+const logger = (0, logger_1.createLogger)({ scope: 'CacheService', time: app_environment_1.isDevEnv });
 let CacheService = class CacheService {
     constructor(redisService) {
         this.redisService = redisService;
@@ -55,7 +56,7 @@ let CacheService = class CacheService {
             })
                 .catch((error) => {
                 setTimeout(execIntervalTask, options.retry);
-                log.warn(`interval task failed! retry when after ${options.retry / 1000}s,`, error);
+                logger.failure(`interval task failed! retry after ${options.retry / 1000}s,`, '|', error);
             });
         };
         execIntervalTask();
@@ -64,7 +65,7 @@ let CacheService = class CacheService {
     schedule(options) {
         const execScheduleTask = () => {
             this.execPromise(options).catch((error) => {
-                log.warn(`schedule task failed! retry when after ${options.retry / 1000}s,`, error);
+                logger.failure(`schedule task failed! retry after ${options.retry / 1000}s,`, '|', error);
                 setTimeout(execScheduleTask, options.retry);
             });
         };

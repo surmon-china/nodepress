@@ -22,8 +22,9 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const option_model_1 = require("./option.model");
 const cache_constant_1 = require("../../constants/cache.constant");
-const logger_1 = __importDefault(require("../../utils/logger"));
-const log = logger_1.default.scope('OptionService');
+const logger_1 = require("../../utils/logger");
+const app_environment_1 = require("../../app.environment");
+const logger = (0, logger_1.createLogger)({ scope: 'OptionService', time: app_environment_1.isDevEnv });
 let OptionService = class OptionService {
     constructor(optionModel, cacheService) {
         this.optionModel = optionModel;
@@ -37,7 +38,7 @@ let OptionService = class OptionService {
             }
         });
         this.optionCache.update().catch((error) => {
-            log.warn('init getAppOption failed!', error);
+            logger.warn('init getAppOption failed!', error);
         });
     }
     async ensureAppOption() {
