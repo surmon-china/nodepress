@@ -832,6 +832,12 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/IPLocation.html" data-type="entity-link" >IPLocation</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/LoggerOptions.html" data-type="entity-link" >LoggerOptions</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/LoggerRenderOptions.html" data-type="entity-link" >LoggerRenderOptions</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/PaginateModel.html" data-type="entity-link" >PaginateModel</a>
                             </li>
                             <li class="link">

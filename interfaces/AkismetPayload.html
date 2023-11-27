@@ -12,6 +12,64 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
@@ -496,10 +554,11 @@
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
-import logger from &#x27;@app/utils/logger&#x27;
 
-const log &#x3D; logger.scope(&#x27;AkismetService&#x27;)
+const logger &#x3D; createLogger({ scope: &#x27;AkismetService&#x27;, time: isDevEnv })
 
 // keyof typeof AkismetClient
 export enum AkismetAction {
@@ -545,11 +604,11 @@ export class AkismetService {
       .then((valid) &#x3D;&gt; (valid ? Promise.resolve(valid) : Promise.reject(&#x27;Invalid Akismet key&#x27;)))
       .then(() &#x3D;&gt; {
         this.clientIsValid &#x3D; true
-        log.info(&#x27;client init succeed.&#x27;)
+        logger.success(&#x27;client init succeed.&#x27;)
       })
       .catch((error) &#x3D;&gt; {
         this.clientIsValid &#x3D; false
-        log.error(&#x27;client init failed!&#x27;, getMessageFromNormalError(error))
+        logger.failure(&#x27;client init failed!&#x27;, &#x27;|&#x27;, getMessageFromNormalError(error))
       })
   }
 
@@ -559,11 +618,11 @@ export class AkismetService {
         // continue operation only when initialization successful
         if (!this.clientIsValid) {
           const message &#x3D; &#x60;${handleType} failed! reason: init failed&#x60;
-          log.warn(message)
+          logger.warn(message)
           return resolve(message)
         }
 
-        log.info(&#x60;${handleType}...&#x60;, new Date())
+        logger.log(&#x60;${handleType}...&#x60;, new Date())
         this.client[handleType]({
           ...content,
           permalink: content.permalink || UNDEFINED,
@@ -574,16 +633,16 @@ export class AkismetService {
         })
           .then((result) &#x3D;&gt; {
             if (handleType &#x3D;&#x3D;&#x3D; AkismetAction.CheckSpam &amp;&amp; result) {
-              log.warn(&#x60;${handleType} found SPAM!&#x60;, new Date(), content)
+              logger.info(&#x60;${handleType} found SPAM!&#x60;, new Date(), content)
               reject(&#x27;SPAM!&#x27;)
             } else {
-              log.info(&#x60;${handleType} succeed.&#x60;)
+              logger.info(&#x60;${handleType} succeed.&#x60;)
               resolve(result)
             }
           })
           .catch((error) &#x3D;&gt; {
             const message &#x3D; &#x60;${handleType} failed!&#x60;
-            log.error(message, error)
+            logger.warn(message, error)
             reject(message)
           })
       })

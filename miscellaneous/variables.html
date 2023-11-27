@@ -12,6 +12,64 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
@@ -133,9 +191,6 @@
                             <a href="#BACKUP_FILE_NAME" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>BACKUP_FILE_NAME</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
                         </li>
                         <li>
-                            <a href="#BAIDU_INDEXED" title="src/app.config.ts" ><b>BAIDU_INDEXED</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
-                        </li>
-                        <li>
                             <a href="#BING_INDEXED" title="src/app.config.ts" ><b>BING_INDEXED</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
@@ -247,7 +302,7 @@
                             <a href="#FeedbackProvider" title="src/modules/feedback/feedback.model.ts" ><b>FeedbackProvider</b>&nbsp;&nbsp;&nbsp;(src/.../feedback.model.ts)</a>
                         </li>
                         <li>
-                            <a href="#generalAutoIncrementIDConfig" title="src/constants/increment.constant.ts" ><b>generalAutoIncrementIDConfig</b>&nbsp;&nbsp;&nbsp;(src/.../increment.constant.ts)</a>
+                            <a href="#GENERAL_AUTO_INCREMENT_ID_CONFIG" title="src/constants/increment.constant.ts" ><b>GENERAL_AUTO_INCREMENT_ID_CONFIG</b>&nbsp;&nbsp;&nbsp;(src/.../increment.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#getApiURL" title="src/utils/disqus.ts" ><b>getApiURL</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.ts)</a>
@@ -373,55 +428,58 @@
                             <a href="#isUnverifiableMetaType" title="src/pipes/validation.pipe.ts" ><b>isUnverifiableMetaType</b>&nbsp;&nbsp;&nbsp;(src/.../validation.pipe.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/interceptors/cache.interceptor.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../cache.interceptor.ts)</a>
+                            <a href="#logger" title="src/interceptors/cache.interceptor.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../cache.interceptor.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/archive/archive.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../archive.service.ts)</a>
+                            <a href="#logger" title="src/interceptors/logging.interceptor.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../logging.interceptor.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/comment/comment.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../comment.service.ts)</a>
+                            <a href="#logger" title="src/modules/archive/archive.service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../archive.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/disqus/disqus.service.private.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.service.private.ts)</a>
+                            <a href="#logger" title="src/modules/comment/comment.service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../comment.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/disqus/disqus.service.public.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.service.public.ts)</a>
+                            <a href="#logger" title="src/modules/disqus/disqus.service.private.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.service.private.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
+                            <a href="#logger" title="src/modules/disqus/disqus.service.public.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.service.public.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/expansion/expansion.service.statistic.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.statistic.ts)</a>
+                            <a href="#logger" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/option/option.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../option.service.ts)</a>
+                            <a href="#logger" title="src/modules/expansion/expansion.service.statistic.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.statistic.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/modules/tag/tag.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../tag.service.ts)</a>
+                            <a href="#logger" title="src/modules/option/option.service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../option.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/cache/cache.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../cache.service.ts)</a>
+                            <a href="#logger" title="src/modules/tag/tag.service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../tag.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/cache/redis.service.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../redis.service.ts)</a>
+                            <a href="#logger" title="src/processors/cache/cache.service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../cache.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/database/database.provider.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../database.provider.ts)</a>
+                            <a href="#logger" title="src/processors/cache/redis.service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../redis.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/helper/helper.service.akismet.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.akismet.ts)</a>
+                            <a href="#logger" title="src/processors/database/database.provider.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../database.provider.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/helper/helper.service.email.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.email.ts)</a>
+                            <a href="#logger" title="src/processors/helper/helper.service.akismet.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.akismet.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/helper/helper.service.google.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.google.ts)</a>
+                            <a href="#logger" title="src/processors/helper/helper.service.email.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.email.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/helper/helper.service.ip.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.ip.ts)</a>
+                            <a href="#logger" title="src/processors/helper/helper.service.google.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.google.ts)</a>
                         </li>
                         <li>
-                            <a href="#log" title="src/processors/helper/helper.service.seo.ts" ><b>log</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.seo.ts)</a>
+                            <a href="#logger" title="src/processors/helper/helper.service.ip.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.ip.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#logger" title="src/processors/helper/helper.service.seo.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.seo.ts)</a>
                         </li>
                         <li>
                             <a href="#MONGO_DB" title="src/app.config.ts" ><b>MONGO_DB</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
@@ -457,7 +515,7 @@
                             <a href="#reflector" title="src/constants/reflector.constant.ts" ><b>reflector</b>&nbsp;&nbsp;&nbsp;(src/.../reflector.constant.ts)</a>
                         </li>
                         <li>
-                            <a href="#renderLog" title="src/utils/logger.ts" ><b>renderLog</b>&nbsp;&nbsp;&nbsp;(src/.../logger.ts)</a>
+                            <a href="#renderLogger" title="src/utils/logger.ts" ><b>renderLogger</b>&nbsp;&nbsp;&nbsp;(src/.../logger.ts)</a>
                         </li>
                         <li>
                             <a href="#renderMessage" title="src/utils/logger.ts" ><b>renderMessage</b>&nbsp;&nbsp;&nbsp;(src/.../logger.ts)</a>
@@ -855,35 +913,6 @@
   secretAccessKey: argv.aws_secret_access_key as string,
   s3StaticRegion: argv.aws_s3_static_region as string,
   s3StaticBucket: argv.aws_s3_static_bucket as string
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="BAIDU_INDEXED"></a>
-                    <span class="name">
-                        <span ><b>BAIDU_INDEXED</b></span>
-                        <a href="#BAIDU_INDEXED"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  site: argv.baidu_site || &#x27;your baidu site domain. e.g. surmon.me&#x27;,
-  token: argv.baidu_token || &#x27;your baidu seo push token&#x27;
 }</code>
                     </td>
                 </tr>
@@ -1857,16 +1886,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;DBBackupService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;DBBackupService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -2427,11 +2456,16 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>(scope?: string) &#x3D;&gt; ({
-  debug: renderLog(LoggerLevel.Debug, chalk.cyan(&#x27;[DEBUG]&#x27;), chalk.cyanBright, scope),
-  info: renderLog(LoggerLevel.Info, chalk.blue(&#x27;[_INFO]&#x27;), chalk.greenBright, scope),
-  warn: renderLog(LoggerLevel.Warn, chalk.yellow(&#x27;[_WARN]&#x27;), chalk.yellowBright, scope),
-  error: renderLog(LoggerLevel.Error, chalk.red(&#x27;[ERROR]&#x27;), chalk.redBright, scope)
+                        <i>Default value : </i><code>(opts?: LoggerOptions) &#x3D;&gt; ({
+  // levels
+  log: renderLogger({ label: &#x27;⚪&#x27;, consoler: console.log, color: chalk.cyanBright, ...opts }),
+  info: renderLogger({ label: &#x27;🔵&#x27;, consoler: console.info, color: chalk.greenBright, ...opts }),
+  warn: renderLogger({ label: &#x27;🟠&#x27;, consoler: console.warn, color: chalk.yellowBright, ...opts }),
+  error: renderLogger({ label: &#x27;🔴&#x27;, consoler: console.error, color: chalk.redBright, ...opts }),
+  debug: renderLogger({ label: &#x27;🟤&#x27;, consoler: console.debug, color: chalk.cyanBright, ...opts }),
+  // aliases
+  success: renderLogger({ label: &#x27;🟢&#x27;, consoler: console.log, color: chalk.greenBright, ...opts }),
+  failure: renderLogger({ label: &#x27;🔴&#x27;, consoler: console.warn, color: chalk.redBright, ...opts })
 })</code>
                     </td>
                 </tr>
@@ -2443,25 +2477,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="renderLog"></a>
+                    <a name="renderLogger"></a>
                     <span class="name">
-                        <span ><b>renderLog</b></span>
-                        <a href="#renderLog"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>renderLogger</b></span>
+                        <a href="#renderLogger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>(method: LoggerLevel, level: string, color: chalk.Chalk, scope?: string) &#x3D;&gt; {
+                        <i>Default value : </i><code>(options: LoggerRenderOptions) &#x3D;&gt; {
   return (...messages: any) &#x3D;&gt; {
     const logs: any[] &#x3D; []
-    logs.push(chalk.greenBright(&#x60;[NP]&#x60;))
-    logs.push(renderTime())
-    logs.push(level)
-    if (scope) {
-      logs.push(renderScope(scope))
+    logs.push(options.label)
+    if (options.time) {
+      logs.push(renderTime())
     }
-    return console[method](...logs, ...renderMessage(color, messages))
+    if (options.scope) {
+      logs.push(renderScope(options.scope))
+    }
+    return options.consoler(...logs, ...renderMessage(options.color, messages))
   }
 }</code>
                     </td>
@@ -2733,11 +2768,11 @@
     mongoose.set(&#x27;strictQuery&#x27;, false)
 
     mongoose.connection.on(&#x27;connecting&#x27;, () &#x3D;&gt; {
-      log.info(&#x27;connecting...&#x27;)
+      logger.log(&#x27;connecting...&#x27;)
     })
 
     mongoose.connection.on(&#x27;open&#x27;, () &#x3D;&gt; {
-      log.info(&#x27;readied (open).&#x27;)
+      logger.success(&#x27;readied (open).&#x27;)
       if (reconnectionTask) {
         clearTimeout(reconnectionTask)
         reconnectionTask &#x3D; null
@@ -2745,12 +2780,12 @@
     })
 
     mongoose.connection.on(&#x27;disconnected&#x27;, () &#x3D;&gt; {
-      log.error(&#x60;disconnected! retry when after ${RECONNECT_INTERVAL / 1000}s&#x60;)
+      logger.error(&#x60;disconnected! retry after ${RECONNECT_INTERVAL / 1000}s&#x60;)
       reconnectionTask &#x3D; setTimeout(connection, RECONNECT_INTERVAL)
     })
 
     mongoose.connection.on(&#x27;error&#x27;, (error) &#x3D;&gt; {
-      log.error(&#x27;error!&#x27;, error)
+      logger.error(&#x27;error!&#x27;, error)
       mongoose.disconnect()
       sendAlarmMail(String(error))
     })
@@ -2768,16 +2803,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;MongoDB&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;MongoDB&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -3083,16 +3118,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;StatisticService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;StatisticService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -3300,10 +3335,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="generalAutoIncrementIDConfig"></a>
+                    <a name="GENERAL_AUTO_INCREMENT_ID_CONFIG"></a>
                     <span class="name">
-                        <span ><b>generalAutoIncrementIDConfig</b></span>
-                        <a href="#generalAutoIncrementIDConfig"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>GENERAL_AUTO_INCREMENT_ID_CONFIG</b></span>
+                        <a href="#GENERAL_AUTO_INCREMENT_ID_CONFIG"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -3325,8 +3360,8 @@
   // https://github.com/typegoose/auto-increment/blob/master/src/autoIncrement.ts
   // https://github.com/typegoose/auto-increment/issues/11
   // https://github.com/typegoose/auto-increment#overwritemodelname
-  // fieldKey: &#x27;field&#x27;,
-  // modelNameKey: &#x27;modelName&#x27;,
+  // field: &#x27;_id&#x27;,
+  // overwriteModelName: &#x27;modelName&#x27;,
 }</code>
                     </td>
                 </tr>
@@ -4140,16 +4175,39 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;CacheInterceptor&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;CacheInterceptor&#x27;, time: isDevEnv })</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/interceptors/logging.interceptor.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;LoggingInterceptor&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4163,16 +4221,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;ArchiveService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;ArchiveService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4186,16 +4244,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;CommentService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;CommentService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4209,16 +4267,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;DisqusPrivateService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;DisqusPrivateService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4232,16 +4290,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;DisqusPublicService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;DisqusPublicService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4255,16 +4313,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;OptionService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;OptionService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4278,16 +4336,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;TagService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;TagService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4301,16 +4359,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;CacheService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;CacheService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4324,16 +4382,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;RedisService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;RedisService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4347,16 +4405,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;AkismetService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;AkismetService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4370,16 +4428,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;EmailService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;EmailService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4393,16 +4451,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;GoogleService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;GoogleService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4416,16 +4474,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;IPService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;IPService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 
@@ -4439,16 +4497,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="log"></a>
+                    <a name="logger"></a>
                     <span class="name">
-                        <span ><b>log</b></span>
-                        <a href="#log"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>logger.scope(&#x27;SeoService&#x27;)</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;SeoService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 

@@ -12,6 +12,64 @@
         <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
+          <script>
+               // Blocking script to avaoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+
+               if ($darkModeToggles.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">NodePress documentation</a>
@@ -120,7 +178,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:31</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:32</a></div>
                             </td>
                         </tr>
 
@@ -181,8 +239,8 @@
                 <td class="col-md-4">
                     <a name="backup"></a>
                     <span class="name">
-                        <span class="modifier">Public</span>
-                        <span class="modifier">Async</span>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
                         <span ><b>backup</b></span>
                         <a href="#backup"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -190,27 +248,27 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>backup()</code>
                 </td>
             </tr>
 
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:44</a></div>
-                </td>
-            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:45</a></div>
+                        </td>
+                    </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -221,7 +279,7 @@
                 <td class="col-md-4">
                     <a name="doBackup"></a>
                     <span class="name">
-                        <span class="modifier">Private</span>
+                            <span class="modifier">Private</span>
                         <span ><b>doBackup</b></span>
                         <a href="#doBackup"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -229,27 +287,27 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>doBackup()</code>
                 </td>
             </tr>
 
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="65"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:65</a></div>
-                </td>
-            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:66</a></div>
+                        </td>
+                    </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
-                    </div>
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -260,7 +318,7 @@
                 <td class="col-md-4">
                     <a name="mailToAdmin"></a>
                     <span class="name">
-                        <span class="modifier">Private</span>
+                            <span class="modifier">Private</span>
                         <span ><b>mailToAdmin</b></span>
                         <a href="#mailToAdmin"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -268,83 +326,81 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
                     <code>mailToAdmin(subject: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, content: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isCode?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="56"
-                            class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:56</a></div>
-                </td>
-            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/modules/expansion/expansion.service.dbbackup.ts:57</a></div>
+                        </td>
+                    </tr>
 
 
             <tr>
                 <td class="col-md-4">
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>subject</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>subject</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>content</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td>isCode</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                    </td>
+                                        </tr>
+                                        <tr>
+                                                <td>content</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
 
-                                    <td>
-                                        Yes
-                                    </td>
+                                            <td>
+                                                    No
+                                            </td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                                        </tr>
+                                        <tr>
+                                                <td>isCode</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
 
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -369,9 +425,10 @@ import {
   AWSServerSideEncryption
 } from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { APP, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
-import logger from &#x27;@app/utils/logger&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
 
-const log &#x3D; logger.scope(&#x27;DBBackupService&#x27;)
+const logger &#x3D; createLogger({ scope: &#x27;DBBackupService&#x27;, time: isDevEnv })
 
 const UP_FAILED_TIMEOUT &#x3D; 1000 * 60 * 5
 const UPLOAD_INTERVAL &#x3D; &#x27;0 0 3 * * *&#x27;
@@ -384,7 +441,7 @@ export class DBBackupService {
     private readonly emailService: EmailService,
     private readonly awsService: AWSService
   ) {
-    log.info(&#x27;schedule job initialized.&#x27;)
+    logger.info(&#x27;schedule job initialized.&#x27;)
     schedule.scheduleJob(UPLOAD_INTERVAL, () &#x3D;&gt; {
       this.backup().catch(() &#x3D;&gt; {
         setTimeout(this.backup.bind(this), UP_FAILED_TIMEOUT)
@@ -425,10 +482,13 @@ export class DBBackupService {
       shell.mkdir(&#x27;backup&#x27;)
 
       // https://dba.stackexchange.com/questions/215534/mongodump-unrecognized-field-snapshot
-      shell.exec(&#x60;mongodump --forceTableScan --uri&#x3D;&quot;${MONGO_DB.uri}&quot; --out&#x3D;&quot;backup&quot;&#x60;, (code, out) &#x3D;&gt; {
-        log.info(&#x27;mongodump done.&#x27;, code, out)
-        if (code !&#x3D;&#x3D; 0) {
-          log.warn(&#x27;mongodump failed!&#x27;, out)
+      // https://www.mongodb.com/docs/database-tools/mongodump/#std-option-mongodump.--quiet
+      shell.exec(&#x60;mongodump --quiet --forceTableScan --uri&#x3D;&quot;${MONGO_DB.uri}&quot; --out&#x3D;&quot;backup&quot;&#x60;, (code, out, err) &#x3D;&gt; {
+        if (code &#x3D;&#x3D;&#x3D; 0) {
+          const filesCount &#x3D; shell.ls(&#x27;./backup/*&#x27;)
+          logger.log(&#x27;mongodump done.&#x27;, &#x60;${filesCount.length} files&#x60;)
+        } else {
+          logger.failure(&#x27;mongodump failed!&#x27;, out, err)
           return reject(out)
         }
 
@@ -438,12 +498,12 @@ export class DBBackupService {
 
         // tar -czf - backup | openssl des3 -salt -k &lt;password&gt; -out target.tar.gz
         // shell.exec(&#x60;tar -czf ${BACKUP_FILE_NAME} ./backup&#x60;)
-        shell.exec(&#x60;zip -r -P ${DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup&#x60;)
+        shell.exec(&#x60;zip -q -r -P ${DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup&#x60;)
         const fileDate &#x3D; dayjs(new Date()).format(&#x27;YYYY-MM-DD-HH:mm&#x27;)
         const fileName &#x3D; &#x60;nodepress-mongodb/backup-${fileDate}.zip&#x60;
         const filePath &#x3D; path.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME)
-        log.info(&#x27;uploading: &#x27; + fileName)
-        log.info(&#x27;file source: &#x27; + filePath)
+        logger.log(&#x60;uploading: ${fileName}&#x60;)
+        logger.log(&#x60;file source: ${filePath}&#x60;)
 
         // upload to cloud storage
         this.awsService
@@ -457,12 +517,13 @@ export class DBBackupService {
             encryption: AWSServerSideEncryption.AES256
           })
           .then((result) &#x3D;&gt; {
-            log.info(&#x27;upload succeed.&#x27;, result.url)
+            logger.success(&#x27;upload succeed.&#x27;, result.url)
             resolve(result)
           })
           .catch((error) &#x3D;&gt; {
-            log.warn(&#x27;upload failed!&#x27;, error)
-            reject(JSON.stringify(error.message))
+            const errorMessage &#x3D; JSON.stringify(error.message ?? error)
+            logger.failure(&#x27;upload failed!&#x27;, errorMessage)
+            reject(errorMessage)
           })
       })
     })
