@@ -6,7 +6,7 @@
 
 import { AutoIncrementIDOptions } from '@typegoose/auto-increment'
 
-export const generalAutoIncrementIDConfig: AutoIncrementIDOptions = {
+export const GENERAL_AUTO_INCREMENT_ID_CONFIG: AutoIncrementIDOptions = {
   field: 'id',
   startAt: 1,
   incrementBy: 1,
@@ -16,6 +16,6 @@ export const generalAutoIncrementIDConfig: AutoIncrementIDOptions = {
   // https://github.com/typegoose/auto-increment/blob/master/src/autoIncrement.ts
   // https://github.com/typegoose/auto-increment/issues/11
   // https://github.com/typegoose/auto-increment#overwritemodelname
-  // fieldKey: 'field',
-  // modelNameKey: 'modelName',
+  // field: '_id',
+  // overwriteModelName: 'modelName',
 }

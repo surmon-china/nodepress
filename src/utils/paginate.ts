@@ -58,7 +58,7 @@ export function paginate<T>(this: Model<T>, filterQuery: PaginateQuery<T> = {}, 
   }
 
   // query
-  const countQuery = this.countDocuments ? this.countDocuments(filterQuery).exec() : this.count(filterQuery).exec()
+  const countQuery = this.countDocuments(filterQuery).exec()
   const pageQuery = this.find(filterQuery, projection, {
     skip: (page - 1) * perPage,
     limit: perPage,

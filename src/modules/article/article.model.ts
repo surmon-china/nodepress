@@ -21,7 +21,7 @@ import {
   ArrayUnique
 } from 'class-validator'
 import { Language, SortType, PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
-import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
+import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { Category } from '@app/modules/category/category.model'
@@ -70,7 +70,7 @@ export class ArticleMeta {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, generalAutoIncrementIDConfig)
+@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
     versionKey: false,

@@ -7,7 +7,7 @@
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions } from '@typegoose/typegoose'
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty } from 'class-validator'
-import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
+import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { PublishState } from '@app/constants/biz.constant'
@@ -15,7 +15,7 @@ import { PublishState } from '@app/constants/biz.constant'
 export const ANNOUNCEMENT_STATES = [PublishState.Draft, PublishState.Published] as const
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, generalAutoIncrementIDConfig)
+@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
     versionKey: false,

@@ -7,7 +7,7 @@
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions, Severity } from '@typegoose/typegoose'
 import { IsString, IsIP, IsIn, IsInt, IsOptional, IsNotEmpty } from 'class-validator'
-import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
+import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { IPLocation } from '@app/processors/helper/helper.service.ip'
@@ -38,7 +38,7 @@ export const VOTE_TARGETS = [VoteTarget.Post, VoteTarget.Comment] as const
 export const VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus] as const
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, generalAutoIncrementIDConfig)
+@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {

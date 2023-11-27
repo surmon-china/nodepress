@@ -19,7 +19,7 @@ import {
   IsOptional,
   IsNotEmpty
 } from 'class-validator'
-import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
+import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { IPLocation } from '@app/processors/helper/helper.service.ip'
@@ -107,7 +107,7 @@ export class FeedbackBase {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, generalAutoIncrementIDConfig)
+@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {

@@ -24,7 +24,7 @@ import {
   ValidateNested,
   ArrayUnique
 } from 'class-validator'
-import { generalAutoIncrementIDConfig } from '@app/constants/increment.constant'
+import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { decodeMD5 } from '@app/transformers/codec.transformer'
@@ -109,7 +109,7 @@ export class CommentBase {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, generalAutoIncrementIDConfig)
+@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
