@@ -78,23 +78,6 @@ export class SeoService {
       })
   }
 
-  // Baidu: https://ziyuan.baidu.com/linksubmit/index
-  private pingBaidu(action: SEOAction, urls: string[]): void {
-    this.httpService.axiosRef
-      .request({
-        method: 'post',
-        data: urls.join('\n'),
-        headers: { 'Content-Type': 'text/plain' },
-        url: `http://data.zz.baidu.com/urls?site=${APP_CONFIG.BAIDU_INDEXED.site}&token=${APP_CONFIG.BAIDU_INDEXED.token}`
-      })
-      .then((response) => {
-        log.info(`Baidu ping [${action}] succeed.`, urls, response.statusText)
-      })
-      .catch((error) => {
-        log.warn(`Baidu ping [${action}] failed!`, getMessageFromAxiosError(error))
-      })
-  }
-
   private humanizedUrl(url: ActionURL): string[] {
     return typeof url === 'string' ? [url] : url
   }
@@ -102,20 +85,17 @@ export class SeoService {
   public push(url: ActionURL) {
     const urls = this.humanizedUrl(url)
     this.pingGoogle(SEOAction.Push, urls)
-    this.pingBaidu(SEOAction.Push, urls)
     this.pingBing(urls)
   }
 
   public update(url: ActionURL) {
     const urls = this.humanizedUrl(url)
-    this.pingBaidu(SEOAction.Update, urls)
     this.pingGoogle(SEOAction.Update, urls)
     this.pingBing(urls)
   }
 
   public delete(url: ActionURL) {
     const urls = this.humanizedUrl(url)
-    this.pingBaidu(SEOAction.Delete, urls)
     this.pingGoogle(SEOAction.Delete, urls)
     this.pingBing(urls)
   }

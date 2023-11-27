@@ -7,9 +7,10 @@
 import path from 'path'
 import yargs from 'yargs'
 
-const argv = yargs.argv as Record<string, string | void>
 const ROOT_PATH = path.join(__dirname, '..')
 const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
+
+const argv = yargs.argv as Record<string, string | void>
 
 export const APP = {
   PORT: 8000,
@@ -78,12 +79,6 @@ export const DISQUS = {
 export const AKISMET = {
   key: argv.akismet_key || 'your Akismet Key',
   blog: argv.akismet_blog || 'your Akismet blog site, e.g. https://surmon.me'
-}
-
-// https://ziyuan.baidu.com/linksubmit/index
-export const BAIDU_INDEXED = {
-  site: argv.baidu_site || 'your baidu site domain. e.g. surmon.me',
-  token: argv.baidu_token || 'your baidu seo push token'
 }
 
 // https://learn.microsoft.com/en-us/bingwebmaster/getting-access
