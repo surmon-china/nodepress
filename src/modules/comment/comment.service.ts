@@ -49,7 +49,9 @@ export class CommentService {
     const getMailContent = (subject = '') => {
       const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`]
       const textHTML = texts.map((text) => `<p>${text}</p>`).join('')
-      const linkHTML = `<a href="${getPermalinkByID(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`
+      const replyText = `Reply to ${authorName} #${comment.id}`
+      const commentLink = getPermalinkByID(comment.post_id) + `#comment-${comment.id}`
+      const linkHTML = `<a href="${commentLink}" target="_blank">${replyText}</a>`
       return {
         text: texts.join('\n'),
         html: [textHTML, `<br>`, linkHTML].join('\n')

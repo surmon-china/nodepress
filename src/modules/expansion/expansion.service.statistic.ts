@@ -8,6 +8,8 @@ import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
 import { CacheService } from '@app/processors/cache/cache.service'
 import { EmailService } from '@app/processors/helper/helper.service.email'
+import { VoteTarget, VoteType } from '@app/modules/vote/vote.model'
+import { VoteService } from '@app/modules/vote/vote.service'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { FeedbackService } from '@app/modules/feedback/feedback.service'
@@ -39,6 +41,7 @@ export class StatisticService {
     private readonly articleService: ArticleService,
     private readonly commentService: CommentService,
     private readonly feedbackService: FeedbackService,
+    private readonly voteService: VoteService,
     private readonly tagService: TagService
   ) {
     // daily data cleaning at 00:01
@@ -57,15 +60,33 @@ export class StatisticService {
   private async dailyStatisticsTask(todayViews: number) {
     const now = new Date()
     const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000)
-    const todayNewComments = await this.commentService.countDocuments({
-      created_at: { $gte: oneDayAgo, $lt: now }
-    })
+    const createdAt = { $gte: oneDayAgo, $lt: now }
+    const [todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] = await Promise.all([
+      this.commentService.countDocuments({ created_at: createdAt }),
+      this.voteService.countDocuments({
+        created_at: createdAt,
+        target_type: VoteTarget.Post,
+        vote_type: VoteType.Upvote
+      }),
+      this.voteService.countDocuments({
+        created_at: createdAt,
+        target_type: VoteTarget.Comment,
+        vote_type: VoteType.Upvote
+      }),
+      this.voteService.countDocuments({
+        created_at: createdAt,
+        target_type: VoteTarget.Comment,
+        vote_type: VoteType.Downvote
+      })
+    ])
+
     const emailContents = [
       `Today views: ${todayViews}`,
-      `Today new comments: ${todayNewComments}`
-      // `Today Post votes: TODO`,
-      // `Today Comment votes: TODO`,
+      `Today new comments: ${todayNewComments}`,
+      `Today new post votes: +${todayArticleUpVotes}`,
+      `Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}`
     ]
+
     this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
       subject: 'Daily Statistics',

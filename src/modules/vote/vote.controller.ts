@@ -293,7 +293,7 @@ export class VoteController {
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkByID(comment.post_id)
+          link: getPermalinkByID(comment.post_id) + `#comment-${comment.id}`
         }
         // email to admin
         this.emailToTargetVoteMessage({
