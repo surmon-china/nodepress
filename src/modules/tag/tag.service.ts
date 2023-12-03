@@ -114,8 +114,8 @@ export class TagService {
     return tag
   }
 
-  public async delete(tagID: MongooseID): Promise<MongooseDoc<Tag>> {
-    const tag = await this.tagModel.findByIdAndRemove(tagID).exec()
+  public async delete(tagID: MongooseID) {
+    const tag = await this.tagModel.findByIdAndDelete(tagID, null).exec()
     if (!tag) {
       throw `Tag '${tagID}' not found`
     }

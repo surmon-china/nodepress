@@ -179,11 +179,12 @@ export class ArticleService {
     return article
   }
 
-  public async delete(articleID: MongooseID): Promise<MongooseDoc<Article>> {
-    const article = await this.articleModel.findByIdAndRemove(articleID).exec()
+  public async delete(articleID: MongooseID) {
+    const article = await this.articleModel.findByIdAndDelete(articleID, null).exec()
     if (!article) {
       throw `Article '${articleID}' not found`
     }
+
     this.seoService.delete(getArticleUrl(article.id))
     this.tagService.updateAllTagsCache()
     this.archiveService.updateCache()

@@ -52,11 +52,12 @@ export class FeedbackService {
     return feedback
   }
 
-  public async delete(feedbackID: MongooseID): Promise<MongooseDoc<Feedback>> {
-    const feedback = await this.feedbackModel.findByIdAndRemove(feedbackID).exec()
+  public async delete(feedbackID: MongooseID) {
+    const feedback = await this.feedbackModel.findByIdAndDelete(feedbackID, null).exec()
     if (!feedback) {
       throw `Feedback '${feedbackID}' not found`
     }
+
     return feedback
   }
 

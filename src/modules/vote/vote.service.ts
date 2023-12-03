@@ -31,8 +31,8 @@ export class VoteService {
     return vote
   }
 
-  public async delete(voteID: MongooseID): Promise<MongooseDoc<Vote>> {
-    const vote = await this.voteModel.findByIdAndRemove(voteID).exec()
+  public async delete(voteID: MongooseID) {
+    const vote = await this.voteModel.findByIdAndDelete(voteID, null).exec()
     if (!vote) {
       throw `Vote '${voteID}' not found`
     }

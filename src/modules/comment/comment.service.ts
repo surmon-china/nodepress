@@ -268,8 +268,8 @@ export class CommentService {
   }
 
   // delete comment
-  public async delete(commentID: MongooseID): Promise<MongooseDoc<Comment>> {
-    const comment = await this.commentModel.findByIdAndRemove(commentID).exec()
+  public async delete(commentID: MongooseID) {
+    const comment = await this.commentModel.findByIdAndDelete(commentID, null).exec()
     if (!comment) {
       throw `Comment '${commentID}' not found`
     }

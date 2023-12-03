@@ -74,7 +74,7 @@ export class TagController {
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Delete tag')
-  delTag(@QueryParams() { params }: QueryParamsResult): Promise<Tag> {
+  delTag(@QueryParams() { params }: QueryParamsResult) {
     return this.tagService.delete(params.id)
   }
 }

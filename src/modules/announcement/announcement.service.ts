@@ -32,11 +32,13 @@ export class AnnouncementService {
       .then((result) => result || Promise.reject(`Announcement '${announcementID}' not found`))
   }
 
-  public delete(announcementID: MongooseID): Promise<MongooseDoc<Announcement>> {
+  public delete(announcementID: MongooseID) {
     return this.announcementModel
-      .findByIdAndRemove(announcementID)
+      .findByIdAndDelete(announcementID, null)
       .exec()
-      .then((result) => result || Promise.reject(`Announcement '${announcementID}' not found`))
+      .then((result) => {
+        return result ?? Promise.reject(`Announcement '${announcementID}' not found`)
+      })
   }
 
   public batchDelete(announcementIDs: MongooseID[]) {

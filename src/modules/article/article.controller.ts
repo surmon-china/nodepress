@@ -164,7 +164,7 @@ export class ArticleController {
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Delete article')
-  delArticle(@QueryParams() { params }: QueryParamsResult): Promise<Article> {
+  delArticle(@QueryParams() { params }: QueryParamsResult) {
     return this.articleService.delete(params.id)
   }
 
