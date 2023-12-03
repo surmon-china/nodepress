@@ -123,7 +123,7 @@ __decorate([
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], TagController.prototype, "delTag", null);
 exports.TagController = TagController = __decorate([
     (0, common_1.Controller)('tag'),

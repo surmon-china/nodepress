@@ -34,9 +34,11 @@ let AnnouncementService = class AnnouncementService {
     }
     delete(announcementID) {
         return this.announcementModel
-            .findByIdAndRemove(announcementID)
+            .findByIdAndDelete(announcementID, null)
             .exec()
-            .then((result) => result || Promise.reject(`Announcement '${announcementID}' not found`));
+            .then((result) => {
+            return result !== null && result !== void 0 ? result : Promise.reject(`Announcement '${announcementID}' not found`);
+        });
     }
     batchDelete(announcementIDs) {
         return this.announcementModel.deleteMany({ _id: { $in: announcementIDs } }).exec();

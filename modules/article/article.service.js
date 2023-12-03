@@ -147,7 +147,7 @@ let ArticleService = class ArticleService {
         return article;
     }
     async delete(articleID) {
-        const article = await this.articleModel.findByIdAndRemove(articleID).exec();
+        const article = await this.articleModel.findByIdAndDelete(articleID, null).exec();
         if (!article) {
             throw `Article '${articleID}' not found`;
         }

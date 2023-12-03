@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExpansionModule = void 0;
 const common_1 = require("@nestjs/common");
 const tag_module_1 = require("../tag/tag.module");
+const vote_module_1 = require("../vote/vote.module");
 const article_module_1 = require("../article/article.module");
 const comment_module_1 = require("../comment/comment.module");
 const feedback_module_1 = require("../feedback/feedback.module");
@@ -20,7 +21,7 @@ let ExpansionModule = class ExpansionModule {
 exports.ExpansionModule = ExpansionModule;
 exports.ExpansionModule = ExpansionModule = __decorate([
     (0, common_1.Module)({
-        imports: [tag_module_1.TagModule, article_module_1.ArticleModule, comment_module_1.CommentModule, feedback_module_1.FeedbackModule],
+        imports: [tag_module_1.TagModule, vote_module_1.VoteModule, article_module_1.ArticleModule, comment_module_1.CommentModule, feedback_module_1.FeedbackModule],
         controllers: [expansion_controller_1.ExpansionController],
         providers: [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService],
         exports: [expansion_service_statistic_1.StatisticService, expansion_service_dbbackup_1.DBBackupService]

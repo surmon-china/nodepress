@@ -208,7 +208,7 @@ __decorate([
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "delArticle", null);
 __decorate([
     (0, common_1.Patch)(),

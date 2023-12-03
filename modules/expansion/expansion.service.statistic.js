@@ -40,6 +40,8 @@ const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const helper_service_email_1 = require("../../processors/helper/helper.service.email");
+const vote_model_1 = require("../vote/vote.model");
+const vote_service_1 = require("../vote/vote.service");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
 const feedback_service_1 = require("../feedback/feedback.service");
@@ -59,12 +61,13 @@ const DEFAULT_STATISTIC = Object.freeze({
     averageEmotion: null
 });
 let StatisticService = class StatisticService {
-    constructor(cacheService, emailService, articleService, commentService, feedbackService, tagService) {
+    constructor(cacheService, emailService, articleService, commentService, feedbackService, voteService, tagService) {
         this.cacheService = cacheService;
         this.emailService = emailService;
         this.articleService = articleService;
         this.commentService = commentService;
         this.feedbackService = feedbackService;
+        this.voteService = voteService;
         this.tagService = tagService;
         node_schedule_1.default.scheduleJob('1 0 0 * * *', async () => {
             try {
@@ -81,12 +84,30 @@ let StatisticService = class StatisticService {
     async dailyStatisticsTask(todayViews) {
         const now = new Date();
         const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        const todayNewComments = await this.commentService.countDocuments({
-            created_at: { $gte: oneDayAgo, $lt: now }
-        });
+        const createdAt = { $gte: oneDayAgo, $lt: now };
+        const [todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] = await Promise.all([
+            this.commentService.countDocuments({ created_at: createdAt }),
+            this.voteService.countDocuments({
+                created_at: createdAt,
+                target_type: vote_model_1.VoteTarget.Post,
+                vote_type: vote_model_1.VoteType.Upvote
+            }),
+            this.voteService.countDocuments({
+                created_at: createdAt,
+                target_type: vote_model_1.VoteTarget.Comment,
+                vote_type: vote_model_1.VoteType.Upvote
+            }),
+            this.voteService.countDocuments({
+                created_at: createdAt,
+                target_type: vote_model_1.VoteTarget.Comment,
+                vote_type: vote_model_1.VoteType.Downvote
+            })
+        ]);
         const emailContents = [
             `Today views: ${todayViews}`,
-            `Today new comments: ${todayNewComments}`
+            `Today new comments: ${todayNewComments}`,
+            `Today new post votes: +${todayArticleUpVotes}`,
+            `Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}`
         ];
         this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
             to: APP_CONFIG.APP.ADMIN_EMAIL,
@@ -135,6 +156,7 @@ exports.StatisticService = StatisticService = __decorate([
         article_service_1.ArticleService,
         comment_service_1.CommentService,
         feedback_service_1.FeedbackService,
+        vote_service_1.VoteService,
         tag_service_1.TagService])
 ], StatisticService);
 //# sourceMappingURL=expansion.service.statistic.js.map

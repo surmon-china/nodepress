@@ -83,7 +83,9 @@ let CommentService = class CommentService {
         const getMailContent = (subject = '') => {
             const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`];
             const textHTML = texts.map((text) => `<p>${text}</p>`).join('');
-            const linkHTML = `<a href="${(0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)}" target="_blank">Reply to ${authorName}</a>`;
+            const replyText = `Reply to ${authorName} #${comment.id}`;
+            const commentLink = (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id) + `#comment-${comment.id}`;
+            const linkHTML = `<a href="${commentLink}" target="_blank">${replyText}</a>`;
             return {
                 text: texts.join('\n'),
                 html: [textHTML, `<br>`, linkHTML].join('\n')
@@ -224,7 +226,7 @@ let CommentService = class CommentService {
         return comment;
     }
     async delete(commentID) {
-        const comment = await this.commentModel.findByIdAndRemove(commentID).exec();
+        const comment = await this.commentModel.findByIdAndDelete(commentID, null).exec();
         if (!comment) {
             throw `Comment '${commentID}' not found`;
         }

@@ -95,7 +95,7 @@ let CategoryService = class CategoryService {
         return category;
     }
     async delete(categoryID) {
-        const category = await this.categoryModel.findByIdAndRemove(categoryID).exec();
+        const category = await this.categoryModel.findByIdAndDelete(categoryID, null).exec();
         if (!category) {
             throw `Category '${categoryID}' not found`;
         }

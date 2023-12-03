@@ -22,7 +22,8 @@ exports.VoteModule = VoteModule = __decorate([
     (0, common_1.Module)({
         imports: [option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule, disqus_module_1.DisqusModule],
         providers: [vote_model_1.VoteProvider, vote_service_1.VoteService],
-        controllers: [vote_controller_1.VoteController]
+        controllers: [vote_controller_1.VoteController],
+        exports: [vote_service_1.VoteService]
     })
 ], VoteModule);
 //# sourceMappingURL=vote.module.js.map

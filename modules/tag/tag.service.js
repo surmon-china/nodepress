@@ -99,7 +99,7 @@ let TagService = class TagService {
         return tag;
     }
     async delete(tagID) {
-        const tag = await this.tagModel.findByIdAndRemove(tagID).exec();
+        const tag = await this.tagModel.findByIdAndDelete(tagID, null).exec();
         if (!tag) {
             throw `Tag '${tagID}' not found`;
         }

@@ -259,7 +259,7 @@ let VoteController = class VoteController {
                 author: this.getAuthorString(voteAuthor),
                 userAgent: visitor.ua,
                 location: ipLocation,
-                link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id)
+                link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id) + `#comment-${comment.id}`
             };
             this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailPayload));
             if (comment.author.email) {

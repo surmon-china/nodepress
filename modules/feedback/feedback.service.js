@@ -45,7 +45,7 @@ let FeedbackService = class FeedbackService {
         return feedback;
     }
     async delete(feedbackID) {
-        const feedback = await this.feedbackModel.findByIdAndRemove(feedbackID).exec();
+        const feedback = await this.feedbackModel.findByIdAndDelete(feedbackID, null).exec();
         if (!feedback) {
             throw `Feedback '${feedbackID}' not found`;
         }
