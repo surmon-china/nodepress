@@ -364,8 +364,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="202"
-                                    class="link-to-prism">src/modules/article/article.service.ts:202</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="203"
+                                    class="link-to-prism">src/modules/article/article.service.ts:203</a></div>
                         </td>
                     </tr>
 
@@ -434,8 +434,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="193"
-                                    class="link-to-prism">src/modules/article/article.service.ts:193</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="194"
+                                    class="link-to-prism">src/modules/article/article.service.ts:194</a></div>
                         </td>
                     </tr>
 
@@ -623,7 +623,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;MongooseDoc&lt;Article&gt;&gt;</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -655,8 +655,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="216"
-                                    class="link-to-prism">src/modules/article/article.service.ts:216</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="217"
+                                    class="link-to-prism">src/modules/article/article.service.ts:217</a></div>
                         </td>
                     </tr>
 
@@ -1019,8 +1019,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="228"
-                                    class="link-to-prism">src/modules/article/article.service.ts:228</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="229"
+                                    class="link-to-prism">src/modules/article/article.service.ts:229</a></div>
                         </td>
                     </tr>
 
@@ -1235,8 +1235,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="212"
-                                    class="link-to-prism">src/modules/article/article.service.ts:212</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="213"
+                                    class="link-to-prism">src/modules/article/article.service.ts:213</a></div>
                         </td>
                     </tr>
 
@@ -1375,8 +1375,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="254"
-                                    class="link-to-prism">src/modules/article/article.service.ts:254</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="255"
+                                    class="link-to-prism">src/modules/article/article.service.ts:255</a></div>
                         </td>
                     </tr>
 
@@ -1608,8 +1608,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="260"
-                                    class="link-to-prism">src/modules/article/article.service.ts:260</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="261"
+                                    class="link-to-prism">src/modules/article/article.service.ts:261</a></div>
                         </td>
                     </tr>
 
@@ -1848,11 +1848,12 @@ export class ArticleService {
     return article
   }
 
-  public async delete(articleID: MongooseID): Promise&lt;MongooseDoc&lt;Article&gt;&gt; {
-    const article &#x3D; await this.articleModel.findByIdAndRemove(articleID).exec()
+  public async delete(articleID: MongooseID) {
+    const article &#x3D; await this.articleModel.findByIdAndDelete(articleID, null).exec()
     if (!article) {
       throw &#x60;Article &#x27;${articleID}&#x27; not found&#x60;
     }
+
     this.seoService.delete(getArticleUrl(article.id))
     this.tagService.updateAllTagsCache()
     this.archiveService.updateCache()

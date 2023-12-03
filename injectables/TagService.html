@@ -605,7 +605,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;MongooseDoc&lt;Tag&gt;&gt;</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -1167,8 +1167,8 @@ export class TagService {
     return tag
   }
 
-  public async delete(tagID: MongooseID): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
-    const tag &#x3D; await this.tagModel.findByIdAndRemove(tagID).exec()
+  public async delete(tagID: MongooseID) {
+    const tag &#x3D; await this.tagModel.findByIdAndDelete(tagID, null).exec()
     if (!tag) {
       throw &#x60;Tag &#x27;${tagID}&#x27; not found&#x60;
     }

@@ -345,7 +345,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;Tag&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -739,7 +739,7 @@ export class TagController {
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
   @Responser.handle(&#x27;Delete tag&#x27;)
-  delTag(@QueryParams() { params }: QueryParamsResult): Promise&lt;Tag&gt; {
+  delTag(@QueryParams() { params }: QueryParamsResult) {
     return this.tagService.delete(params.id)
   }
 }

@@ -911,7 +911,7 @@ export class CategoryService {
 
   // delete category
   public async delete(categoryID: MongooseID) {
-    const category &#x3D; await this.categoryModel.findByIdAndRemove(categoryID).exec()
+    const category &#x3D; await this.categoryModel.findByIdAndDelete(categoryID, null).exec()
     if (!category) {
       throw &#x60;Category &#x27;${categoryID}&#x27; not found&#x60;
     }

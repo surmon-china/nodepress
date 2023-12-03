@@ -250,8 +250,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="42"
-                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:42</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -425,7 +425,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Announcement.html" target="_self" >Promise&lt;MongooseDoc&lt;Announcement&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -631,11 +631,13 @@ export class AnnouncementService {
       .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Announcement &#x27;${announcementID}&#x27; not found&#x60;))
   }
 
-  public delete(announcementID: MongooseID): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
+  public delete(announcementID: MongooseID) {
     return this.announcementModel
-      .findByIdAndRemove(announcementID)
+      .findByIdAndDelete(announcementID, null)
       .exec()
-      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Announcement &#x27;${announcementID}&#x27; not found&#x60;))
+      .then((result) &#x3D;&gt; {
+        return result ?? Promise.reject(&#x60;Announcement &#x27;${announcementID}&#x27; not found&#x60;)
+      })
   }
 
   public batchDelete(announcementIDs: MongooseID[]) {

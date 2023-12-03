@@ -365,7 +365,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -1113,7 +1113,7 @@ export class ArticleController {
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
   @Responser.handle(&#x27;Delete article&#x27;)
-  delArticle(@QueryParams() { params }: QueryParamsResult): Promise&lt;Article&gt; {
+  delArticle(@QueryParams() { params }: QueryParamsResult) {
     return this.articleService.delete(params.id)
   }
 

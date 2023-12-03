@@ -274,8 +274,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="63"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:63</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -463,7 +463,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Feedback.html" target="_self" >Promise&lt;MongooseDoc&lt;Feedback&gt;&gt;</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -565,8 +565,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="67"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:67</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -799,11 +799,12 @@ export class FeedbackService {
     return feedback
   }
 
-  public async delete(feedbackID: MongooseID): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    const feedback &#x3D; await this.feedbackModel.findByIdAndRemove(feedbackID).exec()
+  public async delete(feedbackID: MongooseID) {
+    const feedback &#x3D; await this.feedbackModel.findByIdAndDelete(feedbackID, null).exec()
     if (!feedback) {
       throw &#x60;Feedback &#x27;${feedbackID}&#x27; not found&#x60;
     }
+
     return feedback
   }
 

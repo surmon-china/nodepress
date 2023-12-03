@@ -169,12 +169,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>, feedbackService: <a href="../injectables/FeedbackService.html" target="_self">FeedbackService</a>, tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
+<code>constructor(cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>, feedbackService: <a href="../injectables/FeedbackService.html" target="_self">FeedbackService</a>, voteService: <a href="../injectables/VoteService.html" target="_self">VoteService</a>, tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:35</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:37</a></div>
                             </td>
                         </tr>
 
@@ -252,6 +252,18 @@
                                                     
                                                 </tr>
                                                 <tr>
+                                                        <td>voteService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/VoteService.html" target="_self" >VoteService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
                                                         <td>tagService</td>
                                                   
                                                         <td>
@@ -300,8 +312,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -369,8 +381,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="77"
-                                    class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:77</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -426,6 +438,8 @@
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { CacheService } from &#x27;@app/processors/cache/cache.service&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
+import { VoteTarget, VoteType } from &#x27;@app/modules/vote/vote.model&#x27;
+import { VoteService } from &#x27;@app/modules/vote/vote.service&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { FeedbackService } from &#x27;@app/modules/feedback/feedback.service&#x27;
@@ -457,6 +471,7 @@ export class StatisticService {
     private readonly articleService: ArticleService,
     private readonly commentService: CommentService,
     private readonly feedbackService: FeedbackService,
+    private readonly voteService: VoteService,
     private readonly tagService: TagService
   ) {
     // daily data cleaning at 00:01
@@ -475,15 +490,33 @@ export class StatisticService {
   private async dailyStatisticsTask(todayViews: number) {
     const now &#x3D; new Date()
     const oneDayAgo &#x3D; new Date(now.getTime() - 24 * 60 * 60 * 1000)
-    const todayNewComments &#x3D; await this.commentService.countDocuments({
-      created_at: { $gte: oneDayAgo, $lt: now }
-    })
+    const createdAt &#x3D; { $gte: oneDayAgo, $lt: now }
+    const [todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] &#x3D; await Promise.all([
+      this.commentService.countDocuments({ created_at: createdAt }),
+      this.voteService.countDocuments({
+        created_at: createdAt,
+        target_type: VoteTarget.Post,
+        vote_type: VoteType.Upvote
+      }),
+      this.voteService.countDocuments({
+        created_at: createdAt,
+        target_type: VoteTarget.Comment,
+        vote_type: VoteType.Upvote
+      }),
+      this.voteService.countDocuments({
+        created_at: createdAt,
+        target_type: VoteTarget.Comment,
+        vote_type: VoteType.Downvote
+      })
+    ])
+
     const emailContents &#x3D; [
       &#x60;Today views: ${todayViews}&#x60;,
-      &#x60;Today new comments: ${todayNewComments}&#x60;
-      // &#x60;Today Post votes: TODO&#x60;,
-      // &#x60;Today Comment votes: TODO&#x60;,
+      &#x60;Today new comments: ${todayNewComments}&#x60;,
+      &#x60;Today new post votes: +${todayArticleUpVotes}&#x60;,
+      &#x60;Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}&#x60;
     ]
+
     this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
       subject: &#x27;Daily Statistics&#x27;,
