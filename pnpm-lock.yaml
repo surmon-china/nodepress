@@ -96,8 +96,8 @@ dependencies:
     specifier: ^2.1.1
     version: 2.1.1
   nodemailer:
-    specifier: ^6.9.7
-    version: 6.9.7
+    specifier: ^6.9.9
+    version: 6.9.9
   passport:
     specifier: ~0.6.0
     version: 0.6.0
@@ -8507,8 +8507,8 @@ packages:
       sorted-array-functions: 1.3.0
     dev: false
 
-  /nodemailer@6.9.7:
-    resolution: {integrity: sha512-rUtR77ksqex/eZRLmQ21LKVH5nAAsVicAtAYudK7JgwenEDZ0UIQ1adUGqErz7sMkWYxWTTU1aeP2Jga6WQyJw==}
+  /nodemailer@6.9.9:
+    resolution: {integrity: sha512-dexTll8zqQoVJEZPwQAKzxxtFn0qTnjdQTchoU6Re9BUUGBJiOy3YMn/0ShTW6J5M0dfQ1NeDeRTTl4oIWgQMA==}
     engines: {node: '>=6.0.0'}
     dev: false
 

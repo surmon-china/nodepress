@@ -59,7 +59,7 @@
     "lodash": "^4.17.21",
     "mongoose": "~8.0.2",
     "node-schedule": "^2.1.1",
-    "nodemailer": "^6.9.7",
+    "nodemailer": "^6.9.9",
     "passport": "~0.6.0",
     "passport-jwt": "^4.0.1",
     "redis": "^4.6.11",
