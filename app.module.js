@@ -42,8 +42,12 @@ exports.AppModule = AppModule = __decorate([
             throttler_1.ThrottlerModule.forRoot([
                 {
                     ttl: (0, throttler_1.minutes)(5),
-                    limit: 800,
-                    ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
+                    limit: 600,
+                    ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
+                    skipIf: (context) => {
+                        const request = context.switchToHttp().getRequest();
+                        return request.hostname === 'localhost' || ['127.0.0.1', '::1'].includes(request.ip);
+                    }
                 }
             ]),
             helper_module_1.HelperModule,

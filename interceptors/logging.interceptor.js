@@ -18,10 +18,10 @@ let LoggingInterceptor = class LoggingInterceptor {
             return next.handle();
         }
         const request = context.switchToHttp().getRequest();
-        const content = request.method + ' -> ' + request.url;
-        logger.debug('+++ req：', content);
+        const content = request.method.padStart(6, '_') + ' -> ' + request.url;
+        logger.debug('+++ REQ:', content);
         const now = Date.now();
-        return next.handle().pipe((0, operators_1.tap)(() => logger.debug('--- res：', content, `${Date.now() - now}ms`)));
+        return next.handle().pipe((0, operators_1.tap)(() => logger.debug('--- RES:', content, '|', `${Date.now() - now}ms`)));
     }
 };
 exports.LoggingInterceptor = LoggingInterceptor;
