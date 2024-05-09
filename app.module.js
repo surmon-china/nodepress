@@ -42,7 +42,7 @@ exports.AppModule = AppModule = __decorate([
             throttler_1.ThrottlerModule.forRoot([
                 {
                     ttl: (0, throttler_1.minutes)(5),
-                    limit: 300,
+                    limit: 800,
                     ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
                 }
             ]),

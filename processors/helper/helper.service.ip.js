@@ -20,7 +20,7 @@ let IPService = class IPService {
     constructor(httpService) {
         this.httpService = httpService;
     }
-    queryLocationByIP_API(ip) {
+    queryLocationByIpApi(ip) {
         return this.httpService.axiosRef
             .get(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,region,regionName,city,zip`)
             .then((response) => {
@@ -38,11 +38,11 @@ let IPService = class IPService {
         })
             .catch((error) => {
             const message = (0, error_transformer_1.getMessageFromAxiosError)(error);
-            logger.warn('queryLocationByIPAPI failed!', message);
+            logger.warn('queryLocationByIpApi failed!', `"${ip}"`, message);
             return Promise.reject(message);
         });
     }
-    queryLocationByAPICo(ip) {
+    queryLocationByApiCo(ip) {
         return this.httpService.axiosRef
             .get(`https://ipapi.co/${ip}/json/`)
             .then((response) => {
@@ -60,13 +60,13 @@ let IPService = class IPService {
         })
             .catch((error) => {
             const message = (0, error_transformer_1.getMessageFromAxiosError)(error);
-            logger.warn('queryLocationByAPICo failed!', message);
+            logger.warn('queryLocationByApiCo failed!', `"${ip}"`, message);
             return Promise.reject(message);
         });
     }
     queryLocation(ip) {
-        return this.queryLocationByIP_API(ip)
-            .catch(() => this.queryLocationByAPICo(ip))
+        return this.queryLocationByIpApi(ip)
+            .catch(() => this.queryLocationByApiCo(ip))
             .catch(() => null);
     }
 };
