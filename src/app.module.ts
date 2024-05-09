@@ -4,6 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import type { Request } from 'express'
 import { APP_INTERCEPTOR, APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
 import { ThrottlerGuard, ThrottlerModule, minutes } from '@nestjs/throttler'
@@ -44,8 +45,14 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     ThrottlerModule.forRoot([
       {
         ttl: minutes(5), // 5 minutes = 300s
-        limit: 800, // 800 limit
-        ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
+        limit: 600, // 600 limit
+        ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
+        skipIf: (context) => {
+          // Skip throttle for the front-end Server
+          const request = context.switchToHttp().getRequest<Request>()
+          // Work only for front-end applications running on the same host machine
+          return request.hostname === 'localhost' || ['127.0.0.1', '::1'].includes(request.ip)
+        }
       }
     ]),
     HelperModule,
