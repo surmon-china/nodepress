@@ -60,15 +60,6 @@
                     darkModeState = darkModeStateLocal === 'true';
                }
                toggleDarkMode(darkModeState);
-
-               if ($darkModeToggles.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
           </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
@@ -108,31 +99,31 @@
     </ol>
     <ul class="dependencies-list">
         <li>
-            <b>@aws-sdk/client-s3</b> : ^3.465.0</li>
+            <b>@aws-sdk/client-s3</b> : ^3.572.0</li>
         <li>
-            <b>@nestjs/axios</b> : ^3.0.1</li>
+            <b>@nestjs/axios</b> : ^3.0.2</li>
         <li>
-            <b>@nestjs/common</b> : ^10.2.10</li>
+            <b>@nestjs/common</b> : ^10.3.8</li>
         <li>
-            <b>@nestjs/core</b> : ^10.2.10</li>
+            <b>@nestjs/core</b> : ^10.3.8</li>
         <li>
             <b>@nestjs/jwt</b> : ^10.2.0</li>
         <li>
-            <b>@nestjs/mapped-types</b> : ^2.0.4</li>
+            <b>@nestjs/mapped-types</b> : ^2.0.5</li>
         <li>
-            <b>@nestjs/passport</b> : ^10.0.2</li>
+            <b>@nestjs/passport</b> : ^10.0.3</li>
         <li>
-            <b>@nestjs/platform-express</b> : ^10.2.10</li>
+            <b>@nestjs/platform-express</b> : ^10.3.8</li>
         <li>
-            <b>@nestjs/throttler</b> : ^5.0.1</li>
+            <b>@nestjs/throttler</b> : ^5.1.2</li>
         <li>
-            <b>@typegoose/auto-increment</b> : ^4.0.0</li>
+            <b>@typegoose/auto-increment</b> : ^4.3.0</li>
         <li>
-            <b>@typegoose/typegoose</b> : ^12.0.0</li>
+            <b>@typegoose/typegoose</b> : ^12.4.0</li>
         <li>
             <b>akismet-api</b> : ^6.0.0</li>
         <li>
-            <b>axios</b> : ^1.6.2</li>
+            <b>axios</b> : ^1.6.8</li>
         <li>
             <b>body-parser</b> : ^1.20.2</li>
         <li>
@@ -140,7 +131,7 @@
         <li>
             <b>class-transformer</b> : ^0.5.1</li>
         <li>
-            <b>class-validator</b> : ^0.14.0</li>
+            <b>class-validator</b> : ^0.14.1</li>
         <li>
             <b>compression</b> : ^1.7.4</li>
         <li>
@@ -148,35 +139,35 @@
         <li>
             <b>cross-env</b> : ^7.0.3</li>
         <li>
-            <b>dayjs</b> : ^1.11.10</li>
+            <b>dayjs</b> : ^1.11.11</li>
         <li>
             <b>express</b> : ^4.19.2</li>
         <li>
-            <b>fast-xml-parser</b> : ^4.3.2</li>
+            <b>fast-xml-parser</b> : ^4.3.6</li>
         <li>
-            <b>googleapis</b> : ^129.0.0</li>
+            <b>googleapis</b> : ^137.1.0</li>
         <li>
             <b>helmet</b> : ^7.1.0</li>
         <li>
-            <b>js-base64</b> : ^3.7.5</li>
+            <b>js-base64</b> : ^3.7.7</li>
         <li>
             <b>jsonwebtoken</b> : ^9.0.2</li>
         <li>
             <b>lodash</b> : ^4.17.21</li>
         <li>
-            <b>mongoose</b> : ~8.0.2</li>
+            <b>mongoose</b> : ~8.3.1</li>
         <li>
             <b>node-schedule</b> : ^2.1.1</li>
         <li>
-            <b>nodemailer</b> : ^6.9.9</li>
+            <b>nodemailer</b> : ^6.9.13</li>
         <li>
-            <b>passport</b> : ~0.6.0</li>
+            <b>passport</b> : ~0.7.0</li>
         <li>
             <b>passport-jwt</b> : ^4.0.1</li>
         <li>
-            <b>redis</b> : ^4.6.11</li>
+            <b>redis</b> : ^4.6.13</li>
         <li>
-            <b>reflect-metadata</b> : ^0.1.13</li>
+            <b>reflect-metadata</b> : ^0.2.2</li>
         <li>
             <b>rimraf</b> : ^5.0.5</li>
         <li>
@@ -224,6 +215,19 @@
             var COMPODOC_CURRENT_PAGE_URL = 'dependencies.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="./js/libs/custom-elements.min.js"></script>
        <script src="./js/libs/lit-html.js"></script>

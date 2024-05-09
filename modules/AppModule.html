@@ -60,15 +60,6 @@
                     darkModeState = darkModeStateLocal === 'true';
                }
                toggleDarkMode(darkModeState);
-
-               if ($darkModeToggles.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
           </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
@@ -449,8 +440,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="85"
-                                    class="link-to-prism">src/app.module.ts:85</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="92"
+                                    class="link-to-prism">src/app.module.ts:92</a></div>
                         </td>
                     </tr>
 
@@ -507,6 +498,7 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
+import type { Request } from &#x27;express&#x27;
 import { APP_INTERCEPTOR, APP_GUARD, APP_PIPE } from &#x27;@nestjs/core&#x27;
 import { Module, NestModule, MiddlewareConsumer } from &#x27;@nestjs/common&#x27;
 import { ThrottlerGuard, ThrottlerModule, minutes } from &#x27;@nestjs/throttler&#x27;
@@ -547,8 +539,14 @@ import { VoteModule } from &#x27;@app/modules/vote/vote.module&#x27;
     ThrottlerModule.forRoot([
       {
         ttl: minutes(5), // 5 minutes &#x3D; 300s
-        limit: 800, // 800 limit
-        ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
+        limit: 600, // 600 limit
+        ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
+        skipIf: (context) &#x3D;&gt; {
+          // Skip throttle for the front-end server.
+          const request &#x3D; context.switchToHttp().getRequest&lt;Request&gt;()
+          // Work only for front-end applications running on the same host machine.
+          return request.hostname &#x3D;&#x3D;&#x3D; &#x27;localhost&#x27; || [&#x27;127.0.0.1&#x27;, &#x27;::1&#x27;].includes(request.ip)
+        }
       }
     ]),
     HelperModule,
@@ -638,6 +636,19 @@ export class AppModule implements NestModule {
             var COMPODOC_CURRENT_PAGE_URL = 'AppModule.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

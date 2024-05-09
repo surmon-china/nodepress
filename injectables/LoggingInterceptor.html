@@ -60,15 +60,6 @@
                     darkModeState = darkModeStateLocal === 'true';
                }
                toggleDarkMode(darkModeState);
-
-               if ($darkModeToggles.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
           </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
@@ -264,10 +255,10 @@ export class LoggingInterceptor implements NestInterceptor {
       return next.handle()
     }
     const request &#x3D; context.switchToHttp().getRequest&lt;Request&gt;()
-    const content &#x3D; request.method + &#x27; -&gt; &#x27; + request.url
-    logger.debug(&#x27;+++ req：&#x27;, content)
+    const content &#x3D; request.method.padStart(6, &#x27;_&#x27;) + &#x27; -&gt; &#x27; + request.url
+    logger.debug(&#x27;+++ REQ:&#x27;, content)
     const now &#x3D; Date.now()
-    return next.handle().pipe(tap(() &#x3D;&gt; logger.debug(&#x27;--- res：&#x27;, content, &#x60;${Date.now() - now}ms&#x60;)))
+    return next.handle().pipe(tap(() &#x3D;&gt; logger.debug(&#x27;--- RES:&#x27;, content, &#x27;|&#x27;, &#x60;${Date.now() - now}ms&#x60;)))
   }
 }
 </code></pre>
@@ -316,6 +307,19 @@ export class LoggingInterceptor implements NestInterceptor {
             var COMPODOC_CURRENT_PAGE_URL = 'LoggingInterceptor.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>

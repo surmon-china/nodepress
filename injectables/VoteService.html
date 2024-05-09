@@ -60,15 +60,6 @@
                     darkModeState = darkModeStateLocal === 'true';
                }
                toggleDarkMode(darkModeState);
-
-               if ($darkModeToggles.length > 0) {
-                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
-                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
-                              darkModeState = !darkModeState;
-                              toggleDarkMode(darkModeState);
-                         });
-                    }
-               }
           </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
@@ -320,7 +311,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>countDocuments(filter: <a href="../classes/Vote.html" target="_self">FilterQuery&lt;Vote&gt;</a>, options?: QueryOptions<Vote>)</code>
+                    <code>countDocuments(filter: <a href="../classes/Vote.html" target="_self">FilterQuery&lt;Vote&gt;</a>, options?: MongooseBaseQueryOptions<Vote>)</code>
                 </td>
             </tr>
 
@@ -363,7 +354,7 @@
                                         <tr>
                                                 <td>options</td>
                                             <td>
-                                                        <code>QueryOptions&lt;Vote&gt;</code>
+                                                        <code>MongooseBaseQueryOptions&lt;Vote&gt;</code>
                                             </td>
 
                                             <td>
@@ -695,7 +686,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
-import { FilterQuery, QueryOptions } from &#x27;mongoose&#x27;
+import { FilterQuery, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
@@ -733,7 +724,7 @@ export class VoteService {
     return this.voteModel.deleteMany({ _id: { $in: voteIDs } }).exec()
   }
 
-  public async countDocuments(filter: FilterQuery&lt;Vote&gt;, options?: QueryOptions&lt;Vote&gt;): Promise&lt;number&gt; {
+  public async countDocuments(filter: FilterQuery&lt;Vote&gt;, options?: MongooseBaseQueryOptions&lt;Vote&gt;): Promise&lt;number&gt; {
     return await this.voteModel.countDocuments(filter, options).exec()
   }
 }
@@ -783,6 +774,19 @@ export class VoteService {
             var COMPODOC_CURRENT_PAGE_URL = 'VoteService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
