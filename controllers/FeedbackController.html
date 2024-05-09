@@ -677,7 +677,7 @@ export class FeedbackController {
   }
 
   @Post()
-  @Throttle({ default: { ttl: seconds(30), limit: 3 } })
+  @Throttle({ default: { ttl: seconds(30), limit: 5 } })
   @Responser.handle(&#x27;Create feedback&#x27;)
   async createFeedback(
     @Body() feedback: FeedbackBase,

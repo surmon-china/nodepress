@@ -148,11 +148,11 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#queryLocationByAPICo" >queryLocationByAPICo</a>
+                                <a href="#queryLocationByApiCo" >queryLocationByApiCo</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#queryLocationByIP_API" >queryLocationByIP_API</a>
+                                <a href="#queryLocationByIpApi" >queryLocationByIpApi</a>
                             </li>
                         </ul>
                     </td>
@@ -293,18 +293,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="queryLocationByAPICo"></a>
+                    <a name="queryLocationByApiCo"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
-                        <span ><b>queryLocationByAPICo</b></span>
-                        <a href="#queryLocationByAPICo"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>queryLocationByApiCo</b></span>
+                        <a href="#queryLocationByApiCo"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>queryLocationByAPICo(ip: <a href="../undefineds/IP.html" target="_self">IP</a>)</code>
+                    <code>queryLocationByApiCo(ip: <a href="../undefineds/IP.html" target="_self">IP</a>)</code>
                 </td>
             </tr>
 
@@ -362,18 +362,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="queryLocationByIP_API"></a>
+                    <a name="queryLocationByIpApi"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
-                        <span ><b>queryLocationByIP_API</b></span>
-                        <a href="#queryLocationByIP_API"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>queryLocationByIpApi</b></span>
+                        <a href="#queryLocationByIpApi"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>queryLocationByIP_API(ip: <a href="../undefineds/IP.html" target="_self">IP</a>)</code>
+                    <code>queryLocationByIpApi(ip: <a href="../undefineds/IP.html" target="_self">IP</a>)</code>
                 </td>
             </tr>
 
@@ -457,7 +457,7 @@ export class IPService {
   constructor(private readonly httpService: HttpService) {}
 
   // query by https://ip-api.com/docs/api:json
-  private queryLocationByIP_API(ip: IP): Promise&lt;IPLocation&gt; {
+  private queryLocationByIpApi(ip: IP): Promise&lt;IPLocation&gt; {
     return this.httpService.axiosRef
       .get&lt;any&gt;(&#x60;http://ip-api.com/json/${ip}?fields&#x3D;status,message,country,countryCode,region,regionName,city,zip&#x60;)
       .then((response) &#x3D;&gt; {
@@ -474,13 +474,13 @@ export class IPService {
       })
       .catch((error) &#x3D;&gt; {
         const message &#x3D; getMessageFromAxiosError(error)
-        logger.warn(&#x27;queryLocationByIPAPI failed!&#x27;, message)
+        logger.warn(&#x27;queryLocationByIpApi failed!&#x27;, &#x60;&quot;${ip}&quot;&#x60;, message)
         return Promise.reject(message)
       })
   }
 
   // query by https://ipapi.co/api/#introduction
-  private queryLocationByAPICo(ip: IP): Promise&lt;IPLocation&gt; {
+  private queryLocationByApiCo(ip: IP): Promise&lt;IPLocation&gt; {
     return this.httpService.axiosRef
       .get&lt;any&gt;(&#x60;https://ipapi.co/${ip}/json/&#x60;)
       .then((response) &#x3D;&gt; {
@@ -497,14 +497,14 @@ export class IPService {
       })
       .catch((error) &#x3D;&gt; {
         const message &#x3D; getMessageFromAxiosError(error)
-        logger.warn(&#x27;queryLocationByAPICo failed!&#x27;, message)
+        logger.warn(&#x27;queryLocationByApiCo failed!&#x27;, &#x60;&quot;${ip}&quot;&#x60;, message)
         return Promise.reject(message)
       })
   }
 
   public queryLocation(ip: IP): Promise&lt;IPLocation | null&gt; {
-    return this.queryLocationByIP_API(ip)
-      .catch(() &#x3D;&gt; this.queryLocationByAPICo(ip))
+    return this.queryLocationByIpApi(ip)
+      .catch(() &#x3D;&gt; this.queryLocationByApiCo(ip))
       .catch(() &#x3D;&gt; null)
   }
 }

@@ -24,10 +24,6 @@
 <title>cluster_ExpansionModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-268 956,-268 956,-70 8,-70"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_ExpansionModule_exports</title>
-<polygon fill="none" stroke="black" points="289,-208 289,-260 553,-260 553,-208 289,-208"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_ExpansionModule_providers</title>
 <polygon fill="none" stroke="black" points="606,-78 606,-130 948,-130 948,-78 606,-78"/>
@@ -35,6 +31,10 @@
 <g id="clust3" class="cluster">
 <title>cluster_ExpansionModule_imports</title>
 <polygon fill="none" stroke="black" points="16,-78 16,-130 598,-130 598,-78 16,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_ExpansionModule_exports</title>
+<polygon fill="none" stroke="black" points="289,-208 289,-260 553,-260 553,-208 289,-208"/>
 </g>
 <!-- ArticleModule -->
 <g id="node1" class="node">
