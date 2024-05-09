@@ -48,9 +48,9 @@ import { VoteModule } from '@app/modules/vote/vote.module'
         limit: 600, // 600 limit
         ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
         skipIf: (context) => {
-          // Skip throttle for the front-end Server
+          // Skip throttle for the front-end server.
           const request = context.switchToHttp().getRequest<Request>()
-          // Work only for front-end applications running on the same host machine
+          // Work only for front-end applications running on the same host machine.
           return request.hostname === 'localhost' || ['127.0.0.1', '::1'].includes(request.ip)
         }
       }

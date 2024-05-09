@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.7.0 (2024-05-10)
+
+**Feature**
+
+- Improve global throttler
+- Improve global log interceptor format
+- Upgrade dependencies
+
 ### 4.4.0 (2023-10-09)
 
 **Breaking Change**
