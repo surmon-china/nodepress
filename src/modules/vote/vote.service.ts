@@ -5,7 +5,7 @@
  */
 
 import { Injectable } from '@nestjs/common'
-import { FilterQuery, QueryOptions } from 'mongoose'
+import { FilterQuery, MongooseBaseQueryOptions } from 'mongoose'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
@@ -43,7 +43,7 @@ export class VoteService {
     return this.voteModel.deleteMany({ _id: { $in: voteIDs } }).exec()
   }
 
-  public async countDocuments(filter: FilterQuery<Vote>, options?: QueryOptions<Vote>): Promise<number> {
+  public async countDocuments(filter: FilterQuery<Vote>, options?: MongooseBaseQueryOptions<Vote>): Promise<number> {
     return await this.voteModel.countDocuments(filter, options).exec()
   }
 }

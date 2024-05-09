@@ -5,7 +5,7 @@
  */
 
 import { Injectable } from '@nestjs/common'
-import { FilterQuery, QueryOptions } from 'mongoose'
+import { FilterQuery, MongooseBaseQueryOptions } from 'mongoose'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
@@ -300,7 +300,10 @@ export class CommentService {
     return result
   }
 
-  public async countDocuments(filter: FilterQuery<Comment>, options?: QueryOptions<Comment>): Promise<number> {
+  public async countDocuments(
+    filter: FilterQuery<Comment>,
+    options?: MongooseBaseQueryOptions<Comment>
+  ): Promise<number> {
     return await this.commentModel.countDocuments(filter, options).exec()
   }
 
