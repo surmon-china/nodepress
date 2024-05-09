@@ -44,7 +44,7 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     ThrottlerModule.forRoot([
       {
         ttl: minutes(5), // 5 minutes = 300s
-        limit: 300, // 300 limit
+        limit: 800, // 800 limit
         ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi]
       }
     ]),
