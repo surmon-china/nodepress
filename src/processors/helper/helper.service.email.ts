@@ -43,17 +43,17 @@ export class EmailService {
       if (error) {
         this.clientIsValid = false
         setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(`client init failed! retry after 30 mins`, '|', getMessageFromNormalError(error))
+        logger.error(`client initialization failed! retry after 30 mins`, '|', getMessageFromNormalError(error))
       } else {
         this.clientIsValid = true
-        logger.success('client init succeed.')
+        logger.success('client initialized.')
       }
     })
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
-      logger.warn('send failed! (init failed)')
+      logger.warn('send failed! (initialization failed)')
       return false
     }
 
@@ -66,7 +66,7 @@ export class EmailService {
         if (error) {
           logger.failure(`send failed!`, getMessageFromNormalError(error))
         } else {
-          logger.success('send succeed.', info.messageId, info.response)
+          logger.success('send succeeded.', info.messageId, info.response)
         }
       }
     )

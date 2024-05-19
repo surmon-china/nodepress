@@ -136,7 +136,7 @@ export class CommentService {
       ? this.optionService.appendToBlocklist({ ips, emails })
       : this.optionService.removeFromBlocklist({ ips, emails })
     blocklistAction
-      .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
+      .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeeded.'))
       .catch((error) => logger.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error))
   }
 
@@ -210,14 +210,14 @@ export class CommentService {
   // create comment
   public async create(comment: Comment): Promise<MongooseDoc<Comment>> {
     const ip_location = isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null
-    const succeedComment = await this.commentModel.create({
+    const succeededComment = await this.commentModel.create({
       ...comment,
       ip_location
     })
     // update aggregate & email notification
-    this.updateCommentsCountWithArticles([succeedComment.post_id])
-    this.emailToAdminAndTargetAuthor(succeedComment)
-    return succeedComment
+    this.updateCommentsCountWithArticles([succeededComment.post_id])
+    this.emailToAdminAndTargetAuthor(succeededComment)
+    return succeededComment
   }
 
   // create comment from client

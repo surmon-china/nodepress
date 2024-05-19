@@ -52,7 +52,7 @@ export class SeoService {
               Authorization: `Bearer ${credentials.access_token}`
             }
           })
-          .then((response) => logger.info(`${actionText} succeed.`, url, response.statusText))
+          .then((response) => logger.info(`${actionText} succeeded.`, url, response.statusText))
           .catch((error) => Promise.reject(getMessageFromAxiosError(error)))
       })
       .catch((error) => logger.warn(`${actionText} failed!`, error))
@@ -72,7 +72,7 @@ export class SeoService {
         }
       })
       .then((response) => {
-        logger.info(`Bing ping action succeed.`, urls, response.statusText)
+        logger.info(`Bing ping action succeeded.`, urls, response.statusText)
       })
       .catch((error) => {
         logger.warn(`Bing ping action failed!`, getMessageFromAxiosError(error))
