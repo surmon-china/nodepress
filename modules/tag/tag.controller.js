@@ -53,8 +53,10 @@ let TagController = class TagController {
         }
         return this.tagService.paginator(paginateQuery, paginateOptions, isUnauthenticated);
     }
-    getAllTags() {
-        return this.tagService.getAllTagsCache();
+    getAllTags({ isAuthenticated }) {
+        return isAuthenticated
+            ? this.tagService.getAllTags({ aggregatePublicOnly: false })
+            : this.tagService.getAllTagsCache();
     }
     createTag(tag) {
         return this.tagService.create(tag);
@@ -83,9 +85,11 @@ __decorate([
 ], TagController.prototype, "getTags", null);
 __decorate([
     (0, common_1.Get)('all'),
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
     responser_decorator_1.Responser.handle('Get all tags'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], TagController.prototype, "getAllTags", null);
 __decorate([

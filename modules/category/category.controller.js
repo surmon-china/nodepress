@@ -30,6 +30,11 @@ let CategoryController = class CategoryController {
     getCategories(query, { isUnauthenticated }) {
         return this.categoryService.paginator({}, { page: query.page, perPage: query.per_page, dateSort: query.sort }, isUnauthenticated);
     }
+    getAllCategories({ isAuthenticated }) {
+        return isAuthenticated
+            ? this.categoryService.getAllCategories({ aggregatePublicOnly: false })
+            : this.categoryService.getAllCategoriesCache();
+    }
     createCategory(category) {
         return this.categoryService.create(category);
     }
@@ -58,6 +63,15 @@ __decorate([
     __metadata("design:paramtypes", [category_dto_1.CategoryPaginateQueryDTO, Object]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "getCategories", null);
+__decorate([
+    (0, common_1.Get)('all'),
+    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
+    responser_decorator_1.Responser.handle('Get all categories'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], CategoryController.prototype, "getAllCategories", null);
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),

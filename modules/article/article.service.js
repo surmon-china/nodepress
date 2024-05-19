@@ -35,13 +35,15 @@ const helper_service_seo_1 = require("../../processors/helper/helper.service.seo
 const cache_service_1 = require("../../processors/cache/cache.service");
 const expansion_helper_1 = require("../expansion/expansion.helper");
 const archive_service_1 = require("../archive/archive.service");
+const category_service_1 = require("../category/category.service");
 const tag_service_1 = require("../tag/tag.service");
 const value_constant_1 = require("../../constants/value.constant");
 const article_model_1 = require("./article.model");
 let ArticleService = class ArticleService {
-    constructor(seoService, tagService, cacheService, archiveService, articleModel) {
+    constructor(seoService, tagService, categoryService, cacheService, archiveService, articleModel) {
         this.seoService = seoService;
         this.tagService = tagService;
+        this.categoryService = categoryService;
         this.cacheService = cacheService;
         this.archiveService = archiveService;
         this.articleModel = articleModel;
@@ -124,6 +126,7 @@ let ArticleService = class ArticleService {
         const article = await this.articleModel.create(newArticle);
         this.seoService.push((0, urlmap_transformer_1.getArticleUrl)(article.id));
         this.tagService.updateAllTagsCache();
+        this.categoryService.updateAllCategoriesCache();
         this.archiveService.updateCache();
         return article;
     }
@@ -143,6 +146,7 @@ let ArticleService = class ArticleService {
         }
         this.seoService.update((0, urlmap_transformer_1.getArticleUrl)(article.id));
         this.tagService.updateAllTagsCache();
+        this.categoryService.updateAllCategoriesCache();
         this.archiveService.updateCache();
         return article;
     }
@@ -153,6 +157,7 @@ let ArticleService = class ArticleService {
         }
         this.seoService.delete((0, urlmap_transformer_1.getArticleUrl)(article.id));
         this.tagService.updateAllTagsCache();
+        this.categoryService.updateAllCategoriesCache();
         this.archiveService.updateCache();
         return article;
     }
@@ -161,6 +166,7 @@ let ArticleService = class ArticleService {
             .updateMany({ _id: { $in: articleIDs } }, { $set: { state } }, { multi: true })
             .exec();
         this.tagService.updateAllTagsCache();
+        this.categoryService.updateAllCategoriesCache();
         this.archiveService.updateCache();
         return actionResult;
     }
@@ -169,6 +175,7 @@ let ArticleService = class ArticleService {
         this.seoService.delete(articles.map((article) => (0, urlmap_transformer_1.getArticleUrl)(article.id)));
         const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIDs } }).exec();
         this.tagService.updateAllTagsCache();
+        this.categoryService.updateAllCategoriesCache();
         this.archiveService.updateCache();
         return actionResult;
     }
@@ -222,9 +229,10 @@ let ArticleService = class ArticleService {
 exports.ArticleService = ArticleService;
 exports.ArticleService = ArticleService = __decorate([
     (0, common_1.Injectable)(),
-    __param(4, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
+    __param(5, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
     __metadata("design:paramtypes", [helper_service_seo_1.SeoService,
         tag_service_1.TagService,
+        category_service_1.CategoryService,
         cache_service_1.CacheService,
         archive_service_1.ArchiveService, Object])
 ], ArticleService);

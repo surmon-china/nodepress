@@ -18,10 +18,10 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const cache_service_1 = require("../../processors/cache/cache.service");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
-const cache_constant_1 = require("../../constants/cache.constant");
-const biz_constant_1 = require("../../constants/biz.constant");
 const archive_service_1 = require("../archive/archive.service");
 const article_model_1 = require("../article/article.model");
+const cache_constant_1 = require("../../constants/cache.constant");
+const biz_constant_1 = require("../../constants/biz.constant");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const tag_model_1 = require("./tag.model");
@@ -35,13 +35,13 @@ let TagService = class TagService {
         this.articleModel = articleModel;
         this.allTagsCache = this.cacheService.manual({
             key: cache_constant_1.CacheKeys.AllTags,
-            promise: () => this.getAllTags()
+            promise: () => this.getAllTags({ aggregatePublicOnly: true })
         });
-        this.updateAllTagsCache().catch((error) => {
-            logger.warn('init tagPaginateCache failed!', error);
+        this.allTagsCache.update().catch((error) => {
+            logger.warn('init getAllTags failed!', error);
         });
     }
-    async aggregate(publicOnly, tags) {
+    async aggregateArticleCount(publicOnly, tags) {
         const counts = await this.articleModel.aggregate([
             { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
             { $unwind: '$tags' },
@@ -52,9 +52,9 @@ let TagService = class TagService {
             return Object.assign(Object.assign({}, tag), { article_count: found ? found.count : 0 });
         });
     }
-    async getAllTags() {
+    async getAllTags(options) {
         const allTags = await this.tagModel.find().lean().sort({ _id: biz_constant_1.SortType.Desc }).exec();
-        return await this.aggregate(true, allTags);
+        return await this.aggregateArticleCount(options.aggregatePublicOnly, allTags);
     }
     getAllTagsCache() {
         return this.allTagsCache.get();
@@ -64,7 +64,7 @@ let TagService = class TagService {
     }
     async paginator(query, options, publicOnly) {
         const tags = await this.tagModel.paginate(query, Object.assign(Object.assign({}, options), { lean: true }));
-        const documents = await this.aggregate(publicOnly, tags.documents);
+        const documents = await this.aggregateArticleCount(publicOnly, tags.documents);
         return Object.assign(Object.assign({}, tags), { documents });
     }
     getDetailBySlug(slug) {

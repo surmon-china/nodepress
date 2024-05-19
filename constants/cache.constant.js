@@ -6,6 +6,7 @@ var CacheKeys;
     CacheKeys["Option"] = "option";
     CacheKeys["Archive"] = "archive";
     CacheKeys["AllTags"] = "all-tags";
+    CacheKeys["AllCategories"] = "all-categories";
     CacheKeys["TodayViewCount"] = "today-view-count";
 })(CacheKeys || (exports.CacheKeys = CacheKeys = {}));
 const getDecoratorCacheKey = (key) => {
