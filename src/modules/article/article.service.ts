@@ -13,6 +13,7 @@ import { SeoService } from '@app/processors/helper/helper.service.seo'
 import { CacheService } from '@app/processors/cache/cache.service'
 import { increaseTodayViewsCount } from '@app/modules/expansion/expansion.helper'
 import { ArchiveService } from '@app/modules/archive/archive.service'
+import { CategoryService } from '@app/modules/category/category.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { PublishState } from '@app/constants/biz.constant'
 import { NULL } from '@app/constants/value.constant'
@@ -30,6 +31,7 @@ export class ArticleService {
   constructor(
     private readonly seoService: SeoService,
     private readonly tagService: TagService,
+    private readonly categoryService: CategoryService,
     private readonly cacheService: CacheService,
     private readonly archiveService: ArchiveService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
@@ -153,6 +155,7 @@ export class ArticleService {
     const article = await this.articleModel.create(newArticle)
     this.seoService.push(getArticleUrl(article.id))
     this.tagService.updateAllTagsCache()
+    this.categoryService.updateAllCategoriesCache()
     this.archiveService.updateCache()
     return article
   }
@@ -175,6 +178,7 @@ export class ArticleService {
     }
     this.seoService.update(getArticleUrl(article.id))
     this.tagService.updateAllTagsCache()
+    this.categoryService.updateAllCategoriesCache()
     this.archiveService.updateCache()
     return article
   }
@@ -187,6 +191,7 @@ export class ArticleService {
 
     this.seoService.delete(getArticleUrl(article.id))
     this.tagService.updateAllTagsCache()
+    this.categoryService.updateAllCategoriesCache()
     this.archiveService.updateCache()
     return article
   }
@@ -196,6 +201,7 @@ export class ArticleService {
       .updateMany({ _id: { $in: articleIDs } }, { $set: { state } }, { multi: true })
       .exec()
     this.tagService.updateAllTagsCache()
+    this.categoryService.updateAllCategoriesCache()
     this.archiveService.updateCache()
     return actionResult
   }
@@ -206,6 +212,7 @@ export class ArticleService {
 
     const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIDs } }).exec()
     this.tagService.updateAllTagsCache()
+    this.categoryService.updateAllCategoriesCache()
     this.archiveService.updateCache()
     return actionResult
   }

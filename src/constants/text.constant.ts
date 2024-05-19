@@ -5,7 +5,7 @@
  */
 
 export const HTTP_ERROR_SUFFIX = ' failed'
-export const HTTP_SUCCESS_SUFFIX = ' succeed'
+export const HTTP_SUCCESS_SUFFIX = ' succeeded'
 export const HTTP_DEFAULT_TEXT = 'request'
 export const HTTP_DEFAULT_ERROR_TEXT = HTTP_DEFAULT_TEXT + HTTP_ERROR_SUFFIX
 export const HTTP_DEFAULT_SUCCESS_TEXT = HTTP_DEFAULT_TEXT + HTTP_SUCCESS_SUFFIX

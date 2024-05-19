@@ -7,14 +7,14 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getTagUrl } from '@app/transformers/urlmap.transformer'
+import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from '@app/interfaces/mongoose.interface'
 import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
-import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from '@app/interfaces/mongoose.interface'
+import { ArchiveService } from '@app/modules/archive/archive.service'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { SortType } from '@app/constants/biz.constant'
-import { ArchiveService } from '@app/modules/archive/archive.service'
-import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import { Tag } from './tag.model'
@@ -34,15 +34,15 @@ export class TagService {
   ) {
     this.allTagsCache = this.cacheService.manual<Array<Tag>>({
       key: CacheKeys.AllTags,
-      promise: () => this.getAllTags()
+      promise: () => this.getAllTags({ aggregatePublicOnly: true })
     })
 
-    this.updateAllTagsCache().catch((error) => {
-      logger.warn('init tagPaginateCache failed!', error)
+    this.allTagsCache.update().catch((error) => {
+      logger.warn('init getAllTags failed!', error)
     })
   }
 
-  private async aggregate(publicOnly: boolean, tags: Array<WithID<Tag>>) {
+  private async aggregateArticleCount(publicOnly: boolean, tags: Array<WithID<Tag>>) {
     const counts = await this.articleModel.aggregate<{ _id: MongooseObjectID; count: number }>([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
       { $unwind: '$tags' },
@@ -54,9 +54,9 @@ export class TagService {
     })
   }
 
-  public async getAllTags(): Promise<Array<Tag>> {
+  public async getAllTags(options: { aggregatePublicOnly: boolean }): Promise<Array<Tag>> {
     const allTags = await this.tagModel.find().lean().sort({ _id: SortType.Desc }).exec()
-    return await this.aggregate(true, allTags)
+    return await this.aggregateArticleCount(options.aggregatePublicOnly, allTags)
   }
 
   public getAllTagsCache(): Promise<Array<Tag>> {
@@ -73,7 +73,7 @@ export class TagService {
     publicOnly: boolean
   ): Promise<PaginateResult<Tag>> {
     const tags = await this.tagModel.paginate(query, { ...options, lean: true })
-    const documents = await this.aggregate(publicOnly, tags.documents)
+    const documents = await this.aggregateArticleCount(publicOnly, tags.documents)
     return { ...tags, documents }
   }
 

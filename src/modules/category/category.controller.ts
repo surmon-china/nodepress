@@ -35,6 +35,15 @@ export class CategoryController {
     )
   }
 
+  @Get('all')
+  @UseGuards(AdminMaybeGuard)
+  @Responser.handle('Get all categories')
+  getAllCategories(@QueryParams() { isAuthenticated }: QueryParamsResult): Promise<Array<Category>> {
+    return isAuthenticated
+      ? this.categoryService.getAllCategories({ aggregatePublicOnly: false })
+      : this.categoryService.getAllCategoriesCache()
+  }
+
   @Post()
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Create category')

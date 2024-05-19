@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.8.0 (2024-05-19)
+
+**Feature**
+
+- **[Category]** Add `/all` API
+- Upgrade dependencies
+
 ### 4.7.0 (2024-05-10)
 
 **Feature**

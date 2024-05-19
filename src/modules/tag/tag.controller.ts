@@ -45,9 +45,12 @@ export class TagController {
   }
 
   @Get('all')
+  @UseGuards(AdminMaybeGuard)
   @Responser.handle('Get all tags')
-  getAllTags(): Promise<Array<Tag>> {
-    return this.tagService.getAllTagsCache()
+  getAllTags(@QueryParams() { isAuthenticated }: QueryParamsResult): Promise<Array<Tag>> {
+    return isAuthenticated
+      ? this.tagService.getAllTags({ aggregatePublicOnly: false })
+      : this.tagService.getAllTagsCache()
   }
 
   @Post()
