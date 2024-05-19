@@ -124,6 +124,21 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#allCategoriesCache" >allCategoriesCache</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -133,6 +148,11 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#aggregateArticleCount" >aggregateArticleCount</a>
+                            </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
@@ -147,6 +167,15 @@
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#delete" >delete</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllCategories" >getAllCategories</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getAllCategoriesCache" >getAllCategoriesCache</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -166,6 +195,10 @@
                                     <span class="modifier">Async</span>
                                 <a href="#update" >update</a>
                             </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#updateAllCategoriesCache" >updateAllCategoriesCache</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -184,12 +217,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(seoService: <a href="../injectables/SeoService.html" target="_self">SeoService</a>, archiveService: <a href="../injectables/ArchiveService.html" target="_self">ArchiveService</a>, articleModel: <a href="../classes/Article.html" target="_self">MongooseModel&lt;Article&gt;</a>, categoryModel: <a href="../classes/Category.html" target="_self">MongooseModel&lt;Category&gt;</a>)</code>
+<code>constructor(seoService: <a href="../injectables/SeoService.html" target="_self">SeoService</a>, cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, archiveService: <a href="../injectables/ArchiveService.html" target="_self">ArchiveService</a>, articleModel: <a href="../classes/Article.html" target="_self">MongooseModel&lt;Article&gt;</a>, categoryModel: <a href="../classes/Category.html" target="_self">MongooseModel&lt;Category&gt;</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/category/category.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/category/category.service.ts:26</a></div>
                             </td>
                         </tr>
 
@@ -211,6 +244,18 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/SeoService.html" target="_self" >SeoService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cacheService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CacheService.html" target="_self" >CacheService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -272,6 +317,88 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="aggregateArticleCount"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>aggregateArticleCount</b></span>
+                        <a href="#aggregateArticleCount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>aggregateArticleCount(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, categories: <a href="../classes/Category.html" target="_self">Array&lt;WithID&lt;Category&gt;&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/category/category.service.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>publicOnly</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>categories</td>
+                                            <td>
+                                                            <code><a href="../classes/Category.html" target="_self" >Array&lt;WithID&lt;Category&gt;&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="batchDelete"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -291,8 +418,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="134"
-                                    class="link-to-prism">src/modules/category/category.service.ts:134</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/modules/category/category.service.ts:171</a></div>
                         </td>
                     </tr>
 
@@ -361,8 +488,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="55"
-                                    class="link-to-prism">src/modules/category/category.service.ts:55</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/modules/category/category.service.ts:89</a></div>
                         </td>
                     </tr>
 
@@ -431,8 +558,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="110"
-                                    class="link-to-prism">src/modules/category/category.service.ts:110</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="146"
+                                    class="link-to-prism">src/modules/category/category.service.ts:146</a></div>
                         </td>
                     </tr>
 
@@ -482,6 +609,115 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getAllCategories"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getAllCategories</b></span>
+                        <a href="#getAllCategories"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllCategories(options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/modules/category/category.service.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;Array&lt;Category&gt;&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllCategoriesCache"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getAllCategoriesCache</b></span>
+                        <a href="#getAllCategoriesCache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllCategoriesCache()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/modules/category/category.service.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;Array&lt;Category&gt;&gt;</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getDetailBySlug"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -500,8 +736,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/modules/category/category.service.ts:47</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="81"
+                                    class="link-to-prism">src/modules/category/category.service.ts:81</a></div>
                         </td>
                     </tr>
 
@@ -569,8 +805,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/modules/category/category.service.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/modules/category/category.service.ts:103</a></div>
                         </td>
                     </tr>
 
@@ -639,8 +875,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">src/modules/category/category.service.ts:26</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="70"
+                                    class="link-to-prism">src/modules/category/category.service.ts:70</a></div>
                         </td>
                     </tr>
 
@@ -733,8 +969,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/modules/category/category.service.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">src/modules/category/category.service.ts:129</a></div>
                         </td>
                     </tr>
 
@@ -792,6 +1028,78 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateAllCategoriesCache"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>updateAllCategoriesCache</b></span>
+                        <a href="#updateAllCategoriesCache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateAllCategoriesCache()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/category/category.service.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;Array&lt;Category&gt;&gt;</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="allCategoriesCache"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>allCategoriesCache</b></span>
+                        <a href="#allCategoriesCache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/CacheManualResult.html" target="_self" >CacheManualResult&lt;Array&lt;Category&gt;&gt;</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/category/category.service.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
 </section>
 
     </div>
@@ -801,21 +1109,65 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getCategoryUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { SeoService } from &#x27;@app/processors/helper/helper.service.seo&#x27;
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.model&#x27;
+import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
+import { SortType } from &#x27;@app/constants/biz.constant&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { Category } from &#x27;./category.model&#x27;
+
+const logger &#x3D; createLogger({ scope: &#x27;CategoryService&#x27;, time: isDevEnv })
 
 @Injectable()
 export class CategoryService {
+  private allCategoriesCache: CacheManualResult&lt;Array&lt;Category&gt;&gt;
+
   constructor(
     private readonly seoService: SeoService,
+    private readonly cacheService: CacheService,
     private readonly archiveService: ArchiveService,
     @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;,
     @InjectModel(Category) private readonly categoryModel: MongooseModel&lt;Category&gt;
-  ) {}
+  ) {
+    this.allCategoriesCache &#x3D; this.cacheService.manual&lt;Array&lt;Category&gt;&gt;({
+      key: CacheKeys.AllCategories,
+      promise: () &#x3D;&gt; this.getAllCategories({ aggregatePublicOnly: true })
+    })
+
+    this.allCategoriesCache.update().catch((error) &#x3D;&gt; {
+      logger.warn(&#x27;init getAllCategories failed!&#x27;, error)
+    })
+  }
+
+  private async aggregateArticleCount(publicOnly: boolean, categories: Array&lt;WithID&lt;Category&gt;&gt;) {
+    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseObjectID; count: number }&gt;([
+      { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
+      { $unwind: &#x27;$categories&#x27; },
+      { $group: { _id: &#x27;$categories&#x27;, count: { $sum: 1 } } }
+    ])
+    return categories.map&lt;Category&gt;((category) &#x3D;&gt; {
+      const found &#x3D; counts.find((item) &#x3D;&gt; item._id.equals(category._id))
+      return { ...category, article_count: found ? found.count : 0 }
+    })
+  }
+
+  public async getAllCategories(options: { aggregatePublicOnly: boolean }): Promise&lt;Array&lt;Category&gt;&gt; {
+    const allCategories &#x3D; await this.categoryModel.find().lean().sort({ _id: SortType.Desc }).exec()
+    return await this.aggregateArticleCount(options.aggregatePublicOnly, allCategories)
+  }
+
+  public getAllCategoriesCache(): Promise&lt;Array&lt;Category&gt;&gt; {
+    return this.allCategoriesCache.get()
+  }
+
+  public updateAllCategoriesCache(): Promise&lt;Array&lt;Category&gt;&gt; {
+    return this.allCategoriesCache.update()
+  }
 
   public async paginator(
     query: PaginateQuery&lt;Category&gt;,
@@ -823,18 +1175,8 @@ export class CategoryService {
     publicOnly: boolean
   ): Promise&lt;PaginateResult&lt;Category&gt;&gt; {
     const categories &#x3D; await this.categoryModel.paginate(query, { ...options, lean: true })
-    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseObjectID; count: number }&gt;([
-      { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-      { $unwind: &#x27;$categories&#x27; },
-      { $group: { _id: &#x27;$categories&#x27;, count: { $sum: 1 } } }
-    ])
-
-    const hydratedDocs &#x3D; categories.documents.map((category) &#x3D;&gt; {
-      const found &#x3D; counts.find((item) &#x3D;&gt; item._id.equals(category._id))
-      return { ...category, article_count: found ? found.count : 0 } as Category
-    })
-
-    return { ...categories, documents: hydratedDocs }
+    const documents &#x3D; await this.aggregateArticleCount(publicOnly, categories.documents)
+    return { ...categories, documents }
   }
 
   // get detail by slug
@@ -855,6 +1197,7 @@ export class CategoryService {
     const category &#x3D; await this.categoryModel.create(newCategory)
     this.seoService.push(getCategoryUrl(category.slug))
     this.archiveService.updateCache()
+    this.updateAllCategoriesCache()
     return category
   }
 
@@ -897,6 +1240,7 @@ export class CategoryService {
     }
     this.seoService.push(getCategoryUrl(category.slug))
     this.archiveService.updateCache()
+    this.updateAllCategoriesCache()
     return category
   }
 
@@ -910,6 +1254,7 @@ export class CategoryService {
     // cache
     this.archiveService.updateCache()
     this.seoService.delete(getCategoryUrl(category.slug))
+    this.updateAllCategoriesCache()
     // children categories
     const categories &#x3D; await this.categoryModel.find({ pid: categoryID }).exec()
     // delete when root category -&gt; { pid: target.id }
@@ -932,6 +1277,7 @@ export class CategoryService {
     // DB remove
     const actionResult &#x3D; await this.categoryModel.deleteMany({ _id: { $in: categoryIDs } }).exec()
     this.archiveService.updateCache()
+    this.updateAllCategoriesCache()
     return actionResult
   }
 }

@@ -28,13 +28,13 @@
 <title>cluster_VoteModule_providers</title>
 <polygon fill="none" stroke="black" points="504,-78 504,-130 638,-130 638,-78 504,-78"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_VoteModule_imports</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 496,-130 496,-78 16,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_VoteModule_exports</title>
 <polygon fill="none" stroke="black" points="262,-208 262,-260 366,-260 366,-208 262,-208"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_VoteModule_imports</title>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 496,-130 496,-78 16,-78"/>
 </g>
 <!-- ArticleModule -->
 <g id="node1" class="node">

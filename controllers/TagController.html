@@ -159,6 +159,7 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getAllTags" >getAllTags</a>
                             </li>
                             <li>
@@ -222,8 +223,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:56</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:59</a></div>
                         </td>
                     </tr>
 
@@ -300,8 +301,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="77"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:77</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -377,8 +378,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="63"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:63</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -432,6 +433,7 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>getAllTags</b></span>
                         <a href="#getAllTags"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -440,7 +442,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAllTags()</code>
+                    <code>getAllTags(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
                 </td>
             </tr>
 
@@ -448,14 +450,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;all&#x27;)<br />@(&#x27;Get all tags&#x27;)<br /></code>
+                    <code>@Get(&#x27;all&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get all tags&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="50"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:50</a></div>
                         </td>
                     </tr>
 
@@ -463,10 +465,39 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;Array&lt;Tag&gt;&gt;</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -592,8 +623,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="70"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:70</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="73"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -701,9 +732,12 @@ export class TagController {
   }
 
   @Get(&#x27;all&#x27;)
+  @UseGuards(AdminMaybeGuard)
   @Responser.handle(&#x27;Get all tags&#x27;)
-  getAllTags(): Promise&lt;Array&lt;Tag&gt;&gt; {
-    return this.tagService.getAllTagsCache()
+  getAllTags(@QueryParams() { isAuthenticated }: QueryParamsResult): Promise&lt;Array&lt;Tag&gt;&gt; {
+    return isAuthenticated
+      ? this.tagService.getAllTags({ aggregatePublicOnly: false })
+      : this.tagService.getAllTagsCache()
   }
 
   @Post()

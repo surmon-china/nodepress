@@ -151,7 +151,7 @@
                             <li>
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
-                                <a href="#aggregate" >aggregate</a>
+                                <a href="#aggregateArticleCount" >aggregateArticleCount</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -318,19 +318,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="aggregate"></a>
+                    <a name="aggregateArticleCount"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
                             <span class="modifier">Async</span>
-                        <span ><b>aggregate</b></span>
-                        <a href="#aggregate"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>aggregateArticleCount</b></span>
+                        <a href="#aggregateArticleCount"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>aggregate(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, tags: <a href="../classes/Tag.html" target="_self">Array&lt;WithID&lt;Tag&gt;&gt;</a>)</code>
+                    <code>aggregateArticleCount(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, tags: <a href="../classes/Tag.html" target="_self">Array&lt;WithID&lt;Tag&gt;&gt;</a>)</code>
                 </td>
             </tr>
 
@@ -622,7 +622,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAllTags()</code>
+                    <code>getAllTags(options: literal type)</code>
                 </td>
             </tr>
 
@@ -638,10 +638,40 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;Array&lt;Tag&gt;&gt;</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1051,14 +1081,14 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getTagUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
+import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
 import { SeoService } from &#x27;@app/processors/helper/helper.service.seo&#x27;
-import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.model&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
-import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
-import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.model&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { Tag } from &#x27;./tag.model&#x27;
@@ -1078,15 +1108,15 @@ export class TagService {
   ) {
     this.allTagsCache &#x3D; this.cacheService.manual&lt;Array&lt;Tag&gt;&gt;({
       key: CacheKeys.AllTags,
-      promise: () &#x3D;&gt; this.getAllTags()
+      promise: () &#x3D;&gt; this.getAllTags({ aggregatePublicOnly: true })
     })
 
-    this.updateAllTagsCache().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;init tagPaginateCache failed!&#x27;, error)
+    this.allTagsCache.update().catch((error) &#x3D;&gt; {
+      logger.warn(&#x27;init getAllTags failed!&#x27;, error)
     })
   }
 
-  private async aggregate(publicOnly: boolean, tags: Array&lt;WithID&lt;Tag&gt;&gt;) {
+  private async aggregateArticleCount(publicOnly: boolean, tags: Array&lt;WithID&lt;Tag&gt;&gt;) {
     const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseObjectID; count: number }&gt;([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
       { $unwind: &#x27;$tags&#x27; },
@@ -1098,9 +1128,9 @@ export class TagService {
     })
   }
 
-  public async getAllTags(): Promise&lt;Array&lt;Tag&gt;&gt; {
+  public async getAllTags(options: { aggregatePublicOnly: boolean }): Promise&lt;Array&lt;Tag&gt;&gt; {
     const allTags &#x3D; await this.tagModel.find().lean().sort({ _id: SortType.Desc }).exec()
-    return await this.aggregate(true, allTags)
+    return await this.aggregateArticleCount(options.aggregatePublicOnly, allTags)
   }
 
   public getAllTagsCache(): Promise&lt;Array&lt;Tag&gt;&gt; {
@@ -1117,7 +1147,7 @@ export class TagService {
     publicOnly: boolean
   ): Promise&lt;PaginateResult&lt;Tag&gt;&gt; {
     const tags &#x3D; await this.tagModel.paginate(query, { ...options, lean: true })
-    const documents &#x3D; await this.aggregate(publicOnly, tags.documents)
+    const documents &#x3D; await this.aggregateArticleCount(publicOnly, tags.documents)
     return { ...tags, documents }
   }
 
