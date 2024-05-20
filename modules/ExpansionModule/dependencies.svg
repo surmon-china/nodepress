@@ -24,131 +24,131 @@
 <title>cluster_ExpansionModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-268 956,-268 956,-70 8,-70"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_ExpansionModule_exports</title>
-<polygon fill="none" stroke="black" points="289,-208 289,-260 553,-260 553,-208 289,-208"/>
+<g id="clust3" class="cluster">
+<title>cluster_ExpansionModule_imports</title>
+<polygon fill="none" stroke="black" points="366,-78 366,-130 948,-130 948,-78 366,-78"/>
 </g>
 <g id="clust6" class="cluster">
 <title>cluster_ExpansionModule_providers</title>
-<polygon fill="none" stroke="black" points="606,-78 606,-130 948,-130 948,-78 606,-78"/>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 358,-130 358,-78 16,-78"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_ExpansionModule_imports</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 598,-130 598,-78 16,-78"/>
+<g id="clust4" class="cluster">
+<title>cluster_ExpansionModule_exports</title>
+<polygon fill="none" stroke="black" points="392,-208 392,-260 656,-260 656,-208 392,-208"/>
 </g>
 <!-- ArticleModule -->
 <g id="node1" class="node">
 <title>ArticleModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="590.42,-122 587.42,-126 566.42,-126 563.42,-122 491.58,-122 491.58,-86 590.42,-86 590.42,-122"/>
-<text text-anchor="middle" x="541" y="-99.8" font-family="Times,serif" font-size="14.00">ArticleModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="940.42,-122 937.42,-126 916.42,-126 913.42,-122 841.58,-122 841.58,-86 940.42,-86 940.42,-122"/>
+<text text-anchor="middle" x="891" y="-99.8" font-family="Times,serif" font-size="14.00">ArticleModule</text>
 </g>
 <!-- ExpansionModule -->
 <g id="node6" class="node">
 <title>ExpansionModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="475.15,-187 472.15,-191 451.15,-191 448.15,-187 356.85,-187 356.85,-151 475.15,-151 475.15,-187"/>
-<text text-anchor="middle" x="416" y="-164.8" font-family="Times,serif" font-size="14.00">ExpansionModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="578.15,-187 575.15,-191 554.15,-191 551.15,-187 459.85,-187 459.85,-151 578.15,-151 578.15,-187"/>
+<text text-anchor="middle" x="519" y="-164.8" font-family="Times,serif" font-size="14.00">ExpansionModule</text>
 </g>
 <!-- ArticleModule&#45;&gt;ExpansionModule -->
 <g id="edge1" class="edge">
 <title>ArticleModule&#45;&gt;ExpansionModule</title>
-<path fill="none" stroke="black" d="M518.32,-122.03C518.32,-138.4 518.32,-160 518.32,-160 518.32,-160 485.22,-160 485.22,-160"/>
-<polygon fill="black" stroke="black" points="485.22,-156.5 475.22,-160 485.22,-163.5 485.22,-156.5"/>
+<path fill="none" stroke="black" d="M891,-122.28C891,-143.32 891,-175 891,-175 891,-175 588.36,-175 588.36,-175"/>
+<polygon fill="black" stroke="black" points="588.36,-171.5 578.36,-175 588.36,-178.5 588.36,-171.5"/>
 </g>
 <!-- CommentModule -->
 <g id="node2" class="node">
 <title>CommentModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="473.27,-122 470.27,-126 449.27,-126 446.27,-122 358.73,-122 358.73,-86 473.27,-86 473.27,-122"/>
-<text text-anchor="middle" x="416" y="-99.8" font-family="Times,serif" font-size="14.00">CommentModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="823.27,-122 820.27,-126 799.27,-126 796.27,-122 708.73,-122 708.73,-86 823.27,-86 823.27,-122"/>
+<text text-anchor="middle" x="766" y="-99.8" font-family="Times,serif" font-size="14.00">CommentModule</text>
 </g>
 <!-- CommentModule&#45;&gt;ExpansionModule -->
 <g id="edge2" class="edge">
 <title>CommentModule&#45;&gt;ExpansionModule</title>
-<path fill="none" stroke="black" d="M416,-122.11C416,-122.11 416,-140.99 416,-140.99"/>
-<polygon fill="black" stroke="black" points="412.5,-140.99 416,-150.99 419.5,-140.99 412.5,-140.99"/>
+<path fill="none" stroke="black" d="M766,-122.02C766,-139.37 766,-163 766,-163 766,-163 588.16,-163 588.16,-163"/>
+<polygon fill="black" stroke="black" points="588.16,-159.5 578.16,-163 588.16,-166.5 588.16,-159.5"/>
 </g>
 <!-- FeedbackModule -->
 <g id="node3" class="node">
 <title>FeedbackModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="340.69,-122 337.69,-126 316.69,-126 313.69,-122 227.31,-122 227.31,-86 340.69,-86 340.69,-122"/>
-<text text-anchor="middle" x="284" y="-99.8" font-family="Times,serif" font-size="14.00">FeedbackModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="690.69,-122 687.69,-126 666.69,-126 663.69,-122 577.31,-122 577.31,-86 690.69,-86 690.69,-122"/>
+<text text-anchor="middle" x="634" y="-99.8" font-family="Times,serif" font-size="14.00">FeedbackModule</text>
 </g>
 <!-- FeedbackModule&#45;&gt;ExpansionModule -->
 <g id="edge3" class="edge">
 <title>FeedbackModule&#45;&gt;ExpansionModule</title>
-<path fill="none" stroke="black" d="M318.65,-122.03C318.65,-138.4 318.65,-160 318.65,-160 318.65,-160 346.85,-160 346.85,-160"/>
-<polygon fill="black" stroke="black" points="346.85,-163.5 356.85,-160 346.85,-156.5 346.85,-163.5"/>
+<path fill="none" stroke="black" d="M577.36,-104C572.01,-104 568.53,-104 568.53,-104 568.53,-104 568.53,-140.89 568.53,-140.89"/>
+<polygon fill="black" stroke="black" points="565.03,-140.89 568.53,-150.89 572.03,-140.89 565.03,-140.89"/>
 </g>
 <!-- TagModule -->
 <g id="node4" class="node">
 <title>TagModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="209.82,-122 206.82,-126 185.82,-126 182.82,-122 128.18,-122 128.18,-86 209.82,-86 209.82,-122"/>
-<text text-anchor="middle" x="169" y="-99.8" font-family="Times,serif" font-size="14.00">TagModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="559.82,-122 556.82,-126 535.82,-126 532.82,-122 478.18,-122 478.18,-86 559.82,-86 559.82,-122"/>
+<text text-anchor="middle" x="519" y="-99.8" font-family="Times,serif" font-size="14.00">TagModule</text>
 </g>
 <!-- TagModule&#45;&gt;ExpansionModule -->
 <g id="edge4" class="edge">
 <title>TagModule&#45;&gt;ExpansionModule</title>
-<path fill="none" stroke="black" d="M169,-122.11C169,-141.34 169,-169 169,-169 169,-169 346.84,-169 346.84,-169"/>
-<polygon fill="black" stroke="black" points="346.84,-172.5 356.84,-169 346.84,-165.5 346.84,-172.5"/>
+<path fill="none" stroke="black" d="M519,-122.11C519,-122.11 519,-140.99 519,-140.99"/>
+<polygon fill="black" stroke="black" points="515.5,-140.99 519,-150.99 522.5,-140.99 515.5,-140.99"/>
 </g>
 <!-- VoteModule -->
 <g id="node5" class="node">
 <title>VoteModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="110.26,-122 107.26,-126 86.26,-126 83.26,-122 23.74,-122 23.74,-86 110.26,-86 110.26,-122"/>
-<text text-anchor="middle" x="67" y="-99.8" font-family="Times,serif" font-size="14.00">VoteModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="460.26,-122 457.26,-126 436.26,-126 433.26,-122 373.74,-122 373.74,-86 460.26,-86 460.26,-122"/>
+<text text-anchor="middle" x="417" y="-99.8" font-family="Times,serif" font-size="14.00">VoteModule</text>
 </g>
 <!-- VoteModule&#45;&gt;ExpansionModule -->
 <g id="edge5" class="edge">
 <title>VoteModule&#45;&gt;ExpansionModule</title>
-<path fill="none" stroke="black" d="M67,-122.29C67,-144.21 67,-178 67,-178 67,-178 346.8,-178 346.8,-178"/>
-<polygon fill="black" stroke="black" points="346.8,-181.5 356.8,-178 346.8,-174.5 346.8,-181.5"/>
+<path fill="none" stroke="black" d="M460.71,-104C465.88,-104 469.36,-104 469.36,-104 469.36,-104 469.36,-140.89 469.36,-140.89"/>
+<polygon fill="black" stroke="black" points="465.86,-140.89 469.36,-150.89 472.86,-140.89 465.86,-140.89"/>
 </g>
 <!-- DBBackupService  -->
 <g id="node7" class="node">
 <title>DBBackupService </title>
-<polygon fill="#fb8072" stroke="black" points="544.69,-252 421.31,-252 421.31,-216 544.69,-216 544.69,-252"/>
-<text text-anchor="middle" x="483" y="-229.8" font-family="Times,serif" font-size="14.00">DBBackupService </text>
+<polygon fill="#fb8072" stroke="black" points="647.69,-252 524.31,-252 524.31,-216 647.69,-216 647.69,-252"/>
+<text text-anchor="middle" x="586" y="-229.8" font-family="Times,serif" font-size="14.00">DBBackupService </text>
 </g>
 <!-- ExpansionModule&#45;&gt;DBBackupService  -->
 <g id="edge6" class="edge">
 <title>ExpansionModule&#45;&gt;DBBackupService </title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M448.24,-187.11C448.24,-187.11 448.24,-205.99 448.24,-205.99"/>
-<polygon fill="black" stroke="black" points="444.74,-205.99 448.24,-215.99 451.74,-205.99 444.74,-205.99"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M551.24,-187.11C551.24,-187.11 551.24,-205.99 551.24,-205.99"/>
+<polygon fill="black" stroke="black" points="547.74,-205.99 551.24,-215.99 554.74,-205.99 547.74,-205.99"/>
 </g>
 <!-- StatisticService  -->
 <g id="node8" class="node">
 <title>StatisticService </title>
-<polygon fill="#fb8072" stroke="black" points="403.09,-252 296.91,-252 296.91,-216 403.09,-216 403.09,-252"/>
-<text text-anchor="middle" x="350" y="-229.8" font-family="Times,serif" font-size="14.00">StatisticService </text>
+<polygon fill="#fb8072" stroke="black" points="506.09,-252 399.91,-252 399.91,-216 506.09,-216 506.09,-252"/>
+<text text-anchor="middle" x="453" y="-229.8" font-family="Times,serif" font-size="14.00">StatisticService </text>
 </g>
 <!-- ExpansionModule&#45;&gt;StatisticService  -->
 <g id="edge7" class="edge">
 <title>ExpansionModule&#45;&gt;StatisticService </title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M379.98,-187.11C379.98,-187.11 379.98,-205.99 379.98,-205.99"/>
-<polygon fill="black" stroke="black" points="376.48,-205.99 379.98,-215.99 383.48,-205.99 376.48,-205.99"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M482.98,-187.11C482.98,-187.11 482.98,-205.99 482.98,-205.99"/>
+<polygon fill="black" stroke="black" points="479.48,-205.99 482.98,-215.99 486.48,-205.99 479.48,-205.99"/>
 </g>
 <!-- DBBackupService -->
 <g id="node9" class="node">
 <title>DBBackupService</title>
-<ellipse fill="#fdb462" stroke="black" cx="857" cy="-104" rx="82.81" ry="18"/>
-<text text-anchor="middle" x="857" y="-99.8" font-family="Times,serif" font-size="14.00">DBBackupService</text>
+<ellipse fill="#fdb462" stroke="black" cx="267" cy="-104" rx="82.81" ry="18"/>
+<text text-anchor="middle" x="267" y="-99.8" font-family="Times,serif" font-size="14.00">DBBackupService</text>
 </g>
 <!-- DBBackupService&#45;&gt;ExpansionModule -->
 <g id="edge8" class="edge">
 <title>DBBackupService&#45;&gt;ExpansionModule</title>
-<path fill="none" stroke="black" d="M857,-122.29C857,-144.21 857,-178 857,-178 857,-178 485.48,-178 485.48,-178"/>
-<polygon fill="black" stroke="black" points="485.48,-174.5 475.48,-178 485.48,-181.5 485.48,-174.5"/>
+<path fill="none" stroke="black" d="M267,-122.02C267,-139.37 267,-163 267,-163 267,-163 449.6,-163 449.6,-163"/>
+<polygon fill="black" stroke="black" points="449.6,-166.5 459.6,-163 449.6,-159.5 449.6,-166.5"/>
 </g>
 <!-- StatisticService -->
 <g id="node10" class="node">
 <title>StatisticService</title>
-<ellipse fill="#fdb462" stroke="black" cx="685" cy="-104" rx="71.22" ry="18"/>
-<text text-anchor="middle" x="685" y="-99.8" font-family="Times,serif" font-size="14.00">StatisticService</text>
+<ellipse fill="#fdb462" stroke="black" cx="95" cy="-104" rx="71.22" ry="18"/>
+<text text-anchor="middle" x="95" y="-99.8" font-family="Times,serif" font-size="14.00">StatisticService</text>
 </g>
 <!-- StatisticService&#45;&gt;ExpansionModule -->
 <g id="edge9" class="edge">
 <title>StatisticService&#45;&gt;ExpansionModule</title>
-<path fill="none" stroke="black" d="M685,-122.11C685,-141.34 685,-169 685,-169 685,-169 485.37,-169 485.37,-169"/>
-<polygon fill="black" stroke="black" points="485.37,-165.5 475.37,-169 485.37,-172.5 485.37,-165.5"/>
+<path fill="none" stroke="black" d="M95,-122.28C95,-143.32 95,-175 95,-175 95,-175 449.6,-175 449.6,-175"/>
+<polygon fill="black" stroke="black" points="449.6,-178.5 459.6,-175 449.6,-171.5 449.6,-178.5"/>
 </g>
 </g>
 </svg>

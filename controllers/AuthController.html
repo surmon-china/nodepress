@@ -533,9 +533,9 @@ export class AuthController {
     const token &#x3D; await this.authService.adminLogin(body.password)
     if (ip) {
       this.ipService.queryLocation(ip).then((location) &#x3D;&gt; {
-        const subject &#x3D; &#x60;App has a new login activity.&#x60;
+        const subject &#x3D; &#x60;App has a new login activity&#x60;
         const locationText &#x3D; location ? [location.country, location.region, location.city].join(&#x27; · &#x27;) : &#x27;unknow&#x27;
-        const content &#x3D; &#x60;${subject}, IP: ${ip}, location: ${locationText}&#x60;
+        const content &#x3D; &#x60;${subject}. IP: ${ip}, location: ${locationText}&#x60;
         this.emailService.sendMailAs(APP.NAME, {
           to: APP.ADMIN_EMAIL,
           subject,
