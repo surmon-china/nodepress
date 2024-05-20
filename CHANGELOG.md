@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.9.0 (2024-05-20)
+
+**Feature**
+
+- **[Auth]** rename DB collection name from `Auth` to `Admin`
+
 ### 4.8.0 (2024-05-19)
 
 **Feature**

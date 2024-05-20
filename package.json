@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "4.8.0",
+  "version": "4.9.0",
   "description": "RESTful API service for Surmon.me blog",
   "author": "Surmon",
   "license": "MIT",
@@ -41,7 +41,7 @@
     "@typegoose/auto-increment": "^4.4.0",
     "@typegoose/typegoose": "^12.5.0",
     "akismet-api": "^6.0.0",
-    "axios": "^1.6.8",
+    "axios": "^1.7.0",
     "body-parser": "^1.20.2",
     "chalk": "4.x",
     "class-transformer": "^0.5.1",
