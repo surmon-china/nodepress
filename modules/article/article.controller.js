@@ -102,12 +102,12 @@ let ArticleController = class ArticleController {
         return this.articleService.getCalendar(isUnauthenticated, query.timezone);
     }
     async getArticleContext({ params }) {
-        const articleID = Number(params.id);
+        const articleId = Number(params.id);
         const [prevArticles, nextArticles, relatedArticles] = await Promise.all([
-            this.articleService.getNearArticles(articleID, 'early', 1),
-            this.articleService.getNearArticles(articleID, 'later', 1),
+            this.articleService.getNearArticles(articleId, 'early', 1),
+            this.articleService.getNearArticles(articleId, 'later', 1),
             this.articleService
-                .getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
+                .getDetailByNumberIdOrSlug({ idOrSlug: articleId, publicOnly: true })
                 .then((article) => this.articleService.getRelatedArticles(article, 20))
         ]);
         return {
@@ -122,8 +122,8 @@ let ArticleController = class ArticleController {
             return this.articleService.getFullDetailForGuest(idOrSlug);
         }
         return mongoose_1.Types.ObjectId.isValid(params.id)
-            ? this.articleService.getDetailByObjectID(params.id)
-            : this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) });
+            ? this.articleService.getDetailByObjectId(params.id)
+            : this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: Number(params.id) });
     }
     createArticle(article) {
         return this.articleService.create(article);
@@ -225,7 +225,7 @@ __decorate([
     responser_decorator_1.Responser.handle('Delete articles'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_dto_1.ArticleIDsDTO]),
+    __metadata("design:paramtypes", [article_dto_1.ArticleIdsDTO]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "delArticles", null);
 exports.ArticleController = ArticleController = __decorate([

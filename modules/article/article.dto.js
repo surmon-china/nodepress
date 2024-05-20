@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticlesStateDTO = exports.ArticleIDsDTO = exports.ArticleCalendarQueryDTO = exports.ArticlePaginateQueryDTO = void 0;
+exports.ArticlesStateDTO = exports.ArticleIdsDTO = exports.ArticleCalendarQueryDTO = exports.ArticlePaginateQueryDTO = void 0;
 const mapped_types_1 = require("@nestjs/mapped-types");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
@@ -83,16 +83,16 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], ArticleCalendarQueryDTO.prototype, "timezone", void 0);
-class ArticleIDsDTO {
+class ArticleIdsDTO {
 }
-exports.ArticleIDsDTO = ArticleIDsDTO;
+exports.ArticleIdsDTO = ArticleIdsDTO;
 __decorate([
     (0, class_validator_1.ArrayNotEmpty)(),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
     __metadata("design:type", Array)
-], ArticleIDsDTO.prototype, "article_ids", void 0);
-class ArticlesStateDTO extends ArticleIDsDTO {
+], ArticleIdsDTO.prototype, "article_ids", void 0);
+class ArticlesStateDTO extends ArticleIdsDTO {
 }
 exports.ArticlesStateDTO = ArticlesStateDTO;
 __decorate([

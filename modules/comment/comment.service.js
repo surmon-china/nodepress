@@ -76,7 +76,7 @@ let CommentService = class CommentService {
             onWhere = 'guestbook';
         }
         else {
-            const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: comment.post_id });
+            const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: comment.post_id });
             onWhere = `"${article.toObject().title}"`;
         }
         const authorName = comment.author.name;
@@ -84,7 +84,7 @@ let CommentService = class CommentService {
             const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`];
             const textHTML = texts.map((text) => `<p>${text}</p>`).join('');
             const replyText = `Reply to ${authorName} #${comment.id}`;
-            const commentLink = (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id) + `#comment-${comment.id}`;
+            const commentLink = (0, urlmap_transformer_1.getPermalinkById)(comment.post_id) + `#comment-${comment.id}`;
             const linkHTML = `<a href="${commentLink}" target="_blank">${replyText}</a>`;
             return {
                 text: texts.join('\n'),
@@ -107,7 +107,7 @@ let CommentService = class CommentService {
             user_ip: comment.ip,
             user_agent: comment.agent,
             referrer: referer || '',
-            permalink: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id),
+            permalink: (0, urlmap_transformer_1.getPermalinkById)(comment.post_id),
             comment_type: comment.pid ? 'reply' : 'comment',
             comment_author: comment.author.name,
             comment_author_email: comment.author.email,
@@ -115,18 +115,18 @@ let CommentService = class CommentService {
             comment_content: comment.content
         });
     }
-    async updateCommentsCountWithArticles(postIDs) {
-        postIDs = postIDs.map(Number).filter(Boolean);
-        if (!postIDs.length) {
+    async updateCommentsCountWithArticles(postIds) {
+        postIds = postIds.map(Number).filter(Boolean);
+        if (!postIds.length) {
             return false;
         }
         try {
             const counts = await this.commentModel.aggregate([
-                { $match: Object.assign(Object.assign({}, comment_model_1.COMMENT_GUEST_QUERY_FILTER), { post_id: { $in: postIDs } }) },
+                { $match: Object.assign(Object.assign({}, comment_model_1.COMMENT_GUEST_QUERY_FILTER), { post_id: { $in: postIds } }) },
                 { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } }
             ]);
             if (!counts || !counts.length) {
-                await this.articleService.updateMetaComments(postIDs[0], 0);
+                await this.articleService.updateMetaComments(postIds[0], 0);
             }
             else {
                 await Promise.all(counts.map((count) => {
@@ -162,11 +162,11 @@ let CommentService = class CommentService {
             return Promise.reject('content | email | IP > blocked');
         }
     }
-    async verifyTargetCommentable(targetPostID) {
-        if (targetPostID !== biz_constant_1.GUESTBOOK_POST_ID) {
-            const isCommentable = await this.articleService.isCommentableArticle(targetPostID);
+    async verifyTargetCommentable(targetPostId) {
+        if (targetPostId !== biz_constant_1.GUESTBOOK_POST_ID) {
+            const isCommentable = await this.articleService.isCommentableArticle(targetPostId);
             if (!isCommentable) {
-                return Promise.reject(`Comment target ${targetPostID} was disabled comment`);
+                return Promise.reject(`Comment target ${targetPostId} was disabled comment`);
             }
         }
     }
@@ -204,31 +204,31 @@ let CommentService = class CommentService {
         ]);
         return this.create(newComment);
     }
-    getDetailByObjectID(commentID) {
+    getDetailByObjectId(commentId) {
         return this.commentModel
-            .findById(commentID)
+            .findById(commentId)
             .exec()
-            .then((result) => result || Promise.reject(`Comment '${commentID}' not found`));
+            .then((result) => result || Promise.reject(`Comment '${commentId}' not found`));
     }
-    getDetailByNumberID(commentID) {
+    getDetailByNumberId(commentId) {
         return this.commentModel
-            .findOne({ id: commentID })
+            .findOne({ id: commentId })
             .exec()
-            .then((result) => result || Promise.reject(`Comment '${commentID}' not found`));
+            .then((result) => result || Promise.reject(`Comment '${commentId}' not found`));
     }
-    async update(commentID, newComment, referer) {
-        const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment, { new: true }).exec();
+    async update(commentId, newComment, referer) {
+        const comment = await this.commentModel.findByIdAndUpdate(commentId, newComment, { new: true }).exec();
         if (!comment) {
-            throw `Comment '${commentID}' not found`;
+            throw `Comment '${commentId}' not found`;
         }
         this.updateCommentsCountWithArticles([comment.post_id]);
         this.updateBlocklistAkismetWithComment([comment], comment.state, referer);
         return comment;
     }
-    async delete(commentID) {
-        const comment = await this.commentModel.findByIdAndDelete(commentID, null).exec();
+    async delete(commentId) {
+        const comment = await this.commentModel.findByIdAndDelete(commentId, null).exec();
         if (!comment) {
-            throw `Comment '${commentID}' not found`;
+            throw `Comment '${commentId}' not found`;
         }
         this.updateCommentsCountWithArticles([comment.post_id]);
         return comment;
@@ -248,9 +248,9 @@ let CommentService = class CommentService {
         }
         return actionResult;
     }
-    async batchDelete(commentIDs, postIDs) {
-        const result = await this.commentModel.deleteMany({ _id: { $in: commentIDs } }).exec();
-        this.updateCommentsCountWithArticles(postIDs);
+    async batchDelete(commentIds, postIds) {
+        const result = await this.commentModel.deleteMany({ _id: { $in: commentIds } }).exec();
+        this.updateCommentsCountWithArticles(postIds);
         return result;
     }
     async countDocuments(filter, options) {
@@ -273,10 +273,10 @@ let CommentService = class CommentService {
         }))
             .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`));
     }
-    async reviseIPLocation(commentID) {
-        const comment = await this.getDetailByObjectID(commentID);
+    async reviseIPLocation(commentId) {
+        const comment = await this.getDetailByObjectId(commentId);
         if (!comment.ip) {
-            return `Comment '${commentID}' hasn't IP address`;
+            return `Comment '${commentId}' hasn't IP address`;
         }
         const location = await this.ipService.queryLocation(comment.ip);
         if (!location) {
@@ -285,8 +285,8 @@ let CommentService = class CommentService {
         comment.ip_location = Object.assign({}, location);
         return await comment.save();
     }
-    async vote(commentID, isLike) {
-        const comment = await this.getDetailByNumberID(commentID);
+    async vote(commentId, isLike) {
+        const comment = await this.getDetailByNumberId(commentId);
         isLike ? comment.likes++ : comment.dislikes++;
         await comment.save({ timestamps: false });
         return {

@@ -84,33 +84,33 @@ let TagService = class TagService {
         this.updateAllTagsCache();
         return tag;
     }
-    async update(tagID, newTag) {
+    async update(tagId, newTag) {
         const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
-        if (existedTag && !existedTag._id.equals(tagID)) {
+        if (existedTag && !existedTag._id.equals(tagId)) {
             throw `Tag slug '${newTag.slug}' is existed`;
         }
-        const tag = await this.tagModel.findByIdAndUpdate(tagID, newTag, { new: true }).exec();
+        const tag = await this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).exec();
         if (!tag) {
-            throw `Tag '${tagID}' not found`;
+            throw `Tag '${tagId}' not found`;
         }
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
         this.updateAllTagsCache();
         return tag;
     }
-    async delete(tagID) {
-        const tag = await this.tagModel.findByIdAndDelete(tagID, null).exec();
+    async delete(tagId) {
+        const tag = await this.tagModel.findByIdAndDelete(tagId, null).exec();
         if (!tag) {
-            throw `Tag '${tagID}' not found`;
+            throw `Tag '${tagId}' not found`;
         }
         this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
         this.updateAllTagsCache();
         return tag;
     }
-    async batchDelete(tagIDs) {
-        const tags = await this.tagModel.find({ _id: { $in: tagIDs } }).exec();
-        const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIDs } }).exec();
+    async batchDelete(tagIds) {
+        const tags = await this.tagModel.find({ _id: { $in: tagIds } }).exec();
+        const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIds } }).exec();
         this.archiveService.updateCache();
         this.updateAllTagsCache();
         this.seoService.delete(tags.map((tag) => (0, urlmap_transformer_1.getTagUrl)(tag.slug)));

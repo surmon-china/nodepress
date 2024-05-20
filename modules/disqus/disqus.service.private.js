@@ -60,23 +60,23 @@ let DisqusPrivateService = class DisqusPrivateService {
             apiSecret: app_config_1.DISQUS.secretKey
         });
     }
-    async createThread(postID) {
+    async createThread(postId) {
         try {
-            const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postID, publicOnly: true });
+            const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId, publicOnly: true });
             const response = await this.disqus.request('threads/create', {
                 forum: app_config_1.DISQUS.forum,
-                identifier: DISQUS_CONST.getThreadIdentifierByID(postID),
+                identifier: DISQUS_CONST.getThreadIdentifierById(postId),
                 title: article.title,
                 message: article.description,
-                slug: article.slug || DISQUS_CONST.getThreadIdentifierByID(postID),
+                slug: article.slug || DISQUS_CONST.getThreadIdentifierById(postId),
                 date: (0, dayjs_1.default)(article.created_at).unix(),
-                url: (0, urlmap_transformer_1.getPermalinkByID)(postID),
+                url: (0, urlmap_transformer_1.getPermalinkById)(postId),
                 access_token: app_config_1.DISQUS.adminAccessToken
             });
             return response.response;
         }
         catch (error) {
-            logger.warn('createThread failed!', postID, error);
+            logger.warn('createThread failed!', postId, error);
             throw error;
         }
     }
@@ -125,9 +125,9 @@ let DisqusPrivateService = class DisqusPrivateService {
         const guestbook = [];
         const allComments = await this.commentService.getAll();
         const todoComments = allComments.filter((comment) => [biz_constant_1.CommentState.Auditing, biz_constant_1.CommentState.Published].includes(comment.state));
-        const todoCommentIDs = todoComments.map((comment) => comment.id);
+        const todoCommentIds = todoComments.map((comment) => comment.id);
         todoComments.forEach((comment) => {
-            if (comment.pid && !todoCommentIDs.includes(comment.pid)) {
+            if (comment.pid && !todoCommentIds.includes(comment.pid)) {
                 comment.pid = 0;
             }
             if (comment.post_id === biz_constant_1.GUESTBOOK_POST_ID) {
@@ -140,8 +140,8 @@ let DisqusPrivateService = class DisqusPrivateService {
                 treeMap.set(comment.post_id, { comments: [comment] });
             }
         });
-        const articleIDs = Array.from(treeMap.keys());
-        const articles = await this.articleService.getList(articleIDs);
+        const articleIds = Array.from(treeMap.keys());
+        const articles = await this.articleService.getList(articleIds);
         articles.forEach((article) => {
             if (treeMap.has(article.id)) {
                 treeMap.get(article.id).article = article;
@@ -161,27 +161,27 @@ let DisqusPrivateService = class DisqusPrivateService {
         const posts = object.disqus.post;
         const filtered = posts.filter((post) => Boolean(post.id));
         const getEach = (post) => ({
-            commentID: Number(post.id.replace(`wp_id=`, '')),
-            postID: post['@dsq:id'],
-            threadID: post.thread['@dsq:id'],
+            commentId: Number(post.id.replace(`wp_id=`, '')),
+            postId: post['@dsq:id'],
+            threadId: post.thread['@dsq:id'],
             isAnonymous: post.author.isAnonymous,
             username: post.author.username || null
         });
         const doImport = async (each) => {
-            if (!Number.isFinite(each.commentID)) {
-                throw `Invalid comment ID '${each.commentID}'`;
+            if (!Number.isFinite(each.commentId)) {
+                throw `Invalid comment ID '${each.commentId}'`;
             }
-            const comment = await this.commentService.getDetailByNumberID(each.commentID);
+            const comment = await this.commentService.getDetailByNumberId(each.commentId);
             if (!comment) {
                 throw `Invalid comment '${comment}'`;
             }
             const _extends = comment.extends || [];
             const extendsObject = (0, extend_transformer_1.getExtendObject)(_extends);
             if (!extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]) {
-                _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postID });
+                _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postId });
             }
             if (!extendsObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY]) {
-                _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadID });
+                _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadId });
             }
             if (each.isAnonymous) {
                 if (!extendsObject[DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY]) {

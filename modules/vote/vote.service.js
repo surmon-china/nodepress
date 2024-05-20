@@ -26,22 +26,22 @@ let VoteService = class VoteService {
     create(vote) {
         return this.voteModel.create(vote);
     }
-    async update(voteID, newVote) {
-        const vote = await this.voteModel.findByIdAndUpdate(voteID, newVote, { new: true }).exec();
+    async update(voteId, newVote) {
+        const vote = await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec();
         if (!vote) {
-            throw `Vote '${voteID}' not found`;
+            throw `Vote '${voteId}' not found`;
         }
         return vote;
     }
-    async delete(voteID) {
-        const vote = await this.voteModel.findByIdAndDelete(voteID, null).exec();
+    async delete(voteId) {
+        const vote = await this.voteModel.findByIdAndDelete(voteId, null).exec();
         if (!vote) {
-            throw `Vote '${voteID}' not found`;
+            throw `Vote '${voteId}' not found`;
         }
         return vote;
     }
-    batchDelete(voteIDs) {
-        return this.voteModel.deleteMany({ _id: { $in: voteIDs } }).exec();
+    batchDelete(voteIds) {
+        return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec();
     }
     async countDocuments(filter, options) {
         return await this.voteModel.countDocuments(filter, options).exec();

@@ -48,14 +48,14 @@ let ArticleService = class ArticleService {
         this.archiveService = archiveService;
         this.articleModel = articleModel;
     }
-    async getNearArticles(articleID, type, count) {
+    async getNearArticles(articleId, type, count) {
         const typeFieldMap = {
             early: { field: '$lt', sort: -1 },
             later: { field: '$gt', sort: 1 }
         };
         const targetType = typeFieldMap[type];
         return this.articleModel
-            .find(Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { id: { [targetType.field]: articleID } }), article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
+            .find(Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { id: { [targetType.field]: articleId } }), article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
             .populate(article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE)
             .sort({ id: targetType.sort })
             .limit(count)
@@ -73,16 +73,16 @@ let ArticleService = class ArticleService {
     paginator(query, options) {
         return this.articleModel.paginate(query, Object.assign(Object.assign({}, options), { projection: article_model_1.ARTICLE_LIST_QUERY_PROJECTION, populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE }));
     }
-    getList(articleIDs) {
-        return this.articleModel.find({ id: { $in: articleIDs } }).exec();
+    getList(articleIds) {
+        return this.articleModel.find({ id: { $in: articleIds } }).exec();
     }
-    getDetailByObjectID(articleID) {
+    getDetailByObjectId(articleId) {
         return this.articleModel
-            .findById(articleID)
+            .findById(articleId)
             .exec()
-            .then((result) => result || Promise.reject(`Article '${articleID}' not found`));
+            .then((result) => result || Promise.reject(`Article '${articleId}' not found`));
     }
-    getDetailByNumberIDOrSlug({ idOrSlug, publicOnly = false, populate = false }) {
+    getDetailByNumberIdOrSlug({ idOrSlug, publicOnly = false, populate = false }) {
         const params = {};
         if (typeof idOrSlug === 'string') {
             params.slug = idOrSlug;
@@ -97,7 +97,7 @@ let ArticleService = class ArticleService {
             .then((result) => result || Promise.reject(`Article '${idOrSlug}' not found`));
     }
     async getFullDetailForGuest(target) {
-        const article = await this.getDetailByNumberIDOrSlug({
+        const article = await this.getDetailByNumberIdOrSlug({
             idOrSlug: target,
             publicOnly: true,
             populate: true
@@ -107,9 +107,9 @@ let ArticleService = class ArticleService {
         (0, expansion_helper_1.increaseTodayViewsCount)(this.cacheService);
         return article.toObject();
     }
-    async incrementLikes(articleID) {
-        const article = await this.getDetailByNumberIDOrSlug({
-            idOrSlug: articleID,
+    async incrementLikes(articleId) {
+        const article = await this.getDetailByNumberIdOrSlug({
+            idOrSlug: articleId,
             publicOnly: true
         });
         article.meta.likes++;
@@ -130,19 +130,19 @@ let ArticleService = class ArticleService {
         this.archiveService.updateCache();
         return article;
     }
-    async update(articleID, newArticle) {
+    async update(articleId, newArticle) {
         if (newArticle.slug) {
             const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec();
-            if (existedArticle && !existedArticle._id.equals(articleID)) {
+            if (existedArticle && !existedArticle._id.equals(articleId)) {
                 throw `Article slug '${newArticle.slug}' is existed`;
             }
         }
         Reflect.deleteProperty(newArticle, 'meta');
         Reflect.deleteProperty(newArticle, 'created_at');
         Reflect.deleteProperty(newArticle, 'updated_at');
-        const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle, { new: true }).exec();
+        const article = await this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).exec();
         if (!article) {
-            throw `Article '${articleID}' not found`;
+            throw `Article '${articleId}' not found`;
         }
         this.seoService.update((0, urlmap_transformer_1.getArticleUrl)(article.id));
         this.tagService.updateAllTagsCache();
@@ -150,10 +150,10 @@ let ArticleService = class ArticleService {
         this.archiveService.updateCache();
         return article;
     }
-    async delete(articleID) {
-        const article = await this.articleModel.findByIdAndDelete(articleID, null).exec();
+    async delete(articleId) {
+        const article = await this.articleModel.findByIdAndDelete(articleId, null).exec();
         if (!article) {
-            throw `Article '${articleID}' not found`;
+            throw `Article '${articleId}' not found`;
         }
         this.seoService.delete((0, urlmap_transformer_1.getArticleUrl)(article.id));
         this.tagService.updateAllTagsCache();
@@ -161,19 +161,19 @@ let ArticleService = class ArticleService {
         this.archiveService.updateCache();
         return article;
     }
-    async batchPatchState(articleIDs, state) {
+    async batchPatchState(articleIds, state) {
         const actionResult = await this.articleModel
-            .updateMany({ _id: { $in: articleIDs } }, { $set: { state } }, { multi: true })
+            .updateMany({ _id: { $in: articleIds } }, { $set: { state } }, { multi: true })
             .exec();
         this.tagService.updateAllTagsCache();
         this.categoryService.updateAllCategoriesCache();
         this.archiveService.updateCache();
         return actionResult;
     }
-    async batchDelete(articleIDs) {
-        const articles = await this.articleModel.find({ _id: { $in: articleIDs } }).exec();
+    async batchDelete(articleIds) {
+        const articles = await this.articleModel.find({ _id: { $in: articleIds } }).exec();
         this.seoService.delete(articles.map((article) => (0, urlmap_transformer_1.getArticleUrl)(article.id)));
-        const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIDs } }).exec();
+        const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIds } }).exec();
         this.tagService.updateAllTagsCache();
         this.categoryService.updateAllCategoriesCache();
         this.archiveService.updateCache();
@@ -216,12 +216,12 @@ let ArticleService = class ArticleService {
             };
         }
     }
-    async isCommentableArticle(articleID) {
-        const article = await this.articleModel.findOne({ id: articleID }).exec();
+    async isCommentableArticle(articleId) {
+        const article = await this.articleModel.findOne({ id: articleId }).exec();
         return Boolean(article && !article.disabled_comments);
     }
-    async updateMetaComments(articleID, commentCount) {
-        const findParams = { id: articleID };
+    async updateMetaComments(articleId, commentCount) {
+        const findParams = { id: articleId };
         const patchParams = { $set: { 'meta.comments': commentCount } };
         return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec();
     }

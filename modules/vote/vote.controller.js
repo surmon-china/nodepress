@@ -89,7 +89,7 @@ let VoteController = class VoteController {
             return 'guestbook';
         }
         else {
-            const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postId });
+            const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId });
             return article.toObject().title;
         }
     }
@@ -219,7 +219,7 @@ let VoteController = class VoteController {
                 author: this.getAuthorString(voteAuthor),
                 userAgent: visitor.ua,
                 location: ipLocation,
-                link: (0, urlmap_transformer_1.getPermalinkByID)(voteBody.post_id)
+                link: (0, urlmap_transformer_1.getPermalinkById)(voteBody.post_id)
             });
         });
         return likes;
@@ -228,11 +228,11 @@ let VoteController = class VoteController {
         const result = await this.commentService.vote(voteBody.comment_id, voteBody.vote > 0);
         if (token) {
             try {
-                const postID = await this.disqusPublicService.getDisqusPostIDByCommentID(voteBody.comment_id);
-                if (postID) {
+                const postId = await this.disqusPublicService.getDisqusPostIdByCommentId(voteBody.comment_id);
+                if (postId) {
                     await this.disqusPublicService.votePost({
                         access_token: token.access_token,
-                        post: postID,
+                        post: postId,
                         vote: voteBody.vote
                     });
                 }
@@ -251,7 +251,7 @@ let VoteController = class VoteController {
                 ip: visitor.ip,
                 ip_location: ipLocation
             });
-            const comment = await this.commentService.getDetailByNumberID(voteBody.comment_id);
+            const comment = await this.commentService.getDetailByNumberId(voteBody.comment_id);
             const targetTitle = await this.getPostTitle(comment.post_id);
             const mailPayload = {
                 vote: vote_model_1.voteTypeMap.get(voteBody.vote),
@@ -259,7 +259,7 @@ let VoteController = class VoteController {
                 author: this.getAuthorString(voteAuthor),
                 userAgent: visitor.ua,
                 location: ipLocation,
-                link: (0, urlmap_transformer_1.getPermalinkByID)(comment.post_id) + `#comment-${comment.id}`
+                link: (0, urlmap_transformer_1.getPermalinkById)(comment.post_id) + `#comment-${comment.id}`
             };
             this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailPayload));
             if (comment.author.email) {

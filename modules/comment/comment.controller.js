@@ -88,7 +88,7 @@ let CommentController = class CommentController {
         return this.commentService.batchDelete(body.comment_ids, body.post_ids);
     }
     getComment({ params }) {
-        return this.commentService.getDetailByObjectID(params.id).then((comment) => {
+        return this.commentService.getDetailByObjectId(params.id).then((comment) => {
             return comment ? comment : Promise.reject('Comment not found');
         });
     }

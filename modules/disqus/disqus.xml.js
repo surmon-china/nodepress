@@ -36,9 +36,9 @@ const getDisqusXML = (data, guestbook) => {
       <channel>
         <item>
           <title>Guestbook</title>
-          <link>${(0, urlmap_transformer_1.getPermalinkByID)(biz_constant_1.GUESTBOOK_POST_ID)}</link>
+          <link>${(0, urlmap_transformer_1.getPermalinkById)(biz_constant_1.GUESTBOOK_POST_ID)}</link>
           <content:encoded><![CDATA[${app_config_1.APP.FE_NAME}]]></content:encoded>
-          <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierByID)(biz_constant_1.GUESTBOOK_POST_ID)}</dsq:thread_identifier>
+          <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierById)(biz_constant_1.GUESTBOOK_POST_ID)}</dsq:thread_identifier>
           <wp:post_date_gmt>2017-01-01 00:00:00</wp:post_date_gmt>
           <wp:comment_status>open</wp:comment_status>
           ${guestbook.map(getCommentItemXML).join('\n')}
@@ -47,9 +47,9 @@ const getDisqusXML = (data, guestbook) => {
         .map((item) => `
             <item>
               <title>${item.article.title}</title>
-              <link>${(0, urlmap_transformer_1.getPermalinkByID)(item.article.id)}</link>
+              <link>${(0, urlmap_transformer_1.getPermalinkById)(item.article.id)}</link>
               <content:encoded><![CDATA[${item.article.description || ''}]]></content:encoded>
-              <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierByID)(item.article.id)}</dsq:thread_identifier>
+              <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierById)(item.article.id)}</dsq:thread_identifier>
               <wp:post_date_gmt>${(0, dayjs_1.default)(item.article.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:post_date_gmt>
               <wp:comment_status>${item.article.disabled_comments ? disqus_dto_1.ThreadState.Closed : disqus_dto_1.ThreadState.Open}</wp:comment_status>
               ${item.comments.map(getCommentItemXML).join('\n')}

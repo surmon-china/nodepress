@@ -84,7 +84,7 @@ let CategoryService = class CategoryService {
         this.updateAllCategoriesCache();
         return category;
     }
-    getGenealogyById(categoryID) {
+    getGenealogyById(categoryId) {
         const categories = [];
         const findById = (id) => this.categoryModel.findById(id).exec();
         return new Promise((resolve, reject) => {
@@ -93,8 +93,8 @@ let CategoryService = class CategoryService {
                 findById(id)
                     .then((category) => {
                     if (!category) {
-                        if (id === categoryID) {
-                            return reject(`Category '${categoryID}' not found`);
+                        if (id === categoryId) {
+                            return reject(`Category '${categoryId}' not found`);
                         }
                         else {
                             return resolve(categories);
@@ -106,32 +106,32 @@ let CategoryService = class CategoryService {
                     return hasParent ? findCateItem(parentId) : resolve(categories);
                 })
                     .catch(reject);
-            })(categoryID);
+            })(categoryId);
         });
     }
-    async update(categoryID, newCategory) {
+    async update(categoryId, newCategory) {
         const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
-        if (existedCategory && !existedCategory._id.equals(categoryID)) {
+        if (existedCategory && !existedCategory._id.equals(categoryId)) {
             throw `Category slug '${newCategory.slug}' is existed`;
         }
-        const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory, { new: true }).exec();
+        const category = await this.categoryModel.findByIdAndUpdate(categoryId, newCategory, { new: true }).exec();
         if (!category) {
-            throw `Category '${categoryID}' not found`;
+            throw `Category '${categoryId}' not found`;
         }
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
         this.archiveService.updateCache();
         this.updateAllCategoriesCache();
         return category;
     }
-    async delete(categoryID) {
-        const category = await this.categoryModel.findByIdAndDelete(categoryID, null).exec();
+    async delete(categoryId) {
+        const category = await this.categoryModel.findByIdAndDelete(categoryId, null).exec();
         if (!category) {
-            throw `Category '${categoryID}' not found`;
+            throw `Category '${categoryId}' not found`;
         }
         this.archiveService.updateCache();
         this.seoService.delete((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
         this.updateAllCategoriesCache();
-        const categories = await this.categoryModel.find({ pid: categoryID }).exec();
+        const categories = await this.categoryModel.find({ pid: categoryId }).exec();
         if (!categories.length) {
             return category;
         }
@@ -142,10 +142,10 @@ let CategoryService = class CategoryService {
             .execute();
         return category;
     }
-    async batchDelete(categoryIDs) {
-        const categories = await this.categoryModel.find({ _id: { $in: categoryIDs } }).exec();
+    async batchDelete(categoryIds) {
+        const categories = await this.categoryModel.find({ _id: { $in: categoryIds } }).exec();
         this.seoService.delete(categories.map((category) => (0, urlmap_transformer_1.getCategoryUrl)(category.slug)));
-        const actionResult = await this.categoryModel.deleteMany({ _id: { $in: categoryIDs } }).exec();
+        const actionResult = await this.categoryModel.deleteMany({ _id: { $in: categoryIds } }).exec();
         this.archiveService.updateCache();
         this.updateAllCategoriesCache();
         return actionResult;

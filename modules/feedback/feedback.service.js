@@ -31,28 +31,28 @@ let FeedbackService = class FeedbackService {
     async create(feedback, visitor) {
         return this.feedbackModel.create(Object.assign(Object.assign({}, feedback), { origin: visitor.origin, user_agent: visitor.ua, ip: visitor.ip, ip_location: app_environment_1.isProdEnv && visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null }));
     }
-    getDetail(feedbackID) {
+    getDetail(feedbackId) {
         return this.feedbackModel
-            .findById(feedbackID)
+            .findById(feedbackId)
             .exec()
-            .then((result) => result || Promise.reject(`Feedback '${feedbackID}' not found`));
+            .then((result) => result || Promise.reject(`Feedback '${feedbackId}' not found`));
     }
-    async update(feedbackID, newFeedback) {
-        const feedback = await this.feedbackModel.findByIdAndUpdate(feedbackID, newFeedback, { new: true }).exec();
+    async update(feedbackId, newFeedback) {
+        const feedback = await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec();
         if (!feedback) {
-            throw `Feedback '${feedbackID}' not found`;
+            throw `Feedback '${feedbackId}' not found`;
         }
         return feedback;
     }
-    async delete(feedbackID) {
-        const feedback = await this.feedbackModel.findByIdAndDelete(feedbackID, null).exec();
+    async delete(feedbackId) {
+        const feedback = await this.feedbackModel.findByIdAndDelete(feedbackId, null).exec();
         if (!feedback) {
-            throw `Feedback '${feedbackID}' not found`;
+            throw `Feedback '${feedbackId}' not found`;
         }
         return feedback;
     }
-    batchDelete(feedbackIDs) {
-        return this.feedbackModel.deleteMany({ _id: { $in: feedbackIDs } }).exec();
+    batchDelete(feedbackIds) {
+        return this.feedbackModel.deleteMany({ _id: { $in: feedbackIds } }).exec();
     }
     async getRootFeedbackAverageEmotion() {
         const [result] = await this.feedbackModel.aggregate([
