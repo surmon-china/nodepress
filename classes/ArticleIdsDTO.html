@@ -93,7 +93,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >ArticleIDsDTO</li>
+  <li class="breadcrumb-item" >ArticleIdsDTO</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -296,14 +296,14 @@ export class ArticleCalendarQueryDTO {
   timezone?: string
 }
 
-export class ArticleIDsDTO {
+export class ArticleIdsDTO {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsArray()
   article_ids: string[]
 }
 
-export class ArticlesStateDTO extends ArticleIDsDTO {
+export class ArticlesStateDTO extends ArticleIdsDTO {
   @IsIn(ARTICLE_PUBLISH_STATES)
   @IsInt()
   @IsDefined()
@@ -347,7 +347,7 @@ export class ArticlesStateDTO extends ArticleIDsDTO {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'ArticleIDsDTO.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ArticleIdsDTO.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

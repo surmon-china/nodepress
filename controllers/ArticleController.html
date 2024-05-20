@@ -383,7 +383,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delArticles(body: <a href="../classes/ArticleIDsDTO.html" target="_self">ArticleIDsDTO</a>)</code>
+                    <code>delArticles(body: <a href="../classes/ArticleIdsDTO.html" target="_self">ArticleIdsDTO</a>)</code>
                 </td>
             </tr>
 
@@ -421,7 +421,7 @@
                                         <tr>
                                                 <td>body</td>
                                             <td>
-                                                            <code><a href="../classes/ArticleIDsDTO.html" target="_self" >ArticleIDsDTO</a></code>
+                                                            <code><a href="../classes/ArticleIdsDTO.html" target="_self" >ArticleIdsDTO</a></code>
                                             </td>
 
                                             <td>
@@ -957,7 +957,7 @@ import { SortType } from &#x27;@app/constants/biz.constant&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIDsDTO, ArticlesStateDTO } from &#x27;./article.dto&#x27;
+import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStateDTO } from &#x27;./article.dto&#x27;
 import { ARTICLE_HOTTEST_SORT_PARAMS } from &#x27;./article.model&#x27;
 import { ArticleService } from &#x27;./article.service&#x27;
 import { Article } from &#x27;./article.model&#x27;
@@ -1054,12 +1054,12 @@ export class ArticleController {
   @Get(&#x27;:id/context&#x27;)
   @Responser.handle(&#x27;Get context articles&#x27;)
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
-    const articleID &#x3D; Number(params.id)
+    const articleId &#x3D; Number(params.id)
     const [prevArticles, nextArticles, relatedArticles] &#x3D; await Promise.all([
-      this.articleService.getNearArticles(articleID, &#x27;early&#x27;, 1),
-      this.articleService.getNearArticles(articleID, &#x27;later&#x27;, 1),
+      this.articleService.getNearArticles(articleId, &#x27;early&#x27;, 1),
+      this.articleService.getNearArticles(articleId, &#x27;later&#x27;, 1),
       this.articleService
-        .getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
+        .getDetailByNumberIdOrSlug({ idOrSlug: articleId, publicOnly: true })
         .then((article) &#x3D;&gt; this.articleService.getRelatedArticles(article, 20))
     ])
     return {
@@ -1083,8 +1083,8 @@ export class ArticleController {
     }
     // admin user &gt; Object ID | number ID
     return Types.ObjectId.isValid(params.id)
-      ? this.articleService.getDetailByObjectID(params.id)
-      : this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) })
+      ? this.articleService.getDetailByObjectId(params.id)
+      : this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: Number(params.id) })
   }
 
   @Post()
@@ -1118,7 +1118,7 @@ export class ArticleController {
   @Delete()
   @UseGuards(AdminOnlyGuard)
   @Responser.handle(&#x27;Delete articles&#x27;)
-  delArticles(@Body() body: ArticleIDsDTO) {
+  delArticles(@Body() body: ArticleIdsDTO) {
     return this.articleService.batchDelete(body.article_ids)
   }
 }

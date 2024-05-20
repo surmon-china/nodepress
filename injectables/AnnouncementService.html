@@ -234,7 +234,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(announcementIDs: <a href="../undefineds/MongooseID.html" target="_self">MongooseID[]</a>)</code>
+                    <code>batchDelete(announcementIds: <a href="../undefineds/MongooseId.html" target="_self">MongooseId[]</a>)</code>
                 </td>
             </tr>
 
@@ -263,9 +263,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>announcementIDs</td>
+                                                <td>announcementIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID[]</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
                                             </td>
 
                                             <td>
@@ -372,7 +372,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(announcementID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
+                    <code>delete(announcementId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>)</code>
                 </td>
             </tr>
 
@@ -401,9 +401,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>announcementID</td>
+                                                <td>announcementId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -522,7 +522,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(announcementID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>, announcement: <a href="../classes/Announcement.html" target="_self">Announcement</a>)</code>
+                    <code>update(announcementId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>, announcement: <a href="../classes/Announcement.html" target="_self">Announcement</a>)</code>
                 </td>
             </tr>
 
@@ -551,9 +551,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>announcementID</td>
+                                                <td>announcementId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -596,7 +596,7 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateOptions, PaginateQuery } from &#x27;@app/utils/paginate&#x27;
 import { Announcement } from &#x27;./announcement.model&#x27;
 
@@ -615,24 +615,24 @@ export class AnnouncementService {
     return this.announcementModel.create(announcement)
   }
 
-  public update(announcementID: MongooseID, announcement: Announcement): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
+  public update(announcementId: MongooseId, announcement: Announcement): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
     return this.announcementModel
-      .findByIdAndUpdate(announcementID, announcement, { new: true })
+      .findByIdAndUpdate(announcementId, announcement, { new: true })
       .exec()
-      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Announcement &#x27;${announcementID}&#x27; not found&#x60;))
+      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Announcement &#x27;${announcementId}&#x27; not found&#x60;))
   }
 
-  public delete(announcementID: MongooseID) {
+  public delete(announcementId: MongooseId) {
     return this.announcementModel
-      .findByIdAndDelete(announcementID, null)
+      .findByIdAndDelete(announcementId, null)
       .exec()
       .then((result) &#x3D;&gt; {
-        return result ?? Promise.reject(&#x60;Announcement &#x27;${announcementID}&#x27; not found&#x60;)
+        return result ?? Promise.reject(&#x60;Announcement &#x27;${announcementId}&#x27; not found&#x60;)
       })
   }
 
-  public batchDelete(announcementIDs: MongooseID[]) {
-    return this.announcementModel.deleteMany({ _id: { $in: announcementIDs } }).exec()
+  public batchDelete(announcementIds: MongooseId[]) {
+    return this.announcementModel.deleteMany({ _id: { $in: announcementIds } }).exec()
   }
 }
 </code></pre>

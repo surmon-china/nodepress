@@ -258,7 +258,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(feedbackIDs: <a href="../undefineds/MongooseID.html" target="_self">MongooseID[]</a>)</code>
+                    <code>batchDelete(feedbackIds: <a href="../undefineds/MongooseId.html" target="_self">MongooseId[]</a>)</code>
                 </td>
             </tr>
 
@@ -287,9 +287,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>feedbackIDs</td>
+                                                <td>feedbackIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID[]</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
                                             </td>
 
                                             <td>
@@ -410,7 +410,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(feedbackID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
+                    <code>delete(feedbackId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>)</code>
                 </td>
             </tr>
 
@@ -439,9 +439,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>feedbackID</td>
+                                                <td>feedbackId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -479,7 +479,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetail(feedbackID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
+                    <code>getDetail(feedbackId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>)</code>
                 </td>
             </tr>
 
@@ -508,9 +508,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>feedbackID</td>
+                                                <td>feedbackId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -670,7 +670,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(feedbackID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>, newFeedback: <a href="../classes/Feedback.html" target="_self">Partial&lt;Feedback&gt;</a>)</code>
+                    <code>update(feedbackId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>, newFeedback: <a href="../classes/Feedback.html" target="_self">Partial&lt;Feedback&gt;</a>)</code>
                 </td>
             </tr>
 
@@ -699,9 +699,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>feedbackID</td>
+                                                <td>feedbackId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -745,7 +745,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types } from &#x27;mongoose&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { ROOT_FEEDBACK_TID } from &#x27;@app/constants/biz.constant&#x27;
 import { NULL } from &#x27;@app/constants/value.constant&#x27;
@@ -775,32 +775,32 @@ export class FeedbackService {
     })
   }
 
-  public getDetail(feedbackID: MongooseID): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
+  public getDetail(feedbackId: MongooseId): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
     return this.feedbackModel
-      .findById(feedbackID)
+      .findById(feedbackId)
       .exec()
-      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Feedback &#x27;${feedbackID}&#x27; not found&#x60;))
+      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Feedback &#x27;${feedbackId}&#x27; not found&#x60;))
   }
 
-  public async update(feedbackID: MongooseID, newFeedback: Partial&lt;Feedback&gt;): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    const feedback &#x3D; await this.feedbackModel.findByIdAndUpdate(feedbackID, newFeedback, { new: true }).exec()
+  public async update(feedbackId: MongooseId, newFeedback: Partial&lt;Feedback&gt;): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
+    const feedback &#x3D; await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec()
     if (!feedback) {
-      throw &#x60;Feedback &#x27;${feedbackID}&#x27; not found&#x60;
+      throw &#x60;Feedback &#x27;${feedbackId}&#x27; not found&#x60;
     }
     return feedback
   }
 
-  public async delete(feedbackID: MongooseID) {
-    const feedback &#x3D; await this.feedbackModel.findByIdAndDelete(feedbackID, null).exec()
+  public async delete(feedbackId: MongooseId) {
+    const feedback &#x3D; await this.feedbackModel.findByIdAndDelete(feedbackId, null).exec()
     if (!feedback) {
-      throw &#x60;Feedback &#x27;${feedbackID}&#x27; not found&#x60;
+      throw &#x60;Feedback &#x27;${feedbackId}&#x27; not found&#x60;
     }
 
     return feedback
   }
 
-  public batchDelete(feedbackIDs: MongooseID[]) {
-    return this.feedbackModel.deleteMany({ _id: { $in: feedbackIDs } }).exec()
+  public batchDelete(feedbackIds: MongooseId[]) {
+    return this.feedbackModel.deleteMany({ _id: { $in: feedbackIds } }).exec()
   }
 
   public async getRootFeedbackAverageEmotion(): Promise&lt;number | null&gt; {

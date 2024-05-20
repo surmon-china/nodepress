@@ -352,7 +352,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createThread(postID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>createThread(postId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -381,7 +381,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>postID</td>
+                                                <td>postId</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
@@ -844,7 +844,7 @@ import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
 import { Article } from &#x27;@app/modules/article/article.model&#x27;
 import { GUESTBOOK_POST_ID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
 import { getExtendObject } from &#x27;@app/transformers/extend.transformer&#x27;
-import { getPermalinkByID } from &#x27;@app/transformers/urlmap.transformer&#x27;
+import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { DISQUS } from &#x27;@app/app.config&#x27;
 import { Disqus } from &#x27;@app/utils/disqus&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -869,23 +869,23 @@ export class DisqusPrivateService {
     })
   }
 
-  public async createThread(postID: number) {
+  public async createThread(postId: number) {
     try {
-      const article &#x3D; await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postID, publicOnly: true })
+      const article &#x3D; await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId, publicOnly: true })
       // https://disqus.com/api/docs/threads/create/
       const response &#x3D; await this.disqus.request(&#x27;threads/create&#x27;, {
         forum: DISQUS.forum,
-        identifier: DISQUS_CONST.getThreadIdentifierByID(postID),
+        identifier: DISQUS_CONST.getThreadIdentifierById(postId),
         title: article.title,
         message: article.description,
-        slug: article.slug || DISQUS_CONST.getThreadIdentifierByID(postID),
+        slug: article.slug || DISQUS_CONST.getThreadIdentifierById(postId),
         date: dayjs(article.created_at).unix(),
-        url: getPermalinkByID(postID),
+        url: getPermalinkById(postId),
         access_token: DISQUS.adminAccessToken
       })
       return response.response
     } catch (error) {
-      logger.warn(&#x27;createThread failed!&#x27;, postID, error)
+      logger.warn(&#x27;createThread failed!&#x27;, postId, error)
       throw error
     }
   }
@@ -968,9 +968,9 @@ export class DisqusPrivateService {
     const todoComments &#x3D; allComments.filter((comment) &#x3D;&gt;
       [CommentState.Auditing, CommentState.Published].includes(comment.state)
     )
-    const todoCommentIDs &#x3D; todoComments.map((comment) &#x3D;&gt; comment.id)
+    const todoCommentIds &#x3D; todoComments.map((comment) &#x3D;&gt; comment.id)
     todoComments.forEach((comment) &#x3D;&gt; {
-      if (comment.pid &amp;&amp; !todoCommentIDs.includes(comment.pid)) {
+      if (comment.pid &amp;&amp; !todoCommentIds.includes(comment.pid)) {
         comment.pid &#x3D; 0
       }
       if (comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID) {
@@ -982,9 +982,9 @@ export class DisqusPrivateService {
       }
     })
 
-    // 2. map comment postIDs &amp; get articles
-    const articleIDs &#x3D; Array.from(treeMap.keys())
-    const articles &#x3D; await this.articleService.getList(articleIDs)
+    // 2. map comment postIds &amp; get articles
+    const articleIds &#x3D; Array.from(treeMap.keys())
+    const articles &#x3D; await this.articleService.getList(articleIds)
     articles.forEach((article) &#x3D;&gt; {
       if (treeMap.has(article.id)) {
         treeMap.get(article.id)!.article &#x3D; article
@@ -1011,19 +1011,19 @@ export class DisqusPrivateService {
     // filter new data
     const filtered &#x3D; posts.filter((post) &#x3D;&gt; Boolean(post.id))
     const getEach &#x3D; (post: any) &#x3D;&gt; ({
-      commentID: Number(post.id.replace(&#x60;wp_id&#x3D;&#x60;, &#x27;&#x27;)),
-      postID: post[&#x27;@dsq:id&#x27;] as string,
-      threadID: post.thread[&#x27;@dsq:id&#x27;] as string,
+      commentId: Number(post.id.replace(&#x60;wp_id&#x3D;&#x60;, &#x27;&#x27;)),
+      postId: post[&#x27;@dsq:id&#x27;] as string,
+      threadId: post.thread[&#x27;@dsq:id&#x27;] as string,
       isAnonymous: post.author.isAnonymous as boolean,
       username: (post.author.username as string) || null
     })
 
     const doImport &#x3D; async (each: ReturnType&lt;typeof getEach&gt;) &#x3D;&gt; {
-      if (!Number.isFinite(each.commentID)) {
-        throw &#x60;Invalid comment ID &#x27;${each.commentID}&#x27;&#x60;
+      if (!Number.isFinite(each.commentId)) {
+        throw &#x60;Invalid comment ID &#x27;${each.commentId}&#x27;&#x60;
       }
 
-      const comment &#x3D; await this.commentService.getDetailByNumberID(each.commentID)
+      const comment &#x3D; await this.commentService.getDetailByNumberId(each.commentId)
       if (!comment) {
         throw &#x60;Invalid comment &#x27;${comment}&#x27;&#x60;
       }
@@ -1032,11 +1032,11 @@ export class DisqusPrivateService {
       const extendsObject &#x3D; getExtendObject(_extends)
       // post ID
       if (!extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]) {
-        _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postID })
+        _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postId })
       }
       // thread ID
       if (!extendsObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY]) {
-        _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadID })
+        _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadId })
       }
       // guest(anonymous) | disqus user
       if (each.isAnonymous) {

@@ -332,7 +332,7 @@
                             <a href="#getResponserOptions" title="src/decorators/responser.decorator.ts" ><b>getResponserOptions</b>&nbsp;&nbsp;&nbsp;(src/.../responser.decorator.ts)</a>
                         </li>
                         <li>
-                            <a href="#getThreadIdentifierByID" title="src/modules/disqus/disqus.constant.ts" ><b>getThreadIdentifierByID</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.constant.ts)</a>
+                            <a href="#getThreadIdentifierById" title="src/modules/disqus/disqus.constant.ts" ><b>getThreadIdentifierById</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#getTodayViewsCount" title="src/modules/expansion/expansion.helper.ts" ><b>getTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.helper.ts)</a>
@@ -1783,17 +1783,17 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getThreadIdentifierByID"></a>
+                    <a name="getThreadIdentifierById"></a>
                     <span class="name">
-                        <span ><b>getThreadIdentifierByID</b></span>
-                        <a href="#getThreadIdentifierByID"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getThreadIdentifierById</b></span>
+                        <a href="#getThreadIdentifierById"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>(postID: number) &#x3D;&gt; {
-  return postID &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID ? GUESTBOOK_IDENTIFIER : &#x60;${ARTICLE_IDENTIFIER_PREFIX}${postID}&#x60;
+                        <i>Default value : </i><code>(postId: number) &#x3D;&gt; {
+  return postId &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID ? GUESTBOOK_IDENTIFIER : &#x60;${ARTICLE_IDENTIFIER_PREFIX}${postId}&#x60;
 }</code>
                     </td>
                 </tr>
@@ -3471,9 +3471,9 @@
       &lt;channel&gt;
         &lt;item&gt;
           &lt;title&gt;Guestbook&lt;/title&gt;
-          &lt;link&gt;${getPermalinkByID(GUESTBOOK_POST_ID)}&lt;/link&gt;
+          &lt;link&gt;${getPermalinkById(GUESTBOOK_POST_ID)}&lt;/link&gt;
           &lt;content:encoded&gt;&lt;![CDATA[${APP.FE_NAME}]]&gt;&lt;/content:encoded&gt;
-          &lt;dsq:thread_identifier&gt;${getThreadIdentifierByID(GUESTBOOK_POST_ID)}&lt;/dsq:thread_identifier&gt;
+          &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(GUESTBOOK_POST_ID)}&lt;/dsq:thread_identifier&gt;
           &lt;wp:post_date_gmt&gt;2017-01-01 00:00:00&lt;/wp:post_date_gmt&gt;
           &lt;wp:comment_status&gt;open&lt;/wp:comment_status&gt;
           ${guestbook.map(getCommentItemXML).join(&#x27;\n&#x27;)}
@@ -3483,9 +3483,9 @@
             (item) &#x3D;&gt; &#x60;
             &lt;item&gt;
               &lt;title&gt;${item.article.title}&lt;/title&gt;
-              &lt;link&gt;${getPermalinkByID(item.article.id)}&lt;/link&gt;
+              &lt;link&gt;${getPermalinkById(item.article.id)}&lt;/link&gt;
               &lt;content:encoded&gt;&lt;![CDATA[${item.article.description || &#x27;&#x27;}]]&gt;&lt;/content:encoded&gt;
-              &lt;dsq:thread_identifier&gt;${getThreadIdentifierByID(item.article.id)}&lt;/dsq:thread_identifier&gt;
+              &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(item.article.id)}&lt;/dsq:thread_identifier&gt;
               &lt;wp:post_date_gmt&gt;${dayjs(item.article.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:post_date_gmt&gt;
               &lt;wp:comment_status&gt;${
                 item.article.disabled_comments ? ThreadState.Closed : ThreadState.Open

@@ -241,7 +241,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(voteIDs: <a href="../undefineds/MongooseID.html" target="_self">MongooseID[]</a>)</code>
+                    <code>batchDelete(voteIds: <a href="../undefineds/MongooseId.html" target="_self">MongooseId[]</a>)</code>
                 </td>
             </tr>
 
@@ -270,9 +270,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>voteIDs</td>
+                                                <td>voteIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID[]</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
                                             </td>
 
                                             <td>
@@ -462,7 +462,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(voteID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
+                    <code>delete(voteId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>)</code>
                 </td>
             </tr>
 
@@ -491,9 +491,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>voteID</td>
+                                                <td>voteId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -613,7 +613,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(voteID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>, newVote: <a href="../classes/Vote.html" target="_self">Partial&lt;Vote&gt;</a>)</code>
+                    <code>update(voteId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>, newVote: <a href="../classes/Vote.html" target="_self">Partial&lt;Vote&gt;</a>)</code>
                 </td>
             </tr>
 
@@ -642,9 +642,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>voteID</td>
+                                                <td>voteId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -688,7 +688,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { FilterQuery, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseID } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { Vote } from &#x27;./vote.model&#x27;
 
@@ -704,24 +704,24 @@ export class VoteService {
     return this.voteModel.create(vote)
   }
 
-  public async update(voteID: MongooseID, newVote: Partial&lt;Vote&gt;): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
-    const vote &#x3D; await this.voteModel.findByIdAndUpdate(voteID, newVote, { new: true }).exec()
+  public async update(voteId: MongooseId, newVote: Partial&lt;Vote&gt;): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
+    const vote &#x3D; await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec()
     if (!vote) {
-      throw &#x60;Vote &#x27;${voteID}&#x27; not found&#x60;
+      throw &#x60;Vote &#x27;${voteId}&#x27; not found&#x60;
     }
     return vote
   }
 
-  public async delete(voteID: MongooseID) {
-    const vote &#x3D; await this.voteModel.findByIdAndDelete(voteID, null).exec()
+  public async delete(voteId: MongooseId) {
+    const vote &#x3D; await this.voteModel.findByIdAndDelete(voteId, null).exec()
     if (!vote) {
-      throw &#x60;Vote &#x27;${voteID}&#x27; not found&#x60;
+      throw &#x60;Vote &#x27;${voteId}&#x27; not found&#x60;
     }
     return vote
   }
 
-  public batchDelete(voteIDs: MongooseID[]) {
-    return this.voteModel.deleteMany({ _id: { $in: voteIDs } }).exec()
+  public batchDelete(voteIds: MongooseId[]) {
+    return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec()
   }
 
   public async countDocuments(filter: FilterQuery&lt;Vote&gt;, options?: MongooseBaseQueryOptions&lt;Vote&gt;): Promise&lt;number&gt; {

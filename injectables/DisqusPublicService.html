@@ -193,7 +193,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getDisqusPostIDByCommentID" >getDisqusPostIDByCommentID</a>
+                                <a href="#getDisqusPostIdByCommentId" >getDisqusPostIdByCommentId</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -566,7 +566,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteUniversalComment(commentID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, accessToken: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>deleteUniversalComment(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, accessToken: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -595,7 +595,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>commentID</td>
+                                                <td>commentId</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
@@ -716,7 +716,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>ensureThreadDetail(postID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>ensureThreadDetail(postId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -745,7 +745,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>postID</td>
+                                                <td>postId</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
@@ -786,7 +786,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>ensureThreadDetailCache(postID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>ensureThreadDetailCache(postId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -815,7 +815,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>postID</td>
+                                                <td>postId</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
@@ -953,19 +953,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getDisqusPostIDByCommentID"></a>
+                    <a name="getDisqusPostIdByCommentId"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>getDisqusPostIDByCommentID</b></span>
-                        <a href="#getDisqusPostIDByCommentID"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getDisqusPostIdByCommentId</b></span>
+                        <a href="#getDisqusPostIdByCommentId"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDisqusPostIDByCommentID(commentID: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>getDisqusPostIdByCommentId(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -994,7 +994,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>commentID</td>
+                                                <td>commentId</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
@@ -1578,7 +1578,7 @@ import { CacheService } from &#x27;@app/processors/cache/cache.service&#x27;
 import { DISQUS } from &#x27;@app/app.config&#x27;
 import { Disqus } from &#x27;@app/utils/disqus&#x27;
 import { getExtendObject, getExtendValue } from &#x27;@app/transformers/extend.transformer&#x27;
-import { getPermalinkByID } from &#x27;@app/transformers/urlmap.transformer&#x27;
+import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { DisqusPrivateService } from &#x27;./disqus.service.private&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -1645,20 +1645,20 @@ export class DisqusPublicService {
       })
   }
 
-  public ensureThreadDetail(postID: number) {
+  public ensureThreadDetail(postId: number) {
     return this.disqus
-      .request(&#x27;threads/details&#x27;, { forum: DISQUS.forum, thread: &#x60;link:${getPermalinkByID(postID)}&#x60; })
+      .request(&#x27;threads/details&#x27;, { forum: DISQUS.forum, thread: &#x60;link:${getPermalinkById(postId)}&#x60; })
       .then((response) &#x3D;&gt; response.response)
-      .catch(() &#x3D;&gt; this.disqusPrivateService.createThread(postID))
+      .catch(() &#x3D;&gt; this.disqusPrivateService.createThread(postId))
   }
 
-  public async ensureThreadDetailCache(postID: number) {
-    const cacheKey &#x3D; getDisqusCacheKey(&#x60;thread-post-${postID}&#x60;)
+  public async ensureThreadDetailCache(postId: number) {
+    const cacheKey &#x3D; getDisqusCacheKey(&#x60;thread-post-${postId}&#x60;)
     const cached &#x3D; await this.cacheService.get&lt;any&gt;(cacheKey)
     if (cached) {
       return cached
     }
-    const result &#x3D; await this.ensureThreadDetail(postID)
+    const result &#x3D; await this.ensureThreadDetail(postId)
     // cache 24 hours
     this.cacheService.set(cacheKey, result, 60 * 60 * 24)
     return result
@@ -1680,9 +1680,9 @@ export class DisqusPublicService {
     })
   }
 
-  public async getDisqusPostIDByCommentID(commentID: number): Promise&lt;string | null&gt; {
+  public async getDisqusPostIdByCommentId(commentId: number): Promise&lt;string | null&gt; {
     try {
-      const comment &#x3D; await this.commentService.getDetailByNumberID(commentID)
+      const comment &#x3D; await this.commentService.getDetailByNumberId(commentId)
       return getExtendValue(comment.extends, DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY) || null
     } catch (error) {
       return null
@@ -1691,16 +1691,16 @@ export class DisqusPublicService {
 
   public async createDisqusComment(payload: {
     comment: Comment
-    threadID: string
-    parentID: string | null
+    threadId: string
+    parentId: string | null
     accessToken?: string
   }) {
-    const { comment, threadID, parentID, accessToken } &#x3D; payload
+    const { comment, threadId, parentId, accessToken } &#x3D; payload
     // https://disqus.com/api/docs/posts/create/
     const body: any &#x3D; {
       message: comment.content,
-      parent: parentID,
-      thread: threadID
+      parent: parentId,
+      thread: threadId
     }
     if (accessToken) {
       // publish by Disqus user
@@ -1733,15 +1733,15 @@ export class DisqusPublicService {
     // 3. nodepress blocklist
     await this.commentService.verifyCommentValidity(newComment)
     // 4. disqus parent comment post ID
-    let parentID: string | null &#x3D; null
+    let parentId: string | null &#x3D; null
     if (Boolean(newComment.pid)) {
-      parentID &#x3D; await this.getDisqusPostIDByCommentID(newComment.pid)
+      parentId &#x3D; await this.getDisqusPostIdByCommentId(newComment.pid)
     }
     // 5. create disqus post(comment)
     const disqusPost &#x3D; await this.createDisqusComment({
       comment: newComment,
-      threadID: thread.id,
-      parentID,
+      threadId: thread.id,
+      parentId: parentId,
       accessToken
     })
     // 6. approve guest post
@@ -1782,30 +1782,30 @@ export class DisqusPublicService {
       })
   }
 
-  public async deleteUniversalComment(commentID: number, accessToken: string) {
+  public async deleteUniversalComment(commentId: number, accessToken: string) {
     // comment
-    const comment &#x3D; await this.commentService.getDetailByNumberID(commentID)
+    const comment &#x3D; await this.commentService.getDetailByNumberId(commentId)
     if (!comment) {
       throw &#x27;Comment not found&#x27;
     }
 
     // disqus extend info
     const extendsObject &#x3D; getExtendObject(comment.extends)
-    const commentDisqusPostID &#x3D; extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
-    const commentDisqusAuthorID &#x3D; extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
-    if (!commentDisqusAuthorID || !commentDisqusPostID) {
+    const commentDisqusPostId &#x3D; extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
+    const commentDisqusAuthorId &#x3D; extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
+    if (!commentDisqusAuthorId || !commentDisqusPostId) {
       throw &#x27;Comment not deletable&#x27;
     }
 
     // user ID &#x3D;&#x3D;&#x3D; author ID
     const userInfo &#x3D; await this.getUserInfo(accessToken)
-    if (userInfo.id !&#x3D;&#x3D; commentDisqusAuthorID) {
-      throw &#x60;You do not have write privileges on comment &#x27;${commentID}&#x27;&#x60;
+    if (userInfo.id !&#x3D;&#x3D; commentDisqusAuthorId) {
+      throw &#x60;You do not have write privileges on comment &#x27;${commentId}&#x27;&#x60;
     }
 
     // disqus delete
     await this.deleteDisqusComment({
-      post: commentDisqusPostID,
+      post: commentDisqusPostId,
       access_token: accessToken
     })
 

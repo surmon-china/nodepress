@@ -329,7 +329,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>aggregateArticleCount(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, categories: <a href="../classes/Category.html" target="_self">Array&lt;WithID&lt;Category&gt;&gt;</a>)</code>
+                    <code>aggregateArticleCount(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, categories: <a href="../classes/Category.html" target="_self">Array&lt;WithId&lt;Category&gt;&gt;</a>)</code>
                 </td>
             </tr>
 
@@ -372,7 +372,7 @@
                                         <tr>
                                                 <td>categories</td>
                                             <td>
-                                                            <code><a href="../classes/Category.html" target="_self" >Array&lt;WithID&lt;Category&gt;&gt;</a></code>
+                                                            <code><a href="../classes/Category.html" target="_self" >Array&lt;WithId&lt;Category&gt;&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -411,7 +411,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(categoryIDs: <a href="../undefineds/MongooseID.html" target="_self">MongooseID[]</a>)</code>
+                    <code>batchDelete(categoryIds: <a href="../undefineds/MongooseId.html" target="_self">MongooseId[]</a>)</code>
                 </td>
             </tr>
 
@@ -440,9 +440,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>categoryIDs</td>
+                                                <td>categoryIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID[]</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
                                             </td>
 
                                             <td>
@@ -551,7 +551,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(categoryID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
+                    <code>delete(categoryId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>)</code>
                 </td>
             </tr>
 
@@ -580,9 +580,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>categoryID</td>
+                                                <td>categoryId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -798,7 +798,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getGenealogyById(categoryID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>)</code>
+                    <code>getGenealogyById(categoryId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>)</code>
                 </td>
             </tr>
 
@@ -827,9 +827,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>categoryID</td>
+                                                <td>categoryId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -962,7 +962,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(categoryID: <a href="../undefineds/MongooseID.html" target="_self">MongooseID</a>, newCategory: <a href="../classes/Category.html" target="_self">Category</a>)</code>
+                    <code>update(categoryId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>, newCategory: <a href="../classes/Category.html" target="_self">Category</a>)</code>
                 </td>
             </tr>
 
@@ -991,9 +991,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>categoryID</td>
+                                                <td>categoryId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseID" target="_self" >MongooseID</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
                                             </td>
 
                                             <td>
@@ -1109,7 +1109,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getCategoryUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { MongooseModel, MongooseDoc, MongooseId, MongooseObjectId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
@@ -1144,8 +1144,8 @@ export class CategoryService {
     })
   }
 
-  private async aggregateArticleCount(publicOnly: boolean, categories: Array&lt;WithID&lt;Category&gt;&gt;) {
-    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseObjectID; count: number }&gt;([
+  private async aggregateArticleCount(publicOnly: boolean, categories: Array&lt;WithId&lt;Category&gt;&gt;) {
+    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseObjectId; count: number }&gt;([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
       { $unwind: &#x27;$categories&#x27; },
       { $group: { _id: &#x27;$categories&#x27;, count: { $sum: 1 } } }
@@ -1202,17 +1202,17 @@ export class CategoryService {
   }
 
   // get categories genealogy
-  public getGenealogyById(categoryID: MongooseID): Promise&lt;Category[]&gt; {
+  public getGenealogyById(categoryId: MongooseId): Promise&lt;Category[]&gt; {
     const categories: Category[] &#x3D; []
-    const findById &#x3D; (id: MongooseID) &#x3D;&gt; this.categoryModel.findById(id).exec()
+    const findById &#x3D; (id: MongooseId) &#x3D;&gt; this.categoryModel.findById(id).exec()
 
     return new Promise((resolve, reject) &#x3D;&gt; {
       ;(function findCateItem(id) {
         findById(id)
           .then((category) &#x3D;&gt; {
             if (!category) {
-              if (id &#x3D;&#x3D;&#x3D; categoryID) {
-                return reject(&#x60;Category &#x27;${categoryID}&#x27; not found&#x60;)
+              if (id &#x3D;&#x3D;&#x3D; categoryId) {
+                return reject(&#x60;Category &#x27;${categoryId}&#x27; not found&#x60;)
               } else {
                 return resolve(categories)
               }
@@ -1223,20 +1223,20 @@ export class CategoryService {
             return hasParent ? findCateItem(parentId) : resolve(categories)
           })
           .catch(reject)
-      })(categoryID)
+      })(categoryId)
     })
   }
 
   // update category
-  public async update(categoryID: MongooseID, newCategory: Category): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
+  public async update(categoryId: MongooseId, newCategory: Category): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
     const existedCategory &#x3D; await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
-    if (existedCategory &amp;&amp; !existedCategory._id.equals(categoryID)) {
+    if (existedCategory &amp;&amp; !existedCategory._id.equals(categoryId)) {
       throw &#x60;Category slug &#x27;${newCategory.slug}&#x27; is existed&#x60;
     }
 
-    const category &#x3D; await this.categoryModel.findByIdAndUpdate(categoryID, newCategory, { new: true }).exec()
+    const category &#x3D; await this.categoryModel.findByIdAndUpdate(categoryId, newCategory, { new: true }).exec()
     if (!category) {
-      throw &#x60;Category &#x27;${categoryID}&#x27; not found&#x60;
+      throw &#x60;Category &#x27;${categoryId}&#x27; not found&#x60;
     }
     this.seoService.push(getCategoryUrl(category.slug))
     this.archiveService.updateCache()
@@ -1245,10 +1245,10 @@ export class CategoryService {
   }
 
   // delete category
-  public async delete(categoryID: MongooseID) {
-    const category &#x3D; await this.categoryModel.findByIdAndDelete(categoryID, null).exec()
+  public async delete(categoryId: MongooseId) {
+    const category &#x3D; await this.categoryModel.findByIdAndDelete(categoryId, null).exec()
     if (!category) {
-      throw &#x60;Category &#x27;${categoryID}&#x27; not found&#x60;
+      throw &#x60;Category &#x27;${categoryId}&#x27; not found&#x60;
     }
 
     // cache
@@ -1256,7 +1256,7 @@ export class CategoryService {
     this.seoService.delete(getCategoryUrl(category.slug))
     this.updateAllCategoriesCache()
     // children categories
-    const categories &#x3D; await this.categoryModel.find({ pid: categoryID }).exec()
+    const categories &#x3D; await this.categoryModel.find({ pid: categoryId }).exec()
     // delete when root category -&gt; { pid: target.id }
     if (!categories.length) {
       return category
@@ -1270,12 +1270,12 @@ export class CategoryService {
     return category
   }
 
-  public async batchDelete(categoryIDs: MongooseID[]) {
+  public async batchDelete(categoryIds: MongooseId[]) {
     // SEO remove
-    const categories &#x3D; await this.categoryModel.find({ _id: { $in: categoryIDs } }).exec()
+    const categories &#x3D; await this.categoryModel.find({ _id: { $in: categoryIds } }).exec()
     this.seoService.delete(categories.map((category) &#x3D;&gt; getCategoryUrl(category.slug)))
     // DB remove
-    const actionResult &#x3D; await this.categoryModel.deleteMany({ _id: { $in: categoryIDs } }).exec()
+    const actionResult &#x3D; await this.categoryModel.deleteMany({ _id: { $in: categoryIds } }).exec()
     this.archiveService.updateCache()
     this.updateAllCategoriesCache()
     return actionResult

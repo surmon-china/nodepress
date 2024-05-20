@@ -126,7 +126,7 @@
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                            <code><a href="../classes/ArticleIDsDTO.html" target="_self" >ArticleIDsDTO</a></code>
+                            <code><a href="../classes/ArticleIdsDTO.html" target="_self" >ArticleIdsDTO</a></code>
             </p>
 
 
@@ -243,13 +243,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Inherited from         <code><a href="../classes/ArticleIDsDTO.html" target="_self" >ArticleIDsDTO</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/ArticleIdsDTO.html" target="_self" >ArticleIdsDTO</a></code>
 </div>
                             </td>
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/ArticleIDsDTO.html#source" target="_self" >ArticleIDsDTO:95</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/ArticleIdsDTO.html#source" target="_self" >ArticleIdsDTO:95</a></code>
 </div>
                         </td>
                     </tr>
@@ -353,14 +353,14 @@ export class ArticleCalendarQueryDTO {
   timezone?: string
 }
 
-export class ArticleIDsDTO {
+export class ArticleIdsDTO {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsArray()
   article_ids: string[]
 }
 
-export class ArticlesStateDTO extends ArticleIDsDTO {
+export class ArticlesStateDTO extends ArticleIdsDTO {
   @IsIn(ARTICLE_PUBLISH_STATES)
   @IsInt()
   @IsDefined()
