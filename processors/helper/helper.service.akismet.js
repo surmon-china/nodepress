@@ -65,11 +65,11 @@ let AkismetService = class AkismetService {
             .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
             .then(() => {
             this.clientIsValid = true;
-            logger.success('client init succeed.');
+            logger.success('client initialized.');
         })
             .catch((error) => {
             this.clientIsValid = false;
-            logger.failure('client init failed!', '|', (0, error_transformer_1.getMessageFromNormalError)(error));
+            logger.failure('client initialization failed!', '|', (0, error_transformer_1.getMessageFromNormalError)(error));
         });
     }
     makeInterceptor(handleType) {
@@ -88,7 +88,7 @@ let AkismetService = class AkismetService {
                         reject('SPAM!');
                     }
                     else {
-                        logger.info(`${handleType} succeed.`);
+                        logger.info(`${handleType} succeeded.`);
                         resolve(result);
                     }
                 })

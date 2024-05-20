@@ -74,7 +74,7 @@ let SeoService = class SeoService {
                     Authorization: `Bearer ${credentials.access_token}`
                 }
             })
-                .then((response) => logger.info(`${actionText} succeed.`, url, response.statusText))
+                .then((response) => logger.info(`${actionText} succeeded.`, url, response.statusText))
                 .catch((error) => Promise.reject((0, error_transformer_1.getMessageFromAxiosError)(error)));
         })
             .catch((error) => logger.warn(`${actionText} failed!`, error));
@@ -91,7 +91,7 @@ let SeoService = class SeoService {
             }
         })
             .then((response) => {
-            logger.info(`Bing ping action succeed.`, urls, response.statusText);
+            logger.info(`Bing ping action succeeded.`, urls, response.statusText);
         })
             .catch((error) => {
             logger.warn(`Bing ping action failed!`, (0, error_transformer_1.getMessageFromAxiosError)(error));

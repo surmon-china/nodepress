@@ -32,7 +32,7 @@ let AuthController = class AuthController {
         const token = await this.authService.adminLogin(body.password);
         if (ip) {
             this.ipService.queryLocation(ip).then((location) => {
-                const subject = `App has new login activity`;
+                const subject = `App has a new login activity.`;
                 const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow';
                 const content = `${subject}, IP: ${ip}, location: ${locationText}`;
                 this.emailService.sendMailAs(app_config_1.APP.NAME, {
@@ -45,17 +45,17 @@ let AuthController = class AuthController {
         }
         return token;
     }
-    getAdminInfo() {
-        return this.authService.getAdminInfo();
-    }
-    putAdminInfo(auth) {
-        return this.authService.putAdminInfo(auth);
-    }
     checkToken() {
         return 'ok';
     }
     renewalToken() {
         return this.authService.createToken();
+    }
+    getAdminProfile() {
+        return this.authService.getAdminProfile();
+    }
+    putAdminProfile(adminProfile) {
+        return this.authService.putAdminProfile(adminProfile);
     }
 };
 exports.AuthController = AuthController;
@@ -69,22 +69,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Get)('admin'),
-    responser_decorator_1.Responser.handle('Get admin info'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "getAdminInfo", null);
-__decorate([
-    (0, common_1.Put)('admin'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update admin info'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [auth_dto_1.AuthUpdateDTO]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "putAdminInfo", null);
-__decorate([
     (0, common_1.Post)('check'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     responser_decorator_1.Responser.handle('Check token'),
@@ -95,11 +79,27 @@ __decorate([
 __decorate([
     (0, common_1.Post)('renewal'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Renewal Token'),
+    responser_decorator_1.Responser.handle('Renewal token'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Object)
 ], AuthController.prototype, "renewalToken", null);
+__decorate([
+    (0, common_1.Get)('admin'),
+    responser_decorator_1.Responser.handle('Get admin profile'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getAdminProfile", null);
+__decorate([
+    (0, common_1.Put)('admin'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responser_decorator_1.Responser.handle('Update admin profile'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [auth_dto_1.AdminUpdateDTO]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "putAdminProfile", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [helper_service_ip_1.IPService,

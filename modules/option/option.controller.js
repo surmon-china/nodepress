@@ -35,7 +35,7 @@ exports.OptionController = OptionController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.handle('Get site options'),
+    responser_decorator_1.Responser.handle('Get app options'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -44,7 +44,7 @@ __decorate([
 __decorate([
     (0, common_1.Put)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update site options'),
+    responser_decorator_1.Responser.handle('Update app options'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [option_model_1.Option]),

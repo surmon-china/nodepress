@@ -61,17 +61,17 @@ let EmailService = class EmailService {
             if (error) {
                 this.clientIsValid = false;
                 setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30);
-                logger.error(`client init failed! retry after 30 mins`, '|', (0, error_transformer_1.getMessageFromNormalError)(error));
+                logger.error(`client initialization failed! retry after 30 mins`, '|', (0, error_transformer_1.getMessageFromNormalError)(error));
             }
             else {
                 this.clientIsValid = true;
-                logger.success('client init succeed.');
+                logger.success('client initialized.');
             }
         });
     }
     sendMail(mailOptions) {
         if (!this.clientIsValid) {
-            logger.warn('send failed! (init failed)');
+            logger.warn('send failed! (initialization failed)');
             return false;
         }
         this.transporter.sendMail(Object.assign(Object.assign({}, mailOptions), { from: APP_CONFIG.EMAIL.from }), (error, info) => {
@@ -79,7 +79,7 @@ let EmailService = class EmailService {
                 logger.failure(`send failed!`, (0, error_transformer_1.getMessageFromNormalError)(error));
             }
             else {
-                logger.success('send succeed.', info.messageId, info.response);
+                logger.success('send succeeded.', info.messageId, info.response);
             }
         });
     }

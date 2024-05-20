@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthUpdateDTO = exports.AuthLoginDTO = void 0;
+exports.AdminUpdateDTO = exports.AuthLoginDTO = void 0;
 const class_validator_1 = require("class-validator");
 const auth_model_1 = require("./auth.model");
 class AuthLoginDTO {
@@ -21,7 +21,7 @@ __decorate([
     (0, class_validator_1.IsDefined)(),
     __metadata("design:type", String)
 ], AuthLoginDTO.prototype, "password", void 0);
-class AuthUpdateDTO extends auth_model_1.Auth {
+class AdminUpdateDTO extends auth_model_1.Admin {
 }
-exports.AuthUpdateDTO = AuthUpdateDTO;
+exports.AdminUpdateDTO = AdminUpdateDTO;
 //# sourceMappingURL=auth.dto.js.map

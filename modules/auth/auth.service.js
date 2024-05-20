@@ -67,51 +67,15 @@ let AuthService = class AuthService {
         const auth = await this.authModel.findOne(value_constant_1.UNDEFINED, '+password').exec();
         return (auth === null || auth === void 0 ? void 0 : auth.password) || (0, codec_transformer_1.decodeMD5)(APP_CONFIG.AUTH.defaultPassword);
     }
+    validateAuthData(payload) {
+        const isVerified = lodash_1.default.isEqual(payload.data, APP_CONFIG.AUTH.data);
+        return isVerified ? payload.data : null;
+    }
     createToken() {
         return {
             access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
             expires_in: APP_CONFIG.AUTH.expiresIn
         };
-    }
-    validateAuthData(payload) {
-        const isVerified = lodash_1.default.isEqual(payload.data, APP_CONFIG.AUTH.data);
-        return isVerified ? payload.data : null;
-    }
-    async getAdminInfo() {
-        const adminInfo = await this.authModel.findOne(value_constant_1.UNDEFINED, '-_id').exec();
-        return adminInfo ? adminInfo.toObject() : auth_model_1.DEFAULT_AUTH;
-    }
-    async putAdminInfo(auth) {
-        const { password, new_password } = auth, restAuth = __rest(auth, ["password", "new_password"]);
-        let newPassword = value_constant_1.UNDEFINED;
-        if (password || new_password) {
-            if (!password || !new_password) {
-                throw 'Incomplete passwords';
-            }
-            if (password === new_password) {
-                throw 'Old password and new password cannot be same';
-            }
-            const oldPassword = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(password));
-            const existedPassword = await this.getExistedPassword();
-            if (oldPassword !== existedPassword) {
-                throw 'Old password incorrect';
-            }
-            else {
-                newPassword = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(new_password));
-            }
-        }
-        const targetAuthData = Object.assign({}, restAuth);
-        if (newPassword) {
-            targetAuthData.password = newPassword;
-        }
-        const existedAuth = await this.authModel.findOne(value_constant_1.UNDEFINED, '+password').exec();
-        if (existedAuth) {
-            await Object.assign(existedAuth, targetAuthData).save();
-        }
-        else {
-            await this.authModel.create(targetAuthData);
-        }
-        return this.getAdminInfo();
     }
     async adminLogin(password) {
         const existedPassword = await this.getExistedPassword();
@@ -123,11 +87,43 @@ let AuthService = class AuthService {
             throw 'Password incorrect';
         }
     }
+    async getAdminProfile() {
+        const adminProfile = await this.authModel.findOne(value_constant_1.UNDEFINED, '-_id').exec();
+        return adminProfile ? adminProfile.toObject() : auth_model_1.DEFAULT_ADMIN_PROFILE;
+    }
+    async putAdminProfile(adminProfile) {
+        const { password, new_password } = adminProfile, restData = __rest(adminProfile, ["password", "new_password"]);
+        const targetPayload = Object.assign({}, restData);
+        if (password || new_password) {
+            if (!password || !new_password) {
+                throw 'Incomplete passwords';
+            }
+            if (password === new_password) {
+                throw 'Old password and new password cannot be the same';
+            }
+            const oldPassword = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(password));
+            const existedPassword = await this.getExistedPassword();
+            if (oldPassword !== existedPassword) {
+                throw 'Old password incorrect';
+            }
+            else {
+                targetPayload.password = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(new_password));
+            }
+        }
+        const existedAuth = await this.authModel.findOne(value_constant_1.UNDEFINED, '+password').exec();
+        if (existedAuth) {
+            await Object.assign(existedAuth, targetPayload).save();
+        }
+        else {
+            await this.authModel.create(targetPayload);
+        }
+        return this.getAdminProfile();
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __param(1, (0, model_transformer_1.InjectModel)(auth_model_1.Auth)),
+    __param(1, (0, model_transformer_1.InjectModel)(auth_model_1.Admin)),
     __metadata("design:paramtypes", [jwt_1.JwtService, Object])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

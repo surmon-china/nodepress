@@ -44,7 +44,7 @@ let DBBackupService = class DBBackupService {
         try {
             const result = await this.doBackup();
             const json = Object.assign(Object.assign({}, result), { size: (result.size / 1024).toFixed(2) + 'kb' });
-            this.mailToAdmin('Database backup succeed', JSON.stringify(json, null, 2), true);
+            this.mailToAdmin('Database backup succeeded.', JSON.stringify(json, null, 2), true);
             return result;
         }
         catch (error) {
@@ -72,7 +72,7 @@ let DBBackupService = class DBBackupService {
             shelljs_1.default.exec(`mongodump --quiet --forceTableScan --uri="${app_config_1.MONGO_DB.uri}" --out="backup"`, (code, out, err) => {
                 if (code === 0) {
                     const filesCount = shelljs_1.default.ls('./backup/*');
-                    logger.log('mongodump done.', `${filesCount.length} files`);
+                    logger.log('mongodump succeeded.', `${filesCount.length} files`);
                 }
                 else {
                     logger.failure('mongodump failed!', out, err);
@@ -98,7 +98,7 @@ let DBBackupService = class DBBackupService {
                     encryption: helper_service_aws_1.AWSServerSideEncryption.AES256
                 })
                     .then((result) => {
-                    logger.success('upload succeed.', result.url);
+                    logger.success('upload succeeded.', result.url);
                     resolve(result);
                 })
                     .catch((error) => {

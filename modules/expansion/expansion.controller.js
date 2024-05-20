@@ -79,7 +79,7 @@ exports.ExpansionController = ExpansionController;
 __decorate([
     (0, common_1.Get)('statistic'),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.handle('Get statistic'),
+    responser_decorator_1.Responser.handle('Get statistics'),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

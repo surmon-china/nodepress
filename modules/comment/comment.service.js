@@ -148,7 +148,7 @@ let CommentService = class CommentService {
             ? this.optionService.appendToBlocklist({ ips, emails })
             : this.optionService.removeFromBlocklist({ ips, emails });
         blocklistAction
-            .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeed.'))
+            .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeeded.'))
             .catch((error) => logger.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error));
     }
     async verifyCommentValidity(comment) {
@@ -190,10 +190,10 @@ let CommentService = class CommentService {
     }
     async create(comment) {
         const ip_location = app_environment_1.isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null;
-        const succeedComment = await this.commentModel.create(Object.assign(Object.assign({}, comment), { ip_location }));
-        this.updateCommentsCountWithArticles([succeedComment.post_id]);
-        this.emailToAdminAndTargetAuthor(succeedComment);
-        return succeedComment;
+        const succeededComment = await this.commentModel.create(Object.assign(Object.assign({}, comment), { ip_location }));
+        this.updateCommentsCountWithArticles([succeededComment.post_id]);
+        this.emailToAdminAndTargetAuthor(succeededComment);
+        return succeededComment;
     }
     async createFormClient(comment, visitor) {
         const newComment = this.normalizeNewComment(comment, visitor);
