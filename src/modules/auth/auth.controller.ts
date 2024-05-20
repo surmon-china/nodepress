@@ -33,9 +33,9 @@ export class AuthController {
     const token = await this.authService.adminLogin(body.password)
     if (ip) {
       this.ipService.queryLocation(ip).then((location) => {
-        const subject = `App has a new login activity.`
+        const subject = `App has a new login activity`
         const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow'
-        const content = `${subject}, IP: ${ip}, location: ${locationText}`
+        const content = `${subject}. IP: ${ip}, location: ${locationText}`
         this.emailService.sendMailAs(APP.NAME, {
           to: APP.ADMIN_EMAIL,
           subject,
