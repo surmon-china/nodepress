@@ -58,7 +58,7 @@ export class AuthController {
   // refresh token
   @Post('renewal')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Renewal Token')
+  @Responser.handle('Renewal token')
   renewalToken(): TokenResult {
     return this.authService.createToken()
   }

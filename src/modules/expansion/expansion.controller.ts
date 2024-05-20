@@ -28,7 +28,7 @@ export class ExpansionController {
 
   @Get('statistic')
   @UseGuards(AdminMaybeGuard)
-  @Responser.handle('Get statistic')
+  @Responser.handle('Get statistics')
   getSystemStatistics(@QueryParams() { isUnauthenticated }: QueryParamsResult): Promise<Statistic> {
     return this.statisticService.getStatistic(isUnauthenticated)
   }

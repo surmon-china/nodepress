@@ -18,14 +18,14 @@ export class OptionController {
 
   @Get()
   @UseGuards(AdminMaybeGuard)
-  @Responser.handle('Get site options')
+  @Responser.handle('Get app options')
   getOption(@QueryParams() { isAuthenticated }: QueryParamsResult) {
     return isAuthenticated ? this.optionService.ensureAppOption() : this.optionService.getOptionCacheForGuest()
   }
 
   @Put()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update site options')
+  @Responser.handle('Update app options')
   putOption(@Body() option: Option): Promise<Option> {
     return this.optionService.putOption(option)
   }
