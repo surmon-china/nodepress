@@ -44,7 +44,7 @@ let DBBackupService = class DBBackupService {
         try {
             const result = await this.doBackup();
             const json = Object.assign(Object.assign({}, result), { size: (result.size / 1024).toFixed(2) + 'kb' });
-            this.mailToAdmin('Database backup succeeded.', JSON.stringify(json, null, 2), true);
+            this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true);
             return result;
         }
         catch (error) {
