@@ -10,10 +10,10 @@ import { IPService } from '@app/processors/helper/helper.service.ip'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
-import { AuthLoginDTO, AuthUpdateDTO } from './auth.dto'
+import { AuthLoginDTO, AdminUpdateDTO } from './auth.dto'
 import { AuthService } from './auth.service'
 import { TokenResult } from './auth.interface'
-import { Auth } from './auth.model'
+import { Admin } from './auth.model'
 import { APP } from '@app/app.config'
 
 @Controller('auth')
@@ -33,7 +33,7 @@ export class AuthController {
     const token = await this.authService.adminLogin(body.password)
     if (ip) {
       this.ipService.queryLocation(ip).then((location) => {
-        const subject = `App has new login activity`
+        const subject = `App has a new login activity.`
         const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow'
         const content = `${subject}, IP: ${ip}, location: ${locationText}`
         this.emailService.sendMailAs(APP.NAME, {
@@ -45,19 +45,6 @@ export class AuthController {
       })
     }
     return token
-  }
-
-  @Get('admin')
-  @Responser.handle('Get admin info')
-  getAdminInfo(): Promise<Auth> {
-    return this.authService.getAdminInfo()
-  }
-
-  @Put('admin')
-  @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update admin info')
-  putAdminInfo(@Body() auth: AuthUpdateDTO): Promise<Auth> {
-    return this.authService.putAdminInfo(auth)
   }
 
   // check token
@@ -74,5 +61,18 @@ export class AuthController {
   @Responser.handle('Renewal Token')
   renewalToken(): TokenResult {
     return this.authService.createToken()
+  }
+
+  @Get('admin')
+  @Responser.handle('Get admin profile')
+  getAdminProfile(): Promise<Admin> {
+    return this.authService.getAdminProfile()
+  }
+
+  @Put('admin')
+  @UseGuards(AdminOnlyGuard)
+  @Responser.handle('Update admin profile')
+  putAdminProfile(@Body() adminProfile: AdminUpdateDTO): Promise<Admin> {
+    return this.authService.putAdminProfile(adminProfile)
   }
 }

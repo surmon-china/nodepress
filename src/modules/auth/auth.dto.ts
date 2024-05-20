@@ -5,7 +5,7 @@
  */
 
 import { IsString, IsDefined, IsNotEmpty } from 'class-validator'
-import { Auth } from './auth.model'
+import { Admin } from './auth.model'
 
 export class AuthLoginDTO {
   @IsString({ message: 'password must be string type' })
@@ -14,6 +14,6 @@ export class AuthLoginDTO {
   password: string
 }
 
-export class AuthUpdateDTO extends Auth {
+export class AdminUpdateDTO extends Admin {
   new_password?: string
 }

@@ -1,5 +1,5 @@
 /**
- * @file Auth & admin model
+ * @file Auth model
  * @module module/auth/model
  * @author Surmon <https://github.com/surmon-china>
  */
@@ -8,7 +8,7 @@ import { prop, modelOptions } from '@typegoose/typegoose'
 import { IsString, IsDefined, IsOptional } from 'class-validator'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
-export const DEFAULT_AUTH = Object.freeze<Auth>({
+export const DEFAULT_ADMIN_PROFILE = Object.freeze<Admin>({
   name: '',
   slogan: '',
   avatar: ''
@@ -19,7 +19,7 @@ export const DEFAULT_AUTH = Object.freeze<Auth>({
     versionKey: false
   }
 })
-export class Auth {
+export class Admin {
   @IsString({ message: "what's your name?" })
   @IsDefined()
   @prop({ required: true })
@@ -40,4 +40,4 @@ export class Auth {
   password?: string
 }
 
-export const AuthProvider = getProviderByTypegooseClass(Auth)
+export const AdminProvider = getProviderByTypegooseClass(Admin)
