@@ -444,7 +444,7 @@ export class DBBackupService {
     try {
       const result &#x3D; await this.doBackup()
       const json &#x3D; { ...result, size: (result.size / 1024).toFixed(2) + &#x27;kb&#x27; }
-      this.mailToAdmin(&#x27;Database backup succeed&#x27;, JSON.stringify(json, null, 2), true)
+      this.mailToAdmin(&#x27;Database backup succeeded.&#x27;, JSON.stringify(json, null, 2), true)
       return result
     } catch (error) {
       this.mailToAdmin(&#x27;Database backup failed!&#x27;, String(error))
@@ -477,7 +477,7 @@ export class DBBackupService {
       shell.exec(&#x60;mongodump --quiet --forceTableScan --uri&#x3D;&quot;${MONGO_DB.uri}&quot; --out&#x3D;&quot;backup&quot;&#x60;, (code, out, err) &#x3D;&gt; {
         if (code &#x3D;&#x3D;&#x3D; 0) {
           const filesCount &#x3D; shell.ls(&#x27;./backup/*&#x27;)
-          logger.log(&#x27;mongodump done.&#x27;, &#x60;${filesCount.length} files&#x60;)
+          logger.log(&#x27;mongodump succeeded.&#x27;, &#x60;${filesCount.length} files&#x60;)
         } else {
           logger.failure(&#x27;mongodump failed!&#x27;, out, err)
           return reject(out)
@@ -508,7 +508,7 @@ export class DBBackupService {
             encryption: AWSServerSideEncryption.AES256
           })
           .then((result) &#x3D;&gt; {
-            logger.success(&#x27;upload succeed.&#x27;, result.url)
+            logger.success(&#x27;upload succeeded.&#x27;, result.url)
             resolve(result)
           })
           .catch((error) &#x3D;&gt; {

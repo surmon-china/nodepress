@@ -349,17 +349,17 @@ export class EmailService {
       if (error) {
         this.clientIsValid &#x3D; false
         setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(&#x60;client init failed! retry after 30 mins&#x60;, &#x27;|&#x27;, getMessageFromNormalError(error))
+        logger.error(&#x60;client initialization failed! retry after 30 mins&#x60;, &#x27;|&#x27;, getMessageFromNormalError(error))
       } else {
         this.clientIsValid &#x3D; true
-        logger.success(&#x27;client init succeed.&#x27;)
+        logger.success(&#x27;client initialized.&#x27;)
       }
     })
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
-      logger.warn(&#x27;send failed! (init failed)&#x27;)
+      logger.warn(&#x27;send failed! (initialization failed)&#x27;)
       return false
     }
 
@@ -372,7 +372,7 @@ export class EmailService {
         if (error) {
           logger.failure(&#x60;send failed!&#x60;, getMessageFromNormalError(error))
         } else {
-          logger.success(&#x27;send succeed.&#x27;, info.messageId, info.response)
+          logger.success(&#x27;send succeeded.&#x27;, info.messageId, info.response)
         }
       }
     )

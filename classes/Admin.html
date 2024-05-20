@@ -93,7 +93,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >Auth</li>
+  <li class="breadcrumb-item" >Admin</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -348,7 +348,7 @@
 import { IsString, IsDefined, IsOptional } from &#x27;class-validator&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 
-export const DEFAULT_AUTH &#x3D; Object.freeze&lt;Auth&gt;({
+export const DEFAULT_ADMIN_PROFILE &#x3D; Object.freeze&lt;Admin&gt;({
   name: &#x27;&#x27;,
   slogan: &#x27;&#x27;,
   avatar: &#x27;&#x27;
@@ -359,7 +359,7 @@ export const DEFAULT_AUTH &#x3D; Object.freeze&lt;Auth&gt;({
     versionKey: false
   }
 })
-export class Auth {
+export class Admin {
   @IsString({ message: &quot;what&#x27;s your name?&quot; })
   @IsDefined()
   @prop({ required: true })
@@ -380,7 +380,7 @@ export class Auth {
   password?: string
 }
 
-export const AuthProvider &#x3D; getProviderByTypegooseClass(Auth)
+export const AdminProvider &#x3D; getProviderByTypegooseClass(Admin)
 </code></pre>
     </div>
 </div>
@@ -419,7 +419,7 @@ export const AuthProvider &#x3D; getProviderByTypegooseClass(Auth)
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'Auth.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'Admin.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

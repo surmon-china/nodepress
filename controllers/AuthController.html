@@ -147,7 +147,7 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#getAdminInfo" >getAdminInfo</a>
+                                <a href="#getAdminProfile" >getAdminProfile</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -159,7 +159,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#putAdminInfo" >putAdminInfo</a>
+                                <a href="#putAdminProfile" >putAdminProfile</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -215,8 +215,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="67"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:67</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/modules/auth/auth.controller.ts:54</a></div>
                         </td>
                     </tr>
 
@@ -236,19 +236,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getAdminInfo"></a>
+                    <a name="getAdminProfile"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>getAdminInfo</b></span>
-                        <a href="#getAdminInfo"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getAdminProfile</b></span>
+                        <a href="#getAdminProfile"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAdminInfo()</code>
+                    <code>getAdminProfile()</code>
                 </td>
             </tr>
 
@@ -256,14 +256,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;admin&#x27;)<br />@(&#x27;Get admin info&#x27;)<br /></code>
+                    <code>@Get(&#x27;admin&#x27;)<br />@(&#x27;Get admin profile&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="52"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:52</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/modules/auth/auth.controller.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -272,7 +272,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Auth.html" target="_self" >Promise&lt;Auth&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;Admin&gt;</a></code>
 
                         </div>
                 </td>
@@ -372,20 +372,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putAdminInfo"></a>
+                    <a name="putAdminProfile"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>putAdminInfo</b></span>
-                        <a href="#putAdminInfo"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>putAdminProfile</b></span>
+                        <a href="#putAdminProfile"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putAdminInfo(auth: <a href="../classes/AuthUpdateDTO.html" target="_self">AuthUpdateDTO</a>)</code>
+                    <code>putAdminProfile(adminProfile: <a href="../classes/AdminUpdateDTO.html" target="_self">AdminUpdateDTO</a>)</code>
                 </td>
             </tr>
 
@@ -393,14 +393,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;admin&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update admin info&#x27;)<br /></code>
+                    <code>@Put(&#x27;admin&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update admin profile&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:59</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/modules/auth/auth.controller.ts:75</a></div>
                         </td>
                     </tr>
 
@@ -421,9 +421,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>auth</td>
+                                                <td>adminProfile</td>
                                             <td>
-                                                            <code><a href="../classes/AuthUpdateDTO.html" target="_self" >AuthUpdateDTO</a></code>
+                                                            <code><a href="../classes/AdminUpdateDTO.html" target="_self" >AdminUpdateDTO</a></code>
                                             </td>
 
                                             <td>
@@ -436,7 +436,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Auth.html" target="_self" >Promise&lt;Auth&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;Admin&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -471,14 +471,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;renewal&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Renewal Token&#x27;)<br /></code>
+                    <code>@Post(&#x27;renewal&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Renewal token&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="75"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:75</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/modules/auth/auth.controller.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -510,10 +510,10 @@ import { IPService } from &#x27;@app/processors/helper/helper.service.ip&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
 import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { AuthLoginDTO, AuthUpdateDTO } from &#x27;./auth.dto&#x27;
+import { AuthLoginDTO, AdminUpdateDTO } from &#x27;./auth.dto&#x27;
 import { AuthService } from &#x27;./auth.service&#x27;
 import { TokenResult } from &#x27;./auth.interface&#x27;
-import { Auth } from &#x27;./auth.model&#x27;
+import { Admin } from &#x27;./auth.model&#x27;
 import { APP } from &#x27;@app/app.config&#x27;
 
 @Controller(&#x27;auth&#x27;)
@@ -533,7 +533,7 @@ export class AuthController {
     const token &#x3D; await this.authService.adminLogin(body.password)
     if (ip) {
       this.ipService.queryLocation(ip).then((location) &#x3D;&gt; {
-        const subject &#x3D; &#x60;App has new login activity&#x60;
+        const subject &#x3D; &#x60;App has a new login activity.&#x60;
         const locationText &#x3D; location ? [location.country, location.region, location.city].join(&#x27; · &#x27;) : &#x27;unknow&#x27;
         const content &#x3D; &#x60;${subject}, IP: ${ip}, location: ${locationText}&#x60;
         this.emailService.sendMailAs(APP.NAME, {
@@ -547,19 +547,6 @@ export class AuthController {
     return token
   }
 
-  @Get(&#x27;admin&#x27;)
-  @Responser.handle(&#x27;Get admin info&#x27;)
-  getAdminInfo(): Promise&lt;Auth&gt; {
-    return this.authService.getAdminInfo()
-  }
-
-  @Put(&#x27;admin&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update admin info&#x27;)
-  putAdminInfo(@Body() auth: AuthUpdateDTO): Promise&lt;Auth&gt; {
-    return this.authService.putAdminInfo(auth)
-  }
-
   // check token
   @Post(&#x27;check&#x27;)
   @UseGuards(AdminOnlyGuard)
@@ -571,9 +558,22 @@ export class AuthController {
   // refresh token
   @Post(&#x27;renewal&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Renewal Token&#x27;)
+  @Responser.handle(&#x27;Renewal token&#x27;)
   renewalToken(): TokenResult {
     return this.authService.createToken()
+  }
+
+  @Get(&#x27;admin&#x27;)
+  @Responser.handle(&#x27;Get admin profile&#x27;)
+  getAdminProfile(): Promise&lt;Admin&gt; {
+    return this.authService.getAdminProfile()
+  }
+
+  @Put(&#x27;admin&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @Responser.handle(&#x27;Update admin profile&#x27;)
+  putAdminProfile(@Body() adminProfile: AdminUpdateDTO): Promise&lt;Admin&gt; {
+    return this.authService.putAdminProfile(adminProfile)
   }
 }
 </code></pre>

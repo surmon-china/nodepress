@@ -113,6 +113,9 @@
                             <a href="#ACCESS_TOKEN_URL" title="src/utils/disqus.ts" ><b>ACCESS_TOKEN_URL</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.ts)</a>
                         </li>
                         <li>
+                            <a href="#AdminProvider" title="src/modules/auth/auth.model.ts" ><b>AdminProvider</b>&nbsp;&nbsp;&nbsp;(src/.../auth.model.ts)</a>
+                        </li>
+                        <li>
                             <a href="#AKISMET" title="src/app.config.ts" ><b>AKISMET</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
@@ -168,9 +171,6 @@
                         </li>
                         <li>
                             <a href="#AUTHORIZE_URL" title="src/utils/disqus.ts" ><b>AUTHORIZE_URL</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#AuthProvider" title="src/modules/auth/auth.model.ts" ><b>AuthProvider</b>&nbsp;&nbsp;&nbsp;(src/.../auth.model.ts)</a>
                         </li>
                         <li>
                             <a href="#AWS" title="src/app.config.ts" ><b>AWS</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
@@ -245,7 +245,7 @@
                             <a href="#decodeToken" title="src/modules/disqus/disqus.token.ts" ><b>decodeToken</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.token.ts)</a>
                         </li>
                         <li>
-                            <a href="#DEFAULT_AUTH" title="src/modules/auth/auth.model.ts" ><b>DEFAULT_AUTH</b>&nbsp;&nbsp;&nbsp;(src/.../auth.model.ts)</a>
+                            <a href="#DEFAULT_ADMIN_PROFILE" title="src/modules/auth/auth.model.ts" ><b>DEFAULT_ADMIN_PROFILE</b>&nbsp;&nbsp;&nbsp;(src/.../auth.model.ts)</a>
                         </li>
                         <li>
                             <a href="#DEFAULT_OPTION" title="src/modules/option/option.model.ts" ><b>DEFAULT_OPTION</b>&nbsp;&nbsp;&nbsp;(src/.../option.model.ts)</a>
@@ -757,6 +757,53 @@
   &#x27;whitelists/add&#x27;,
   &#x27;whitelists/remove&#x27;
 ]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/modules/auth/auth.model.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AdminProvider"></a>
+                    <span class="name">
+                        <span ><b>AdminProvider</b></span>
+                        <a href="#AdminProvider"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>getProviderByTypegooseClass(Admin)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DEFAULT_ADMIN_PROFILE"></a>
+                    <span class="name">
+                        <span ><b>DEFAULT_ADMIN_PROFILE</b></span>
+                        <a href="#DEFAULT_ADMIN_PROFILE"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>Object.freeze&lt;Admin&gt;({
+  name: &#x27;&#x27;,
+  slogan: &#x27;&#x27;,
+  avatar: &#x27;&#x27;
+})</code>
                     </td>
                 </tr>
 
@@ -1774,53 +1821,6 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>&#x27;guestbook&#x27;</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
-    <h3>src/modules/auth/auth.model.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="AuthProvider"></a>
-                    <span class="name">
-                        <span ><b>AuthProvider</b></span>
-                        <a href="#AuthProvider"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>getProviderByTypegooseClass(Auth)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="DEFAULT_AUTH"></a>
-                    <span class="name">
-                        <span ><b>DEFAULT_AUTH</b></span>
-                        <a href="#DEFAULT_AUTH"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>Object.freeze&lt;Auth&gt;({
-  name: &#x27;&#x27;,
-  slogan: &#x27;&#x27;,
-  avatar: &#x27;&#x27;
-})</code>
                     </td>
                 </tr>
 

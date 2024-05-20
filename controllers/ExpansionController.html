@@ -221,7 +221,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Auth.html" target="_self" >Promise&lt;Auth.Credentials&gt;</a></code>
+                            <b>Returns : </b>    <code>Promise&lt;Auth.Credentials&gt;</code>
 
                         </div>
                 </td>
@@ -253,7 +253,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;statistic&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get statistic&#x27;)<br /></code>
+                    <code>@Get(&#x27;statistic&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get statistics&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -477,7 +477,7 @@ export class ExpansionController {
 
   @Get(&#x27;statistic&#x27;)
   @UseGuards(AdminMaybeGuard)
-  @Responser.handle(&#x27;Get statistic&#x27;)
+  @Responser.handle(&#x27;Get statistics&#x27;)
   getSystemStatistics(@QueryParams() { isUnauthenticated }: QueryParamsResult): Promise&lt;Statistic&gt; {
     return this.statisticService.getStatistic(isUnauthenticated)
   }

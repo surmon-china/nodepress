@@ -685,11 +685,11 @@ export class AkismetService {
       .then((valid) &#x3D;&gt; (valid ? Promise.resolve(valid) : Promise.reject(&#x27;Invalid Akismet key&#x27;)))
       .then(() &#x3D;&gt; {
         this.clientIsValid &#x3D; true
-        logger.success(&#x27;client init succeed.&#x27;)
+        logger.success(&#x27;client initialized.&#x27;)
       })
       .catch((error) &#x3D;&gt; {
         this.clientIsValid &#x3D; false
-        logger.failure(&#x27;client init failed!&#x27;, &#x27;|&#x27;, getMessageFromNormalError(error))
+        logger.failure(&#x27;client initialization failed!&#x27;, &#x27;|&#x27;, getMessageFromNormalError(error))
       })
   }
 
@@ -717,7 +717,7 @@ export class AkismetService {
               logger.info(&#x60;${handleType} found SPAM!&#x60;, new Date(), content)
               reject(&#x27;SPAM!&#x27;)
             } else {
-              logger.info(&#x60;${handleType} succeed.&#x60;)
+              logger.info(&#x60;${handleType} succeeded.&#x60;)
               resolve(result)
             }
           })

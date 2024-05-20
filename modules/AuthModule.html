@@ -261,7 +261,7 @@ import { Module } from &#x27;@nestjs/common&#x27;
 import { JwtModule } from &#x27;@nestjs/jwt&#x27;
 import { PassportModule } from &#x27;@nestjs/passport&#x27;
 import { AuthController } from &#x27;./auth.controller&#x27;
-import { AuthProvider } from &#x27;./auth.model&#x27;
+import { AdminProvider } from &#x27;./auth.model&#x27;
 import { AuthService } from &#x27;./auth.service&#x27;
 import { JwtStrategy } from &#x27;./jwt.strategy&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -277,7 +277,7 @@ import * as APP_CONFIG from &#x27;@app/app.config&#x27;
     })
   ],
   controllers: [AuthController],
-  providers: [AuthProvider, AuthService, JwtStrategy],
+  providers: [AdminProvider, AuthService, JwtStrategy],
   exports: [AuthService]
 })
 export class AuthModule {}

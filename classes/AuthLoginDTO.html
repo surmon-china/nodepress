@@ -213,7 +213,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsDefined, IsNotEmpty } from &#x27;class-validator&#x27;
-import { Auth } from &#x27;./auth.model&#x27;
+import { Admin } from &#x27;./auth.model&#x27;
 
 export class AuthLoginDTO {
   @IsString({ message: &#x27;password must be string type&#x27; })
@@ -222,7 +222,7 @@ export class AuthLoginDTO {
   password: string
 }
 
-export class AuthUpdateDTO extends Auth {
+export class AdminUpdateDTO extends Admin {
   new_password?: string
 }
 </code></pre>
