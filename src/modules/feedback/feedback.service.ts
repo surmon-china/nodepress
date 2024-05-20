@@ -7,7 +7,7 @@
 import { Types } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { ROOT_FEEDBACK_TID } from '@app/constants/biz.constant'
 import { NULL } from '@app/constants/value.constant'
@@ -37,32 +37,32 @@ export class FeedbackService {
     })
   }
 
-  public getDetail(feedbackID: MongooseID): Promise<MongooseDoc<Feedback>> {
+  public getDetail(feedbackId: MongooseId): Promise<MongooseDoc<Feedback>> {
     return this.feedbackModel
-      .findById(feedbackID)
+      .findById(feedbackId)
       .exec()
-      .then((result) => result || Promise.reject(`Feedback '${feedbackID}' not found`))
+      .then((result) => result || Promise.reject(`Feedback '${feedbackId}' not found`))
   }
 
-  public async update(feedbackID: MongooseID, newFeedback: Partial<Feedback>): Promise<MongooseDoc<Feedback>> {
-    const feedback = await this.feedbackModel.findByIdAndUpdate(feedbackID, newFeedback, { new: true }).exec()
+  public async update(feedbackId: MongooseId, newFeedback: Partial<Feedback>): Promise<MongooseDoc<Feedback>> {
+    const feedback = await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec()
     if (!feedback) {
-      throw `Feedback '${feedbackID}' not found`
+      throw `Feedback '${feedbackId}' not found`
     }
     return feedback
   }
 
-  public async delete(feedbackID: MongooseID) {
-    const feedback = await this.feedbackModel.findByIdAndDelete(feedbackID, null).exec()
+  public async delete(feedbackId: MongooseId) {
+    const feedback = await this.feedbackModel.findByIdAndDelete(feedbackId, null).exec()
     if (!feedback) {
-      throw `Feedback '${feedbackID}' not found`
+      throw `Feedback '${feedbackId}' not found`
     }
 
     return feedback
   }
 
-  public batchDelete(feedbackIDs: MongooseID[]) {
-    return this.feedbackModel.deleteMany({ _id: { $in: feedbackIDs } }).exec()
+  public batchDelete(feedbackIds: MongooseId[]) {
+    return this.feedbackModel.deleteMany({ _id: { $in: feedbackIds } }).exec()
   }
 
   public async getRootFeedbackAverageEmotion(): Promise<number | null> {

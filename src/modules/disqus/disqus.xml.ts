@@ -8,8 +8,8 @@ import dayjs from 'dayjs'
 import { Comment } from '@app/modules/comment/comment.model'
 import { Article } from '@app/modules/article/article.model'
 import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
-import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
-import { getThreadIdentifierByID } from './disqus.constant'
+import { getPermalinkById } from '@app/transformers/urlmap.transformer'
+import { getThreadIdentifierById } from './disqus.constant'
 import { ThreadState } from './disqus.dto'
 import { APP } from '@app/app.config'
 
@@ -46,9 +46,9 @@ export const getDisqusXML = (data: XMLItemData[], guestbook: Array<Comment>) => 
       <channel>
         <item>
           <title>Guestbook</title>
-          <link>${getPermalinkByID(GUESTBOOK_POST_ID)}</link>
+          <link>${getPermalinkById(GUESTBOOK_POST_ID)}</link>
           <content:encoded><![CDATA[${APP.FE_NAME}]]></content:encoded>
-          <dsq:thread_identifier>${getThreadIdentifierByID(GUESTBOOK_POST_ID)}</dsq:thread_identifier>
+          <dsq:thread_identifier>${getThreadIdentifierById(GUESTBOOK_POST_ID)}</dsq:thread_identifier>
           <wp:post_date_gmt>2017-01-01 00:00:00</wp:post_date_gmt>
           <wp:comment_status>open</wp:comment_status>
           ${guestbook.map(getCommentItemXML).join('\n')}
@@ -58,9 +58,9 @@ export const getDisqusXML = (data: XMLItemData[], guestbook: Array<Comment>) => 
             (item) => `
             <item>
               <title>${item.article.title}</title>
-              <link>${getPermalinkByID(item.article.id)}</link>
+              <link>${getPermalinkById(item.article.id)}</link>
               <content:encoded><![CDATA[${item.article.description || ''}]]></content:encoded>
-              <dsq:thread_identifier>${getThreadIdentifierByID(item.article.id)}</dsq:thread_identifier>
+              <dsq:thread_identifier>${getThreadIdentifierById(item.article.id)}</dsq:thread_identifier>
               <wp:post_date_gmt>${dayjs(item.article.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:post_date_gmt>
               <wp:comment_status>${
                 item.article.disabled_comments ? ThreadState.Closed : ThreadState.Open

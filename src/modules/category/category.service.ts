@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getCategoryUrl } from '@app/transformers/urlmap.transformer'
-import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseId, MongooseObjectId, WithId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
 import { ArchiveService } from '@app/modules/archive/archive.service'
@@ -42,8 +42,8 @@ export class CategoryService {
     })
   }
 
-  private async aggregateArticleCount(publicOnly: boolean, categories: Array<WithID<Category>>) {
-    const counts = await this.articleModel.aggregate<{ _id: MongooseObjectID; count: number }>([
+  private async aggregateArticleCount(publicOnly: boolean, categories: Array<WithId<Category>>) {
+    const counts = await this.articleModel.aggregate<{ _id: MongooseObjectId; count: number }>([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
       { $unwind: '$categories' },
       { $group: { _id: '$categories', count: { $sum: 1 } } }
@@ -100,17 +100,17 @@ export class CategoryService {
   }
 
   // get categories genealogy
-  public getGenealogyById(categoryID: MongooseID): Promise<Category[]> {
+  public getGenealogyById(categoryId: MongooseId): Promise<Category[]> {
     const categories: Category[] = []
-    const findById = (id: MongooseID) => this.categoryModel.findById(id).exec()
+    const findById = (id: MongooseId) => this.categoryModel.findById(id).exec()
 
     return new Promise((resolve, reject) => {
       ;(function findCateItem(id) {
         findById(id)
           .then((category) => {
             if (!category) {
-              if (id === categoryID) {
-                return reject(`Category '${categoryID}' not found`)
+              if (id === categoryId) {
+                return reject(`Category '${categoryId}' not found`)
               } else {
                 return resolve(categories)
               }
@@ -121,20 +121,20 @@ export class CategoryService {
             return hasParent ? findCateItem(parentId) : resolve(categories)
           })
           .catch(reject)
-      })(categoryID)
+      })(categoryId)
     })
   }
 
   // update category
-  public async update(categoryID: MongooseID, newCategory: Category): Promise<MongooseDoc<Category>> {
+  public async update(categoryId: MongooseId, newCategory: Category): Promise<MongooseDoc<Category>> {
     const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
-    if (existedCategory && !existedCategory._id.equals(categoryID)) {
+    if (existedCategory && !existedCategory._id.equals(categoryId)) {
       throw `Category slug '${newCategory.slug}' is existed`
     }
 
-    const category = await this.categoryModel.findByIdAndUpdate(categoryID, newCategory, { new: true }).exec()
+    const category = await this.categoryModel.findByIdAndUpdate(categoryId, newCategory, { new: true }).exec()
     if (!category) {
-      throw `Category '${categoryID}' not found`
+      throw `Category '${categoryId}' not found`
     }
     this.seoService.push(getCategoryUrl(category.slug))
     this.archiveService.updateCache()
@@ -143,10 +143,10 @@ export class CategoryService {
   }
 
   // delete category
-  public async delete(categoryID: MongooseID) {
-    const category = await this.categoryModel.findByIdAndDelete(categoryID, null).exec()
+  public async delete(categoryId: MongooseId) {
+    const category = await this.categoryModel.findByIdAndDelete(categoryId, null).exec()
     if (!category) {
-      throw `Category '${categoryID}' not found`
+      throw `Category '${categoryId}' not found`
     }
 
     // cache
@@ -154,7 +154,7 @@ export class CategoryService {
     this.seoService.delete(getCategoryUrl(category.slug))
     this.updateAllCategoriesCache()
     // children categories
-    const categories = await this.categoryModel.find({ pid: categoryID }).exec()
+    const categories = await this.categoryModel.find({ pid: categoryId }).exec()
     // delete when root category -> { pid: target.id }
     if (!categories.length) {
       return category
@@ -168,12 +168,12 @@ export class CategoryService {
     return category
   }
 
-  public async batchDelete(categoryIDs: MongooseID[]) {
+  public async batchDelete(categoryIds: MongooseId[]) {
     // SEO remove
-    const categories = await this.categoryModel.find({ _id: { $in: categoryIDs } }).exec()
+    const categories = await this.categoryModel.find({ _id: { $in: categoryIds } }).exec()
     this.seoService.delete(categories.map((category) => getCategoryUrl(category.slug)))
     // DB remove
-    const actionResult = await this.categoryModel.deleteMany({ _id: { $in: categoryIDs } }).exec()
+    const actionResult = await this.categoryModel.deleteMany({ _id: { $in: categoryIds } }).exec()
     this.archiveService.updateCache()
     this.updateAllCategoriesCache()
     return actionResult

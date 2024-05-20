@@ -23,8 +23,8 @@ export const ARTICLE_THREAD_ID_EXTEND_KEY = 'disqus-thread-id'
 // identifier
 const GUESTBOOK_IDENTIFIER = 'guestbook'
 const ARTICLE_IDENTIFIER_PREFIX = 'article-'
-export const getThreadIdentifierByID = (postID: number) => {
-  return postID === GUESTBOOK_POST_ID ? GUESTBOOK_IDENTIFIER : `${ARTICLE_IDENTIFIER_PREFIX}${postID}`
+export const getThreadIdentifierById = (postId: number) => {
+  return postId === GUESTBOOK_POST_ID ? GUESTBOOK_IDENTIFIER : `${ARTICLE_IDENTIFIER_PREFIX}${postId}`
 }
 export const getIDByThreadIdentifier = (id: string) => {
   return id === GUESTBOOK_IDENTIFIER ? GUESTBOOK_POST_ID : id.replace(ARTICLE_IDENTIFIER_PREFIX, '')

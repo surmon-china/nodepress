@@ -23,6 +23,6 @@ export function getGuestbookPageUrl(): string {
   return `${APP_CONFIG.APP.FE_URL}/guestbook`
 }
 
-export function getPermalinkByID(id: number): string {
+export function getPermalinkById(id: number): string {
   return id === GUESTBOOK_POST_ID ? getGuestbookPageUrl() : getArticleUrl(id)
 }

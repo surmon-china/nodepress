@@ -17,7 +17,7 @@ import { SortType } from '@app/constants/biz.constant'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIDsDTO, ArticlesStateDTO } from './article.dto'
+import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStateDTO } from './article.dto'
 import { ARTICLE_HOTTEST_SORT_PARAMS } from './article.model'
 import { ArticleService } from './article.service'
 import { Article } from './article.model'
@@ -114,12 +114,12 @@ export class ArticleController {
   @Get(':id/context')
   @Responser.handle('Get context articles')
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
-    const articleID = Number(params.id)
+    const articleId = Number(params.id)
     const [prevArticles, nextArticles, relatedArticles] = await Promise.all([
-      this.articleService.getNearArticles(articleID, 'early', 1),
-      this.articleService.getNearArticles(articleID, 'later', 1),
+      this.articleService.getNearArticles(articleId, 'early', 1),
+      this.articleService.getNearArticles(articleId, 'later', 1),
       this.articleService
-        .getDetailByNumberIDOrSlug({ idOrSlug: articleID, publicOnly: true })
+        .getDetailByNumberIdOrSlug({ idOrSlug: articleId, publicOnly: true })
         .then((article) => this.articleService.getRelatedArticles(article, 20))
     ])
     return {
@@ -143,8 +143,8 @@ export class ArticleController {
     }
     // admin user > Object ID | number ID
     return Types.ObjectId.isValid(params.id)
-      ? this.articleService.getDetailByObjectID(params.id)
-      : this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: Number(params.id) })
+      ? this.articleService.getDetailByObjectId(params.id)
+      : this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: Number(params.id) })
   }
 
   @Post()
@@ -178,7 +178,7 @@ export class ArticleController {
   @Delete()
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Delete articles')
-  delArticles(@Body() body: ArticleIDsDTO) {
+  delArticles(@Body() body: ArticleIdsDTO) {
     return this.articleService.batchDelete(body.article_ids)
   }
 }

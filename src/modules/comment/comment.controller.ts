@@ -105,7 +105,7 @@ export class CommentController {
   @UseGuards(AdminOnlyGuard)
   @Responser.handle({ message: 'Get comment detail', error: HttpStatus.NOT_FOUND })
   getComment(@QueryParams() { params }: QueryParamsResult): Promise<Comment> {
-    return this.commentService.getDetailByObjectID(params.id).then((comment) => {
+    return this.commentService.getDetailByObjectId(params.id).then((comment) => {
       return comment ? comment : Promise.reject('Comment not found')
     })
   }

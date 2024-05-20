@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getTagUrl } from '@app/transformers/urlmap.transformer'
-import { MongooseModel, MongooseDoc, MongooseID, MongooseObjectID, WithID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseId, MongooseObjectId, WithId } from '@app/interfaces/mongoose.interface'
 import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
 import { SeoService } from '@app/processors/helper/helper.service.seo'
 import { ArchiveService } from '@app/modules/archive/archive.service'
@@ -42,8 +42,8 @@ export class TagService {
     })
   }
 
-  private async aggregateArticleCount(publicOnly: boolean, tags: Array<WithID<Tag>>) {
-    const counts = await this.articleModel.aggregate<{ _id: MongooseObjectID; count: number }>([
+  private async aggregateArticleCount(publicOnly: boolean, tags: Array<WithId<Tag>>) {
+    const counts = await this.articleModel.aggregate<{ _id: MongooseObjectId; count: number }>([
       { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
       { $unwind: '$tags' },
       { $group: { _id: '$tags', count: { $sum: 1 } } }
@@ -97,15 +97,15 @@ export class TagService {
     return tag
   }
 
-  public async update(tagID: MongooseID, newTag: Tag): Promise<MongooseDoc<Tag>> {
+  public async update(tagId: MongooseId, newTag: Tag): Promise<MongooseDoc<Tag>> {
     const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec()
-    if (existedTag && !existedTag._id.equals(tagID)) {
+    if (existedTag && !existedTag._id.equals(tagId)) {
       throw `Tag slug '${newTag.slug}' is existed`
     }
 
-    const tag = await this.tagModel.findByIdAndUpdate(tagID, newTag as any, { new: true }).exec()
+    const tag = await this.tagModel.findByIdAndUpdate(tagId, newTag as any, { new: true }).exec()
     if (!tag) {
-      throw `Tag '${tagID}' not found`
+      throw `Tag '${tagId}' not found`
     }
 
     this.seoService.push(getTagUrl(tag.slug))
@@ -114,10 +114,10 @@ export class TagService {
     return tag
   }
 
-  public async delete(tagID: MongooseID) {
-    const tag = await this.tagModel.findByIdAndDelete(tagID, null).exec()
+  public async delete(tagId: MongooseId) {
+    const tag = await this.tagModel.findByIdAndDelete(tagId, null).exec()
     if (!tag) {
-      throw `Tag '${tagID}' not found`
+      throw `Tag '${tagId}' not found`
     }
 
     this.seoService.delete(getTagUrl(tag.slug))
@@ -126,10 +126,10 @@ export class TagService {
     return tag
   }
 
-  public async batchDelete(tagIDs: MongooseID[]) {
-    const tags = await this.tagModel.find({ _id: { $in: tagIDs } }).exec()
+  public async batchDelete(tagIds: MongooseId[]) {
+    const tags = await this.tagModel.find({ _id: { $in: tagIds } }).exec()
     // DB remove
-    const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIDs } }).exec()
+    const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIds } }).exec()
     // Cache update
     this.archiveService.updateCache()
     this.updateAllTagsCache()

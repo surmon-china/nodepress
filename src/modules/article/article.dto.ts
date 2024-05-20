@@ -88,14 +88,14 @@ export class ArticleCalendarQueryDTO {
   timezone?: string
 }
 
-export class ArticleIDsDTO {
+export class ArticleIdsDTO {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsArray()
   article_ids: string[]
 }
 
-export class ArticlesStateDTO extends ArticleIDsDTO {
+export class ArticlesStateDTO extends ArticleIdsDTO {
   @IsIn(ARTICLE_PUBLISH_STATES)
   @IsInt()
   @IsDefined()

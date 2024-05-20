@@ -17,7 +17,7 @@ import { CategoryService } from '@app/modules/category/category.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { PublishState } from '@app/constants/biz.constant'
 import { NULL } from '@app/constants/value.constant'
-import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import {
   Article,
@@ -38,7 +38,7 @@ export class ArticleService {
   ) {}
 
   // get near articles
-  public async getNearArticles(articleID: number, type: 'later' | 'early', count: number): Promise<Article[]> {
+  public async getNearArticles(articleId: number, type: 'later' | 'early', count: number): Promise<Article[]> {
     const typeFieldMap = {
       early: { field: '$lt', sort: -1 as SortOrder },
       later: { field: '$gt', sort: 1 as SortOrder }
@@ -46,7 +46,7 @@ export class ArticleService {
     const targetType = typeFieldMap[type]
     return this.articleModel
       .find(
-        { ...ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [targetType.field]: articleID } },
+        { ...ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [targetType.field]: articleId } },
         ARTICLE_LIST_QUERY_PROJECTION
       )
       .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
@@ -80,20 +80,20 @@ export class ArticleService {
   }
 
   // get articles by ids
-  public getList(articleIDs: number[]): Promise<Array<Article>> {
-    return this.articleModel.find({ id: { $in: articleIDs } }).exec()
+  public getList(articleIds: number[]): Promise<Array<Article>> {
+    return this.articleModel.find({ id: { $in: articleIds } }).exec()
   }
 
   // get article by ObjectID
-  public getDetailByObjectID(articleID: MongooseID): Promise<MongooseDoc<Article>> {
+  public getDetailByObjectId(articleId: MongooseId): Promise<MongooseDoc<Article>> {
     return this.articleModel
-      .findById(articleID)
+      .findById(articleId)
       .exec()
-      .then((result) => result || Promise.reject(`Article '${articleID}' not found`))
+      .then((result) => result || Promise.reject(`Article '${articleId}' not found`))
   }
 
   // get article by number id
-  public getDetailByNumberIDOrSlug({
+  public getDetailByNumberIdOrSlug({
     idOrSlug,
     publicOnly = false,
     populate = false
@@ -118,7 +118,7 @@ export class ArticleService {
 
   // get article detail for guest user
   public async getFullDetailForGuest(target: number | string): Promise<Article> {
-    const article = await this.getDetailByNumberIDOrSlug({
+    const article = await this.getDetailByNumberIdOrSlug({
       idOrSlug: target,
       publicOnly: true,
       populate: true
@@ -134,9 +134,9 @@ export class ArticleService {
     return article.toObject()
   }
 
-  public async incrementLikes(articleID: number) {
-    const article = await this.getDetailByNumberIDOrSlug({
-      idOrSlug: articleID,
+  public async incrementLikes(articleId: number) {
+    const article = await this.getDetailByNumberIdOrSlug({
+      idOrSlug: articleId,
       publicOnly: true
     })
     article.meta.likes++
@@ -160,10 +160,10 @@ export class ArticleService {
     return article
   }
 
-  public async update(articleID: MongooseID, newArticle: Article): Promise<MongooseDoc<Article>> {
+  public async update(articleId: MongooseId, newArticle: Article): Promise<MongooseDoc<Article>> {
     if (newArticle.slug) {
       const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec()
-      if (existedArticle && !existedArticle._id.equals(articleID)) {
+      if (existedArticle && !existedArticle._id.equals(articleId)) {
         throw `Article slug '${newArticle.slug}' is existed`
       }
     }
@@ -172,9 +172,9 @@ export class ArticleService {
     Reflect.deleteProperty(newArticle, 'created_at')
     Reflect.deleteProperty(newArticle, 'updated_at')
 
-    const article = await this.articleModel.findByIdAndUpdate(articleID, newArticle, { new: true }).exec()
+    const article = await this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).exec()
     if (!article) {
-      throw `Article '${articleID}' not found`
+      throw `Article '${articleId}' not found`
     }
     this.seoService.update(getArticleUrl(article.id))
     this.tagService.updateAllTagsCache()
@@ -183,10 +183,10 @@ export class ArticleService {
     return article
   }
 
-  public async delete(articleID: MongooseID) {
-    const article = await this.articleModel.findByIdAndDelete(articleID, null).exec()
+  public async delete(articleId: MongooseId) {
+    const article = await this.articleModel.findByIdAndDelete(articleId, null).exec()
     if (!article) {
-      throw `Article '${articleID}' not found`
+      throw `Article '${articleId}' not found`
     }
 
     this.seoService.delete(getArticleUrl(article.id))
@@ -196,9 +196,9 @@ export class ArticleService {
     return article
   }
 
-  public async batchPatchState(articleIDs: MongooseID[], state: PublishState) {
+  public async batchPatchState(articleIds: MongooseId[], state: PublishState) {
     const actionResult = await this.articleModel
-      .updateMany({ _id: { $in: articleIDs } }, { $set: { state } }, { multi: true })
+      .updateMany({ _id: { $in: articleIds } }, { $set: { state } }, { multi: true })
       .exec()
     this.tagService.updateAllTagsCache()
     this.categoryService.updateAllCategoriesCache()
@@ -206,11 +206,11 @@ export class ArticleService {
     return actionResult
   }
 
-  public async batchDelete(articleIDs: MongooseID[]) {
-    const articles = await this.articleModel.find({ _id: { $in: articleIDs } }).exec()
+  public async batchDelete(articleIds: MongooseId[]) {
+    const articles = await this.articleModel.find({ _id: { $in: articleIds } }).exec()
     this.seoService.delete(articles.map((article) => getArticleUrl(article.id)))
 
-    const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIDs } }).exec()
+    const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIds } }).exec()
     this.tagService.updateAllTagsCache()
     this.categoryService.updateAllCategoriesCache()
     this.archiveService.updateCache()
@@ -259,14 +259,14 @@ export class ArticleService {
   }
 
   // article commentable state
-  public async isCommentableArticle(articleID: number): Promise<boolean> {
-    const article = await this.articleModel.findOne({ id: articleID }).exec()
+  public async isCommentableArticle(articleId: number): Promise<boolean> {
+    const article = await this.articleModel.findOne({ id: articleId }).exec()
     return Boolean(article && !article.disabled_comments)
   }
 
   // update article comments count
-  public async updateMetaComments(articleID: number, commentCount: number) {
-    const findParams = { id: articleID }
+  public async updateMetaComments(articleId: number, commentCount: number) {
+    const findParams = { id: articleId }
     const patchParams = { $set: { 'meta.comments': commentCount } }
     return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec()
   }

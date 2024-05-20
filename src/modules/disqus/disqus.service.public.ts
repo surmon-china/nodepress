@@ -14,7 +14,7 @@ import { CacheService } from '@app/processors/cache/cache.service'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
 import { getExtendObject, getExtendValue } from '@app/transformers/extend.transformer'
-import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
+import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { DisqusPrivateService } from './disqus.service.private'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
@@ -81,20 +81,20 @@ export class DisqusPublicService {
       })
   }
 
-  public ensureThreadDetail(postID: number) {
+  public ensureThreadDetail(postId: number) {
     return this.disqus
-      .request('threads/details', { forum: DISQUS.forum, thread: `link:${getPermalinkByID(postID)}` })
+      .request('threads/details', { forum: DISQUS.forum, thread: `link:${getPermalinkById(postId)}` })
       .then((response) => response.response)
-      .catch(() => this.disqusPrivateService.createThread(postID))
+      .catch(() => this.disqusPrivateService.createThread(postId))
   }
 
-  public async ensureThreadDetailCache(postID: number) {
-    const cacheKey = getDisqusCacheKey(`thread-post-${postID}`)
+  public async ensureThreadDetailCache(postId: number) {
+    const cacheKey = getDisqusCacheKey(`thread-post-${postId}`)
     const cached = await this.cacheService.get<any>(cacheKey)
     if (cached) {
       return cached
     }
-    const result = await this.ensureThreadDetail(postID)
+    const result = await this.ensureThreadDetail(postId)
     // cache 24 hours
     this.cacheService.set(cacheKey, result, 60 * 60 * 24)
     return result
@@ -116,9 +116,9 @@ export class DisqusPublicService {
     })
   }
 
-  public async getDisqusPostIDByCommentID(commentID: number): Promise<string | null> {
+  public async getDisqusPostIdByCommentId(commentId: number): Promise<string | null> {
     try {
-      const comment = await this.commentService.getDetailByNumberID(commentID)
+      const comment = await this.commentService.getDetailByNumberId(commentId)
       return getExtendValue(comment.extends, DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY) || null
     } catch (error) {
       return null
@@ -127,16 +127,16 @@ export class DisqusPublicService {
 
   public async createDisqusComment(payload: {
     comment: Comment
-    threadID: string
-    parentID: string | null
+    threadId: string
+    parentId: string | null
     accessToken?: string
   }) {
-    const { comment, threadID, parentID, accessToken } = payload
+    const { comment, threadId, parentId, accessToken } = payload
     // https://disqus.com/api/docs/posts/create/
     const body: any = {
       message: comment.content,
-      parent: parentID,
-      thread: threadID
+      parent: parentId,
+      thread: threadId
     }
     if (accessToken) {
       // publish by Disqus user
@@ -169,15 +169,15 @@ export class DisqusPublicService {
     // 3. nodepress blocklist
     await this.commentService.verifyCommentValidity(newComment)
     // 4. disqus parent comment post ID
-    let parentID: string | null = null
+    let parentId: string | null = null
     if (Boolean(newComment.pid)) {
-      parentID = await this.getDisqusPostIDByCommentID(newComment.pid)
+      parentId = await this.getDisqusPostIdByCommentId(newComment.pid)
     }
     // 5. create disqus post(comment)
     const disqusPost = await this.createDisqusComment({
       comment: newComment,
-      threadID: thread.id,
-      parentID,
+      threadId: thread.id,
+      parentId: parentId,
       accessToken
     })
     // 6. approve guest post
@@ -218,30 +218,30 @@ export class DisqusPublicService {
       })
   }
 
-  public async deleteUniversalComment(commentID: number, accessToken: string) {
+  public async deleteUniversalComment(commentId: number, accessToken: string) {
     // comment
-    const comment = await this.commentService.getDetailByNumberID(commentID)
+    const comment = await this.commentService.getDetailByNumberId(commentId)
     if (!comment) {
       throw 'Comment not found'
     }
 
     // disqus extend info
     const extendsObject = getExtendObject(comment.extends)
-    const commentDisqusPostID = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
-    const commentDisqusAuthorID = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
-    if (!commentDisqusAuthorID || !commentDisqusPostID) {
+    const commentDisqusPostId = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
+    const commentDisqusAuthorId = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
+    if (!commentDisqusAuthorId || !commentDisqusPostId) {
       throw 'Comment not deletable'
     }
 
     // user ID === author ID
     const userInfo = await this.getUserInfo(accessToken)
-    if (userInfo.id !== commentDisqusAuthorID) {
-      throw `You do not have write privileges on comment '${commentID}'`
+    if (userInfo.id !== commentDisqusAuthorId) {
+      throw `You do not have write privileges on comment '${commentId}'`
     }
 
     // disqus delete
     await this.deleteDisqusComment({
-      post: commentDisqusPostID,
+      post: commentDisqusPostId,
       access_token: accessToken
     })
 

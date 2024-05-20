@@ -15,7 +15,7 @@ export type MongooseModel<T> = Model<MongooseDoc<T>> & PaginateModel<MongooseDoc
 // `The id is cast based on the Schema before sending the command.`
 // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndDelete
 // `id «Object|Number|String» value of _id to query by.`
-export type MongooseID = Types.ObjectId | string
-export type MongooseObjectID = Types.ObjectId
+export type MongooseId = Types.ObjectId | string
+export type MongooseObjectId = Types.ObjectId
 
-export type WithID<T> = T & { _id: Types.ObjectId }
+export type WithId<T> = T & { _id: Types.ObjectId }

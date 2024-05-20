@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common'
 import { FilterQuery, MongooseBaseQueryOptions } from 'mongoose'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { Vote } from './vote.model'
 
@@ -23,24 +23,24 @@ export class VoteService {
     return this.voteModel.create(vote)
   }
 
-  public async update(voteID: MongooseID, newVote: Partial<Vote>): Promise<MongooseDoc<Vote>> {
-    const vote = await this.voteModel.findByIdAndUpdate(voteID, newVote, { new: true }).exec()
+  public async update(voteId: MongooseId, newVote: Partial<Vote>): Promise<MongooseDoc<Vote>> {
+    const vote = await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec()
     if (!vote) {
-      throw `Vote '${voteID}' not found`
+      throw `Vote '${voteId}' not found`
     }
     return vote
   }
 
-  public async delete(voteID: MongooseID) {
-    const vote = await this.voteModel.findByIdAndDelete(voteID, null).exec()
+  public async delete(voteId: MongooseId) {
+    const vote = await this.voteModel.findByIdAndDelete(voteId, null).exec()
     if (!vote) {
-      throw `Vote '${voteID}' not found`
+      throw `Vote '${voteId}' not found`
     }
     return vote
   }
 
-  public batchDelete(voteIDs: MongooseID[]) {
-    return this.voteModel.deleteMany({ _id: { $in: voteIDs } }).exec()
+  public batchDelete(voteIds: MongooseId[]) {
+    return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec()
   }
 
   public async countDocuments(filter: FilterQuery<Vote>, options?: MongooseBaseQueryOptions<Vote>): Promise<number> {

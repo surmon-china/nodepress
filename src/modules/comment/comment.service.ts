@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common'
 import { FilterQuery, MongooseBaseQueryOptions } from 'mongoose'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
 import { ArticleService } from '@app/modules/article/article.service'
@@ -16,7 +16,7 @@ import { EmailService } from '@app/processors/helper/helper.service.email'
 import { AkismetService, AkismetAction } from '@app/processors/helper/helper.service.akismet'
 import { QueryVisitor } from '@app/decorators/queryparams.decorator'
 import { OptionService } from '@app/modules/option/option.service'
-import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
+import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { Comment, CommentBase, COMMENT_GUEST_QUERY_FILTER } from './comment.model'
 import { CommentsStateDTO } from './comment.dto'
 import { isDevEnv, isProdEnv } from '@app/app.environment'
@@ -41,7 +41,7 @@ export class CommentService {
     if (comment.post_id === GUESTBOOK_POST_ID) {
       onWhere = 'guestbook'
     } else {
-      const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: comment.post_id })
+      const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: comment.post_id })
       onWhere = `"${article.toObject().title}"`
     }
 
@@ -50,7 +50,7 @@ export class CommentService {
       const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`]
       const textHTML = texts.map((text) => `<p>${text}</p>`).join('')
       const replyText = `Reply to ${authorName} #${comment.id}`
-      const commentLink = getPermalinkByID(comment.post_id) + `#comment-${comment.id}`
+      const commentLink = getPermalinkById(comment.post_id) + `#comment-${comment.id}`
       const linkHTML = `<a href="${commentLink}" target="_blank">${replyText}</a>`
       return {
         text: texts.join('\n'),
@@ -86,7 +86,7 @@ export class CommentService {
       user_ip: comment.ip!,
       user_agent: comment.agent!,
       referrer: referer || '',
-      permalink: getPermalinkByID(comment.post_id),
+      permalink: getPermalinkById(comment.post_id),
       comment_type: comment.pid ? 'reply' : 'comment',
       comment_author: comment.author.name,
       comment_author_email: comment.author.email,
@@ -95,20 +95,20 @@ export class CommentService {
     })
   }
 
-  private async updateCommentsCountWithArticles(postIDs: number[]) {
+  private async updateCommentsCountWithArticles(postIds: number[]) {
     // filter invalid post_id & guestbook
-    postIDs = postIDs.map(Number).filter(Boolean)
-    if (!postIDs.length) {
+    postIds = postIds.map(Number).filter(Boolean)
+    if (!postIds.length) {
       return false
     }
 
     try {
       const counts = await this.commentModel.aggregate<{ _id: number; num_tutorial: number }>([
-        { $match: { ...COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIDs } } },
+        { $match: { ...COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIds } } },
         { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } }
       ])
       if (!counts || !counts.length) {
-        await this.articleService.updateMetaComments(postIDs[0], 0)
+        await this.articleService.updateMetaComments(postIds[0], 0)
       } else {
         await Promise.all(
           counts.map((count) => {
@@ -154,11 +154,11 @@ export class CommentService {
   }
 
   // validate comment target commentable
-  public async verifyTargetCommentable(targetPostID: number): Promise<void> {
-    if (targetPostID !== GUESTBOOK_POST_ID) {
-      const isCommentable = await this.articleService.isCommentableArticle(targetPostID)
+  public async verifyTargetCommentable(targetPostId: number): Promise<void> {
+    if (targetPostId !== GUESTBOOK_POST_ID) {
+      const isCommentable = await this.articleService.isCommentableArticle(targetPostId)
       if (!isCommentable) {
-        return Promise.reject(`Comment target ${targetPostID} was disabled comment`)
+        return Promise.reject(`Comment target ${targetPostId} was disabled comment`)
       }
     }
   }
@@ -236,30 +236,30 @@ export class CommentService {
   }
 
   // get comment detail by ObjectID
-  public getDetailByObjectID(commentID: MongooseID): Promise<MongooseDoc<Comment>> {
+  public getDetailByObjectId(commentId: MongooseId): Promise<MongooseDoc<Comment>> {
     return this.commentModel
-      .findById(commentID)
+      .findById(commentId)
       .exec()
-      .then((result) => result || Promise.reject(`Comment '${commentID}' not found`))
+      .then((result) => result || Promise.reject(`Comment '${commentId}' not found`))
   }
 
   // get comment detail by number ID
-  public getDetailByNumberID(commentID: number): Promise<MongooseDoc<Comment>> {
+  public getDetailByNumberId(commentId: number): Promise<MongooseDoc<Comment>> {
     return this.commentModel
-      .findOne({ id: commentID })
+      .findOne({ id: commentId })
       .exec()
-      .then((result) => result || Promise.reject(`Comment '${commentID}' not found`))
+      .then((result) => result || Promise.reject(`Comment '${commentId}' not found`))
   }
 
   // update comment
   public async update(
-    commentID: MongooseID,
+    commentId: MongooseId,
     newComment: Partial<Comment>,
     referer?: string
   ): Promise<MongooseDoc<Comment>> {
-    const comment = await this.commentModel.findByIdAndUpdate(commentID, newComment, { new: true }).exec()
+    const comment = await this.commentModel.findByIdAndUpdate(commentId, newComment, { new: true }).exec()
     if (!comment) {
-      throw `Comment '${commentID}' not found`
+      throw `Comment '${commentId}' not found`
     }
 
     this.updateCommentsCountWithArticles([comment.post_id])
@@ -268,10 +268,10 @@ export class CommentService {
   }
 
   // delete comment
-  public async delete(commentID: MongooseID) {
-    const comment = await this.commentModel.findByIdAndDelete(commentID, null).exec()
+  public async delete(commentId: MongooseId) {
+    const comment = await this.commentModel.findByIdAndDelete(commentId, null).exec()
     if (!comment) {
-      throw `Comment '${commentID}' not found`
+      throw `Comment '${commentId}' not found`
     }
 
     this.updateCommentsCountWithArticles([comment.post_id])
@@ -294,9 +294,9 @@ export class CommentService {
     return actionResult
   }
 
-  public async batchDelete(commentIDs: MongooseID[], postIDs: number[]) {
-    const result = await this.commentModel.deleteMany({ _id: { $in: commentIDs } }).exec()
-    this.updateCommentsCountWithArticles(postIDs)
+  public async batchDelete(commentIds: MongooseId[], postIds: number[]) {
+    const result = await this.commentModel.deleteMany({ _id: { $in: commentIds } }).exec()
+    this.updateCommentsCountWithArticles(postIds)
     return result
   }
 
@@ -323,10 +323,10 @@ export class CommentService {
       .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`))
   }
 
-  public async reviseIPLocation(commentID: MongooseID) {
-    const comment = await this.getDetailByObjectID(commentID)
+  public async reviseIPLocation(commentId: MongooseId) {
+    const comment = await this.getDetailByObjectId(commentId)
     if (!comment.ip) {
-      return `Comment '${commentID}' hasn't IP address`
+      return `Comment '${commentId}' hasn't IP address`
     }
 
     const location = await this.ipService.queryLocation(comment.ip)
@@ -339,8 +339,8 @@ export class CommentService {
   }
 
   // vote comment
-  public async vote(commentID: number, isLike: boolean) {
-    const comment = await this.getDetailByNumberID(commentID)
+  public async vote(commentId: number, isLike: boolean) {
+    const comment = await this.getDetailByNumberId(commentId)
     isLike ? comment.likes++ : comment.dislikes++
     await comment.save({ timestamps: false })
     return {

@@ -23,7 +23,7 @@ import { DisqusPublicService } from '@app/modules/disqus/disqus.service.public'
 import { DisqusToken } from '@app/modules/disqus/disqus.token'
 import { AccessToken } from '@app/utils/disqus'
 import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
-import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
+import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { CommentVoteDTO, PostVoteDTO, VotePaginateQueryDTO, VotesDTO } from './vote.dto'
 import { Vote, VoteTarget, VoteAuthorType, voteTypeMap } from './vote.model'
 import { VoteService } from './vote.service'
@@ -49,7 +49,7 @@ export class VoteController {
     if (postId === GUESTBOOK_POST_ID) {
       return 'guestbook'
     } else {
-      const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postId })
+      const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId })
       return article.toObject().title
     }
   }
@@ -234,7 +234,7 @@ export class VoteController {
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkByID(voteBody.post_id)
+          link: getPermalinkById(voteBody.post_id)
         })
       }
     )
@@ -256,11 +256,11 @@ export class VoteController {
     // Disqus only logged-in user
     if (token) {
       try {
-        const postID = await this.disqusPublicService.getDisqusPostIDByCommentID(voteBody.comment_id)
-        if (postID) {
+        const postId = await this.disqusPublicService.getDisqusPostIdByCommentId(voteBody.comment_id)
+        if (postId) {
           await this.disqusPublicService.votePost({
             access_token: token.access_token,
-            post: postID,
+            post: postId,
             vote: voteBody.vote
           })
           // console.info(`Disqus like post ${voteBody.comment_id}`, result)
@@ -284,7 +284,7 @@ export class VoteController {
           ip: visitor.ip,
           ip_location: ipLocation
         })
-        const comment = await this.commentService.getDetailByNumberID(voteBody.comment_id)
+        const comment = await this.commentService.getDetailByNumberId(voteBody.comment_id)
         const targetTitle = await this.getPostTitle(comment.post_id)
         // email to author and admin
         const mailPayload = {
@@ -293,7 +293,7 @@ export class VoteController {
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkByID(comment.post_id) + `#comment-${comment.id}`
+          link: getPermalinkById(comment.post_id) + `#comment-${comment.id}`
         }
         // email to admin
         this.emailToTargetVoteMessage({

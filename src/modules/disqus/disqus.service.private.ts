@@ -13,7 +13,7 @@ import { Comment } from '@app/modules/comment/comment.model'
 import { Article } from '@app/modules/article/article.model'
 import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
 import { getExtendObject } from '@app/transformers/extend.transformer'
-import { getPermalinkByID } from '@app/transformers/urlmap.transformer'
+import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
 import { isDevEnv } from '@app/app.environment'
@@ -38,23 +38,23 @@ export class DisqusPrivateService {
     })
   }
 
-  public async createThread(postID: number) {
+  public async createThread(postId: number) {
     try {
-      const article = await this.articleService.getDetailByNumberIDOrSlug({ idOrSlug: postID, publicOnly: true })
+      const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId, publicOnly: true })
       // https://disqus.com/api/docs/threads/create/
       const response = await this.disqus.request('threads/create', {
         forum: DISQUS.forum,
-        identifier: DISQUS_CONST.getThreadIdentifierByID(postID),
+        identifier: DISQUS_CONST.getThreadIdentifierById(postId),
         title: article.title,
         message: article.description,
-        slug: article.slug || DISQUS_CONST.getThreadIdentifierByID(postID),
+        slug: article.slug || DISQUS_CONST.getThreadIdentifierById(postId),
         date: dayjs(article.created_at).unix(),
-        url: getPermalinkByID(postID),
+        url: getPermalinkById(postId),
         access_token: DISQUS.adminAccessToken
       })
       return response.response
     } catch (error) {
-      logger.warn('createThread failed!', postID, error)
+      logger.warn('createThread failed!', postId, error)
       throw error
     }
   }
@@ -137,9 +137,9 @@ export class DisqusPrivateService {
     const todoComments = allComments.filter((comment) =>
       [CommentState.Auditing, CommentState.Published].includes(comment.state)
     )
-    const todoCommentIDs = todoComments.map((comment) => comment.id)
+    const todoCommentIds = todoComments.map((comment) => comment.id)
     todoComments.forEach((comment) => {
-      if (comment.pid && !todoCommentIDs.includes(comment.pid)) {
+      if (comment.pid && !todoCommentIds.includes(comment.pid)) {
         comment.pid = 0
       }
       if (comment.post_id === GUESTBOOK_POST_ID) {
@@ -151,9 +151,9 @@ export class DisqusPrivateService {
       }
     })
 
-    // 2. map comment postIDs & get articles
-    const articleIDs = Array.from(treeMap.keys())
-    const articles = await this.articleService.getList(articleIDs)
+    // 2. map comment postIds & get articles
+    const articleIds = Array.from(treeMap.keys())
+    const articles = await this.articleService.getList(articleIds)
     articles.forEach((article) => {
       if (treeMap.has(article.id)) {
         treeMap.get(article.id)!.article = article
@@ -180,19 +180,19 @@ export class DisqusPrivateService {
     // filter new data
     const filtered = posts.filter((post) => Boolean(post.id))
     const getEach = (post: any) => ({
-      commentID: Number(post.id.replace(`wp_id=`, '')),
-      postID: post['@dsq:id'] as string,
-      threadID: post.thread['@dsq:id'] as string,
+      commentId: Number(post.id.replace(`wp_id=`, '')),
+      postId: post['@dsq:id'] as string,
+      threadId: post.thread['@dsq:id'] as string,
       isAnonymous: post.author.isAnonymous as boolean,
       username: (post.author.username as string) || null
     })
 
     const doImport = async (each: ReturnType<typeof getEach>) => {
-      if (!Number.isFinite(each.commentID)) {
-        throw `Invalid comment ID '${each.commentID}'`
+      if (!Number.isFinite(each.commentId)) {
+        throw `Invalid comment ID '${each.commentId}'`
       }
 
-      const comment = await this.commentService.getDetailByNumberID(each.commentID)
+      const comment = await this.commentService.getDetailByNumberId(each.commentId)
       if (!comment) {
         throw `Invalid comment '${comment}'`
       }
@@ -201,11 +201,11 @@ export class DisqusPrivateService {
       const extendsObject = getExtendObject(_extends)
       // post ID
       if (!extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]) {
-        _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postID })
+        _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postId })
       }
       // thread ID
       if (!extendsObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY]) {
-        _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadID })
+        _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadId })
       }
       // guest(anonymous) | disqus user
       if (each.isAnonymous) {

@@ -6,7 +6,7 @@
 
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseID } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateOptions, PaginateQuery } from '@app/utils/paginate'
 import { Announcement } from './announcement.model'
 
@@ -25,23 +25,23 @@ export class AnnouncementService {
     return this.announcementModel.create(announcement)
   }
 
-  public update(announcementID: MongooseID, announcement: Announcement): Promise<MongooseDoc<Announcement>> {
+  public update(announcementId: MongooseId, announcement: Announcement): Promise<MongooseDoc<Announcement>> {
     return this.announcementModel
-      .findByIdAndUpdate(announcementID, announcement, { new: true })
+      .findByIdAndUpdate(announcementId, announcement, { new: true })
       .exec()
-      .then((result) => result || Promise.reject(`Announcement '${announcementID}' not found`))
+      .then((result) => result || Promise.reject(`Announcement '${announcementId}' not found`))
   }
 
-  public delete(announcementID: MongooseID) {
+  public delete(announcementId: MongooseId) {
     return this.announcementModel
-      .findByIdAndDelete(announcementID, null)
+      .findByIdAndDelete(announcementId, null)
       .exec()
       .then((result) => {
-        return result ?? Promise.reject(`Announcement '${announcementID}' not found`)
+        return result ?? Promise.reject(`Announcement '${announcementId}' not found`)
       })
   }
 
-  public batchDelete(announcementIDs: MongooseID[]) {
-    return this.announcementModel.deleteMany({ _id: { $in: announcementIDs } }).exec()
+  public batchDelete(announcementIds: MongooseId[]) {
+    return this.announcementModel.deleteMany({ _id: { $in: announcementIds } }).exec()
   }
 }
