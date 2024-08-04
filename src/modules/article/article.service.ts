@@ -4,7 +4,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
 import { Types, FilterQuery, SortOrder } from 'mongoose'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
@@ -56,18 +55,31 @@ export class ArticleService {
   }
 
   // get related articles
-  public async getRelatedArticles(article: Article, count: number): Promise<Article[]> {
+  public getRelatedArticles(article: Article, count: number): Promise<Article[]> {
     const findParams: FilterQuery<Article> = {
       ...ARTICLE_LIST_QUERY_GUEST_FILTER,
       tags: { $in: article.tags },
-      categories: { $in: article.categories }
+      categories: { $in: article.categories },
+      // Exclude the current article in the query
+      id: { $ne: article.id }
     }
-    const articles = await this.articleModel
-      .find(findParams, ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 2 })
-      .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
-      .exec()
-    const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject())
-    return lodash.sampleSize<Article>(filtered, count)
+
+    return this.articleModel.aggregate<Article>([
+      { $match: findParams },
+      // Randomly select articles at the database level
+      { $sample: { size: count } },
+      // Select the required fields (-content)
+      { $project: ARTICLE_LIST_QUERY_PROJECTION },
+      // Populate reference fields
+      ...ARTICLE_FULL_QUERY_REF_POPULATE.map((field) => ({
+        $lookup: {
+          from: field, //  Name of the collection to join. e.g. categories
+          localField: field, // Field from the input documents. e.g. categories
+          foreignField: '_id', // Field from the documents of the "from" collection
+          as: field // Output array field. e.g. categories
+        }
+      }))
+    ])
   }
 
   // get paginate articles
