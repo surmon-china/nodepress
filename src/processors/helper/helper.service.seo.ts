@@ -40,7 +40,7 @@ export class SeoService {
     const actionText = `Google ping [${action}] action`
 
     this.googleService
-      .getCredentials()
+      .getAuthCredentials()
       .then((credentials) => {
         return this.httpService.axiosRef
           .request({

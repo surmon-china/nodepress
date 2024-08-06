@@ -88,6 +88,7 @@ export const BING_INDEXED = {
 }
 
 export const GOOGLE = {
+  analyticsV4PropertyId: argv.google_analytics_v4_property_id,
   jwtServiceAccountCredentials: argv.google_jwt_cred_json ? JSON.parse(argv.google_jwt_cred_json as string) : null
 }
 
