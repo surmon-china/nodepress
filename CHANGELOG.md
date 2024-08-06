@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.10.0 (2024-08-06)
+
+**Feature**
+
+- Upgrade actions dependencies
+- Upgrade dependencies
+- Upgrade Eslint to v9
+
+**Refactor**
+
+- **[Google]** upgrade Google Analytics to v4
+- **[Article]** optimize `getRelatedArticles` API
+- **[Expansion]** rename module name from `expansion` to `extension`
+
 ### 4.9.0 (2024-05-20)
 
 **Feature**
