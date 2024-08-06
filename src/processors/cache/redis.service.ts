@@ -8,7 +8,7 @@
 // https://github.com/nestjs/cache-manager/blob/master/lib/cache.providers.ts
 // https://gist.github.com/kyle-mccarthy/b6770b49ebfab88e75bcbac87b272a94
 
-import lodash from 'lodash'
+import _throttle from 'lodash/throttle'
 import { createClient, RedisClientType } from 'redis'
 import { Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
@@ -40,7 +40,7 @@ export class RedisService {
     this.redisClient.connect()
   }
 
-  private sendAlarmMail = lodash.throttle((error: string) => {
+  private sendAlarmMail = _throttle((error: string) => {
     this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
       subject: `Redis Error!`,

@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
+import _trim from 'lodash/trim'
 import { Controller, Get, Put, Post, Delete, Body, UseGuards, Query } from '@nestjs/common'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
@@ -34,7 +34,7 @@ export class AnnouncementController {
 
     // search
     if (keyword) {
-      paginateQuery.content = new RegExp(lodash.trim(keyword), 'i')
+      paginateQuery.content = new RegExp(_trim(keyword), 'i')
     }
 
     // state

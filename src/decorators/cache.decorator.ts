@@ -5,7 +5,7 @@
  * @ref https://github.com/nestjs/cache-manager/tree/master/lib/decorators
  */
 
-import lodash from 'lodash'
+import _isObject from 'lodash/isObject'
 import { SetMetadata } from '@nestjs/common'
 import { reflector } from '@app/constants/reflector.constant'
 import { NULL } from '@app/constants/value.constant'
@@ -27,7 +27,7 @@ export function Cache(option: CacheOptions): MethodDecorator
 export function Cache(key: string, ttl?: number): MethodDecorator
 export function Cache(...args) {
   const option = args[0]
-  const isOption = (value): value is CacheOptions => lodash.isObject(value)
+  const isOption = (value): value is CacheOptions => _isObject(value)
   const key: string = isOption(option) ? option.key : option
   const ttl: number = isOption(option) ? option.ttl : args[1] || NULL
   return (_, __, descriptor: PropertyDescriptor) => {

@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { isUndefined } from 'lodash'
+import _isUndefined from 'lodash/isUndefined'
 import { Request } from 'express'
 import { REQUEST } from '@nestjs/core'
 import { Injectable, Inject, Scope, PipeTransform } from '@nestjs/common'
@@ -50,7 +50,7 @@ export class PermissionPipe implements PipeTransform<any> {
       const v = value[field]
       const o = guestRequestOptions[field]
       if (o?.default) {
-        if (isUndefined(v)) {
+        if (_isUndefined(v)) {
           value[field] = o.default
         }
       }

@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodashMerge from 'lodash/merge'
+import _merge from 'lodash/merge'
 import type { Model, Document, Schema, FilterQuery, QueryOptions } from 'mongoose'
 
 export interface PaginateResult<T> {
@@ -47,7 +47,7 @@ export function mongoosePaginate(schema: Schema) {
 }
 
 export function paginate<T>(this: Model<T>, filterQuery: PaginateQuery<T> = {}, options: PaginateOptions = {}) {
-  const { page, perPage, dateSort, projection, $queryOptions, ...resetOptions } = lodashMerge(
+  const { page, perPage, dateSort, projection, $queryOptions, ...resetOptions } = _merge(
     { ...DEFAULT_OPTIONS },
     { ...options }
   )

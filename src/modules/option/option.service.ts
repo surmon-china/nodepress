@@ -4,7 +4,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
+import _omit from 'lodash/omit'
+import _uniq from 'lodash/uniq'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
@@ -28,7 +29,7 @@ export class OptionService {
       key: CacheKeys.Option,
       promise: () => {
         return this.ensureAppOption().then((option) => {
-          return lodash.omit(option.toObject<Option>(), ['blocklist'])
+          return _omit(option.toObject<Option>(), ['blocklist'])
         })
       }
     })
@@ -62,8 +63,8 @@ export class OptionService {
 
   public async appendToBlocklist(payload: { ips: string[]; emails: string[] }): Promise<Blocklist> {
     const option = await this.ensureAppOption()
-    option.blocklist.ips = lodash.uniq([...option.blocklist.ips, ...payload.ips])
-    option.blocklist.mails = lodash.uniq([...option.blocklist.mails, ...payload.emails])
+    option.blocklist.ips = _uniq([...option.blocklist.ips, ...payload.ips])
+    option.blocklist.mails = _uniq([...option.blocklist.mails, ...payload.emails])
     await option.save()
     return option.blocklist
   }

@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
+import _trim from 'lodash/trim'
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
@@ -35,7 +35,7 @@ export class TagController {
 
     // search
     if (filters.keyword) {
-      const trimmed = lodash.trim(filters.keyword)
+      const trimmed = _trim(filters.keyword)
       const keywordRegExp = new RegExp(trimmed, 'i')
       paginateQuery.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
     }

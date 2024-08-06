@@ -3,7 +3,7 @@
  * @module module/auth/service
  */
 
-import lodash from 'lodash'
+import _isEqual from 'lodash/isEqual'
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UNDEFINED } from '@app/constants/value.constant'
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   public validateAuthData(payload: any): Promise<any> {
-    const isVerified = lodash.isEqual(payload.data, APP_CONFIG.AUTH.data)
+    const isVerified = _isEqual(payload.data, APP_CONFIG.AUTH.data)
     return isVerified ? payload.data : null
   }
 

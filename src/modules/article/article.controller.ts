@@ -4,7 +4,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
+import _trim from 'lodash/trim'
+import _isUndefined from 'lodash/isUndefined'
 import { Types } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from '@nestjs/common'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
@@ -42,7 +43,7 @@ export class ArticleController {
     const paginateOptions: PaginateOptions = { page, perPage: per_page }
 
     // sort
-    if (!lodash.isUndefined(sort)) {
+    if (!_isUndefined(sort)) {
       if (sort === SortType.Hottest) {
         paginateOptions.sort = ARTICLE_HOTTEST_SORT_PARAMS
       } else {
@@ -51,29 +52,29 @@ export class ArticleController {
     }
 
     // featured
-    if (!lodash.isUndefined(filters.featured)) {
+    if (!_isUndefined(filters.featured)) {
       paginateQuery.featured = filters.featured
     }
 
     // language
-    if (!lodash.isUndefined(filters.lang)) {
+    if (!_isUndefined(filters.lang)) {
       paginateQuery.lang = filters.lang
     }
 
     // states
-    if (!lodash.isUndefined(filters.state)) {
+    if (!_isUndefined(filters.state)) {
       paginateQuery.state = filters.state
     }
-    if (!lodash.isUndefined(filters.public)) {
+    if (!_isUndefined(filters.public)) {
       paginateQuery.public = filters.public
     }
-    if (!lodash.isUndefined(filters.origin)) {
+    if (!_isUndefined(filters.origin)) {
       paginateQuery.origin = filters.origin
     }
 
     // search
     if (filters.keyword) {
-      const trimmed = lodash.trim(filters.keyword)
+      const trimmed = _trim(filters.keyword)
       const keywordRegExp = new RegExp(trimmed, 'i')
       paginateQuery.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
     }

@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
+import _isUndefined from 'lodash/isUndefined'
 import { UAParser } from 'ua-parser-js'
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from '@nestjs/common'
 import { Throttle, minutes, seconds } from '@nestjs/throttler'
@@ -169,19 +169,19 @@ export class VoteController {
     const paginateQuery: PaginateQuery<Vote> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page, dateSort: sort }
     // target type
-    if (!lodash.isUndefined(filters.target_type)) {
+    if (!_isUndefined(filters.target_type)) {
       paginateQuery.target_type = filters.target_type
     }
     // target ID
-    if (!lodash.isUndefined(filters.target_id)) {
+    if (!_isUndefined(filters.target_id)) {
       paginateQuery.target_id = filters.target_id
     }
     // vote type
-    if (!lodash.isUndefined(filters.vote_type)) {
+    if (!_isUndefined(filters.vote_type)) {
       paginateQuery.vote_type = filters.vote_type
     }
     // author type
-    if (!lodash.isUndefined(filters.author_type)) {
+    if (!_isUndefined(filters.author_type)) {
       paginateQuery.author_type = filters.author_type
     }
     return this.voteService.paginator(paginateQuery, paginateOptions)

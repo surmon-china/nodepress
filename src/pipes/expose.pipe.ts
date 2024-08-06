@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { cloneDeep } from 'lodash'
+import _cloneDeep from 'lodash/cloneDeep'
 import { Request } from 'express'
 import { REQUEST } from '@nestjs/core'
 import { Injectable, Inject, Scope, PipeTransform } from '@nestjs/common'
@@ -26,7 +26,7 @@ export class ExposePipe implements PipeTransform<any> {
   constructor(@Inject(REQUEST) protected readonly request: Request) {}
 
   transform(value) {
-    this.request.$validatedPayload = cloneDeep(value)
+    this.request.$validatedPayload = _cloneDeep(value)
     return value
   }
 }

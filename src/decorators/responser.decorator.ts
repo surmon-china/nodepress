@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
+import _isObject from 'lodash/isObject'
 import { SetMetadata, HttpStatus } from '@nestjs/common'
 import { ResponseMessage } from '@app/interfaces/response.interface'
 import { UNDEFINED } from '@app/constants/value.constant'
@@ -95,7 +95,7 @@ export const success = (message: ResponseMessage, statusCode?: HttpStatus): Meth
 export function handle(args: HandleOptionConfig): MethodDecorator
 export function handle(...args) {
   const option = args[0]
-  const isOption = (value: HandleOptionConfig): value is HandleOption => lodash.isObject(value)
+  const isOption = (value: HandleOptionConfig): value is HandleOption => _isObject(value)
   const message: ResponseMessage = isOption(option) ? option.message : option
   const errorMessage: ResponseMessage = message + TEXT.HTTP_ERROR_SUFFIX
   const successMessage: ResponseMessage = message + TEXT.HTTP_SUCCESS_SUFFIX

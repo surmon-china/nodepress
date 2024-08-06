@@ -4,7 +4,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import lodash from 'lodash'
+import _trim from 'lodash/trim'
+import _isUndefined from 'lodash/isUndefined'
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { Throttle, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
@@ -35,20 +36,20 @@ export class FeedbackController {
     const paginateQuery: PaginateQuery<Feedback> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page, dateSort: sort }
     // target ID
-    if (!lodash.isUndefined(filters.tid)) {
+    if (!_isUndefined(filters.tid)) {
       paginateQuery.tid = filters.tid
     }
     // emotion
-    if (!lodash.isUndefined(filters.emotion)) {
+    if (!_isUndefined(filters.emotion)) {
       paginateQuery.emotion = filters.emotion
     }
     // marked
-    if (!lodash.isUndefined(filters.marked)) {
+    if (!_isUndefined(filters.marked)) {
       paginateQuery.marked = numberToBoolean(filters.marked)
     }
     // search
     if (filters.keyword) {
-      const trimmed = lodash.trim(filters.keyword)
+      const trimmed = _trim(filters.keyword)
       const keywordRegExp = new RegExp(trimmed, 'i')
       paginateQuery.$or = [
         { content: keywordRegExp },
