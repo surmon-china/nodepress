@@ -14,7 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.paginate = exports.mongoosePaginate = void 0;
+exports.mongoosePaginate = mongoosePaginate;
+exports.paginate = paginate;
 const merge_1 = __importDefault(require("lodash/merge"));
 const DEFAULT_OPTIONS = Object.freeze({
     page: 1,
@@ -25,7 +26,6 @@ const DEFAULT_OPTIONS = Object.freeze({
 function mongoosePaginate(schema) {
     schema.statics.paginate = paginate;
 }
-exports.mongoosePaginate = mongoosePaginate;
 function paginate(filterQuery = {}, options = {}) {
     const _a = (0, merge_1.default)(Object.assign({}, DEFAULT_OPTIONS), Object.assign({}, options)), { page, perPage, dateSort, projection, $queryOptions } = _a, resetOptions = __rest(_a, ["page", "perPage", "dateSort", "projection", "$queryOptions"]);
     const findQueryOptions = Object.assign(Object.assign({}, resetOptions), $queryOptions);
@@ -42,5 +42,4 @@ function paginate(filterQuery = {}, options = {}) {
         return result;
     });
 }
-exports.paginate = paginate;
 //# sourceMappingURL=paginate.js.map

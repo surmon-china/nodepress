@@ -46,7 +46,7 @@ const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
 const feedback_service_1 = require("../feedback/feedback.service");
 const tag_service_1 = require("../tag/tag.service");
-const expansion_helper_1 = require("./expansion.helper");
+const extension_helper_1 = require("./extension.helper");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
@@ -71,11 +71,11 @@ let StatisticService = class StatisticService {
         this.tagService = tagService;
         node_schedule_1.default.scheduleJob('1 0 0 * * *', async () => {
             try {
-                const todayViewsCount = await (0, expansion_helper_1.getTodayViewsCount)(this.cacheService);
+                const todayViewsCount = await (0, extension_helper_1.getTodayViewsCount)(this.cacheService);
                 await this.dailyStatisticsTask(todayViewsCount);
             }
             finally {
-                (0, expansion_helper_1.resetTodayViewsCount)(this.cacheService).catch((error) => {
+                (0, extension_helper_1.resetTodayViewsCount)(this.cacheService).catch((error) => {
                     logger.warn('reset TODAY_VIEWS failed!', error);
                 });
             }
@@ -136,7 +136,7 @@ let StatisticService = class StatisticService {
                 resultData.totalViews = (_a = value === null || value === void 0 ? void 0 : value.totalViews) !== null && _a !== void 0 ? _a : 0;
                 resultData.totalLikes = (_b = value === null || value === void 0 ? void 0 : value.totalLikes) !== null && _b !== void 0 ? _b : 0;
             }),
-            (0, expansion_helper_1.getTodayViewsCount)(this.cacheService).then((value) => {
+            (0, extension_helper_1.getTodayViewsCount)(this.cacheService).then((value) => {
                 resultData.todayViews = value;
             })
         ]);
@@ -159,4 +159,4 @@ exports.StatisticService = StatisticService = __decorate([
         vote_service_1.VoteService,
         tag_service_1.TagService])
 ], StatisticService);
-//# sourceMappingURL=expansion.service.statistic.js.map
+//# sourceMappingURL=extension.service.statistic.js.map

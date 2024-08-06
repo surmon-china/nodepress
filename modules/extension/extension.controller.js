@@ -35,7 +35,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExpansionController = void 0;
+exports.ExtensionController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
@@ -44,10 +44,10 @@ const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
 const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
 const helper_service_google_1 = require("../../processors/helper/helper.service.google");
-const expansion_service_statistic_1 = require("./expansion.service.statistic");
-const expansion_service_dbbackup_1 = require("./expansion.service.dbbackup");
+const extension_service_statistic_1 = require("./extension.service.statistic");
+const extension_service_dbbackup_1 = require("./extension.service.dbbackup");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let ExpansionController = class ExpansionController {
+let ExtensionController = class ExtensionController {
     constructor(awsService, googleService, dbBackupService, statisticService) {
         this.awsService = awsService;
         this.googleService = googleService;
@@ -57,25 +57,39 @@ let ExpansionController = class ExpansionController {
     getSystemStatistics({ isUnauthenticated }) {
         return this.statisticService.getStatistic(isUnauthenticated);
     }
-    getGoogleToken() {
-        return this.googleService.getCredentials();
-    }
     updateDatabaseBackup() {
         return this.dbBackupService.backup();
     }
-    uploadStatic(file, body) {
-        return this.awsService
-            .uploadFile({
+    async uploadStatic(file, body) {
+        const result = await this.awsService.uploadFile({
             name: body.name,
             file: file.buffer,
             fileContentType: file.mimetype,
             region: APP_CONFIG.AWS.s3StaticRegion,
             bucket: APP_CONFIG.AWS.s3StaticBucket
-        })
-            .then((result) => (Object.assign(Object.assign({}, result), { url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}` })));
+        });
+        return Object.assign(Object.assign({}, result), { url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}` });
+    }
+    googleAnalyticsBatchRunReports(requestBody) {
+        return this.googleService.getAnalyticsData().properties.batchRunReports({
+            property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+            requestBody
+        });
+    }
+    googleAnalyticsBatchRunPivotReports(requestBody) {
+        return this.googleService.getAnalyticsData().properties.batchRunPivotReports({
+            property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+            requestBody
+        });
+    }
+    googleAnalyticsRunRealtimeReport(requestBody) {
+        return this.googleService.getAnalyticsData().properties.runRealtimeReport({
+            property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+            requestBody
+        });
     }
 };
-exports.ExpansionController = ExpansionController;
+exports.ExtensionController = ExtensionController;
 __decorate([
     (0, common_1.Get)('statistic'),
     (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
@@ -84,15 +98,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], ExpansionController.prototype, "getSystemStatistics", null);
-__decorate([
-    (0, common_1.Get)('google-token'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Get Google credentials'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], ExpansionController.prototype, "getGoogleToken", null);
+], ExtensionController.prototype, "getSystemStatistics", null);
 __decorate([
     (0, common_1.Patch)('database-backup'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
@@ -100,7 +106,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], ExpansionController.prototype, "updateDatabaseBackup", null);
+], ExtensionController.prototype, "updateDatabaseBackup", null);
 __decorate([
     (0, common_1.Post)('upload'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
@@ -110,13 +116,40 @@ __decorate([
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], ExtensionController.prototype, "uploadStatic", null);
+__decorate([
+    (0, common_1.Post)('google-analytics/batch-run-reports'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responser_decorator_1.Responser.handle('Google analytics batchRunReports'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], ExpansionController.prototype, "uploadStatic", null);
-exports.ExpansionController = ExpansionController = __decorate([
-    (0, common_1.Controller)('expansion'),
+], ExtensionController.prototype, "googleAnalyticsBatchRunReports", null);
+__decorate([
+    (0, common_1.Post)('google-analytics/batch-run-pivot-reports'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responser_decorator_1.Responser.handle('Google analytics batchRunPivotReports'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ExtensionController.prototype, "googleAnalyticsBatchRunPivotReports", null);
+__decorate([
+    (0, common_1.Post)('google-analytics/run-realtime-report'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responser_decorator_1.Responser.handle('Google analytics runRealtimeReport'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ExtensionController.prototype, "googleAnalyticsRunRealtimeReport", null);
+exports.ExtensionController = ExtensionController = __decorate([
+    (0, common_1.Controller)('extension'),
     __metadata("design:paramtypes", [helper_service_aws_1.AWSService,
         helper_service_google_1.GoogleService,
-        expansion_service_dbbackup_1.DBBackupService,
-        expansion_service_statistic_1.StatisticService])
-], ExpansionController);
-//# sourceMappingURL=expansion.controller.js.map
+        extension_service_dbbackup_1.DBBackupService,
+        extension_service_statistic_1.StatisticService])
+], ExtensionController);
+//# sourceMappingURL=extension.controller.js.map

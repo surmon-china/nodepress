@@ -27,7 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TagController = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const trim_1 = __importDefault(require("lodash/trim"));
 const common_1 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
@@ -47,7 +47,7 @@ let TagController = class TagController {
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
         if (filters.keyword) {
-            const trimmed = lodash_1.default.trim(filters.keyword);
+            const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
             paginateQuery.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }];
         }

@@ -18,7 +18,7 @@ const origin_middleware_1 = require("./middlewares/origin.middleware");
 const database_module_1 = require("./processors/database/database.module");
 const cache_module_1 = require("./processors/cache/cache.module");
 const helper_module_1 = require("./processors/helper/helper.module");
-const expansion_module_1 = require("./modules/expansion/expansion.module");
+const extension_module_1 = require("./modules/extension/extension.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const option_module_1 = require("./modules/option/option.module");
 const feedback_module_1 = require("./modules/feedback/feedback.module");
@@ -53,7 +53,7 @@ exports.AppModule = AppModule = __decorate([
             helper_module_1.HelperModule,
             database_module_1.DatabaseModule,
             cache_module_1.CacheModule,
-            expansion_module_1.ExpansionModule,
+            extension_module_1.ExtensionModule,
             auth_module_1.AuthModule,
             option_module_1.OptionModule,
             feedback_module_1.FeedbackModule,

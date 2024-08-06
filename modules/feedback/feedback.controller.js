@@ -50,7 +50,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FeedbackController = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const trim_1 = __importDefault(require("lodash/trim"));
+const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
@@ -72,17 +73,17 @@ let FeedbackController = class FeedbackController {
         const { sort, page, per_page } = query, filters = __rest(query, ["sort", "page", "per_page"]);
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
-        if (!lodash_1.default.isUndefined(filters.tid)) {
+        if (!(0, isUndefined_1.default)(filters.tid)) {
             paginateQuery.tid = filters.tid;
         }
-        if (!lodash_1.default.isUndefined(filters.emotion)) {
+        if (!(0, isUndefined_1.default)(filters.emotion)) {
             paginateQuery.emotion = filters.emotion;
         }
-        if (!lodash_1.default.isUndefined(filters.marked)) {
+        if (!(0, isUndefined_1.default)(filters.marked)) {
             paginateQuery.marked = (0, value_transformer_1.numberToBoolean)(filters.marked);
         }
         if (filters.keyword) {
-            const trimmed = lodash_1.default.trim(filters.keyword);
+            const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
             paginateQuery.$or = [
                 { content: keywordRegExp },

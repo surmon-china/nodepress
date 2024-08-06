@@ -27,7 +27,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentController = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const trim_1 = __importDefault(require("lodash/trim"));
+const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
@@ -48,7 +49,7 @@ let CommentController = class CommentController {
         const { sort, page, per_page } = query, filters = __rest(query, ["sort", "page", "per_page"]);
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page };
-        if (!lodash_1.default.isUndefined(sort)) {
+        if (!(0, isUndefined_1.default)(sort)) {
             if (sort === biz_constant_1.SortType.Hottest) {
                 paginateOptions.sort = { likes: biz_constant_1.SortType.Desc };
             }
@@ -56,14 +57,14 @@ let CommentController = class CommentController {
                 paginateOptions.dateSort = sort;
             }
         }
-        if (!lodash_1.default.isUndefined(filters.state)) {
+        if (!(0, isUndefined_1.default)(filters.state)) {
             paginateQuery.state = filters.state;
         }
-        if (!lodash_1.default.isUndefined(filters.post_id)) {
+        if (!(0, isUndefined_1.default)(filters.post_id)) {
             paginateQuery.post_id = filters.post_id;
         }
         if (filters.keyword) {
-            const trimmed = lodash_1.default.trim(filters.keyword);
+            const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
             paginateQuery.$or = [
                 { content: keywordRegExp },

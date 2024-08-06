@@ -16,7 +16,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OptionService = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const omit_1 = __importDefault(require("lodash/omit"));
+const uniq_1 = __importDefault(require("lodash/uniq"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_service_1 = require("../../processors/cache/cache.service");
@@ -33,7 +34,7 @@ let OptionService = class OptionService {
             key: cache_constant_1.CacheKeys.Option,
             promise: () => {
                 return this.ensureAppOption().then((option) => {
-                    return lodash_1.default.omit(option.toObject(), ['blocklist']);
+                    return (0, omit_1.default)(option.toObject(), ['blocklist']);
                 });
             }
         });
@@ -58,8 +59,8 @@ let OptionService = class OptionService {
     }
     async appendToBlocklist(payload) {
         const option = await this.ensureAppOption();
-        option.blocklist.ips = lodash_1.default.uniq([...option.blocklist.ips, ...payload.ips]);
-        option.blocklist.mails = lodash_1.default.uniq([...option.blocklist.mails, ...payload.emails]);
+        option.blocklist.ips = (0, uniq_1.default)([...option.blocklist.ips, ...payload.ips]);
+        option.blocklist.mails = (0, uniq_1.default)([...option.blocklist.mails, ...payload.emails]);
         await option.save();
         return option.blocklist;
     }

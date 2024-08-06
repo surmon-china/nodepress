@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedisService = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const throttle_1 = __importDefault(require("lodash/throttle"));
 const redis_1 = require("redis");
 const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../helper/helper.service.email");
@@ -48,7 +48,7 @@ const logger = (0, logger_1.createLogger)({ scope: 'RedisService', time: app_env
 let RedisService = class RedisService {
     constructor(emailService) {
         this.emailService = emailService;
-        this.sendAlarmMail = lodash_1.default.throttle((error) => {
+        this.sendAlarmMail = (0, throttle_1.default)((error) => {
             this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
                 to: APP_CONFIG.APP.ADMIN_EMAIL,
                 subject: `Redis Error!`,

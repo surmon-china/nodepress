@@ -27,7 +27,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticleController = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const trim_1 = __importDefault(require("lodash/trim"));
+const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const mongoose_1 = require("mongoose");
 const common_1 = require("@nestjs/common");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
@@ -53,7 +54,7 @@ let ArticleController = class ArticleController {
         const { page, per_page, sort } = query, filters = __rest(query, ["page", "per_page", "sort"]);
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page };
-        if (!lodash_1.default.isUndefined(sort)) {
+        if (!(0, isUndefined_1.default)(sort)) {
             if (sort === biz_constant_1.SortType.Hottest) {
                 paginateOptions.sort = article_model_1.ARTICLE_HOTTEST_SORT_PARAMS;
             }
@@ -61,23 +62,23 @@ let ArticleController = class ArticleController {
                 paginateOptions.dateSort = sort;
             }
         }
-        if (!lodash_1.default.isUndefined(filters.featured)) {
+        if (!(0, isUndefined_1.default)(filters.featured)) {
             paginateQuery.featured = filters.featured;
         }
-        if (!lodash_1.default.isUndefined(filters.lang)) {
+        if (!(0, isUndefined_1.default)(filters.lang)) {
             paginateQuery.lang = filters.lang;
         }
-        if (!lodash_1.default.isUndefined(filters.state)) {
+        if (!(0, isUndefined_1.default)(filters.state)) {
             paginateQuery.state = filters.state;
         }
-        if (!lodash_1.default.isUndefined(filters.public)) {
+        if (!(0, isUndefined_1.default)(filters.public)) {
             paginateQuery.public = filters.public;
         }
-        if (!lodash_1.default.isUndefined(filters.origin)) {
+        if (!(0, isUndefined_1.default)(filters.origin)) {
             paginateQuery.origin = filters.origin;
         }
         if (filters.keyword) {
-            const trimmed = lodash_1.default.trim(filters.keyword);
+            const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
             paginateQuery.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }];
         }

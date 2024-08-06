@@ -11,9 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PermissionPipe = void 0;
-const lodash_1 = require("lodash");
+const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
 const text_constant_1 = require("../constants/text.constant");
@@ -47,7 +50,7 @@ let PermissionPipe = class PermissionPipe {
             const v = value[field];
             const o = guestRequestOptions[field];
             if (o === null || o === void 0 ? void 0 : o.default) {
-                if ((0, lodash_1.isUndefined)(v)) {
+                if ((0, isUndefined_1.default)(v)) {
                     value[field] = o.default;
                 }
             }

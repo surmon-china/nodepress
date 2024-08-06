@@ -17,4 +17,4 @@ const resetTodayViewsCount = (cache) => {
     return cache.set(cache_constant_1.CacheKeys.TodayViewCount, 0);
 };
 exports.resetTodayViewsCount = resetTodayViewsCount;
-//# sourceMappingURL=expansion.helper.js.map
+//# sourceMappingURL=extension.helper.js.map

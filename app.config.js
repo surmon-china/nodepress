@@ -72,6 +72,7 @@ exports.BING_INDEXED = {
     apiKey: argv.bing_api_key || 'your bing webmaster api key'
 };
 exports.GOOGLE = {
+    analyticsV4PropertyId: argv.google_analytics_v4_property_id,
     jwtServiceAccountCredentials: argv.google_jwt_cred_json ? JSON.parse(argv.google_jwt_cred_json) : null
 };
 exports.AWS = {

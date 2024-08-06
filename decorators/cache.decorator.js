@@ -26,15 +26,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCacheTTL = exports.getCacheKey = exports.Cache = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+exports.getCacheTTL = exports.getCacheKey = void 0;
+exports.Cache = Cache;
+const isObject_1 = __importDefault(require("lodash/isObject"));
 const common_1 = require("@nestjs/common");
 const reflector_constant_1 = require("../constants/reflector.constant");
 const value_constant_1 = require("../constants/value.constant");
 const META = __importStar(require("../constants/meta.constant"));
 function Cache(...args) {
     const option = args[0];
-    const isOption = (value) => lodash_1.default.isObject(value);
+    const isOption = (value) => (0, isObject_1.default)(value);
     const key = isOption(option) ? option.key : option;
     const ttl = isOption(option) ? option.ttl : args[1] || value_constant_1.NULL;
     return (_, __, descriptor) => {
@@ -47,7 +48,6 @@ function Cache(...args) {
         return descriptor;
     };
 }
-exports.Cache = Cache;
 const getCacheKey = (target) => {
     return reflector_constant_1.reflector.get(META.CACHE_KEY_METADATA, target);
 };

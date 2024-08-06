@@ -50,7 +50,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const isEqual_1 = __importDefault(require("lodash/isEqual"));
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const value_constant_1 = require("../../constants/value.constant");
@@ -68,7 +68,7 @@ let AuthService = class AuthService {
         return (auth === null || auth === void 0 ? void 0 : auth.password) || (0, codec_transformer_1.decodeMD5)(APP_CONFIG.AUTH.defaultPassword);
     }
     validateAuthData(payload) {
-        const isVerified = lodash_1.default.isEqual(payload.data, APP_CONFIG.AUTH.data);
+        const isVerified = (0, isEqual_1.default)(payload.data, APP_CONFIG.AUTH.data);
         return isVerified ? payload.data : null;
     }
     createToken() {

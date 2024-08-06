@@ -50,7 +50,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteController = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const ua_parser_js_1 = require("ua-parser-js");
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
@@ -177,16 +177,16 @@ let VoteController = class VoteController {
         const { sort, page, per_page } = query, filters = __rest(query, ["sort", "page", "per_page"]);
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
-        if (!lodash_1.default.isUndefined(filters.target_type)) {
+        if (!(0, isUndefined_1.default)(filters.target_type)) {
             paginateQuery.target_type = filters.target_type;
         }
-        if (!lodash_1.default.isUndefined(filters.target_id)) {
+        if (!(0, isUndefined_1.default)(filters.target_id)) {
             paginateQuery.target_id = filters.target_id;
         }
-        if (!lodash_1.default.isUndefined(filters.vote_type)) {
+        if (!(0, isUndefined_1.default)(filters.vote_type)) {
             paginateQuery.vote_type = filters.vote_type;
         }
-        if (!lodash_1.default.isUndefined(filters.author_type)) {
+        if (!(0, isUndefined_1.default)(filters.author_type)) {
             paginateQuery.author_type = filters.author_type;
         }
         return this.voteService.paginator(paginateQuery, paginateOptions);

@@ -23,27 +23,26 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPermalinkById = exports.getGuestbookPageUrl = exports.getArticleUrl = exports.getCategoryUrl = exports.getTagUrl = void 0;
+exports.getTagUrl = getTagUrl;
+exports.getCategoryUrl = getCategoryUrl;
+exports.getArticleUrl = getArticleUrl;
+exports.getGuestbookPageUrl = getGuestbookPageUrl;
+exports.getPermalinkById = getPermalinkById;
 const biz_constant_1 = require("../constants/biz.constant");
 const APP_CONFIG = __importStar(require("../app.config"));
 function getTagUrl(tagSlug) {
     return `${APP_CONFIG.APP.FE_URL}/tag/${tagSlug}`;
 }
-exports.getTagUrl = getTagUrl;
 function getCategoryUrl(categorySlug) {
     return `${APP_CONFIG.APP.FE_URL}/category/${categorySlug}`;
 }
-exports.getCategoryUrl = getCategoryUrl;
 function getArticleUrl(articleId) {
     return `${APP_CONFIG.APP.FE_URL}/article/${articleId}`;
 }
-exports.getArticleUrl = getArticleUrl;
 function getGuestbookPageUrl() {
     return `${APP_CONFIG.APP.FE_URL}/guestbook`;
 }
-exports.getGuestbookPageUrl = getGuestbookPageUrl;
 function getPermalinkById(id) {
     return id === biz_constant_1.GUESTBOOK_POST_ID ? getGuestbookPageUrl() : getArticleUrl(id);
 }
-exports.getPermalinkById = getPermalinkById;
 //# sourceMappingURL=urlmap.transformer.js.map

@@ -62,7 +62,7 @@ let SeoService = class SeoService {
         const type = pingActionMap[action];
         const actionText = `Google ping [${action}] action`;
         this.googleService
-            .getCredentials()
+            .getAuthCredentials()
             .then((credentials) => {
             return this.httpService.axiosRef
                 .request({

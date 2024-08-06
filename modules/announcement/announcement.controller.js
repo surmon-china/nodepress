@@ -27,7 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnnouncementController = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const trim_1 = __importDefault(require("lodash/trim"));
 const common_1 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
@@ -47,7 +47,7 @@ let AnnouncementController = class AnnouncementController {
         const { keyword, state } = filters;
         const paginateQuery = {};
         if (keyword) {
-            paginateQuery.content = new RegExp(lodash_1.default.trim(keyword), 'i');
+            paginateQuery.content = new RegExp((0, trim_1.default)(keyword), 'i');
         }
         if (state != null) {
             paginateQuery.state = state;

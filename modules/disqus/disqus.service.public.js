@@ -116,7 +116,7 @@ let DisqusPublicService = class DisqusPublicService {
         });
     }
     async votePost(params) {
-        https: return this.disqus.request('posts/vote', params).catch((error) => {
+        return this.disqus.request('posts/vote', params).catch((error) => {
             logger.warn('votePost failed!', error);
             return Promise.reject(error);
         });
@@ -159,7 +159,7 @@ let DisqusPublicService = class DisqusPublicService {
         const thread = await this.ensureThreadDetailCache(newComment.post_id);
         await this.commentService.verifyCommentValidity(newComment);
         let parentId = null;
-        if (Boolean(newComment.pid)) {
+        if (newComment.pid) {
             parentId = await this.getDisqusPostIdByCommentId(newComment.pid);
         }
         const disqusPost = await this.createDisqusComment({

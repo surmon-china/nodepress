@@ -10,7 +10,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpExceptionFilter = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+const isString_1 = __importDefault(require("lodash/isString"));
 const common_1 = require("@nestjs/common");
 const response_interface_1 = require("../interfaces/response.interface");
 const value_constant_1 = require("../constants/value.constant");
@@ -21,12 +21,12 @@ let HttpExceptionFilter = class HttpExceptionFilter {
         const response = host.switchToHttp().getResponse();
         const exceptionStatus = exception.getStatus() || common_1.HttpStatus.INTERNAL_SERVER_ERROR;
         const errorResponse = exception.getResponse();
-        const errorMessage = lodash_1.default.isString(errorResponse) ? errorResponse : errorResponse.message;
-        const errorInfo = lodash_1.default.isString(errorResponse) ? null : errorResponse.error;
+        const errorMessage = (0, isString_1.default)(errorResponse) ? errorResponse : errorResponse.message;
+        const errorInfo = (0, isString_1.default)(errorResponse) ? null : errorResponse.error;
         const data = {
             status: response_interface_1.ResponseStatus.Error,
             message: errorMessage,
-            error: (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.message) || (lodash_1.default.isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
+            error: (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.message) || ((0, isString_1.default)(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
             debug: app_environment_1.isDevEnv ? (errorInfo === null || errorInfo === void 0 ? void 0 : errorInfo.stack) || exception.stack : value_constant_1.UNDEFINED
         };
         if (exceptionStatus === common_1.HttpStatus.NOT_FOUND) {

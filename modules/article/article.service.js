@@ -22,18 +22,14 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticleService = void 0;
-const lodash_1 = __importDefault(require("lodash"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
 const cache_service_1 = require("../../processors/cache/cache.service");
-const expansion_helper_1 = require("../expansion/expansion.helper");
+const extension_helper_1 = require("../extension/extension.helper");
 const archive_service_1 = require("../archive/archive.service");
 const category_service_1 = require("../category/category.service");
 const tag_service_1 = require("../tag/tag.service");
@@ -61,14 +57,21 @@ let ArticleService = class ArticleService {
             .limit(count)
             .exec();
     }
-    async getRelatedArticles(article, count) {
-        const findParams = Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { tags: { $in: article.tags }, categories: { $in: article.categories } });
-        const articles = await this.articleModel
-            .find(findParams, article_model_1.ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 2 })
-            .populate(article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE)
-            .exec();
-        const filtered = articles.filter((a) => a.id !== article.id).map((a) => a.toObject());
-        return lodash_1.default.sampleSize(filtered, count);
+    getRelatedArticles(article, count) {
+        const findParams = Object.assign(Object.assign({}, article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER), { tags: { $in: article.tags }, categories: { $in: article.categories }, id: { $ne: article.id } });
+        return this.articleModel.aggregate([
+            { $match: findParams },
+            { $sample: { size: count } },
+            { $project: article_model_1.ARTICLE_LIST_QUERY_PROJECTION },
+            ...article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE.map((field) => ({
+                $lookup: {
+                    from: field,
+                    localField: field,
+                    foreignField: '_id',
+                    as: field
+                }
+            }))
+        ]);
     }
     paginator(query, options) {
         return this.articleModel.paginate(query, Object.assign(Object.assign({}, options), { projection: article_model_1.ARTICLE_LIST_QUERY_PROJECTION, populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE }));
@@ -104,7 +107,7 @@ let ArticleService = class ArticleService {
         });
         article.meta.views++;
         article.save({ timestamps: false });
-        (0, expansion_helper_1.increaseTodayViewsCount)(this.cacheService);
+        (0, extension_helper_1.increaseTodayViewsCount)(this.cacheService);
         return article.toObject();
     }
     async incrementLikes(articleId) {

@@ -26,8 +26,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Responser = exports.paginate = exports.handle = exports.success = exports.error = exports.getResponserOptions = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+exports.Responser = exports.paginate = exports.success = exports.error = exports.getResponserOptions = void 0;
+exports.handle = handle;
+const isObject_1 = __importDefault(require("lodash/isObject"));
 const common_1 = require("@nestjs/common");
 const value_constant_1 = require("../constants/value.constant");
 const reflector_constant_1 = require("../constants/reflector.constant");
@@ -79,7 +80,7 @@ const success = (message, statusCode) => {
 exports.success = success;
 function handle(...args) {
     const option = args[0];
-    const isOption = (value) => lodash_1.default.isObject(value);
+    const isOption = (value) => (0, isObject_1.default)(value);
     const message = isOption(option) ? option.message : option;
     const errorMessage = message + TEXT.HTTP_ERROR_SUFFIX;
     const successMessage = message + TEXT.HTTP_SUCCESS_SUFFIX;
@@ -94,7 +95,6 @@ function handle(...args) {
         usePaginate
     });
 }
-exports.handle = handle;
 const paginate = () => {
     return createDecorator({ usePaginate: true });
 };

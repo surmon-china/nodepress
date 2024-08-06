@@ -40,38 +40,52 @@ const value_constant_1 = require("../../constants/value.constant");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const logger = (0, logger_1.createLogger)({ scope: 'GoogleService', time: app_environment_1.isDevEnv });
+const logger = (0, logger_1.createLogger)({ scope: 'GoogleAPIService', time: app_environment_1.isDevEnv });
 let GoogleService = class GoogleService {
     constructor() {
-        this.jwtClient = null;
-        this.initClient();
-    }
-    initClient() {
         var _a, _b;
+        this.authJWT = null;
+        this.analyticsData = null;
         try {
-            this.jwtClient = new googleapis_1.google.auth.JWT((_a = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _a === void 0 ? void 0 : _a.client_email, value_constant_1.UNDEFINED, (_b = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _b === void 0 ? void 0 : _b.private_key, [
+            this.authJWT = new googleapis_1.google.auth.JWT((_a = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _a === void 0 ? void 0 : _a.client_email, value_constant_1.UNDEFINED, (_b = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _b === void 0 ? void 0 : _b.private_key, [
                 'https://www.googleapis.com/auth/indexing',
                 'https://www.googleapis.com/auth/analytics.readonly'
             ], value_constant_1.UNDEFINED);
+            this.analyticsData = googleapis_1.google.analyticsdata({
+                version: 'v1beta',
+                auth: this.authJWT
+            });
         }
         catch (error) {
-            logger.failure('client initialization failed!');
+            logger.failure('authJWT initialization failed!', error);
         }
     }
-    getCredentials() {
+    getAuthCredentials() {
         return new Promise((resolve, reject) => {
-            if (!this.jwtClient) {
-                return reject('GoogleAPI client initialization failed!');
+            if (!this.authJWT) {
+                reject('GoogleAPI authJWT initialization failed!');
             }
-            this.jwtClient.authorize((error, credentials) => {
-                const message = (0, error_transformer_1.getMessageFromNormalError)(error);
-                if (message) {
-                    logger.warn('JWT authorize failed!', message);
-                    reject(message);
-                }
-                resolve(credentials);
-            });
+            else {
+                this.authJWT.authorize((error, credentials) => {
+                    const message = (0, error_transformer_1.getMessageFromNormalError)(error);
+                    if (message) {
+                        logger.warn('authJWT authorize failed!', message);
+                        reject(message);
+                    }
+                    else {
+                        resolve(credentials);
+                    }
+                });
+            }
         });
+    }
+    getAnalyticsData() {
+        if (!this.authJWT || !this.analyticsData) {
+            throw new Error('GoogleAPI analyticsData initialization failed!');
+        }
+        else {
+            return this.analyticsData;
+        }
     }
 };
 exports.GoogleService = GoogleService;

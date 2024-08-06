@@ -11,9 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExposePipe = void 0;
-const lodash_1 = require("lodash");
+const cloneDeep_1 = __importDefault(require("lodash/cloneDeep"));
 const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
 let ExposePipe = class ExposePipe {
@@ -21,7 +24,7 @@ let ExposePipe = class ExposePipe {
         this.request = request;
     }
     transform(value) {
-        this.request.$validatedPayload = (0, lodash_1.cloneDeep)(value);
+        this.request.$validatedPayload = (0, cloneDeep_1.default)(value);
         return value;
     }
 };
