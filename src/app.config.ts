@@ -8,6 +8,7 @@ import path from 'path'
 import yargs from 'yargs'
 
 const ROOT_PATH = path.join(__dirname, '..')
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 
 const argv = yargs.argv as Record<string, string | void>

@@ -109,8 +109,8 @@ export class DisqusPublicService {
   }
 
   public async votePost(params: any) {
-    //disqus.com/api/docs/posts/vote/
-    https: return this.disqus.request('posts/vote', params).catch((error) => {
+    // https://disqus.com/api/docs/posts/vote/
+    return this.disqus.request('posts/vote', params).catch((error) => {
       logger.warn('votePost failed!', error)
       return Promise.reject(error)
     })
@@ -170,7 +170,7 @@ export class DisqusPublicService {
     await this.commentService.verifyCommentValidity(newComment)
     // 4. disqus parent comment post ID
     let parentId: string | null = null
-    if (Boolean(newComment.pid)) {
+    if (newComment.pid) {
       parentId = await this.getDisqusPostIdByCommentId(newComment.pid)
     }
     // 5. create disqus post(comment)
