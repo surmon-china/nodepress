@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -1021,7 +1023,7 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import lodash from &#x27;lodash&#x27;
+import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import { UAParser } from &#x27;ua-parser-js&#x27;
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, minutes, seconds } from &#x27;@nestjs/throttler&#x27;
@@ -1186,19 +1188,19 @@ export class VoteController {
     const paginateQuery: PaginateQuery&lt;Vote&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
     // target type
-    if (!lodash.isUndefined(filters.target_type)) {
+    if (!_isUndefined(filters.target_type)) {
       paginateQuery.target_type &#x3D; filters.target_type
     }
     // target ID
-    if (!lodash.isUndefined(filters.target_id)) {
+    if (!_isUndefined(filters.target_id)) {
       paginateQuery.target_id &#x3D; filters.target_id
     }
     // vote type
-    if (!lodash.isUndefined(filters.vote_type)) {
+    if (!_isUndefined(filters.vote_type)) {
       paginateQuery.vote_type &#x3D; filters.vote_type
     }
     // author type
-    if (!lodash.isUndefined(filters.author_type)) {
+    if (!_isUndefined(filters.author_type)) {
       paginateQuery.author_type &#x3D; filters.author_type
     }
     return this.voteService.paginator(paginateQuery, paginateOptions)

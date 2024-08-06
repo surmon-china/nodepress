@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -200,7 +202,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/modules/option/option.service.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/option/option.service.ts:22</a></div>
                             </td>
                         </tr>
 
@@ -278,8 +280,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="63"
-                                    class="link-to-prism">src/modules/option/option.service.ts:63</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/modules/option/option.service.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -348,8 +350,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/modules/option/option.service.ts:41</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/modules/option/option.service.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -387,8 +389,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">src/modules/option/option.service.ts:46</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/modules/option/option.service.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -427,8 +429,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="79"
-                                    class="link-to-prism">src/modules/option/option.service.ts:79</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/modules/option/option.service.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -467,8 +469,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/option/option.service.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/modules/option/option.service.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -537,8 +539,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="71"
-                                    class="link-to-prism">src/modules/option/option.service.ts:71</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/modules/option/option.service.ts:72</a></div>
                         </td>
                     </tr>
 
@@ -610,7 +612,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/modules/option/option.service.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/option/option.service.ts:22</a></div>
                         </td>
                     </tr>
 
@@ -623,7 +625,8 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _omit from &#x27;lodash/omit&#x27;
+import _uniq from &#x27;lodash/uniq&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
@@ -647,7 +650,7 @@ export class OptionService {
       key: CacheKeys.Option,
       promise: () &#x3D;&gt; {
         return this.ensureAppOption().then((option) &#x3D;&gt; {
-          return lodash.omit(option.toObject&lt;Option&gt;(), [&#x27;blocklist&#x27;])
+          return _omit(option.toObject&lt;Option&gt;(), [&#x27;blocklist&#x27;])
         })
       }
     })
@@ -681,8 +684,8 @@ export class OptionService {
 
   public async appendToBlocklist(payload: { ips: string[]; emails: string[] }): Promise&lt;Blocklist&gt; {
     const option &#x3D; await this.ensureAppOption()
-    option.blocklist.ips &#x3D; lodash.uniq([...option.blocklist.ips, ...payload.ips])
-    option.blocklist.mails &#x3D; lodash.uniq([...option.blocklist.mails, ...payload.emails])
+    option.blocklist.ips &#x3D; _uniq([...option.blocklist.ips, ...payload.ips])
+    option.blocklist.mails &#x3D; _uniq([...option.blocklist.mails, ...payload.emails])
     await option.save()
     return option.blocklist
   }

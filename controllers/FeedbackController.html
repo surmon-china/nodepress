@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -219,8 +221,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="67"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:67</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -308,8 +310,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="107"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:107</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="108"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:108</a></div>
                         </td>
                     </tr>
 
@@ -385,8 +387,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="93"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:93</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -464,8 +466,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="33"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:33</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -542,8 +544,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="100"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:100</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:101</a></div>
                         </td>
                     </tr>
 
@@ -610,7 +612,8 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import lodash from &#x27;lodash&#x27;
+import _trim from &#x27;lodash/trim&#x27;
+import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
@@ -641,20 +644,20 @@ export class FeedbackController {
     const paginateQuery: PaginateQuery&lt;Feedback&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
     // target ID
-    if (!lodash.isUndefined(filters.tid)) {
+    if (!_isUndefined(filters.tid)) {
       paginateQuery.tid &#x3D; filters.tid
     }
     // emotion
-    if (!lodash.isUndefined(filters.emotion)) {
+    if (!_isUndefined(filters.emotion)) {
       paginateQuery.emotion &#x3D; filters.emotion
     }
     // marked
-    if (!lodash.isUndefined(filters.marked)) {
+    if (!_isUndefined(filters.marked)) {
       paginateQuery.marked &#x3D; numberToBoolean(filters.marked)
     }
     // search
     if (filters.keyword) {
-      const trimmed &#x3D; lodash.trim(filters.keyword)
+      const trimmed &#x3D; _trim(filters.keyword)
       const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
       paginateQuery.$or &#x3D; [
         { content: keywordRegExp },

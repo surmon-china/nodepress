@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -1673,8 +1675,8 @@ export class DisqusPublicService {
   }
 
   public async votePost(params: any) {
-    //disqus.com/api/docs/posts/vote/
-    https: return this.disqus.request(&#x27;posts/vote&#x27;, params).catch((error) &#x3D;&gt; {
+    // https://disqus.com/api/docs/posts/vote/
+    return this.disqus.request(&#x27;posts/vote&#x27;, params).catch((error) &#x3D;&gt; {
       logger.warn(&#x27;votePost failed!&#x27;, error)
       return Promise.reject(error)
     })
@@ -1734,7 +1736,7 @@ export class DisqusPublicService {
     await this.commentService.verifyCommentValidity(newComment)
     // 4. disqus parent comment post ID
     let parentId: string | null &#x3D; null
-    if (Boolean(newComment.pid)) {
+    if (newComment.pid) {
       parentId &#x3D; await this.getDisqusPostIdByCommentId(newComment.pid)
     }
     // 5. create disqus post(comment)

@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -429,7 +431,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>lodash.throttle((error: string) &#x3D;&gt; {
+                        <i>Default value : </i><code>_throttle((error: string) &#x3D;&gt; {
     this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
       subject: &#x60;Redis Error!&#x60;,
@@ -503,7 +505,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _throttle from &#x27;lodash/throttle&#x27;
 import { createClient, RedisClientType } from &#x27;redis&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
@@ -535,7 +537,7 @@ export class RedisService {
     this.redisClient.connect()
   }
 
-  private sendAlarmMail &#x3D; lodash.throttle((error: string) &#x3D;&gt; {
+  private sendAlarmMail &#x3D; _throttle((error: string) &#x3D;&gt; {
     this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
       to: APP_CONFIG.APP.ADMIN_EMAIL,
       subject: &#x60;Redis Error!&#x60;,

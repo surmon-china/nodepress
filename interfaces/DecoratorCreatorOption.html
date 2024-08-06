@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -379,7 +381,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isObject from &#x27;lodash/isObject&#x27;
 import { SetMetadata, HttpStatus } from &#x27;@nestjs/common&#x27;
 import { ResponseMessage } from &#x27;@app/interfaces/response.interface&#x27;
 import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
@@ -470,7 +472,7 @@ export const success &#x3D; (message: ResponseMessage, statusCode?: HttpStatus):
 export function handle(args: HandleOptionConfig): MethodDecorator
 export function handle(...args) {
   const option &#x3D; args[0]
-  const isOption &#x3D; (value: HandleOptionConfig): value is HandleOption &#x3D;&gt; lodash.isObject(value)
+  const isOption &#x3D; (value: HandleOptionConfig): value is HandleOption &#x3D;&gt; _isObject(value)
   const message: ResponseMessage &#x3D; isOption(option) ? option.message : option
   const errorMessage: ResponseMessage &#x3D; message + TEXT.HTTP_ERROR_SUFFIX
   const successMessage: ResponseMessage &#x3D; message + TEXT.HTTP_SUCCESS_SUFFIX

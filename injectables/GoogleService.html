@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -134,7 +136,11 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#jwtClient" >jwtClient</a>
+                                <a href="#analyticsData" >analyticsData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#authJWT" >authJWT</a>
                             </li>
                         </ul>
                     </td>
@@ -150,11 +156,11 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getCredentials" >getCredentials</a>
+                                <a href="#getAnalyticsData" >getAnalyticsData</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#initClient" >initClient</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#getAuthCredentials" >getAuthCredentials</a>
                             </li>
                         </ul>
                     </td>
@@ -179,7 +185,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/helper/helper.service.google.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/processors/helper/helper.service.google.ts:20</a></div>
                             </td>
                         </tr>
 
@@ -196,26 +202,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getCredentials"></a>
+                    <a name="getAnalyticsData"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getCredentials</b></span>
-                        <a href="#getCredentials"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getAnalyticsData</b></span>
+                        <a href="#getAnalyticsData"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCredentials()</code>
+                    <code>getAnalyticsData()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="43"
-                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:43</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -224,7 +230,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;Auth.Credentials&gt;</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                 </td>
@@ -235,26 +241,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="initClient"></a>
+                    <a name="getAuthCredentials"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>initClient</b></span>
-                        <a href="#initClient"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Public</span>
+                        <span ><b>getAuthCredentials</b></span>
+                        <a href="#getAuthCredentials"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>initClient()</code>
+                    <code>getAuthCredentials()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="25"
-                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:25</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -263,7 +269,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                            <b>Returns : </b>    <code>Promise&lt;Auth.Credentials&gt;</code>
 
                         </div>
                 </td>
@@ -280,11 +286,43 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="jwtClient"></a>
+                    <a name="analyticsData"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
-                        <span ><b>jwtClient</b></span>
-                        <a href="#jwtClient"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>analyticsData</b></span>
+                        <a href="#analyticsData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>analyticsdata_v1beta.Analyticsdata | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/processors/helper/helper.service.google.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authJWT"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>authJWT</b></span>
+                        <a href="#authJWT"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -314,7 +352,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { google, Auth } from &#x27;googleapis&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { google, Auth, analyticsdata_v1beta } from &#x27;googleapis&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
@@ -322,19 +360,17 @@ import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-const logger &#x3D; createLogger({ scope: &#x27;GoogleService&#x27;, time: isDevEnv })
+const logger &#x3D; createLogger({ scope: &#x27;GoogleAPIService&#x27;, time: isDevEnv })
 
 @Injectable()
 export class GoogleService {
-  private jwtClient: Auth.JWT | null &#x3D; null
+  private authJWT: Auth.JWT | null &#x3D; null
+  private analyticsData: analyticsdata_v1beta.Analyticsdata | null &#x3D; null
 
   constructor() {
-    this.initClient()
-  }
-
-  private initClient() {
     try {
-      this.jwtClient &#x3D; new google.auth.JWT(
+      // auth client
+      this.authJWT &#x3D; new google.auth.JWT(
         APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.client_email,
         UNDEFINED,
         APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.private_key,
@@ -344,26 +380,45 @@ export class GoogleService {
         ],
         UNDEFINED
       )
+      // Google analytics v4
+      this.analyticsData &#x3D; google.analyticsdata({
+        version: &#x27;v1beta&#x27;,
+        auth: this.authJWT
+      })
     } catch (error) {
-      logger.failure(&#x27;client initialization failed!&#x27;)
+      logger.failure(&#x27;authJWT initialization failed!&#x27;, error)
     }
   }
 
-  // get credentials for client
-  public getCredentials(): Promise&lt;Auth.Credentials&gt; {
+  public getAuthCredentials(): Promise&lt;Auth.Credentials&gt; {
     return new Promise((resolve, reject) &#x3D;&gt; {
-      if (!this.jwtClient) {
-        return reject(&#x27;GoogleAPI client initialization failed!&#x27;)
+      if (!this.authJWT) {
+        reject(&#x27;GoogleAPI authJWT initialization failed!&#x27;)
+      } else {
+        this.authJWT.authorize((error, credentials: Auth.Credentials) &#x3D;&gt; {
+          const message &#x3D; getMessageFromNormalError(error)
+          if (message) {
+            logger.warn(&#x27;authJWT authorize failed!&#x27;, message)
+            reject(message)
+          } else {
+            resolve(credentials)
+          }
+        })
       }
-      this.jwtClient.authorize((error, credentials: Auth.Credentials) &#x3D;&gt; {
-        const message &#x3D; getMessageFromNormalError(error)
-        if (message) {
-          logger.warn(&#x27;JWT authorize failed!&#x27;, message)
-          reject(message)
-        }
-        resolve(credentials)
-      })
     })
+  }
+
+  // https://github.com/datopian/frontend-v2/blob/f172ea1262bea1f930b767c082c3915f317dde2e/plugins/google-analytics/api.js#L25
+  // https://github.com/dtinth/sheet.spacet.me/blob/bed73b061f0bded0c1c406011ecd3cdd2dd8f47a/api/statistics.js#L4
+  // https://github.com/Andro999b/movies-telegram-bot/blob/c5697681dead5df22e847e784a93c0a16f3af2fc/analytics/functions/handlers/ga4.ts#L46
+  // https://developers.google.com/analytics/devguides/reporting/data/v1
+  // https://developers.google.com/analytics/devguides/reporting/data/v1/basics
+  public getAnalyticsData() {
+    if (!this.authJWT || !this.analyticsData) {
+      throw new Error(&#x27;GoogleAPI analyticsData initialization failed!&#x27;)
+    } else {
+      return this.analyticsData
+    }
   }
 }
 </code></pre>

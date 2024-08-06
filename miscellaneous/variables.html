@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -176,10 +178,10 @@
                             <a href="#AWS" title="src/app.config.ts" ><b>AWS</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
-                            <a href="#BACKUP_DIR_PATH" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>BACKUP_DIR_PATH</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
+                            <a href="#BACKUP_DIR_PATH" title="src/modules/extension/extension.service.dbbackup.ts" ><b>BACKUP_DIR_PATH</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.dbbackup.ts)</a>
                         </li>
                         <li>
-                            <a href="#BACKUP_FILE_NAME" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>BACKUP_FILE_NAME</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
+                            <a href="#BACKUP_FILE_NAME" title="src/modules/extension/extension.service.dbbackup.ts" ><b>BACKUP_FILE_NAME</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.dbbackup.ts)</a>
                         </li>
                         <li>
                             <a href="#BING_INDEXED" title="src/app.config.ts" ><b>BING_INDEXED</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
@@ -254,7 +256,7 @@
                             <a href="#DEFAULT_OPTIONS" title="src/utils/paginate.ts" ><b>DEFAULT_OPTIONS</b>&nbsp;&nbsp;&nbsp;(src/.../paginate.ts)</a>
                         </li>
                         <li>
-                            <a href="#DEFAULT_STATISTIC" title="src/modules/expansion/expansion.service.statistic.ts" ><b>DEFAULT_STATISTIC</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.statistic.ts)</a>
+                            <a href="#DEFAULT_STATISTIC" title="src/modules/extension/extension.service.statistic.ts" ><b>DEFAULT_STATISTIC</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.statistic.ts)</a>
                         </li>
                         <li>
                             <a href="#DISQUS" title="src/app.config.ts" ><b>DISQUS</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
@@ -335,7 +337,7 @@
                             <a href="#getThreadIdentifierById" title="src/modules/disqus/disqus.constant.ts" ><b>getThreadIdentifierById</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.constant.ts)</a>
                         </li>
                         <li>
-                            <a href="#getTodayViewsCount" title="src/modules/expansion/expansion.helper.ts" ><b>getTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.helper.ts)</a>
+                            <a href="#getTodayViewsCount" title="src/modules/extension/extension.helper.ts" ><b>getTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../extension.helper.ts)</a>
                         </li>
                         <li>
                             <a href="#GOOGLE" title="src/app.config.ts" ><b>GOOGLE</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
@@ -395,7 +397,7 @@
                             <a href="#HTTP_UNAUTHORIZED_TEXT_DEFAULT" title="src/constants/text.constant.ts" ><b>HTTP_UNAUTHORIZED_TEXT_DEFAULT</b>&nbsp;&nbsp;&nbsp;(src/.../text.constant.ts)</a>
                         </li>
                         <li>
-                            <a href="#increaseTodayViewsCount" title="src/modules/expansion/expansion.helper.ts" ><b>increaseTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.helper.ts)</a>
+                            <a href="#increaseTodayViewsCount" title="src/modules/extension/extension.helper.ts" ><b>increaseTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../extension.helper.ts)</a>
                         </li>
                         <li>
                             <a href="#isDevEnv" title="src/app.environment.ts" ><b>isDevEnv</b>&nbsp;&nbsp;&nbsp;(src/.../app.environment.ts)</a>
@@ -440,10 +442,10 @@
                             <a href="#logger" title="src/modules/disqus/disqus.service.public.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.service.public.ts)</a>
                         </li>
                         <li>
-                            <a href="#logger" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
+                            <a href="#logger" title="src/modules/extension/extension.service.dbbackup.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.dbbackup.ts)</a>
                         </li>
                         <li>
-                            <a href="#logger" title="src/modules/expansion/expansion.service.statistic.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.statistic.ts)</a>
+                            <a href="#logger" title="src/modules/extension/extension.service.statistic.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.statistic.ts)</a>
                         </li>
                         <li>
                             <a href="#logger" title="src/modules/option/option.service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../option.service.ts)</a>
@@ -521,7 +523,7 @@
                             <a href="#renderTime" title="src/utils/logger.ts" ><b>renderTime</b>&nbsp;&nbsp;&nbsp;(src/.../logger.ts)</a>
                         </li>
                         <li>
-                            <a href="#resetTodayViewsCount" title="src/modules/expansion/expansion.helper.ts" ><b>resetTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.helper.ts)</a>
+                            <a href="#resetTodayViewsCount" title="src/modules/extension/extension.helper.ts" ><b>resetTodayViewsCount</b>&nbsp;&nbsp;&nbsp;(src/.../extension.helper.ts)</a>
                         </li>
                         <li>
                             <a href="#resourcesRequiringPost" title="src/utils/disqus.ts" ><b>resourcesRequiringPost</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.ts)</a>
@@ -557,10 +559,10 @@
                             <a href="#UNDEFINED" title="src/constants/value.constant.ts" ><b>UNDEFINED</b>&nbsp;&nbsp;&nbsp;(src/.../value.constant.ts)</a>
                         </li>
                         <li>
-                            <a href="#UP_FAILED_TIMEOUT" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>UP_FAILED_TIMEOUT</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
+                            <a href="#UP_FAILED_TIMEOUT" title="src/modules/extension/extension.service.dbbackup.ts" ><b>UP_FAILED_TIMEOUT</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.dbbackup.ts)</a>
                         </li>
                         <li>
-                            <a href="#UPLOAD_INTERVAL" title="src/modules/expansion/expansion.service.dbbackup.ts" ><b>UPLOAD_INTERVAL</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.dbbackup.ts)</a>
+                            <a href="#UPLOAD_INTERVAL" title="src/modules/extension/extension.service.dbbackup.ts" ><b>UPLOAD_INTERVAL</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.dbbackup.ts)</a>
                         </li>
                         <li>
                             <a href="#VALIDATION_ERROR_DEFAULT" title="src/constants/text.constant.ts" ><b>VALIDATION_ERROR_DEFAULT</b>&nbsp;&nbsp;&nbsp;(src/.../text.constant.ts)</a>
@@ -1135,6 +1137,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
+  analyticsV4PropertyId: argv.google_analytics_v4_property_id,
   jwtServiceAccountCredentials: argv.google_jwt_cred_json ? JSON.parse(argv.google_jwt_cred_json as string) : null
 }</code>
                     </td>
@@ -1828,7 +1831,7 @@
         </tbody>
     </table>
 </section>
-    <h3>src/modules/expansion/expansion.service.dbbackup.ts</h3>
+    <h3>src/modules/extension/extension.service.dbbackup.ts</h3>
     <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
@@ -3078,7 +3081,7 @@
         </tbody>
     </table>
 </section>
-    <h3>src/modules/expansion/expansion.service.statistic.ts</h3>
+    <h3>src/modules/extension/extension.service.statistic.ts</h3>
     <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
@@ -3624,7 +3627,7 @@
         </tbody>
     </table>
 </section>
-    <h3>src/modules/expansion/expansion.helper.ts</h3>
+    <h3>src/modules/extension/extension.helper.ts</h3>
     <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
@@ -4477,7 +4480,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>createLogger({ scope: &#x27;GoogleService&#x27;, time: isDevEnv })</code>
+                        <i>Default value : </i><code>createLogger({ scope: &#x27;GoogleAPIService&#x27;, time: isDevEnv })</code>
                     </td>
                 </tr>
 

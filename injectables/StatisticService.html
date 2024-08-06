@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -113,7 +115,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/expansion/expansion.service.statistic.ts</code>
+            <code>src/modules/extension/extension.service.statistic.ts</code>
         </p>
 
 
@@ -165,7 +167,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/modules/extension/extension.service.statistic.ts:37</a></div>
                             </td>
                         </tr>
 
@@ -304,7 +306,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="60"
-                                    class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:60</a></div>
+                                    class="link-to-prism">src/modules/extension/extension.service.statistic.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -373,7 +375,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="98"
-                                    class="link-to-prism">src/modules/expansion/expansion.service.statistic.ts:98</a></div>
+                                    class="link-to-prism">src/modules/extension/extension.service.statistic.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -435,7 +437,7 @@ import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { FeedbackService } from &#x27;@app/modules/feedback/feedback.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import { getTodayViewsCount, resetTodayViewsCount } from &#x27;./expansion.helper&#x27;
+import { getTodayViewsCount, resetTodayViewsCount } from &#x27;./extension.helper&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;

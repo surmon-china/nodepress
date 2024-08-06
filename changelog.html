@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="./" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -82,6 +84,19 @@
 
 <h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3>4.10.0 (2024-08-06)</h3>
+<p><strong>Feature</strong></p>
+<ul>
+<li>Upgrade actions dependencies</li>
+<li>Upgrade dependencies</li>
+<li>Upgrade Eslint to v9</li>
+</ul>
+<p><strong>Refactor</strong></p>
+<ul>
+<li><strong>[Google]</strong> upgrade Google Analytics to v4</li>
+<li><strong>[Article]</strong> optimize <code>getRelatedArticles</code> API</li>
+<li><strong>[Expansion]</strong> rename module name from <code>expansion</code> to <code>extension</code></li>
+</ul>
 <h3>4.9.0 (2024-05-20)</h3>
 <p><strong>Feature</strong></p>
 <ul>

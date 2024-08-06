@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -241,8 +243,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="84"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:84</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:85</a></div>
                         </td>
                     </tr>
 
@@ -330,8 +332,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="130"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:130</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:131</a></div>
                         </td>
                     </tr>
 
@@ -407,8 +409,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="100"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:100</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:101</a></div>
                         </td>
                     </tr>
 
@@ -485,8 +487,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="107"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:107</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="108"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:108</a></div>
                         </td>
                     </tr>
 
@@ -562,8 +564,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="74"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:74</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:75</a></div>
                         </td>
                     </tr>
 
@@ -652,8 +654,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="30"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:30</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="31"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -741,8 +743,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="93"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:93</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -830,8 +832,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="116"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:116</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:117</a></div>
                         </td>
                     </tr>
 
@@ -919,8 +921,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="123"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:123</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="124"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:124</a></div>
                         </td>
                     </tr>
 
@@ -975,7 +977,8 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import lodash from &#x27;lodash&#x27;
+import _trim from &#x27;lodash/trim&#x27;
+import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
@@ -1007,7 +1010,7 @@ export class CommentController {
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page }
 
     // sort
-    if (!lodash.isUndefined(sort)) {
+    if (!_isUndefined(sort)) {
       if (sort &#x3D;&#x3D;&#x3D; SortType.Hottest) {
         paginateOptions.sort &#x3D; { likes: SortType.Desc }
       } else {
@@ -1016,18 +1019,18 @@ export class CommentController {
     }
 
     // state
-    if (!lodash.isUndefined(filters.state)) {
+    if (!_isUndefined(filters.state)) {
       paginateQuery.state &#x3D; filters.state
     }
 
     // post ID
-    if (!lodash.isUndefined(filters.post_id)) {
+    if (!_isUndefined(filters.post_id)) {
       paginateQuery.post_id &#x3D; filters.post_id
     }
 
     // search
     if (filters.keyword) {
-      const trimmed &#x3D; lodash.trim(filters.keyword)
+      const trimmed &#x3D; _trim(filters.keyword)
       const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
       paginateQuery.$or &#x3D; [
         { content: keywordRegExp },

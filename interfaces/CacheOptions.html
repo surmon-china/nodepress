@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -250,7 +252,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isObject from &#x27;lodash/isObject&#x27;
 import { SetMetadata } from &#x27;@nestjs/common&#x27;
 import { reflector } from &#x27;@app/constants/reflector.constant&#x27;
 import { NULL } from &#x27;@app/constants/value.constant&#x27;
@@ -272,7 +274,7 @@ export function Cache(option: CacheOptions): MethodDecorator
 export function Cache(key: string, ttl?: number): MethodDecorator
 export function Cache(...args) {
   const option &#x3D; args[0]
-  const isOption &#x3D; (value): value is CacheOptions &#x3D;&gt; lodash.isObject(value)
+  const isOption &#x3D; (value): value is CacheOptions &#x3D;&gt; _isObject(value)
   const key: string &#x3D; isOption(option) ? option.key : option
   const ttl: number &#x3D; isOption(option) ? option.ttl : args[1] || NULL
   return (_, __, descriptor: PropertyDescriptor) &#x3D;&gt; {

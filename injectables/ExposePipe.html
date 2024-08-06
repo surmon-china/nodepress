@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -271,7 +273,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { cloneDeep } from &#x27;lodash&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _cloneDeep from &#x27;lodash/cloneDeep&#x27;
 import { Request } from &#x27;express&#x27;
 import { REQUEST } from &#x27;@nestjs/core&#x27;
 import { Injectable, Inject, Scope, PipeTransform } from &#x27;@nestjs/common&#x27;
@@ -293,7 +295,7 @@ export class ExposePipe implements PipeTransform&lt;any&gt; {
   constructor(@Inject(REQUEST) protected readonly request: Request) {}
 
   transform(value) {
-    this.request.$validatedPayload &#x3D; cloneDeep(value)
+    this.request.$validatedPayload &#x3D; _cloneDeep(value)
     return value
   }
 }

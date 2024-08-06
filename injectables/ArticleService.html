@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -186,7 +188,6 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#getRelatedArticles" >getRelatedArticles</a>
                             </li>
                             <li>
@@ -241,7 +242,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/article/article.service.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/modules/article/article.service.ts:29</a></div>
                             </td>
                         </tr>
 
@@ -367,8 +368,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="209"
-                                    class="link-to-prism">src/modules/article/article.service.ts:209</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="221"
+                                    class="link-to-prism">src/modules/article/article.service.ts:221</a></div>
                         </td>
                     </tr>
 
@@ -437,8 +438,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="199"
-                                    class="link-to-prism">src/modules/article/article.service.ts:199</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="211"
+                                    class="link-to-prism">src/modules/article/article.service.ts:211</a></div>
                         </td>
                     </tr>
 
@@ -519,8 +520,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="147"
-                                    class="link-to-prism">src/modules/article/article.service.ts:147</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/modules/article/article.service.ts:159</a></div>
                         </td>
                     </tr>
 
@@ -589,8 +590,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="186"
-                                    class="link-to-prism">src/modules/article/article.service.ts:186</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="198"
+                                    class="link-to-prism">src/modules/article/article.service.ts:198</a></div>
                         </td>
                     </tr>
 
@@ -658,8 +659,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="224"
-                                    class="link-to-prism">src/modules/article/article.service.ts:224</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="236"
+                                    class="link-to-prism">src/modules/article/article.service.ts:236</a></div>
                         </td>
                     </tr>
 
@@ -745,8 +746,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="96"
-                                    class="link-to-prism">src/modules/article/article.service.ts:96</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="108"
+                                    class="link-to-prism">src/modules/article/article.service.ts:108</a></div>
                         </td>
                     </tr>
 
@@ -813,8 +814,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="88"
-                                    class="link-to-prism">src/modules/article/article.service.ts:88</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="100"
+                                    class="link-to-prism">src/modules/article/article.service.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -883,8 +884,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="120"
-                                    class="link-to-prism">src/modules/article/article.service.ts:120</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="132"
+                                    class="link-to-prism">src/modules/article/article.service.ts:132</a></div>
                         </td>
                     </tr>
 
@@ -952,8 +953,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="83"
-                                    class="link-to-prism">src/modules/article/article.service.ts:83</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/modules/article/article.service.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -1022,8 +1023,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="236"
-                                    class="link-to-prism">src/modules/article/article.service.ts:236</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="248"
+                                    class="link-to-prism">src/modules/article/article.service.ts:248</a></div>
                         </td>
                     </tr>
 
@@ -1062,8 +1063,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/modules/article/article.service.ts:41</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/modules/article/article.service.ts:40</a></div>
                         </td>
                     </tr>
 
@@ -1140,7 +1141,6 @@
                     <a name="getRelatedArticles"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
                         <span ><b>getRelatedArticles</b></span>
                         <a href="#getRelatedArticles"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1156,8 +1156,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/modules/article/article.service.ts:59</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/modules/article/article.service.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -1238,8 +1238,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="220"
-                                    class="link-to-prism">src/modules/article/article.service.ts:220</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="232"
+                                    class="link-to-prism">src/modules/article/article.service.ts:232</a></div>
                         </td>
                     </tr>
 
@@ -1308,8 +1308,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="137"
-                                    class="link-to-prism">src/modules/article/article.service.ts:137</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">src/modules/article/article.service.ts:149</a></div>
                         </td>
                     </tr>
 
@@ -1378,8 +1378,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="262"
-                                    class="link-to-prism">src/modules/article/article.service.ts:262</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="274"
+                                    class="link-to-prism">src/modules/article/article.service.ts:274</a></div>
                         </td>
                     </tr>
 
@@ -1447,8 +1447,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="74"
-                                    class="link-to-prism">src/modules/article/article.service.ts:74</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/modules/article/article.service.ts:86</a></div>
                         </td>
                     </tr>
 
@@ -1529,8 +1529,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="163"
-                                    class="link-to-prism">src/modules/article/article.service.ts:163</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">src/modules/article/article.service.ts:175</a></div>
                         </td>
                     </tr>
 
@@ -1611,8 +1611,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="268"
-                                    class="link-to-prism">src/modules/article/article.service.ts:268</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="280"
+                                    class="link-to-prism">src/modules/article/article.service.ts:280</a></div>
                         </td>
                     </tr>
 
@@ -1676,14 +1676,13 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import lodash from &#x27;lodash&#x27;
-import { Types, FilterQuery, SortOrder } from &#x27;mongoose&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types, FilterQuery, SortOrder } from &#x27;mongoose&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getArticleUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { SeoService } from &#x27;@app/processors/helper/helper.service.seo&#x27;
 import { CacheService } from &#x27;@app/processors/cache/cache.service&#x27;
-import { increaseTodayViewsCount } from &#x27;@app/modules/expansion/expansion.helper&#x27;
+import { increaseTodayViewsCount } from &#x27;@app/modules/extension/extension.helper&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
@@ -1728,18 +1727,31 @@ export class ArticleService {
   }
 
   // get related articles
-  public async getRelatedArticles(article: Article, count: number): Promise&lt;Article[]&gt; {
+  public getRelatedArticles(article: Article, count: number): Promise&lt;Article[]&gt; {
     const findParams: FilterQuery&lt;Article&gt; &#x3D; {
       ...ARTICLE_LIST_QUERY_GUEST_FILTER,
       tags: { $in: article.tags },
-      categories: { $in: article.categories }
+      categories: { $in: article.categories },
+      // Exclude the current article in the query
+      id: { $ne: article.id }
     }
-    const articles &#x3D; await this.articleModel
-      .find(findParams, ARTICLE_LIST_QUERY_PROJECTION, { limit: count * 2 })
-      .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
-      .exec()
-    const filtered &#x3D; articles.filter((a) &#x3D;&gt; a.id !&#x3D;&#x3D; article.id).map((a) &#x3D;&gt; a.toObject())
-    return lodash.sampleSize&lt;Article&gt;(filtered, count)
+
+    return this.articleModel.aggregate&lt;Article&gt;([
+      { $match: findParams },
+      // Randomly select articles at the database level
+      { $sample: { size: count } },
+      // Select the required fields (-content)
+      { $project: ARTICLE_LIST_QUERY_PROJECTION },
+      // Populate reference fields
+      ...ARTICLE_FULL_QUERY_REF_POPULATE.map((field) &#x3D;&gt; ({
+        $lookup: {
+          from: field, //  Name of the collection to join. e.g. categories
+          localField: field, // Field from the input documents. e.g. categories
+          foreignField: &#x27;_id&#x27;, // Field from the documents of the &quot;from&quot; collection
+          as: field // Output array field. e.g. categories
+        }
+      }))
+    ])
   }
 
   // get paginate articles

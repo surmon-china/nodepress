@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -152,7 +154,7 @@
                             <a href="#ResponseMessage" title="src/interfaces/response.interface.ts" ><b>ResponseMessage</b>&nbsp;&nbsp;&nbsp;(src/.../response.interface.ts)</a>
                         </li>
                         <li>
-                            <a href="#Statistic" title="src/modules/expansion/expansion.service.statistic.ts" ><b>Statistic</b>&nbsp;&nbsp;&nbsp;(src/.../expansion.service.statistic.ts)</a>
+                            <a href="#Statistic" title="src/modules/extension/extension.service.statistic.ts" ><b>Statistic</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.statistic.ts)</a>
                         </li>
                         <li>
                             <a href="#WithId" title="src/interfaces/mongoose.interface.ts" ><b>WithId</b>&nbsp;&nbsp;&nbsp;(src/.../mongoose.interface.ts)</a>
@@ -418,7 +420,7 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/modules/expansion/expansion.service.statistic.ts</h3>
+</section>    <h3>src/modules/extension/extension.service.statistic.ts</h3>
     <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>

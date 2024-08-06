@@ -13,7 +13,7 @@
     </head>
     <body>
           <script>
-               // Blocking script to avaoid flickering dark mode
+               // Blocking script to avoid flickering dark mode
                // Dark mode toggle button
                var useDark = window.matchMedia('(prefers-color-scheme: dark)');
                var darkModeState = useDark.matches;
@@ -62,9 +62,11 @@
                toggleDarkMode(darkModeState);
           </script>
 
-        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
-            <a href="../" class="navbar-brand">NodePress documentation</a>
-            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
         </div>
 
         <div class="xs-menu menu" id="mobile-menu">
@@ -73,7 +75,7 @@
 
         <div class="container-fluid main">
            <div class="row main">
-               <div class="hidden-xs menu">
+               <div class="d-none d-md-block menu">
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
@@ -86,7 +88,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >ExpansionController</li>
+  <li class="breadcrumb-item" >ExtensionController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -110,14 +112,14 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/expansion/expansion.controller.ts</code>
+            <code>src/modules/extension/extension.controller.ts</code>
         </p>
 
             <p class="comment">
                 <h3>Prefix</h3>
             </p>
             <p class="comment">
-                <code>expansion</code>
+                <code>extension</code>
             </p>
 
 
@@ -142,13 +144,25 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#getGoogleToken" >getGoogleToken</a>
+                                <a href="#getSystemStatistics" >getSystemStatistics</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#getSystemStatistics" >getSystemStatistics</a>
+                                <a href="#googleAnalyticsBatchRunPivotReports" >googleAnalyticsBatchRunPivotReports</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#googleAnalyticsBatchRunReports" >googleAnalyticsBatchRunReports</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#googleAnalyticsRunRealtimeReport" >googleAnalyticsRunRealtimeReport</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -161,6 +175,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#uploadStatic" >uploadStatic</a>
                             </li>
                         </ul>
@@ -180,54 +195,6 @@
     <h3 id="methods">
         Methods
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getGoogleToken"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>getGoogleToken</b></span>
-                        <a href="#getGoogleToken"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getGoogleToken()</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Get(&#x27;google-token&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Get Google credentials&#x27;)<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="39"
-                                    class="link-to-prism">src/modules/expansion/expansion.controller.ts:39</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;Auth.Credentials&gt;</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -259,8 +226,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="32"
-                                    class="link-to-prism">src/modules/expansion/expansion.controller.ts:32</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="31"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -309,6 +276,228 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="googleAnalyticsBatchRunPivotReports"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>googleAnalyticsBatchRunPivotReports</b></span>
+                        <a href="#googleAnalyticsBatchRunPivotReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>googleAnalyticsBatchRunPivotReports(requestBody)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;google-analytics/batch-run-pivot-reports&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Google analytics batchRunPivotReports&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>requestBody</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="googleAnalyticsBatchRunReports"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>googleAnalyticsBatchRunReports</b></span>
+                        <a href="#googleAnalyticsBatchRunReports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>googleAnalyticsBatchRunReports(requestBody)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;google-analytics/batch-run-reports&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Google analytics batchRunReports&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>requestBody</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="googleAnalyticsRunRealtimeReport"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>googleAnalyticsRunRealtimeReport</b></span>
+                        <a href="#googleAnalyticsRunRealtimeReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>googleAnalyticsRunRealtimeReport(requestBody)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;google-analytics/run-realtime-report&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Google analytics runRealtimeReport&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="87"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>requestBody</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="updateDatabaseBackup"></a>
                     <span class="name">
                             <span class="modifier"></span>
@@ -336,8 +525,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">src/modules/expansion/expansion.controller.ts:46</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -363,6 +552,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>uploadStatic</b></span>
                         <a href="#uploadStatic"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -385,8 +575,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/modules/expansion/expansion.controller.ts:54</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -433,7 +623,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -448,12 +638,11 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
- * @file Expansion controller
- * @module module/expansion/controller
+ * @file Extension controller
+ * @module module/extension/controller
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import { Auth } from &#x27;googleapis&#x27;
 import { Controller, Get, Post, Patch, UploadedFile, Body, UseGuards, UseInterceptors } from &#x27;@nestjs/common&#x27;
 import { FileInterceptor } from &#x27;@nestjs/platform-express&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
@@ -462,12 +651,12 @@ import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
 import { AWSService } from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { GoogleService } from &#x27;@app/processors/helper/helper.service.google&#x27;
-import { StatisticService, Statistic } from &#x27;./expansion.service.statistic&#x27;
-import { DBBackupService } from &#x27;./expansion.service.dbbackup&#x27;
+import { StatisticService, Statistic } from &#x27;./extension.service.statistic&#x27;
+import { DBBackupService } from &#x27;./extension.service.dbbackup&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-@Controller(&#x27;expansion&#x27;)
-export class ExpansionController {
+@Controller(&#x27;extension&#x27;)
+export class ExtensionController {
   constructor(
     private readonly awsService: AWSService,
     private readonly googleService: GoogleService,
@@ -482,13 +671,6 @@ export class ExpansionController {
     return this.statisticService.getStatistic(isUnauthenticated)
   }
 
-  @Get(&#x27;google-token&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Get Google credentials&#x27;)
-  getGoogleToken(): Promise&lt;Auth.Credentials&gt; {
-    return this.googleService.getCredentials()
-  }
-
   @Patch(&#x27;database-backup&#x27;)
   @UseGuards(AdminOnlyGuard)
   @Responser.handle(&#x27;Update database backup&#x27;)
@@ -500,19 +682,52 @@ export class ExpansionController {
   @UseGuards(AdminOnlyGuard)
   @UseInterceptors(FileInterceptor(&#x27;file&#x27;))
   @Responser.handle(&#x27;Upload file to cloud storage&#x27;)
-  uploadStatic(@UploadedFile() file: Express.Multer.File, @Body() body) {
-    return this.awsService
-      .uploadFile({
-        name: body.name,
-        file: file.buffer,
-        fileContentType: file.mimetype,
-        region: APP_CONFIG.AWS.s3StaticRegion,
-        bucket: APP_CONFIG.AWS.s3StaticBucket
-      })
-      .then((result) &#x3D;&gt; ({
-        ...result,
-        url: &#x60;${APP_CONFIG.APP.STATIC_URL}/${result.key}&#x60;
-      }))
+  async uploadStatic(@UploadedFile() file: Express.Multer.File, @Body() body) {
+    const result &#x3D; await this.awsService.uploadFile({
+      name: body.name,
+      file: file.buffer,
+      fileContentType: file.mimetype,
+      region: APP_CONFIG.AWS.s3StaticRegion,
+      bucket: APP_CONFIG.AWS.s3StaticBucket
+    })
+
+    return {
+      ...result,
+      url: &#x60;${APP_CONFIG.APP.STATIC_URL}/${result.key}&#x60;
+    }
+  }
+
+  // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunReports
+  @Post(&#x27;google-analytics/batch-run-reports&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @Responser.handle(&#x27;Google analytics batchRunReports&#x27;)
+  googleAnalyticsBatchRunReports(@Body() requestBody) {
+    return this.googleService.getAnalyticsData().properties.batchRunReports({
+      property: &#x60;properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}&#x60;,
+      requestBody
+    })
+  }
+
+  // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunPivotReports
+  @Post(&#x27;google-analytics/batch-run-pivot-reports&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @Responser.handle(&#x27;Google analytics batchRunPivotReports&#x27;)
+  googleAnalyticsBatchRunPivotReports(@Body() requestBody) {
+    return this.googleService.getAnalyticsData().properties.batchRunPivotReports({
+      property: &#x60;properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}&#x60;,
+      requestBody
+    })
+  }
+
+  // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runRealtimeReport
+  @Post(&#x27;google-analytics/run-realtime-report&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @Responser.handle(&#x27;Google analytics runRealtimeReport&#x27;)
+  googleAnalyticsRunRealtimeReport(@Body() requestBody) {
+    return this.googleService.getAnalyticsData().properties.runRealtimeReport({
+      property: &#x60;properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}&#x60;,
+      requestBody
+    })
   }
 }
 </code></pre>
@@ -560,7 +775,7 @@ export class ExpansionController {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
-            var COMPODOC_CURRENT_PAGE_URL = 'ExpansionController.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ExtensionController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
