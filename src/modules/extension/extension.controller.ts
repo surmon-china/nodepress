@@ -1,6 +1,6 @@
 /**
- * @file Expansion controller
- * @module module/expansion/controller
+ * @file Extension controller
+ * @module module/extension/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -12,12 +12,12 @@ import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
 import { AWSService } from '@app/processors/helper/helper.service.aws'
 import { GoogleService } from '@app/processors/helper/helper.service.google'
-import { StatisticService, Statistic } from './expansion.service.statistic'
-import { DBBackupService } from './expansion.service.dbbackup'
+import { StatisticService, Statistic } from './extension.service.statistic'
+import { DBBackupService } from './extension.service.dbbackup'
 import * as APP_CONFIG from '@app/app.config'
 
-@Controller('expansion')
-export class ExpansionController {
+@Controller('extension')
+export class ExtensionController {
   constructor(
     private readonly awsService: AWSService,
     private readonly googleService: GoogleService,

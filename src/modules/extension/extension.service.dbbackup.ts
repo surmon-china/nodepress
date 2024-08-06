@@ -1,6 +1,6 @@
 /**
- * @file Expansion DB backup service
- * @module module/expansion/dbbackup.service
+ * @file Extension DB backup service
+ * @module module/extension/dbbackup.service
  * @author Surmon <https://github.com/surmon-china>
  */
 

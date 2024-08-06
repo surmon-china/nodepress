@@ -1,6 +1,6 @@
 /**
  * @file AWS storage service
- * @module module/expansion/aws.service
+ * @module module/extension/aws.service
  * @author Surmon <https://github.com/surmon-china>
  */
 

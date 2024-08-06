@@ -24,7 +24,7 @@ import { CacheModule } from '@app/processors/cache/cache.module'
 import { HelperModule } from '@app/processors/helper/helper.module'
 
 // BIZ helper module
-import { ExpansionModule } from '@app/modules/expansion/expansion.module'
+import { ExtensionModule } from '@app/modules/extension/extension.module'
 
 // BIZ modules
 import { AuthModule } from '@app/modules/auth/auth.module'
@@ -58,7 +58,7 @@ import { VoteModule } from '@app/modules/vote/vote.module'
     HelperModule,
     DatabaseModule,
     CacheModule,
-    ExpansionModule,
+    ExtensionModule,
     // BIZs
     AuthModule,
     OptionModule,

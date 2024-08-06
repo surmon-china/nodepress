@@ -1,6 +1,6 @@
 /**
- * @file Expansion statistic service
- * @module module/expansion/statistic.service
+ * @file Extension statistic service
+ * @module module/extension/statistic.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -14,7 +14,7 @@ import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { FeedbackService } from '@app/modules/feedback/feedback.service'
 import { TagService } from '@app/modules/tag/tag.service'
-import { getTodayViewsCount, resetTodayViewsCount } from './expansion.helper'
+import { getTodayViewsCount, resetTodayViewsCount } from './extension.helper'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
