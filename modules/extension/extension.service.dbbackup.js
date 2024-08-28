@@ -41,9 +41,10 @@ let DBBackupService = class DBBackupService {
         });
     }
     async backup() {
+        var _a;
         try {
             const result = await this.doBackup();
-            const json = Object.assign(Object.assign({}, result), { size: (result.size / 1024).toFixed(2) + 'kb' });
+            const json = Object.assign(Object.assign({}, result), { lastModified: (_a = result.lastModified) === null || _a === void 0 ? void 0 : _a.toLocaleString('zh'), size: (result.size / 1024).toFixed(2) + 'kb' });
             this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true);
             return result;
         }

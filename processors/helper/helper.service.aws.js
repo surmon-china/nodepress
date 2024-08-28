@@ -46,6 +46,9 @@ let AWSService = class AWSService {
             }
         });
     }
+    getAwsGeneralFileUrl(region, bucket, key) {
+        return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
+    }
     getObjectAttributes(payload) {
         const s3Client = this.createClient(payload.region);
         const command = new client_s3_1.GetObjectAttributesCommand({
@@ -68,16 +71,43 @@ let AWSService = class AWSService {
             ServerSideEncryption: payload.encryption
         });
         return s3Client.send(command).then(() => {
-            return this.getObjectAttributes({ region, bucket, key }).then((attributes) => {
-                return {
-                    key,
-                    url: `https://${bucket}.s3.${region}.amazonaws.com/${key}`,
-                    eTag: attributes.ETag,
-                    size: attributes.ObjectSize
-                };
+            return this.getObjectAttributes({ region, bucket, key }).then((attributes) => ({
+                key,
+                url: this.getAwsGeneralFileUrl(region, bucket, key),
+                size: attributes.ObjectSize,
+                eTag: attributes.ETag,
+                lastModified: attributes.LastModified,
+                storageClass: attributes.StorageClass
+            }));
+        });
+    }
+    getFileList(payload) {
+        const s3Client = this.createClient(payload.region);
+        const command = new client_s3_1.ListObjectsCommand({
+            Bucket: payload.bucket,
+            Marker: payload.marker,
+            Prefix: payload.prefix,
+            MaxKeys: payload.limit
+        });
+        return s3Client.send(command).then((result) => {
+            var _a;
+            return ({
+                name: result.Name,
+                limit: result.MaxKeys,
+                prefix: result.Prefix,
+                marker: result.Marker,
+                files: ((_a = result.Contents) !== null && _a !== void 0 ? _a : []).map((object) => ({
+                    key: object.Key,
+                    url: this.getAwsGeneralFileUrl(payload.region, payload.bucket, object.Key),
+                    eTag: object.ETag,
+                    size: object.Size,
+                    lastModified: object.LastModified,
+                    storageClass: object.StorageClass
+                }))
             });
         });
     }
+    async deleteFile() { }
 };
 exports.AWSService = AWSService;
 exports.AWSService = AWSService = __decorate([

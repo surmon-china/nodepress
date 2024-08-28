@@ -42,8 +42,8 @@ const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
 const responser_decorator_1 = require("../../decorators/responser.decorator");
 const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
 const helper_service_google_1 = require("../../processors/helper/helper.service.google");
+const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
 const extension_service_statistic_1 = require("./extension.service.statistic");
 const extension_service_dbbackup_1 = require("./extension.service.dbbackup");
 const APP_CONFIG = __importStar(require("../../app.config"));
@@ -60,7 +60,23 @@ let ExtensionController = class ExtensionController {
     updateDatabaseBackup() {
         return this.dbBackupService.backup();
     }
-    async uploadStatic(file, body) {
+    async getStaticFileList({ query }) {
+        const minLimit = 80;
+        const numberLimit = Number(query.limit);
+        const limit = Number.isInteger(numberLimit) ? numberLimit : minLimit;
+        const result = await this.awsService.getFileList({
+            limit: limit < minLimit ? minLimit : limit,
+            prefix: query.prefix,
+            marker: query.marker,
+            region: APP_CONFIG.AWS.s3StaticRegion,
+            bucket: APP_CONFIG.AWS.s3StaticBucket
+        });
+        return Object.assign(Object.assign({}, result), { files: result.files.map((file) => {
+                var _a;
+                return (Object.assign(Object.assign({}, file), { url: `${APP_CONFIG.APP.STATIC_URL}/${file.key}`, lastModified: (_a = file.lastModified) === null || _a === void 0 ? void 0 : _a.getTime() }));
+            }) });
+    }
+    async uploadStaticFile(file, body) {
         const result = await this.awsService.uploadFile({
             name: body.name,
             file: file.buffer,
@@ -108,7 +124,16 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ExtensionController.prototype, "updateDatabaseBackup", null);
 __decorate([
-    (0, common_1.Post)('upload'),
+    (0, common_1.Get)('static/list'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    responser_decorator_1.Responser.handle('Get file list from cloud storage'),
+    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ExtensionController.prototype, "getStaticFileList", null);
+__decorate([
+    (0, common_1.Post)('static/upload'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     responser_decorator_1.Responser.handle('Upload file to cloud storage'),
@@ -117,7 +142,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], ExtensionController.prototype, "uploadStatic", null);
+], ExtensionController.prototype, "uploadStaticFile", null);
 __decorate([
     (0, common_1.Post)('google-analytics/batch-run-reports'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
