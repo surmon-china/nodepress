@@ -7,6 +7,7 @@
 import {
   S3Client,
   PutObjectCommand,
+  ListObjectsCommand,
   GetObjectAttributesCommand,
   ObjectAttributes,
   StorageClass,
@@ -28,11 +29,13 @@ export interface FileUploader {
   encryption?: ServerSideEncryption
 }
 
-export interface UploadResult {
+export interface S3FileObject {
   key: string
   url: string
   eTag: string
   size: number
+  lastModified?: Date
+  storageClass?: StorageClass
 }
 
 @Injectable()
@@ -47,6 +50,11 @@ export class AWSService {
     })
   }
 
+  private getAwsGeneralFileUrl(region: string, bucket: string, key: string) {
+    // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
+    return `https://${bucket}.s3.${region}.amazonaws.com/${key}`
+  }
+
   public getObjectAttributes(payload: { region: string; bucket: string; key: string }) {
     const s3Client = this.createClient(payload.region)
     const command = new GetObjectAttributesCommand({
@@ -57,7 +65,7 @@ export class AWSService {
     return s3Client.send(command)
   }
 
-  public uploadFile(payload: FileUploader): Promise<UploadResult> {
+  public uploadFile(payload: FileUploader): Promise<S3FileObject> {
     const { region, bucket, name: key } = payload
     const s3Client = this.createClient(region)
     const command = new PutObjectCommand({
@@ -69,15 +77,42 @@ export class AWSService {
       ServerSideEncryption: payload.encryption
     })
     return s3Client.send(command).then(() => {
-      return this.getObjectAttributes({ region, bucket, key }).then((attributes) => {
-        return {
-          key,
-          // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
-          url: `https://${bucket}.s3.${region}.amazonaws.com/${key}`,
-          eTag: attributes.ETag!,
-          size: attributes.ObjectSize!
-        }
-      })
+      return this.getObjectAttributes({ region, bucket, key }).then((attributes) => ({
+        key,
+        url: this.getAwsGeneralFileUrl(region, bucket, key),
+        size: attributes.ObjectSize!,
+        eTag: attributes.ETag!,
+        lastModified: attributes.LastModified,
+        storageClass: attributes.StorageClass
+      }))
     })
   }
+
+  public getFileList(payload: { region: string; bucket: string; limit: number; prefix?: string; marker?: string }) {
+    const s3Client = this.createClient(payload.region)
+    const command = new ListObjectsCommand({
+      Bucket: payload.bucket,
+      Marker: payload.marker,
+      Prefix: payload.prefix,
+      MaxKeys: payload.limit
+    })
+
+    return s3Client.send(command).then((result) => ({
+      name: result.Name,
+      limit: result.MaxKeys,
+      prefix: result.Prefix,
+      marker: result.Marker,
+      files: (result.Contents ?? []).map<S3FileObject>((object) => ({
+        key: object.Key!,
+        url: this.getAwsGeneralFileUrl(payload.region, payload.bucket, object.Key!),
+        eTag: object.ETag!,
+        size: object.Size!,
+        lastModified: object.LastModified,
+        storageClass: object.StorageClass
+      }))
+    }))
+  }
+
+  // TODO
+  public async deleteFile() {}
 }

@@ -10,8 +10,8 @@ import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
 import { Responser } from '@app/decorators/responser.decorator'
 import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
-import { AWSService } from '@app/processors/helper/helper.service.aws'
 import { GoogleService } from '@app/processors/helper/helper.service.google'
+import { AWSService } from '@app/processors/helper/helper.service.aws'
 import { StatisticService, Statistic } from './extension.service.statistic'
 import { DBBackupService } from './extension.service.dbbackup'
 import * as APP_CONFIG from '@app/app.config'
@@ -39,11 +39,36 @@ export class ExtensionController {
     return this.dbBackupService.backup()
   }
 
-  @Post('upload')
+  @Get('static/list')
+  @UseGuards(AdminOnlyGuard)
+  @Responser.handle('Get file list from cloud storage')
+  async getStaticFileList(@QueryParams() { query }: QueryParamsResult) {
+    const minLimit = 80
+    const numberLimit = Number(query.limit)
+    const limit = Number.isInteger(numberLimit) ? numberLimit : minLimit
+    const result = await this.awsService.getFileList({
+      limit: limit < minLimit ? minLimit : limit,
+      prefix: query.prefix,
+      marker: query.marker,
+      region: APP_CONFIG.AWS.s3StaticRegion,
+      bucket: APP_CONFIG.AWS.s3StaticBucket
+    })
+
+    return {
+      ...result,
+      files: result.files.map((file) => ({
+        ...file,
+        url: `${APP_CONFIG.APP.STATIC_URL}/${file.key}`,
+        lastModified: file.lastModified?.getTime()
+      }))
+    }
+  }
+
+  @Post('static/upload')
   @UseGuards(AdminOnlyGuard)
   @UseInterceptors(FileInterceptor('file'))
   @Responser.handle('Upload file to cloud storage')
-  async uploadStatic(@UploadedFile() file: Express.Multer.File, @Body() body) {
+  async uploadStaticFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
     const result = await this.awsService.uploadFile({
       name: body.name,
       file: file.buffer,

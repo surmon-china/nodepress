@@ -12,7 +12,7 @@ import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import {
-  UploadResult,
+  S3FileObject,
   AWSService,
   AWSStorageClass,
   AWSServerSideEncryption
@@ -45,7 +45,11 @@ export class DBBackupService {
   public async backup() {
     try {
       const result = await this.doBackup()
-      const json = { ...result, size: (result.size / 1024).toFixed(2) + 'kb' }
+      const json = {
+        ...result,
+        lastModified: result.lastModified?.toLocaleString('zh'),
+        size: (result.size / 1024).toFixed(2) + 'kb'
+      }
       this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true)
       return result
     } catch (error) {
@@ -64,7 +68,7 @@ export class DBBackupService {
   }
 
   private doBackup() {
-    return new Promise<UploadResult>((resolve, reject) => {
+    return new Promise<S3FileObject>((resolve, reject) => {
       if (!shell.which('mongodump')) {
         return reject('DB Backup script requires [mongodump]')
       }
