@@ -141,6 +141,19 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteFile" >deleteFile</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getAwsGeneralFileUrl" >getAwsGeneralFileUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getFileList" >getFileList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#getObjectAttributes" >getObjectAttributes</a>
                             </li>
                             <li>
@@ -187,8 +200,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="40"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:40</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:43</a></div>
                         </td>
                     </tr>
 
@@ -238,6 +251,208 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="deleteFile"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>deleteFile</b></span>
+                        <a href="#deleteFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteFile()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:117</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAwsGeneralFileUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getAwsGeneralFileUrl</b></span>
+                        <a href="#getAwsGeneralFileUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAwsGeneralFileUrl(region: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, bucket: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>region</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>bucket</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFileList"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getFileList</b></span>
+                        <a href="#getFileList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFileList(payload: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>payload</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getObjectAttributes"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -256,8 +471,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -325,8 +540,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="60"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:60</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -362,7 +577,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/UploadResult.html" target="_self" >Promise&lt;UploadResult&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/S3FileObject.html" target="_self" >Promise&lt;S3FileObject&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -381,6 +596,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
   S3Client,
   PutObjectCommand,
+  ListObjectsCommand,
   GetObjectAttributesCommand,
   ObjectAttributes,
   StorageClass,
@@ -402,11 +618,13 @@ export interface FileUploader {
   encryption?: ServerSideEncryption
 }
 
-export interface UploadResult {
+export interface S3FileObject {
   key: string
   url: string
   eTag: string
   size: number
+  lastModified?: Date
+  storageClass?: StorageClass
 }
 
 @Injectable()
@@ -421,6 +639,11 @@ export class AWSService {
     })
   }
 
+  private getAwsGeneralFileUrl(region: string, bucket: string, key: string) {
+    // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
+    return &#x60;https://${bucket}.s3.${region}.amazonaws.com/${key}&#x60;
+  }
+
   public getObjectAttributes(payload: { region: string; bucket: string; key: string }) {
     const s3Client &#x3D; this.createClient(payload.region)
     const command &#x3D; new GetObjectAttributesCommand({
@@ -431,7 +654,7 @@ export class AWSService {
     return s3Client.send(command)
   }
 
-  public uploadFile(payload: FileUploader): Promise&lt;UploadResult&gt; {
+  public uploadFile(payload: FileUploader): Promise&lt;S3FileObject&gt; {
     const { region, bucket, name: key } &#x3D; payload
     const s3Client &#x3D; this.createClient(region)
     const command &#x3D; new PutObjectCommand({
@@ -443,17 +666,44 @@ export class AWSService {
       ServerSideEncryption: payload.encryption
     })
     return s3Client.send(command).then(() &#x3D;&gt; {
-      return this.getObjectAttributes({ region, bucket, key }).then((attributes) &#x3D;&gt; {
-        return {
-          key,
-          // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
-          url: &#x60;https://${bucket}.s3.${region}.amazonaws.com/${key}&#x60;,
-          eTag: attributes.ETag!,
-          size: attributes.ObjectSize!
-        }
-      })
+      return this.getObjectAttributes({ region, bucket, key }).then((attributes) &#x3D;&gt; ({
+        key,
+        url: this.getAwsGeneralFileUrl(region, bucket, key),
+        size: attributes.ObjectSize!,
+        eTag: attributes.ETag!,
+        lastModified: attributes.LastModified,
+        storageClass: attributes.StorageClass
+      }))
     })
   }
+
+  public getFileList(payload: { region: string; bucket: string; limit: number; prefix?: string; marker?: string }) {
+    const s3Client &#x3D; this.createClient(payload.region)
+    const command &#x3D; new ListObjectsCommand({
+      Bucket: payload.bucket,
+      Marker: payload.marker,
+      Prefix: payload.prefix,
+      MaxKeys: payload.limit
+    })
+
+    return s3Client.send(command).then((result) &#x3D;&gt; ({
+      name: result.Name,
+      limit: result.MaxKeys,
+      prefix: result.Prefix,
+      marker: result.Marker,
+      files: (result.Contents ?? []).map&lt;S3FileObject&gt;((object) &#x3D;&gt; ({
+        key: object.Key!,
+        url: this.getAwsGeneralFileUrl(payload.region, payload.bucket, object.Key!),
+        eTag: object.ETag!,
+        size: object.Size!,
+        lastModified: object.LastModified,
+        storageClass: object.StorageClass
+      }))
+    }))
+  }
+
+  // TODO
+  public async deleteFile() {}
 }
 </code></pre>
     </div>

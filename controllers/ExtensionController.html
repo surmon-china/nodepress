@@ -144,6 +144,13 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getStaticFileList" >getStaticFileList</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#getSystemStatistics" >getSystemStatistics</a>
                             </li>
                             <li>
@@ -176,7 +183,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier">Async</span>
-                                <a href="#uploadStatic" >uploadStatic</a>
+                                <a href="#uploadStaticFile" >uploadStaticFile</a>
                             </li>
                         </ul>
                     </td>
@@ -195,6 +202,84 @@
     <h3 id="methods">
         Methods
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStaticFileList"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getStaticFileList</b></span>
+                        <a href="#getStaticFileList"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getStaticFileList(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;static/list&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Get file list from cloud storage&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -303,8 +388,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="76"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:76</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:101</a></div>
                         </td>
                     </tr>
 
@@ -377,8 +462,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:90</a></div>
                         </td>
                     </tr>
 
@@ -451,8 +536,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="87"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:87</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -546,22 +631,22 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="uploadStatic"></a>
+                    <a name="uploadStaticFile"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier">Async</span>
-                        <span ><b>uploadStatic</b></span>
-                        <a href="#uploadStatic"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>uploadStaticFile</b></span>
+                        <a href="#uploadStaticFile"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>uploadStatic(file: Express.Multer.File, body)</code>
+                    <code>uploadStaticFile(file: Express.Multer.File, body)</code>
                 </td>
             </tr>
 
@@ -569,14 +654,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;upload&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@UseInterceptors(undefined)<br />@(&#x27;Upload file to cloud storage&#x27;)<br /></code>
+                    <code>@Post(&#x27;static/upload&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@UseInterceptors(undefined)<br />@(&#x27;Upload file to cloud storage&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:46</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -649,8 +734,8 @@ import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
 import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
 import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { AWSService } from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { GoogleService } from &#x27;@app/processors/helper/helper.service.google&#x27;
+import { AWSService } from &#x27;@app/processors/helper/helper.service.aws&#x27;
 import { StatisticService, Statistic } from &#x27;./extension.service.statistic&#x27;
 import { DBBackupService } from &#x27;./extension.service.dbbackup&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -678,11 +763,36 @@ export class ExtensionController {
     return this.dbBackupService.backup()
   }
 
-  @Post(&#x27;upload&#x27;)
+  @Get(&#x27;static/list&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @Responser.handle(&#x27;Get file list from cloud storage&#x27;)
+  async getStaticFileList(@QueryParams() { query }: QueryParamsResult) {
+    const minLimit &#x3D; 80
+    const numberLimit &#x3D; Number(query.limit)
+    const limit &#x3D; Number.isInteger(numberLimit) ? numberLimit : minLimit
+    const result &#x3D; await this.awsService.getFileList({
+      limit: limit &lt; minLimit ? minLimit : limit,
+      prefix: query.prefix,
+      marker: query.marker,
+      region: APP_CONFIG.AWS.s3StaticRegion,
+      bucket: APP_CONFIG.AWS.s3StaticBucket
+    })
+
+    return {
+      ...result,
+      files: result.files.map((file) &#x3D;&gt; ({
+        ...file,
+        url: &#x60;${APP_CONFIG.APP.STATIC_URL}/${file.key}&#x60;,
+        lastModified: file.lastModified?.getTime()
+      }))
+    }
+  }
+
+  @Post(&#x27;static/upload&#x27;)
   @UseGuards(AdminOnlyGuard)
   @UseInterceptors(FileInterceptor(&#x27;file&#x27;))
   @Responser.handle(&#x27;Upload file to cloud storage&#x27;)
-  async uploadStatic(@UploadedFile() file: Express.Multer.File, @Body() body) {
+  async uploadStaticFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
     const result &#x3D; await this.awsService.uploadFile({
       name: body.name,
       file: file.buffer,

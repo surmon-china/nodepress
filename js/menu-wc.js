@@ -868,13 +868,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/ResponserOptions.html" data-type="entity-link" >ResponserOptions</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/S3FileObject.html" data-type="entity-link" >S3FileObject</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/TokenResult.html" data-type="entity-link" >TokenResult</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/TypegooseClass.html" data-type="entity-link" >TypegooseClass</a>
-                            </li>
-                            <li class="link">
-                                <a href="interfaces/UploadResult.html" data-type="entity-link" >UploadResult</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/XMLItemData.html" data-type="entity-link" >XMLItemData</a>

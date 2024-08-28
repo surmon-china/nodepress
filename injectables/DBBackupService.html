@@ -288,8 +288,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="66"
-                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:66</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="70"
+                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:70</a></div>
                         </td>
                     </tr>
 
@@ -327,8 +327,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="61"
+                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:61</a></div>
                         </td>
                     </tr>
 
@@ -412,7 +412,7 @@ import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
 import {
-  UploadResult,
+  S3FileObject,
   AWSService,
   AWSStorageClass,
   AWSServerSideEncryption
@@ -445,7 +445,11 @@ export class DBBackupService {
   public async backup() {
     try {
       const result &#x3D; await this.doBackup()
-      const json &#x3D; { ...result, size: (result.size / 1024).toFixed(2) + &#x27;kb&#x27; }
+      const json &#x3D; {
+        ...result,
+        lastModified: result.lastModified?.toLocaleString(&#x27;zh&#x27;),
+        size: (result.size / 1024).toFixed(2) + &#x27;kb&#x27;
+      }
       this.mailToAdmin(&#x27;Database backup succeeded&#x27;, JSON.stringify(json, null, 2), true)
       return result
     } catch (error) {
@@ -464,7 +468,7 @@ export class DBBackupService {
   }
 
   private doBackup() {
-    return new Promise&lt;UploadResult&gt;((resolve, reject) &#x3D;&gt; {
+    return new Promise&lt;S3FileObject&gt;((resolve, reject) &#x3D;&gt; {
       if (!shell.which(&#x27;mongodump&#x27;)) {
         return reject(&#x27;DB Backup script requires [mongodump]&#x27;)
       }
