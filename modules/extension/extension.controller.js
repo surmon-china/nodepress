@@ -61,13 +61,14 @@ let ExtensionController = class ExtensionController {
         return this.dbBackupService.backup();
     }
     async getStaticFileList({ query }) {
-        const minLimit = 80;
+        const minLimit = 200;
         const numberLimit = Number(query.limit);
         const limit = Number.isInteger(numberLimit) ? numberLimit : minLimit;
         const result = await this.awsService.getFileList({
             limit: limit < minLimit ? minLimit : limit,
             prefix: query.prefix,
-            marker: query.marker,
+            startAfter: query.startAfter,
+            delimiter: query.delimiter,
             region: APP_CONFIG.AWS.s3StaticRegion,
             bucket: APP_CONFIG.AWS.s3StaticBucket
         });

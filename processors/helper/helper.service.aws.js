@@ -83,11 +83,12 @@ let AWSService = class AWSService {
     }
     getFileList(payload) {
         const s3Client = this.createClient(payload.region);
-        const command = new client_s3_1.ListObjectsCommand({
+        const command = new client_s3_1.ListObjectsV2Command({
             Bucket: payload.bucket,
-            Marker: payload.marker,
             Prefix: payload.prefix,
-            MaxKeys: payload.limit
+            MaxKeys: payload.limit,
+            Delimiter: payload.delimiter,
+            StartAfter: payload.startAfter
         });
         return s3Client.send(command).then((result) => {
             var _a;
@@ -95,7 +96,9 @@ let AWSService = class AWSService {
                 name: result.Name,
                 limit: result.MaxKeys,
                 prefix: result.Prefix,
-                marker: result.Marker,
+                delimiter: result.Delimiter,
+                startAfter: result.StartAfter,
+                commonPrefixes: result.CommonPrefixes,
                 files: ((_a = result.Contents) !== null && _a !== void 0 ? _a : []).map((object) => ({
                     key: object.Key,
                     url: this.getAwsGeneralFileUrl(payload.region, payload.bucket, object.Key),

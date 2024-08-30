@@ -45,8 +45,9 @@ exports.AppModule = AppModule = __decorate([
                     limit: 600,
                     ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
                     skipIf: (context) => {
+                        var _a;
                         const request = context.switchToHttp().getRequest();
-                        return request.hostname === 'localhost' || ['127.0.0.1', '::1'].includes(request.ip);
+                        return request.hostname === 'localhost' || ['127.0.0.1', '::1'].includes((_a = request.ip) !== null && _a !== void 0 ? _a : '');
                     }
                 }
             ]),
