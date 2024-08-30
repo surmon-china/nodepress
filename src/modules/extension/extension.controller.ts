@@ -43,13 +43,14 @@ export class ExtensionController {
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Get file list from cloud storage')
   async getStaticFileList(@QueryParams() { query }: QueryParamsResult) {
-    const minLimit = 80
+    const minLimit = 200
     const numberLimit = Number(query.limit)
     const limit = Number.isInteger(numberLimit) ? numberLimit : minLimit
     const result = await this.awsService.getFileList({
       limit: limit < minLimit ? minLimit : limit,
       prefix: query.prefix,
-      marker: query.marker,
+      startAfter: query.startAfter,
+      delimiter: query.delimiter,
       region: APP_CONFIG.AWS.s3StaticRegion,
       bucket: APP_CONFIG.AWS.s3StaticBucket
     })

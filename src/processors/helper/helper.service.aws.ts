@@ -7,7 +7,7 @@
 import {
   S3Client,
   PutObjectCommand,
-  ListObjectsCommand,
+  ListObjectsV2Command,
   GetObjectAttributesCommand,
   ObjectAttributes,
   StorageClass,
@@ -88,20 +88,31 @@ export class AWSService {
     })
   }
 
-  public getFileList(payload: { region: string; bucket: string; limit: number; prefix?: string; marker?: string }) {
+  public getFileList(payload: {
+    region: string
+    bucket: string
+    limit: number
+    prefix?: string
+    delimiter?: string
+    startAfter?: string
+  }) {
     const s3Client = this.createClient(payload.region)
-    const command = new ListObjectsCommand({
+    // https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html
+    const command = new ListObjectsV2Command({
       Bucket: payload.bucket,
-      Marker: payload.marker,
       Prefix: payload.prefix,
-      MaxKeys: payload.limit
+      MaxKeys: payload.limit,
+      Delimiter: payload.delimiter,
+      StartAfter: payload.startAfter
     })
 
     return s3Client.send(command).then((result) => ({
       name: result.Name,
       limit: result.MaxKeys,
       prefix: result.Prefix,
-      marker: result.Marker,
+      delimiter: result.Delimiter,
+      startAfter: result.StartAfter,
+      commonPrefixes: result.CommonPrefixes,
       files: (result.Contents ?? []).map<S3FileObject>((object) => ({
         key: object.Key!,
         url: this.getAwsGeneralFileUrl(payload.region, payload.bucket, object.Key!),
