@@ -388,8 +388,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="101"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:101</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:102</a></div>
                         </td>
                     </tr>
 
@@ -462,8 +462,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="90"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:90</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:91</a></div>
                         </td>
                     </tr>
 
@@ -536,8 +536,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="112"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:112</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:113</a></div>
                         </td>
                     </tr>
 
@@ -660,8 +660,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="71"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:71</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:72</a></div>
                         </td>
                     </tr>
 
@@ -767,13 +767,14 @@ export class ExtensionController {
   @UseGuards(AdminOnlyGuard)
   @Responser.handle(&#x27;Get file list from cloud storage&#x27;)
   async getStaticFileList(@QueryParams() { query }: QueryParamsResult) {
-    const minLimit &#x3D; 80
+    const minLimit &#x3D; 200
     const numberLimit &#x3D; Number(query.limit)
     const limit &#x3D; Number.isInteger(numberLimit) ? numberLimit : minLimit
     const result &#x3D; await this.awsService.getFileList({
       limit: limit &lt; minLimit ? minLimit : limit,
       prefix: query.prefix,
-      marker: query.marker,
+      startAfter: query.startAfter,
+      delimiter: query.delimiter,
       region: APP_CONFIG.AWS.s3StaticRegion,
       bucket: APP_CONFIG.AWS.s3StaticBucket
     })

@@ -270,8 +270,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="117"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:117</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:128</a></div>
                         </td>
                     </tr>
 
@@ -596,7 +596,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
   S3Client,
   PutObjectCommand,
-  ListObjectsCommand,
+  ListObjectsV2Command,
   GetObjectAttributesCommand,
   ObjectAttributes,
   StorageClass,
@@ -677,20 +677,31 @@ export class AWSService {
     })
   }
 
-  public getFileList(payload: { region: string; bucket: string; limit: number; prefix?: string; marker?: string }) {
+  public getFileList(payload: {
+    region: string
+    bucket: string
+    limit: number
+    prefix?: string
+    delimiter?: string
+    startAfter?: string
+  }) {
     const s3Client &#x3D; this.createClient(payload.region)
-    const command &#x3D; new ListObjectsCommand({
+    // https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html
+    const command &#x3D; new ListObjectsV2Command({
       Bucket: payload.bucket,
-      Marker: payload.marker,
       Prefix: payload.prefix,
-      MaxKeys: payload.limit
+      MaxKeys: payload.limit,
+      Delimiter: payload.delimiter,
+      StartAfter: payload.startAfter
     })
 
     return s3Client.send(command).then((result) &#x3D;&gt; ({
       name: result.Name,
       limit: result.MaxKeys,
       prefix: result.Prefix,
-      marker: result.Marker,
+      delimiter: result.Delimiter,
+      startAfter: result.StartAfter,
+      commonPrefixes: result.CommonPrefixes,
       files: (result.Contents ?? []).map&lt;S3FileObject&gt;((object) &#x3D;&gt; ({
         key: object.Key!,
         url: this.getAwsGeneralFileUrl(payload.region, payload.bucket, object.Key!),

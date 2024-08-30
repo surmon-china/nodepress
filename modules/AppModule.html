@@ -547,7 +547,7 @@ import { VoteModule } from &#x27;@app/modules/vote/vote.module&#x27;
           // Skip throttle for the front-end server.
           const request &#x3D; context.switchToHttp().getRequest&lt;Request&gt;()
           // Work only for front-end applications running on the same host machine.
-          return request.hostname &#x3D;&#x3D;&#x3D; &#x27;localhost&#x27; || [&#x27;127.0.0.1&#x27;, &#x27;::1&#x27;].includes(request.ip)
+          return request.hostname &#x3D;&#x3D;&#x3D; &#x27;localhost&#x27; || [&#x27;127.0.0.1&#x27;, &#x27;::1&#x27;].includes(request.ip ?? &#x27;&#x27;)
         }
       }
     ]),
