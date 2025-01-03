@@ -4,27 +4,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-// MARK: keep chalk v4.x
-// https://stackoverflow.com/questions/70309135/chalk-error-err-require-esm-require-of-es-module
-import chalk from 'chalk'
-
-const renderTime = () => {
-  const now = new Date()
-  return `[${now.toLocaleDateString()} ${now.toLocaleTimeString()}]`
-}
-
-const renderScope = (scope: string) => {
-  return chalk.green.underline(scope)
-}
-
-const renderMessage = (color: chalk.Chalk, messages: any[]) => {
-  return messages.map((m) => (typeof m === 'string' ? color(m) : m))
-}
+import pico from 'picocolors'
 
 interface LoggerRenderOptions {
   consoler: (...messages: any[]) => void
+  formatter(...messages: any[]): string
   label: string
-  color: chalk.Chalk
   scope?: string
   time?: boolean
 }
@@ -32,14 +17,28 @@ interface LoggerRenderOptions {
 const renderLogger = (options: LoggerRenderOptions) => {
   return (...messages: any) => {
     const logs: any[] = []
+
+    // label
     logs.push(options.label)
+
+    // timestamp
     if (options.time) {
-      logs.push(renderTime())
+      const now = new Date()
+      const formattedDate = now.toLocaleDateString()
+      const formattedTime = now.toLocaleTimeString()
+      const timestamp = `[${formattedDate} ${formattedTime}]`
+      logs.push(timestamp)
     }
+
+    // scope
     if (options.scope) {
-      logs.push(renderScope(options.scope))
+      const scope = pico.green(pico.underline(pico.bold(options.scope)))
+      logs.push(scope)
     }
-    return options.consoler(...logs, ...renderMessage(options.color, messages))
+
+    // message
+    const msgs = messages.map((m) => (typeof m === 'string' ? options.formatter(m) : m))
+    return options.consoler(...logs, ...msgs)
   }
 }
 
@@ -50,14 +49,14 @@ export interface LoggerOptions {
 
 export const createLogger = (opts?: LoggerOptions) => ({
   // levels
-  log: renderLogger({ label: '⚪', consoler: console.log, color: chalk.cyanBright, ...opts }),
-  info: renderLogger({ label: '🔵', consoler: console.info, color: chalk.greenBright, ...opts }),
-  warn: renderLogger({ label: '🟠', consoler: console.warn, color: chalk.yellowBright, ...opts }),
-  error: renderLogger({ label: '🔴', consoler: console.error, color: chalk.redBright, ...opts }),
-  debug: renderLogger({ label: '🟤', consoler: console.debug, color: chalk.cyanBright, ...opts }),
+  log: renderLogger({ label: '⚪', consoler: console.log, formatter: pico.cyanBright, ...opts }),
+  info: renderLogger({ label: '🔵', consoler: console.info, formatter: pico.greenBright, ...opts }),
+  warn: renderLogger({ label: '🟠', consoler: console.warn, formatter: pico.yellowBright, ...opts }),
+  error: renderLogger({ label: '🔴', consoler: console.error, formatter: pico.redBright, ...opts }),
+  debug: renderLogger({ label: '🟤', consoler: console.debug, formatter: pico.cyanBright, ...opts }),
   // aliases
-  success: renderLogger({ label: '🟢', consoler: console.log, color: chalk.greenBright, ...opts }),
-  failure: renderLogger({ label: '🔴', consoler: console.warn, color: chalk.redBright, ...opts })
+  success: renderLogger({ label: '🟢', consoler: console.log, formatter: pico.greenBright, ...opts }),
+  failure: renderLogger({ label: '🔴', consoler: console.warn, formatter: pico.redBright, ...opts })
 })
 
 export default createLogger()

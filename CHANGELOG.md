@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 4.13.0 (2025-01-04)
+
+**Feature**
+
+- Upgrade dependencies
+- Use `picocolors` instead of `chalk`
+
 ### 4.10.0 (2024-08-06)
 
 **Feature**

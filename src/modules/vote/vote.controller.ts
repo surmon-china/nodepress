@@ -122,11 +122,11 @@ export class VoteController {
     }
 
     const getAgentText = (ua: string) => {
-      const uaResult = new UAParser(ua).getResult()
+      const parsed = UAParser(ua)
       return [
-        `${uaResult.browser.name ?? 'unknown_browser'}@${uaResult.browser.version ?? 'unknown'}`,
-        `${uaResult.os.name ?? 'unknown_OS'}@${uaResult.os.version ?? 'unknown'}`,
-        `${uaResult.device.model ?? 'unknown_device'}@${uaResult.device.vendor ?? 'unknown'}`
+        `${parsed.browser.name ?? 'unknown_browser'}@${parsed.browser.version ?? 'unknown'}`,
+        `${parsed.os.name ?? 'unknown_OS'}@${parsed.os.version ?? 'unknown'}`,
+        `${parsed.device.model ?? 'unknown_device'}@${parsed.device.vendor ?? 'unknown'}`
       ].join(' · ')
     }
 
