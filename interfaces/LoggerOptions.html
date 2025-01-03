@@ -246,25 +246,12 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import chalk from &#x27;chalk&#x27;
-
-const renderTime &#x3D; () &#x3D;&gt; {
-  const now &#x3D; new Date()
-  return &#x60;[${now.toLocaleDateString()} ${now.toLocaleTimeString()}]&#x60;
-}
-
-const renderScope &#x3D; (scope: string) &#x3D;&gt; {
-  return chalk.green.underline(scope)
-}
-
-const renderMessage &#x3D; (color: chalk.Chalk, messages: any[]) &#x3D;&gt; {
-  return messages.map((m) &#x3D;&gt; (typeof m &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? color(m) : m))
-}
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import pico from &#x27;picocolors&#x27;
 
 interface LoggerRenderOptions {
   consoler: (...messages: any[]) &#x3D;&gt; void
+  formatter(...messages: any[]): string
   label: string
-  color: chalk.Chalk
   scope?: string
   time?: boolean
 }
@@ -272,14 +259,28 @@ interface LoggerRenderOptions {
 const renderLogger &#x3D; (options: LoggerRenderOptions) &#x3D;&gt; {
   return (...messages: any) &#x3D;&gt; {
     const logs: any[] &#x3D; []
+
+    // label
     logs.push(options.label)
+
+    // timestamp
     if (options.time) {
-      logs.push(renderTime())
+      const now &#x3D; new Date()
+      const formattedDate &#x3D; now.toLocaleDateString()
+      const formattedTime &#x3D; now.toLocaleTimeString()
+      const timestamp &#x3D; &#x60;[${formattedDate} ${formattedTime}]&#x60;
+      logs.push(timestamp)
     }
+
+    // scope
     if (options.scope) {
-      logs.push(renderScope(options.scope))
+      const scope &#x3D; pico.green(pico.underline(pico.bold(options.scope)))
+      logs.push(scope)
     }
-    return options.consoler(...logs, ...renderMessage(options.color, messages))
+
+    // message
+    const msgs &#x3D; messages.map((m) &#x3D;&gt; (typeof m &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? options.formatter(m) : m))
+    return options.consoler(...logs, ...msgs)
   }
 }
 
@@ -290,14 +291,14 @@ export interface LoggerOptions {
 
 export const createLogger &#x3D; (opts?: LoggerOptions) &#x3D;&gt; ({
   // levels
-  log: renderLogger({ label: &#x27;⚪&#x27;, consoler: console.log, color: chalk.cyanBright, ...opts }),
-  info: renderLogger({ label: &#x27;🔵&#x27;, consoler: console.info, color: chalk.greenBright, ...opts }),
-  warn: renderLogger({ label: &#x27;🟠&#x27;, consoler: console.warn, color: chalk.yellowBright, ...opts }),
-  error: renderLogger({ label: &#x27;🔴&#x27;, consoler: console.error, color: chalk.redBright, ...opts }),
-  debug: renderLogger({ label: &#x27;🟤&#x27;, consoler: console.debug, color: chalk.cyanBright, ...opts }),
+  log: renderLogger({ label: &#x27;⚪&#x27;, consoler: console.log, formatter: pico.cyanBright, ...opts }),
+  info: renderLogger({ label: &#x27;🔵&#x27;, consoler: console.info, formatter: pico.greenBright, ...opts }),
+  warn: renderLogger({ label: &#x27;🟠&#x27;, consoler: console.warn, formatter: pico.yellowBright, ...opts }),
+  error: renderLogger({ label: &#x27;🔴&#x27;, consoler: console.error, formatter: pico.redBright, ...opts }),
+  debug: renderLogger({ label: &#x27;🟤&#x27;, consoler: console.debug, formatter: pico.cyanBright, ...opts }),
   // aliases
-  success: renderLogger({ label: &#x27;🟢&#x27;, consoler: console.log, color: chalk.greenBright, ...opts }),
-  failure: renderLogger({ label: &#x27;🔴&#x27;, consoler: console.warn, color: chalk.redBright, ...opts })
+  success: renderLogger({ label: &#x27;🟢&#x27;, consoler: console.log, formatter: pico.greenBright, ...opts }),
+  failure: renderLogger({ label: &#x27;🔴&#x27;, consoler: console.warn, formatter: pico.redBright, ...opts })
 })
 
 export default createLogger()
@@ -366,7 +367,6 @@ export default createLogger()
        <script src="../js/libs/es6-shim.min.js"></script>
        <script src="../js/libs/EventDispatcher.js"></script>
        <script src="../js/libs/promise.min.js"></script>
-       <script src="../js/libs/zepto.min.js"></script>
 
        <script src="../js/compodoc.js"></script>
 

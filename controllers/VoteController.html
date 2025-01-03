@@ -1141,11 +1141,11 @@ export class VoteController {
     }
 
     const getAgentText &#x3D; (ua: string) &#x3D;&gt; {
-      const uaResult &#x3D; new UAParser(ua).getResult()
+      const parsed &#x3D; UAParser(ua)
       return [
-        &#x60;${uaResult.browser.name ?? &#x27;unknown_browser&#x27;}@${uaResult.browser.version ?? &#x27;unknown&#x27;}&#x60;,
-        &#x60;${uaResult.os.name ?? &#x27;unknown_OS&#x27;}@${uaResult.os.version ?? &#x27;unknown&#x27;}&#x60;,
-        &#x60;${uaResult.device.model ?? &#x27;unknown_device&#x27;}@${uaResult.device.vendor ?? &#x27;unknown&#x27;}&#x60;
+        &#x60;${parsed.browser.name ?? &#x27;unknown_browser&#x27;}@${parsed.browser.version ?? &#x27;unknown&#x27;}&#x60;,
+        &#x60;${parsed.os.name ?? &#x27;unknown_OS&#x27;}@${parsed.os.version ?? &#x27;unknown&#x27;}&#x60;,
+        &#x60;${parsed.device.model ?? &#x27;unknown_device&#x27;}@${parsed.device.vendor ?? &#x27;unknown&#x27;}&#x60;
       ].join(&#x27; · &#x27;)
     }
 
@@ -1407,7 +1407,6 @@ export class VoteController {
        <script src="../js/libs/es6-shim.min.js"></script>
        <script src="../js/libs/EventDispatcher.js"></script>
        <script src="../js/libs/promise.min.js"></script>
-       <script src="../js/libs/zepto.min.js"></script>
 
        <script src="../js/compodoc.js"></script>
 
