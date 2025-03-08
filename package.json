@@ -41,7 +41,7 @@
     "@typegoose/auto-increment": "^4.9.x",
     "@typegoose/typegoose": "^12.10.x",
     "akismet-api": "^6.x",
-    "axios": "^1.7.x",
+    "axios": "^1.8.x",
     "body-parser": "^1.20.x",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
