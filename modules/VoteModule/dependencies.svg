@@ -24,13 +24,13 @@
 <title>cluster_VoteModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-268 646,-268 646,-70 8,-70"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_VoteModule_exports</title>
-<polygon fill="none" stroke="black" points="262,-208 262,-260 366,-260 366,-208 262,-208"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_VoteModule_providers</title>
 <polygon fill="none" stroke="black" points="504,-78 504,-130 638,-130 638,-78 504,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_VoteModule_exports</title>
+<polygon fill="none" stroke="black" points="262,-208 262,-260 366,-260 366,-208 262,-208"/>
 </g>
 <g id="clust3" class="cluster">
 <title>cluster_VoteModule_imports</title>
