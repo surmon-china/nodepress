@@ -8,8 +8,8 @@
 // https://github.com/dabroek/node-cache-manager-redis-store/blob/master/index.js
 // https://github.com/node-cache-manager/node-cache-manager-redis-yet/blob/master/src/index.ts
 
-import type { RedisClientType } from 'redis'
 import { isNil, isUndefined, UNDEFINED } from '@app/constants/value.constant'
+import type { RedisClientType } from './redis.service'
 
 export type { RedisClientOptions } from 'redis'
 export type RedisStore = ReturnType<typeof createRedisStore>
@@ -44,7 +44,7 @@ export const createRedisStore = (redisClient: RedisClientType, options?: RedisSt
     const _ttl = isUndefined(ttl) ? options?.defaultTTL : ttl
     if (!isNil(_ttl) && _ttl !== 0) {
       // EX — Set the specified expire time, in seconds.
-      await redisClient.set(_key, _value, { EX: _ttl })
+      await redisClient.set(_key, _value, { expiration: { type: 'EX', value: _ttl } })
     } else {
       await redisClient.set(_key, _value)
     }
@@ -56,7 +56,7 @@ export const createRedisStore = (redisClient: RedisClientType, options?: RedisSt
       const multi = redisClient.multi()
       for (const [key, value] of kvs) {
         // EX — Set the specified expire time, in seconds.
-        multi.set(getKeyName(key), stringifyValue(value), { EX: _ttl })
+        multi.set(getKeyName(key), stringifyValue(value), { expiration: { type: 'EX', value: _ttl } })
       }
       await multi.exec()
     } else {

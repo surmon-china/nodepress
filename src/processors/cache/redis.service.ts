@@ -9,7 +9,7 @@
 // https://gist.github.com/kyle-mccarthy/b6770b49ebfab88e75bcbac87b272a94
 
 import _throttle from 'lodash/throttle'
-import { createClient, RedisClientType } from 'redis'
+import { createClient } from 'redis'
 import { Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
 import { createRedisStore, RedisStore, RedisClientOptions } from './redis.store'
@@ -19,13 +19,16 @@ import * as APP_CONFIG from '@app/app.config'
 
 const logger = createLogger({ scope: 'RedisService', time: isDevEnv })
 
+// https://github.com/redis/node-redis/blob/master/docs/FAQ.md#redisclienttype
+export type RedisClientType = ReturnType<typeof createClient>
+
 @Injectable()
 export class RedisService {
   private redisStore!: RedisStore
   private redisClient!: RedisClientType
 
   constructor(private readonly emailService: EmailService) {
-    this.redisClient = createClient(this.getOptions()) as RedisClientType
+    this.redisClient = createClient(this.getOptions())
     this.redisStore = createRedisStore(this.redisClient, {
       defaultTTL: APP_CONFIG.APP.DEFAULT_CACHE_TTL,
       namespace: APP_CONFIG.REDIS.namespace
