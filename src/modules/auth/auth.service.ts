@@ -27,7 +27,7 @@ export class AuthService {
     return auth?.password || decodeMD5(APP_CONFIG.AUTH.defaultPassword as string)
   }
 
-  public validateAuthData(payload: any): Promise<any> {
+  public validateAuthData(payload: any): any | null {
     const isVerified = _isEqual(payload.data, APP_CONFIG.AUTH.data)
     return isVerified ? payload.data : null
   }
