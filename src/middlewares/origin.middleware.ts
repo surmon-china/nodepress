@@ -8,7 +8,7 @@ import { Request, Response } from 'express'
 import { Injectable, NestMiddleware, HttpStatus } from '@nestjs/common'
 import { HttpResponseError, ResponseStatus } from '@app/interfaces/response.interface'
 import { isProdEnv } from '@app/app.environment'
-import { CROSS_DOMAIN } from '@app/app.config'
+import { APP_BIZ } from '@app/app.config'
 import * as TEXT from '@app/constants/text.constant'
 
 /**
@@ -21,7 +21,7 @@ export class OriginMiddleware implements NestMiddleware {
     // production only
     if (isProdEnv) {
       const { origin, referer } = request.headers
-      const isAllowed = (field) => !field || field.includes(CROSS_DOMAIN.allowedReferer)
+      const isAllowed = (field) => !field || field.includes(APP_BIZ.CORS.allowedReferer)
       const isAllowedOrigin = isAllowed(origin)
       const isAllowedReferer = isAllowed(referer)
       if (!isAllowedOrigin && !isAllowedReferer) {

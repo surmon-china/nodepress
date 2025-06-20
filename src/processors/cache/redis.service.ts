@@ -30,7 +30,7 @@ export class RedisService {
   constructor(private readonly emailService: EmailService) {
     this.redisClient = createClient(this.getOptions())
     this.redisStore = createRedisStore(this.redisClient, {
-      defaultTTL: APP_CONFIG.APP.DEFAULT_CACHE_TTL,
+      defaultTTL: APP_CONFIG.APP_BIZ.DEFAULT_CACHE_TTL,
       namespace: APP_CONFIG.REDIS.namespace
     })
     // https://github.com/redis/node-redis#events
@@ -44,8 +44,8 @@ export class RedisService {
   }
 
   private sendAlarmMail = _throttle((error: string) => {
-    this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
-      to: APP_CONFIG.APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
       subject: `Redis Error!`,
       text: error,
       html: `<pre><code>${error}</code></pre>`

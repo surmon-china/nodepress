@@ -87,8 +87,8 @@ export class StatisticService {
       `Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}`
     ]
 
-    this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
-      to: APP_CONFIG.APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
       subject: 'Daily Statistics',
       text: emailContents.join('\n'),
       html: emailContents.map((text) => `<p>${text}</p>`).join('\n')

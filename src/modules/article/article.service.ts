@@ -73,10 +73,10 @@ export class ArticleService {
       // Populate reference fields
       ...ARTICLE_FULL_QUERY_REF_POPULATE.map((field) => ({
         $lookup: {
-          from: field, //  Name of the collection to join. e.g. categories
-          localField: field, // Field from the input documents. e.g. categories
+          from: field, //  Name of the collection to join (e.g., categories)
+          localField: field, // Field from the input documents (e.g., categories)
           foreignField: '_id', // Field from the documents of the "from" collection
-          as: field // Output array field. e.g. categories
+          as: field // Output array field (e.g., categories)
         }
       }))
     ])

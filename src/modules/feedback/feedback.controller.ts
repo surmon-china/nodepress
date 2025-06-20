@@ -78,8 +78,8 @@ export class FeedbackController {
       `Feedback: ${result.content}`
     ]
 
-    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
-      to: APP_CONFIG.APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
+      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
       subject,
       text: texts.join('\n'),
       html: texts.map((text) => `<p>${text}</p>`).join('\n')

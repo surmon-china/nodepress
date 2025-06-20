@@ -60,8 +60,8 @@ export class CommentService {
 
     // email to admin
     const subject = `You have a new comment`
-    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
-      to: APP_CONFIG.APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
+      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
       subject,
       ...getMailContent(subject)
     })
@@ -71,7 +71,7 @@ export class CommentService {
       this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
         if (parentComment?.author.email) {
           const subject = `Your comment #${parentComment.id} has a new reply`
-          this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
+          this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
             to: parentComment.author.email,
             subject,
             ...getMailContent(subject)

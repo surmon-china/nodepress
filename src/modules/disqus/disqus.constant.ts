@@ -4,12 +4,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { APP } from '@app/app.config'
+import { APP_BIZ } from '@app/app.config'
 import { isProdEnv } from '@app/app.environment'
 import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 
 export const DISQUS_OAUTH_CALLBACK_URL = isProdEnv
-  ? `${APP.URL}/disqus/oauth-callback`
+  ? `${APP_BIZ.URL}/disqus/oauth-callback`
   : `http://localhost:8000/disqus/oauth-callback`
 
 // extends

@@ -20,7 +20,7 @@ import {
 } from 'class-validator'
 import { KeyValueModel } from '@app/models/key-value.model'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
-import { APP } from '@app/app.config'
+import { APP_BIZ } from '@app/app.config'
 
 export const DEFAULT_OPTION: Option = Object.freeze<Option>({
   title: 'NodePress',
@@ -32,8 +32,8 @@ export const DEFAULT_OPTION: Option = Object.freeze<Option>({
   site_email: 'admin@example.com',
   friend_links: [
     {
-      name: APP.FE_NAME,
-      value: APP.FE_URL
+      name: APP_BIZ.FE_NAME,
+      value: APP_BIZ.FE_URL
     }
   ],
   meta: { likes: 0 },

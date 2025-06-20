@@ -14,7 +14,7 @@ import { AuthLoginDTO, AdminUpdateDTO } from './auth.dto'
 import { AuthService } from './auth.service'
 import { TokenResult } from './auth.interface'
 import { Admin } from './auth.model'
-import { APP } from '@app/app.config'
+import { APP_BIZ } from '@app/app.config'
 
 @Controller('auth')
 export class AuthController {
@@ -36,8 +36,8 @@ export class AuthController {
         const subject = `App has a new login activity`
         const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow'
         const content = `${subject}. IP: ${ip}, location: ${locationText}`
-        this.emailService.sendMailAs(APP.NAME, {
-          to: APP.ADMIN_EMAIL,
+        this.emailService.sendMailAs(APP_BIZ.NAME, {
+          to: APP_BIZ.ADMIN_EMAIL,
           subject,
           text: content,
           html: content

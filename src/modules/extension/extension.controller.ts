@@ -59,7 +59,7 @@ export class ExtensionController {
       ...result,
       files: result.files.map((file) => ({
         ...file,
-        url: `${APP_CONFIG.APP.STATIC_URL}/${file.key}`,
+        url: `${APP_CONFIG.APP_BIZ.STATIC_URL}/${file.key}`,
         lastModified: file.lastModified?.getTime()
       }))
     }
@@ -80,7 +80,7 @@ export class ExtensionController {
 
     return {
       ...result,
-      url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}`
+      url: `${APP_CONFIG.APP_BIZ.STATIC_URL}/${result.key}`
     }
   }
 

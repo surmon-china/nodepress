@@ -36,14 +36,14 @@ async function bootstrap() {
   // https://stackoverflow.com/a/60141437/6222535
   // MARK: can't used!
   // useContainer(app.select(AppModule), { fallbackOnErrors: true, fallback: true })
-  return await app.listen(APP_CONFIG.APP.PORT)
+  return await app.listen(APP_CONFIG.APP_BIZ.PORT)
 }
 
 bootstrap().then(() => {
   logger.success(
-    `${APP_CONFIG.APP.NAME} app is running!`,
+    `${APP_CONFIG.APP_BIZ.NAME} app is running!`,
     `| env: ${environment}`,
-    `| port: ${APP_CONFIG.APP.PORT}`,
+    `| port: ${APP_CONFIG.APP_BIZ.PORT}`,
     `| ${new Date().toLocaleString()}`
   )
 })

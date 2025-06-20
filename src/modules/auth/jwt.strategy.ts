@@ -10,14 +10,14 @@ import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { HttpUnauthorizedError } from '@app/errors/unauthorized.error'
 import { AuthService } from './auth.service'
-import * as APP_CONFIG from '@app/app.config'
+import { APP_BIZ } from '@app/app.config'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: APP_CONFIG.AUTH.jwtSecret
+      secretOrKey: APP_BIZ.AUTH.jwtSecret
     })
   }
 

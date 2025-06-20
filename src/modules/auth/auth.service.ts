@@ -13,7 +13,7 @@ import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { TokenResult } from './auth.interface'
 import { Admin, DEFAULT_ADMIN_PROFILE } from './auth.model'
 import { AdminUpdateDTO } from './auth.dto'
-import * as APP_CONFIG from '@app/app.config'
+import { APP_BIZ } from '@app/app.config'
 
 @Injectable()
 export class AuthService {
@@ -24,18 +24,18 @@ export class AuthService {
 
   private async getExistedPassword(): Promise<string> {
     const auth = await this.authModel.findOne(UNDEFINED, '+password').exec()
-    return auth?.password || decodeMD5(APP_CONFIG.AUTH.defaultPassword as string)
+    return auth?.password || decodeMD5(APP_BIZ.AUTH.defaultPassword as string)
   }
 
   public validateAuthData(payload: any): any | null {
-    const isVerified = _isEqual(payload.data, APP_CONFIG.AUTH.data)
+    const isVerified = _isEqual(payload.data, APP_BIZ.AUTH.data)
     return isVerified ? payload.data : null
   }
 
   public createToken(): TokenResult {
     return {
-      access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
-      expires_in: APP_CONFIG.AUTH.expiresIn as number
+      access_token: this.jwtService.sign({ data: APP_BIZ.AUTH.data }),
+      expires_in: APP_BIZ.AUTH.expiresIn as number
     }
   }
 

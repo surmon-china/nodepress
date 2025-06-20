@@ -140,7 +140,7 @@ export class VoteController {
     const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('')
     const linkHTML = `<a href="${payload.link}" target="_blank">${payload.on}</a>`
 
-    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
       to: payload.to,
       subject: payload.subject,
       text: mailTexts.join('\n'),
@@ -227,7 +227,7 @@ export class VoteController {
         })
         // email to admin
         this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP.ADMIN_EMAIL,
+          to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
           subject: `You have a new post vote`,
           on: await this.getPostTitle(voteBody.post_id),
           vote: voteTypeMap.get(voteBody.vote)!,
@@ -297,7 +297,7 @@ export class VoteController {
         }
         // email to admin
         this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP.ADMIN_EMAIL,
+          to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
           subject: `You have a new comment vote`,
           ...mailPayload
         })
