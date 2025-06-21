@@ -8,7 +8,7 @@
 
 # NodePress
 
-[![nodepress](https://raw.githubusercontent.com/surmon-china/nodepress/main/badge.svg)](https://github.com/surmon-china/nodepress)
+[![nodepress](branding/badge.svg)](https://github.com/surmon-china/nodepress)
 &nbsp;
 [![GitHub stars](https://img.shields.io/github/stars/surmon-china/nodepress.svg?style=for-the-badge)](https://github.com/surmon-china/nodepress/stargazers)
 &nbsp;
