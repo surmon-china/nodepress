@@ -4,14 +4,13 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+// https://github.com/jaredwray/cacheable
 // https://github.com/node-cache-manager/node-cache-manager
 // https://github.com/dabroek/node-cache-manager-redis-store/blob/master/index.js
-// https://github.com/node-cache-manager/node-cache-manager-redis-yet/blob/master/src/index.ts
 
 import { isNil, isUndefined, UNDEFINED } from '@app/constants/value.constant'
 import type { RedisClientType } from './redis.service'
 
-export type { RedisClientOptions } from 'redis'
 export type RedisStore = ReturnType<typeof createRedisStore>
 
 const stringifyValue = (value: unknown) => {

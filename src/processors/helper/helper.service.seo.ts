@@ -4,13 +4,13 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import * as APP_CONFIG from '@app/app.config'
 import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import { GoogleService } from './helper.service.google'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
+import * as APP_CONFIG from '@app/app.config'
 
 const logger = createLogger({ scope: 'SeoService', time: isDevEnv })
 

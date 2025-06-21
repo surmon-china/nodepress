@@ -6,7 +6,7 @@
 
 // https://docs.nestjs.com/techniques/caching#different-stores
 // https://docs.nestjs.com/techniques/caching#async-configuration
-// MARK： No longer use cache-manager because the API between `cache-manager` and `@nestjs/cache-manager` is inconsistent.
+// MARK: No longer use cache-manager because the API between `cache-manager` and `@nestjs/cache-manager` is inconsistent.
 
 import { Global, Module } from '@nestjs/common'
 import { RedisService } from './redis.service'

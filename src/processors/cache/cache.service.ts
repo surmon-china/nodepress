@@ -7,9 +7,9 @@
 import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
 import { isNil } from '@app/constants/value.constant'
-import { RedisService } from './redis.service'
-import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
+import { createLogger } from '@app/utils/logger'
+import { RedisService } from './redis.service'
 
 const logger = createLogger({ scope: 'CacheService', time: isDevEnv })
 

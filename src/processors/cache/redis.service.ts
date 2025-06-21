@@ -1,20 +1,21 @@
 /**
  * @file Cache Redis service
- * @module processor/cache/redis.config
+ * @module processor/cache/redis.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
 // https://github.com/nestjs/cache-manager/blob/master/lib/cache.module.ts
 // https://github.com/nestjs/cache-manager/blob/master/lib/cache.providers.ts
 // https://gist.github.com/kyle-mccarthy/b6770b49ebfab88e75bcbac87b272a94
+// https://github.com/jaredwray/keyv/blob/main/packages/redis/src/index.ts
 
 import _throttle from 'lodash/throttle'
-import { createClient } from 'redis'
+import { createClient, RedisClientOptions } from '@redis/client'
 import { Injectable } from '@nestjs/common'
 import { EmailService } from '@app/processors/helper/helper.service.email'
-import { createRedisStore, RedisStore, RedisClientOptions } from './redis.store'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
+import { createRedisStore, RedisStore } from './redis.store'
 import * as APP_CONFIG from '@app/app.config'
 
 const logger = createLogger({ scope: 'RedisService', time: isDevEnv })
