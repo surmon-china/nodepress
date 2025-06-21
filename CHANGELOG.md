@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 5.0.0 (2025-06-16)
+
+**Feature**
+
+- Upgrade `express` to v5
+- Upgrade `nestjs` to v11
+- Upgrade `Redis` supports to v8
+- Replaced `Redis` with `@redis/client`
+- Replaced `yargs` with `yargs-parser`
+- Refactored `app.config.ts` file
+
 ### 4.13.0 (2025-01-04)
 
 **Feature**

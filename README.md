@@ -24,7 +24,7 @@
 
 - [Changelog](/CHANGELOG.md#changelog)
 - [API Documentation](https://github.surmon.me/nodepress)
-- [Architecture Documentation](/DOCUMENTATION.md)
+- [Architecture Documentation](/ARCHITECTURE.md)
 
 **Related [Projects](https://github.com/stars/surmon-china/lists/surmon-me)**
 
@@ -61,6 +61,10 @@ $ pnpm run start:prod
 - Any PR open → `CI:Build test`
 - New tag `v*` → `CI:Create release`
 - Release created → `CI:Deploy` → `CI:Execute server deploy script`
+
+### TODO
+
+- About ES Modules support [#13319](https://github.com/nestjs/nest/issues/13319) / [#13817](https://github.com/nestjs/nest/issues/13817)
 
 ### Changelog
 
