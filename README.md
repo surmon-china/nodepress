@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/surmon-china/nodepress" target="blank">
-    <img src="branding/logo.png" height="96" alt="nodepress Logo" />
+    <img src="branding/logo.png" height="118" alt="nodepress Logo" />
   </a>
 </p>
 
