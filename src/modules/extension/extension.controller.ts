@@ -89,7 +89,7 @@ export class ExtensionController {
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Google analytics batchRunReports')
   googleAnalyticsBatchRunReports(@Body() requestBody) {
-    return this.googleService.getAnalyticsData().properties.batchRunReports({
+    return this.googleService.getAnalyticsDataClient().properties.batchRunReports({
       property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
       requestBody
     })
@@ -100,7 +100,7 @@ export class ExtensionController {
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Google analytics batchRunPivotReports')
   googleAnalyticsBatchRunPivotReports(@Body() requestBody) {
-    return this.googleService.getAnalyticsData().properties.batchRunPivotReports({
+    return this.googleService.getAnalyticsDataClient().properties.batchRunPivotReports({
       property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
       requestBody
     })
@@ -111,7 +111,7 @@ export class ExtensionController {
   @UseGuards(AdminOnlyGuard)
   @Responser.handle('Google analytics runRealtimeReport')
   googleAnalyticsRunRealtimeReport(@Body() requestBody) {
-    return this.googleService.getAnalyticsData().properties.runRealtimeReport({
+    return this.googleService.getAnalyticsDataClient().properties.runRealtimeReport({
       property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
       requestBody
     })
