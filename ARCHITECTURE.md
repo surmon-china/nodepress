@@ -18,7 +18,7 @@
 - `status`
   - `success` — Successful response
   - `error` — Error occurred
-- `message` — Always present; injected by [`responsor.decorator`](/src/decorators/responsor.decorator.ts)
+- `message` — Always present; injected by [`responser.decorator.ts`](/src/decorators/responser.decorator.ts)
 - `error` — Required when `status` is `error`, useful for debugging
 - `debug` — Stack trace (only in development mode)
 - `result` — Required when `status` is `success`
@@ -31,7 +31,7 @@
 
 **General Structure**
 
-- `extend` — Common extensible field used by models like `Article`, `Category`, and `Tag`, enabling backend customization. Inspired by [WordPress Custom Fields](https://wordpress.org/support/article/custom-fields/). See [`Extend Model`](/src/models/extend.model.ts).
+- `extend` — Common extensible field used by models like `Article`, `Category`, and `Tag`, enabling backend customization. Inspired by [WordPress Assign custom fields](https://wordpress.org/documentation/article/assign-custom-fields/). See [`KeyValue Model`](src/models/key-value.model.ts).
 
 **Key Fields**
 
@@ -160,8 +160,6 @@
 
 ### Google Analytics Embed API
 
-- [Docs](https://developers.google.com/analytics/devguides/reporting/embed/v1/)
-- [Live Demo](https://ga-dev-tools.appspot.com/embed-api/)
-- [Server-side Auth](https://ga-dev-tools.appspot.com/embed-api/server-side-authorization/)
-- [Client API Reference](https://developers.google.com/analytics/devguides/reporting/embed/v1/core-methods-reference)
+- [Demo & Tools](https://ga-dev-tools.appspot.com/embed-api/)
 - [GA Account Access](https://marketingplatform.google.com/home/accounts)
+- [Google Analytics Data API](https://developers.google.com/analytics/devguides/reporting/data/v1)
