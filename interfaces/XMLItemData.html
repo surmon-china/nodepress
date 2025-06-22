@@ -241,7 +241,7 @@ import { GUESTBOOK_POST_ID, CommentState } from &#x27;@app/constants/biz.constan
 import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { getThreadIdentifierById } from &#x27;./disqus.constant&#x27;
 import { ThreadState } from &#x27;./disqus.dto&#x27;
-import { APP } from &#x27;@app/app.config&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 // DOC: https://help.disqus.com/en/articles/1717222-custom-xml-import-format
 
@@ -277,7 +277,7 @@ export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comme
         &lt;item&gt;
           &lt;title&gt;Guestbook&lt;/title&gt;
           &lt;link&gt;${getPermalinkById(GUESTBOOK_POST_ID)}&lt;/link&gt;
-          &lt;content:encoded&gt;&lt;![CDATA[${APP.FE_NAME}]]&gt;&lt;/content:encoded&gt;
+          &lt;content:encoded&gt;&lt;![CDATA[${APP_BIZ.FE_NAME}]]&gt;&lt;/content:encoded&gt;
           &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(GUESTBOOK_POST_ID)}&lt;/dsq:thread_identifier&gt;
           &lt;wp:post_date_gmt&gt;2017-01-01 00:00:00&lt;/wp:post_date_gmt&gt;
           &lt;wp:comment_status&gt;open&lt;/wp:comment_status&gt;

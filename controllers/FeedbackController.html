@@ -686,8 +686,8 @@ export class FeedbackController {
       &#x60;Feedback: ${result.content}&#x60;
     ]
 
-    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
-      to: APP_CONFIG.APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
+      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
       subject,
       text: texts.join(&#x27;\n&#x27;),
       html: texts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;)

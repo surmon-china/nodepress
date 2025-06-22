@@ -243,9 +243,9 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { isNil } from &#x27;@app/constants/value.constant&#x27;
-import { RedisService } from &#x27;./redis.service&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
+import { RedisService } from &#x27;./redis.service&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;CacheService&#x27;, time: isDevEnv })
 

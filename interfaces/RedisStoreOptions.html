@@ -246,10 +246,9 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { RedisClientType } from &#x27;redis&#x27;
-import { isNil, isUndefined, UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { isNil, isUndefined, UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
+import type { RedisClientType } from &#x27;./redis.service&#x27;
 
-export type { RedisClientOptions } from &#x27;redis&#x27;
 export type RedisStore &#x3D; ReturnType&lt;typeof createRedisStore&gt;
 
 const stringifyValue &#x3D; (value: unknown) &#x3D;&gt; {
@@ -282,7 +281,7 @@ export const createRedisStore &#x3D; (redisClient: RedisClientType, options?: Re
     const _ttl &#x3D; isUndefined(ttl) ? options?.defaultTTL : ttl
     if (!isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
       // EX — Set the specified expire time, in seconds.
-      await redisClient.set(_key, _value, { EX: _ttl })
+      await redisClient.set(_key, _value, { expiration: { type: &#x27;EX&#x27;, value: _ttl } })
     } else {
       await redisClient.set(_key, _value)
     }
@@ -294,7 +293,7 @@ export const createRedisStore &#x3D; (redisClient: RedisClientType, options?: Re
       const multi &#x3D; redisClient.multi()
       for (const [key, value] of kvs) {
         // EX — Set the specified expire time, in seconds.
-        multi.set(getKeyName(key), stringifyValue(value), { EX: _ttl })
+        multi.set(getKeyName(key), stringifyValue(value), { expiration: { type: &#x27;EX&#x27;, value: _ttl } })
       }
       await multi.exec()
     } else {

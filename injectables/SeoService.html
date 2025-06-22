@@ -669,13 +669,13 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as APP_CONFIG from &#x27;@app/app.config&#x27;
-import { HttpService } from &#x27;@nestjs/axios&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpService } from &#x27;@nestjs/axios&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transformer&#x27;
 import { GoogleService } from &#x27;./helper.service.google&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;SeoService&#x27;, time: isDevEnv })
 

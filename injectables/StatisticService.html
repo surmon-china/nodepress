@@ -510,8 +510,8 @@ export class StatisticService {
       &#x60;Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}&#x60;
     ]
 
-    this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
-      to: APP_CONFIG.APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
       subject: &#x27;Daily Statistics&#x27;,
       text: emailContents.join(&#x27;\n&#x27;),
       html: emailContents.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;)

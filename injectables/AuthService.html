@@ -559,7 +559,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+                            <b>Returns : </b>    <code>any | null</code>
 
                         </div>
                             <div class="io-description">
@@ -585,7 +585,7 @@ import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { TokenResult } from &#x27;./auth.interface&#x27;
 import { Admin, DEFAULT_ADMIN_PROFILE } from &#x27;./auth.model&#x27;
 import { AdminUpdateDTO } from &#x27;./auth.dto&#x27;
-import * as APP_CONFIG from &#x27;@app/app.config&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 @Injectable()
 export class AuthService {
@@ -596,18 +596,18 @@ export class AuthService {
 
   private async getExistedPassword(): Promise&lt;string&gt; {
     const auth &#x3D; await this.authModel.findOne(UNDEFINED, &#x27;+password&#x27;).exec()
-    return auth?.password || decodeMD5(APP_CONFIG.AUTH.defaultPassword as string)
+    return auth?.password || decodeMD5(APP_BIZ.AUTH.defaultPassword as string)
   }
 
-  public validateAuthData(payload: any): Promise&lt;any&gt; {
-    const isVerified &#x3D; _isEqual(payload.data, APP_CONFIG.AUTH.data)
+  public validateAuthData(payload: any): any | null {
+    const isVerified &#x3D; _isEqual(payload.data, APP_BIZ.AUTH.data)
     return isVerified ? payload.data : null
   }
 
   public createToken(): TokenResult {
     return {
-      access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
-      expires_in: APP_CONFIG.AUTH.expiresIn as number
+      access_token: this.jwtService.sign({ data: APP_BIZ.AUTH.data }),
+      expires_in: APP_BIZ.AUTH.expiresIn as number
     }
   }
 

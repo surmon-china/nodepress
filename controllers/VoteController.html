@@ -1159,7 +1159,7 @@ export class VoteController {
     const textHTML &#x3D; mailTexts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;&#x27;)
     const linkHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;${payload.link}&quot; target&#x3D;&quot;_blank&quot;&gt;${payload.on}&lt;/a&gt;&#x60;
 
-    this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
       to: payload.to,
       subject: payload.subject,
       text: mailTexts.join(&#x27;\n&#x27;),
@@ -1246,7 +1246,7 @@ export class VoteController {
         })
         // email to admin
         this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP.ADMIN_EMAIL,
+          to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
           subject: &#x60;You have a new post vote&#x60;,
           on: await this.getPostTitle(voteBody.post_id),
           vote: voteTypeMap.get(voteBody.vote)!,
@@ -1316,7 +1316,7 @@ export class VoteController {
         }
         // email to admin
         this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP.ADMIN_EMAIL,
+          to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
           subject: &#x60;You have a new comment vote&#x60;,
           ...mailPayload
         })

@@ -516,7 +516,7 @@ import { AuthLoginDTO, AdminUpdateDTO } from &#x27;./auth.dto&#x27;
 import { AuthService } from &#x27;./auth.service&#x27;
 import { TokenResult } from &#x27;./auth.interface&#x27;
 import { Admin } from &#x27;./auth.model&#x27;
-import { APP } from &#x27;@app/app.config&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 @Controller(&#x27;auth&#x27;)
 export class AuthController {
@@ -538,8 +538,8 @@ export class AuthController {
         const subject &#x3D; &#x60;App has a new login activity&#x60;
         const locationText &#x3D; location ? [location.country, location.region, location.city].join(&#x27; · &#x27;) : &#x27;unknow&#x27;
         const content &#x3D; &#x60;${subject}. IP: ${ip}, location: ${locationText}&#x60;
-        this.emailService.sendMailAs(APP.NAME, {
-          to: APP.ADMIN_EMAIL,
+        this.emailService.sendMailAs(APP_BIZ.NAME, {
+          to: APP_BIZ.ADMIN_EMAIL,
           subject,
           text: content,
           html: content

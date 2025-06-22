@@ -127,10 +127,16 @@
                             <a href="#AnnouncementProvider" title="src/modules/announcement/announcement.model.ts" ><b>AnnouncementProvider</b>&nbsp;&nbsp;&nbsp;(src/.../announcement.model.ts)</a>
                         </li>
                         <li>
-                            <a href="#APP" title="src/app.config.ts" ><b>APP</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
+                            <a href="#APP_BIZ" title="src/app.config.ts" ><b>APP_BIZ</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
-                            <a href="#argv" title="src/app.config.ts" ><b>argv</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
+                            <a href="#arg" title="src/app.config.ts" ><b>arg</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#args" title="src/app.config.ts" ><b>args</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#argvs" title="src/app.config.ts" ><b>argvs</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
                             <a href="#ARTICLE_DEFAULT_META" title="src/modules/article/article.model.ts" ><b>ARTICLE_DEFAULT_META</b>&nbsp;&nbsp;&nbsp;(src/.../article.model.ts)</a>
@@ -167,9 +173,6 @@
                         </li>
                         <li>
                             <a href="#ArticleProvider" title="src/modules/article/article.model.ts" ><b>ArticleProvider</b>&nbsp;&nbsp;&nbsp;(src/.../article.model.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#AUTH" title="src/app.config.ts" ><b>AUTH</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
                             <a href="#AUTHORIZE_URL" title="src/utils/disqus.ts" ><b>AUTHORIZE_URL</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.ts)</a>
@@ -227,9 +230,6 @@
                         </li>
                         <li>
                             <a href="#createRedisStore" title="src/processors/cache/redis.store.ts" ><b>createRedisStore</b>&nbsp;&nbsp;&nbsp;(src/.../redis.store.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#CROSS_DOMAIN" title="src/app.config.ts" ><b>CROSS_DOMAIN</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
                             <a href="#databaseProvider" title="src/processors/database/database.provider.ts" ><b>databaseProvider</b>&nbsp;&nbsp;&nbsp;(src/.../database.provider.ts)</a>
@@ -494,6 +494,9 @@
                         </li>
                         <li>
                             <a href="#paginate" title="src/decorators/responser.decorator.ts" ><b>paginate</b>&nbsp;&nbsp;&nbsp;(src/.../responser.decorator.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#parseArgv" title="src/utils/args.ts" ><b>parseArgv</b>&nbsp;&nbsp;&nbsp;(src/.../args.ts)</a>
                         </li>
                         <li>
                             <a href="#parseValue" title="src/processors/cache/redis.store.ts" ><b>parseValue</b>&nbsp;&nbsp;&nbsp;(src/.../redis.store.ts)</a>
@@ -826,8 +829,10 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  key: argv.akismet_key || &#x27;your Akismet Key&#x27;,
-  blog: argv.akismet_blog || &#x27;your Akismet blog site, e.g. https://surmon.me&#x27;
+  /** Akismet API key {@link https://akismet.com/developers/getting-started/#verify-key} */
+  key: arg&lt;string&gt;(&#x27;akismet_key&#x27;),
+  /** Akismet blog URL for spam protection (e.g., &#x60;https://surmon.me&#x60;) */
+  blog: arg&lt;string&gt;(&#x27;akismet_blog&#x27;)
 }</code>
                     </td>
                 </tr>
@@ -839,10 +844,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="APP"></a>
+                    <a name="APP_BIZ"></a>
                     <span class="name">
-                        <span ><b>APP</b></span>
-                        <a href="#APP"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>APP_BIZ</b></span>
+                        <a href="#APP_BIZ"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -855,16 +860,41 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  PORT: 8000,
   ROOT_PATH,
+  /** Default server port (can be overridden) */
+  PORT: 8000,
+  /** Default cache time-to-live (TTL) in seconds. &#x60;0&#x60; disables caching. */
   DEFAULT_CACHE_TTL: 0,
-  MASTER: &#x27;Surmon&#x27;,
+  /** Application display name */
   NAME: &#x27;NodePress&#x27;,
+  /** Backend API base URL */
   URL: &#x27;https://api.surmon.me&#x27;,
-  ADMIN_EMAIL: argv.admin_email || &#x27;admin email, e.g. admin@example.com&#x27;,
+  /** Admin email used for notifications, integrations, etc. Required for features like sending emails and Disqus. */
+  ADMIN_EMAIL: arg&lt;string&gt;({ key: &#x27;admin_email&#x27; }),
+  /** Frontend display name (used in email, SEO, etc.) */
   FE_NAME: &#x27;Surmon.me&#x27;,
+  /** Frontend URL (used in SEO or link generation) */
   FE_URL: &#x27;https://surmon.me&#x27;,
-  STATIC_URL: &#x27;https://static.surmon.me&#x27;
+  /** Static resource host URL */
+  STATIC_URL: &#x27;https://static.surmon.me&#x27;,
+  /** Cross-domain / CORS Configuration */
+  CORS: {
+    /** Allowed CORS origins */
+    allowedOrigins: [&#x27;https://surmon.me&#x27;, &#x27;https://cdn.surmon.me&#x27;, &#x27;https://admin.surmon.me&#x27;],
+    /** Allowed Referer domain */
+    allowedReferer: &#x27;surmon.me&#x27;
+  },
+  /** Authentication config */
+  AUTH: {
+    /** JWT token expiration time in seconds */
+    expiresIn: arg({ key: &#x27;auth_expires_in&#x27;, default: 3600 }),
+    /** JWT signing secret; must be secure in production */
+    jwtSecret: arg({ key: &#x27;auth_key&#x27;, default: &#x27;nodepress&#x27; }),
+    /** Default payload for issued tokens */
+    data: arg&lt;any&gt;({ key: &#x27;auth_data&#x27;, default: { user: &#x27;root&#x27; } }),
+    /** Default admin password */
+    defaultPassword: arg({ key: &#x27;auth_default_password&#x27;, default: &#x27;root&#x27; })
+  }
 }</code>
                     </td>
                 </tr>
@@ -876,16 +906,16 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="argv"></a>
+                    <a name="arg"></a>
                     <span class="name">
-                        <span ><b>argv</b></span>
-                        <a href="#argv"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>arg</b></span>
+                        <a href="#arg"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>yargs.argv as Record&lt;string, string | void&gt;</code>
+                        <i>Default value : </i><code>parseArgs(args)</code>
                     </td>
                 </tr>
 
@@ -896,27 +926,36 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="AUTH"></a>
+                    <a name="args"></a>
                     <span class="name">
-                        <span ><b>AUTH</b></span>
-                        <a href="#AUTH"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>args</b></span>
+                        <a href="#args"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
+                        <i>Default value : </i><code>parseArgv&lt;Record&lt;string, string | number | void&gt;&gt;(argvs)</code>
                     </td>
                 </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="argvs"></a>
+                    <span class="name">
+                        <span ><b>argvs</b></span>
+                        <a href="#argvs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  expiresIn: argv.auth_expires_in || 3600,
-  data: argv.auth_data || { user: &#x27;root&#x27; },
-  jwtSecret: argv.auth_key || &#x27;nodepress&#x27;,
-  defaultPassword: argv.auth_default_password || &#x27;root&#x27;
-}</code>
+                        <i>Default value : </i><code>process.argv.slice(2)</code>
                     </td>
                 </tr>
 
@@ -943,10 +982,14 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  accessKeyId: argv.aws_access_key_id as string,
-  secretAccessKey: argv.aws_secret_access_key as string,
-  s3StaticRegion: argv.aws_s3_static_region as string,
-  s3StaticBucket: argv.aws_s3_static_bucket as string
+  /** AWS Access Key ID */
+  accessKeyId: arg&lt;string&gt;(&#x27;aws_access_key_id&#x27;),
+  /** AWS Secret Access Key */
+  secretAccessKey: arg&lt;string&gt;(&#x27;aws_secret_access_key&#x27;),
+  /** AWS S3 Region for static file bucket */
+  s3StaticRegion: arg&lt;string&gt;(&#x27;aws_s3_static_region&#x27;),
+  /** AWS S3 Bucket name for static files */
+  s3StaticBucket: arg&lt;string&gt;(&#x27;aws_s3_static_bucket&#x27;)
 }</code>
                     </td>
                 </tr>
@@ -974,37 +1017,10 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  site: argv.bing_site || &#x27;your bing site url. e.g. https://surmon.me&#x27;,
-  apiKey: argv.bing_api_key || &#x27;your bing webmaster api key&#x27;
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="CROSS_DOMAIN"></a>
-                    <span class="name">
-                        <span ><b>CROSS_DOMAIN</b></span>
-                        <a href="#CROSS_DOMAIN"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  allowedOrigins: [&#x27;https://surmon.me&#x27;, &#x27;https://cdn.surmon.me&#x27;, &#x27;https://admin.surmon.me&#x27;],
-  allowedReferer: &#x27;surmon.me&#x27;
+  /** Website URL submitted to Bing (e.g., &#x60;https://surmon.me&#x60;) */
+  site: arg&lt;string&gt;(&#x27;bing_site&#x27;),
+  /** API key for Bing indexing {@link https://learn.microsoft.com/en-us/bingwebmaster/getting-access} */
+  apiKey: arg&lt;string&gt;(&#x27;bing_api_key&#x27;)
 }</code>
                     </td>
                 </tr>
@@ -1032,9 +1048,12 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  s3Region: argv.db_backup_s3_region as string,
-  s3Bucket: argv.db_backup_s3_bucket as string,
-  password: argv.db_backup_file_password as string
+  /** S3 region for storing backups */
+  s3Region: arg&lt;string&gt;(&#x27;db_backup_s3_region&#x27;),
+  /** S3 bucket for database backup files */
+  s3Bucket: arg&lt;string&gt;(&#x27;db_backup_s3_bucket&#x27;),
+  /** Password for backup file encryption */
+  password: arg&lt;string&gt;(&#x27;db_backup_file_password&#x27;)
 }</code>
                     </td>
                 </tr>
@@ -1062,13 +1081,16 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  // https://disqus.com/api/applications/&lt;app_id&gt; &amp; Keep permissions: &lt;Read, Write, Manage Forums&gt;
-  adminAccessToken: argv.disqus_admin_access_token || &#x27;Disqus admin access_token&#x27;,
-  adminUsername: argv.disqus_admin_username || &#x27;Disqus admin username&#x27;,
-  forum: argv.disqus_forum_shortname || &#x27;Disqus forum shortname&#x27;,
-  // https://disqus.com/api/applications/
-  publicKey: argv.disqus_public_key || &#x27;Disqus application public_key&#x27;,
-  secretKey: argv.disqus_secret_key || &#x27;Disqus application secret_key&#x27;
+  /** Disqus admin access_token (Permissions: Read, Write, Manage Forums) {@link https://disqus.com/api/applications/} */
+  adminAccessToken: arg&lt;string&gt;(&#x27;disqus_admin_access_token&#x27;),
+  /** Disqus admin username */
+  adminUsername: arg&lt;string&gt;(&#x27;disqus_admin_username&#x27;),
+  /** Disqus forum shortname */
+  forum: arg&lt;string&gt;(&#x27;disqus_forum_shortname&#x27;),
+  /** Disqus application public_key {@link https://disqus.com/api/applications/} */
+  publicKey: arg&lt;string&gt;(&#x27;disqus_public_key&#x27;),
+  /** Disqus application secret_key {@link https://disqus.com/api/applications/} */
+  secretKey: arg&lt;string&gt;(&#x27;disqus_secret_key&#x27;)
 }</code>
                     </td>
                 </tr>
@@ -1096,11 +1118,16 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
+  /** SMTP port, usually 587 or 465 */
   port: 587,
-  host: argv.email_host || &#x27;your email host, e.g. smtp.qq.com&#x27;,
-  account: argv.email_account || &#x27;your email address, e.g. admin@example.me&#x27;,
-  password: argv.email_password || &#x27;your email password&#x27;,
-  from: &#x60;&quot;${APP.FE_NAME}&quot; &lt;${argv.email_from || argv.email_account}&gt;&#x60;
+  /** Email SMTP server host (e.g., &#x60;smtp.qq.com&#x60;) */
+  host: arg&lt;string&gt;(&#x27;email_host&#x27;),
+  /** ESender email address, (e.g., &#x60;admin@example.me&#x60;) */
+  account: arg&lt;string&gt;(&#x27;email_account&#x27;),
+  /** Email SMTP password */
+  password: arg&lt;string&gt;(&#x27;email_password&#x27;),
+  /** Display name for email sender */
+  from: &#x60;&quot;${APP_BIZ.FE_NAME}&quot; &lt;${arg(&#x27;email_from&#x27;) || arg(&#x27;email_account&#x27;)}&gt;&#x60;
 }</code>
                     </td>
                 </tr>
@@ -1128,8 +1155,10 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  analyticsV4PropertyId: argv.google_analytics_v4_property_id,
-  jwtServiceAccountCredentials: argv.google_jwt_cred_json ? JSON.parse(argv.google_jwt_cred_json as string) : null
+  /** Google Analytics v4 Property ID */
+  analyticsV4PropertyId: arg&lt;string&gt;(&#x27;google_analytics_v4_property_id&#x27;),
+  /** Service account credentials (JSON parsed) */
+  jwtServiceAccountCredentials: args.google_jwt_cred_json ? JSON.parse(args.google_jwt_cred_json as string) : null
 }</code>
                     </td>
                 </tr>
@@ -1157,7 +1186,8 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  uri: argv.db_uri || &#x60;mongodb://127.0.0.1:27017/NodePress&#x60;
+  /** MongoDB connection URI */
+  uri: arg({ key: &#x27;db_uri&#x27;, default: &#x27;mongodb://127.0.0.1:27017/NodePress&#x27; })
 }</code>
                     </td>
                 </tr>
@@ -1238,11 +1268,12 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>{
-  namespace: argv.redis_namespace || &#x27;nodepress&#x27;,
-  host: argv.redis_host || &#x27;localhost&#x27;,
-  port: argv.redis_port || 6379,
-  username: argv.redis_username || null,
-  password: argv.redis_password || null
+  /** As a prefix for Redis storage keys, used to distinguish data from other applications in Redis. */
+  namespace: arg({ key: &#x27;redis_namespace&#x27;, default: &#x27;nodepress&#x27; }),
+  host: arg({ key: &#x27;redis_host&#x27;, default: &#x27;localhost&#x27; }),
+  port: arg({ key: &#x27;redis_port&#x27;, default: 6379 }),
+  username: arg&lt;string | void&gt;(&#x27;redis_username&#x27;),
+  password: arg&lt;string | void&gt;(&#x27;redis_password&#x27;)
 }</code>
                     </td>
                 </tr>
@@ -1743,7 +1774,7 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>isProdEnv
-  ? &#x60;${APP.URL}/disqus/oauth-callback&#x60;
+  ? &#x60;${APP_BIZ.URL}/disqus/oauth-callback&#x60;
   : &#x60;http://localhost:8000/disqus/oauth-callback&#x60;</code>
                     </td>
                 </tr>
@@ -1837,7 +1868,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>path.join(APP.ROOT_PATH, &#x27;dbbackup&#x27;)</code>
+                        <i>Default value : </i><code>path.join(APP_BIZ.ROOT_PATH, &#x27;dbbackup&#x27;)</code>
                     </td>
                 </tr>
 
@@ -2540,7 +2571,7 @@
     const _ttl &#x3D; isUndefined(ttl) ? options?.defaultTTL : ttl
     if (!isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
       // EX — Set the specified expire time, in seconds.
-      await redisClient.set(_key, _value, { EX: _ttl })
+      await redisClient.set(_key, _value, { expiration: { type: &#x27;EX&#x27;, value: _ttl } })
     } else {
       await redisClient.set(_key, _value)
     }
@@ -2552,7 +2583,7 @@
       const multi &#x3D; redisClient.multi()
       for (const [key, value] of kvs) {
         // EX — Set the specified expire time, in seconds.
-        multi.set(getKeyName(key), stringifyValue(value), { EX: _ttl })
+        multi.set(getKeyName(key), stringifyValue(value), { expiration: { type: &#x27;EX&#x27;, value: _ttl } })
       }
       await multi.exec()
     } else {
@@ -2684,8 +2715,8 @@
     const RECONNECT_INTERVAL &#x3D; 6000
 
     const sendAlarmMail &#x3D; (error: string) &#x3D;&gt; {
-      emailService.sendMailAs(APP_CONFIG.APP.NAME, {
-        to: APP_CONFIG.APP.ADMIN_EMAIL,
+      emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+        to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
         subject: &#x60;MongoDB Error!&#x60;,
         text: error,
         html: &#x60;&lt;pre&gt;&lt;code&gt;${error}&lt;/code&gt;&lt;/pre&gt;&#x60;
@@ -2946,8 +2977,8 @@
   site_email: &#x27;admin@example.com&#x27;,
   friend_links: [
     {
-      name: APP.FE_NAME,
-      value: APP.FE_URL
+      name: APP_BIZ.FE_NAME,
+      value: APP_BIZ.FE_URL
     }
   ],
   meta: { likes: 0 },
@@ -3413,7 +3444,7 @@
         &lt;item&gt;
           &lt;title&gt;Guestbook&lt;/title&gt;
           &lt;link&gt;${getPermalinkById(GUESTBOOK_POST_ID)}&lt;/link&gt;
-          &lt;content:encoded&gt;&lt;![CDATA[${APP.FE_NAME}]]&gt;&lt;/content:encoded&gt;
+          &lt;content:encoded&gt;&lt;![CDATA[${APP_BIZ.FE_NAME}]]&gt;&lt;/content:encoded&gt;
           &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(GUESTBOOK_POST_ID)}&lt;/dsq:thread_identifier&gt;
           &lt;wp:post_date_gmt&gt;2017-01-01 00:00:00&lt;/wp:post_date_gmt&gt;
           &lt;wp:comment_status&gt;open&lt;/wp:comment_status&gt;
@@ -4465,6 +4496,29 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>createLogger({ scope: &#x27;SeoService&#x27;, time: isDevEnv })</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/utils/args.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseArgv"></a>
+                    <span class="name">
+                        <span ><b>parseArgv</b></span>
+                        <a href="#parseArgv"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&lt;T &#x3D; DefaultArgs&gt;(argv: string[]): T &#x3D;&gt; yargsArgv(argv)</code>
                     </td>
                 </tr>
 

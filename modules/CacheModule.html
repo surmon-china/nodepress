@@ -117,13 +117,13 @@
 <title>cluster_CacheModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="97,-70 97,-268 399,-268 399,-70 97,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_CacheModule_providers</title>
-<polygon fill="none" stroke="black" points="105,-78 105,-130 391,-130 391,-78 105,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_CacheModule_exports</title>
 <polygon fill="none" stroke="black" points="124,-208 124,-260 348,-260 348,-208 124,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_CacheModule_providers</title>
+<polygon fill="none" stroke="black" points="105,-78 105,-130 391,-130 391,-78 105,-78"/>
 </g>
 <!-- CacheService  -->
 <g id="node1" class="node">
@@ -265,7 +265,7 @@
 
 // https://docs.nestjs.com/techniques/caching#different-stores
 // https://docs.nestjs.com/techniques/caching#async-configuration
-// MARK： No longer use cache-manager because the API between &#x60;cache-manager&#x60; and &#x60;@nestjs/cache-manager&#x60; is inconsistent.
+// MARK: No longer use cache-manager because the API between &#x60;cache-manager&#x60; and &#x60;@nestjs/cache-manager&#x60; is inconsistent.
 
 import { Global, Module } from &#x27;@nestjs/common&#x27;
 import { RedisService } from &#x27;./redis.service&#x27;

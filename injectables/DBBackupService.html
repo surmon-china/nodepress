@@ -417,7 +417,7 @@ import {
   AWSStorageClass,
   AWSServerSideEncryption
 } from &#x27;@app/processors/helper/helper.service.aws&#x27;
-import { APP, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
+import { APP_BIZ, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 
@@ -426,7 +426,7 @@ const logger &#x3D; createLogger({ scope: &#x27;DBBackupService&#x27;, time: isD
 const UP_FAILED_TIMEOUT &#x3D; 1000 * 60 * 5
 const UPLOAD_INTERVAL &#x3D; &#x27;0 0 3 * * *&#x27;
 const BACKUP_FILE_NAME &#x3D; &#x27;nodepress.zip&#x27;
-const BACKUP_DIR_PATH &#x3D; path.join(APP.ROOT_PATH, &#x27;dbbackup&#x27;)
+const BACKUP_DIR_PATH &#x3D; path.join(APP_BIZ.ROOT_PATH, &#x27;dbbackup&#x27;)
 
 @Injectable()
 export class DBBackupService {
@@ -459,8 +459,8 @@ export class DBBackupService {
   }
 
   private mailToAdmin(subject: string, content: string, isCode?: boolean) {
-    this.emailService.sendMailAs(APP.NAME, {
-      to: APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_BIZ.NAME, {
+      to: APP_BIZ.ADMIN_EMAIL,
       subject,
       text: &#x60;${subject}, detail: ${content}&#x60;,
       html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${content}&lt;/pre&gt;&#x60; : content}&#x60;

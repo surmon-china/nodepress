@@ -288,14 +288,14 @@ import { PassportStrategy } from &#x27;@nestjs/passport&#x27;
 import { ExtractJwt, Strategy } from &#x27;passport-jwt&#x27;
 import { HttpUnauthorizedError } from &#x27;@app/errors/unauthorized.error&#x27;
 import { AuthService } from &#x27;./auth.service&#x27;
-import * as APP_CONFIG from &#x27;@app/app.config&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: APP_CONFIG.AUTH.jwtSecret
+      secretOrKey: APP_BIZ.AUTH.jwtSecret
     })
   }
 

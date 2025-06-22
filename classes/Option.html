@@ -718,7 +718,7 @@ import {
 } from &#x27;class-validator&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
-import { APP } from &#x27;@app/app.config&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   title: &#x27;NodePress&#x27;,
@@ -730,8 +730,8 @@ export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   site_email: &#x27;admin@example.com&#x27;,
   friend_links: [
     {
-      name: APP.FE_NAME,
-      value: APP.FE_URL
+      name: APP_BIZ.FE_NAME,
+      value: APP_BIZ.FE_URL
     }
   ],
   meta: { likes: 0 },

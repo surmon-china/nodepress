@@ -268,7 +268,7 @@ export class CorsMiddleware implements NestMiddleware {
     const origins &#x3D; request.headers.origin
     const origin &#x3D; (Array.isArray(origins) ? origins[0] : origins) || &#x27;&#x27;
 
-    const allowedOrigins &#x3D; [...APP_CONFIG.CROSS_DOMAIN.allowedOrigins]
+    const allowedOrigins &#x3D; [...APP_CONFIG.APP_BIZ.CORS.allowedOrigins]
     const allowedMethods &#x3D; [
       RequestMethod.GET,
       RequestMethod.HEAD,

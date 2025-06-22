@@ -136,7 +136,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#analyticsData" >analyticsData</a>
+                                <a href="#analyticsDataClient" >analyticsDataClient</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
@@ -156,7 +156,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getAnalyticsData" >getAnalyticsData</a>
+                                <a href="#getAnalyticsDataClient" >getAnalyticsDataClient</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -185,7 +185,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/processors/helper/helper.service.google.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/helper/helper.service.google.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -202,26 +202,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getAnalyticsData"></a>
+                    <a name="getAnalyticsDataClient"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getAnalyticsData</b></span>
-                        <a href="#getAnalyticsData"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getAnalyticsDataClient</b></span>
+                        <a href="#getAnalyticsDataClient"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAnalyticsData()</code>
+                    <code>getAnalyticsDataClient()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -259,8 +259,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -286,11 +286,11 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="analyticsData"></a>
+                    <a name="analyticsDataClient"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
-                        <span ><b>analyticsData</b></span>
-                        <a href="#analyticsData"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>analyticsDataClient</b></span>
+                        <a href="#analyticsDataClient"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -307,7 +307,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/processors/helper/helper.service.google.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/helper/helper.service.google.ts:19</a></div>
                         </td>
                     </tr>
 
@@ -339,7 +339,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/helper/helper.service.google.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/processors/helper/helper.service.google.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -355,7 +355,6 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { google, Auth, analyticsdata_v1beta } from &#x27;googleapis&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
-import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -365,23 +364,21 @@ const logger &#x3D; createLogger({ scope: &#x27;GoogleAPIService&#x27;, time: is
 @Injectable()
 export class GoogleService {
   private authJWT: Auth.JWT | null &#x3D; null
-  private analyticsData: analyticsdata_v1beta.Analyticsdata | null &#x3D; null
+  private analyticsDataClient: analyticsdata_v1beta.Analyticsdata | null &#x3D; null
 
   constructor() {
     try {
       // auth client
-      this.authJWT &#x3D; new google.auth.JWT(
-        APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.client_email,
-        UNDEFINED,
-        APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.private_key,
-        [
+      this.authJWT &#x3D; new google.auth.JWT({
+        email: APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.client_email,
+        key: APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.private_key,
+        scopes: [
           &#x27;https://www.googleapis.com/auth/indexing&#x27;, // ping service
           &#x27;https://www.googleapis.com/auth/analytics.readonly&#x27; // GA service
-        ],
-        UNDEFINED
-      )
+        ]
+      })
       // Google analytics v4
-      this.analyticsData &#x3D; google.analyticsdata({
+      this.analyticsDataClient &#x3D; google.analyticsdata({
         version: &#x27;v1beta&#x27;,
         auth: this.authJWT
       })
@@ -413,11 +410,11 @@ export class GoogleService {
   // https://github.com/Andro999b/movies-telegram-bot/blob/c5697681dead5df22e847e784a93c0a16f3af2fc/analytics/functions/handlers/ga4.ts#L46
   // https://developers.google.com/analytics/devguides/reporting/data/v1
   // https://developers.google.com/analytics/devguides/reporting/data/v1/basics
-  public getAnalyticsData() {
-    if (!this.authJWT || !this.analyticsData) {
+  public getAnalyticsDataClient() {
+    if (!this.authJWT || !this.analyticsDataClient) {
       throw new Error(&#x27;GoogleAPI analyticsData initialization failed!&#x27;)
     } else {
-      return this.analyticsData
+      return this.analyticsDataClient
     }
   }
 }

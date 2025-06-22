@@ -206,7 +206,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/processors/cache/redis.service.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/processors/cache/redis.service.ts:29</a></div>
                             </td>
                         </tr>
 
@@ -271,8 +271,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="64"
-                                    class="link-to-prism">src/processors/cache/redis.service.ts:64</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/processors/cache/redis.service.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -310,8 +310,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="53"
-                                    class="link-to-prism">src/processors/cache/redis.service.ts:53</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/processors/cache/redis.service.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -377,13 +377,13 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>RedisClientType</code>
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#RedisClientType" target="_self" >RedisClientType</a></code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/processors/cache/redis.service.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/processors/cache/redis.service.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -410,7 +410,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/processors/cache/redis.service.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/processors/cache/redis.service.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -432,8 +432,8 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>_throttle((error: string) &#x3D;&gt; {
-    this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
-      to: APP_CONFIG.APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
       subject: &#x60;Redis Error!&#x60;,
       text: error,
       html: &#x60;&lt;pre&gt;&lt;code&gt;${error}&lt;/code&gt;&lt;/pre&gt;&#x60;
@@ -443,7 +443,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/processors/cache/redis.service.ts:43</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/processors/cache/redis.service.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -472,7 +472,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/processors/cache/redis.service.ts:82</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/processors/cache/redis.service.ts:86</a></div>
                                 </td>
                             </tr>
 
@@ -494,7 +494,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/processors/cache/redis.service.ts:86</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/processors/cache/redis.service.ts:90</a></div>
                                 </td>
                             </tr>
 
@@ -506,15 +506,18 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _throttle from &#x27;lodash/throttle&#x27;
-import { createClient, RedisClientType } from &#x27;redis&#x27;
+import { createClient, RedisClientOptions } from &#x27;@redis/client&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
-import { createRedisStore, RedisStore, RedisClientOptions } from &#x27;./redis.store&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { createRedisStore, RedisStore } from &#x27;./redis.store&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;RedisService&#x27;, time: isDevEnv })
+
+// https://github.com/redis/node-redis/blob/master/docs/FAQ.md#redisclienttype
+export type RedisClientType &#x3D; ReturnType&lt;typeof createClient&gt;
 
 @Injectable()
 export class RedisService {
@@ -522,9 +525,9 @@ export class RedisService {
   private redisClient!: RedisClientType
 
   constructor(private readonly emailService: EmailService) {
-    this.redisClient &#x3D; createClient(this.getOptions()) as RedisClientType
+    this.redisClient &#x3D; createClient(this.getOptions())
     this.redisStore &#x3D; createRedisStore(this.redisClient, {
-      defaultTTL: APP_CONFIG.APP.DEFAULT_CACHE_TTL,
+      defaultTTL: APP_CONFIG.APP_BIZ.DEFAULT_CACHE_TTL,
       namespace: APP_CONFIG.REDIS.namespace
     })
     // https://github.com/redis/node-redis#events
@@ -538,8 +541,8 @@ export class RedisService {
   }
 
   private sendAlarmMail &#x3D; _throttle((error: string) &#x3D;&gt; {
-    this.emailService.sendMailAs(APP_CONFIG.APP.NAME, {
-      to: APP_CONFIG.APP.ADMIN_EMAIL,
+    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
       subject: &#x60;Redis Error!&#x60;,
       text: error,
       html: &#x60;&lt;pre&gt;&lt;code&gt;${error}&lt;/code&gt;&lt;/pre&gt;&#x60;
