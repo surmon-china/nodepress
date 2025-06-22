@@ -17,6 +17,7 @@ const args = parseArgv<Record<string, string | number | void>>(argvs)
 const arg = parseArgs(args)
 
 const ROOT_PATH = path.join(__dirname, '..')
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 
 // Project Metadata
