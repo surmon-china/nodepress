@@ -43,13 +43,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SeoService = exports.SEOAction = void 0;
-const APP_CONFIG = __importStar(require("../../app.config"));
 const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const helper_service_google_1 = require("./helper.service.google");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
+const APP_CONFIG = __importStar(require("../../app.config"));
 const logger = (0, logger_1.createLogger)({ scope: 'SeoService', time: app_environment_1.isDevEnv });
 var SEOAction;
 (function (SEOAction) {

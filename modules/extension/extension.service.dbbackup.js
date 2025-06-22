@@ -28,7 +28,7 @@ const logger = (0, logger_1.createLogger)({ scope: 'DBBackupService', time: app_
 const UP_FAILED_TIMEOUT = 1000 * 60 * 5;
 const UPLOAD_INTERVAL = '0 0 3 * * *';
 const BACKUP_FILE_NAME = 'nodepress.zip';
-const BACKUP_DIR_PATH = path_1.default.join(app_config_1.APP.ROOT_PATH, 'dbbackup');
+const BACKUP_DIR_PATH = path_1.default.join(app_config_1.APP_BIZ.ROOT_PATH, 'dbbackup');
 let DBBackupService = class DBBackupService {
     constructor(emailService, awsService) {
         this.emailService = emailService;
@@ -54,8 +54,8 @@ let DBBackupService = class DBBackupService {
         }
     }
     mailToAdmin(subject, content, isCode) {
-        this.emailService.sendMailAs(app_config_1.APP.NAME, {
-            to: app_config_1.APP.ADMIN_EMAIL,
+        this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
+            to: app_config_1.APP_BIZ.ADMIN_EMAIL,
             subject,
             text: `${subject}, detail: ${content}`,
             html: `${subject} <br> ${isCode ? `<pre>${content}</pre>` : content}`

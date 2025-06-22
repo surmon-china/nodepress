@@ -26,8 +26,8 @@ exports.DEFAULT_OPTION = Object.freeze({
     site_email: 'admin@example.com',
     friend_links: [
         {
-            name: app_config_1.APP.FE_NAME,
-            value: app_config_1.APP.FE_URL
+            name: app_config_1.APP_BIZ.FE_NAME,
+            value: app_config_1.APP_BIZ.FE_URL
         }
     ],
     meta: { likes: 0 },

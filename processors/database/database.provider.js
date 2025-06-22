@@ -51,8 +51,8 @@ exports.databaseProvider = {
         let reconnectionTask = null;
         const RECONNECT_INTERVAL = 6000;
         const sendAlarmMail = (error) => {
-            emailService.sendMailAs(APP_CONFIG.APP.NAME, {
-                to: APP_CONFIG.APP.ADMIN_EMAIL,
+            emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+                to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
                 subject: `MongoDB Error!`,
                 text: error,
                 html: `<pre><code>${error}</code></pre>`

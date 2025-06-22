@@ -16,9 +16,9 @@ exports.CacheService = void 0;
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const value_constant_1 = require("../../constants/value.constant");
-const redis_service_1 = require("./redis.service");
-const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
+const logger_1 = require("../../utils/logger");
+const redis_service_1 = require("./redis.service");
 const logger = (0, logger_1.createLogger)({ scope: 'CacheService', time: app_environment_1.isDevEnv });
 let CacheService = class CacheService {
     constructor(redisService) {

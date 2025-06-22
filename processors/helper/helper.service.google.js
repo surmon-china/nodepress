@@ -46,7 +46,6 @@ exports.GoogleService = void 0;
 const googleapis_1 = require("googleapis");
 const common_1 = require("@nestjs/common");
 const error_transformer_1 = require("../../transformers/error.transformer");
-const value_constant_1 = require("../../constants/value.constant");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
@@ -55,13 +54,17 @@ let GoogleService = class GoogleService {
     constructor() {
         var _a, _b;
         this.authJWT = null;
-        this.analyticsData = null;
+        this.analyticsDataClient = null;
         try {
-            this.authJWT = new googleapis_1.google.auth.JWT((_a = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _a === void 0 ? void 0 : _a.client_email, value_constant_1.UNDEFINED, (_b = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _b === void 0 ? void 0 : _b.private_key, [
-                'https://www.googleapis.com/auth/indexing',
-                'https://www.googleapis.com/auth/analytics.readonly'
-            ], value_constant_1.UNDEFINED);
-            this.analyticsData = googleapis_1.google.analyticsdata({
+            this.authJWT = new googleapis_1.google.auth.JWT({
+                email: (_a = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _a === void 0 ? void 0 : _a.client_email,
+                key: (_b = APP_CONFIG.GOOGLE.jwtServiceAccountCredentials) === null || _b === void 0 ? void 0 : _b.private_key,
+                scopes: [
+                    'https://www.googleapis.com/auth/indexing',
+                    'https://www.googleapis.com/auth/analytics.readonly'
+                ]
+            });
+            this.analyticsDataClient = googleapis_1.google.analyticsdata({
                 version: 'v1beta',
                 auth: this.authJWT
             });
@@ -89,12 +92,12 @@ let GoogleService = class GoogleService {
             }
         });
     }
-    getAnalyticsData() {
-        if (!this.authJWT || !this.analyticsData) {
+    getAnalyticsDataClient() {
+        if (!this.authJWT || !this.analyticsDataClient) {
             throw new Error('GoogleAPI analyticsData initialization failed!');
         }
         else {
-            return this.analyticsData;
+            return this.analyticsDataClient;
         }
     }
 };

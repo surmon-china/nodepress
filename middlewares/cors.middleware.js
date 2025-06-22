@@ -48,7 +48,7 @@ let CorsMiddleware = class CorsMiddleware {
         const getMethod = (method) => common_1.RequestMethod[method];
         const origins = request.headers.origin;
         const origin = (Array.isArray(origins) ? origins[0] : origins) || '';
-        const allowedOrigins = [...APP_CONFIG.CROSS_DOMAIN.allowedOrigins];
+        const allowedOrigins = [...APP_CONFIG.APP_BIZ.CORS.allowedOrigins];
         const allowedMethods = [
             common_1.RequestMethod.GET,
             common_1.RequestMethod.HEAD,

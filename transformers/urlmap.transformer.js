@@ -41,16 +41,16 @@ exports.getPermalinkById = getPermalinkById;
 const biz_constant_1 = require("../constants/biz.constant");
 const APP_CONFIG = __importStar(require("../app.config"));
 function getTagUrl(tagSlug) {
-    return `${APP_CONFIG.APP.FE_URL}/tag/${tagSlug}`;
+    return `${APP_CONFIG.APP_BIZ.FE_URL}/tag/${tagSlug}`;
 }
 function getCategoryUrl(categorySlug) {
-    return `${APP_CONFIG.APP.FE_URL}/category/${categorySlug}`;
+    return `${APP_CONFIG.APP_BIZ.FE_URL}/category/${categorySlug}`;
 }
 function getArticleUrl(articleId) {
-    return `${APP_CONFIG.APP.FE_URL}/article/${articleId}`;
+    return `${APP_CONFIG.APP_BIZ.FE_URL}/article/${articleId}`;
 }
 function getGuestbookPageUrl() {
-    return `${APP_CONFIG.APP.FE_URL}/guestbook`;
+    return `${APP_CONFIG.APP_BIZ.FE_URL}/guestbook`;
 }
 function getPermalinkById(id) {
     return id === biz_constant_1.GUESTBOOK_POST_ID ? getGuestbookPageUrl() : getArticleUrl(id);

@@ -60,9 +60,9 @@ async function bootstrap() {
     app.use(passport_1.default.initialize());
     app.useGlobalFilters(new error_filter_1.HttpExceptionFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor(), new error_interceptor_1.ErrorInterceptor(), new logging_interceptor_1.LoggingInterceptor());
-    return await app.listen(APP_CONFIG.APP.PORT);
+    return await app.listen(APP_CONFIG.APP_BIZ.PORT);
 }
 bootstrap().then(() => {
-    logger_1.default.success(`${APP_CONFIG.APP.NAME} app is running!`, `| env: ${app_environment_1.environment}`, `| port: ${APP_CONFIG.APP.PORT}`, `| ${new Date().toLocaleString()}`);
+    logger_1.default.success(`${APP_CONFIG.APP_BIZ.NAME} app is running!`, `| env: ${app_environment_1.environment}`, `| port: ${APP_CONFIG.APP_BIZ.PORT}`, `| ${new Date().toLocaleString()}`);
 });
 //# sourceMappingURL=main.js.map

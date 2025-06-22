@@ -5,7 +5,7 @@ const app_config_1 = require("../../app.config");
 const app_environment_1 = require("../../app.environment");
 const biz_constant_1 = require("../../constants/biz.constant");
 exports.DISQUS_OAUTH_CALLBACK_URL = app_environment_1.isProdEnv
-    ? `${app_config_1.APP.URL}/disqus/oauth-callback`
+    ? `${app_config_1.APP_BIZ.URL}/disqus/oauth-callback`
     : `http://localhost:8000/disqus/oauth-callback`;
 exports.COMMENT_POST_ID_EXTEND_KEY = 'disqus-post-id';
 exports.COMMENT_THREAD_ID_EXTEND_KEY = 'disqus-thread-id';

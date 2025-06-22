@@ -84,7 +84,7 @@ let ExtensionController = class ExtensionController {
         });
         return Object.assign(Object.assign({}, result), { files: result.files.map((file) => {
                 var _a;
-                return (Object.assign(Object.assign({}, file), { url: `${APP_CONFIG.APP.STATIC_URL}/${file.key}`, lastModified: (_a = file.lastModified) === null || _a === void 0 ? void 0 : _a.getTime() }));
+                return (Object.assign(Object.assign({}, file), { url: `${APP_CONFIG.APP_BIZ.STATIC_URL}/${file.key}`, lastModified: (_a = file.lastModified) === null || _a === void 0 ? void 0 : _a.getTime() }));
             }) });
     }
     async uploadStaticFile(file, body) {
@@ -95,22 +95,22 @@ let ExtensionController = class ExtensionController {
             region: APP_CONFIG.AWS.s3StaticRegion,
             bucket: APP_CONFIG.AWS.s3StaticBucket
         });
-        return Object.assign(Object.assign({}, result), { url: `${APP_CONFIG.APP.STATIC_URL}/${result.key}` });
+        return Object.assign(Object.assign({}, result), { url: `${APP_CONFIG.APP_BIZ.STATIC_URL}/${result.key}` });
     }
     googleAnalyticsBatchRunReports(requestBody) {
-        return this.googleService.getAnalyticsData().properties.batchRunReports({
+        return this.googleService.getAnalyticsDataClient().properties.batchRunReports({
             property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
             requestBody
         });
     }
     googleAnalyticsBatchRunPivotReports(requestBody) {
-        return this.googleService.getAnalyticsData().properties.batchRunPivotReports({
+        return this.googleService.getAnalyticsDataClient().properties.batchRunPivotReports({
             property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
             requestBody
         });
     }
     googleAnalyticsRunRealtimeReport(requestBody) {
-        return this.googleService.getAnalyticsData().properties.runRealtimeReport({
+        return this.googleService.getAnalyticsDataClient().properties.runRealtimeReport({
             property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
             requestBody
         });

@@ -3,24 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DB_BACKUP = exports.AWS = exports.GOOGLE = exports.BING_INDEXED = exports.AKISMET = exports.DISQUS = exports.EMAIL = exports.AUTH = exports.REDIS = exports.MONGO_DB = exports.CROSS_DOMAIN = exports.PROJECT = exports.APP = void 0;
+exports.GOOGLE = exports.BING_INDEXED = exports.DB_BACKUP = exports.AWS = exports.DISQUS = exports.AKISMET = exports.EMAIL = exports.REDIS = exports.MONGO_DB = exports.APP_BIZ = exports.PROJECT = void 0;
 const path_1 = __importDefault(require("path"));
-const yargs_1 = __importDefault(require("yargs"));
+const args_1 = require("./utils/args");
+const argvs = process.argv.slice(2);
+const args = (0, args_1.parseArgv)(argvs);
+const arg = (0, args_1.parseArgs)(args);
 const ROOT_PATH = path_1.default.join(__dirname, '..');
 const packageJSON = require(path_1.default.resolve(ROOT_PATH, 'package.json'));
-const argv = yargs_1.default.argv;
-exports.APP = {
-    PORT: 8000,
-    ROOT_PATH,
-    DEFAULT_CACHE_TTL: 0,
-    MASTER: 'Surmon',
-    NAME: 'NodePress',
-    URL: 'https://api.surmon.me',
-    ADMIN_EMAIL: argv.admin_email || 'admin email, e.g. admin@example.com',
-    FE_NAME: 'Surmon.me',
-    FE_URL: 'https://surmon.me',
-    STATIC_URL: 'https://static.surmon.me'
-};
 exports.PROJECT = {
     name: packageJSON.name,
     version: packageJSON.version,
@@ -29,61 +19,72 @@ exports.PROJECT = {
     documentation: packageJSON.documentation,
     repository: packageJSON.repository.url
 };
-exports.CROSS_DOMAIN = {
-    allowedOrigins: ['https://surmon.me', 'https://cdn.surmon.me', 'https://admin.surmon.me'],
-    allowedReferer: 'surmon.me'
+exports.APP_BIZ = {
+    ROOT_PATH,
+    PORT: 8000,
+    DEFAULT_CACHE_TTL: 0,
+    NAME: 'NodePress',
+    URL: 'https://api.surmon.me',
+    ADMIN_EMAIL: arg({ key: 'admin_email' }),
+    FE_NAME: 'Surmon.me',
+    FE_URL: 'https://surmon.me',
+    STATIC_URL: 'https://static.surmon.me',
+    CORS: {
+        allowedOrigins: ['https://surmon.me', 'https://cdn.surmon.me', 'https://admin.surmon.me'],
+        allowedReferer: 'surmon.me'
+    },
+    AUTH: {
+        expiresIn: arg({ key: 'auth_expires_in', default: 3600 }),
+        jwtSecret: arg({ key: 'auth_key', default: 'nodepress' }),
+        data: arg({ key: 'auth_data', default: { user: 'root' } }),
+        defaultPassword: arg({ key: 'auth_default_password', default: 'root' })
+    }
 };
 exports.MONGO_DB = {
-    uri: argv.db_uri || `mongodb://127.0.0.1:27017/NodePress`
+    uri: arg({ key: 'db_uri', default: 'mongodb://127.0.0.1:27017/NodePress' })
 };
 exports.REDIS = {
-    namespace: argv.redis_namespace || 'nodepress',
-    host: argv.redis_host || 'localhost',
-    port: argv.redis_port || 6379,
-    username: argv.redis_username || null,
-    password: argv.redis_password || null
-};
-exports.AUTH = {
-    expiresIn: argv.auth_expires_in || 3600,
-    data: argv.auth_data || { user: 'root' },
-    jwtSecret: argv.auth_key || 'nodepress',
-    defaultPassword: argv.auth_default_password || 'root'
+    namespace: arg({ key: 'redis_namespace', default: 'nodepress' }),
+    host: arg({ key: 'redis_host', default: 'localhost' }),
+    port: arg({ key: 'redis_port', default: 6379 }),
+    username: arg('redis_username'),
+    password: arg('redis_password')
 };
 exports.EMAIL = {
     port: 587,
-    host: argv.email_host || 'your email host, e.g. smtp.qq.com',
-    account: argv.email_account || 'your email address, e.g. admin@example.me',
-    password: argv.email_password || 'your email password',
-    from: `"${exports.APP.FE_NAME}" <${argv.email_from || argv.email_account}>`
-};
-exports.DISQUS = {
-    adminAccessToken: argv.disqus_admin_access_token || 'Disqus admin access_token',
-    adminUsername: argv.disqus_admin_username || 'Disqus admin username',
-    forum: argv.disqus_forum_shortname || 'Disqus forum shortname',
-    publicKey: argv.disqus_public_key || 'Disqus application public_key',
-    secretKey: argv.disqus_secret_key || 'Disqus application secret_key'
+    host: arg('email_host'),
+    account: arg('email_account'),
+    password: arg('email_password'),
+    from: `"${exports.APP_BIZ.FE_NAME}" <${arg('email_from') || arg('email_account')}>`
 };
 exports.AKISMET = {
-    key: argv.akismet_key || 'your Akismet Key',
-    blog: argv.akismet_blog || 'your Akismet blog site, e.g. https://surmon.me'
+    key: arg('akismet_key'),
+    blog: arg('akismet_blog')
 };
-exports.BING_INDEXED = {
-    site: argv.bing_site || 'your bing site url. e.g. https://surmon.me',
-    apiKey: argv.bing_api_key || 'your bing webmaster api key'
-};
-exports.GOOGLE = {
-    analyticsV4PropertyId: argv.google_analytics_v4_property_id,
-    jwtServiceAccountCredentials: argv.google_jwt_cred_json ? JSON.parse(argv.google_jwt_cred_json) : null
+exports.DISQUS = {
+    adminAccessToken: arg('disqus_admin_access_token'),
+    adminUsername: arg('disqus_admin_username'),
+    forum: arg('disqus_forum_shortname'),
+    publicKey: arg('disqus_public_key'),
+    secretKey: arg('disqus_secret_key')
 };
 exports.AWS = {
-    accessKeyId: argv.aws_access_key_id,
-    secretAccessKey: argv.aws_secret_access_key,
-    s3StaticRegion: argv.aws_s3_static_region,
-    s3StaticBucket: argv.aws_s3_static_bucket
+    accessKeyId: arg('aws_access_key_id'),
+    secretAccessKey: arg('aws_secret_access_key'),
+    s3StaticRegion: arg('aws_s3_static_region'),
+    s3StaticBucket: arg('aws_s3_static_bucket')
 };
 exports.DB_BACKUP = {
-    s3Region: argv.db_backup_s3_region,
-    s3Bucket: argv.db_backup_s3_bucket,
-    password: argv.db_backup_file_password
+    s3Region: arg('db_backup_s3_region'),
+    s3Bucket: arg('db_backup_s3_bucket'),
+    password: arg('db_backup_file_password')
+};
+exports.BING_INDEXED = {
+    site: arg('bing_site'),
+    apiKey: arg('bing_api_key')
+};
+exports.GOOGLE = {
+    analyticsV4PropertyId: arg('google_analytics_v4_property_id'),
+    jwtServiceAccountCredentials: args.google_jwt_cred_json ? JSON.parse(args.google_jwt_cred_json) : null
 };
 //# sourceMappingURL=app.config.js.map

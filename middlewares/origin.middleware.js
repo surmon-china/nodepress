@@ -49,7 +49,7 @@ let OriginMiddleware = class OriginMiddleware {
     use(request, response, next) {
         if (app_environment_1.isProdEnv) {
             const { origin, referer } = request.headers;
-            const isAllowed = (field) => !field || field.includes(app_config_1.CROSS_DOMAIN.allowedReferer);
+            const isAllowed = (field) => !field || field.includes(app_config_1.APP_BIZ.CORS.allowedReferer);
             const isAllowedOrigin = isAllowed(origin);
             const isAllowedReferer = isAllowed(referer);
             if (!isAllowedOrigin && !isAllowedReferer) {

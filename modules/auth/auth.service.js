@@ -1,43 +1,10 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
@@ -67,7 +34,7 @@ const value_constant_1 = require("../../constants/value.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
 const auth_model_1 = require("./auth.model");
-const APP_CONFIG = __importStar(require("../../app.config"));
+const app_config_1 = require("../../app.config");
 let AuthService = class AuthService {
     constructor(jwtService, authModel) {
         this.jwtService = jwtService;
@@ -75,16 +42,16 @@ let AuthService = class AuthService {
     }
     async getExistedPassword() {
         const auth = await this.authModel.findOne(value_constant_1.UNDEFINED, '+password').exec();
-        return (auth === null || auth === void 0 ? void 0 : auth.password) || (0, codec_transformer_1.decodeMD5)(APP_CONFIG.AUTH.defaultPassword);
+        return (auth === null || auth === void 0 ? void 0 : auth.password) || (0, codec_transformer_1.decodeMD5)(app_config_1.APP_BIZ.AUTH.defaultPassword);
     }
     validateAuthData(payload) {
-        const isVerified = (0, isEqual_1.default)(payload.data, APP_CONFIG.AUTH.data);
+        const isVerified = (0, isEqual_1.default)(payload.data, app_config_1.APP_BIZ.AUTH.data);
         return isVerified ? payload.data : null;
     }
     createToken() {
         return {
-            access_token: this.jwtService.sign({ data: APP_CONFIG.AUTH.data }),
-            expires_in: APP_CONFIG.AUTH.expiresIn
+            access_token: this.jwtService.sign({ data: app_config_1.APP_BIZ.AUTH.data }),
+            expires_in: app_config_1.APP_BIZ.AUTH.expiresIn
         };
     }
     async adminLogin(password) {

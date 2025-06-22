@@ -35,8 +35,8 @@ let AuthController = class AuthController {
                 const subject = `App has a new login activity`;
                 const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow';
                 const content = `${subject}. IP: ${ip}, location: ${locationText}`;
-                this.emailService.sendMailAs(app_config_1.APP.NAME, {
-                    to: app_config_1.APP.ADMIN_EMAIL,
+                this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
+                    to: app_config_1.APP_BIZ.ADMIN_EMAIL,
                     subject,
                     text: content,
                     html: content

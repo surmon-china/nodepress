@@ -37,7 +37,7 @@ const getDisqusXML = (data, guestbook) => {
         <item>
           <title>Guestbook</title>
           <link>${(0, urlmap_transformer_1.getPermalinkById)(biz_constant_1.GUESTBOOK_POST_ID)}</link>
-          <content:encoded><![CDATA[${app_config_1.APP.FE_NAME}]]></content:encoded>
+          <content:encoded><![CDATA[${app_config_1.APP_BIZ.FE_NAME}]]></content:encoded>
           <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierById)(biz_constant_1.GUESTBOOK_POST_ID)}</dsq:thread_identifier>
           <wp:post_date_gmt>2017-01-01 00:00:00</wp:post_date_gmt>
           <wp:comment_status>open</wp:comment_status>

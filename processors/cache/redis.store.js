@@ -21,7 +21,7 @@ const createRedisStore = (redisClient, options) => {
         const _value = stringifyValue(value);
         const _ttl = (0, value_constant_1.isUndefined)(ttl) ? options === null || options === void 0 ? void 0 : options.defaultTTL : ttl;
         if (!(0, value_constant_1.isNil)(_ttl) && _ttl !== 0) {
-            await redisClient.set(_key, _value, { EX: _ttl });
+            await redisClient.set(_key, _value, { expiration: { type: 'EX', value: _ttl } });
         }
         else {
             await redisClient.set(_key, _value);
@@ -32,7 +32,7 @@ const createRedisStore = (redisClient, options) => {
         if (!(0, value_constant_1.isNil)(_ttl) && _ttl !== 0) {
             const multi = redisClient.multi();
             for (const [key, value] of kvs) {
-                multi.set(getKeyName(key), stringifyValue(value), { EX: _ttl });
+                multi.set(getKeyName(key), stringifyValue(value), { expiration: { type: 'EX', value: _ttl } });
             }
             await multi.exec();
         }

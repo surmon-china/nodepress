@@ -167,7 +167,7 @@ let VoteController = class VoteController {
         ];
         const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('');
         const linkHTML = `<a href="${payload.link}" target="_blank">${payload.on}</a>`;
-        this.emailService.sendMailAs(APP_CONFIG.APP.FE_NAME, {
+        this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
             to: payload.to,
             subject: payload.subject,
             text: mailTexts.join('\n'),
@@ -222,7 +222,7 @@ let VoteController = class VoteController {
                 ip_location: ipLocation
             });
             this.emailToTargetVoteMessage({
-                to: APP_CONFIG.APP.ADMIN_EMAIL,
+                to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
                 subject: `You have a new post vote`,
                 on: await this.getPostTitle(voteBody.post_id),
                 vote: vote_model_1.voteTypeMap.get(voteBody.vote),
@@ -271,7 +271,7 @@ let VoteController = class VoteController {
                 location: ipLocation,
                 link: (0, urlmap_transformer_1.getPermalinkById)(comment.post_id) + `#comment-${comment.id}`
             };
-            this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailPayload));
+            this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailPayload));
             if (comment.author.email) {
                 this.emailToTargetVoteMessage(Object.assign({ to: comment.author.email, subject: `Your comment #${comment.id} has a new vote` }, mailPayload));
             }
