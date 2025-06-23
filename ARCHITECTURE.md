@@ -1,4 +1,4 @@
-## v4.x Architecture Overview
+## Architecture of NodePress v4.x
 
 ### API Overview
 
