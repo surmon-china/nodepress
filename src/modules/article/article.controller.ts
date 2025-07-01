@@ -113,7 +113,10 @@ export class ArticleController {
   }
 
   @Get(':id/context')
-  @Responser.handle('Get context articles')
+  @Responser.handle({
+    message: 'Get context articles',
+    error: HttpStatus.NOT_FOUND
+  })
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
     const articleId = Number(params.id)
     const [prevArticles, nextArticles, relatedArticles] = await Promise.all([
