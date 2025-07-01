@@ -244,8 +244,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="154"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:154</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="157"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:157</a></div>
                         </td>
                     </tr>
 
@@ -322,8 +322,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="168"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:168</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:171</a></div>
                         </td>
                     </tr>
 
@@ -399,8 +399,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="182"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:182</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:185</a></div>
                         </td>
                     </tr>
 
@@ -477,8 +477,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="139"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:139</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:142</a></div>
                         </td>
                     </tr>
 
@@ -637,14 +637,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;:id/context&#x27;)<br />@(&#x27;Get context articles&#x27;)<br /></code>
+                    <code>@Get(&#x27;:id/context&#x27;)<br />@({message: &#x27;Get context articles&#x27;, error: undefined})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="117"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:117</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:120</a></div>
                         </td>
                     </tr>
 
@@ -800,8 +800,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="175"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:175</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="178"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:178</a></div>
                         </td>
                     </tr>
 
@@ -878,8 +878,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="161"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:161</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="164"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:164</a></div>
                         </td>
                     </tr>
 
@@ -1055,7 +1055,10 @@ export class ArticleController {
   }
 
   @Get(&#x27;:id/context&#x27;)
-  @Responser.handle(&#x27;Get context articles&#x27;)
+  @Responser.handle({
+    message: &#x27;Get context articles&#x27;,
+    error: HttpStatus.NOT_FOUND
+  })
   async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
     const articleId &#x3D; Number(params.id)
     const [prevArticles, nextArticles, relatedArticles] &#x3D; await Promise.all([
