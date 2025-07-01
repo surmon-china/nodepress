@@ -165,7 +165,10 @@ __decorate([
 ], ArticleController.prototype, "getArticleCalendar", null);
 __decorate([
     (0, common_1.Get)(':id/context'),
-    responser_decorator_1.Responser.handle('Get context articles'),
+    responser_decorator_1.Responser.handle({
+        message: 'Get context articles',
+        error: common_1.HttpStatus.NOT_FOUND
+    }),
     __param(0, (0, queryparams_decorator_1.QueryParams)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
