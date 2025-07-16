@@ -346,9 +346,6 @@
                             <a href="#isProdEnv" title="src/app.environment.ts" ><b>isProdEnv</b>&nbsp;&nbsp;&nbsp;(src/.../app.environment.ts)</a>
                         </li>
                         <li>
-                            <a href="#isUnverifiableMetaType" title="src/pipes/validation.pipe.ts" ><b>isUnverifiableMetaType</b>&nbsp;&nbsp;&nbsp;(src/.../validation.pipe.ts)</a>
-                        </li>
-                        <li>
                             <a href="#logger" title="src/interceptors/logging.interceptor.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(src/.../logging.interceptor.ts)</a>
                         </li>
                         <li>
@@ -476,6 +473,9 @@
                         </li>
                         <li>
                             <a href="#TOKEN_COOKIE_KEY" title="src/modules/disqus/disqus.token.ts" ><b>TOKEN_COOKIE_KEY</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.token.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UNVERIFIABLE_TYPES" title="src/pipes/validation.pipe.ts" ><b>UNVERIFIABLE_TYPES</b>&nbsp;&nbsp;&nbsp;(src/.../validation.pipe.ts)</a>
                         </li>
                         <li>
                             <a href="#UP_FAILED_TIMEOUT" title="src/modules/extension/extension.service.dbbackup.ts" ><b>UP_FAILED_TIMEOUT</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.dbbackup.ts)</a>
@@ -1953,19 +1953,22 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="isUnverifiableMetaType"></a>
+                    <a name="UNVERIFIABLE_TYPES"></a>
                     <span class="name">
-                        <span ><b>isUnverifiableMetaType</b></span>
-                        <a href="#isUnverifiableMetaType"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>UNVERIFIABLE_TYPES</b></span>
+                        <a href="#UNVERIFIABLE_TYPES"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>(metatype: any): metatype is undefined &#x3D;&gt; {
-  const basicTypes &#x3D; [String, Boolean, Number, Array, Object]
-  return !metatype || basicTypes.includes(metatype)
-}</code>
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[String, Boolean, Number, Array, Object]</code>
                     </td>
                 </tr>
 

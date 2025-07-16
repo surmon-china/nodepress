@@ -143,6 +143,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#author" >author</a>
                             </li>
@@ -174,6 +175,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
                         <span ><b>author</b></span>
                         <a href="#author"><span class="icon ion-ios-link"></span></a>
@@ -191,13 +193,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ValidateNested()<br />@IsObject()<br />@IsOptional()<br />
+                            @Type(undefined)<br />@ValidateNested()<br />@IsObject()<br />@IsOptional()<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/vote/vote.dto.ts:55</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/vote/vote.dto.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -216,7 +218,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform } from &#x27;class-transformer&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform, Type } from &#x27;class-transformer&#x27;
 import { IsInt, IsObject, IsArray, IsDefined, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
 import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
@@ -261,6 +263,7 @@ export class VotesDTO {
 }
 
 export class VoteAuthorDTO {
+  @Type(() &#x3D;&gt; Author)
   @ValidateNested()
   @IsObject()
   @IsOptional()

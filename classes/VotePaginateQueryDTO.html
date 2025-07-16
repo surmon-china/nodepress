@@ -547,7 +547,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform } from &#x27;class-transformer&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform, Type } from &#x27;class-transformer&#x27;
 import { IsInt, IsObject, IsArray, IsDefined, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
 import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
@@ -592,6 +592,7 @@ export class VotesDTO {
 }
 
 export class VoteAuthorDTO {
+  @Type(() &#x3D;&gt; Author)
   @ValidateNested()
   @IsObject()
   @IsOptional()

@@ -457,8 +457,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="89"
-                                    class="link-to-prism">src/app.module.ts:89</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/app.module.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -518,13 +518,12 @@
 import type { FastifyRequest } from &#x27;fastify&#x27;
 import type { MiddlewareConsumer } from &#x27;@nestjs/common&#x27;
 import { Module, NestModule } from &#x27;@nestjs/common&#x27;
-import { APP_GUARD, APP_PIPE } from &#x27;@nestjs/core&#x27;
+import { APP_GUARD } from &#x27;@nestjs/core&#x27;
 import { ThrottlerGuard, ThrottlerModule, minutes } from &#x27;@nestjs/throttler&#x27;
 import { AppController } from &#x27;@app/app.controller&#x27;
 
 // Framework
 import { NoopMiddleware } from &#x27;@app/middlewares/noop.middleware&#x27;
-import { ValidationPipe } from &#x27;@app/pipes/validation.pipe&#x27;
 
 // Global modules
 import { DatabaseModule } from &#x27;@app/core/database/database.module&#x27;
@@ -589,10 +588,6 @@ import { ExtensionModule } from &#x27;@app/modules/extension/extension.module&#x
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard
-    },
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe
     }
   ]
 })

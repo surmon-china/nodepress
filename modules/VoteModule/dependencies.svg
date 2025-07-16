@@ -24,95 +24,95 @@
 <title>cluster_VoteModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-268 646,-268 646,-70 8,-70"/>
 </g>
+<g id="clust6" class="cluster">
+<title>cluster_VoteModule_providers</title>
+<polygon fill="none" stroke="black" points="504,-78 504,-130 638,-130 638,-78 504,-78"/>
+</g>
 <g id="clust4" class="cluster">
 <title>cluster_VoteModule_exports</title>
-<polygon fill="none" stroke="black" points="279,-208 279,-260 383,-260 383,-208 279,-208"/>
+<polygon fill="none" stroke="black" points="262,-208 262,-260 366,-260 366,-208 262,-208"/>
 </g>
 <g id="clust3" class="cluster">
 <title>cluster_VoteModule_imports</title>
-<polygon fill="none" stroke="black" points="158,-78 158,-130 638,-130 638,-78 158,-78"/>
-</g>
-<g id="clust6" class="cluster">
-<title>cluster_VoteModule_providers</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 150,-130 150,-78 16,-78"/>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 496,-130 496,-78 16,-78"/>
 </g>
 <!-- ArticleModule -->
 <g id="node1" class="node">
 <title>ArticleModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="630.42,-122 627.42,-126 606.42,-126 603.42,-122 531.58,-122 531.58,-86 630.42,-86 630.42,-122"/>
-<text text-anchor="middle" x="581" y="-99.8" font-family="Times,serif" font-size="14.00">ArticleModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="488.42,-122 485.42,-126 464.42,-126 461.42,-122 389.58,-122 389.58,-86 488.42,-86 488.42,-122"/>
+<text text-anchor="middle" x="439" y="-99.8" font-family="Times,serif" font-size="14.00">ArticleModule</text>
 </g>
 <!-- VoteModule -->
 <g id="node5" class="node">
 <title>VoteModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="374.26,-187 371.26,-191 350.26,-191 347.26,-187 287.74,-187 287.74,-151 374.26,-151 374.26,-187"/>
-<text text-anchor="middle" x="331" y="-164.8" font-family="Times,serif" font-size="14.00">VoteModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="357.26,-187 354.26,-191 333.26,-191 330.26,-187 270.74,-187 270.74,-151 357.26,-151 357.26,-187"/>
+<text text-anchor="middle" x="314" y="-164.8" font-family="Times,serif" font-size="14.00">VoteModule</text>
 </g>
 <!-- ArticleModule&#45;&gt;VoteModule -->
 <g id="edge1" class="edge">
 <title>ArticleModule&#45;&gt;VoteModule</title>
-<path fill="none" stroke="black" d="M581,-122.28C581,-143.32 581,-175 581,-175 581,-175 384.55,-175 384.55,-175"/>
-<polygon fill="black" stroke="black" points="384.55,-171.5 374.55,-175 384.55,-178.5 384.55,-171.5"/>
+<path fill="none" stroke="black" d="M439,-122.02C439,-139.37 439,-163 439,-163 439,-163 367.37,-163 367.37,-163"/>
+<polygon fill="black" stroke="black" points="367.37,-159.5 357.37,-163 367.37,-166.5 367.37,-159.5"/>
 </g>
 <!-- CommentModule -->
 <g id="node2" class="node">
 <title>CommentModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="513.27,-122 510.27,-126 489.27,-126 486.27,-122 398.73,-122 398.73,-86 513.27,-86 513.27,-122"/>
-<text text-anchor="middle" x="456" y="-99.8" font-family="Times,serif" font-size="14.00">CommentModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="371.27,-122 368.27,-126 347.27,-126 344.27,-122 256.73,-122 256.73,-86 371.27,-86 371.27,-122"/>
+<text text-anchor="middle" x="314" y="-99.8" font-family="Times,serif" font-size="14.00">CommentModule</text>
 </g>
 <!-- CommentModule&#45;&gt;VoteModule -->
 <g id="edge2" class="edge">
 <title>CommentModule&#45;&gt;VoteModule</title>
-<path fill="none" stroke="black" d="M456,-122.02C456,-139.37 456,-163 456,-163 456,-163 384.37,-163 384.37,-163"/>
-<polygon fill="black" stroke="black" points="384.37,-159.5 374.37,-163 384.37,-166.5 384.37,-159.5"/>
+<path fill="none" stroke="black" d="M314,-122.11C314,-122.11 314,-140.99 314,-140.99"/>
+<polygon fill="black" stroke="black" points="310.5,-140.99 314,-150.99 317.5,-140.99 310.5,-140.99"/>
 </g>
 <!-- DisqusModule -->
 <g id="node3" class="node">
 <title>DisqusModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="380.44,-122 377.44,-126 356.44,-126 353.44,-122 281.56,-122 281.56,-86 380.44,-86 380.44,-122"/>
-<text text-anchor="middle" x="331" y="-99.8" font-family="Times,serif" font-size="14.00">DisqusModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="238.44,-122 235.44,-126 214.44,-126 211.44,-122 139.56,-122 139.56,-86 238.44,-86 238.44,-122"/>
+<text text-anchor="middle" x="189" y="-99.8" font-family="Times,serif" font-size="14.00">DisqusModule</text>
 </g>
 <!-- DisqusModule&#45;&gt;VoteModule -->
 <g id="edge3" class="edge">
 <title>DisqusModule&#45;&gt;VoteModule</title>
-<path fill="none" stroke="black" d="M331,-122.11C331,-122.11 331,-140.99 331,-140.99"/>
-<polygon fill="black" stroke="black" points="327.5,-140.99 331,-150.99 334.5,-140.99 327.5,-140.99"/>
+<path fill="none" stroke="black" d="M189,-122.02C189,-139.37 189,-163 189,-163 189,-163 260.63,-163 260.63,-163"/>
+<polygon fill="black" stroke="black" points="260.63,-166.5 270.63,-163 260.63,-159.5 260.63,-166.5"/>
 </g>
 <!-- OptionModule -->
 <g id="node4" class="node">
 <title>OptionModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="264.44,-122 261.44,-126 240.44,-126 237.44,-122 165.56,-122 165.56,-86 264.44,-86 264.44,-122"/>
-<text text-anchor="middle" x="215" y="-99.8" font-family="Times,serif" font-size="14.00">OptionModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="122.44,-122 119.44,-126 98.44,-126 95.44,-122 23.56,-122 23.56,-86 122.44,-86 122.44,-122"/>
+<text text-anchor="middle" x="73" y="-99.8" font-family="Times,serif" font-size="14.00">OptionModule</text>
 </g>
 <!-- OptionModule&#45;&gt;VoteModule -->
 <g id="edge4" class="edge">
 <title>OptionModule&#45;&gt;VoteModule</title>
-<path fill="none" stroke="black" d="M215,-122.02C215,-139.37 215,-163 215,-163 215,-163 277.48,-163 277.48,-163"/>
-<polygon fill="black" stroke="black" points="277.48,-166.5 287.48,-163 277.48,-159.5 277.48,-166.5"/>
+<path fill="none" stroke="black" d="M73,-122.28C73,-143.32 73,-175 73,-175 73,-175 260.64,-175 260.64,-175"/>
+<polygon fill="black" stroke="black" points="260.64,-178.5 270.64,-175 260.64,-171.5 260.64,-178.5"/>
 </g>
 <!-- VoteService  -->
 <g id="node6" class="node">
 <title>VoteService </title>
-<polygon fill="#fb8072" stroke="black" points="375.19,-252 286.81,-252 286.81,-216 375.19,-216 375.19,-252"/>
-<text text-anchor="middle" x="331" y="-229.8" font-family="Times,serif" font-size="14.00">VoteService </text>
+<polygon fill="#fb8072" stroke="black" points="358.19,-252 269.81,-252 269.81,-216 358.19,-216 358.19,-252"/>
+<text text-anchor="middle" x="314" y="-229.8" font-family="Times,serif" font-size="14.00">VoteService </text>
 </g>
 <!-- VoteModule&#45;&gt;VoteService  -->
 <g id="edge5" class="edge">
 <title>VoteModule&#45;&gt;VoteService </title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M331,-187.11C331,-187.11 331,-205.99 331,-205.99"/>
-<polygon fill="black" stroke="black" points="327.5,-205.99 331,-215.99 334.5,-205.99 327.5,-205.99"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M314,-187.11C314,-187.11 314,-205.99 314,-205.99"/>
+<polygon fill="black" stroke="black" points="310.5,-205.99 314,-215.99 317.5,-205.99 310.5,-205.99"/>
 </g>
 <!-- VoteService -->
 <g id="node7" class="node">
 <title>VoteService</title>
-<ellipse fill="#fdb462" stroke="black" cx="83" cy="-104" rx="58.53" ry="18"/>
-<text text-anchor="middle" x="83" y="-99.8" font-family="Times,serif" font-size="14.00">VoteService</text>
+<ellipse fill="#fdb462" stroke="black" cx="571" cy="-104" rx="58.53" ry="18"/>
+<text text-anchor="middle" x="571" y="-99.8" font-family="Times,serif" font-size="14.00">VoteService</text>
 </g>
 <!-- VoteService&#45;&gt;VoteModule -->
 <g id="edge6" class="edge">
 <title>VoteService&#45;&gt;VoteModule</title>
-<path fill="none" stroke="black" d="M83,-122.28C83,-143.32 83,-175 83,-175 83,-175 277.52,-175 277.52,-175"/>
-<polygon fill="black" stroke="black" points="277.52,-178.5 287.52,-175 277.52,-171.5 277.52,-178.5"/>
+<path fill="none" stroke="black" d="M571,-122.28C571,-143.32 571,-175 571,-175 571,-175 367.31,-175 367.31,-175"/>
+<polygon fill="black" stroke="black" points="367.31,-171.5 357.31,-175 367.31,-178.5 367.31,-171.5"/>
 </g>
 </g>
 </svg>

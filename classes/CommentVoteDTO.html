@@ -160,6 +160,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#author" >author</a>
                             </li>
@@ -212,7 +213,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/modules/vote/vote.dto.ts:61</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/vote/vote.dto.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -250,7 +251,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/modules/vote/vote.dto.ts:66</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/modules/vote/vote.dto.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -263,6 +264,7 @@
                 <td class="col-md-4">
                     <a name="author"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -283,7 +285,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ValidateNested()<br />@IsObject()<br />@IsOptional()<br />
+                            @Type(undefined)<br />@ValidateNested()<br />@IsObject()<br />@IsOptional()<br />
                         </code>
                     </td>
                 </tr>
@@ -295,7 +297,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/VoteAuthorDTO.html#source" target="_self" >VoteAuthorDTO:55</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/VoteAuthorDTO.html#source" target="_self" >VoteAuthorDTO:56</a></code>
 </div>
                         </td>
                     </tr>
@@ -315,7 +317,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform } from &#x27;class-transformer&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform, Type } from &#x27;class-transformer&#x27;
 import { IsInt, IsObject, IsArray, IsDefined, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
 import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
@@ -360,6 +362,7 @@ export class VotesDTO {
 }
 
 export class VoteAuthorDTO {
+  @Type(() &#x3D;&gt; Author)
   @ValidateNested()
   @IsObject()
   @IsOptional()
