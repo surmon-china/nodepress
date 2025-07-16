@@ -30,18 +30,17 @@ async function bootstrap() {
         request.locals.isAuthenticated = isAuthenticated;
         request.locals.isUnauthenticated = !isAuthenticated;
     });
+    app.enableCors({
+        origin: app_environment_1.isDevEnv ? true : app_config_1.APP_BIZ.CORS_ALLOWED_ORIGINS,
+        preflight: true,
+        credentials: true,
+        maxAge: 600,
+        methods: ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    });
     app.useGlobalFilters(new exception_filter_1.HttpExceptionFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
-    if (app_environment_1.isDevEnv) {
+    if (app_environment_1.isDevEnv)
         app.useGlobalInterceptors(new logging_interceptor_1.LoggingInterceptor());
-        app.enableCors({
-            origin: true,
-            preflight: true,
-            credentials: true,
-            maxAge: 86400,
-            methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH']
-        });
-    }
     return await app.listen(app_config_1.APP_BIZ.PORT);
 }
 bootstrap().then((server) => {
