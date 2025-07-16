@@ -6,11 +6,10 @@
 
 import { Controller, UseGuards, Get, Put, Post, Delete, Query, Body } from '@nestjs/common'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
+import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { ExposePipe } from '@app/pipes/expose.pipe'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
-import { Responser } from '@app/decorators/responser.decorator'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PaginateResult } from '@app/utils/paginate'
 import { CategoriesDTO, CategoryPaginateQueryDTO } from './category.dto'
 import { CategoryService } from './category.service'
@@ -21,14 +20,13 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle('Get categories')
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: 'Get categories succeeded', usePaginate: true })
   getCategories(
-    @Query(PermissionPipe, ExposePipe) query: CategoryPaginateQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query(PermissionPipe) query: CategoryPaginateQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise<PaginateResult<Category>> {
-    return this.categoryService.paginator(
+    return this.categoryService.paginate(
       {},
       { page: query.page, perPage: query.per_page, dateSort: query.sort },
       isUnauthenticated
@@ -36,9 +34,9 @@ export class CategoryController {
   }
 
   @Get('all')
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle('Get all categories')
-  getAllCategories(@QueryParams() { isAuthenticated }: QueryParamsResult): Promise<Array<Category>> {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse('Get all categories succeeded')
+  getAllCategories(@RequestContext() { isAuthenticated }: IRequestContext): Promise<Array<Category>> {
     return isAuthenticated
       ? this.categoryService.getAllCategories({ aggregatePublicOnly: false })
       : this.categoryService.getAllCategoriesCache()
@@ -46,35 +44,35 @@ export class CategoryController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Create category')
+  @SuccessResponse('Create category succeeded')
   createCategory(@Body() category: Category): Promise<Category> {
     return this.categoryService.create(category)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete categories')
+  @SuccessResponse('Delete categories succeeded')
   delCategories(@Body() body: CategoriesDTO) {
     return this.categoryService.batchDelete(body.category_ids)
   }
 
   @Get(':id')
-  @Responser.handle('Get categories tree')
-  getCategory(@QueryParams() { params }: QueryParamsResult): Promise<Category[]> {
+  @SuccessResponse('Get categories tree succeeded')
+  getCategory(@RequestContext() { params }: IRequestContext): Promise<Category[]> {
     return this.categoryService.getGenealogyById(params.id)
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update category')
-  putCategory(@QueryParams() { params }: QueryParamsResult, @Body() category: Category): Promise<Category> {
+  @SuccessResponse('Update category succeeded')
+  putCategory(@RequestContext() { params }: IRequestContext, @Body() category: Category): Promise<Category> {
     return this.categoryService.update(params.id, category)
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete category')
-  delCategory(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse('Delete category succeeded')
+  delCategory(@RequestContext() { params }: IRequestContext) {
     return this.categoryService.delete(params.id)
   }
 }

@@ -9,7 +9,7 @@
 import { Connection } from 'mongoose'
 import { Provider, Inject } from '@nestjs/common'
 import { getModelForClass } from '@typegoose/typegoose'
-import { DB_CONNECTION_TOKEN, DB_MODEL_TOKEN_SUFFIX } from '@app/constants/system.constant'
+import { DB_CONNECTION_TOKEN, DB_MODEL_TOKEN_SUFFIX } from '@app/constants/database.constant'
 
 export interface TypegooseClass {
   new (...args: any[])

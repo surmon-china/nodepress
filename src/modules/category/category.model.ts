@@ -8,13 +8,13 @@ import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions } from '@typegoose/typegoose'
 import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayUnique } from 'class-validator'
-import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { KeyValueModel } from '@app/models/key-value.model'
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
     versionKey: false,

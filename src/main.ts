@@ -4,46 +4,66 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import helmet from 'helmet'
-import passport from 'passport'
-import bodyParser from 'body-parser'
-import cookieParser from 'cookie-parser'
-import compression from 'compression'
+import fastifyCookie from '@fastify/cookie'
+import fastifyMultipart from '@fastify/multipart'
 import { NestFactory } from '@nestjs/core'
-import { AppModule } from '@app/app.module'
-import { HttpExceptionFilter } from '@app/filters/error.filter'
+import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify'
 import { TransformInterceptor } from '@app/interceptors/transform.interceptor'
 import { LoggingInterceptor } from '@app/interceptors/logging.interceptor'
-import { ErrorInterceptor } from '@app/interceptors/error.interceptor'
-import { environment, isProdEnv } from '@app/app.environment'
+import { HttpExceptionFilter } from '@app/filters/exception.filter'
+import { AuthService } from '@app/core/auth/auth.service'
+import { environment, isDevEnv } from './app.environment'
+import { AppModule } from './app.module'
+import { APP_BIZ } from './app.config'
 import logger from '@app/utils/logger'
-import * as APP_CONFIG from '@app/app.config'
 
 async function bootstrap() {
-  // MARK: keep logger enabled on dev env
-  const app = await NestFactory.create(AppModule, isProdEnv ? { logger: false } : {})
-  app.use(helmet())
-  app.use(compression())
-  app.use(cookieParser())
-  app.use(bodyParser.json({ limit: '1mb' }))
-  app.use(bodyParser.urlencoded({ extended: true }))
-  // MARK: Beware of upgrades!
-  // https://github.com/jaredhanson/passport/blob/master/CHANGELOG.md#changed
-  app.use(passport.initialize())
+  // https://fastify.dev/docs/latest/Reference/Server/#trustproxy
+  const adapter = new FastifyAdapter({ logger: false, trustProxy: true })
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, { logger: false })
+
+  // Register fastify plugins
+  await app.register(fastifyCookie)
+  await app.register(fastifyMultipart, { limits: { fileSize: 1024 * 1024 * 20 }, throwFileSizeLimit: true })
+
+  // Authentication initialization must be done as early as possible (before Guards).
+  // Since NestMiddleware receives a Node.js IncomingMessage (not FastifyRequest),
+  // mutations made in middleware cannot be accessed in Guards/Pipes/Interceptors.
+  // Therefore, Fastify's `onRequest` hook is used to access the full request object.
+  // Reference: https://github.com/nestjs/nest/issues/9865#issuecomment-1174056923
+  // Reference: https://stackoverflow.com/a/79056477/6222535
+  const authService = app.get(AuthService)
+  const fastify = app.getHttpAdapter().getInstance()
+  fastify.addHook('onRequest', async (request) => {
+    const token = authService.extractTokenFromAuthorization(request.headers.authorization)
+    const isAuthenticated = Boolean(token && (await authService.verifyToken(token)))
+    request.locals ??= {} as any
+    request.locals.token = token
+    request.locals.isAuthenticated = isAuthenticated
+    request.locals.isUnauthenticated = !isAuthenticated
+  })
+
+  // Register global filters and interceptors
   app.useGlobalFilters(new HttpExceptionFilter())
-  app.useGlobalInterceptors(new TransformInterceptor(), new ErrorInterceptor(), new LoggingInterceptor())
-  // https://github.com/nestjs/nest/issues/528#issuecomment-403212561
-  // https://stackoverflow.com/a/60141437/6222535
-  // MARK: can't used!
-  // useContainer(app.select(AppModule), { fallbackOnErrors: true, fallback: true })
-  return await app.listen(APP_CONFIG.APP_BIZ.PORT)
+  app.useGlobalInterceptors(new TransformInterceptor())
+  if (isDevEnv) {
+    app.useGlobalInterceptors(new LoggingInterceptor())
+    app.enableCors({
+      origin: true,
+      preflight: true,
+      credentials: true,
+      maxAge: 86400,
+      methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH']
+    })
+  }
+
+  return await app.listen(APP_BIZ.PORT)
 }
 
-bootstrap().then(() => {
+bootstrap().then((server) => {
   logger.success(
-    `${APP_CONFIG.APP_BIZ.NAME} app is running!`,
+    `${APP_BIZ.NAME} app is running!`,
     `| env: ${environment}`,
-    `| port: ${APP_CONFIG.APP_BIZ.PORT}`,
-    `| ${new Date().toLocaleString()}`
+    `| at: ${JSON.stringify(server.address())}`
   )
 })

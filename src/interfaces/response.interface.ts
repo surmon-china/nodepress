@@ -1,6 +1,6 @@
 /**
- * @file HTTP interface
- * @module interface/http
+ * @file HTTP response interface
+ * @module interface/response
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -10,20 +10,7 @@ export enum ResponseStatus {
   Success = 'success'
 }
 
-export interface HttpResponseBase {
-  status: ResponseStatus
-  message: ResponseMessage
-}
-
-export type ExceptionInfo =
-  | ResponseMessage
-  | {
-      message: ResponseMessage
-      error?: any
-    }
-
-// paginate data
-export interface HttpPaginateResult<T> {
+export interface PaginationPayload<T> {
   data: T
   pagination: {
     total: number
@@ -33,17 +20,16 @@ export interface HttpPaginateResult<T> {
   }
 }
 
-// HTTP error
-export type HttpResponseError = HttpResponseBase & {
-  error: any
-  debug?: string
+export interface HttpErrorResponse {
+  status: ResponseStatus.Error
+  message: ResponseMessage
+  error: string
+  timestamp: string
 }
 
-// HTTP success
-export type HttpResponseSuccess<T> = HttpResponseBase & {
-  params?: any
-  result: T | HttpPaginateResult<T>
+export interface HttpSuccessResponse<T> {
+  status: ResponseStatus.Success
+  message: ResponseMessage
+  result: T | PaginationPayload<T>
+  context?: any
 }
-
-// HTTP response
-export type HttpResponse<T> = HttpResponseError | HttpResponseSuccess<T>

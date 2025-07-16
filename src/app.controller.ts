@@ -10,7 +10,7 @@ import * as APP_CONFIG from './app.config'
 @Controller()
 export class AppController {
   @Get()
-  root(): any {
+  root() {
     return APP_CONFIG.PROJECT
   }
 }

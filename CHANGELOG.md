@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### 5.1.0 (2025-07-16)
+
+**Feature**
+
+- Replaced Express with Fastify as the HTTP server
+- Renamed `AuthModule` to `AdminModule`
+- Refactored the global JWT authentication mechanism
+- Refactored decorators
+- Removed all legacy middleware (CORS)
+- Removed the unused Cache decorator
+- Removed unnecessary global constants
+
 ### 5.0.0 (2025-06-16)
 
 **Feature**
@@ -323,7 +335,6 @@ All notable changes to this project will be documented in this file.
 **Chore**
 
 - Upgrade deps
-
   - `Redis` > v4
   - `nest` > v8
   - `mongoose` > v6

@@ -9,7 +9,7 @@ import _uniq from 'lodash/uniq'
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
-import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
+import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { Option, Blocklist, DEFAULT_OPTION } from './option.model'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { createLogger } from '@app/utils/logger'
@@ -41,7 +41,7 @@ export class OptionService {
 
   public async ensureAppOption(): Promise<MongooseDoc<Option>> {
     const option = await this.optionModel.findOne().exec()
-    return option || (await this.optionModel.create({ ...DEFAULT_OPTION }))
+    return option ?? (await this.optionModel.create({ ...DEFAULT_OPTION }))
   }
 
   public getOptionCacheForGuest() {

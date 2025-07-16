@@ -1,4 +1,4 @@
-import { CacheService } from '@app/processors/cache/cache.service'
+import { CacheService } from '@app/core/cache/cache.service'
 import { CacheKeys } from '@app/constants/cache.constant'
 
 export const getTodayViewsCount = async (cache: CacheService) => {

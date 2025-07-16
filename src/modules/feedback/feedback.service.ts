@@ -5,15 +5,13 @@
  */
 
 import { Types } from 'mongoose'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { ROOT_FEEDBACK_TID } from '@app/constants/biz.constant'
-import { NULL } from '@app/constants/value.constant'
-import { IPService } from '@app/processors/helper/helper.service.ip'
-import { QueryVisitor } from '@app/decorators/queryparams.decorator'
-import { isProdEnv } from '@app/app.environment'
+import { IPService } from '@app/core/helper/helper.service.ip'
+import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { Feedback, FeedbackBase } from './feedback.model'
 
 @Injectable()
@@ -23,7 +21,7 @@ export class FeedbackService {
     @InjectModel(Feedback) private readonly feedbackModel: MongooseModel<Feedback>
   ) {}
 
-  public paginator(query: PaginateQuery<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>> {
+  public paginate(query: PaginateQuery<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>> {
     return this.feedbackModel.paginate(query, options)
   }
 
@@ -33,32 +31,26 @@ export class FeedbackService {
       origin: visitor.origin,
       user_agent: visitor.ua,
       ip: visitor.ip,
-      ip_location: isProdEnv && visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
+      ip_location: visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
     })
   }
 
-  public getDetail(feedbackId: MongooseId): Promise<MongooseDoc<Feedback>> {
-    return this.feedbackModel
-      .findById(feedbackId)
-      .exec()
-      .then((result) => result || Promise.reject(`Feedback '${feedbackId}' not found`))
+  public async getDetail(feedbackId: MongooseId): Promise<MongooseDoc<Feedback>> {
+    const feedback = await this.feedbackModel.findById(feedbackId).exec()
+    if (!feedback) throw new NotFoundException(`Feedback '${feedbackId}' not found`)
+    return feedback
   }
 
   public async update(feedbackId: MongooseId, newFeedback: Partial<Feedback>): Promise<MongooseDoc<Feedback>> {
-    const feedback = await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec()
-    if (!feedback) {
-      throw `Feedback '${feedbackId}' not found`
-    }
-    return feedback
+    const updated = await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec()
+    if (!updated) throw new NotFoundException(`Feedback '${feedbackId}' not found`)
+    return updated
   }
 
   public async delete(feedbackId: MongooseId) {
-    const feedback = await this.feedbackModel.findByIdAndDelete(feedbackId, null).exec()
-    if (!feedback) {
-      throw `Feedback '${feedbackId}' not found`
-    }
-
-    return feedback
+    const deleted = await this.feedbackModel.findByIdAndDelete(feedbackId, null).exec()
+    if (!deleted) throw new NotFoundException(`Feedback '${feedbackId}' not found`)
+    return deleted
   }
 
   public batchDelete(feedbackIds: MongooseId[]) {
@@ -70,6 +62,6 @@ export class FeedbackService {
       { $match: { tid: ROOT_FEEDBACK_TID } },
       { $group: { _id: null, avgEmotion: { $avg: '$emotion' } } }
     ])
-    return result ? Math.round(result.avgEmotion * 1000) / 1000 : NULL
+    return result ? Math.round(result.avgEmotion * 1000) / 1000 : null
   }
 }

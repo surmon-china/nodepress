@@ -1,25 +1,22 @@
 /**
- * @file Dev logging interceptor
+ * @file Logging interceptor
  * @module interceptor/logging
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Request } from 'express'
-import { Observable } from 'rxjs'
-import { tap } from 'rxjs/operators'
-import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common'
-import { isDevEnv } from '@app/app.environment'
+import type { Observable } from 'rxjs'
+import type { FastifyRequest } from 'fastify'
+import type { CallHandler, ExecutionContext } from '@nestjs/common'
+import { Injectable, NestInterceptor } from '@nestjs/common'
 import { createLogger } from '@app/utils/logger'
+import { tap } from 'rxjs/operators'
 
-const logger = createLogger({ scope: 'LoggingInterceptor', time: isDevEnv })
+const logger = createLogger({ scope: 'LoggingInterceptor', time: true })
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
-    if (!isDevEnv) {
-      return next.handle()
-    }
-    const request = context.switchToHttp().getRequest<Request>()
+    const request = context.switchToHttp().getRequest<FastifyRequest>()
     const content = request.method.padStart(6, '_') + ' -> ' + request.url
     logger.debug('+++ REQ:', content)
     const now = Date.now()

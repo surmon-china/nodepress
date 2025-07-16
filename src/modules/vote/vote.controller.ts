@@ -9,12 +9,11 @@ import { UAParser } from 'ua-parser-js'
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from '@nestjs/common'
 import { Throttle, minutes, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { ExposePipe } from '@app/pipes/expose.pipe'
-import { Responser } from '@app/decorators/responser.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
-import { IPService, IPLocation } from '@app/processors/helper/helper.service.ip'
-import { EmailService } from '@app/processors/helper/helper.service.email'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { IPService, IPLocation } from '@app/core/helper/helper.service.ip'
+import { EmailService } from '@app/core/helper/helper.service.email'
 import { OptionService } from '@app/modules/option/option.service'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
@@ -104,7 +103,7 @@ export class VoteController {
     }
 
     // anonymous user
-    return `Anonymous user`
+    return 'Anonymous user'
   }
 
   private emailToTargetVoteMessage(payload: {
@@ -162,9 +161,8 @@ export class VoteController {
 
   @Get()
   @UseGuards(AdminOnlyGuard)
-  @Responser.paginate()
-  @Responser.handle('Get votes')
-  getVotes(@Query(ExposePipe) query: VotePaginateQueryDTO): Promise<PaginateResult<Vote>> {
+  @SuccessResponse({ message: 'Get votes succeeded', usePaginate: true })
+  getVotes(@Query() query: VotePaginateQueryDTO): Promise<PaginateResult<Vote>> {
     const { sort, page, per_page, ...filters } = query
     const paginateQuery: PaginateQuery<Vote> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page, dateSort: sort }
@@ -184,23 +182,23 @@ export class VoteController {
     if (!_isUndefined(filters.author_type)) {
       paginateQuery.author_type = filters.author_type
     }
-    return this.voteService.paginator(paginateQuery, paginateOptions)
+    return this.voteService.paginate(paginateQuery, paginateOptions)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete votes')
+  @SuccessResponse('Delete votes succeeded')
   deleteVotes(@Body() body: VotesDTO) {
     return this.voteService.batchDelete(body.vote_ids)
   }
 
   @Post('/post')
   @Throttle({ default: { ttl: minutes(1), limit: 10 } })
-  @Responser.handle('Vote post')
+  @SuccessResponse('Vote post succeeded')
   async votePost(
     @Body() voteBody: PostVoteDTO,
     @DisqusToken() token: AccessToken | null,
-    @QueryParams() { visitor }: QueryParamsResult
+    @RequestContext() { visitor }: IRequestContext
   ) {
     // NodePress
     const likes =
@@ -244,11 +242,11 @@ export class VoteController {
 
   @Post('/comment')
   @Throttle({ default: { ttl: seconds(30), limit: 10 } })
-  @Responser.handle('Vote comment')
+  @SuccessResponse('Vote comment succeeded')
   async voteComment(
     @Body() voteBody: CommentVoteDTO,
     @DisqusToken() token: AccessToken | null,
-    @QueryParams() { visitor }: QueryParamsResult
+    @RequestContext() { visitor }: IRequestContext
   ) {
     // NodePress
     const result = await this.commentService.vote(voteBody.comment_id, voteBody.vote > 0)

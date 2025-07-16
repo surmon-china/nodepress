@@ -7,13 +7,12 @@
 import _trim from 'lodash/trim'
 import _isUndefined from 'lodash/isUndefined'
 import { Types } from 'mongoose'
-import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from '@nestjs/common'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
-import { Responser } from '@app/decorators/responser.decorator'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
+import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from '@nestjs/common'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { ExposePipe } from '@app/pipes/expose.pipe'
+import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
+import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { SortType } from '@app/constants/biz.constant'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
@@ -32,12 +31,9 @@ export class ArticleController {
   ) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle('Get articles')
-  async getArticles(
-    @Query(PermissionPipe, ExposePipe) query: ArticlePaginateQueryDTO
-  ): Promise<PaginateResult<Article>> {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: 'Get articles succeeded', usePaginate: true })
+  async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDTO): Promise<PaginateResult<Article>> {
     const { page, per_page, sort, ...filters } = query
     const paginateQuery: PaginateQuery<Article> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page }
@@ -99,25 +95,22 @@ export class ArticleController {
     }
 
     // paginate
-    return this.articleService.paginator(paginateQuery, paginateOptions)
+    return this.articleService.paginate(paginateQuery, paginateOptions)
   }
 
   @Get('calendar')
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle('Get article calendar')
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse('Get article calendar succeeded')
   getArticleCalendar(
-    @Query(ExposePipe) query: ArticleCalendarQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query() query: ArticleCalendarQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ) {
     return this.articleService.getCalendar(isUnauthenticated, query.timezone)
   }
 
   @Get(':id/context')
-  @Responser.handle({
-    message: 'Get context articles',
-    error: HttpStatus.NOT_FOUND
-  })
-  async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse('Get context articles succeeded')
+  async getArticleContext(@RequestContext() { params }: IRequestContext) {
     const articleId = Number(params.id)
     const [prevArticles, nextArticles, relatedArticles] = await Promise.all([
       this.articleService.getNearArticles(articleId, 'early', 1),
@@ -134,18 +127,15 @@ export class ArticleController {
   }
 
   @Get(':id')
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle({
-    message: 'Get article detail',
-    error: HttpStatus.NOT_FOUND
-  })
-  getArticle(@QueryParams() { params, isUnauthenticated }: QueryParamsResult): Promise<Article> {
-    // guest user > number ID | slug
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse('Get article detail succeeded')
+  getArticle(@RequestContext() { params, isUnauthenticated }: IRequestContext): Promise<Article> {
+    // Guest user > number ID | slug
     if (isUnauthenticated) {
       const idOrSlug = isNaN(Number(params.id)) ? String(params.id) : Number(params.id)
       return this.articleService.getFullDetailForGuest(idOrSlug)
     }
-    // admin user > Object ID | number ID
+    // Admin user > Object ID | number ID
     return Types.ObjectId.isValid(params.id)
       ? this.articleService.getDetailByObjectId(params.id)
       : this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: Number(params.id) })
@@ -153,35 +143,35 @@ export class ArticleController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Create article')
+  @SuccessResponse('Create article succeeded')
   createArticle(@Body() article: Article): Promise<Article> {
     return this.articleService.create(article)
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update article')
-  putArticle(@QueryParams() { params }: QueryParamsResult, @Body() article: Article): Promise<Article> {
+  @SuccessResponse('Update article succeeded')
+  putArticle(@RequestContext() { params }: IRequestContext, @Body() article: Article): Promise<Article> {
     return this.articleService.update(params.id, article)
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete article')
-  delArticle(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse('Delete article succeeded')
+  delArticle(@RequestContext() { params }: IRequestContext) {
     return this.articleService.delete(params.id)
   }
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update articles')
+  @SuccessResponse('Update articles succeeded')
   patchArticles(@Body() body: ArticlesStateDTO) {
     return this.articleService.batchPatchState(body.article_ids, body.state)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete articles')
+  @SuccessResponse('Delete articles succeeded')
   delArticles(@Body() body: ArticleIdsDTO) {
     return this.articleService.batchDelete(body.article_ids)
   }

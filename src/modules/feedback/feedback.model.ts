@@ -6,23 +6,12 @@
 
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions, Severity } from '@typegoose/typegoose'
-import {
-  IsString,
-  MinLength,
-  MaxLength,
-  Min,
-  IsIP,
-  IsBoolean,
-  IsEmail,
-  IsIn,
-  IsInt,
-  IsOptional,
-  IsNotEmpty
-} from 'class-validator'
-import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
+import { IsString, IsBoolean, IsEmail, IsInt, IsIP, Min, MinLength, MaxLength } from 'class-validator'
+import { IsOptional, IsNotEmpty, IsIn } from 'class-validator'
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { IPLocation } from '@app/processors/helper/helper.service.ip'
+import { IPLocation } from '@app/core/helper/helper.service.ip'
 
 export enum FeedbackEmotion {
   Terrible = 1,
@@ -107,7 +96,7 @@ export class FeedbackBase {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {

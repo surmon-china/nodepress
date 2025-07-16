@@ -5,19 +5,18 @@
  */
 
 import { Types, FilterQuery, SortOrder } from 'mongoose'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException, BadRequestException, ConflictException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { getArticleUrl } from '@app/transformers/urlmap.transformer'
-import { SeoService } from '@app/processors/helper/helper.service.seo'
-import { CacheService } from '@app/processors/cache/cache.service'
+import { SeoService } from '@app/core/helper/helper.service.seo'
+import { CacheService } from '@app/core/cache/cache.service'
 import { increaseTodayViewsCount } from '@app/modules/extension/extension.helper'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { PublishState } from '@app/constants/biz.constant'
-import { NULL } from '@app/constants/value.constant'
 import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { getArticleUrl } from '@app/transformers/urlmap.transformer'
 import {
   Article,
   ARTICLE_LIST_QUERY_GUEST_FILTER,
@@ -29,14 +28,14 @@ import {
 export class ArticleService {
   constructor(
     private readonly seoService: SeoService,
+    private readonly cacheService: CacheService,
     private readonly tagService: TagService,
     private readonly categoryService: CategoryService,
-    private readonly cacheService: CacheService,
     private readonly archiveService: ArchiveService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
   ) {}
 
-  // get near articles
+  // Get near articles
   public async getNearArticles(articleId: number, type: 'later' | 'early', count: number): Promise<Article[]> {
     const typeFieldMap = {
       early: { field: '$lt', sort: -1 as SortOrder },
@@ -54,7 +53,7 @@ export class ArticleService {
       .exec()
   }
 
-  // get related articles
+  // Get related articles
   public getRelatedArticles(article: Article, count: number): Promise<Article[]> {
     const findParams: FilterQuery<Article> = {
       ...ARTICLE_LIST_QUERY_GUEST_FILTER,
@@ -83,7 +82,7 @@ export class ArticleService {
   }
 
   // get paginate articles
-  public paginator(query: PaginateQuery<Article>, options: PaginateOptions): Promise<PaginateResult<Article>> {
+  public paginate(query: PaginateQuery<Article>, options: PaginateOptions): Promise<PaginateResult<Article>> {
     return this.articleModel.paginate(query, {
       ...options,
       projection: ARTICLE_LIST_QUERY_PROJECTION,
@@ -91,21 +90,20 @@ export class ArticleService {
     })
   }
 
-  // get articles by ids
-  public getList(articleIds: number[]): Promise<Array<Article>> {
+  // Get articles by ids
+  public getList(articleIds: number[]): Promise<Article[]> {
     return this.articleModel.find({ id: { $in: articleIds } }).exec()
   }
 
-  // get article by ObjectID
-  public getDetailByObjectId(articleId: MongooseId): Promise<MongooseDoc<Article>> {
-    return this.articleModel
-      .findById(articleId)
-      .exec()
-      .then((result) => result || Promise.reject(`Article '${articleId}' not found`))
+  // Get article by ObjectID
+  public async getDetailByObjectId(articleId: MongooseId): Promise<MongooseDoc<Article>> {
+    const article = await this.articleModel.findById(articleId).exec()
+    if (!article) throw new NotFoundException(`Article '${articleId}' not found`)
+    return article
   }
 
-  // get article by number id
-  public getDetailByNumberIdOrSlug({
+  // Get article by number id or slug
+  public async getDetailByNumberIdOrSlug({
     idOrSlug,
     publicOnly = false,
     populate = false
@@ -121,14 +119,19 @@ export class ArticleService {
       params.id = idOrSlug
     }
 
-    return this.articleModel
+    const article = await this.articleModel
       .findOne(publicOnly ? { ...params, ...ARTICLE_LIST_QUERY_GUEST_FILTER } : params)
       .populate(populate ? ARTICLE_FULL_QUERY_REF_POPULATE : [])
       .exec()
-      .then((result) => result || Promise.reject(`Article '${idOrSlug}' not found`))
+
+    if (!article) {
+      throw new NotFoundException(`Article '${idOrSlug}' not found`)
+    }
+
+    return article
   }
 
-  // get article detail for guest user
+  // Get article detail for guest user
   public async getFullDetailForGuest(target: number | string): Promise<Article> {
     const article = await this.getDetailByNumberIdOrSlug({
       idOrSlug: target,
@@ -159,9 +162,7 @@ export class ArticleService {
   public async create(newArticle: Article): Promise<MongooseDoc<Article>> {
     if (newArticle.slug) {
       const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec()
-      if (existedArticle) {
-        throw `Article slug '${newArticle.slug}' is existed`
-      }
+      if (existedArticle) throw new ConflictException(`Article slug '${newArticle.slug}' already exists`)
     }
 
     const article = await this.articleModel.create(newArticle)
@@ -176,7 +177,7 @@ export class ArticleService {
     if (newArticle.slug) {
       const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).exec()
       if (existedArticle && !existedArticle._id.equals(articleId)) {
-        throw `Article slug '${newArticle.slug}' is existed`
+        throw new ConflictException(`Article slug '${newArticle.slug}' already exists`)
       }
     }
 
@@ -185,9 +186,8 @@ export class ArticleService {
     Reflect.deleteProperty(newArticle, 'updated_at')
 
     const article = await this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).exec()
-    if (!article) {
-      throw `Article '${articleId}' not found`
-    }
+    if (!article) throw new NotFoundException(`Article '${articleId}' not found`)
+
     this.seoService.update(getArticleUrl(article.id))
     this.tagService.updateAllTagsCache()
     this.categoryService.updateAllCategoriesCache()
@@ -197,9 +197,7 @@ export class ArticleService {
 
   public async delete(articleId: MongooseId) {
     const article = await this.articleModel.findByIdAndDelete(articleId, null).exec()
-    if (!article) {
-      throw `Article '${articleId}' not found`
-    }
+    if (!article) throw new NotFoundException(`Article '${articleId}' not found`)
 
     this.seoService.delete(getArticleUrl(article.id))
     this.tagService.updateAllTagsCache()
@@ -233,16 +231,18 @@ export class ArticleService {
     return await this.articleModel.countDocuments(publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {}).exec()
   }
 
-  public getCalendar(publicOnly: boolean, timezone = 'GMT') {
-    return this.articleModel
-      .aggregate<{ _id: string; count: number }>([
+  public async getCalendar(publicOnly: boolean, timezone = 'GMT') {
+    try {
+      const calendar = await this.articleModel.aggregate<{ _id: string; count: number }>([
         { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
         { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
         { $group: { _id: '$day', count: { $sum: 1 } } },
         { $sort: { _id: 1 } }
       ])
-      .then((calendar) => calendar.map(({ _id, ...r }) => ({ ...r, date: _id })))
-      .catch(() => Promise.reject(`Invalid timezone identifier: '${timezone}'`))
+      return calendar.map(({ _id, ...rest }) => ({ ...rest, date: _id }))
+    } catch (error) {
+      throw new BadRequestException(`Invalid timezone identifier: '${timezone}'`)
+    }
   }
 
   public async getMetaStatistic() {
@@ -261,22 +261,22 @@ export class ArticleService {
     ])
 
     if (!result) {
-      return NULL
-    } else {
-      return {
-        totalViews: result.totalViews,
-        totalLikes: result.totalLikes
-      }
+      return null
+    }
+
+    return {
+      totalViews: result.totalViews,
+      totalLikes: result.totalLikes
     }
   }
 
-  // article commentable state
+  // Article commentable state
   public async isCommentableArticle(articleId: number): Promise<boolean> {
     const article = await this.articleModel.findOne({ id: articleId }).exec()
     return Boolean(article && !article.disabled_comments)
   }
 
-  // update article comments count
+  // Update article comments count
   public async updateMetaComments(articleId: number, commentCount: number) {
     const findParams = { id: articleId }
     const patchParams = { $set: { 'meta.comments': commentCount } }

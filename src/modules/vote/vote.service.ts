@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { FilterQuery, MongooseBaseQueryOptions } from 'mongoose'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
@@ -15,7 +15,7 @@ import { Vote } from './vote.model'
 export class VoteService {
   constructor(@InjectModel(Vote) private readonly voteModel: MongooseModel<Vote>) {}
 
-  public paginator(query: PaginateQuery<Vote>, options: PaginateOptions): Promise<PaginateResult<Vote>> {
+  public paginate(query: PaginateQuery<Vote>, options: PaginateOptions): Promise<PaginateResult<Vote>> {
     return this.voteModel.paginate(query, options)
   }
 
@@ -24,26 +24,25 @@ export class VoteService {
   }
 
   public async update(voteId: MongooseId, newVote: Partial<Vote>): Promise<MongooseDoc<Vote>> {
-    const vote = await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec()
-    if (!vote) {
-      throw `Vote '${voteId}' not found`
-    }
-    return vote
+    const updated = await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec()
+    if (!updated) throw new NotFoundException(`Vote '${voteId}' not found`)
+    return updated
   }
 
   public async delete(voteId: MongooseId) {
-    const vote = await this.voteModel.findByIdAndDelete(voteId, null).exec()
-    if (!vote) {
-      throw `Vote '${voteId}' not found`
-    }
-    return vote
+    const deleted = await this.voteModel.findByIdAndDelete(voteId, null).exec()
+    if (!deleted) throw new NotFoundException(`Vote '${voteId}' not found`)
+    return deleted
   }
 
   public batchDelete(voteIds: MongooseId[]) {
     return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec()
   }
 
-  public async countDocuments(filter: FilterQuery<Vote>, options?: MongooseBaseQueryOptions<Vote>): Promise<number> {
+  public async countDocuments(
+    filter: FilterQuery<Vote>,
+    options?: MongooseBaseQueryOptions<Vote>
+  ): Promise<number> {
     return await this.voteModel.countDocuments(filter, options).exec()
   }
 }

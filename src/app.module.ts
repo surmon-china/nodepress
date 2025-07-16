@@ -4,40 +4,38 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import type { Request } from 'express'
-import { APP_INTERCEPTOR, APP_GUARD, APP_PIPE } from '@nestjs/core'
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common'
+import type { FastifyRequest } from 'fastify'
+import type { MiddlewareConsumer } from '@nestjs/common'
+import { Module, NestModule } from '@nestjs/common'
+import { APP_GUARD, APP_PIPE } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule, minutes } from '@nestjs/throttler'
 import { AppController } from '@app/app.controller'
 
-// framework
-import { CacheInterceptor } from '@app/interceptors/cache.interceptor'
+// Framework
+import { NoopMiddleware } from '@app/middlewares/noop.middleware'
 import { ValidationPipe } from '@app/pipes/validation.pipe'
 
-// middlewares
-import { CorsMiddleware } from '@app/middlewares/cors.middleware'
-import { OriginMiddleware } from '@app/middlewares/origin.middleware'
+// Global modules
+import { DatabaseModule } from '@app/core/database/database.module'
+import { CacheModule } from '@app/core/cache/cache.module'
+import { AuthModule } from '@app/core/auth/auth.module'
+import { HelperModule } from '@app/core/helper/helper.module'
 
-// universal modules
-import { DatabaseModule } from '@app/processors/database/database.module'
-import { CacheModule } from '@app/processors/cache/cache.module'
-import { HelperModule } from '@app/processors/helper/helper.module'
+// BIZ modules
+import { AnnouncementModule } from '@app/modules/announcement/announcement.module'
+import { CategoryModule } from '@app/modules/category/category.module'
+import { TagModule } from '@app/modules/tag/tag.module'
+import { ArticleModule } from '@app/modules/article/article.module'
+import { CommentModule } from '@app/modules/comment/comment.module'
+import { ArchiveModule } from '@app/modules/archive/archive.module'
+import { FeedbackModule } from '@app/modules/feedback/feedback.module'
+import { VoteModule } from '@app/modules/vote/vote.module'
+import { OptionModule } from '@app/modules/option/option.module'
+import { AdminModule } from '@app/modules/admin/admin.module'
+import { DisqusModule } from '@app/modules/disqus/disqus.module'
 
 // BIZ helper module
 import { ExtensionModule } from '@app/modules/extension/extension.module'
-
-// BIZ modules
-import { AuthModule } from '@app/modules/auth/auth.module'
-import { OptionModule } from '@app/modules/option/option.module'
-import { FeedbackModule } from '@app/modules/feedback/feedback.module'
-import { AnnouncementModule } from '@app/modules/announcement/announcement.module'
-import { TagModule } from '@app/modules/tag/tag.module'
-import { CategoryModule } from '@app/modules/category/category.module'
-import { ArticleModule } from '@app/modules/article/article.module'
-import { CommentModule } from '@app/modules/comment/comment.module'
-import { DisqusModule } from '@app/modules/disqus/disqus.module'
-import { ArchiveModule } from '@app/modules/archive/archive.module'
-import { VoteModule } from '@app/modules/vote/vote.module'
 
 @Module({
   imports: [
@@ -48,19 +46,22 @@ import { VoteModule } from '@app/modules/vote/vote.module'
         limit: 600, // 600 limit
         ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
         skipIf: (context) => {
-          // Skip throttle for the front-end server.
-          const request = context.switchToHttp().getRequest<Request>()
-          // Work only for front-end applications running on the same host machine.
-          return request.hostname === 'localhost' || ['127.0.0.1', '::1'].includes(request.ip ?? '')
+          const request = context.switchToHttp().getRequest<FastifyRequest>()
+          // Skip throttle for SSR applications on the same host.
+          return (
+            request.hostname === 'localhost' ||
+            request.ip.startsWith('::ffff:127.0.0.1') ||
+            ['127.0.0.1', '::1'].includes(request.ip ?? '')
+          )
         }
       }
     ]),
     HelperModule,
     DatabaseModule,
     CacheModule,
-    ExtensionModule,
-    // BIZs
     AuthModule,
+    ExtensionModule,
+    AdminModule,
     OptionModule,
     FeedbackModule,
     AnnouncementModule,
@@ -75,10 +76,6 @@ import { VoteModule } from '@app/modules/vote/vote.module'
   controllers: [AppController],
   providers: [
     {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor
-    },
-    {
       provide: APP_GUARD,
       useClass: ThrottlerGuard
     },
@@ -90,6 +87,6 @@ import { VoteModule } from '@app/modules/vote/vote.module'
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CorsMiddleware, OriginMiddleware).forRoutes('*')
+    consumer.apply(NoopMiddleware).forRoutes('*')
   }
 }

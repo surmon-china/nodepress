@@ -10,6 +10,6 @@ export const getExtendObject = (_extends: KeyValueModel[]): { [key: string]: str
   return _extends.length ? _extends.reduce((v, c) => ({ ...v, [c.name]: c.value }), {}) : {}
 }
 
-export const getExtendValue = (_extends: KeyValueModel[], key: string): string | void => {
-  return _extends.length ? getExtendObject(_extends)[key] : void 0
+export const getExtendValue = (_extends: KeyValueModel[], key: string): string | undefined => {
+  return _extends.length ? getExtendObject(_extends)[key] : undefined
 }

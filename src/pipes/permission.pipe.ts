@@ -5,56 +5,48 @@
  */
 
 import _isUndefined from 'lodash/isUndefined'
-import { Request } from 'express'
+import type { FastifyRequest } from 'fastify'
+import type { PipeTransform } from '@nestjs/common'
+import { Injectable, Inject, Scope, ForbiddenException } from '@nestjs/common'
+import { getGuestRequestPermission } from '@app/decorators/guest-permission.decorator'
 import { REQUEST } from '@nestjs/core'
-import { Injectable, Inject, Scope, PipeTransform } from '@nestjs/common'
-import { HTTP_PARAMS_PERMISSION_ERROR_DEFAULT } from '@app/constants/text.constant'
-import { HttpForbiddenError } from '@app/errors/forbidden.error'
-import { getGuestRequestOptions } from '@app/decorators/guest.decorator'
 
 /**
  * @class PermissionPipe
- * @classdesc validate metatype class permission & guest default value
+ * @classdesc Validate metatype class permission & set default value.
  */
 @Injectable({ scope: Scope.REQUEST })
 export class PermissionPipe implements PipeTransform<any> {
-  constructor(@Inject(REQUEST) protected readonly request: Request) {}
+  constructor(@Inject(REQUEST) protected readonly request: FastifyRequest) {}
 
   transform(value) {
-    // admin > any request params
-    if (this.request.isAuthenticated()) {
+    // Allow any authenticated user to pass through without validation.
+    if (this.request.locals.isAuthenticated) {
       return value
     }
 
-    // guest request params permission config
-    const guestRequestOptions = getGuestRequestOptions(value)
-    if (!guestRequestOptions) {
-      return value
-    }
-
-    // validate guest user request params's field permission
     Object.keys(value).forEach((field) => {
-      const v = value[field]
-      const o = guestRequestOptions[field]
-      if (o?.only?.length) {
-        if (!o.only.includes(v)) {
-          const message = `${HTTP_PARAMS_PERMISSION_ERROR_DEFAULT}: '${field}=${v}'`
-          const description = `'${field}' must be one of the following values: ${o.only.join(', ')}`
-          throw new HttpForbiddenError(`${message}, ${description}`)
+      const fieldValue = value[field]
+      const fieldMeta = getGuestRequestPermission(value, field)
+
+      // Only validate permission when user explicitly provides the query param.
+      if (!_isUndefined(fieldValue)) {
+        // Validate guest user request params's field permission.
+        if (fieldMeta?.only?.length && !fieldMeta.only.includes(fieldValue)) {
+          throw new ForbiddenException(
+            `Invalid value for field '${field}': allowed values are [${fieldMeta.only.join(', ')}]`
+          )
         }
+      }
+
+      // Set default value for guest param if not provided and default is defined.
+      if (_isUndefined(fieldValue) && !_isUndefined(fieldMeta?.default)) {
+        value[field] = fieldMeta.default
       }
     })
 
-    // set default value for guest request params
-    Object.keys(guestRequestOptions).forEach((field) => {
-      const v = value[field]
-      const o = guestRequestOptions[field]
-      if (o?.default) {
-        if (_isUndefined(v)) {
-          value[field] = o.default
-        }
-      }
-    })
+    // HACK: Persisting validated query params to request.locals for debugging (non-standard side effect)
+    this.request.locals.validatedQueryParams = { ...value }
 
     return value
   }

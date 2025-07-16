@@ -6,7 +6,7 @@
 
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
+import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { SortType } from '@app/constants/biz.constant'

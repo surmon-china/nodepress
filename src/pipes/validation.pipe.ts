@@ -4,15 +4,28 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { plainToInstance } from 'class-transformer'
+import type { ValidationError } from 'class-validator'
 import { validate } from 'class-validator'
-import { plainToClass } from 'class-transformer'
-import { Injectable, PipeTransform, ArgumentMetadata } from '@nestjs/common'
-import { ValidationError } from '@app/errors/validation.error'
-import { VALIDATION_ERROR_DEFAULT } from '@app/constants/text.constant'
+import type { PipeTransform, ArgumentMetadata } from '@nestjs/common'
+import { Injectable, BadRequestException } from '@nestjs/common'
 
 export const isUnverifiableMetaType = (metatype: any): metatype is undefined => {
   const basicTypes = [String, Boolean, Number, Array, Object]
   return !metatype || basicTypes.includes(metatype)
+}
+
+const collectMessages = (errors: ValidationError[]) => {
+  const messages: string[] = []
+  for (const error of errors) {
+    if (error.constraints) {
+      messages.push(...Object.values<any>(error.constraints))
+    }
+    if (error.children?.length) {
+      messages.push(...collectMessages(error.children))
+    }
+  }
+  return messages
 }
 
 /**
@@ -26,25 +39,10 @@ export class ValidationPipe implements PipeTransform<any> {
       return value
     }
 
-    const object = plainToClass(metatype, value)
+    const object = plainToInstance(metatype, value)
     const errors = await validate(object)
     if (errors.length > 0) {
-      const messages: string[] = []
-      const pushMessage = (constraints = {}) => {
-        messages.push(...Object.values<any>(constraints))
-      }
-
-      errors.forEach((error) => {
-        if (error.constraints) {
-          pushMessage(error.constraints)
-        }
-        // MARK: keep 1 level > Maximum call stack
-        if (error.children) {
-          error.children.forEach((e) => pushMessage(e.constraints))
-        }
-      })
-
-      throw new ValidationError(`${VALIDATION_ERROR_DEFAULT}: ` + messages.join(', '))
+      throw new BadRequestException(`Validation failed: ${collectMessages(errors).join('; ')}`)
     }
 
     return object

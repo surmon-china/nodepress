@@ -4,13 +4,13 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { Comment, CommentBase } from '@app/modules/comment/comment.model'
-import { QueryVisitor } from '@app/decorators/queryparams.decorator'
+import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { CommentState } from '@app/constants/biz.constant'
 import { getDisqusCacheKey } from '@app/constants/cache.constant'
-import { CacheService } from '@app/processors/cache/cache.service'
+import { CacheService } from '@app/core/cache/cache.service'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
 import { getExtendObject, getExtendValue } from '@app/transformers/extend.transformer'
@@ -221,22 +221,20 @@ export class DisqusPublicService {
   public async deleteUniversalComment(commentId: number, accessToken: string) {
     // comment
     const comment = await this.commentService.getDetailByNumberId(commentId)
-    if (!comment) {
-      throw 'Comment not found'
-    }
+    if (!comment) throw new NotFoundException(`Comment '${commentId}' not found`)
 
     // disqus extend info
     const extendsObject = getExtendObject(comment.extends)
     const commentDisqusPostId = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
     const commentDisqusAuthorId = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
     if (!commentDisqusAuthorId || !commentDisqusPostId) {
-      throw 'Comment not deletable'
+      throw new BadRequestException(`Comment '${commentId}' cannot be deleted (missing Disqus metadata)`)
     }
 
     // user ID === author ID
     const userInfo = await this.getUserInfo(accessToken)
     if (userInfo.id !== commentDisqusAuthorId) {
-      throw `You do not have write privileges on comment '${commentId}'`
+      throw new ForbiddenException(`You do not have permission to delete comment '${commentId}'`)
     }
 
     // disqus delete

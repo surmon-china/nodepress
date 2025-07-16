@@ -4,17 +4,18 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { getTagUrl } from '@app/transformers/urlmap.transformer'
-import { MongooseModel, MongooseDoc, MongooseId, MongooseObjectId, WithId } from '@app/interfaces/mongoose.interface'
-import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
-import { SeoService } from '@app/processors/helper/helper.service.seo'
+import type { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
+import type { MongooseId, MongooseObjectId, WithId } from '@app/interfaces/mongoose.interface'
+import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
+import { SeoService } from '@app/core/helper/helper.service.seo'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { SortType } from '@app/constants/biz.constant'
+import { getTagUrl } from '@app/transformers/urlmap.transformer'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import { Tag } from './tag.model'
@@ -36,7 +37,6 @@ export class TagService {
       key: CacheKeys.AllTags,
       promise: () => this.getAllTags({ aggregatePublicOnly: true })
     })
-
     this.allTagsCache.update().catch((error) => {
       logger.warn('init getAllTags failed!', error)
     })
@@ -67,7 +67,7 @@ export class TagService {
     return this.allTagsCache.update()
   }
 
-  public async paginator(
+  public async paginate(
     query: PaginateQuery<Tag>,
     options: PaginateOptions,
     publicOnly: boolean
@@ -77,18 +77,15 @@ export class TagService {
     return { ...tags, documents }
   }
 
-  public getDetailBySlug(slug: string): Promise<MongooseDoc<Tag>> {
-    return this.tagModel
-      .findOne({ slug })
-      .exec()
-      .then((result) => result || Promise.reject(`Tag '${slug}' not found`))
+  public async getDetailBySlug(slug: string): Promise<MongooseDoc<Tag>> {
+    const tag = await this.tagModel.findOne({ slug }).exec()
+    if (!tag) throw new NotFoundException(`Tag '${slug}' not found`)
+    return tag
   }
 
   public async create(newTag: Tag): Promise<MongooseDoc<Tag>> {
     const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec()
-    if (existedTag) {
-      throw `Tag slug '${newTag.slug}' is existed`
-    }
+    if (existedTag) throw new ConflictException(`Tag slug '${newTag.slug}' already exists`)
 
     const tag = await this.tagModel.create(newTag)
     this.seoService.push(getTagUrl(tag.slug))
@@ -100,30 +97,26 @@ export class TagService {
   public async update(tagId: MongooseId, newTag: Tag): Promise<MongooseDoc<Tag>> {
     const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec()
     if (existedTag && !existedTag._id.equals(tagId)) {
-      throw `Tag slug '${newTag.slug}' is existed`
+      throw new ConflictException(`Tag slug '${newTag.slug}' already exists`)
     }
 
-    const tag = await this.tagModel.findByIdAndUpdate(tagId, newTag as any, { new: true }).exec()
-    if (!tag) {
-      throw `Tag '${tagId}' not found`
-    }
+    const updated = await this.tagModel.findByIdAndUpdate(tagId, newTag as any, { new: true }).exec()
+    if (!updated) throw new NotFoundException(`Tag '${tagId}' not found`)
 
-    this.seoService.push(getTagUrl(tag.slug))
+    this.seoService.push(getTagUrl(updated.slug))
     this.archiveService.updateCache()
     this.updateAllTagsCache()
-    return tag
+    return updated
   }
 
   public async delete(tagId: MongooseId) {
-    const tag = await this.tagModel.findByIdAndDelete(tagId, null).exec()
-    if (!tag) {
-      throw `Tag '${tagId}' not found`
-    }
+    const deleted = await this.tagModel.findByIdAndDelete(tagId, null).exec()
+    if (!deleted) throw new NotFoundException(`Tag '${tagId}' not found`)
 
-    this.seoService.delete(getTagUrl(tag.slug))
+    this.seoService.delete(getTagUrl(deleted.slug))
     this.archiveService.updateCache()
     this.updateAllTagsCache()
-    return tag
+    return deleted
   }
 
   public async batchDelete(tagIds: MongooseId[]) {

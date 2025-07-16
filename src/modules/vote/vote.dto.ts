@@ -5,18 +5,8 @@
  */
 
 import { Transform } from 'class-transformer'
-import {
-  IsInt,
-  IsDefined,
-  IsIn,
-  IsOptional,
-  IsObject,
-  IsNotEmpty,
-  ValidateNested,
-  IsArray,
-  ArrayNotEmpty,
-  ArrayUnique
-} from 'class-validator'
+import { IsInt, IsObject, IsArray, IsDefined, IsOptional, IsNotEmpty } from 'class-validator'
+import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { PaginateOptionDTO } from '@app/models/paginate.model'
 import { Author } from '@app/modules/comment/comment.model'
 import { unknownToNumber } from '@app/transformers/value.transformer'

@@ -7,30 +7,15 @@
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions, Severity } from '@typegoose/typegoose'
 import { Type } from 'class-transformer'
-import {
-  IsString,
-  MinLength,
-  MaxLength,
-  IsDefined,
-  IsIn,
-  IsIP,
-  IsUrl,
-  IsEmail,
-  IsInt,
-  IsOptional,
-  IsNotEmpty,
-  IsArray,
-  IsObject,
-  ValidateNested,
-  ArrayUnique
-} from 'class-validator'
-import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
+import { IsString, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsArray, IsObject, ArrayUnique } from 'class-validator'
+import { IsDefined, IsOptional, IsNotEmpty, ValidateNested, MinLength, MaxLength } from 'class-validator'
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
-import { decodeMD5 } from '@app/transformers/codec.transformer'
 import { ROOT_COMMENT_PID, CommentState } from '@app/constants/biz.constant'
-import { IPLocation } from '@app/processors/helper/helper.service.ip'
+import { IPLocation } from '@app/core/helper/helper.service.ip'
 import { KeyValueModel } from '@app/models/key-value.model'
+import { decodeMD5 } from '@app/transformers/codec.transformer'
 
 export const COMMENT_STATES = [
   CommentState.Auditing,
@@ -109,7 +94,7 @@ export class CommentBase {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },

@@ -6,7 +6,7 @@
 
 import dayjs from 'dayjs'
 import { XMLParser } from 'fast-xml-parser'
-import { Injectable } from '@nestjs/common'
+import { Injectable, BadRequestException } from '@nestjs/common'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { Comment } from '@app/modules/comment/comment.model'
@@ -128,7 +128,7 @@ export class DisqusPrivateService {
 
   // export NodePress to Disqus
   // https://help.disqus.com/en/articles/1717222-custom-xml-import-format
-  public async exportXML(): Promise<string> {
+  public async exportXMLFromNodepress(): Promise<string> {
     const treeMap = new Map<number, { comments: Array<Comment>; article: Article }>()
     const guestbook: Comment[] = []
 
@@ -167,16 +167,18 @@ export class DisqusPrivateService {
 
   // import Disqus data to NodePress
   // https://help.disqus.com/en/articles/1717164-comments-export
-  public async importXML(file: Express.Multer.File) {
-    const xml = file.buffer.toString()
+  public async importXMLToNodepress(xmlFileBuffer: Buffer) {
     const parser = new XMLParser({
       ignoreAttributes: false,
       allowBooleanAttributes: true,
       attributeNamePrefix: '@'
     })
-    const object = parser.parse(xml)
-    // const threads: any[] = object.disqus.thread
-    const posts: any[] = object.disqus.post
+    const object = parser.parse(xmlFileBuffer)
+    const posts: any[] = object?.disqus?.post
+    if (!posts || !Array.isArray(posts)) {
+      throw new BadRequestException('Invalid XML format: missing disqus.post')
+    }
+
     // filter new data
     const filtered = posts.filter((post) => Boolean(post.id))
     const getEach = (post: any) => ({

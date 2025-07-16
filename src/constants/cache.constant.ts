@@ -12,10 +12,10 @@ export enum CacheKeys {
   TodayViewCount = 'today-view-count'
 }
 
-export const getDecoratorCacheKey = (key: string) => {
-  return `decorator:${key}`
-}
-
 export const getDisqusCacheKey = (key: string) => {
   return `disqus:${key}`
+}
+
+export const getInvalidatedTokenCacheKey = (key: string) => {
+  return `auth:invalidated:${key}`
 }

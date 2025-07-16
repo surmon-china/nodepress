@@ -4,14 +4,15 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getCategoryUrl } from '@app/transformers/urlmap.transformer'
-import { MongooseModel, MongooseDoc, MongooseId, MongooseObjectId, WithId } from '@app/interfaces/mongoose.interface'
+import type { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
+import type { MongooseId, MongooseObjectId, WithId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
-import { CacheService, CacheManualResult } from '@app/processors/cache/cache.service'
+import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { ArchiveService } from '@app/modules/archive/archive.service'
-import { SeoService } from '@app/processors/helper/helper.service.seo'
+import { SeoService } from '@app/core/helper/helper.service.seo'
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { SortType } from '@app/constants/biz.constant'
@@ -36,7 +37,6 @@ export class CategoryService {
       key: CacheKeys.AllCategories,
       promise: () => this.getAllCategories({ aggregatePublicOnly: true })
     })
-
     this.allCategoriesCache.update().catch((error) => {
       logger.warn('init getAllCategories failed!', error)
     })
@@ -67,7 +67,7 @@ export class CategoryService {
     return this.allCategoriesCache.update()
   }
 
-  public async paginator(
+  public async paginate(
     query: PaginateQuery<Category>,
     options: PaginateOptions,
     publicOnly: boolean
@@ -77,19 +77,18 @@ export class CategoryService {
     return { ...categories, documents }
   }
 
-  // get detail by slug
-  public getDetailBySlug(slug: string): Promise<MongooseDoc<Category>> {
-    return this.categoryModel
-      .findOne({ slug })
-      .exec()
-      .then((result) => result || Promise.reject(`Category '${slug}' not found`))
+  // Get detail by slug
+  public async getDetailBySlug(slug: string): Promise<MongooseDoc<Category>> {
+    const category = await this.categoryModel.findOne({ slug }).exec()
+    if (!category) throw new NotFoundException(`Category '${slug}' not found`)
+    return category
   }
 
-  // create category
+  // Create category
   public async create(newCategory: Category): Promise<MongooseDoc<Category>> {
     const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
     if (existedCategory) {
-      throw `Category slug '${newCategory.slug}' is existed`
+      throw new ConflictException(`Category slug '${newCategory.slug}' already exists`)
     }
 
     const category = await this.categoryModel.create(newCategory)
@@ -99,7 +98,7 @@ export class CategoryService {
     return category
   }
 
-  // get categories genealogy
+  // Get categories genealogy
   public getGenealogyById(categoryId: MongooseId): Promise<Category[]> {
     const categories: Category[] = []
     const findById = (id: MongooseId) => this.categoryModel.findById(id).exec()
@@ -110,7 +109,7 @@ export class CategoryService {
           .then((category) => {
             if (!category) {
               if (id === categoryId) {
-                return reject(`Category '${categoryId}' not found`)
+                return reject(new NotFoundException(`Category '${categoryId}' not found`))
               } else {
                 return resolve(categories)
               }
@@ -125,29 +124,25 @@ export class CategoryService {
     })
   }
 
-  // update category
+  // Update category
   public async update(categoryId: MongooseId, newCategory: Category): Promise<MongooseDoc<Category>> {
     const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
     if (existedCategory && !existedCategory._id.equals(categoryId)) {
-      throw `Category slug '${newCategory.slug}' is existed`
+      throw new ConflictException(`Category slug '${newCategory.slug}' already exists`)
     }
 
     const category = await this.categoryModel.findByIdAndUpdate(categoryId, newCategory, { new: true }).exec()
-    if (!category) {
-      throw `Category '${categoryId}' not found`
-    }
+    if (!category) throw new NotFoundException(`Category '${categoryId}' not found`)
     this.seoService.push(getCategoryUrl(category.slug))
     this.archiveService.updateCache()
     this.updateAllCategoriesCache()
     return category
   }
 
-  // delete category
+  // Delete category
   public async delete(categoryId: MongooseId) {
     const category = await this.categoryModel.findByIdAndDelete(categoryId, null).exec()
-    if (!category) {
-      throw `Category '${categoryId}' not found`
-    }
+    if (!category) throw new NotFoundException(`Category '${categoryId}' not found`)
 
     // cache
     this.archiveService.updateCache()
@@ -156,9 +151,7 @@ export class CategoryService {
     // children categories
     const categories = await this.categoryModel.find({ pid: categoryId }).exec()
     // delete when root category -> { pid: target.id }
-    if (!categories.length) {
-      return category
-    }
+    if (!categories.length) return category
     // recursive delete parents -> { pid: target.id } -> { pid: target.pid || null }
     await this.categoryModel.collection
       .initializeOrderedBulkOp()

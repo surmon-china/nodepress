@@ -6,20 +6,10 @@
 
 import { IntersectionType } from '@nestjs/mapped-types'
 import { Transform } from 'class-transformer'
-import {
-  IsString,
-  IsNotEmpty,
-  IsArray,
-  IsOptional,
-  IsDefined,
-  IsBoolean,
-  IsIn,
-  IsInt,
-  ArrayNotEmpty,
-  ArrayUnique
-} from 'class-validator'
+import { IsString, IsArray, IsBoolean, IsIn, IsInt } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsDefined, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
-import { WhenGuest } from '@app/decorators/guest.decorator'
+import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
 import { unknownToNumber, unknownToBoolean } from '@app/transformers/value.transformer'
 import { DateQueryDTO, KeywordQueryDTO } from '@app/models/query.model'
 import { PaginateOptionWithHotSortDTO } from '@app/models/paginate.model'
@@ -35,7 +25,7 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   KeywordQueryDTO,
   DateQueryDTO
 ) {
-  @WhenGuest({ only: [PublishState.Published], default: PublishState.Published })
+  @WithGuestPermission({ only: [PublishState.Published], default: PublishState.Published })
   @IsIn(ARTICLE_PUBLISH_STATES)
   @IsInt()
   @IsNotEmpty()
@@ -43,7 +33,7 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @Transform(({ value }) => unknownToNumber(value))
   state?: PublishState
 
-  @WhenGuest({ only: [PublicState.Public], default: PublicState.Public })
+  @WithGuestPermission({ only: [PublicState.Public], default: PublicState.Public })
   @IsIn(ARTICLE_PUBLIC_STATES)
   @IsInt()
   @IsNotEmpty()

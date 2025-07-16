@@ -7,11 +7,10 @@
 import _trim from 'lodash/trim'
 import { Controller, Get, Put, Post, Delete, Body, UseGuards, Query } from '@nestjs/common'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
+import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { ExposePipe } from '@app/pipes/expose.pipe'
-import { Responser } from '@app/decorators/responser.decorator'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { PaginateResult, PaginateQuery } from '@app/utils/paginate'
 import { AnnouncementsDTO, AnnouncementPaginateQueryDTO } from './announcement.dto'
 import { AnnouncementService } from './announcement.service'
@@ -22,12 +21,9 @@ export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle('Get announcements')
-  getAnnouncements(
-    @Query(PermissionPipe, ExposePipe) query: AnnouncementPaginateQueryDTO
-  ): Promise<PaginateResult<Announcement>> {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: 'Get announcements succeeded', usePaginate: true })
+  getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDTO) {
     const { sort, page, per_page, ...filters } = query
     const { keyword, state } = filters
     const paginateQuery: PaginateQuery<Announcement> = {}
@@ -42,8 +38,8 @@ export class AnnouncementController {
       paginateQuery.state = state
     }
 
-    // paginator
-    return this.announcementService.paginator(paginateQuery, {
+    // paginate
+    return this.announcementService.paginate(paginateQuery, {
       page,
       perPage: per_page,
       dateSort: sort
@@ -52,29 +48,29 @@ export class AnnouncementController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Create announcement')
+  @SuccessResponse('Create announcement succeeded')
   createAnnouncement(@Body() announcement: Announcement) {
     return this.announcementService.create(announcement)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete announcements')
+  @SuccessResponse('Delete announcements succeeded')
   delAnnouncements(@Body() body: AnnouncementsDTO) {
     return this.announcementService.batchDelete(body.announcement_ids)
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update announcement')
-  putAnnouncement(@QueryParams() { params }: QueryParamsResult, @Body() announcement: Announcement) {
+  @SuccessResponse('Update announcement succeeded')
+  putAnnouncement(@RequestContext() { params }: IRequestContext, @Body() announcement: Announcement) {
     return this.announcementService.update(params.id, announcement)
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete announcement')
-  delAnnouncement(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse('Delete announcement succeeded')
+  delAnnouncement(@RequestContext() { params }: IRequestContext) {
     return this.announcementService.delete(params.id)
   }
 }

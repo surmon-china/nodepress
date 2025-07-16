@@ -4,27 +4,26 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { AuthGuard } from '@nestjs/passport'
-import { ExecutionContext, Injectable } from '@nestjs/common'
-import { HttpUnauthorizedError } from '@app/errors/unauthorized.error'
-import { UNDEFINED } from '@app/constants/value.constant'
+import type { FastifyRequest } from 'fastify'
+import type { ExecutionContext } from '@nestjs/common'
+import { Injectable, CanActivate, UnauthorizedException } from '@nestjs/common'
 
 /**
  * @class AdminOnlyGuard
- * @classdesc Token existed -> Token activated -> Token data validated
+ * @classdesc Allows access only when a valid token is provided and authenticated.
  * @example ```@UseGuards(AdminOnlyGuard)```
  */
 @Injectable()
-export class AdminOnlyGuard extends AuthGuard('jwt') {
-  canActivate(context: ExecutionContext) {
-    return super.canActivate(context)
-  }
+export class AdminOnlyGuard implements CanActivate {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest<FastifyRequest>()
 
-  handleRequest(error, authInfo, errInfo) {
-    if (authInfo && !error && !errInfo) {
-      return authInfo
-    } else {
-      throw error || new HttpUnauthorizedError(UNDEFINED, errInfo?.message)
+    // Allow only if authenticated
+    if (request.locals.isAuthenticated) {
+      return true
     }
+
+    // Deny if not authenticated
+    throw new UnauthorizedException('Authentication required')
   }
 }

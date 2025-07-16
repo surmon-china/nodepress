@@ -6,15 +6,14 @@
 
 import _trim from 'lodash/trim'
 import _isUndefined from 'lodash/isUndefined'
-import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from '@nestjs/common'
+import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { Throttle, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
+import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { ExposePipe } from '@app/pipes/expose.pipe'
 import { SortType } from '@app/constants/biz.constant'
-import { Responser } from '@app/decorators/responser.decorator'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStateDTO } from './comment.dto'
 import { CommentService } from './comment.service'
@@ -25,12 +24,11 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle('Get comments')
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: 'Get comments succeeded', usePaginate: true })
   getComments(
-    @Query(PermissionPipe, ExposePipe) query: CommentPaginateQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query(PermissionPipe) query: CommentPaginateQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise<PaginateResult<Comment>> {
     const { sort, page, per_page, ...filters } = query
     const paginateQuery: PaginateQuery<Comment> = {}
@@ -66,69 +64,65 @@ export class CommentController {
       ]
     }
 
-    return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
+    return this.commentService.paginate(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
   @Get('calendar')
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle('Get comment calendar')
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse('Get comment calendar succeeded')
   getCommentCalendar(
-    @Query(ExposePipe) query: CommentCalendarQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query() query: CommentCalendarQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ) {
     return this.commentService.getCalendar(isUnauthenticated, query.timezone)
   }
 
   @Post()
   @Throttle({ default: { ttl: seconds(30), limit: 6 } })
-  @Responser.handle('Create comment')
-  createComment(@Body() comment: CommentBase, @QueryParams() { visitor }: QueryParamsResult): Promise<Comment> {
-    return comment.author.email
-      ? this.commentService.createFormClient(comment, visitor)
-      : Promise.reject(`author email should not be empty`)
+  @SuccessResponse('Create comment succeeded')
+  createComment(@Body() comment: CommentBase, @RequestContext() { visitor }: IRequestContext): Promise<Comment> {
+    return this.commentService.createFormClient(comment, visitor)
   }
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update comments')
-  patchComments(@QueryParams() { visitor }: QueryParamsResult, @Body() body: CommentsStateDTO) {
+  @SuccessResponse('Update comments succeeded')
+  patchComments(@RequestContext() { visitor }: IRequestContext, @Body() body: CommentsStateDTO) {
     return this.commentService.batchPatchState(body, visitor.referer)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete comments')
+  @SuccessResponse('Delete comments succeeded')
   delComments(@Body() body: CommentsDTO) {
     return this.commentService.batchDelete(body.comment_ids, body.post_ids)
   }
 
   @Get(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle({ message: 'Get comment detail', error: HttpStatus.NOT_FOUND })
-  getComment(@QueryParams() { params }: QueryParamsResult): Promise<Comment> {
-    return this.commentService.getDetailByObjectId(params.id).then((comment) => {
-      return comment ? comment : Promise.reject('Comment not found')
-    })
+  @SuccessResponse('Get comment detail succeeded')
+  getComment(@RequestContext() { params }: IRequestContext): Promise<Comment> {
+    return this.commentService.getDetailByObjectId(params.id)
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update comment')
-  putComment(@QueryParams() { params, visitor }: QueryParamsResult, @Body() comment: Comment): Promise<Comment> {
+  @SuccessResponse('Update comment succeeded')
+  putComment(@RequestContext() { params, visitor }: IRequestContext, @Body() comment: Comment): Promise<Comment> {
     return this.commentService.update(params.id, comment, visitor.referer)
   }
 
   @Put(':id/ip_location')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update comment IP location')
-  putCommentIPLocation(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse('Update comment IP location succeeded')
+  putCommentIPLocation(@RequestContext() { params }: IRequestContext) {
     return this.commentService.reviseIPLocation(params.id)
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete comment')
-  delComment(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse('Delete comment succeeded')
+  delComment(@RequestContext() { params }: IRequestContext) {
     return this.commentService.delete(params.id)
   }
 }

@@ -5,19 +5,10 @@
  */
 
 import { IntersectionType } from '@nestjs/mapped-types'
-import {
-  IsNotEmpty,
-  IsString,
-  IsArray,
-  IsIn,
-  IsInt,
-  IsOptional,
-  Min,
-  ArrayNotEmpty,
-  ArrayUnique
-} from 'class-validator'
+import { IsString, IsArray, IsIn, IsInt, Min } from 'class-validator'
+import { IsNotEmpty, IsOptional, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { Transform } from 'class-transformer'
-import { WhenGuest } from '@app/decorators/guest.decorator'
+import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
 import { CommentState } from '@app/constants/biz.constant'
 import { COMMENT_STATES } from './comment.model'
 import { KeywordQueryDTO } from '@app/models/query.model'
@@ -25,7 +16,7 @@ import { PaginateOptionWithHotSortDTO } from '@app/models/paginate.model'
 import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWithHotSortDTO, KeywordQueryDTO) {
-  @WhenGuest({ only: [CommentState.Published], default: CommentState.Published })
+  @WithGuestPermission({ only: [CommentState.Published], default: CommentState.Published })
   @IsIn(COMMENT_STATES)
   @IsInt()
   @IsNotEmpty()

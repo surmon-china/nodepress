@@ -6,26 +6,14 @@
 
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, index, plugin, Ref, modelOptions } from '@typegoose/typegoose'
-import {
-  IsString,
-  IsBoolean,
-  IsNotEmpty,
-  IsArray,
-  IsOptional,
-  IsDefined,
-  IsIn,
-  IsInt,
-  MaxLength,
-  Matches,
-  ArrayNotEmpty,
-  ArrayUnique
-} from 'class-validator'
+import { IsString, IsBoolean, IsArray, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength } from 'class-validator'
 import { Language, SortType, PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
-import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/increment.constant'
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { Category } from '@app/modules/category/category.model'
 import { KeyValueModel } from '@app/models/key-value.model'
+import { Category } from '@app/modules/category/category.model'
 import { Tag } from '@app/modules/tag/tag.model'
 
 export const ARTICLE_LANGUAGES = [Language.English, Language.Chinese, Language.Mixed] as const
@@ -70,7 +58,7 @@ export class ArticleMeta {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
     versionKey: false,

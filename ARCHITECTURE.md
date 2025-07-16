@@ -1,8 +1,8 @@
-## Architecture of NodePress v4.x
+## Architecture of NodePress (>= v4.x)
 
 ### API Overview
 
-**HTTP Status Codes** [`errors`](/src/errors)
+**HTTP Status Codes**
 
 - `400` — Request rejected due to business logic
 - `401` — Authentication failed
@@ -18,9 +18,8 @@
 - `status`
   - `success` — Successful response
   - `error` — Error occurred
-- `message` — Always present; injected by [`responser.decorator.ts`](/src/decorators/responser.decorator.ts)
-- `error` — Required when `status` is `error`, useful for debugging
-- `debug` — Stack trace (only in development mode)
+- `message` — Always present; injected by [`success-response.decorator.ts`](/src/decorators/success-response.decorator.ts)
+- `error` — Required when `status` is `error`, usually a simple description of the error
 - `result` — Required when `status` is `success`
   - For entity: e.g. `{ title: '', content: '', ... }`
   - For list: e.g. `{ pagination: {...}, data: [...] }`
@@ -60,10 +59,10 @@
 **Request Lifecycle**
 
 1. `request` — Incoming HTTP request
-2. `middleware` — Preprocessing (CORS, origin checks)
+2. `middleware` — Preprocessing (empty in this app)
 3. `guard` — Authentication guards
 4. `interceptor:before` — Input transformation (empty in this app)
-5. `pipe` — Data validation and transformation; attaches payload to context
+5. `pipe` — Data validation and transformation
 6. `controller` — Request handler logic
 7. `service` — Business logic
 8. `interceptor:after` — Output formatting and error handling
@@ -71,15 +70,14 @@
 
 **Authentication Flow**
 
-1. Guard entry point: [`guards`](/src/guards)
-2. `canActivate()` — Entry check
-3. `JwtStrategy.validate()` — Calls [`jwt.strategy.ts`](/src/modules/auth/jwt.strategy.ts)
-4. `handleRequest()` — Accept or reject based on validation result
+1. [`main.ts`](/src/main.ts): Uses Fastify’s `onRequest` to perform authentication and inject auth data into the request
+2. Uses [`Guards`](/src/guards) to validate and intercept each controller method
+3. `handleRequest()` — Accept or reject based on validation result
 
 **Access Control Levels**
 
 - CUD (write) operations require tokens: [`AdminOnlyGuard`](/src/guards/admin-only.guard.ts)
-- GET (read) operations auto-detect token presence: [`AdminMaybeGuard`](/src/guards/admin-maybe.guard.ts)
+- GET (read) operations auto-detect token presence: [`AdminOptionalGuard`](/src/guards/admin-optional.guard.ts)
 
 **Validation Rules**
 
@@ -90,41 +88,34 @@
 
 ### Core Components
 
-**Exception Filter** [`error.filter.ts`](/src/filters/error.filter.ts)
+[**Exception Filter**](/src/filters/exception.filter.ts)
 
-**Interceptors** [`interceptors`](/src/interceptors)
+[**Interceptors**](/src/interceptors)
 
-- [Cache](/src/interceptors/cache.interceptor.ts): Adds TTL support
 - [Transformer](/src/interceptors/transform.interceptor.ts): Formats successful service responses
-- [Error](/src/interceptors/error.interceptor.ts): Catches service-layer exceptions
 - [Logging](/src/interceptors/logging.interceptor.ts): Supplements global logging
 
-**Decorators** [`decorators`](/src/decorators)
+[**Decorators**](/src/decorators)
 
-- [Cache](/src/decorators/cache.decorator.ts): Configure cache key/TTL
-- [Response](/src/decorators/responsor.decorator.ts): Adds `message`, pagination, etc.
-- [QueryParams](/src/decorators/queryparams.decorator.ts): Auto-validate and normalize params
-- [Guest](/src/decorators/guest.decorator.ts): Extend sub-fields with metadata for `permission.pipe`
+- [RequestContext](/src/decorators/request-context.decorator.ts): Auto-validate and normalize params
+- [GuestPermission](/src/decorators/guest-permission.decorator.ts): Extend sub-fields with metadata for `permission.pipe`
+- [SuccessResponse](/src/decorators/success-response.decorator.ts): Adds `message`, pagination, etc.
+- [UploadedFile](/src/decorators/uploaded-file.decorator.ts): Reads the uploaded file from `request.file` and converts it to buffer
 
-**Guards** [`guards`](/src/guards)
+[**Guards**](/src/guards)
 
 - Default: All non-GET requests require [`AdminOnlyGuard`](/src/guards/admin-only.guard.ts)
-- Multi-role GET requests use [`AdminMaybeGuard`](/src/guards/admin-maybe.guard.ts)
+- Multi-role GET requests use [`AdminOptionalGuard`](/src/guards/admin-optional.guard.ts)
 
-**Middlewares** [`middlewares`](/src/middlewares)
-
-- [`CORS`](/src/middlewares/cors.middleware.ts): Handles cross-origin requests
-- [`Origin`](/src/middlewares/origin.middleware.ts): Blocks unknown sources
-
-**Pipes** [`pipes`](/src/pipes)
+[**Pipes**](/src/pipes)
 
 - `validation.pipe` — Validates DTO schemas
 - `permission.pipe` — Checks field-level permissions
 
-**Feature Modules** [`modules`](/src/modules)
+[**Feature Modules**](/src/modules)
 
 - `Announcement`, `Article`, `Category`, `Tag`, `Comment`, `Option`
-- `Auth` — Global token and user auth
+- `Admin` — Admin profile and authentication
 - `Vote` — Reaction logic (like/dislike)
 - `Disqus` — Third-party integration
 - `Archive` — Caching layer
@@ -133,16 +124,17 @@
   - DB Backup (manual and scheduled)
   - Miscellaneous third-party services
 
-**Global/Core Modules** [`processors`](/src/processors)
+[**Global/Core Modules**](/src/core)
 
-- [`database`](/src/processors/database) — DB connection and error handling
-- [`cache`](/src/processors/cache) — Cache APIs and strategies
-- [`helper`](/src/processors/helper):
-  - [SEO Submission](/src/processors/helper/helper.service.seo.ts)
-  - [Spam Detection](/src/processors/helper/helper.service.akismet.ts)
-  - [Email Service](/src/processors/helper/helper.service.email.ts)
-  - [IP Geolocation](/src/processors/helper/helper.service.ip.ts)
-  - [AWS S3 Upload](/src/processors/helper/helper.service.aws.ts)
+- [`database`](/src/core/database) — DB connection and error handling
+- [`cache`](/src/core/cache) — Cache APIs and strategies
+- [`auth`](/src/core/auth) — Responsible for global JWT authentication logic
+- [`helper`](/src/core/helper):
+  - [SEO Submission](/src/core/helper/helper.service.seo.ts)
+  - [Spam Detection](/src/core/helper/helper.service.akismet.ts)
+  - [Email Service](/src/core/helper/helper.service.email.ts)
+  - [IP Geolocation](/src/core/helper/helper.service.ip.ts)
+  - [AWS S3 Upload](/src/core/helper/helper.service.aws.ts)
   - Google Service Credentials
 
 ---

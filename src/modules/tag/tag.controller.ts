@@ -7,11 +7,10 @@
 import _trim from 'lodash/trim'
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
+import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { ExposePipe } from '@app/pipes/expose.pipe'
-import { Responser } from '@app/decorators/responser.decorator'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
 import { TagsDTO, TagPaginateQueryDTO } from './tag.dto'
 import { TagService } from './tag.service'
@@ -22,12 +21,11 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle('Get tags')
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: 'Get tags succeeded', usePaginate: true })
   getTags(
-    @Query(PermissionPipe, ExposePipe) query: TagPaginateQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query(PermissionPipe) query: TagPaginateQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise<PaginateResult<Tag>> {
     const { sort, page, per_page, ...filters } = query
     const paginateQuery: PaginateQuery<Tag> = {}
@@ -41,13 +39,13 @@ export class TagController {
     }
 
     // paginate
-    return this.tagService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
+    return this.tagService.paginate(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
   @Get('all')
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle('Get all tags')
-  getAllTags(@QueryParams() { isAuthenticated }: QueryParamsResult): Promise<Array<Tag>> {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse('Get all tags succeeded')
+  getAllTags(@RequestContext() { isAuthenticated }: IRequestContext): Promise<Tag[]> {
     return isAuthenticated
       ? this.tagService.getAllTags({ aggregatePublicOnly: false })
       : this.tagService.getAllTagsCache()
@@ -55,29 +53,29 @@ export class TagController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Create tag')
+  @SuccessResponse('Create tag succeeded')
   createTag(@Body() tag: Tag): Promise<Tag> {
     return this.tagService.create(tag)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete tags')
+  @SuccessResponse('Delete tags succeeded')
   delTags(@Body() body: TagsDTO) {
     return this.tagService.batchDelete(body.tag_ids)
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update Tag')
-  putTag(@QueryParams() { params }: QueryParamsResult, @Body() tag: Tag): Promise<Tag> {
+  @SuccessResponse('Update Tag succeeded')
+  putTag(@RequestContext() { params }: IRequestContext, @Body() tag: Tag): Promise<Tag> {
     return this.tagService.update(params.id, tag)
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Delete tag')
-  delTag(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse('Delete tag succeeded')
+  delTag(@RequestContext() { params }: IRequestContext) {
     return this.tagService.delete(params.id)
   }
 }

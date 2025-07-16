@@ -9,14 +9,10 @@ import path from 'path'
 import shell from 'shelljs'
 import dayjs from 'dayjs'
 import schedule from 'node-schedule'
-import { Injectable } from '@nestjs/common'
-import { EmailService } from '@app/processors/helper/helper.service.email'
-import {
-  S3FileObject,
-  AWSService,
-  AWSStorageClass,
-  AWSServerSideEncryption
-} from '@app/processors/helper/helper.service.aws'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { EmailService } from '@app/core/helper/helper.service.email'
+import type { S3FileObject } from '@app/core/helper/helper.service.aws'
+import { AWSService, AWSStorageClass, AWSServerSideEncryption } from '@app/core/helper/helper.service.aws'
 import { APP_BIZ, MONGO_DB, DB_BACKUP } from '@app/app.config'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
@@ -52,9 +48,9 @@ export class DBBackupService {
       }
       this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true)
       return result
-    } catch (error) {
+    } catch (error: unknown) {
       this.mailToAdmin('Database backup failed!', String(error))
-      throw error
+      throw new InternalServerErrorException(String(error))
     }
   }
 
@@ -102,10 +98,10 @@ export class DBBackupService {
         logger.log(`uploading: ${fileName}`)
         logger.log(`file source: ${filePath}`)
 
-        // upload to cloud storage
+        // Upload to cloud storage
         this.awsService
           .uploadFile({
-            name: fileName,
+            key: fileName,
             file: fs.createReadStream(filePath),
             fileContentType: 'application/zip',
             region: DB_BACKUP.s3Region,

@@ -49,19 +49,12 @@ export const APP_BIZ = {
   FE_URL: 'https://surmon.me',
   /** Static resource host URL */
   STATIC_URL: 'https://static.surmon.me',
-  /** Cross-domain / CORS Configuration */
-  CORS: {
-    /** Allowed CORS origins */
-    allowedOrigins: ['https://surmon.me', 'https://cdn.surmon.me', 'https://admin.surmon.me'],
-    /** Allowed Referer domain */
-    allowedReferer: 'surmon.me'
-  },
   /** Authentication config */
   AUTH: {
     /** JWT token expiration time in seconds */
     expiresIn: arg({ key: 'auth_expires_in', default: 3600 }),
     /** JWT signing secret; must be secure in production */
-    jwtSecret: arg({ key: 'auth_key', default: 'nodepress' }),
+    jwtSecret: arg({ key: 'auth_secret', default: 'nodepress' }),
     /** Default payload for issued tokens */
     data: arg<any>({ key: 'auth_data', default: { user: 'root' } }),
     /** Default admin password */

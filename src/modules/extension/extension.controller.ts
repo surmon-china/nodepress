@@ -4,14 +4,15 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, Post, Patch, UploadedFile, Body, UseGuards, UseInterceptors } from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
+import { Get, Post, Patch, Body } from '@nestjs/common'
+import { Controller, UseGuards, BadRequestException } from '@nestjs/common'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminMaybeGuard } from '@app/guards/admin-maybe.guard'
-import { Responser } from '@app/decorators/responser.decorator'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
-import { GoogleService } from '@app/processors/helper/helper.service.google'
-import { AWSService } from '@app/processors/helper/helper.service.aws'
+import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { UploadedFile, IUploadedFile } from '@app/decorators/uploaded-file.decorator'
+import { GoogleService } from '@app/core/helper/helper.service.google'
+import { AWSService } from '@app/core/helper/helper.service.aws'
 import { StatisticService, Statistic } from './extension.service.statistic'
 import { DBBackupService } from './extension.service.dbbackup'
 import * as APP_CONFIG from '@app/app.config'
@@ -26,23 +27,23 @@ export class ExtensionController {
   ) {}
 
   @Get('statistic')
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle('Get statistics')
-  getSystemStatistics(@QueryParams() { isUnauthenticated }: QueryParamsResult): Promise<Statistic> {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse('Get statistics succeeded')
+  getSystemStatistics(@RequestContext() { isUnauthenticated }: IRequestContext): Promise<Statistic> {
     return this.statisticService.getStatistic(isUnauthenticated)
   }
 
   @Patch('database-backup')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update database backup')
+  @SuccessResponse('Update database backup succeeded')
   updateDatabaseBackup() {
     return this.dbBackupService.backup()
   }
 
   @Get('static/list')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Get file list from cloud storage')
-  async getStaticFileList(@QueryParams() { query }: QueryParamsResult) {
+  @SuccessResponse('Get file list succeeded')
+  async getStaticFileList(@RequestContext() { query }: IRequestContext) {
     const minLimit = 200
     const numberLimit = Number(query.limit)
     const limit = Number.isInteger(numberLimit) ? numberLimit : minLimit
@@ -67,11 +68,14 @@ export class ExtensionController {
 
   @Post('static/upload')
   @UseGuards(AdminOnlyGuard)
-  @UseInterceptors(FileInterceptor('file'))
-  @Responser.handle('Upload file to cloud storage')
-  async uploadStaticFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
+  @SuccessResponse('Upload file to cloud storage succeeded')
+  async uploadStaticFile(@UploadedFile() file: IUploadedFile) {
+    if (!file.fields.key) {
+      throw new BadRequestException('Missing required field: key')
+    }
+
     const result = await this.awsService.uploadFile({
-      name: body.name,
+      key: file.fields.key,
       file: file.buffer,
       fileContentType: file.mimetype,
       region: APP_CONFIG.AWS.s3StaticRegion,
@@ -87,7 +91,7 @@ export class ExtensionController {
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunReports
   @Post('google-analytics/batch-run-reports')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Google analytics batchRunReports')
+  @SuccessResponse('Google analytics batchRunReports succeeded')
   googleAnalyticsBatchRunReports(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.batchRunReports({
       property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
@@ -98,7 +102,7 @@ export class ExtensionController {
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunPivotReports
   @Post('google-analytics/batch-run-pivot-reports')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Google analytics batchRunPivotReports')
+  @SuccessResponse('Google analytics batchRunPivotReports succeeded')
   googleAnalyticsBatchRunPivotReports(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.batchRunPivotReports({
       property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
@@ -109,7 +113,7 @@ export class ExtensionController {
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runRealtimeReport
   @Post('google-analytics/run-realtime-report')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Google analytics runRealtimeReport')
+  @SuccessResponse('Google analytics runRealtimeReport succeeded')
   googleAnalyticsRunRealtimeReport(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.runRealtimeReport({
       property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,

@@ -8,14 +8,14 @@ import { IntersectionType } from '@nestjs/mapped-types'
 import { Transform } from 'class-transformer'
 import { IsInt, IsIn, IsNotEmpty, IsOptional, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { unknownToNumber } from '@app/transformers/value.transformer'
-import { WhenGuest } from '@app/decorators/guest.decorator'
+import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
 import { PublishState } from '@app/constants/biz.constant'
 import { PaginateOptionDTO } from '@app/models/paginate.model'
 import { KeywordQueryDTO } from '@app/models/query.model'
 import { ANNOUNCEMENT_STATES } from './announcement.model'
 
 export class AnnouncementPaginateQueryDTO extends IntersectionType(PaginateOptionDTO, KeywordQueryDTO) {
-  @WhenGuest({ only: [PublishState.Published], default: PublishState.Published })
+  @WithGuestPermission({ only: [PublishState.Published], default: PublishState.Published })
   @IsIn(ANNOUNCEMENT_STATES)
   @IsInt()
   @IsNotEmpty()

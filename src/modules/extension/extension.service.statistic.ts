@@ -6,8 +6,8 @@
 
 import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
-import { CacheService } from '@app/processors/cache/cache.service'
-import { EmailService } from '@app/processors/helper/helper.service.email'
+import { CacheService } from '@app/core/cache/cache.service'
+import { EmailService } from '@app/core/helper/helper.service.email'
 import { VoteTarget, VoteType } from '@app/modules/vote/vote.model'
 import { VoteService } from '@app/modules/vote/vote.service'
 import { ArticleService } from '@app/modules/article/article.service'
@@ -96,34 +96,34 @@ export class StatisticService {
   }
 
   public getStatistic(publicOnly: boolean) {
-    const resultData: Statistic = { ...DEFAULT_STATISTIC }
+    const statisticData: Statistic = { ...DEFAULT_STATISTIC }
     const tasks = Promise.all([
       this.tagService.getTotalCount().then((value) => {
-        resultData.tags = value
+        statisticData.tags = value
       }),
       this.articleService.getTotalCount(publicOnly).then((value) => {
-        resultData.articles = value
+        statisticData.articles = value
       }),
       this.commentService.getTotalCount(publicOnly).then((value) => {
-        resultData.comments = value
+        statisticData.comments = value
       }),
       this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
-        resultData.averageEmotion = value ?? 0
+        statisticData.averageEmotion = value ?? 0
       }),
       this.articleService.getMetaStatistic().then((value) => {
-        resultData.totalViews = value?.totalViews ?? 0
-        resultData.totalLikes = value?.totalLikes ?? 0
+        statisticData.totalViews = value?.totalViews ?? 0
+        statisticData.totalLikes = value?.totalLikes ?? 0
       }),
       getTodayViewsCount(this.cacheService).then((value) => {
-        resultData.todayViews = value
+        statisticData.todayViews = value
       })
     ])
 
     return tasks
-      .then(() => resultData)
+      .then(() => statisticData)
       .catch((error) => {
         logger.warn('getStatistic task partial failed!', error)
-        return Promise.resolve(resultData)
+        return Promise.resolve(statisticData)
       })
   }
 }

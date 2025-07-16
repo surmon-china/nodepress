@@ -4,25 +4,14 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Header,
-  UploadedFile,
-  Response,
-  UseGuards,
-  Query,
-  UseInterceptors
-} from '@nestjs/common'
-import { FileInterceptor } from '@nestjs/platform-express'
+import type { FastifyReply } from 'fastify'
+import { Controller, UseGuards, UnauthorizedException, BadRequestException } from '@nestjs/common'
+import { Get, Post, Delete, Query, Body, Header, Response } from '@nestjs/common'
 import { Throttle, seconds } from '@nestjs/throttler'
-import { isProdEnv } from '@app/app.environment'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { Responser } from '@app/decorators/responser.decorator'
-import { QueryParams, QueryParamsResult } from '@app/decorators/queryparams.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
+import { UploadedFile, IUploadedFile } from '@app/decorators/uploaded-file.decorator'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { CommentBase } from '@app/modules/comment/comment.model'
 import { DISQUS } from '@app/app.config'
 import { AccessToken } from '@app/utils/disqus'
@@ -42,7 +31,7 @@ export class DisqusController {
   // for client Disqus user
 
   @Get('config')
-  @Responser.handle('Get Disqus config')
+  @SuccessResponse('Get Disqus config succeeded')
   getConfig() {
     return {
       forum: DISQUS.forum,
@@ -53,60 +42,54 @@ export class DisqusController {
   }
 
   @Get('oauth-callback')
-  @Header('content-type', 'text/html')
-  @Header('Content-Security-Policy', "script-src 'unsafe-inline'")
-  @Responser.handle('Disqus OAuth login')
-  async oauthCallback(@Query() query: CallbackCodeDTO, @Response() response) {
+  async oauthCallback(@Query() query: CallbackCodeDTO, @Response() response: FastifyReply) {
     const accessToken = await this.disqusPublicService.getAccessToken(query.code)
-    // cache user info
+    // Cache user info
     this.disqusPublicService.setUserInfoCache(
       accessToken.user_id,
       await this.disqusPublicService.getUserInfo(accessToken.access_token),
       accessToken.expires_in
     )
-    // http://expressjs.com/en/5x/api.html#res.cookie
-    response.cookie(TOKEN_COOKIE_KEY, encodeToken(accessToken), {
+    // https://github.com/fastify/fastify-cookie?tab=readme-ov-file#options
+    response.setCookie(TOKEN_COOKIE_KEY, encodeToken(accessToken), {
       maxAge: accessToken.expires_in * 1000,
       httpOnly: true,
-      secure: isProdEnv
+      secure: 'auto'
     })
+    // Close the popup window
+    response.header('content-security-policy', "script-src 'unsafe-inline'")
+    response.header('content-type', 'text/html')
     response.send(`<script>window.close();</script>`)
   }
 
-  @Get('oauth-logout')
-  @Header('content-type', 'text/plain')
-  @Responser.handle('Disqus OAuth logout')
-  oauthLogout(@DisqusToken() token: AccessToken | null, @Response() response) {
-    if (token) {
-      this.disqusPublicService.deleteUserInfoCache(token.user_id)
-    }
+  @Post('oauth-logout')
+  oauthLogout(@DisqusToken() token: AccessToken | null, @Response() response: FastifyReply) {
+    if (token) this.disqusPublicService.deleteUserInfoCache(token.user_id)
     response.clearCookie(TOKEN_COOKIE_KEY)
-    response.send('ok')
+    response.header('content-type', 'text/plain')
+    response.send('Disqus OAuth logout succeeded')
   }
 
   @Get('user-info')
-  @Responser.handle('Get Disqus user info')
+  @SuccessResponse('Get Disqus user info succeeded')
   getUserInfo(@DisqusToken() token: AccessToken | null) {
-    if (!token) {
-      return Promise.reject(`You are not logged in`)
-    }
-
+    if (!token) throw new UnauthorizedException('You are not logged in')
     return this.disqusPublicService.getUserInfoCache(token.user_id).then((cached) => {
-      return cached || this.disqusPublicService.getUserInfo(token.access_token)
+      return cached ?? this.disqusPublicService.getUserInfo(token.access_token)
     })
   }
 
   @Get('thread')
-  @Responser.handle('Get Disqus thread info')
+  @SuccessResponse('Get Disqus thread info succeeded')
   getThread(@Query() query: ThreadPostIdDTO) {
     return this.disqusPublicService.ensureThreadDetailCache(Number(query.post_id))
   }
 
   @Post('comment')
   @Throttle({ default: { ttl: seconds(30), limit: 6 } })
-  @Responser.handle('Create universal comment')
+  @SuccessResponse('Create universal comment succeeded')
   createComment(
-    @QueryParams() { visitor }: QueryParamsResult,
+    @RequestContext() { visitor }: IRequestContext,
     @DisqusToken() token: AccessToken | null,
     @Body() comment: CommentBase
   ) {
@@ -114,11 +97,10 @@ export class DisqusController {
   }
 
   @Delete('comment')
-  @Responser.handle('Delete universal comment')
+  @SuccessResponse('Delete universal comment succeeded')
   deleteComment(@Body() payload: CommentIdDTO, @DisqusToken() token: AccessToken | null) {
-    return token
-      ? this.disqusPublicService.deleteUniversalComment(payload.comment_id, token.access_token)
-      : Promise.reject(`You are not logged in`)
+    if (!token) throw new UnauthorizedException('You are not logged in')
+    return this.disqusPublicService.deleteUniversalComment(payload.comment_id, token.access_token)
   }
 
   // --------------------------------
@@ -126,47 +108,46 @@ export class DisqusController {
 
   @Get('threads')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Get Disqus threads')
+  @SuccessResponse('Get Disqus threads succeeded')
   getThreads(@Query() query: GeneralDisqusParams) {
     return this.disqusPrivateService.getThreads(query)
   }
 
   @Get('posts')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Get Disqus posts')
+  @SuccessResponse('Get Disqus posts succeeded')
   getPosts(@Query() query: GeneralDisqusParams) {
     return this.disqusPrivateService.getPosts(query)
   }
 
   @Post('post')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update Disqus post')
+  @SuccessResponse('Update Disqus post succeeded')
   updatePost(@Body() body) {
     return this.disqusPrivateService.updatePost(body)
   }
 
   @Post('thread')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Update Disqus thread')
+  @SuccessResponse('Update Disqus thread succeeded')
   updateThread(@Body() body) {
     return this.disqusPrivateService.updateThread(body)
   }
 
   @Get('export-xml')
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle('Export XML for Disqus import')
-  exportXML(@Response() response) {
-    return this.disqusPrivateService.exportXML().then((xml) => {
-      response.header('Content-Type', 'application/xml')
-      response.send(xml)
-    })
+  @Header('content-type', 'application/xml')
+  exportXML() {
+    return this.disqusPrivateService.exportXMLFromNodepress()
   }
 
   @Post('import-xml')
   @UseGuards(AdminOnlyGuard)
-  @UseInterceptors(FileInterceptor('file'))
-  @Responser.handle('Import XML from Disqus')
-  importXML(@UploadedFile() file: Express.Multer.File) {
-    return this.disqusPrivateService.importXML(file)
+  @SuccessResponse('Import XML from Disqus succeeded')
+  importXML(@UploadedFile() file: IUploadedFile) {
+    if (!['application/xml', 'text/xml'].includes(file.mimetype)) {
+      throw new BadRequestException('Only XML files are allowed for import')
+    }
+    return this.disqusPrivateService.importXMLToNodepress(file.buffer)
   }
 }

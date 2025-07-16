@@ -5,6 +5,7 @@
  */
 
 import pico from 'picocolors'
+import { isDevEnv } from '@app/app.environment'
 
 interface LoggerRenderOptions {
   consoler: (...messages: any[]) => void
@@ -59,4 +60,4 @@ export const createLogger = (opts?: LoggerOptions) => ({
   failure: renderLogger({ label: '🔴', consoler: console.warn, formatter: pico.redBright, ...opts })
 })
 
-export default createLogger()
+export default createLogger({ time: isDevEnv })

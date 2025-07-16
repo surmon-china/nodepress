@@ -5,6 +5,7 @@
  */
 
 import jwt from 'jsonwebtoken'
+import type { FastifyRequest } from 'fastify'
 import { createParamDecorator, ExecutionContext } from '@nestjs/common'
 import { AccessToken } from '@app/utils/disqus'
 import { DISQUS } from '@app/app.config'
@@ -27,7 +28,7 @@ export const decodeToken = (token: string): AccessToken | null => {
 }
 
 export const DisqusToken = createParamDecorator((key: string = TOKEN_COOKIE_KEY, context: ExecutionContext) => {
-  const request = context.switchToHttp().getRequest()
+  const request = context.switchToHttp().getRequest<FastifyRequest>()
   const cookies = request.cookies
   const token = cookies[key]
   return token ? decodeToken(token) : null

@@ -4,43 +4,49 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Request } from 'express'
-import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from '@nestjs/common'
-import { HttpResponseSuccess, ResponseStatus } from '@app/interfaces/response.interface'
-import { getResponserOptions } from '@app/decorators/responser.decorator'
-import * as TEXT from '@app/constants/text.constant'
+import type { Observable } from 'rxjs'
+import type { FastifyRequest, FastifyReply } from 'fastify'
+import type { CallHandler, ExecutionContext } from '@nestjs/common'
+import { Injectable, NestInterceptor } from '@nestjs/common'
+import { HttpSuccessResponse, ResponseStatus } from '@app/interfaces/response.interface'
+import { getSuccessResponseOptions } from '@app/decorators/success-response.decorator'
 
 /**
  * @class TransformInterceptor
  * @classdesc transform `T` to `HttpResponseSuccess<T>` when controller `Promise` resolved
  */
 @Injectable()
-export class TransformInterceptor<T> implements NestInterceptor<T, T | HttpResponseSuccess<T>> {
-  intercept(context: ExecutionContext, next: CallHandler<T>): Observable<T | HttpResponseSuccess<T>> {
-    const target = context.getHandler()
-    const { successMessage, transform, paginate } = getResponserOptions(target)
-    if (!transform) {
+export class TransformInterceptor<T> implements NestInterceptor<T, T | HttpSuccessResponse<T>> {
+  intercept(context: ExecutionContext, next: CallHandler<T>): Observable<T | HttpSuccessResponse<T>> {
+    const reponseOptions = getSuccessResponseOptions(context.getHandler())
+    if (!reponseOptions.useTransform) {
       return next.handle()
     }
 
-    const request = context.switchToHttp().getRequest<Request>()
+    const request = context.switchToHttp().getRequest<FastifyRequest>()
+    const response = context.switchToHttp().getResponse<FastifyReply>()
+
     return next.handle().pipe(
       map((data: any) => {
-        return {
+        if (reponseOptions.status) {
+          response.status(reponseOptions.status)
+        }
+
+        const responseBody: HttpSuccessResponse<T> = {
           status: ResponseStatus.Success,
-          message: successMessage || TEXT.HTTP_DEFAULT_SUCCESS_TEXT,
-          params: {
-            isAuthenticated: request.isAuthenticated(),
-            isUnauthenticated: request.isUnauthenticated(),
+          message: reponseOptions.message ?? 'Success',
+          context: {
             url: request.url,
             method: request.method,
-            routes: request.params,
-            payload: request.$validatedPayload || {}
+            route_params: request.params ?? {},
+            query_params: request.locals.validatedQueryParams ?? {},
+            is_authenticated: request.locals.isAuthenticated,
+            is_unauthenticated: request.locals.isUnauthenticated
           },
-          result: paginate
-            ? {
+          result: !reponseOptions.usePaginate
+            ? data
+            : {
                 data: data.documents,
                 pagination: {
                   total: data.total,
@@ -49,8 +55,9 @@ export class TransformInterceptor<T> implements NestInterceptor<T, T | HttpRespo
                   total_page: data.totalPage
                 }
               }
-            : data
         }
+
+        return responseBody
       })
     )
   }

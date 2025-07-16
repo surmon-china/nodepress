@@ -6,18 +6,8 @@
 
 import { prop, modelOptions } from '@typegoose/typegoose'
 import { Type } from 'class-transformer'
-import {
-  IsString,
-  IsEmail,
-  IsOptional,
-  IsInt,
-  IsObject,
-  IsUrl,
-  IsNotEmpty,
-  IsArray,
-  ValidateNested,
-  ArrayUnique
-} from 'class-validator'
+import { IsString, IsInt, IsObject, IsUrl, IsEmail, IsArray } from 'class-validator'
+import { IsOptional, IsNotEmpty, ValidateNested, ArrayUnique } from 'class-validator'
 import { KeyValueModel } from '@app/models/key-value.model'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { APP_BIZ } from '@app/app.config'
