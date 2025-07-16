@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   public signToken() {
-    return this.jwtService.sign({ data: APP_BIZ.AUTH.data })
+    return this.jwtService.sign({ data: APP_BIZ.AUTH_JWT.data })
   }
 
   public async verifyToken(token: string): Promise<boolean> {
@@ -45,8 +45,8 @@ export class AuthService {
     }
 
     try {
-      const payload = this.jwtService.verify(token, { secret: APP_BIZ.AUTH.jwtSecret })
-      return _isEqual(payload.data, APP_BIZ.AUTH.data)
+      const payload = this.jwtService.verify(token, { secret: APP_BIZ.AUTH_JWT.secret })
+      return _isEqual(payload.data, APP_BIZ.AUTH_JWT.data)
     } catch {
       return false
     }

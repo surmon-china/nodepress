@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### 5.3.0 (2025-07-16)
+
+**Feature**
+
+- Improved password hash algorithm, using a more secure `bcrypt`
+
 ### 5.1.0 (2025-07-16)
 
 **Feature**

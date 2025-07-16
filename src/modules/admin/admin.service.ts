@@ -3,11 +3,12 @@
  * @module module/admin/service
  */
 
+import bcrypt from 'bcryptjs'
 import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { AuthService } from '@app/core/auth/auth.service'
-import { decodeBase64, decodeMD5 } from '@app/transformers/codec.transformer'
+import { decodeBase64 } from '@app/transformers/codec.transformer'
 import { Admin, DEFAULT_ADMIN_PROFILE } from './admin.model'
 import { TokenResult } from './admin.interface'
 import { AdminUpdateDTO } from './admin.dto'
@@ -20,22 +21,31 @@ export class AdminService {
     @InjectModel(Admin) private readonly adminModel: MongooseModel<Admin>
   ) {}
 
-  private async getExistedPassword(): Promise<string> {
-    const auth = await this.adminModel.findOne(undefined, '+password').exec()
-    return auth?.password || decodeMD5(APP_BIZ.AUTH.defaultPassword)
+  /**
+   * Validate the provided plain password against the stored password.
+   * - If a hashed password exists in the database, verify with bcrypt.
+   * - If no password exists (e.g., initial state), fall back to comparing with the default password.
+   */
+  private async validatePassword(plainPassword: string): Promise<boolean> {
+    const existedProfile = await this.adminModel.findOne(undefined, '+password').exec()
+    if (existedProfile?.password) {
+      // Password exists in database → validate using bcrypt
+      return await bcrypt.compare(plainPassword, existedProfile.password)
+    } else {
+      // No password in database → compare directly with default password (no hashing)
+      return plainPassword === APP_BIZ.PASSWORD.defaultPassword
+    }
   }
 
   public createToken(): TokenResult {
     return {
       access_token: this.authService.signToken(),
-      expires_in: APP_BIZ.AUTH.expiresIn
+      expires_in: APP_BIZ.AUTH_JWT.expiresIn
     }
   }
 
-  public async login(password: string): Promise<TokenResult> {
-    const existedPassword = await this.getExistedPassword()
-    const loginPassword = decodeMD5(decodeBase64(password))
-    if (loginPassword === existedPassword) {
+  public async login(base64Password: string): Promise<TokenResult> {
+    if (await this.validatePassword(decodeBase64(base64Password))) {
       return this.createToken()
     } else {
       throw new UnauthorizedException('Password incorrect')
@@ -48,32 +58,31 @@ export class AdminService {
   }
 
   public async updateProfile(adminProfile: AdminUpdateDTO): Promise<Admin> {
-    const { password, new_password, ...profile } = adminProfile
-    const payload: Admin = { ...profile }
+    const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = adminProfile
+    const newProfile: Admin = { ...profile }
 
-    // verify password
-    if (password || new_password) {
-      if (!password || !new_password) {
+    // Verify password
+    if (inputOldPassword || inputNewPassword) {
+      if (!inputOldPassword || !inputNewPassword) {
         throw new BadRequestException('Incomplete passwords')
       }
-      if (password === new_password) {
+      if (inputOldPassword === inputNewPassword) {
         throw new BadRequestException('Old password and new password cannot be the same')
       }
-      const oldPassword = decodeMD5(decodeBase64(password))
-      const existedPassword = await this.getExistedPassword()
-      if (oldPassword !== existedPassword) {
+      if (!(await this.validatePassword(decodeBase64(inputOldPassword)))) {
         throw new BadRequestException('Old password incorrect')
       }
-      // set new password
-      payload.password = decodeMD5(decodeBase64(new_password))
+      // Set new password
+      const plainNewPassword = decodeBase64(inputNewPassword)
+      newProfile.password = await bcrypt.hash(plainNewPassword, APP_BIZ.PASSWORD.bcryptSaltRounds)
     }
 
     // save
-    const existedAuth = await this.adminModel.findOne(undefined, '+password').exec()
-    if (existedAuth) {
-      await Object.assign(existedAuth, payload).save()
+    const existedProfile = await this.adminModel.findOne(undefined, '+password').exec()
+    if (existedProfile) {
+      await Object.assign(existedProfile, newProfile).save()
     } else {
-      await this.adminModel.create(payload)
+      await this.adminModel.create(newProfile)
     }
 
     return this.getProfile()

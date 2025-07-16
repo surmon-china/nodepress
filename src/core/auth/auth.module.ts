@@ -15,8 +15,8 @@ import { AuthService } from './auth.service'
     // https://docs.nestjs.com/security/authentication#jwt-token
     JwtModule.register({
       global: true,
-      secret: APP_BIZ.AUTH.jwtSecret,
-      signOptions: { expiresIn: APP_BIZ.AUTH.expiresIn }
+      secret: APP_BIZ.AUTH_JWT.secret,
+      signOptions: { expiresIn: APP_BIZ.AUTH_JWT.expiresIn }
     })
   ],
   providers: [AuthService],

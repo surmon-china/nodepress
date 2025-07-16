@@ -51,16 +51,21 @@ export const APP_BIZ = {
   STATIC_URL: 'https://static.surmon.me',
   /** Allowed CORS origins */
   CORS_ALLOWED_ORIGINS: ['https://surmon.me', /\.surmon\.me$/],
-  /** Authentication config */
-  AUTH: {
+  /** Default admin password */
+  PASSWORD: {
+    /** Default password for the admin user, used when no password is set in the database */
+    defaultPassword: arg({ key: 'default_password', default: 'root' }),
+    /** Bcrypt salt rounds for hashing passwords */
+    bcryptSaltRounds: arg({ key: 'bcrypt_salt_rounds', default: 10 })
+  },
+  /** Authentication config (JSON Web Token) */
+  AUTH_JWT: {
     /** JWT token expiration time in seconds */
-    expiresIn: arg({ key: 'auth_expires_in', default: 3600 }),
+    expiresIn: arg({ key: 'auth_jwt_expires_in', default: 3600 }),
     /** JWT signing secret; must be secure in production */
-    jwtSecret: arg({ key: 'auth_secret', default: 'nodepress' }),
-    /** Default payload for issued tokens */
-    data: arg<any>({ key: 'auth_data', default: { user: 'root' } }),
-    /** Default admin password */
-    defaultPassword: arg({ key: 'auth_default_password', default: 'root' })
+    secret: arg({ key: 'auth_jwt_secret', default: 'nodepress' }),
+    /** Default payload for issued JWT tokens (e.g., user role or ID) */
+    data: arg<any>({ key: 'auth_jwt_data', default: { user: 'root' } })
   }
 }
 
