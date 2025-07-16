@@ -11,8 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminService = void 0;
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const auth_service_1 = require("../../core/auth/auth.service");
@@ -26,20 +30,23 @@ let AdminService = class AdminService {
         this.authService = authService;
         this.adminModel = adminModel;
     }
-    async getExistedPassword() {
-        const auth = await this.adminModel.findOne(undefined, '+password').exec();
-        return auth?.password || (0, codec_transformer_1.decodeMD5)(app_config_1.APP_BIZ.AUTH.defaultPassword);
+    async validatePassword(plainPassword) {
+        const existedProfile = await this.adminModel.findOne(undefined, '+password').exec();
+        if (existedProfile?.password) {
+            return await bcryptjs_1.default.compare(plainPassword, existedProfile.password);
+        }
+        else {
+            return plainPassword === app_config_1.APP_BIZ.PASSWORD.defaultPassword;
+        }
     }
     createToken() {
         return {
             access_token: this.authService.signToken(),
-            expires_in: app_config_1.APP_BIZ.AUTH.expiresIn
+            expires_in: app_config_1.APP_BIZ.AUTH_JWT.expiresIn
         };
     }
-    async login(password) {
-        const existedPassword = await this.getExistedPassword();
-        const loginPassword = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(password));
-        if (loginPassword === existedPassword) {
+    async login(base64Password) {
+        if (await this.validatePassword((0, codec_transformer_1.decodeBase64)(base64Password))) {
             return this.createToken();
         }
         else {
@@ -51,28 +58,27 @@ let AdminService = class AdminService {
         return adminProfile ? adminProfile.toObject() : admin_model_1.DEFAULT_ADMIN_PROFILE;
     }
     async updateProfile(adminProfile) {
-        const { password, new_password, ...profile } = adminProfile;
-        const payload = { ...profile };
-        if (password || new_password) {
-            if (!password || !new_password) {
+        const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = adminProfile;
+        const newProfile = { ...profile };
+        if (inputOldPassword || inputNewPassword) {
+            if (!inputOldPassword || !inputNewPassword) {
                 throw new common_1.BadRequestException('Incomplete passwords');
             }
-            if (password === new_password) {
+            if (inputOldPassword === inputNewPassword) {
                 throw new common_1.BadRequestException('Old password and new password cannot be the same');
             }
-            const oldPassword = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(password));
-            const existedPassword = await this.getExistedPassword();
-            if (oldPassword !== existedPassword) {
+            if (!(await this.validatePassword((0, codec_transformer_1.decodeBase64)(inputOldPassword)))) {
                 throw new common_1.BadRequestException('Old password incorrect');
             }
-            payload.password = (0, codec_transformer_1.decodeMD5)((0, codec_transformer_1.decodeBase64)(new_password));
+            const plainNewPassword = (0, codec_transformer_1.decodeBase64)(inputNewPassword);
+            newProfile.password = await bcryptjs_1.default.hash(plainNewPassword, app_config_1.APP_BIZ.PASSWORD.bcryptSaltRounds);
         }
-        const existedAuth = await this.adminModel.findOne(undefined, '+password').exec();
-        if (existedAuth) {
-            await Object.assign(existedAuth, payload).save();
+        const existedProfile = await this.adminModel.findOne(undefined, '+password').exec();
+        if (existedProfile) {
+            await Object.assign(existedProfile, newProfile).save();
         }
         else {
-            await this.adminModel.create(payload);
+            await this.adminModel.create(newProfile);
         }
         return this.getProfile();
     }

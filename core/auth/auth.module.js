@@ -20,8 +20,8 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [
             jwt_1.JwtModule.register({
                 global: true,
-                secret: app_config_1.APP_BIZ.AUTH.jwtSecret,
-                signOptions: { expiresIn: app_config_1.APP_BIZ.AUTH.expiresIn }
+                secret: app_config_1.APP_BIZ.AUTH_JWT.secret,
+                signOptions: { expiresIn: app_config_1.APP_BIZ.AUTH_JWT.expiresIn }
             })
         ],
         providers: [auth_service_1.AuthService],

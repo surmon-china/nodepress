@@ -41,15 +41,15 @@ let AuthService = class AuthService {
         return await this.cacheService.has(key);
     }
     signToken() {
-        return this.jwtService.sign({ data: app_config_1.APP_BIZ.AUTH.data });
+        return this.jwtService.sign({ data: app_config_1.APP_BIZ.AUTH_JWT.data });
     }
     async verifyToken(token) {
         if (await this.isTokenInvalidated(token)) {
             return false;
         }
         try {
-            const payload = this.jwtService.verify(token, { secret: app_config_1.APP_BIZ.AUTH.jwtSecret });
-            return (0, isEqual_1.default)(payload.data, app_config_1.APP_BIZ.AUTH.data);
+            const payload = this.jwtService.verify(token, { secret: app_config_1.APP_BIZ.AUTH_JWT.secret });
+            return (0, isEqual_1.default)(payload.data, app_config_1.APP_BIZ.AUTH_JWT.data);
         }
         catch {
             return false;

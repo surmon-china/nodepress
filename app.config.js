@@ -30,11 +30,14 @@ exports.APP_BIZ = {
     FE_URL: 'https://surmon.me',
     STATIC_URL: 'https://static.surmon.me',
     CORS_ALLOWED_ORIGINS: ['https://surmon.me', /\.surmon\.me$/],
-    AUTH: {
-        expiresIn: arg({ key: 'auth_expires_in', default: 3600 }),
-        jwtSecret: arg({ key: 'auth_secret', default: 'nodepress' }),
-        data: arg({ key: 'auth_data', default: { user: 'root' } }),
-        defaultPassword: arg({ key: 'auth_default_password', default: 'root' })
+    PASSWORD: {
+        defaultPassword: arg({ key: 'default_password', default: 'root' }),
+        bcryptSaltRounds: arg({ key: 'bcrypt_salt_rounds', default: 10 })
+    },
+    AUTH_JWT: {
+        expiresIn: arg({ key: 'auth_jwt_expires_in', default: 3600 }),
+        secret: arg({ key: 'auth_jwt_secret', default: 'nodepress' }),
+        data: arg({ key: 'auth_jwt_data', default: { user: 'root' } })
     }
 };
 exports.MONGO_DB = {
