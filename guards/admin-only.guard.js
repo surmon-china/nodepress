@@ -7,21 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminOnlyGuard = void 0;
-const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
-const unauthorized_error_1 = require("../errors/unauthorized.error");
-const value_constant_1 = require("../constants/value.constant");
-let AdminOnlyGuard = class AdminOnlyGuard extends (0, passport_1.AuthGuard)('jwt') {
-    canActivate(context) {
-        return super.canActivate(context);
-    }
-    handleRequest(error, authInfo, errInfo) {
-        if (authInfo && !error && !errInfo) {
-            return authInfo;
+let AdminOnlyGuard = class AdminOnlyGuard {
+    async canActivate(context) {
+        const request = context.switchToHttp().getRequest();
+        if (request.locals.isAuthenticated) {
+            return true;
         }
-        else {
-            throw error || new unauthorized_error_1.HttpUnauthorizedError(value_constant_1.UNDEFINED, errInfo === null || errInfo === void 0 ? void 0 : errInfo.message);
-        }
+        throw new common_1.UnauthorizedException('Authentication required');
     }
 };
 exports.AdminOnlyGuard = AdminOnlyGuard;

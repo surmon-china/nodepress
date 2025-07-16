@@ -13,7 +13,7 @@ exports.VoteProvider = exports.Vote = exports.VOTE_AUTHOR_TYPES = exports.VOTE_T
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
-const increment_constant_1 = require("../../constants/increment.constant");
+const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 var VoteTarget;
@@ -40,6 +40,17 @@ exports.VOTE_TYPES = [VoteType.Upvote, VoteType.Downvote];
 exports.VOTE_TARGETS = [VoteTarget.Post, VoteTarget.Comment];
 exports.VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus];
 let Vote = class Vote {
+    id;
+    target_type;
+    target_id;
+    vote_type;
+    author_type;
+    author;
+    ip;
+    ip_location;
+    user_agent;
+    created_at;
+    updated_at;
 };
 exports.Vote = Vote;
 __decorate([
@@ -102,7 +113,7 @@ __decorate([
 ], Vote.prototype, "updated_at", void 0);
 exports.Vote = Vote = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
-    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.GENERAL_AUTO_INCREMENT_ID_CONFIG),
+    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
     (0, typegoose_1.modelOptions)({
         options: { allowMixed: typegoose_1.Severity.ALLOW },
         schemaOptions: {

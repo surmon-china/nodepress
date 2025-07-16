@@ -14,12 +14,13 @@ const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-const increment_constant_1 = require("../../constants/increment.constant");
+const class_validator_2 = require("class-validator");
+const database_constant_1 = require("../../constants/database.constant");
 const paginate_1 = require("../../utils/paginate");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const codec_transformer_1 = require("../../transformers/codec.transformer");
 const biz_constant_1 = require("../../constants/biz.constant");
 const key_value_model_1 = require("../../models/key-value.model");
+const codec_transformer_1 = require("../../transformers/codec.transformer");
 exports.COMMENT_STATES = [
     biz_constant_1.CommentState.Auditing,
     biz_constant_1.CommentState.Published,
@@ -30,31 +31,33 @@ exports.COMMENT_GUEST_QUERY_FILTER = Object.freeze({
     state: biz_constant_1.CommentState.Published
 });
 let Author = class Author {
+    name;
+    email;
+    site;
     get email_hash() {
-        var _a;
-        const email = (_a = this.email) === null || _a === void 0 ? void 0 : _a.trim().toLowerCase();
+        const email = this.email?.trim().toLowerCase();
         return email ? (0, codec_transformer_1.decodeMD5)(email) : null;
     }
 };
 exports.Author = Author;
 __decorate([
-    (0, class_validator_1.MaxLength)(20),
+    (0, class_validator_2.MaxLength)(20),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_2.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Author.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Author.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsUrl)({ require_protocol: true }),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Author.prototype, "site", void 0);
@@ -68,11 +71,16 @@ exports.Author = Author = __decorate([
     })
 ], Author);
 class CommentBase {
+    post_id;
+    pid;
+    content;
+    agent;
+    author;
 }
 exports.CommentBase = CommentBase;
 __decorate([
     (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)({ message: 'post ID?' }),
+    (0, class_validator_2.IsNotEmpty)({ message: 'post ID?' }),
     (0, typegoose_1.prop)({ required: true, index: true }),
     __metadata("design:type", Number)
 ], CommentBase.prototype, "post_id", void 0);
@@ -82,10 +90,10 @@ __decorate([
     __metadata("design:type", Number)
 ], CommentBase.prototype, "pid", void 0);
 __decorate([
-    (0, class_validator_1.MinLength)(3),
-    (0, class_validator_1.MaxLength)(3000),
+    (0, class_validator_2.MinLength)(3),
+    (0, class_validator_2.MaxLength)(3000),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)({ message: 'comment content?' }),
+    (0, class_validator_2.IsNotEmpty)({ message: 'comment content?' }),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], CommentBase.prototype, "content", void 0);
@@ -96,14 +104,23 @@ __decorate([
 ], CommentBase.prototype, "agent", void 0);
 __decorate([
     (0, class_transformer_1.Type)(() => Author),
-    (0, class_validator_1.ValidateNested)(),
+    (0, class_validator_2.ValidateNested)(),
     (0, class_validator_1.IsObject)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsDefined)({ message: 'comment author?' }),
+    (0, class_validator_2.IsNotEmpty)(),
+    (0, class_validator_2.IsDefined)({ message: 'comment author?' }),
     (0, typegoose_1.prop)({ required: true, _id: false }),
     __metadata("design:type", Author)
 ], CommentBase.prototype, "author", void 0);
 let Comment = class Comment extends CommentBase {
+    id;
+    state;
+    likes;
+    dislikes;
+    ip;
+    ip_location;
+    created_at;
+    updated_at;
+    extends;
 };
 exports.Comment = Comment;
 __decorate([
@@ -128,7 +145,7 @@ __decorate([
 ], Comment.prototype, "dislikes", void 0);
 __decorate([
     (0, class_validator_1.IsIP)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Comment.prototype, "ip", void 0);
@@ -152,7 +169,7 @@ __decorate([
 ], Comment.prototype, "extends", void 0);
 exports.Comment = Comment = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
-    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.GENERAL_AUTO_INCREMENT_ID_CONFIG),
+    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
     (0, typegoose_1.modelOptions)({
         options: { allowMixed: typegoose_1.Severity.ALLOW },
         schemaOptions: {

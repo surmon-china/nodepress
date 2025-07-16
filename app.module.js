@@ -7,32 +7,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
-const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
+const core_1 = require("@nestjs/core");
 const throttler_1 = require("@nestjs/throttler");
 const app_controller_1 = require("./app.controller");
-const cache_interceptor_1 = require("./interceptors/cache.interceptor");
+const noop_middleware_1 = require("./middlewares/noop.middleware");
 const validation_pipe_1 = require("./pipes/validation.pipe");
-const cors_middleware_1 = require("./middlewares/cors.middleware");
-const origin_middleware_1 = require("./middlewares/origin.middleware");
-const database_module_1 = require("./processors/database/database.module");
-const cache_module_1 = require("./processors/cache/cache.module");
-const helper_module_1 = require("./processors/helper/helper.module");
-const extension_module_1 = require("./modules/extension/extension.module");
-const auth_module_1 = require("./modules/auth/auth.module");
-const option_module_1 = require("./modules/option/option.module");
-const feedback_module_1 = require("./modules/feedback/feedback.module");
+const database_module_1 = require("./core/database/database.module");
+const cache_module_1 = require("./core/cache/cache.module");
+const auth_module_1 = require("./core/auth/auth.module");
+const helper_module_1 = require("./core/helper/helper.module");
 const announcement_module_1 = require("./modules/announcement/announcement.module");
-const tag_module_1 = require("./modules/tag/tag.module");
 const category_module_1 = require("./modules/category/category.module");
+const tag_module_1 = require("./modules/tag/tag.module");
 const article_module_1 = require("./modules/article/article.module");
 const comment_module_1 = require("./modules/comment/comment.module");
-const disqus_module_1 = require("./modules/disqus/disqus.module");
 const archive_module_1 = require("./modules/archive/archive.module");
+const feedback_module_1 = require("./modules/feedback/feedback.module");
 const vote_module_1 = require("./modules/vote/vote.module");
+const option_module_1 = require("./modules/option/option.module");
+const admin_module_1 = require("./modules/admin/admin.module");
+const disqus_module_1 = require("./modules/disqus/disqus.module");
+const extension_module_1 = require("./modules/extension/extension.module");
 let AppModule = class AppModule {
     configure(consumer) {
-        consumer.apply(cors_middleware_1.CorsMiddleware, origin_middleware_1.OriginMiddleware).forRoutes('*');
+        consumer.apply(noop_middleware_1.NoopMiddleware).forRoutes('*');
     }
 };
 exports.AppModule = AppModule;
@@ -45,17 +44,19 @@ exports.AppModule = AppModule = __decorate([
                     limit: 600,
                     ignoreUserAgents: [/googlebot/gi, /bingbot/gi, /baidubot/gi],
                     skipIf: (context) => {
-                        var _a;
                         const request = context.switchToHttp().getRequest();
-                        return request.hostname === 'localhost' || ['127.0.0.1', '::1'].includes((_a = request.ip) !== null && _a !== void 0 ? _a : '');
+                        return (request.hostname === 'localhost' ||
+                            request.ip.startsWith('::ffff:127.0.0.1') ||
+                            ['127.0.0.1', '::1'].includes(request.ip ?? ''));
                     }
                 }
             ]),
             helper_module_1.HelperModule,
             database_module_1.DatabaseModule,
             cache_module_1.CacheModule,
-            extension_module_1.ExtensionModule,
             auth_module_1.AuthModule,
+            extension_module_1.ExtensionModule,
+            admin_module_1.AdminModule,
             option_module_1.OptionModule,
             feedback_module_1.FeedbackModule,
             announcement_module_1.AnnouncementModule,
@@ -69,10 +70,6 @@ exports.AppModule = AppModule = __decorate([
         ],
         controllers: [app_controller_1.AppController],
         providers: [
-            {
-                provide: core_1.APP_INTERCEPTOR,
-                useClass: cache_interceptor_1.CacheInterceptor
-            },
             {
                 provide: core_1.APP_GUARD,
                 useClass: throttler_1.ThrottlerGuard

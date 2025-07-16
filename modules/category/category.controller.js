@@ -15,20 +15,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryController = void 0;
 const common_1 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
+const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
-const expose_pipe_1 = require("../../pipes/expose.pipe");
-const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const responser_decorator_1 = require("../../decorators/responser.decorator");
+const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const category_dto_1 = require("./category.dto");
 const category_service_1 = require("./category.service");
 const category_model_1 = require("./category.model");
 let CategoryController = class CategoryController {
+    categoryService;
     constructor(categoryService) {
         this.categoryService = categoryService;
     }
     getCategories(query, { isUnauthenticated }) {
-        return this.categoryService.paginator({}, { page: query.page, perPage: query.per_page, dateSort: query.sort }, isUnauthenticated);
+        return this.categoryService.paginate({}, { page: query.page, perPage: query.per_page, dateSort: query.sort }, isUnauthenticated);
     }
     getAllCategories({ isAuthenticated }) {
         return isAuthenticated
@@ -54,20 +54,19 @@ let CategoryController = class CategoryController {
 exports.CategoryController = CategoryController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.paginate(),
-    responser_decorator_1.Responser.handle('Get categories'),
-    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
-    __param(1, (0, queryparams_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)({ message: 'Get categories succeeded', usePaginate: true }),
+    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe)),
+    __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [category_dto_1.CategoryPaginateQueryDTO, Object]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "getCategories", null);
 __decorate([
     (0, common_1.Get)('all'),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.handle('Get all categories'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Get all categories succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
@@ -75,7 +74,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Create category'),
+    (0, success_response_decorator_1.SuccessResponse)('Create category succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [category_model_1.Category]),
@@ -84,7 +83,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete categories'),
+    (0, success_response_decorator_1.SuccessResponse)('Delete categories succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [category_dto_1.CategoriesDTO]),
@@ -92,8 +91,8 @@ __decorate([
 ], CategoryController.prototype, "delCategories", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    responser_decorator_1.Responser.handle('Get categories tree'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Get categories tree succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
@@ -101,8 +100,8 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update category'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Update category succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, category_model_1.Category]),
@@ -111,8 +110,8 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete category'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Delete category succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)

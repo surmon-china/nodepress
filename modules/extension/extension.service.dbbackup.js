@@ -19,8 +19,8 @@ const shelljs_1 = __importDefault(require("shelljs"));
 const dayjs_1 = __importDefault(require("dayjs"));
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
-const helper_service_email_1 = require("../../processors/helper/helper.service.email");
-const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
+const helper_service_email_1 = require("../../core/helper/helper.service.email");
+const helper_service_aws_1 = require("../../core/helper/helper.service.aws");
 const app_config_1 = require("../../app.config");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
@@ -30,6 +30,8 @@ const UPLOAD_INTERVAL = '0 0 3 * * *';
 const BACKUP_FILE_NAME = 'nodepress.zip';
 const BACKUP_DIR_PATH = path_1.default.join(app_config_1.APP_BIZ.ROOT_PATH, 'dbbackup');
 let DBBackupService = class DBBackupService {
+    emailService;
+    awsService;
     constructor(emailService, awsService) {
         this.emailService = emailService;
         this.awsService = awsService;
@@ -41,16 +43,19 @@ let DBBackupService = class DBBackupService {
         });
     }
     async backup() {
-        var _a;
         try {
             const result = await this.doBackup();
-            const json = Object.assign(Object.assign({}, result), { lastModified: (_a = result.lastModified) === null || _a === void 0 ? void 0 : _a.toLocaleString('zh'), size: (result.size / 1024).toFixed(2) + 'kb' });
+            const json = {
+                ...result,
+                lastModified: result.lastModified?.toLocaleString('zh'),
+                size: (result.size / 1024).toFixed(2) + 'kb'
+            };
             this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true);
             return result;
         }
         catch (error) {
             this.mailToAdmin('Database backup failed!', String(error));
-            throw error;
+            throw new common_1.InternalServerErrorException(String(error));
         }
     }
     mailToAdmin(subject, content, isCode) {
@@ -90,7 +95,7 @@ let DBBackupService = class DBBackupService {
                 logger.log(`file source: ${filePath}`);
                 this.awsService
                     .uploadFile({
-                    name: fileName,
+                    key: fileName,
                     file: fs_1.default.createReadStream(filePath),
                     fileContentType: 'application/zip',
                     region: app_config_1.DB_BACKUP.s3Region,
@@ -103,8 +108,7 @@ let DBBackupService = class DBBackupService {
                     resolve(result);
                 })
                     .catch((error) => {
-                    var _a;
-                    const errorMessage = JSON.stringify((_a = error.message) !== null && _a !== void 0 ? _a : error);
+                    const errorMessage = JSON.stringify(error.message ?? error);
                     logger.failure('upload failed!', errorMessage);
                     reject(errorMessage);
                 });

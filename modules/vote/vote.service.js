@@ -17,28 +17,27 @@ const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const vote_model_1 = require("./vote.model");
 let VoteService = class VoteService {
+    voteModel;
     constructor(voteModel) {
         this.voteModel = voteModel;
     }
-    paginator(query, options) {
+    paginate(query, options) {
         return this.voteModel.paginate(query, options);
     }
     create(vote) {
         return this.voteModel.create(vote);
     }
     async update(voteId, newVote) {
-        const vote = await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec();
-        if (!vote) {
-            throw `Vote '${voteId}' not found`;
-        }
-        return vote;
+        const updated = await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec();
+        if (!updated)
+            throw new common_1.NotFoundException(`Vote '${voteId}' not found`);
+        return updated;
     }
     async delete(voteId) {
-        const vote = await this.voteModel.findByIdAndDelete(voteId, null).exec();
-        if (!vote) {
-            throw `Vote '${voteId}' not found`;
-        }
-        return vote;
+        const deleted = await this.voteModel.findByIdAndDelete(voteId, null).exec();
+        if (!deleted)
+            throw new common_1.NotFoundException(`Vote '${voteId}' not found`);
+        return deleted;
     }
     batchDelete(voteIds) {
         return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec();

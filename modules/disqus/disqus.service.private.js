@@ -62,6 +62,9 @@ const disqus_xml_1 = require("./disqus.xml");
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
 const logger = (0, logger_1.createLogger)({ scope: 'DisqusPrivateService', time: app_environment_1.isDevEnv });
 let DisqusPrivateService = class DisqusPrivateService {
+    articleService;
+    commentService;
+    disqus;
     constructor(articleService, commentService) {
         this.articleService = articleService;
         this.commentService = commentService;
@@ -92,7 +95,11 @@ let DisqusPrivateService = class DisqusPrivateService {
     }
     async getThreads(params) {
         return this.disqus
-            .request('threads/list', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken, forum: app_config_1.DISQUS.forum }, params))
+            .request('threads/list', {
+            access_token: app_config_1.DISQUS.adminAccessToken,
+            forum: app_config_1.DISQUS.forum,
+            ...params
+        })
             .catch((error) => {
             logger.warn('getThreads failed!', error);
             return Promise.reject(error);
@@ -100,7 +107,11 @@ let DisqusPrivateService = class DisqusPrivateService {
     }
     async getPosts(params) {
         return this.disqus
-            .request('posts/list', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken, forum: app_config_1.DISQUS.forum }, params))
+            .request('posts/list', {
+            access_token: app_config_1.DISQUS.adminAccessToken,
+            forum: app_config_1.DISQUS.forum,
+            ...params
+        })
             .catch((error) => {
             logger.warn('getPosts failed!', error);
             return Promise.reject(error);
@@ -108,7 +119,10 @@ let DisqusPrivateService = class DisqusPrivateService {
     }
     async updateThread(params) {
         return this.disqus
-            .request('threads/update', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken }, params))
+            .request('threads/update', {
+            access_token: app_config_1.DISQUS.adminAccessToken,
+            ...params
+        })
             .catch((error) => {
             logger.warn('updateThread failed!', error);
             return Promise.reject(error);
@@ -116,7 +130,10 @@ let DisqusPrivateService = class DisqusPrivateService {
     }
     async updatePost(params) {
         return this.disqus
-            .request('posts/update', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken }, params))
+            .request('posts/update', {
+            access_token: app_config_1.DISQUS.adminAccessToken,
+            ...params
+        })
             .catch((error) => {
             logger.warn('updatePost failed!', error);
             return Promise.reject(error);
@@ -124,13 +141,16 @@ let DisqusPrivateService = class DisqusPrivateService {
     }
     async approvePost(params) {
         return this.disqus
-            .request('posts/approve', Object.assign({ access_token: app_config_1.DISQUS.adminAccessToken }, params))
+            .request('posts/approve', {
+            access_token: app_config_1.DISQUS.adminAccessToken,
+            ...params
+        })
             .catch((error) => {
             logger.warn('approvePost failed!', error);
             return Promise.reject(error);
         });
     }
-    async exportXML() {
+    async exportXMLFromNodepress() {
         const treeMap = new Map();
         const guestbook = [];
         const allComments = await this.commentService.getAll();
@@ -160,15 +180,17 @@ let DisqusPrivateService = class DisqusPrivateService {
         const treeList = Array.from(treeMap.values()).filter((item) => Boolean(item.article));
         return (0, disqus_xml_1.getDisqusXML)(treeList, guestbook);
     }
-    async importXML(file) {
-        const xml = file.buffer.toString();
+    async importXMLToNodepress(xmlFileBuffer) {
         const parser = new fast_xml_parser_1.XMLParser({
             ignoreAttributes: false,
             allowBooleanAttributes: true,
             attributeNamePrefix: '@'
         });
-        const object = parser.parse(xml);
-        const posts = object.disqus.post;
+        const object = parser.parse(xmlFileBuffer);
+        const posts = object?.disqus?.post;
+        if (!posts || !Array.isArray(posts)) {
+            throw new common_1.BadRequestException('Invalid XML format: missing disqus.post');
+        }
         const filtered = posts.filter((post) => Boolean(post.id));
         const getEach = (post) => ({
             commentId: Number(post.id.replace(`wp_id=`, '')),

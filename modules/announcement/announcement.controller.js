@@ -11,17 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -30,20 +19,20 @@ exports.AnnouncementController = void 0;
 const trim_1 = __importDefault(require("lodash/trim"));
 const common_1 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
+const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
-const expose_pipe_1 = require("../../pipes/expose.pipe");
-const responser_decorator_1 = require("../../decorators/responser.decorator");
-const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const success_response_decorator_1 = require("../../decorators/success-response.decorator");
+const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const announcement_dto_1 = require("./announcement.dto");
 const announcement_service_1 = require("./announcement.service");
 const announcement_model_1 = require("./announcement.model");
 let AnnouncementController = class AnnouncementController {
+    announcementService;
     constructor(announcementService) {
         this.announcementService = announcementService;
     }
     getAnnouncements(query) {
-        const { sort, page, per_page } = query, filters = __rest(query, ["sort", "page", "per_page"]);
+        const { sort, page, per_page, ...filters } = query;
         const { keyword, state } = filters;
         const paginateQuery = {};
         if (keyword) {
@@ -52,7 +41,7 @@ let AnnouncementController = class AnnouncementController {
         if (state != null) {
             paginateQuery.state = state;
         }
-        return this.announcementService.paginator(paginateQuery, {
+        return this.announcementService.paginate(paginateQuery, {
             page,
             perPage: per_page,
             dateSort: sort
@@ -74,18 +63,17 @@ let AnnouncementController = class AnnouncementController {
 exports.AnnouncementController = AnnouncementController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.paginate(),
-    responser_decorator_1.Responser.handle('Get announcements'),
-    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
+    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)({ message: 'Get announcements succeeded', usePaginate: true }),
+    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_dto_1.AnnouncementPaginateQueryDTO]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], AnnouncementController.prototype, "getAnnouncements", null);
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Create announcement'),
+    (0, success_response_decorator_1.SuccessResponse)('Create announcement succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_model_1.Announcement]),
@@ -94,7 +82,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete announcements'),
+    (0, success_response_decorator_1.SuccessResponse)('Delete announcements succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [announcement_dto_1.AnnouncementsDTO]),
@@ -103,8 +91,8 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update announcement'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Update announcement succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, announcement_model_1.Announcement]),
@@ -113,8 +101,8 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete announcement'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Delete announcement succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)

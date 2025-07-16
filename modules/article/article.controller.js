@@ -11,17 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -31,12 +20,11 @@ const trim_1 = __importDefault(require("lodash/trim"));
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const mongoose_1 = require("mongoose");
 const common_1 = require("@nestjs/common");
-const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const responser_decorator_1 = require("../../decorators/responser.decorator");
-const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
+const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
-const expose_pipe_1 = require("../../pipes/expose.pipe");
+const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
+const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const biz_constant_1 = require("../../constants/biz.constant");
 const tag_service_1 = require("../tag/tag.service");
 const category_service_1 = require("../category/category.service");
@@ -45,13 +33,16 @@ const article_model_1 = require("./article.model");
 const article_service_1 = require("./article.service");
 const article_model_2 = require("./article.model");
 let ArticleController = class ArticleController {
+    tagService;
+    categoryService;
+    articleService;
     constructor(tagService, categoryService, articleService) {
         this.tagService = tagService;
         this.categoryService = categoryService;
         this.articleService = articleService;
     }
     async getArticles(query) {
-        const { page, per_page, sort } = query, filters = __rest(query, ["page", "per_page", "sort"]);
+        const { page, per_page, sort, ...filters } = query;
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page };
         if (!(0, isUndefined_1.default)(sort)) {
@@ -97,7 +88,7 @@ let ArticleController = class ArticleController {
             const category = await this.categoryService.getDetailBySlug(filters.category_slug);
             paginateQuery.categories = category._id;
         }
-        return this.articleService.paginator(paginateQuery, paginateOptions);
+        return this.articleService.paginate(paginateQuery, paginateOptions);
     }
     getArticleCalendar(query, { isUnauthenticated }) {
         return this.articleService.getCalendar(isUnauthenticated, query.timezone);
@@ -112,8 +103,8 @@ let ArticleController = class ArticleController {
                 .then((article) => this.articleService.getRelatedArticles(article, 20))
         ]);
         return {
-            prev_article: (prevArticles === null || prevArticles === void 0 ? void 0 : prevArticles[0]) || null,
-            next_article: (nextArticles === null || nextArticles === void 0 ? void 0 : nextArticles[0]) || null,
+            prev_article: prevArticles?.[0] || null,
+            next_article: nextArticles?.[0] || null,
             related_articles: relatedArticles || []
         };
     }
@@ -145,43 +136,36 @@ let ArticleController = class ArticleController {
 exports.ArticleController = ArticleController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.paginate(),
-    responser_decorator_1.Responser.handle('Get articles'),
-    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
+    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)({ message: 'Get articles succeeded', usePaginate: true }),
+    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticlePaginateQueryDTO]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticles", null);
 __decorate([
     (0, common_1.Get)('calendar'),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.handle('Get article calendar'),
-    __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
-    __param(1, (0, queryparams_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Get article calendar succeeded'),
+    __param(0, (0, common_1.Query)()),
+    __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticleCalendarQueryDTO, Object]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "getArticleCalendar", null);
 __decorate([
     (0, common_1.Get)(':id/context'),
-    responser_decorator_1.Responser.handle({
-        message: 'Get context articles',
-        error: common_1.HttpStatus.NOT_FOUND
-    }),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Get context articles succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticleContext", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.handle({
-        message: 'Get article detail',
-        error: common_1.HttpStatus.NOT_FOUND
-    }),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Get article detail succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
@@ -189,7 +173,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Create article'),
+    (0, success_response_decorator_1.SuccessResponse)('Create article succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_model_2.Article]),
@@ -198,8 +182,8 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update article'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Update article succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, article_model_2.Article]),
@@ -208,8 +192,8 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete article'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Delete article succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
@@ -217,7 +201,7 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update articles'),
+    (0, success_response_decorator_1.SuccessResponse)('Update articles succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticlesStateDTO]),
@@ -226,7 +210,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete articles'),
+    (0, success_response_decorator_1.SuccessResponse)('Delete articles succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticleIdsDTO]),

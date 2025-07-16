@@ -11,17 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -32,21 +21,21 @@ const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
+const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
-const expose_pipe_1 = require("../../pipes/expose.pipe");
 const biz_constant_1 = require("../../constants/biz.constant");
-const responser_decorator_1 = require("../../decorators/responser.decorator");
-const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
+const success_response_decorator_1 = require("../../decorators/success-response.decorator");
+const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const comment_dto_1 = require("./comment.dto");
 const comment_service_1 = require("./comment.service");
 const comment_model_1 = require("./comment.model");
 let CommentController = class CommentController {
+    commentService;
     constructor(commentService) {
         this.commentService = commentService;
     }
     getComments(query, { isUnauthenticated }) {
-        const { sort, page, per_page } = query, filters = __rest(query, ["sort", "page", "per_page"]);
+        const { sort, page, per_page, ...filters } = query;
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page };
         if (!(0, isUndefined_1.default)(sort)) {
@@ -72,15 +61,13 @@ let CommentController = class CommentController {
                 { 'author.email': keywordRegExp }
             ];
         }
-        return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated);
+        return this.commentService.paginate(paginateQuery, paginateOptions, isUnauthenticated);
     }
     getCommentCalendar(query, { isUnauthenticated }) {
         return this.commentService.getCalendar(isUnauthenticated, query.timezone);
     }
     createComment(comment, { visitor }) {
-        return comment.author.email
-            ? this.commentService.createFormClient(comment, visitor)
-            : Promise.reject(`author email should not be empty`);
+        return this.commentService.createFormClient(comment, visitor);
     }
     patchComments({ visitor }, body) {
         return this.commentService.batchPatchState(body, visitor.referer);
@@ -89,9 +76,7 @@ let CommentController = class CommentController {
         return this.commentService.batchDelete(body.comment_ids, body.post_ids);
     }
     getComment({ params }) {
-        return this.commentService.getDetailByObjectId(params.id).then((comment) => {
-            return comment ? comment : Promise.reject('Comment not found');
-        });
+        return this.commentService.getDetailByObjectId(params.id);
     }
     putComment({ params, visitor }, comment) {
         return this.commentService.update(params.id, comment, visitor.referer);
@@ -106,21 +91,20 @@ let CommentController = class CommentController {
 exports.CommentController = CommentController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.paginate(),
-    responser_decorator_1.Responser.handle('Get comments'),
-    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe, expose_pipe_1.ExposePipe)),
-    __param(1, (0, queryparams_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)({ message: 'Get comments succeeded', usePaginate: true }),
+    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe)),
+    __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [comment_dto_1.CommentPaginateQueryDTO, Object]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getComments", null);
 __decorate([
     (0, common_1.Get)('calendar'),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.handle('Get comment calendar'),
-    __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
-    __param(1, (0, queryparams_decorator_1.QueryParams)()),
+    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Get comment calendar succeeded'),
+    __param(0, (0, common_1.Query)()),
+    __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [comment_dto_1.CommentCalendarQueryDTO, Object]),
     __metadata("design:returntype", void 0)
@@ -128,9 +112,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 6 } }),
-    responser_decorator_1.Responser.handle('Create comment'),
+    (0, success_response_decorator_1.SuccessResponse)('Create comment succeeded'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, queryparams_decorator_1.QueryParams)()),
+    __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [comment_model_1.CommentBase, Object]),
     __metadata("design:returntype", Promise)
@@ -138,8 +122,8 @@ __decorate([
 __decorate([
     (0, common_1.Patch)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update comments'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Update comments succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, comment_dto_1.CommentsStateDTO]),
@@ -148,7 +132,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete comments'),
+    (0, success_response_decorator_1.SuccessResponse)('Delete comments succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [comment_dto_1.CommentsDTO]),
@@ -157,8 +141,8 @@ __decorate([
 __decorate([
     (0, common_1.Get)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle({ message: 'Get comment detail', error: common_1.HttpStatus.NOT_FOUND }),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Get comment detail succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
@@ -166,8 +150,8 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update comment'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Update comment succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, comment_model_1.Comment]),
@@ -176,8 +160,8 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id/ip_location'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update comment IP location'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Update comment IP location succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
@@ -185,8 +169,8 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete comment'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Delete comment succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)

@@ -29,13 +29,9 @@ exports.APP_BIZ = {
     FE_NAME: 'Surmon.me',
     FE_URL: 'https://surmon.me',
     STATIC_URL: 'https://static.surmon.me',
-    CORS: {
-        allowedOrigins: ['https://surmon.me', 'https://cdn.surmon.me', 'https://admin.surmon.me'],
-        allowedReferer: 'surmon.me'
-    },
     AUTH: {
         expiresIn: arg({ key: 'auth_expires_in', default: 3600 }),
-        jwtSecret: arg({ key: 'auth_key', default: 'nodepress' }),
+        jwtSecret: arg({ key: 'auth_secret', default: 'nodepress' }),
         data: arg({ key: 'auth_data', default: { user: 'root' } }),
         defaultPassword: arg({ key: 'auth_default_password', default: 'root' })
     }

@@ -13,6 +13,8 @@ exports.KeyValueModel = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
 class KeyValueModel {
+    name;
+    value;
 }
 exports.KeyValueModel = KeyValueModel;
 __decorate([

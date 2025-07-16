@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const value_transformer_1 = require("../transformers/value.transformer");
 class DateQueryDTO {
+    date;
 }
 exports.DateQueryDTO = DateQueryDTO;
 __decorate([
@@ -23,6 +24,7 @@ __decorate([
     __metadata("design:type", String)
 ], DateQueryDTO.prototype, "date", void 0);
 class KeywordQueryDTO {
+    keyword;
 }
 exports.KeywordQueryDTO = KeywordQueryDTO;
 __decorate([
@@ -32,6 +34,7 @@ __decorate([
     __metadata("design:type", String)
 ], KeywordQueryDTO.prototype, "keyword", void 0);
 class BooleanQueryDTO {
+    boolean;
 }
 exports.BooleanQueryDTO = BooleanQueryDTO;
 __decorate([

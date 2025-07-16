@@ -13,11 +13,19 @@ exports.TagProvider = exports.Tag = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
-const increment_constant_1 = require("../../constants/increment.constant");
+const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 const key_value_model_1 = require("../../models/key-value.model");
 let Tag = class Tag {
+    id;
+    name;
+    slug;
+    description;
+    created_at;
+    updated_at;
+    extends;
+    article_count;
 };
 exports.Tag = Tag;
 __decorate([
@@ -59,7 +67,7 @@ __decorate([
 ], Tag.prototype, "extends", void 0);
 exports.Tag = Tag = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
-    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.GENERAL_AUTO_INCREMENT_ID_CONFIG),
+    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
             versionKey: false,

@@ -7,16 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggingInterceptor = void 0;
-const operators_1 = require("rxjs/operators");
 const common_1 = require("@nestjs/common");
-const app_environment_1 = require("../app.environment");
 const logger_1 = require("../utils/logger");
-const logger = (0, logger_1.createLogger)({ scope: 'LoggingInterceptor', time: app_environment_1.isDevEnv });
+const operators_1 = require("rxjs/operators");
+const logger = (0, logger_1.createLogger)({ scope: 'LoggingInterceptor', time: true });
 let LoggingInterceptor = class LoggingInterceptor {
     intercept(context, next) {
-        if (!app_environment_1.isDevEnv) {
-            return next.handle();
-        }
         const request = context.switchToHttp().getRequest();
         const content = request.method.padStart(6, '_') + ' -> ' + request.url;
         logger.debug('+++ REQ:', content);

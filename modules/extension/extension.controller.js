@@ -47,17 +47,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExtensionController = void 0;
 const common_1 = require("@nestjs/common");
-const platform_express_1 = require("@nestjs/platform-express");
+const common_2 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_maybe_guard_1 = require("../../guards/admin-maybe.guard");
-const responser_decorator_1 = require("../../decorators/responser.decorator");
-const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const helper_service_google_1 = require("../../processors/helper/helper.service.google");
-const helper_service_aws_1 = require("../../processors/helper/helper.service.aws");
+const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
+const success_response_decorator_1 = require("../../decorators/success-response.decorator");
+const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const uploaded_file_decorator_1 = require("../../decorators/uploaded-file.decorator");
+const helper_service_google_1 = require("../../core/helper/helper.service.google");
+const helper_service_aws_1 = require("../../core/helper/helper.service.aws");
 const extension_service_statistic_1 = require("./extension.service.statistic");
 const extension_service_dbbackup_1 = require("./extension.service.dbbackup");
 const APP_CONFIG = __importStar(require("../../app.config"));
 let ExtensionController = class ExtensionController {
+    awsService;
+    googleService;
+    dbBackupService;
+    statisticService;
     constructor(awsService, googleService, dbBackupService, statisticService) {
         this.awsService = awsService;
         this.googleService = googleService;
@@ -82,20 +87,30 @@ let ExtensionController = class ExtensionController {
             region: APP_CONFIG.AWS.s3StaticRegion,
             bucket: APP_CONFIG.AWS.s3StaticBucket
         });
-        return Object.assign(Object.assign({}, result), { files: result.files.map((file) => {
-                var _a;
-                return (Object.assign(Object.assign({}, file), { url: `${APP_CONFIG.APP_BIZ.STATIC_URL}/${file.key}`, lastModified: (_a = file.lastModified) === null || _a === void 0 ? void 0 : _a.getTime() }));
-            }) });
+        return {
+            ...result,
+            files: result.files.map((file) => ({
+                ...file,
+                url: `${APP_CONFIG.APP_BIZ.STATIC_URL}/${file.key}`,
+                lastModified: file.lastModified?.getTime()
+            }))
+        };
     }
-    async uploadStaticFile(file, body) {
+    async uploadStaticFile(file) {
+        if (!file.fields.key) {
+            throw new common_2.BadRequestException('Missing required field: key');
+        }
         const result = await this.awsService.uploadFile({
-            name: body.name,
+            key: file.fields.key,
             file: file.buffer,
             fileContentType: file.mimetype,
             region: APP_CONFIG.AWS.s3StaticRegion,
             bucket: APP_CONFIG.AWS.s3StaticBucket
         });
-        return Object.assign(Object.assign({}, result), { url: `${APP_CONFIG.APP_BIZ.STATIC_URL}/${result.key}` });
+        return {
+            ...result,
+            url: `${APP_CONFIG.APP_BIZ.STATIC_URL}/${result.key}`
+        };
     }
     googleAnalyticsBatchRunReports(requestBody) {
         return this.googleService.getAnalyticsDataClient().properties.batchRunReports({
@@ -119,45 +134,43 @@ let ExtensionController = class ExtensionController {
 exports.ExtensionController = ExtensionController;
 __decorate([
     (0, common_1.Get)('statistic'),
-    (0, common_1.UseGuards)(admin_maybe_guard_1.AdminMaybeGuard),
-    responser_decorator_1.Responser.handle('Get statistics'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, common_2.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Get statistics succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ExtensionController.prototype, "getSystemStatistics", null);
 __decorate([
     (0, common_1.Patch)('database-backup'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update database backup'),
+    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Update database backup succeeded'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ExtensionController.prototype, "updateDatabaseBackup", null);
 __decorate([
     (0, common_1.Get)('static/list'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Get file list from cloud storage'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Get file list succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ExtensionController.prototype, "getStaticFileList", null);
 __decorate([
     (0, common_1.Post)('static/upload'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
-    responser_decorator_1.Responser.handle('Upload file to cloud storage'),
-    __param(0, (0, common_1.UploadedFile)()),
-    __param(1, (0, common_1.Body)()),
+    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Upload file to cloud storage succeeded'),
+    __param(0, (0, uploaded_file_decorator_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ExtensionController.prototype, "uploadStaticFile", null);
 __decorate([
     (0, common_1.Post)('google-analytics/batch-run-reports'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Google analytics batchRunReports'),
+    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Google analytics batchRunReports succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -165,8 +178,8 @@ __decorate([
 ], ExtensionController.prototype, "googleAnalyticsBatchRunReports", null);
 __decorate([
     (0, common_1.Post)('google-analytics/batch-run-pivot-reports'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Google analytics batchRunPivotReports'),
+    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Google analytics batchRunPivotReports succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -174,15 +187,15 @@ __decorate([
 ], ExtensionController.prototype, "googleAnalyticsBatchRunPivotReports", null);
 __decorate([
     (0, common_1.Post)('google-analytics/run-realtime-report'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Google analytics runRealtimeReport'),
+    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Google analytics runRealtimeReport succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], ExtensionController.prototype, "googleAnalyticsRunRealtimeReport", null);
 exports.ExtensionController = ExtensionController = __decorate([
-    (0, common_1.Controller)('extension'),
+    (0, common_2.Controller)('extension'),
     __metadata("design:paramtypes", [helper_service_aws_1.AWSService,
         helper_service_google_1.GoogleService,
         extension_service_dbbackup_1.DBBackupService,

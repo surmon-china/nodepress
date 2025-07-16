@@ -44,17 +44,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -65,22 +54,23 @@ const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const expose_pipe_1 = require("../../pipes/expose.pipe");
-const responser_decorator_1 = require("../../decorators/responser.decorator");
-const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const helper_service_email_1 = require("../../processors/helper/helper.service.email");
+const success_response_decorator_1 = require("../../decorators/success-response.decorator");
+const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const helper_service_email_1 = require("../../core/helper/helper.service.email");
 const value_transformer_1 = require("../../transformers/value.transformer");
 const feedback_dto_1 = require("./feedback.dto");
 const feedback_model_1 = require("./feedback.model");
 const feedback_service_1 = require("./feedback.service");
 const APP_CONFIG = __importStar(require("../../app.config"));
 let FeedbackController = class FeedbackController {
+    emailService;
+    feedbackService;
     constructor(emailService, feedbackService) {
         this.emailService = emailService;
         this.feedbackService = feedbackService;
     }
     getFeedbacks(query) {
-        const { sort, page, per_page } = query, filters = __rest(query, ["sort", "page", "per_page"]);
+        const { sort, page, per_page, ...filters } = query;
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
         if (!(0, isUndefined_1.default)(filters.tid)) {
@@ -102,16 +92,16 @@ let FeedbackController = class FeedbackController {
                 { remark: keywordRegExp }
             ];
         }
-        return this.feedbackService.paginator(paginateQuery, paginateOptions);
+        return this.feedbackService.paginate(paginateQuery, paginateOptions);
     }
     async createFeedback(feedback, { visitor }) {
-        const result = await this.feedbackService.create(feedback, visitor);
+        const created = await this.feedbackService.create(feedback, visitor);
         const subject = `You have a new feedback`;
         const texts = [
-            `${subject} on ${result.tid}.`,
-            `Author: ${result.user_name || 'Anonymous user'}`,
-            `Emotion: ${result.emotion_emoji} ${result.emotion_text} (${result.emotion})`,
-            `Feedback: ${result.content}`
+            `${subject} on ${created.tid}.`,
+            `Author: ${created.user_name || 'Anonymous user'}`,
+            `Emotion: ${created.emotion_emoji} ${created.emotion_text} (${created.emotion})`,
+            `Feedback: ${created.content}`
         ];
         this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
             to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
@@ -119,7 +109,7 @@ let FeedbackController = class FeedbackController {
             text: texts.join('\n'),
             html: texts.map((text) => `<p>${text}</p>`).join('\n')
         });
-        return result;
+        return created;
     }
     deleteFeedbacks(body) {
         return this.feedbackService.batchDelete(body.feedback_ids);
@@ -135,9 +125,8 @@ exports.FeedbackController = FeedbackController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.paginate(),
-    responser_decorator_1.Responser.handle('Get feedbacks'),
-    __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
+    (0, success_response_decorator_1.SuccessResponse)({ message: 'Get feedbacks succeeded', usePaginate: true }),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [feedback_dto_1.FeedbackPaginateQueryDTO]),
     __metadata("design:returntype", Promise)
@@ -145,9 +134,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)(),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 5 } }),
-    responser_decorator_1.Responser.handle('Create feedback'),
+    (0, success_response_decorator_1.SuccessResponse)('Create feedback succeeded'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, queryparams_decorator_1.QueryParams)()),
+    __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [feedback_model_1.FeedbackBase, Object]),
     __metadata("design:returntype", Promise)
@@ -155,7 +144,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete feedbacks'),
+    (0, success_response_decorator_1.SuccessResponse)('Delete feedbacks succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [feedback_dto_1.FeedbacksDTO]),
@@ -164,8 +153,8 @@ __decorate([
 __decorate([
     (0, common_1.Put)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Update feedback'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Update feedback succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, feedback_model_1.Feedback]),
@@ -174,8 +163,8 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete feedback'),
-    __param(0, (0, queryparams_decorator_1.QueryParams)()),
+    (0, success_response_decorator_1.SuccessResponse)('Delete feedback succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)

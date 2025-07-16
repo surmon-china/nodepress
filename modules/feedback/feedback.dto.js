@@ -18,6 +18,9 @@ const paginate_model_1 = require("../../models/paginate.model");
 const value_transformer_1 = require("../../transformers/value.transformer");
 const feedback_model_1 = require("./feedback.model");
 class FeedbackPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionDTO, query_model_1.KeywordQueryDTO) {
+    tid;
+    emotion;
+    marked;
 }
 exports.FeedbackPaginateQueryDTO = FeedbackPaginateQueryDTO;
 __decorate([
@@ -45,6 +48,7 @@ __decorate([
     __metadata("design:type", Number)
 ], FeedbackPaginateQueryDTO.prototype, "marked", void 0);
 class FeedbacksDTO {
+    feedback_ids;
 }
 exports.FeedbacksDTO = FeedbacksDTO;
 __decorate([

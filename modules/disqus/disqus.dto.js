@@ -17,6 +17,7 @@ var ThreadState;
     ThreadState["Closed"] = "closed";
 })(ThreadState || (exports.ThreadState = ThreadState = {}));
 class CallbackCodeDTO {
+    code;
 }
 exports.CallbackCodeDTO = CallbackCodeDTO;
 __decorate([
@@ -25,6 +26,7 @@ __decorate([
     __metadata("design:type", String)
 ], CallbackCodeDTO.prototype, "code", void 0);
 class ThreadPostIdDTO {
+    post_id;
 }
 exports.ThreadPostIdDTO = ThreadPostIdDTO;
 __decorate([
@@ -33,6 +35,7 @@ __decorate([
     __metadata("design:type", String)
 ], ThreadPostIdDTO.prototype, "post_id", void 0);
 class CommentIdDTO {
+    comment_id;
 }
 exports.CommentIdDTO = CommentIdDTO;
 __decorate([

@@ -48,8 +48,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatisticService = void 0;
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
-const cache_service_1 = require("../../processors/cache/cache.service");
-const helper_service_email_1 = require("../../processors/helper/helper.service.email");
+const cache_service_1 = require("../../core/cache/cache.service");
+const helper_service_email_1 = require("../../core/helper/helper.service.email");
 const vote_model_1 = require("../vote/vote.model");
 const vote_service_1 = require("../vote/vote.service");
 const article_service_1 = require("../article/article.service");
@@ -71,6 +71,13 @@ const DEFAULT_STATISTIC = Object.freeze({
     averageEmotion: null
 });
 let StatisticService = class StatisticService {
+    cacheService;
+    emailService;
+    articleService;
+    commentService;
+    feedbackService;
+    voteService;
+    tagService;
     constructor(cacheService, emailService, articleService, commentService, feedbackService, voteService, tagService) {
         this.cacheService = cacheService;
         this.emailService = emailService;
@@ -127,34 +134,33 @@ let StatisticService = class StatisticService {
         });
     }
     getStatistic(publicOnly) {
-        const resultData = Object.assign({}, DEFAULT_STATISTIC);
+        const statisticData = { ...DEFAULT_STATISTIC };
         const tasks = Promise.all([
             this.tagService.getTotalCount().then((value) => {
-                resultData.tags = value;
+                statisticData.tags = value;
             }),
             this.articleService.getTotalCount(publicOnly).then((value) => {
-                resultData.articles = value;
+                statisticData.articles = value;
             }),
             this.commentService.getTotalCount(publicOnly).then((value) => {
-                resultData.comments = value;
+                statisticData.comments = value;
             }),
             this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
-                resultData.averageEmotion = value !== null && value !== void 0 ? value : 0;
+                statisticData.averageEmotion = value ?? 0;
             }),
             this.articleService.getMetaStatistic().then((value) => {
-                var _a, _b;
-                resultData.totalViews = (_a = value === null || value === void 0 ? void 0 : value.totalViews) !== null && _a !== void 0 ? _a : 0;
-                resultData.totalLikes = (_b = value === null || value === void 0 ? void 0 : value.totalLikes) !== null && _b !== void 0 ? _b : 0;
+                statisticData.totalViews = value?.totalViews ?? 0;
+                statisticData.totalLikes = value?.totalLikes ?? 0;
             }),
             (0, extension_helper_1.getTodayViewsCount)(this.cacheService).then((value) => {
-                resultData.todayViews = value;
+                statisticData.todayViews = value;
             })
         ]);
         return tasks
-            .then(() => resultData)
+            .then(() => statisticData)
             .catch((error) => {
             logger.warn('getStatistic task partial failed!', error);
-            return Promise.resolve(resultData);
+            return Promise.resolve(statisticData);
         });
     }
 };

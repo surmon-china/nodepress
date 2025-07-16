@@ -15,6 +15,8 @@ const class_transformer_1 = require("class-transformer");
 const biz_constant_1 = require("../constants/biz.constant");
 const value_transformer_1 = require("../transformers/value.transformer");
 class PaginateBaseOptionDTO {
+    page;
+    per_page;
 }
 exports.PaginateBaseOptionDTO = PaginateBaseOptionDTO;
 __decorate([
@@ -35,6 +37,7 @@ __decorate([
     __metadata("design:type", Number)
 ], PaginateBaseOptionDTO.prototype, "per_page", void 0);
 class PaginateOptionDTO extends PaginateBaseOptionDTO {
+    sort;
 }
 exports.PaginateOptionDTO = PaginateOptionDTO;
 __decorate([
@@ -46,6 +49,7 @@ __decorate([
     __metadata("design:type", Number)
 ], PaginateOptionDTO.prototype, "sort", void 0);
 class PaginateOptionWithHotSortDTO extends PaginateBaseOptionDTO {
+    sort;
 }
 exports.PaginateOptionWithHotSortDTO = PaginateOptionWithHotSortDTO;
 __decorate([

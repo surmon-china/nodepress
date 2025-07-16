@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createLogger = void 0;
 const picocolors_1 = __importDefault(require("picocolors"));
+const app_environment_1 = require("../app.environment");
 const renderLogger = (options) => {
     return (...messages) => {
         const logs = [];
@@ -25,14 +26,14 @@ const renderLogger = (options) => {
     };
 };
 const createLogger = (opts) => ({
-    log: renderLogger(Object.assign({ label: '⚪', consoler: console.log, formatter: picocolors_1.default.cyanBright }, opts)),
-    info: renderLogger(Object.assign({ label: '🔵', consoler: console.info, formatter: picocolors_1.default.greenBright }, opts)),
-    warn: renderLogger(Object.assign({ label: '🟠', consoler: console.warn, formatter: picocolors_1.default.yellowBright }, opts)),
-    error: renderLogger(Object.assign({ label: '🔴', consoler: console.error, formatter: picocolors_1.default.redBright }, opts)),
-    debug: renderLogger(Object.assign({ label: '🟤', consoler: console.debug, formatter: picocolors_1.default.cyanBright }, opts)),
-    success: renderLogger(Object.assign({ label: '🟢', consoler: console.log, formatter: picocolors_1.default.greenBright }, opts)),
-    failure: renderLogger(Object.assign({ label: '🔴', consoler: console.warn, formatter: picocolors_1.default.redBright }, opts))
+    log: renderLogger({ label: '⚪', consoler: console.log, formatter: picocolors_1.default.cyanBright, ...opts }),
+    info: renderLogger({ label: '🔵', consoler: console.info, formatter: picocolors_1.default.greenBright, ...opts }),
+    warn: renderLogger({ label: '🟠', consoler: console.warn, formatter: picocolors_1.default.yellowBright, ...opts }),
+    error: renderLogger({ label: '🔴', consoler: console.error, formatter: picocolors_1.default.redBright, ...opts }),
+    debug: renderLogger({ label: '🟤', consoler: console.debug, formatter: picocolors_1.default.cyanBright, ...opts }),
+    success: renderLogger({ label: '🟢', consoler: console.log, formatter: picocolors_1.default.greenBright, ...opts }),
+    failure: renderLogger({ label: '🔴', consoler: console.warn, formatter: picocolors_1.default.redBright, ...opts })
 });
 exports.createLogger = createLogger;
-exports.default = (0, exports.createLogger)();
+exports.default = (0, exports.createLogger)({ time: app_environment_1.isDevEnv });
 //# sourceMappingURL=logger.js.map

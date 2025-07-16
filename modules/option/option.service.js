@@ -20,13 +20,16 @@ const omit_1 = __importDefault(require("lodash/omit"));
 const uniq_1 = __importDefault(require("lodash/uniq"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const cache_service_1 = require("../../processors/cache/cache.service");
+const cache_service_1 = require("../../core/cache/cache.service");
 const option_model_1 = require("./option.model");
 const cache_constant_1 = require("../../constants/cache.constant");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const logger = (0, logger_1.createLogger)({ scope: 'OptionService', time: app_environment_1.isDevEnv });
 let OptionService = class OptionService {
+    optionModel;
+    cacheService;
+    optionCache;
     constructor(optionModel, cacheService) {
         this.optionModel = optionModel;
         this.cacheService = cacheService;
@@ -44,7 +47,7 @@ let OptionService = class OptionService {
     }
     async ensureAppOption() {
         const option = await this.optionModel.findOne().exec();
-        return option || (await this.optionModel.create(Object.assign({}, option_model_1.DEFAULT_OPTION)));
+        return option ?? (await this.optionModel.create({ ...option_model_1.DEFAULT_OPTION }));
     }
     getOptionCacheForGuest() {
         return this.optionCache.get();

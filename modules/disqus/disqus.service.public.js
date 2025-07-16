@@ -47,7 +47,7 @@ const common_1 = require("@nestjs/common");
 const comment_service_1 = require("../comment/comment.service");
 const biz_constant_1 = require("../../constants/biz.constant");
 const cache_constant_1 = require("../../constants/cache.constant");
-const cache_service_1 = require("../../processors/cache/cache.service");
+const cache_service_1 = require("../../core/cache/cache.service");
 const app_config_1 = require("../../app.config");
 const disqus_1 = require("../../utils/disqus");
 const extend_transformer_1 = require("../../transformers/extend.transformer");
@@ -58,6 +58,10 @@ const app_environment_1 = require("../../app.environment");
 const DISQUS_CONST = __importStar(require("./disqus.constant"));
 const logger = (0, logger_1.createLogger)({ scope: 'DisqusPublicService', time: app_environment_1.isDevEnv });
 let DisqusPublicService = class DisqusPublicService {
+    cacheService;
+    commentService;
+    disqusPrivateService;
+    disqus;
     constructor(cacheService, commentService, disqusPrivateService) {
         this.cacheService = cacheService;
         this.commentService = commentService;
@@ -206,18 +210,17 @@ let DisqusPublicService = class DisqusPublicService {
     }
     async deleteUniversalComment(commentId, accessToken) {
         const comment = await this.commentService.getDetailByNumberId(commentId);
-        if (!comment) {
-            throw 'Comment not found';
-        }
+        if (!comment)
+            throw new common_1.NotFoundException(`Comment '${commentId}' not found`);
         const extendsObject = (0, extend_transformer_1.getExtendObject)(comment.extends);
         const commentDisqusPostId = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY];
         const commentDisqusAuthorId = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY];
         if (!commentDisqusAuthorId || !commentDisqusPostId) {
-            throw 'Comment not deletable';
+            throw new common_1.BadRequestException(`Comment '${commentId}' cannot be deleted (missing Disqus metadata)`);
         }
         const userInfo = await this.getUserInfo(accessToken);
         if (userInfo.id !== commentDisqusAuthorId) {
-            throw `You do not have write privileges on comment '${commentId}'`;
+            throw new common_1.ForbiddenException(`You do not have permission to delete comment '${commentId}'`);
         }
         await this.deleteDisqusComment({
             post: commentDisqusPostId,

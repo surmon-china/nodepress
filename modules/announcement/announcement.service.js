@@ -17,28 +17,30 @@ const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const announcement_model_1 = require("./announcement.model");
 let AnnouncementService = class AnnouncementService {
+    announcementModel;
     constructor(announcementModel) {
         this.announcementModel = announcementModel;
     }
-    paginator(query, options) {
+    paginate(query, options) {
         return this.announcementModel.paginate(query, options);
     }
     create(announcement) {
         return this.announcementModel.create(announcement);
     }
-    update(announcementId, announcement) {
-        return this.announcementModel
+    async update(announcementId, announcement) {
+        const updated = await this.announcementModel
             .findByIdAndUpdate(announcementId, announcement, { new: true })
-            .exec()
-            .then((result) => result || Promise.reject(`Announcement '${announcementId}' not found`));
+            .exec();
+        if (!updated) {
+            throw new common_1.NotFoundException(`Announcement '${announcementId}' not found`);
+        }
+        return updated;
     }
-    delete(announcementId) {
-        return this.announcementModel
-            .findByIdAndDelete(announcementId, null)
-            .exec()
-            .then((result) => {
-            return result !== null && result !== void 0 ? result : Promise.reject(`Announcement '${announcementId}' not found`);
-        });
+    async delete(announcementId) {
+        const deleted = await this.announcementModel.findByIdAndDelete(announcementId).exec();
+        if (!deleted)
+            throw new common_1.NotFoundException(`Announcement '${announcementId}' not found`);
+        return deleted;
     }
     batchDelete(announcementIds) {
         return this.announcementModel.deleteMany({ _id: { $in: announcementIds } }).exec();

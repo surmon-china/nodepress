@@ -1,68 +1,50 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const helmet_1 = __importDefault(require("helmet"));
-const passport_1 = __importDefault(require("passport"));
-const body_parser_1 = __importDefault(require("body-parser"));
-const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const compression_1 = __importDefault(require("compression"));
+const cookie_1 = __importDefault(require("@fastify/cookie"));
+const multipart_1 = __importDefault(require("@fastify/multipart"));
 const core_1 = require("@nestjs/core");
-const app_module_1 = require("./app.module");
-const error_filter_1 = require("./filters/error.filter");
+const platform_fastify_1 = require("@nestjs/platform-fastify");
 const transform_interceptor_1 = require("./interceptors/transform.interceptor");
 const logging_interceptor_1 = require("./interceptors/logging.interceptor");
-const error_interceptor_1 = require("./interceptors/error.interceptor");
+const exception_filter_1 = require("./filters/exception.filter");
+const auth_service_1 = require("./core/auth/auth.service");
 const app_environment_1 = require("./app.environment");
+const app_module_1 = require("./app.module");
+const app_config_1 = require("./app.config");
 const logger_1 = __importDefault(require("./utils/logger"));
-const APP_CONFIG = __importStar(require("./app.config"));
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule, app_environment_1.isProdEnv ? { logger: false } : {});
-    app.use((0, helmet_1.default)());
-    app.use((0, compression_1.default)());
-    app.use((0, cookie_parser_1.default)());
-    app.use(body_parser_1.default.json({ limit: '1mb' }));
-    app.use(body_parser_1.default.urlencoded({ extended: true }));
-    app.use(passport_1.default.initialize());
-    app.useGlobalFilters(new error_filter_1.HttpExceptionFilter());
-    app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor(), new error_interceptor_1.ErrorInterceptor(), new logging_interceptor_1.LoggingInterceptor());
-    return await app.listen(APP_CONFIG.APP_BIZ.PORT);
+    const adapter = new platform_fastify_1.FastifyAdapter({ logger: false, trustProxy: true });
+    const app = await core_1.NestFactory.create(app_module_1.AppModule, adapter, { logger: false });
+    await app.register(cookie_1.default);
+    await app.register(multipart_1.default, { limits: { fileSize: 1024 * 1024 * 20 }, throwFileSizeLimit: true });
+    const authService = app.get(auth_service_1.AuthService);
+    const fastify = app.getHttpAdapter().getInstance();
+    fastify.addHook('onRequest', async (request) => {
+        const token = authService.extractTokenFromAuthorization(request.headers.authorization);
+        const isAuthenticated = Boolean(token && (await authService.verifyToken(token)));
+        request.locals ??= {};
+        request.locals.token = token;
+        request.locals.isAuthenticated = isAuthenticated;
+        request.locals.isUnauthenticated = !isAuthenticated;
+    });
+    app.useGlobalFilters(new exception_filter_1.HttpExceptionFilter());
+    app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
+    if (app_environment_1.isDevEnv) {
+        app.useGlobalInterceptors(new logging_interceptor_1.LoggingInterceptor());
+        app.enableCors({
+            origin: true,
+            preflight: true,
+            credentials: true,
+            maxAge: 86400,
+            methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH']
+        });
+    }
+    return await app.listen(app_config_1.APP_BIZ.PORT);
 }
-bootstrap().then(() => {
-    logger_1.default.success(`${APP_CONFIG.APP_BIZ.NAME} app is running!`, `| env: ${app_environment_1.environment}`, `| port: ${APP_CONFIG.APP_BIZ.PORT}`, `| ${new Date().toLocaleString()}`);
+bootstrap().then((server) => {
+    logger_1.default.success(`${app_config_1.APP_BIZ.NAME} app is running!`, `| env: ${app_environment_1.environment}`, `| at: ${JSON.stringify(server.address())}`);
 });
 //# sourceMappingURL=main.js.map

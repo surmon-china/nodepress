@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArchiveService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const cache_service_1 = require("../../processors/cache/cache.service");
+const cache_service_1 = require("../../core/cache/cache.service");
 const cache_constant_1 = require("../../constants/cache.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
 const category_model_1 = require("../category/category.model");
@@ -25,6 +25,11 @@ const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const logger = (0, logger_1.createLogger)({ scope: 'ArchiveService', time: app_environment_1.isDevEnv });
 let ArchiveService = class ArchiveService {
+    cacheService;
+    tagModel;
+    articleModel;
+    categoryModel;
+    archiveCache;
     constructor(cacheService, tagModel, articleModel, categoryModel) {
         this.cacheService = cacheService;
         this.tagModel = tagModel;

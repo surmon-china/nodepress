@@ -9,8 +9,7 @@ const AUTHORIZE_URL = 'https://disqus.com/api/oauth/2.0/authorize';
 const ACCESS_TOKEN_URL = 'https://disqus.com/api/oauth/2.0/access_token/';
 const getApiURL = (resource) => `https://disqus.com/api/3.0/${resource}.json`;
 const normalizeAxiosError = (error) => {
-    var _a, _b, _c;
-    return ((_b = (_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.response) || ((_c = error === null || error === void 0 ? void 0 : error.response) === null || _c === void 0 ? void 0 : _c.data) || (error === null || error === void 0 ? void 0 : error.toJSON()) || (error === null || error === void 0 ? void 0 : error.message) || error;
+    return error?.response?.data?.response || error?.response?.data || error?.toJSON() || error?.message || error;
 };
 const resourcesRequiringPost = [
     'blacklists/add',
@@ -49,12 +48,13 @@ const resourcesRequiringPost = [
 ];
 exports.DISQUS_PUBKEY = `E8Uh5l5fHZ6gD8U3KycjAIAk46f68Zw7C6eW8WSjZvCLXebZ7p0r1yrYDrLilk2F`;
 class Disqus {
+    config;
     constructor(config) {
         this.config = config;
     }
     request(resource, params = {}, usePublic = false) {
         const api = getApiURL(resource);
-        const queryParams = Object.assign({}, params);
+        const queryParams = { ...params };
         if (usePublic) {
             queryParams.api_key = exports.DISQUS_PUBKEY;
         }
@@ -70,8 +70,7 @@ class Disqus {
             return response.data.code !== 0 ? Promise.reject(response.data) : Promise.resolve(response.data);
         })
             .catch((error) => {
-            var _a, _b;
-            return ((_b = (_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.data) === null || _b === void 0 ? void 0 : _b.response)
+            return error?.response?.data?.response
                 ? Promise.reject(`[code=${error.response.data.code}] ${error.response.data.response}`)
                 : Promise.reject(normalizeAxiosError(error));
         });

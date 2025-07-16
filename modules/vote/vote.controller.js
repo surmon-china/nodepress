@@ -44,17 +44,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -65,11 +54,10 @@ const ua_parser_js_1 = require("ua-parser-js");
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const expose_pipe_1 = require("../../pipes/expose.pipe");
-const responser_decorator_1 = require("../../decorators/responser.decorator");
-const queryparams_decorator_1 = require("../../decorators/queryparams.decorator");
-const helper_service_ip_1 = require("../../processors/helper/helper.service.ip");
-const helper_service_email_1 = require("../../processors/helper/helper.service.email");
+const success_response_decorator_1 = require("../../decorators/success-response.decorator");
+const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
+const helper_service_email_1 = require("../../core/helper/helper.service.email");
 const option_service_1 = require("../option/option.service");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
@@ -82,6 +70,13 @@ const vote_model_1 = require("./vote.model");
 const vote_service_1 = require("./vote.service");
 const APP_CONFIG = __importStar(require("../../app.config"));
 let VoteController = class VoteController {
+    ipService;
+    emailService;
+    disqusPublicService;
+    commentService;
+    articleService;
+    optionService;
+    voteService;
     constructor(ipService, emailService, disqusPublicService, commentService, articleService, optionService, voteService) {
         this.ipService = ipService;
         this.emailService = emailService;
@@ -104,7 +99,7 @@ let VoteController = class VoteController {
         }
     }
     async getVoteAuthor(payload) {
-        const { guestAuthor, disqusToken } = payload !== null && payload !== void 0 ? payload : {};
+        const { guestAuthor, disqusToken } = payload ?? {};
         if (disqusToken) {
             try {
                 const disqusUserInfo = await this.disqusPublicService.getUserInfo(disqusToken);
@@ -143,19 +138,18 @@ let VoteController = class VoteController {
             const guestUser = voteAuthor.data;
             return [`${guestUser.name} (Guest user)`, guestUser.site].filter(Boolean).join(' · ');
         }
-        return `Anonymous user`;
+        return 'Anonymous user';
     }
     emailToTargetVoteMessage(payload) {
         const getLocationText = (location) => {
             return [location.country, location.region, location.city].join(' · ');
         };
         const getAgentText = (ua) => {
-            var _a, _b, _c, _d, _e, _f;
             const parsed = (0, ua_parser_js_1.UAParser)(ua);
             return [
-                `${(_a = parsed.browser.name) !== null && _a !== void 0 ? _a : 'unknown_browser'}@${(_b = parsed.browser.version) !== null && _b !== void 0 ? _b : 'unknown'}`,
-                `${(_c = parsed.os.name) !== null && _c !== void 0 ? _c : 'unknown_OS'}@${(_d = parsed.os.version) !== null && _d !== void 0 ? _d : 'unknown'}`,
-                `${(_e = parsed.device.model) !== null && _e !== void 0 ? _e : 'unknown_device'}@${(_f = parsed.device.vendor) !== null && _f !== void 0 ? _f : 'unknown'}`
+                `${parsed.browser.name ?? 'unknown_browser'}@${parsed.browser.version ?? 'unknown'}`,
+                `${parsed.os.name ?? 'unknown_OS'}@${parsed.os.version ?? 'unknown'}`,
+                `${parsed.device.model ?? 'unknown_device'}@${parsed.device.vendor ?? 'unknown'}`
             ].join(' · ');
         };
         const mailTexts = [
@@ -184,7 +178,7 @@ let VoteController = class VoteController {
         return result;
     }
     getVotes(query) {
-        const { sort, page, per_page } = query, filters = __rest(query, ["sort", "page", "per_page"]);
+        const { sort, page, per_page, ...filters } = query;
         const paginateQuery = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
         if (!(0, isUndefined_1.default)(filters.target_type)) {
@@ -199,7 +193,7 @@ let VoteController = class VoteController {
         if (!(0, isUndefined_1.default)(filters.author_type)) {
             paginateQuery.author_type = filters.author_type;
         }
-        return this.voteService.paginator(paginateQuery, paginateOptions);
+        return this.voteService.paginate(paginateQuery, paginateOptions);
     }
     deleteVotes(body) {
         return this.voteService.batchDelete(body.vote_ids);
@@ -208,8 +202,8 @@ let VoteController = class VoteController {
         const likes = voteBody.post_id === biz_constant_1.GUESTBOOK_POST_ID
             ? await this.optionService.incrementLikes()
             : await this.articleService.incrementLikes(voteBody.post_id);
-        this.voteDisqusThread(voteBody.post_id, voteBody.vote, token === null || token === void 0 ? void 0 : token.access_token).catch(() => { });
-        this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then(async (voteAuthor) => {
+        this.voteDisqusThread(voteBody.post_id, voteBody.vote, token?.access_token).catch(() => { });
+        this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(async (voteAuthor) => {
             const ipLocation = await this.queryIPLocation(visitor.ip);
             await this.voteService.create({
                 target_type: vote_model_1.VoteTarget.Post,
@@ -249,7 +243,7 @@ let VoteController = class VoteController {
             }
             catch (error) { }
         }
-        this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token === null || token === void 0 ? void 0 : token.access_token }).then(async (voteAuthor) => {
+        this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(async (voteAuthor) => {
             const ipLocation = await this.queryIPLocation(visitor.ip);
             await this.voteService.create({
                 target_type: vote_model_1.VoteTarget.Comment,
@@ -271,9 +265,17 @@ let VoteController = class VoteController {
                 location: ipLocation,
                 link: (0, urlmap_transformer_1.getPermalinkById)(comment.post_id) + `#comment-${comment.id}`
             };
-            this.emailToTargetVoteMessage(Object.assign({ to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL, subject: `You have a new comment vote` }, mailPayload));
+            this.emailToTargetVoteMessage({
+                to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
+                subject: `You have a new comment vote`,
+                ...mailPayload
+            });
             if (comment.author.email) {
-                this.emailToTargetVoteMessage(Object.assign({ to: comment.author.email, subject: `Your comment #${comment.id} has a new vote` }, mailPayload));
+                this.emailToTargetVoteMessage({
+                    to: comment.author.email,
+                    subject: `Your comment #${comment.id} has a new vote`,
+                    ...mailPayload
+                });
             }
         });
         return result;
@@ -283,9 +285,8 @@ exports.VoteController = VoteController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.paginate(),
-    responser_decorator_1.Responser.handle('Get votes'),
-    __param(0, (0, common_1.Query)(expose_pipe_1.ExposePipe)),
+    (0, success_response_decorator_1.SuccessResponse)({ message: 'Get votes succeeded', usePaginate: true }),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [vote_dto_1.VotePaginateQueryDTO]),
     __metadata("design:returntype", Promise)
@@ -293,7 +294,7 @@ __decorate([
 __decorate([
     (0, common_1.Delete)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    responser_decorator_1.Responser.handle('Delete votes'),
+    (0, success_response_decorator_1.SuccessResponse)('Delete votes succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [vote_dto_1.VotesDTO]),
@@ -302,10 +303,10 @@ __decorate([
 __decorate([
     (0, common_1.Post)('/post'),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.minutes)(1), limit: 10 } }),
-    responser_decorator_1.Responser.handle('Vote post'),
+    (0, success_response_decorator_1.SuccessResponse)('Vote post succeeded'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
-    __param(2, (0, queryparams_decorator_1.QueryParams)()),
+    __param(2, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [vote_dto_1.PostVoteDTO, Object, Object]),
     __metadata("design:returntype", Promise)
@@ -313,10 +314,10 @@ __decorate([
 __decorate([
     (0, common_1.Post)('/comment'),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 10 } }),
-    responser_decorator_1.Responser.handle('Vote comment'),
+    (0, success_response_decorator_1.SuccessResponse)('Vote comment succeeded'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
-    __param(2, (0, queryparams_decorator_1.QueryParams)()),
+    __param(2, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [vote_dto_1.CommentVoteDTO, Object, Object]),
     __metadata("design:returntype", Promise)

@@ -13,12 +13,13 @@ exports.ArticleProvider = exports.Article = exports.ArticleMeta = exports.ARTICL
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
+const class_validator_2 = require("class-validator");
 const biz_constant_1 = require("../../constants/biz.constant");
-const increment_constant_1 = require("../../constants/increment.constant");
+const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
-const category_model_1 = require("../category/category.model");
 const key_value_model_1 = require("../../models/key-value.model");
+const category_model_1 = require("../category/category.model");
 const tag_model_1 = require("../tag/tag.model");
 exports.ARTICLE_LANGUAGES = [biz_constant_1.Language.English, biz_constant_1.Language.Chinese, biz_constant_1.Language.Mixed];
 exports.ARTICLE_PUBLISH_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published, biz_constant_1.PublishState.Recycle];
@@ -40,6 +41,9 @@ const ARTICLE_DEFAULT_META = Object.freeze({
     comments: 0
 });
 class ArticleMeta {
+    likes;
+    views;
+    comments;
 }
 exports.ArticleMeta = ArticleMeta;
 __decorate([
@@ -58,6 +62,25 @@ __decorate([
     __metadata("design:type", Number)
 ], ArticleMeta.prototype, "comments", void 0);
 let Article = class Article {
+    id;
+    slug;
+    title;
+    content;
+    description;
+    keywords;
+    thumbnail;
+    state;
+    public;
+    origin;
+    categories;
+    tags;
+    lang;
+    featured;
+    disabled_comments;
+    meta;
+    created_at;
+    updated_at;
+    extends;
 };
 exports.Article = Article;
 __decorate([
@@ -65,22 +88,22 @@ __decorate([
     __metadata("design:type", Number)
 ], Article.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.Matches)(/^[a-zA-Z0-9-_]+$/),
-    (0, class_validator_1.MaxLength)(50),
+    (0, class_validator_2.Matches)(/^[a-zA-Z0-9-_]+$/),
+    (0, class_validator_2.MaxLength)(50),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ default: null, validate: /^[a-zA-Z0-9-_]+$/, index: true }),
     __metadata("design:type", String)
 ], Article.prototype, "slug", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)({ message: 'title?' }),
+    (0, class_validator_2.IsNotEmpty)({ message: 'title?' }),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/, text: true }),
     __metadata("design:type", String)
 ], Article.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)({ message: 'content?' }),
+    (0, class_validator_2.IsNotEmpty)({ message: 'content?' }),
     (0, typegoose_1.prop)({ required: true, validate: /\S+/, text: true }),
     __metadata("design:type", String)
 ], Article.prototype, "content", void 0);
@@ -92,34 +115,34 @@ __decorate([
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.IsDefined)(),
+    (0, class_validator_2.IsDefined)(),
     (0, typegoose_1.prop)({ default: [], type: () => [String] }),
     __metadata("design:type", Array)
 ], Article.prototype, "keywords", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Article.prototype, "thumbnail", void 0);
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_PUBLISH_STATES),
     (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsDefined)(),
+    (0, class_validator_2.IsDefined)(),
     (0, typegoose_1.prop)({ enum: biz_constant_1.PublishState, default: biz_constant_1.PublishState.Published, index: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "state", void 0);
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_PUBLIC_STATES),
     (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsDefined)(),
+    (0, class_validator_2.IsDefined)(),
     (0, typegoose_1.prop)({ enum: biz_constant_1.PublicState, default: biz_constant_1.PublicState.Public, index: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "public", void 0);
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_ORIGIN_STATES),
     (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsDefined)(),
+    (0, class_validator_2.IsDefined)(),
     (0, typegoose_1.prop)({ enum: biz_constant_1.OriginState, default: biz_constant_1.OriginState.Original, index: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "origin", void 0);
@@ -137,7 +160,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsIn)(exports.ARTICLE_LANGUAGES),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsDefined)(),
+    (0, class_validator_2.IsDefined)(),
     (0, typegoose_1.prop)({ default: biz_constant_1.Language.Chinese, index: true }),
     __metadata("design:type", String)
 ], Article.prototype, "lang", void 0);
@@ -152,7 +175,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Article.prototype, "disabled_comments", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ _id: false, default: Object.assign({}, ARTICLE_DEFAULT_META) }),
+    (0, typegoose_1.prop)({ _id: false, default: { ...ARTICLE_DEFAULT_META } }),
     __metadata("design:type", ArticleMeta)
 ], Article.prototype, "meta", void 0);
 __decorate([
@@ -171,7 +194,7 @@ __decorate([
 ], Article.prototype, "extends", void 0);
 exports.Article = Article = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
-    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, increment_constant_1.GENERAL_AUTO_INCREMENT_ID_CONFIG),
+    (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
             versionKey: false,

@@ -16,9 +16,9 @@ exports.CategoryService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
-const cache_service_1 = require("../../processors/cache/cache.service");
+const cache_service_1 = require("../../core/cache/cache.service");
 const archive_service_1 = require("../archive/archive.service");
-const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
+const helper_service_seo_1 = require("../../core/helper/helper.service.seo");
 const article_model_1 = require("../article/article.model");
 const cache_constant_1 = require("../../constants/cache.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
@@ -27,6 +27,12 @@ const app_environment_1 = require("../../app.environment");
 const category_model_1 = require("./category.model");
 const logger = (0, logger_1.createLogger)({ scope: 'CategoryService', time: app_environment_1.isDevEnv });
 let CategoryService = class CategoryService {
+    seoService;
+    cacheService;
+    archiveService;
+    articleModel;
+    categoryModel;
+    allCategoriesCache;
     constructor(seoService, cacheService, archiveService, articleModel, categoryModel) {
         this.seoService = seoService;
         this.cacheService = cacheService;
@@ -49,7 +55,7 @@ let CategoryService = class CategoryService {
         ]);
         return categories.map((category) => {
             const found = counts.find((item) => item._id.equals(category._id));
-            return Object.assign(Object.assign({}, category), { article_count: found ? found.count : 0 });
+            return { ...category, article_count: found ? found.count : 0 };
         });
     }
     async getAllCategories(options) {
@@ -62,21 +68,21 @@ let CategoryService = class CategoryService {
     updateAllCategoriesCache() {
         return this.allCategoriesCache.update();
     }
-    async paginator(query, options, publicOnly) {
-        const categories = await this.categoryModel.paginate(query, Object.assign(Object.assign({}, options), { lean: true }));
+    async paginate(query, options, publicOnly) {
+        const categories = await this.categoryModel.paginate(query, { ...options, lean: true });
         const documents = await this.aggregateArticleCount(publicOnly, categories.documents);
-        return Object.assign(Object.assign({}, categories), { documents });
+        return { ...categories, documents };
     }
-    getDetailBySlug(slug) {
-        return this.categoryModel
-            .findOne({ slug })
-            .exec()
-            .then((result) => result || Promise.reject(`Category '${slug}' not found`));
+    async getDetailBySlug(slug) {
+        const category = await this.categoryModel.findOne({ slug }).exec();
+        if (!category)
+            throw new common_1.NotFoundException(`Category '${slug}' not found`);
+        return category;
     }
     async create(newCategory) {
         const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
         if (existedCategory) {
-            throw `Category slug '${newCategory.slug}' is existed`;
+            throw new common_1.ConflictException(`Category slug '${newCategory.slug}' already exists`);
         }
         const category = await this.categoryModel.create(newCategory);
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
@@ -94,7 +100,7 @@ let CategoryService = class CategoryService {
                     .then((category) => {
                     if (!category) {
                         if (id === categoryId) {
-                            return reject(`Category '${categoryId}' not found`);
+                            return reject(new common_1.NotFoundException(`Category '${categoryId}' not found`));
                         }
                         else {
                             return resolve(categories);
@@ -112,12 +118,11 @@ let CategoryService = class CategoryService {
     async update(categoryId, newCategory) {
         const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
         if (existedCategory && !existedCategory._id.equals(categoryId)) {
-            throw `Category slug '${newCategory.slug}' is existed`;
+            throw new common_1.ConflictException(`Category slug '${newCategory.slug}' already exists`);
         }
         const category = await this.categoryModel.findByIdAndUpdate(categoryId, newCategory, { new: true }).exec();
-        if (!category) {
-            throw `Category '${categoryId}' not found`;
-        }
+        if (!category)
+            throw new common_1.NotFoundException(`Category '${categoryId}' not found`);
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
         this.archiveService.updateCache();
         this.updateAllCategoriesCache();
@@ -125,16 +130,14 @@ let CategoryService = class CategoryService {
     }
     async delete(categoryId) {
         const category = await this.categoryModel.findByIdAndDelete(categoryId, null).exec();
-        if (!category) {
-            throw `Category '${categoryId}' not found`;
-        }
+        if (!category)
+            throw new common_1.NotFoundException(`Category '${categoryId}' not found`);
         this.archiveService.updateCache();
         this.seoService.delete((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
         this.updateAllCategoriesCache();
         const categories = await this.categoryModel.find({ pid: categoryId }).exec();
-        if (!categories.length) {
+        if (!categories.length)
             return category;
-        }
         await this.categoryModel.collection
             .initializeOrderedBulkOp()
             .find({ _id: { $in: Array.from(categories, (c) => c._id) } })

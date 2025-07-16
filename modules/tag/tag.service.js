@@ -15,18 +15,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TagService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
-const cache_service_1 = require("../../processors/cache/cache.service");
-const helper_service_seo_1 = require("../../processors/helper/helper.service.seo");
+const cache_service_1 = require("../../core/cache/cache.service");
+const helper_service_seo_1 = require("../../core/helper/helper.service.seo");
 const archive_service_1 = require("../archive/archive.service");
 const article_model_1 = require("../article/article.model");
 const cache_constant_1 = require("../../constants/cache.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
+const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const tag_model_1 = require("./tag.model");
 const logger = (0, logger_1.createLogger)({ scope: 'TagService', time: app_environment_1.isDevEnv });
 let TagService = class TagService {
+    seoService;
+    cacheService;
+    archiveService;
+    tagModel;
+    articleModel;
+    allTagsCache;
     constructor(seoService, cacheService, archiveService, tagModel, articleModel) {
         this.seoService = seoService;
         this.cacheService = cacheService;
@@ -49,7 +55,7 @@ let TagService = class TagService {
         ]);
         return tags.map((tag) => {
             const found = counts.find((item) => item._id.equals(tag._id));
-            return Object.assign(Object.assign({}, tag), { article_count: found ? found.count : 0 });
+            return { ...tag, article_count: found ? found.count : 0 };
         });
     }
     async getAllTags(options) {
@@ -62,22 +68,21 @@ let TagService = class TagService {
     updateAllTagsCache() {
         return this.allTagsCache.update();
     }
-    async paginator(query, options, publicOnly) {
-        const tags = await this.tagModel.paginate(query, Object.assign(Object.assign({}, options), { lean: true }));
+    async paginate(query, options, publicOnly) {
+        const tags = await this.tagModel.paginate(query, { ...options, lean: true });
         const documents = await this.aggregateArticleCount(publicOnly, tags.documents);
-        return Object.assign(Object.assign({}, tags), { documents });
+        return { ...tags, documents };
     }
-    getDetailBySlug(slug) {
-        return this.tagModel
-            .findOne({ slug })
-            .exec()
-            .then((result) => result || Promise.reject(`Tag '${slug}' not found`));
+    async getDetailBySlug(slug) {
+        const tag = await this.tagModel.findOne({ slug }).exec();
+        if (!tag)
+            throw new common_1.NotFoundException(`Tag '${slug}' not found`);
+        return tag;
     }
     async create(newTag) {
         const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
-        if (existedTag) {
-            throw `Tag slug '${newTag.slug}' is existed`;
-        }
+        if (existedTag)
+            throw new common_1.ConflictException(`Tag slug '${newTag.slug}' already exists`);
         const tag = await this.tagModel.create(newTag);
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(tag.slug));
         this.archiveService.updateCache();
@@ -87,26 +92,24 @@ let TagService = class TagService {
     async update(tagId, newTag) {
         const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
         if (existedTag && !existedTag._id.equals(tagId)) {
-            throw `Tag slug '${newTag.slug}' is existed`;
+            throw new common_1.ConflictException(`Tag slug '${newTag.slug}' already exists`);
         }
-        const tag = await this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).exec();
-        if (!tag) {
-            throw `Tag '${tagId}' not found`;
-        }
-        this.seoService.push((0, urlmap_transformer_1.getTagUrl)(tag.slug));
+        const updated = await this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).exec();
+        if (!updated)
+            throw new common_1.NotFoundException(`Tag '${tagId}' not found`);
+        this.seoService.push((0, urlmap_transformer_1.getTagUrl)(updated.slug));
         this.archiveService.updateCache();
         this.updateAllTagsCache();
-        return tag;
+        return updated;
     }
     async delete(tagId) {
-        const tag = await this.tagModel.findByIdAndDelete(tagId, null).exec();
-        if (!tag) {
-            throw `Tag '${tagId}' not found`;
-        }
-        this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(tag.slug));
+        const deleted = await this.tagModel.findByIdAndDelete(tagId, null).exec();
+        if (!deleted)
+            throw new common_1.NotFoundException(`Tag '${tagId}' not found`);
+        this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(deleted.slug));
         this.archiveService.updateCache();
         this.updateAllTagsCache();
-        return tag;
+        return deleted;
     }
     async batchDelete(tagIds) {
         const tags = await this.tagModel.find({ _id: { $in: tagIds } }).exec();

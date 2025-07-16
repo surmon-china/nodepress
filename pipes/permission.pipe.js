@@ -17,44 +17,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PermissionPipe = void 0;
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
-const core_1 = require("@nestjs/core");
 const common_1 = require("@nestjs/common");
-const text_constant_1 = require("../constants/text.constant");
-const forbidden_error_1 = require("../errors/forbidden.error");
-const guest_decorator_1 = require("../decorators/guest.decorator");
+const guest_permission_decorator_1 = require("../decorators/guest-permission.decorator");
+const core_1 = require("@nestjs/core");
 let PermissionPipe = class PermissionPipe {
+    request;
     constructor(request) {
         this.request = request;
     }
     transform(value) {
-        if (this.request.isAuthenticated()) {
-            return value;
-        }
-        const guestRequestOptions = (0, guest_decorator_1.getGuestRequestOptions)(value);
-        if (!guestRequestOptions) {
+        if (this.request.locals.isAuthenticated) {
             return value;
         }
         Object.keys(value).forEach((field) => {
-            var _a;
-            const v = value[field];
-            const o = guestRequestOptions[field];
-            if ((_a = o === null || o === void 0 ? void 0 : o.only) === null || _a === void 0 ? void 0 : _a.length) {
-                if (!o.only.includes(v)) {
-                    const message = `${text_constant_1.HTTP_PARAMS_PERMISSION_ERROR_DEFAULT}: '${field}=${v}'`;
-                    const description = `'${field}' must be one of the following values: ${o.only.join(', ')}`;
-                    throw new forbidden_error_1.HttpForbiddenError(`${message}, ${description}`);
+            const fieldValue = value[field];
+            const fieldMeta = (0, guest_permission_decorator_1.getGuestRequestPermission)(value, field);
+            if (!(0, isUndefined_1.default)(fieldValue)) {
+                if (fieldMeta?.only?.length && !fieldMeta.only.includes(fieldValue)) {
+                    throw new common_1.ForbiddenException(`Invalid value for field '${field}': allowed values are [${fieldMeta.only.join(', ')}]`);
                 }
             }
-        });
-        Object.keys(guestRequestOptions).forEach((field) => {
-            const v = value[field];
-            const o = guestRequestOptions[field];
-            if (o === null || o === void 0 ? void 0 : o.default) {
-                if ((0, isUndefined_1.default)(v)) {
-                    value[field] = o.default;
-                }
+            if ((0, isUndefined_1.default)(fieldValue) && !(0, isUndefined_1.default)(fieldMeta?.default)) {
+                value[field] = fieldMeta.default;
             }
         });
+        this.request.locals.validatedQueryParams = { ...value };
         return value;
     }
 };

@@ -7,37 +7,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ValidationPipe = exports.isUnverifiableMetaType = void 0;
-const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const class_validator_1 = require("class-validator");
 const common_1 = require("@nestjs/common");
-const validation_error_1 = require("../errors/validation.error");
-const text_constant_1 = require("../constants/text.constant");
 const isUnverifiableMetaType = (metatype) => {
     const basicTypes = [String, Boolean, Number, Array, Object];
     return !metatype || basicTypes.includes(metatype);
 };
 exports.isUnverifiableMetaType = isUnverifiableMetaType;
+const collectMessages = (errors) => {
+    const messages = [];
+    for (const error of errors) {
+        if (error.constraints) {
+            messages.push(...Object.values(error.constraints));
+        }
+        if (error.children?.length) {
+            messages.push(...collectMessages(error.children));
+        }
+    }
+    return messages;
+};
 let ValidationPipe = class ValidationPipe {
     async transform(value, { metatype }) {
         if ((0, exports.isUnverifiableMetaType)(metatype)) {
             return value;
         }
-        const object = (0, class_transformer_1.plainToClass)(metatype, value);
+        const object = (0, class_transformer_1.plainToInstance)(metatype, value);
         const errors = await (0, class_validator_1.validate)(object);
         if (errors.length > 0) {
-            const messages = [];
-            const pushMessage = (constraints = {}) => {
-                messages.push(...Object.values(constraints));
-            };
-            errors.forEach((error) => {
-                if (error.constraints) {
-                    pushMessage(error.constraints);
-                }
-                if (error.children) {
-                    error.children.forEach((e) => pushMessage(e.constraints));
-                }
-            });
-            throw new validation_error_1.ValidationError(`${text_constant_1.VALIDATION_ERROR_DEFAULT}: ` + messages.join(', '));
+            throw new common_1.BadRequestException(`Validation failed: ${collectMessages(errors).join('; ')}`);
         }
         return object;
     }

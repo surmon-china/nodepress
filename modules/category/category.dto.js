@@ -16,6 +16,7 @@ class CategoryPaginateQueryDTO extends paginate_model_1.PaginateOptionDTO {
 }
 exports.CategoryPaginateQueryDTO = CategoryPaginateQueryDTO;
 class CategoriesDTO {
+    category_ids;
 }
 exports.CategoriesDTO = CategoriesDTO;
 __decorate([

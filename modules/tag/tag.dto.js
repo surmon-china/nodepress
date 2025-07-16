@@ -18,6 +18,7 @@ class TagPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_
 }
 exports.TagPaginateQueryDTO = TagPaginateQueryDTO;
 class TagsDTO {
+    tag_ids;
 }
 exports.TagsDTO = TagsDTO;
 __decorate([
