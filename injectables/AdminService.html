@@ -140,11 +140,6 @@
                                 <a href="#createToken" >createToken</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getExistedPassword" >getExistedPassword</a>
-                            </li>
-                            <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#getProfile" >getProfile</a>
@@ -158,6 +153,11 @@
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#updateProfile" >updateProfile</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#validatePassword" >validatePassword</a>
                             </li>
                         </ul>
                     </td>
@@ -182,7 +182,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/modules/admin/admin.service.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/admin/admin.service.ts:18</a></div>
                             </td>
                         </tr>
 
@@ -259,8 +259,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:28</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:40</a></div>
                         </td>
                     </tr>
 
@@ -270,46 +270,6 @@
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="../interfaces/TokenResult.html" target="_self" >TokenResult</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getExistedPassword"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getExistedPassword</b></span>
-                        <a href="#getExistedPassword"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getExistedPassword()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="23"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:23</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
 
                         </div>
                 </td>
@@ -339,8 +299,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -372,15 +332,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>login(password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>login(base64Password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="35"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:35</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -401,7 +361,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>password</td>
+                                                <td>base64Password</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                             </td>
@@ -449,8 +409,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -496,17 +456,94 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validatePassword"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>validatePassword</b></span>
+                        <a href="#validatePassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>validatePassword(plainPassword: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Validate the provided plain password against the stored password.</p>
+<ul>
+<li>If a hashed password exists in the database, verify with bcrypt.</li>
+<li>If no password exists (e.g., initial state), fall back to comparing with the default password.</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>plainPassword</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, UnauthorizedException, BadRequestException } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import bcrypt from &#x27;bcryptjs&#x27;
+import { Injectable, UnauthorizedException, BadRequestException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { AuthService } from &#x27;@app/core/auth/auth.service&#x27;
-import { decodeBase64, decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
+import { decodeBase64 } from &#x27;@app/transformers/codec.transformer&#x27;
 import { Admin, DEFAULT_ADMIN_PROFILE } from &#x27;./admin.model&#x27;
 import { TokenResult } from &#x27;./admin.interface&#x27;
 import { AdminUpdateDTO } from &#x27;./admin.dto&#x27;
@@ -519,22 +556,31 @@ export class AdminService {
     @InjectModel(Admin) private readonly adminModel: MongooseModel&lt;Admin&gt;
   ) {}
 
-  private async getExistedPassword(): Promise&lt;string&gt; {
-    const auth &#x3D; await this.adminModel.findOne(undefined, &#x27;+password&#x27;).exec()
-    return auth?.password || decodeMD5(APP_BIZ.AUTH.defaultPassword)
+  /**
+   * Validate the provided plain password against the stored password.
+   * - If a hashed password exists in the database, verify with bcrypt.
+   * - If no password exists (e.g., initial state), fall back to comparing with the default password.
+   */
+  private async validatePassword(plainPassword: string): Promise&lt;boolean&gt; {
+    const existedProfile &#x3D; await this.adminModel.findOne(undefined, &#x27;+password&#x27;).exec()
+    if (existedProfile?.password) {
+      // Password exists in database → validate using bcrypt
+      return await bcrypt.compare(plainPassword, existedProfile.password)
+    } else {
+      // No password in database → compare directly with default password (no hashing)
+      return plainPassword &#x3D;&#x3D;&#x3D; APP_BIZ.PASSWORD.defaultPassword
+    }
   }
 
   public createToken(): TokenResult {
     return {
       access_token: this.authService.signToken(),
-      expires_in: APP_BIZ.AUTH.expiresIn
+      expires_in: APP_BIZ.AUTH_JWT.expiresIn
     }
   }
 
-  public async login(password: string): Promise&lt;TokenResult&gt; {
-    const existedPassword &#x3D; await this.getExistedPassword()
-    const loginPassword &#x3D; decodeMD5(decodeBase64(password))
-    if (loginPassword &#x3D;&#x3D;&#x3D; existedPassword) {
+  public async login(base64Password: string): Promise&lt;TokenResult&gt; {
+    if (await this.validatePassword(decodeBase64(base64Password))) {
       return this.createToken()
     } else {
       throw new UnauthorizedException(&#x27;Password incorrect&#x27;)
@@ -547,32 +593,31 @@ export class AdminService {
   }
 
   public async updateProfile(adminProfile: AdminUpdateDTO): Promise&lt;Admin&gt; {
-    const { password, new_password, ...profile } &#x3D; adminProfile
-    const payload: Admin &#x3D; { ...profile }
+    const { password: inputOldPassword, new_password: inputNewPassword, ...profile } &#x3D; adminProfile
+    const newProfile: Admin &#x3D; { ...profile }
 
-    // verify password
-    if (password || new_password) {
-      if (!password || !new_password) {
+    // Verify password
+    if (inputOldPassword || inputNewPassword) {
+      if (!inputOldPassword || !inputNewPassword) {
         throw new BadRequestException(&#x27;Incomplete passwords&#x27;)
       }
-      if (password &#x3D;&#x3D;&#x3D; new_password) {
+      if (inputOldPassword &#x3D;&#x3D;&#x3D; inputNewPassword) {
         throw new BadRequestException(&#x27;Old password and new password cannot be the same&#x27;)
       }
-      const oldPassword &#x3D; decodeMD5(decodeBase64(password))
-      const existedPassword &#x3D; await this.getExistedPassword()
-      if (oldPassword !&#x3D;&#x3D; existedPassword) {
+      if (!(await this.validatePassword(decodeBase64(inputOldPassword)))) {
         throw new BadRequestException(&#x27;Old password incorrect&#x27;)
       }
-      // set new password
-      payload.password &#x3D; decodeMD5(decodeBase64(new_password))
+      // Set new password
+      const plainNewPassword &#x3D; decodeBase64(inputNewPassword)
+      newProfile.password &#x3D; await bcrypt.hash(plainNewPassword, APP_BIZ.PASSWORD.bcryptSaltRounds)
     }
 
     // save
-    const existedAuth &#x3D; await this.adminModel.findOne(undefined, &#x27;+password&#x27;).exec()
-    if (existedAuth) {
-      await Object.assign(existedAuth, payload).save()
+    const existedProfile &#x3D; await this.adminModel.findOne(undefined, &#x27;+password&#x27;).exec()
+    if (existedProfile) {
+      await Object.assign(existedProfile, newProfile).save()
     } else {
-      await this.adminModel.create(payload)
+      await this.adminModel.create(newProfile)
     }
 
     return this.getProfile()

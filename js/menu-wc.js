@@ -210,13 +210,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/AuthModule.html" data-type="entity-link" >AuthModule</a>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                        'data-bs-target="#injectables-links-module-AuthModule-d41e980580020ad1a69a52d92db9e7f20e12bf41d7cf62168537cb219b465f03ecc73e24e5dbf52612ed8968fc966f463c4064fc8f61e66a76c8756415fc2855"' : 'data-bs-target="#xs-injectables-links-module-AuthModule-d41e980580020ad1a69a52d92db9e7f20e12bf41d7cf62168537cb219b465f03ecc73e24e5dbf52612ed8968fc966f463c4064fc8f61e66a76c8756415fc2855"' }>
+                                        'data-bs-target="#injectables-links-module-AuthModule-a5d902e18596ea0628535522ecfa459dbe3f2fa7514716911c3ba12f4d0e55c68b4c9aeac6fc9acdd7463bce5f033c96a5a72ce794070d8147a6d41ef7d3d0cf"' : 'data-bs-target="#xs-injectables-links-module-AuthModule-a5d902e18596ea0628535522ecfa459dbe3f2fa7514716911c3ba12f4d0e55c68b4c9aeac6fc9acdd7463bce5f033c96a5a72ce794070d8147a6d41ef7d3d0cf"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-AuthModule-d41e980580020ad1a69a52d92db9e7f20e12bf41d7cf62168537cb219b465f03ecc73e24e5dbf52612ed8968fc966f463c4064fc8f61e66a76c8756415fc2855"' :
-                                        'id="xs-injectables-links-module-AuthModule-d41e980580020ad1a69a52d92db9e7f20e12bf41d7cf62168537cb219b465f03ecc73e24e5dbf52612ed8968fc966f463c4064fc8f61e66a76c8756415fc2855"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-AuthModule-a5d902e18596ea0628535522ecfa459dbe3f2fa7514716911c3ba12f4d0e55c68b4c9aeac6fc9acdd7463bce5f033c96a5a72ce794070d8147a6d41ef7d3d0cf"' :
+                                        'id="xs-injectables-links-module-AuthModule-a5d902e18596ea0628535522ecfa459dbe3f2fa7514716911c3ba12f4d0e55c68b4c9aeac6fc9acdd7463bce5f033c96a5a72ce794070d8147a6d41ef7d3d0cf"' }>
                                         <li class="link">
                                             <a href="injectables/AuthService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AuthService</a>
                                         </li>

@@ -804,16 +804,21 @@
   STATIC_URL: &#x27;https://static.surmon.me&#x27;,
   /** Allowed CORS origins */
   CORS_ALLOWED_ORIGINS: [&#x27;https://surmon.me&#x27;, /\.surmon\.me$/],
-  /** Authentication config */
-  AUTH: {
+  /** Default admin password */
+  PASSWORD: {
+    /** Default password for the admin user, used when no password is set in the database */
+    defaultPassword: arg({ key: &#x27;default_password&#x27;, default: &#x27;root&#x27; }),
+    /** Bcrypt salt rounds for hashing passwords */
+    bcryptSaltRounds: arg({ key: &#x27;bcrypt_salt_rounds&#x27;, default: 10 })
+  },
+  /** Authentication config (JSON Web Token) */
+  AUTH_JWT: {
     /** JWT token expiration time in seconds */
-    expiresIn: arg({ key: &#x27;auth_expires_in&#x27;, default: 3600 }),
+    expiresIn: arg({ key: &#x27;auth_jwt_expires_in&#x27;, default: 3600 }),
     /** JWT signing secret; must be secure in production */
-    jwtSecret: arg({ key: &#x27;auth_secret&#x27;, default: &#x27;nodepress&#x27; }),
-    /** Default payload for issued tokens */
-    data: arg&lt;any&gt;({ key: &#x27;auth_data&#x27;, default: { user: &#x27;root&#x27; } }),
-    /** Default admin password */
-    defaultPassword: arg({ key: &#x27;auth_default_password&#x27;, default: &#x27;root&#x27; })
+    secret: arg({ key: &#x27;auth_jwt_secret&#x27;, default: &#x27;nodepress&#x27; }),
+    /** Default payload for issued JWT tokens (e.g., user role or ID) */
+    data: arg&lt;any&gt;({ key: &#x27;auth_jwt_data&#x27;, default: { user: &#x27;root&#x27; } })
   }
 }</code>
                     </td>
