@@ -192,7 +192,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@(&#x27;Get archive&#x27;)<br /></code>
+                    <code>@Get()<br />@SuccessResponse(&#x27;Get archive succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -240,7 +240,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update archive cache&#x27;)<br /></code>
+                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update archive cache succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -275,7 +275,7 @@
 
 import { UseGuards, Controller, Get, Patch } from &#x27;@nestjs/common&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { ArchiveService, ArchiveData } from &#x27;./archive.service&#x27;
 
 @Controller(&#x27;archive&#x27;)
@@ -283,14 +283,14 @@ export class ArchiveController {
   constructor(private readonly archiveService: ArchiveService) {}
 
   @Get()
-  @Responser.handle(&#x27;Get archive&#x27;)
+  @SuccessResponse(&#x27;Get archive succeeded&#x27;)
   getArchive(): Promise&lt;ArchiveData&gt; {
     return this.archiveService.getCache()
   }
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update archive cache&#x27;)
+  @SuccessResponse(&#x27;Update archive cache succeeded&#x27;)
   updateArchive(): Promise&lt;any&gt; {
     return this.archiveService.updateCache()
   }

@@ -179,8 +179,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/pipes/validation.pipe.ts:24</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/pipes/validation.pipe.ts:37</a></div>
                         </td>
                     </tr>
 
@@ -242,15 +242,28 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { validate } from &#x27;class-validator&#x27;
-import { plainToClass } from &#x27;class-transformer&#x27;
-import { Injectable, PipeTransform, ArgumentMetadata } from &#x27;@nestjs/common&#x27;
-import { ValidationError } from &#x27;@app/errors/validation.error&#x27;
-import { VALIDATION_ERROR_DEFAULT } from &#x27;@app/constants/text.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { plainToInstance } from &#x27;class-transformer&#x27;
+import type { ValidationError } from &#x27;class-validator&#x27;
+import { validate } from &#x27;class-validator&#x27;
+import type { PipeTransform, ArgumentMetadata } from &#x27;@nestjs/common&#x27;
+import { Injectable, BadRequestException } from &#x27;@nestjs/common&#x27;
 
 export const isUnverifiableMetaType &#x3D; (metatype: any): metatype is undefined &#x3D;&gt; {
   const basicTypes &#x3D; [String, Boolean, Number, Array, Object]
   return !metatype || basicTypes.includes(metatype)
+}
+
+const collectMessages &#x3D; (errors: ValidationError[]) &#x3D;&gt; {
+  const messages: string[] &#x3D; []
+  for (const error of errors) {
+    if (error.constraints) {
+      messages.push(...Object.values&lt;any&gt;(error.constraints))
+    }
+    if (error.children?.length) {
+      messages.push(...collectMessages(error.children))
+    }
+  }
+  return messages
 }
 
 /**
@@ -264,25 +277,10 @@ export class ValidationPipe implements PipeTransform&lt;any&gt; {
       return value
     }
 
-    const object &#x3D; plainToClass(metatype, value)
+    const object &#x3D; plainToInstance(metatype, value)
     const errors &#x3D; await validate(object)
     if (errors.length &gt; 0) {
-      const messages: string[] &#x3D; []
-      const pushMessage &#x3D; (constraints &#x3D; {}) &#x3D;&gt; {
-        messages.push(...Object.values&lt;any&gt;(constraints))
-      }
-
-      errors.forEach((error) &#x3D;&gt; {
-        if (error.constraints) {
-          pushMessage(error.constraints)
-        }
-        // MARK: keep 1 level &gt; Maximum call stack
-        if (error.children) {
-          error.children.forEach((e) &#x3D;&gt; pushMessage(e.constraints))
-        }
-      })
-
-      throw new ValidationError(&#x60;${VALIDATION_ERROR_DEFAULT}: &#x60; + messages.join(&#x27;, &#x27;))
+      throw new BadRequestException(&#x60;Validation failed: ${collectMessages(errors).join(&#x27;; &#x27;)}&#x60;)
     }
 
     return object

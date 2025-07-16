@@ -188,20 +188,14 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#importXML" >importXML</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#oauthCallback" >oauthCallback</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#oauthLogout" >oauthLogout</a>
                             </li>
@@ -251,7 +245,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createComment(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, comment: <a href="../classes/CommentBase.html" target="_self">CommentBase</a>)</code>
+                    <code>createComment(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, comment: <a href="../classes/CommentBase.html" target="_self">CommentBase</a>)</code>
                 </td>
             </tr>
 
@@ -259,14 +253,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;comment&#x27;)<br />@Throttle({default: undefined})<br />@(&#x27;Create universal comment&#x27;)<br /></code>
+                    <code>@Post(&#x27;comment&#x27;)<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Create universal comment succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="108"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:108</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:91</a></div>
                         </td>
                     </tr>
 
@@ -288,7 +282,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -359,14 +353,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;comment&#x27;)<br />@(&#x27;Delete universal comment&#x27;)<br /></code>
+                    <code>@Delete(&#x27;comment&#x27;)<br />@SuccessResponse(&#x27;Delete universal comment succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="118"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:118</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:101</a></div>
                         </td>
                     </tr>
 
@@ -441,7 +435,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>exportXML(response)</code>
+                    <code>exportXML()</code>
                 </td>
             </tr>
 
@@ -449,14 +443,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;export-xml&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Export XML for Disqus import&#x27;)<br /></code>
+                    <code>@Get(&#x27;export-xml&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@Header(&#x27;content-type&#x27;, &#x27;application/xml&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="158"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:158</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="140"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:140</a></div>
                         </td>
                     </tr>
 
@@ -464,36 +458,10 @@
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>response</td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
-                            <div class="io-description">
-                                
-                            </div>
                 </td>
             </tr>
         </tbody>
@@ -522,14 +490,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;config&#x27;)<br />@(&#x27;Get Disqus config&#x27;)<br /></code>
+                    <code>@Get(&#x27;config&#x27;)<br />@SuccessResponse(&#x27;Get Disqus config succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:46</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="35"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:35</a></div>
                         </td>
                     </tr>
 
@@ -570,14 +538,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;posts&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Get Disqus posts&#x27;)<br /></code>
+                    <code>@Get(&#x27;posts&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Get Disqus posts succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="137"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:137</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="119"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:119</a></div>
                         </td>
                     </tr>
 
@@ -647,14 +615,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;thread&#x27;)<br />@(&#x27;Get Disqus thread info&#x27;)<br /></code>
+                    <code>@Get(&#x27;thread&#x27;)<br />@SuccessResponse(&#x27;Get Disqus thread info succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="101"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:101</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -725,14 +693,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;threads&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Get Disqus threads&#x27;)<br /></code>
+                    <code>@Get(&#x27;threads&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Get Disqus threads succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="130"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:130</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -802,14 +770,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;user-info&#x27;)<br />@(&#x27;Get Disqus user info&#x27;)<br /></code>
+                    <code>@Get(&#x27;user-info&#x27;)<br />@SuccessResponse(&#x27;Get Disqus user info succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="89"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:89</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:75</a></div>
                         </td>
                     </tr>
 
@@ -864,7 +832,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>importXML</b></span>
                         <a href="#importXML"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -873,7 +840,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>importXML(file: Express.Multer.File)</code>
+                    <code>importXML(file: <a href="../interfaces/IUploadedFile.html" target="_self">IUploadedFile</a>)</code>
                 </td>
             </tr>
 
@@ -881,14 +848,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;import-xml&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@UseInterceptors(undefined)<br />@(&#x27;Import XML from Disqus&#x27;)<br /></code>
+                    <code>@Post(&#x27;import-xml&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Import XML from Disqus succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="169"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:169</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:147</a></div>
                         </td>
                     </tr>
 
@@ -911,7 +878,7 @@
                                         <tr>
                                                 <td>file</td>
                                             <td>
-                                                        <code>Express.Multer.File</code>
+                                                            <code><a href="../interfaces/IUploadedFile.html" target="_self" >IUploadedFile</a></code>
                                             </td>
 
                                             <td>
@@ -941,9 +908,6 @@
                     <a name="oauthCallback"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                             <span class="modifier">Async</span>
                         <span ><b>oauthCallback</b></span>
                         <a href="#oauthCallback"><span class="icon ion-ios-link"></span></a>
@@ -953,7 +917,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>oauthCallback(query: <a href="../classes/CallbackCodeDTO.html" target="_self">CallbackCodeDTO</a>, response)</code>
+                    <code>oauthCallback(query: <a href="../classes/CallbackCodeDTO.html" target="_self">CallbackCodeDTO</a>, response: FastifyReply)</code>
                 </td>
             </tr>
 
@@ -961,14 +925,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;oauth-callback&#x27;)<br />@Header(&#x27;content-type&#x27;, &#x27;text/html&#x27;)<br />@Header(&#x27;Content-Security-Policy&#x27;, &#x27;script-src &#x27;unsafe-inline&#x27;&#x27;)<br />@(&#x27;Disqus OAuth login&#x27;)<br /></code>
+                    <code>@Get(&#x27;oauth-callback&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:59</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -1003,6 +967,7 @@
                                         <tr>
                                                 <td>response</td>
                                             <td>
+                                                        <code>FastifyReply</code>
                                             </td>
 
                                             <td>
@@ -1032,8 +997,6 @@
                     <a name="oauthLogout"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>oauthLogout</b></span>
                         <a href="#oauthLogout"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1042,7 +1005,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>oauthLogout(token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, response)</code>
+                    <code>oauthLogout(token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, response: FastifyReply)</code>
                 </td>
             </tr>
 
@@ -1050,14 +1013,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;oauth-logout&#x27;)<br />@Header(&#x27;content-type&#x27;, &#x27;text/plain&#x27;)<br />@(&#x27;Disqus OAuth logout&#x27;)<br /></code>
+                    <code>@Post(&#x27;oauth-logout&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="79"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:79</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -1092,6 +1055,7 @@
                                         <tr>
                                                 <td>response</td>
                                             <td>
+                                                        <code>FastifyReply</code>
                                             </td>
 
                                             <td>
@@ -1139,14 +1103,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;post&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update Disqus post&#x27;)<br /></code>
+                    <code>@Post(&#x27;post&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update Disqus post succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="144"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:144</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="126"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:126</a></div>
                         </td>
                     </tr>
 
@@ -1213,14 +1177,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;thread&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update Disqus thread&#x27;)<br /></code>
+                    <code>@Post(&#x27;thread&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update Disqus thread succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="151"
-                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:151</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="133"
+                                    class="link-to-prism">src/modules/disqus/disqus.controller.ts:133</a></div>
                         </td>
                     </tr>
 
@@ -1272,25 +1236,14 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Body,
-  Header,
-  UploadedFile,
-  Response,
-  UseGuards,
-  Query,
-  UseInterceptors
-} from &#x27;@nestjs/common&#x27;
-import { FileInterceptor } from &#x27;@nestjs/platform-express&#x27;
+import type { FastifyReply } from &#x27;fastify&#x27;
+import { Controller, UseGuards, UnauthorizedException, BadRequestException } from &#x27;@nestjs/common&#x27;
+import { Get, Post, Delete, Query, Body, Header, Response } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
-import { isProdEnv } from &#x27;@app/app.environment&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { UploadedFile, IUploadedFile } from &#x27;@app/decorators/uploaded-file.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { CommentBase } from &#x27;@app/modules/comment/comment.model&#x27;
 import { DISQUS } from &#x27;@app/app.config&#x27;
 import { AccessToken } from &#x27;@app/utils/disqus&#x27;
@@ -1310,7 +1263,7 @@ export class DisqusController {
   // for client Disqus user
 
   @Get(&#x27;config&#x27;)
-  @Responser.handle(&#x27;Get Disqus config&#x27;)
+  @SuccessResponse(&#x27;Get Disqus config succeeded&#x27;)
   getConfig() {
     return {
       forum: DISQUS.forum,
@@ -1321,60 +1274,54 @@ export class DisqusController {
   }
 
   @Get(&#x27;oauth-callback&#x27;)
-  @Header(&#x27;content-type&#x27;, &#x27;text/html&#x27;)
-  @Header(&#x27;Content-Security-Policy&#x27;, &quot;script-src &#x27;unsafe-inline&#x27;&quot;)
-  @Responser.handle(&#x27;Disqus OAuth login&#x27;)
-  async oauthCallback(@Query() query: CallbackCodeDTO, @Response() response) {
+  async oauthCallback(@Query() query: CallbackCodeDTO, @Response() response: FastifyReply) {
     const accessToken &#x3D; await this.disqusPublicService.getAccessToken(query.code)
-    // cache user info
+    // Cache user info
     this.disqusPublicService.setUserInfoCache(
       accessToken.user_id,
       await this.disqusPublicService.getUserInfo(accessToken.access_token),
       accessToken.expires_in
     )
-    // http://expressjs.com/en/5x/api.html#res.cookie
-    response.cookie(TOKEN_COOKIE_KEY, encodeToken(accessToken), {
+    // https://github.com/fastify/fastify-cookie?tab&#x3D;readme-ov-file#options
+    response.setCookie(TOKEN_COOKIE_KEY, encodeToken(accessToken), {
       maxAge: accessToken.expires_in * 1000,
       httpOnly: true,
-      secure: isProdEnv
+      secure: &#x27;auto&#x27;
     })
+    // Close the popup window
+    response.header(&#x27;content-security-policy&#x27;, &quot;script-src &#x27;unsafe-inline&#x27;&quot;)
+    response.header(&#x27;content-type&#x27;, &#x27;text/html&#x27;)
     response.send(&#x60;&lt;script&gt;window.close();&lt;/script&gt;&#x60;)
   }
 
-  @Get(&#x27;oauth-logout&#x27;)
-  @Header(&#x27;content-type&#x27;, &#x27;text/plain&#x27;)
-  @Responser.handle(&#x27;Disqus OAuth logout&#x27;)
-  oauthLogout(@DisqusToken() token: AccessToken | null, @Response() response) {
-    if (token) {
-      this.disqusPublicService.deleteUserInfoCache(token.user_id)
-    }
+  @Post(&#x27;oauth-logout&#x27;)
+  oauthLogout(@DisqusToken() token: AccessToken | null, @Response() response: FastifyReply) {
+    if (token) this.disqusPublicService.deleteUserInfoCache(token.user_id)
     response.clearCookie(TOKEN_COOKIE_KEY)
-    response.send(&#x27;ok&#x27;)
+    response.header(&#x27;content-type&#x27;, &#x27;text/plain&#x27;)
+    response.send(&#x27;Disqus OAuth logout succeeded&#x27;)
   }
 
   @Get(&#x27;user-info&#x27;)
-  @Responser.handle(&#x27;Get Disqus user info&#x27;)
+  @SuccessResponse(&#x27;Get Disqus user info succeeded&#x27;)
   getUserInfo(@DisqusToken() token: AccessToken | null) {
-    if (!token) {
-      return Promise.reject(&#x60;You are not logged in&#x60;)
-    }
-
+    if (!token) throw new UnauthorizedException(&#x27;You are not logged in&#x27;)
     return this.disqusPublicService.getUserInfoCache(token.user_id).then((cached) &#x3D;&gt; {
-      return cached || this.disqusPublicService.getUserInfo(token.access_token)
+      return cached ?? this.disqusPublicService.getUserInfo(token.access_token)
     })
   }
 
   @Get(&#x27;thread&#x27;)
-  @Responser.handle(&#x27;Get Disqus thread info&#x27;)
+  @SuccessResponse(&#x27;Get Disqus thread info succeeded&#x27;)
   getThread(@Query() query: ThreadPostIdDTO) {
     return this.disqusPublicService.ensureThreadDetailCache(Number(query.post_id))
   }
 
   @Post(&#x27;comment&#x27;)
   @Throttle({ default: { ttl: seconds(30), limit: 6 } })
-  @Responser.handle(&#x27;Create universal comment&#x27;)
+  @SuccessResponse(&#x27;Create universal comment succeeded&#x27;)
   createComment(
-    @QueryParams() { visitor }: QueryParamsResult,
+    @RequestContext() { visitor }: IRequestContext,
     @DisqusToken() token: AccessToken | null,
     @Body() comment: CommentBase
   ) {
@@ -1382,11 +1329,10 @@ export class DisqusController {
   }
 
   @Delete(&#x27;comment&#x27;)
-  @Responser.handle(&#x27;Delete universal comment&#x27;)
+  @SuccessResponse(&#x27;Delete universal comment succeeded&#x27;)
   deleteComment(@Body() payload: CommentIdDTO, @DisqusToken() token: AccessToken | null) {
-    return token
-      ? this.disqusPublicService.deleteUniversalComment(payload.comment_id, token.access_token)
-      : Promise.reject(&#x60;You are not logged in&#x60;)
+    if (!token) throw new UnauthorizedException(&#x27;You are not logged in&#x27;)
+    return this.disqusPublicService.deleteUniversalComment(payload.comment_id, token.access_token)
   }
 
   // --------------------------------
@@ -1394,48 +1340,47 @@ export class DisqusController {
 
   @Get(&#x27;threads&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Get Disqus threads&#x27;)
+  @SuccessResponse(&#x27;Get Disqus threads succeeded&#x27;)
   getThreads(@Query() query: GeneralDisqusParams) {
     return this.disqusPrivateService.getThreads(query)
   }
 
   @Get(&#x27;posts&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Get Disqus posts&#x27;)
+  @SuccessResponse(&#x27;Get Disqus posts succeeded&#x27;)
   getPosts(@Query() query: GeneralDisqusParams) {
     return this.disqusPrivateService.getPosts(query)
   }
 
   @Post(&#x27;post&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update Disqus post&#x27;)
+  @SuccessResponse(&#x27;Update Disqus post succeeded&#x27;)
   updatePost(@Body() body) {
     return this.disqusPrivateService.updatePost(body)
   }
 
   @Post(&#x27;thread&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update Disqus thread&#x27;)
+  @SuccessResponse(&#x27;Update Disqus thread succeeded&#x27;)
   updateThread(@Body() body) {
     return this.disqusPrivateService.updateThread(body)
   }
 
   @Get(&#x27;export-xml&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Export XML for Disqus import&#x27;)
-  exportXML(@Response() response) {
-    return this.disqusPrivateService.exportXML().then((xml) &#x3D;&gt; {
-      response.header(&#x27;Content-Type&#x27;, &#x27;application/xml&#x27;)
-      response.send(xml)
-    })
+  @Header(&#x27;content-type&#x27;, &#x27;application/xml&#x27;)
+  exportXML() {
+    return this.disqusPrivateService.exportXMLFromNodepress()
   }
 
   @Post(&#x27;import-xml&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @UseInterceptors(FileInterceptor(&#x27;file&#x27;))
-  @Responser.handle(&#x27;Import XML from Disqus&#x27;)
-  importXML(@UploadedFile() file: Express.Multer.File) {
-    return this.disqusPrivateService.importXML(file)
+  @SuccessResponse(&#x27;Import XML from Disqus succeeded&#x27;)
+  importXML(@UploadedFile() file: IUploadedFile) {
+    if (![&#x27;application/xml&#x27;, &#x27;text/xml&#x27;].includes(file.mimetype)) {
+      throw new BadRequestException(&#x27;Only XML files are allowed for import&#x27;)
+    }
+    return this.disqusPrivateService.importXMLToNodepress(file.buffer)
   }
 }
 </code></pre>

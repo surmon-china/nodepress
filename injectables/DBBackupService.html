@@ -171,7 +171,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:28</a></div>
                             </td>
                         </tr>
 
@@ -249,8 +249,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -288,8 +288,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="70"
-                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:70</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -327,8 +327,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="61"
-                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:61</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/modules/extension/extension.service.dbbackup.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -409,14 +409,10 @@ import path from &#x27;path&#x27;
 import shell from &#x27;shelljs&#x27;
 import dayjs from &#x27;dayjs&#x27;
 import schedule from &#x27;node-schedule&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
-import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
-import {
-  S3FileObject,
-  AWSService,
-  AWSStorageClass,
-  AWSServerSideEncryption
-} from &#x27;@app/processors/helper/helper.service.aws&#x27;
+import { Injectable, InternalServerErrorException } from &#x27;@nestjs/common&#x27;
+import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
+import type { S3FileObject } from &#x27;@app/core/helper/helper.service.aws&#x27;
+import { AWSService, AWSStorageClass, AWSServerSideEncryption } from &#x27;@app/core/helper/helper.service.aws&#x27;
 import { APP_BIZ, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -452,9 +448,9 @@ export class DBBackupService {
       }
       this.mailToAdmin(&#x27;Database backup succeeded&#x27;, JSON.stringify(json, null, 2), true)
       return result
-    } catch (error) {
+    } catch (error: unknown) {
       this.mailToAdmin(&#x27;Database backup failed!&#x27;, String(error))
-      throw error
+      throw new InternalServerErrorException(String(error))
     }
   }
 
@@ -502,10 +498,10 @@ export class DBBackupService {
         logger.log(&#x60;uploading: ${fileName}&#x60;)
         logger.log(&#x60;file source: ${filePath}&#x60;)
 
-        // upload to cloud storage
+        // Upload to cloud storage
         this.awsService
           .uploadFile({
-            name: fileName,
+            key: fileName,
             file: fs.createReadStream(filePath),
             fileContentType: &#x27;application/zip&#x27;,
             region: DB_BACKUP.s3Region,

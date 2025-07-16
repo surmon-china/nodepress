@@ -66,6 +66,37 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </a>
                         <ul class="links collapse " ${ isNormalMode ? 'id="modules-links"' : 'id="xs-modules-links"' }>
                             <li class="link">
+                                <a href="modules/AdminModule.html" data-type="entity-link" >AdminModule</a>
+                                    <li class="chapter inner">
+                                        <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
+                                            'data-bs-target="#controllers-links-module-AdminModule-643474275ac2a1d22f85a810e23f22390a12dc552b782786009d2e2d54ff2f722a1a020af88f6699e16fb32d49b3674a9d2975439ac5f9970a3e735e8d1c5116"' : 'data-bs-target="#xs-controllers-links-module-AdminModule-643474275ac2a1d22f85a810e23f22390a12dc552b782786009d2e2d54ff2f722a1a020af88f6699e16fb32d49b3674a9d2975439ac5f9970a3e735e8d1c5116"' }>
+                                            <span class="icon ion-md-swap"></span>
+                                            <span>Controllers</span>
+                                            <span class="icon ion-ios-arrow-down"></span>
+                                        </div>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="controllers-links-module-AdminModule-643474275ac2a1d22f85a810e23f22390a12dc552b782786009d2e2d54ff2f722a1a020af88f6699e16fb32d49b3674a9d2975439ac5f9970a3e735e8d1c5116"' :
+                                            'id="xs-controllers-links-module-AdminModule-643474275ac2a1d22f85a810e23f22390a12dc552b782786009d2e2d54ff2f722a1a020af88f6699e16fb32d49b3674a9d2975439ac5f9970a3e735e8d1c5116"' }>
+                                            <li class="link">
+                                                <a href="controllers/AdminController.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AdminController</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                <li class="chapter inner">
+                                    <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
+                                        'data-bs-target="#injectables-links-module-AdminModule-643474275ac2a1d22f85a810e23f22390a12dc552b782786009d2e2d54ff2f722a1a020af88f6699e16fb32d49b3674a9d2975439ac5f9970a3e735e8d1c5116"' : 'data-bs-target="#xs-injectables-links-module-AdminModule-643474275ac2a1d22f85a810e23f22390a12dc552b782786009d2e2d54ff2f722a1a020af88f6699e16fb32d49b3674a9d2975439ac5f9970a3e735e8d1c5116"' }>
+                                        <span class="icon ion-md-arrow-round-down"></span>
+                                        <span>Injectables</span>
+                                        <span class="icon ion-ios-arrow-down"></span>
+                                    </div>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-AdminModule-643474275ac2a1d22f85a810e23f22390a12dc552b782786009d2e2d54ff2f722a1a020af88f6699e16fb32d49b3674a9d2975439ac5f9970a3e735e8d1c5116"' :
+                                        'id="xs-injectables-links-module-AdminModule-643474275ac2a1d22f85a810e23f22390a12dc552b782786009d2e2d54ff2f722a1a020af88f6699e16fb32d49b3674a9d2975439ac5f9970a3e735e8d1c5116"' }>
+                                        <li class="link">
+                                            <a href="injectables/AdminService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AdminService</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </li>
+                            <li class="link">
                                 <a href="modules/AnnouncementModule.html" data-type="entity-link" >AnnouncementModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
@@ -100,13 +131,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/AppModule.html" data-type="entity-link" >AppModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                            'data-bs-target="#controllers-links-module-AppModule-1f0f7df06313718e81180a007515384d8aa9ea419aadbfe28ae8eb2747d2792fec48b004c95b872b1c7141ed4f5a5cdd6c72ca42c04a2b16d62220c5ca121193"' : 'data-bs-target="#xs-controllers-links-module-AppModule-1f0f7df06313718e81180a007515384d8aa9ea419aadbfe28ae8eb2747d2792fec48b004c95b872b1c7141ed4f5a5cdd6c72ca42c04a2b16d62220c5ca121193"' }>
+                                            'data-bs-target="#controllers-links-module-AppModule-6b6764ad8c73ddc4e7226504d93ae3874059c433bbbb5e16f418503e99e37acb9e6b0788e1928c87b113f5abdfb0911f10736518943fdfed08624b89d0cb778d"' : 'data-bs-target="#xs-controllers-links-module-AppModule-6b6764ad8c73ddc4e7226504d93ae3874059c433bbbb5e16f418503e99e37acb9e6b0788e1928c87b113f5abdfb0911f10736518943fdfed08624b89d0cb778d"' }>
                                             <span class="icon ion-md-swap"></span>
                                             <span>Controllers</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="controllers-links-module-AppModule-1f0f7df06313718e81180a007515384d8aa9ea419aadbfe28ae8eb2747d2792fec48b004c95b872b1c7141ed4f5a5cdd6c72ca42c04a2b16d62220c5ca121193"' :
-                                            'id="xs-controllers-links-module-AppModule-1f0f7df06313718e81180a007515384d8aa9ea419aadbfe28ae8eb2747d2792fec48b004c95b872b1c7141ed4f5a5cdd6c72ca42c04a2b16d62220c5ca121193"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="controllers-links-module-AppModule-6b6764ad8c73ddc4e7226504d93ae3874059c433bbbb5e16f418503e99e37acb9e6b0788e1928c87b113f5abdfb0911f10736518943fdfed08624b89d0cb778d"' :
+                                            'id="xs-controllers-links-module-AppModule-6b6764ad8c73ddc4e7226504d93ae3874059c433bbbb5e16f418503e99e37acb9e6b0788e1928c87b113f5abdfb0911f10736518943fdfed08624b89d0cb778d"' }>
                                             <li class="link">
                                                 <a href="controllers/AppController.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AppController</a>
                                             </li>
@@ -177,34 +208,17 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="modules/AuthModule.html" data-type="entity-link" >AuthModule</a>
-                                    <li class="chapter inner">
-                                        <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                            'data-bs-target="#controllers-links-module-AuthModule-d1f8ec8989df819ed5b0d0b700677f67dc6ca6d669b7da2fca83bb1376b7c18e64a3b4807e7a9eb7eeb7e6724a3db4dd729c7b4af574fc8ad01ed78f4b7f4449"' : 'data-bs-target="#xs-controllers-links-module-AuthModule-d1f8ec8989df819ed5b0d0b700677f67dc6ca6d669b7da2fca83bb1376b7c18e64a3b4807e7a9eb7eeb7e6724a3db4dd729c7b4af574fc8ad01ed78f4b7f4449"' }>
-                                            <span class="icon ion-md-swap"></span>
-                                            <span>Controllers</span>
-                                            <span class="icon ion-ios-arrow-down"></span>
-                                        </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="controllers-links-module-AuthModule-d1f8ec8989df819ed5b0d0b700677f67dc6ca6d669b7da2fca83bb1376b7c18e64a3b4807e7a9eb7eeb7e6724a3db4dd729c7b4af574fc8ad01ed78f4b7f4449"' :
-                                            'id="xs-controllers-links-module-AuthModule-d1f8ec8989df819ed5b0d0b700677f67dc6ca6d669b7da2fca83bb1376b7c18e64a3b4807e7a9eb7eeb7e6724a3db4dd729c7b4af574fc8ad01ed78f4b7f4449"' }>
-                                            <li class="link">
-                                                <a href="controllers/AuthController.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AuthController</a>
-                                            </li>
-                                        </ul>
-                                    </li>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                        'data-bs-target="#injectables-links-module-AuthModule-d1f8ec8989df819ed5b0d0b700677f67dc6ca6d669b7da2fca83bb1376b7c18e64a3b4807e7a9eb7eeb7e6724a3db4dd729c7b4af574fc8ad01ed78f4b7f4449"' : 'data-bs-target="#xs-injectables-links-module-AuthModule-d1f8ec8989df819ed5b0d0b700677f67dc6ca6d669b7da2fca83bb1376b7c18e64a3b4807e7a9eb7eeb7e6724a3db4dd729c7b4af574fc8ad01ed78f4b7f4449"' }>
+                                        'data-bs-target="#injectables-links-module-AuthModule-d41e980580020ad1a69a52d92db9e7f20e12bf41d7cf62168537cb219b465f03ecc73e24e5dbf52612ed8968fc966f463c4064fc8f61e66a76c8756415fc2855"' : 'data-bs-target="#xs-injectables-links-module-AuthModule-d41e980580020ad1a69a52d92db9e7f20e12bf41d7cf62168537cb219b465f03ecc73e24e5dbf52612ed8968fc966f463c4064fc8f61e66a76c8756415fc2855"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-AuthModule-d1f8ec8989df819ed5b0d0b700677f67dc6ca6d669b7da2fca83bb1376b7c18e64a3b4807e7a9eb7eeb7e6724a3db4dd729c7b4af574fc8ad01ed78f4b7f4449"' :
-                                        'id="xs-injectables-links-module-AuthModule-d1f8ec8989df819ed5b0d0b700677f67dc6ca6d669b7da2fca83bb1376b7c18e64a3b4807e7a9eb7eeb7e6724a3db4dd729c7b4af574fc8ad01ed78f4b7f4449"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-AuthModule-d41e980580020ad1a69a52d92db9e7f20e12bf41d7cf62168537cb219b465f03ecc73e24e5dbf52612ed8968fc966f463c4064fc8f61e66a76c8756415fc2855"' :
+                                        'id="xs-injectables-links-module-AuthModule-d41e980580020ad1a69a52d92db9e7f20e12bf41d7cf62168537cb219b465f03ecc73e24e5dbf52612ed8968fc966f463c4064fc8f61e66a76c8756415fc2855"' }>
                                         <li class="link">
                                             <a href="injectables/AuthService.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >AuthService</a>
-                                        </li>
-                                        <li class="link">
-                                            <a href="injectables/JwtStrategy.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >JwtStrategy</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -626,9 +640,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/CommentVoteDTO.html" data-type="entity-link" >CommentVoteDTO</a>
                             </li>
                             <li class="link">
-                                <a href="classes/CustomError.html" data-type="entity-link" >CustomError</a>
-                            </li>
-                            <li class="link">
                                 <a href="classes/DateQueryDTO.html" data-type="entity-link" >DateQueryDTO</a>
                             </li>
                             <li class="link">
@@ -647,16 +658,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/FeedbacksDTO.html" data-type="entity-link" >FeedbacksDTO</a>
                             </li>
                             <li class="link">
-                                <a href="classes/HttpBadRequestError.html" data-type="entity-link" >HttpBadRequestError</a>
-                            </li>
-                            <li class="link">
                                 <a href="classes/HttpExceptionFilter.html" data-type="entity-link" >HttpExceptionFilter</a>
-                            </li>
-                            <li class="link">
-                                <a href="classes/HttpForbiddenError.html" data-type="entity-link" >HttpForbiddenError</a>
-                            </li>
-                            <li class="link">
-                                <a href="classes/HttpUnauthorizedError.html" data-type="entity-link" >HttpUnauthorizedError</a>
                             </li>
                             <li class="link">
                                 <a href="classes/KeyValueModel.html" data-type="entity-link" >KeyValueModel</a>
@@ -692,9 +694,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/ThreadPostIdDTO.html" data-type="entity-link" >ThreadPostIdDTO</a>
                             </li>
                             <li class="link">
-                                <a href="classes/ValidationError.html" data-type="entity-link" >ValidationError</a>
-                            </li>
-                            <li class="link">
                                 <a href="classes/Vote.html" data-type="entity-link" >Vote</a>
                             </li>
                             <li class="link">
@@ -717,31 +716,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </div>
                             <ul class="links collapse " ${ isNormalMode ? 'id="injectables-links"' : 'id="xs-injectables-links"' }>
                                 <li class="link">
-                                    <a href="injectables/AdminMaybeGuard.html" data-type="entity-link" >AdminMaybeGuard</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/AdminOnlyGuard.html" data-type="entity-link" >AdminOnlyGuard</a>
-                                </li>
-                                <li class="link">
                                     <a href="injectables/AkismetService.html" data-type="entity-link" >AkismetService</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/AWSService.html" data-type="entity-link" >AWSService</a>
                                 </li>
                                 <li class="link">
-                                    <a href="injectables/CacheInterceptor.html" data-type="entity-link" >CacheInterceptor</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/CorsMiddleware.html" data-type="entity-link" >CorsMiddleware</a>
-                                </li>
-                                <li class="link">
                                     <a href="injectables/EmailService.html" data-type="entity-link" >EmailService</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/ErrorInterceptor.html" data-type="entity-link" >ErrorInterceptor</a>
-                                </li>
-                                <li class="link">
-                                    <a href="injectables/ExposePipe.html" data-type="entity-link" >ExposePipe</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/GoogleService.html" data-type="entity-link" >GoogleService</a>
@@ -753,7 +734,10 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <a href="injectables/LoggingInterceptor.html" data-type="entity-link" >LoggingInterceptor</a>
                                 </li>
                                 <li class="link">
-                                    <a href="injectables/OriginMiddleware.html" data-type="entity-link" >OriginMiddleware</a>
+                                    <a href="injectables/MultipartValidationPipe.html" data-type="entity-link" >MultipartValidationPipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/NoopMiddleware.html" data-type="entity-link" >NoopMiddleware</a>
                                 </li>
                                 <li class="link">
                                     <a href="injectables/PermissionPipe.html" data-type="entity-link" >PermissionPipe</a>
@@ -769,6 +753,22 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 </li>
                             </ul>
                         </li>
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ? 'data-bs-target="#guards-links"' :
+                            'data-bs-target="#xs-guards-links"' }>
+                            <span class="icon ion-ios-lock"></span>
+                            <span>Guards</span>
+                            <span class="icon ion-ios-arrow-down"></span>
+                        </div>
+                        <ul class="links collapse " ${ isNormalMode ? 'id="guards-links"' : 'id="xs-guards-links"' }>
+                            <li class="link">
+                                <a href="guards/AdminOnlyGuard.html" data-type="entity-link" >AdminOnlyGuard</a>
+                            </li>
+                            <li class="link">
+                                <a href="guards/AdminOptionalGuard.html" data-type="entity-link" >AdminOptionalGuard</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="chapter">
                         <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ? 'data-bs-target="#interfaces-links"' :
                             'data-bs-target="#xs-interfaces-links"' }>
@@ -799,13 +799,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/CacheManualResult.html" data-type="entity-link" >CacheManualResult</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/CacheOptions.html" data-type="entity-link" >CacheOptions</a>
-                            </li>
-                            <li class="link">
                                 <a href="interfaces/CacheScheduleOptions.html" data-type="entity-link" >CacheScheduleOptions</a>
-                            </li>
-                            <li class="link">
-                                <a href="interfaces/DecoratorCreatorOption.html" data-type="entity-link" >DecoratorCreatorOption</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/DisqusConfig.html" data-type="entity-link" >DisqusConfig</a>
@@ -820,25 +814,31 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/GeneralDisqusParams.html" data-type="entity-link" >GeneralDisqusParams</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/GuestRequestOption.html" data-type="entity-link" >GuestRequestOption</a>
+                                <a href="interfaces/GuestRequestPermission.html" data-type="entity-link" >GuestRequestPermission</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/HandleOption.html" data-type="entity-link" >HandleOption</a>
+                                <a href="interfaces/HttpErrorResponse.html" data-type="entity-link" >HttpErrorResponse</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/HttpPaginateResult.html" data-type="entity-link" >HttpPaginateResult</a>
-                            </li>
-                            <li class="link">
-                                <a href="interfaces/HttpResponseBase.html" data-type="entity-link" >HttpResponseBase</a>
+                                <a href="interfaces/HttpSuccessResponse.html" data-type="entity-link" >HttpSuccessResponse</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/IPLocation.html" data-type="entity-link" >IPLocation</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/IRequestContext.html" data-type="entity-link" >IRequestContext</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/IUploadedFile.html" data-type="entity-link" >IUploadedFile</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/LoggerOptions.html" data-type="entity-link" >LoggerOptions</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/LoggerRenderOptions.html" data-type="entity-link" >LoggerRenderOptions</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/MultipartValidationOptions.html" data-type="entity-link" >MultipartValidationOptions</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/PaginateModel.html" data-type="entity-link" >PaginateModel</a>
@@ -850,10 +850,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/PaginateResult.html" data-type="entity-link" >PaginateResult</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/QueryCookies.html" data-type="entity-link" >QueryCookies</a>
-                            </li>
-                            <li class="link">
-                                <a href="interfaces/QueryParamsResult.html" data-type="entity-link" >QueryParamsResult</a>
+                                <a href="interfaces/PaginationPayload.html" data-type="entity-link" >PaginationPayload</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/QueryVisitor.html" data-type="entity-link" >QueryVisitor</a>
@@ -862,16 +859,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/RedisStoreOptions.html" data-type="entity-link" >RedisStoreOptions</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/Request.html" data-type="entity-link" >Request</a>
-                            </li>
-                            <li class="link">
                                 <a href="interfaces/RequestParams.html" data-type="entity-link" >RequestParams</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/ResponserOptions.html" data-type="entity-link" >ResponserOptions</a>
+                                <a href="interfaces/S3FileObject.html" data-type="entity-link" >S3FileObject</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/S3FileObject.html" data-type="entity-link" >S3FileObject</a>
+                                <a href="interfaces/SuccessResponseOptions.html" data-type="entity-link" >SuccessResponseOptions</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/TokenResult.html" data-type="entity-link" >TokenResult</a>

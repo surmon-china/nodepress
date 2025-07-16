@@ -203,7 +203,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/modules/article/article.model.ts:69</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/article/article.model.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -240,7 +240,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/article/article.model.ts:57</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/article/article.model.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -277,7 +277,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/modules/article/article.model.ts:61</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/modules/article/article.model.ts:49</a></div>
                         </td>
                     </tr>
 
@@ -298,26 +298,14 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, index, plugin, Ref, modelOptions } from &#x27;@typegoose/typegoose&#x27;
-import {
-  IsString,
-  IsBoolean,
-  IsNotEmpty,
-  IsArray,
-  IsOptional,
-  IsDefined,
-  IsIn,
-  IsInt,
-  MaxLength,
-  Matches,
-  ArrayNotEmpty,
-  ArrayUnique
-} from &#x27;class-validator&#x27;
+import { IsString, IsBoolean, IsArray, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength } from &#x27;class-validator&#x27;
 import { Language, SortType, PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
-import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/increment.constant&#x27;
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
-import { Category } from &#x27;@app/modules/category/category.model&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { Category } from &#x27;@app/modules/category/category.model&#x27;
 import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
 
 export const ARTICLE_LANGUAGES &#x3D; [Language.English, Language.Chinese, Language.Mixed] as const
@@ -362,7 +350,7 @@ export class ArticleMeta {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
     versionKey: false,

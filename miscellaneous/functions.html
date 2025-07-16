@@ -115,15 +115,6 @@
                             <a href="#bootstrap" title="src/main.ts" ><b>bootstrap</b>&nbsp;&nbsp;&nbsp;(src/.../main.ts)</a>
                         </li>
                         <li>
-                            <a href="#Cache" title="src/decorators/cache.decorator.ts" ><b>Cache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#Cache" title="src/decorators/cache.decorator.ts" ><b>Cache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#Cache" title="src/decorators/cache.decorator.ts" ><b>Cache</b>&nbsp;&nbsp;&nbsp;(src/.../cache.decorator.ts)</a>
-                        </li>
-                        <li>
                             <a href="#decodeBase64" title="src/transformers/codec.transformer.ts" ><b>decodeBase64</b>&nbsp;&nbsp;&nbsp;(src/.../codec.transformer.ts)</a>
                         </li>
                         <li>
@@ -157,12 +148,6 @@
                             <a href="#getTagUrl" title="src/transformers/urlmap.transformer.ts" ><b>getTagUrl</b>&nbsp;&nbsp;&nbsp;(src/.../urlmap.transformer.ts)</a>
                         </li>
                         <li>
-                            <a href="#handle" title="src/decorators/responser.decorator.ts" ><b>handle</b>&nbsp;&nbsp;&nbsp;(src/.../responser.decorator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#handle" title="src/decorators/responser.decorator.ts" ><b>handle</b>&nbsp;&nbsp;&nbsp;(src/.../responser.decorator.ts)</a>
-                        </li>
-                        <li>
                             <a href="#InjectModel" title="src/transformers/model.transformer.ts" ><b>InjectModel</b>&nbsp;&nbsp;&nbsp;(src/.../model.transformer.ts)</a>
                         </li>
                         <li>
@@ -178,6 +163,9 @@
                             <a href="#parseArgs" title="src/utils/args.ts" ><b>parseArgs</b>&nbsp;&nbsp;&nbsp;(src/.../args.ts)</a>
                         </li>
                         <li>
+                            <a href="#SuccessResponse" title="src/decorators/success-response.decorator.ts" ><b>SuccessResponse</b>&nbsp;&nbsp;&nbsp;(src/.../success-response.decorator.ts)</a>
+                        </li>
+                        <li>
                             <a href="#unknownToBoolean" title="src/transformers/value.transformer.ts" ><b>unknownToBoolean</b>&nbsp;&nbsp;&nbsp;(src/.../value.transformer.ts)</a>
                         </li>
                         <li>
@@ -187,7 +175,7 @@
                             <a href="#unknownToNumber" title="src/transformers/value.transformer.ts" ><b>unknownToNumber</b>&nbsp;&nbsp;&nbsp;(src/.../value.transformer.ts)</a>
                         </li>
                         <li>
-                            <a href="#WhenGuest" title="src/decorators/guest.decorator.ts" ><b>WhenGuest</b>&nbsp;&nbsp;&nbsp;(src/.../guest.decorator.ts)</a>
+                            <a href="#WithGuestPermission" title="src/decorators/guest-permission.decorator.ts" ><b>WithGuestPermission</b>&nbsp;&nbsp;&nbsp;(src/.../guest-permission.decorator.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -218,196 +206,6 @@
 
 
 
-        </tbody>
-    </table>
-</section>    <h3>src/decorators/cache.decorator.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="Cache"></a>
-                    <span class="name">
-                        <span ><b>Cache</b></span>
-                        <a href="#Cache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>Cache(option: <a href="../interfaces/CacheOptions.html" target="_self">CacheOptions</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>option</td>
-                                            <td>
-                                                            <code><a href="../interfaces/CacheOptions.html" target="_self" >CacheOptions</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>MethodDecorator</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="Cache"></a>
-                    <span class="name">
-                        <span ><b>Cache</b></span>
-                        <a href="#Cache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>Cache(key: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, ttl?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>key</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>ttl</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>MethodDecorator</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="Cache"></a>
-                    <span class="name">
-                        <span ><b>Cache</b></span>
-                        <a href="#Cache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>Cache(...args: any[])</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>args</td>
-                                            <td>
-                                                        <code>any[]</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                </td>
-            </tr>
         </tbody>
     </table>
 </section>    <h3>src/transformers/codec.transformer.ts</h3>
@@ -1109,123 +907,6 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/decorators/responser.decorator.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="handle"></a>
-                    <span class="name">
-                        <span ><b>handle</b></span>
-                        <a href="#handle"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>handle(args: <a href="../undefineds/HandleOptionConfig.html" target="_self">HandleOptionConfig</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>args</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#HandleOptionConfig" target="_self" >HandleOptionConfig</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>MethodDecorator</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="handle"></a>
-                    <span class="name">
-                        <span ><b>handle</b></span>
-                        <a href="#handle"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>handle(...args: any[])</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>args</td>
-                                            <td>
-                                                        <code>any[]</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </section>    <h3>src/utils/paginate.ts</h3>
     <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -1659,22 +1340,81 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/decorators/guest.decorator.ts</h3>
+</section>    <h3>src/decorators/success-response.decorator.ts</h3>
     <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="WhenGuest"></a>
+                    <a name="SuccessResponse"></a>
                     <span class="name">
-                        <span ><b>WhenGuest</b></span>
-                        <a href="#WhenGuest"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>SuccessResponse</b></span>
+                        <a href="#SuccessResponse"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>WhenGuest(option: <a href="../interfaces/GuestRequestOption.html" target="_self">GuestRequestOption</a>)</code>
+<code>SuccessResponse(input)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>input</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>MethodDecorator</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/decorators/guest-permission.decorator.ts</h3>
+    <section data-compodoc="block-methods">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="WithGuestPermission"></a>
+                    <span class="name">
+                        <span ><b>WithGuestPermission</b></span>
+                        <a href="#WithGuestPermission"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>WithGuestPermission(permission: <a href="../interfaces/GuestRequestPermission.html" target="_self">GuestRequestPermission</a>)</code>
                 </td>
             </tr>
 
@@ -1697,9 +1437,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>option</td>
+                                                <td>permission</td>
                                             <td>
-                                                            <code><a href="../interfaces/GuestRequestOption.html" target="_self" >GuestRequestOption</a></code>
+                                                            <code><a href="../interfaces/GuestRequestPermission.html" target="_self" >GuestRequestPermission</a></code>
                                             </td>
 
                                             <td>

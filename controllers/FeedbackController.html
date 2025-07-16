@@ -163,7 +163,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getFeedbacks" >getFeedbacks</a>
                             </li>
                             <li>
@@ -207,7 +206,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createFeedback(feedback: <a href="../classes/FeedbackBase.html" target="_self">FeedbackBase</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>createFeedback(feedback: <a href="../classes/FeedbackBase.html" target="_self">FeedbackBase</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -215,14 +214,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@Throttle({default: undefined})<br />@(&#x27;Create feedback&#x27;)<br /></code>
+                    <code>@Post()<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Create feedback succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -256,7 +255,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -269,7 +268,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Feedback.html" target="_self" >Promise&lt;Feedback&gt;</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -296,7 +295,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteFeedback(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>deleteFeedback(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -304,14 +303,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete feedback&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete feedback succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="108"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:108</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:103</a></div>
                         </td>
                     </tr>
 
@@ -333,7 +332,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -381,14 +380,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete feedbacks&#x27;)<br /></code>
+                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete feedbacks succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:89</a></div>
                         </td>
                     </tr>
 
@@ -443,7 +442,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getFeedbacks</b></span>
                         <a href="#getFeedbacks"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -460,14 +458,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOnlyGuard)<br />@()<br />@(&#x27;Get feedbacks&#x27;)<br /></code>
+                    <code>@Get()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse({message: &#x27;Get feedbacks succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:34</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -530,7 +528,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putFeedback(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, feedback: <a href="../classes/Feedback.html" target="_self">Feedback</a>)</code>
+                    <code>putFeedback(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, feedback: <a href="../classes/Feedback.html" target="_self">Feedback</a>)</code>
                 </td>
             </tr>
 
@@ -538,14 +536,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update feedback&#x27;)<br /></code>
+                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update feedback succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="101"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:101</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="96"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:96</a></div>
                         </td>
                     </tr>
 
@@ -567,7 +565,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -617,11 +615,10 @@ import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
+import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { numberToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
 import { FeedbackPaginateQueryDTO, FeedbacksDTO } from &#x27;./feedback.dto&#x27;
 import { Feedback, FeedbackBase } from &#x27;./feedback.model&#x27;
@@ -637,9 +634,8 @@ export class FeedbackController {
 
   @Get()
   @UseGuards(AdminOnlyGuard)
-  @Responser.paginate()
-  @Responser.handle(&#x27;Get feedbacks&#x27;)
-  getFeedbacks(@Query(ExposePipe) query: FeedbackPaginateQueryDTO): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
+  @SuccessResponse({ message: &#x27;Get feedbacks succeeded&#x27;, usePaginate: true })
+  getFeedbacks(@Query() query: FeedbackPaginateQueryDTO): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
     const paginateQuery: PaginateQuery&lt;Feedback&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
@@ -667,23 +663,20 @@ export class FeedbackController {
       ]
     }
 
-    return this.feedbackService.paginator(paginateQuery, paginateOptions)
+    return this.feedbackService.paginate(paginateQuery, paginateOptions)
   }
 
   @Post()
   @Throttle({ default: { ttl: seconds(30), limit: 5 } })
-  @Responser.handle(&#x27;Create feedback&#x27;)
-  async createFeedback(
-    @Body() feedback: FeedbackBase,
-    @QueryParams() { visitor }: QueryParamsResult
-  ): Promise&lt;Feedback&gt; {
-    const result &#x3D; await this.feedbackService.create(feedback, visitor)
+  @SuccessResponse(&#x27;Create feedback succeeded&#x27;)
+  async createFeedback(@Body() feedback: FeedbackBase, @RequestContext() { visitor }: IRequestContext) {
+    const created &#x3D; await this.feedbackService.create(feedback, visitor)
     const subject &#x3D; &#x60;You have a new feedback&#x60;
     const texts &#x3D; [
-      &#x60;${subject} on ${result.tid}.&#x60;,
-      &#x60;Author: ${result.user_name || &#x27;Anonymous user&#x27;}&#x60;,
-      &#x60;Emotion: ${result.emotion_emoji} ${result.emotion_text} (${result.emotion})&#x60;,
-      &#x60;Feedback: ${result.content}&#x60;
+      &#x60;${subject} on ${created.tid}.&#x60;,
+      &#x60;Author: ${created.user_name || &#x27;Anonymous user&#x27;}&#x60;,
+      &#x60;Emotion: ${created.emotion_emoji} ${created.emotion_text} (${created.emotion})&#x60;,
+      &#x60;Feedback: ${created.content}&#x60;
     ]
 
     this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
@@ -693,27 +686,27 @@ export class FeedbackController {
       html: texts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;)
     })
 
-    return result
+    return created
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete feedbacks&#x27;)
+  @SuccessResponse(&#x27;Delete feedbacks succeeded&#x27;)
   deleteFeedbacks(@Body() body: FeedbacksDTO) {
     return this.feedbackService.batchDelete(body.feedback_ids)
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update feedback&#x27;)
-  putFeedback(@QueryParams() { params }: QueryParamsResult, @Body() feedback: Feedback): Promise&lt;Feedback&gt; {
+  @SuccessResponse(&#x27;Update feedback succeeded&#x27;)
+  putFeedback(@RequestContext() { params }: IRequestContext, @Body() feedback: Feedback): Promise&lt;Feedback&gt; {
     return this.feedbackService.update(params.id, feedback)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete feedback&#x27;)
-  deleteFeedback(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Delete feedback succeeded&#x27;)
+  deleteFeedback(@RequestContext() { params }: IRequestContext) {
     return this.feedbackService.delete(params.id)
   }
 }

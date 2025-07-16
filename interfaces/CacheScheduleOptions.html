@@ -122,7 +122,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/cache/cache.service.ts</code>
+            <code>src/core/cache/cache.service.ts</code>
         </p>
 
 
@@ -240,9 +240,9 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import schedule from &#x27;node-schedule&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isNil from &#x27;lodash/isNil&#x27;
+import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
-import { isNil } from &#x27;@app/constants/value.constant&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { RedisService } from &#x27;./redis.service&#x27;
@@ -272,6 +272,7 @@ export interface CacheScheduleOptions&lt;T&gt; extends CacheBaseOptions&lt;T&gt;
 /**
  * @class CacheService
  * @classdesc Global cache service
+ * @example CacheService.has(CacheKey).then()
  * @example CacheService.get(CacheKey).then()
  * @example CacheService.set(CacheKey).then()
  * @example CacheService.delete(CacheKey).then()
@@ -283,6 +284,10 @@ export interface CacheScheduleOptions&lt;T&gt; extends CacheBaseOptions&lt;T&gt;
 @Injectable()
 export class CacheService {
   constructor(private readonly redisService: RedisService) {}
+
+  public has(key: string) {
+    return this.redisService.store.has(key)
+  }
 
   public set(
     key: string,
@@ -315,7 +320,7 @@ export class CacheService {
    */
   public async once&lt;T&gt;(options: CacheBaseOptions&lt;T&gt;): Promise&lt;T&gt; {
     const data &#x3D; await this.get&lt;T&gt;(options.key)
-    return isNil(data) ? await this.execPromise&lt;T&gt;(options) : data
+    return _isNil(data) ? await this.execPromise&lt;T&gt;(options) : data
   }
 
   /**

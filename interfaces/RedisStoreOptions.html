@@ -122,7 +122,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/cache/redis.store.ts</code>
+            <code>src/core/cache/redis.store.ts</code>
         </p>
 
 
@@ -246,17 +246,18 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { isNil, isUndefined, UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isNil from &#x27;lodash/isNil&#x27;
+import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import type { RedisClientType } from &#x27;./redis.service&#x27;
 
 export type RedisStore &#x3D; ReturnType&lt;typeof createRedisStore&gt;
 
 const stringifyValue &#x3D; (value: unknown) &#x3D;&gt; {
-  return isNil(value) ? &#x27;&#x27; : JSON.stringify(value)
+  return _isNil(value) ? &#x27;&#x27; : JSON.stringify(value)
 }
 
-const parseValue &#x3D; &lt;T&gt;(value: string | null | void) &#x3D;&gt; {
-  return isNil(value) ? UNDEFINED : (JSON.parse(value) as T)
+const parseValue &#x3D; &lt;T&gt;(value: string | null | undefined) &#x3D;&gt; {
+  return _isNil(value) ? undefined : (JSON.parse(value) as T)
 }
 
 export interface RedisStoreOptions {
@@ -278,8 +279,8 @@ export const createRedisStore &#x3D; (redisClient: RedisClientType, options?: Re
   const set &#x3D; async (key: string, value: any, ttl?: number): Promise&lt;void&gt; &#x3D;&gt; {
     const _key &#x3D; getKeyName(key)
     const _value &#x3D; stringifyValue(value)
-    const _ttl &#x3D; isUndefined(ttl) ? options?.defaultTTL : ttl
-    if (!isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
+    const _ttl &#x3D; _isUndefined(ttl) ? options?.defaultTTL : ttl
+    if (!_isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
       // EX — Set the specified expire time, in seconds.
       await redisClient.set(_key, _value, { expiration: { type: &#x27;EX&#x27;, value: _ttl } })
     } else {
@@ -288,8 +289,8 @@ export const createRedisStore &#x3D; (redisClient: RedisClientType, options?: Re
   }
 
   const mset &#x3D; async (kvs: [string, any][], ttl?: number): Promise&lt;void&gt; &#x3D;&gt; {
-    const _ttl &#x3D; isUndefined(ttl) ? options?.defaultTTL : ttl
-    if (!isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
+    const _ttl &#x3D; _isUndefined(ttl) ? options?.defaultTTL : ttl
+    if (!_isNil(_ttl) &amp;&amp; _ttl !&#x3D;&#x3D; 0) {
       const multi &#x3D; redisClient.multi()
       for (const [key, value] of kvs) {
         // EX — Set the specified expire time, in seconds.

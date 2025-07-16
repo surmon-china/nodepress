@@ -145,14 +145,16 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
                                 <a href="#delete" >delete</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#paginator" >paginator</a>
+                                <a href="#paginate" >paginate</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
                                 <a href="#update" >update</a>
                             </li>
                         </ul>
@@ -243,8 +245,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -366,6 +368,7 @@
                     <a name="delete"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
                         <span ><b>delete</b></span>
                         <a href="#delete"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -381,8 +384,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="35"
-                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:35</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -418,7 +421,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Announcement.html" target="_self" >Promise&lt;MongooseDoc&lt;Announcement&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -432,18 +435,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="paginator"></a>
+                    <a name="paginate"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>paginator</b></span>
-                        <a href="#paginator"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>paginate</b></span>
+                        <a href="#paginate"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginator(query: <a href="../classes/Announcement.html" target="_self">PaginateQuery&lt;Announcement&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
+                    <code>paginate(query: <a href="../classes/Announcement.html" target="_self">PaginateQuery&lt;Announcement&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
@@ -516,6 +519,7 @@
                     <a name="update"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
                         <span ><b>update</b></span>
                         <a href="#update"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -596,7 +600,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateOptions, PaginateQuery } from &#x27;@app/utils/paginate&#x27;
@@ -606,7 +610,7 @@ import { Announcement } from &#x27;./announcement.model&#x27;
 export class AnnouncementService {
   constructor(@InjectModel(Announcement) private readonly announcementModel: MongooseModel&lt;Announcement&gt;) {}
 
-  public paginator(
+  public paginate(
     query: PaginateQuery&lt;Announcement&gt;,
     options: PaginateOptions
   ): Promise&lt;PaginateResult&lt;Announcement&gt;&gt; {
@@ -617,20 +621,21 @@ export class AnnouncementService {
     return this.announcementModel.create(announcement)
   }
 
-  public update(announcementId: MongooseId, announcement: Announcement): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
-    return this.announcementModel
+  public async update(announcementId: MongooseId, announcement: Announcement): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
+    const updated &#x3D; await this.announcementModel
       .findByIdAndUpdate(announcementId, announcement, { new: true })
       .exec()
-      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Announcement &#x27;${announcementId}&#x27; not found&#x60;))
+
+    if (!updated) {
+      throw new NotFoundException(&#x60;Announcement &#x27;${announcementId}&#x27; not found&#x60;)
+    }
+    return updated
   }
 
-  public delete(announcementId: MongooseId) {
-    return this.announcementModel
-      .findByIdAndDelete(announcementId, null)
-      .exec()
-      .then((result) &#x3D;&gt; {
-        return result ?? Promise.reject(&#x60;Announcement &#x27;${announcementId}&#x27; not found&#x60;)
-      })
+  public async delete(announcementId: MongooseId): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
+    const deleted &#x3D; await this.announcementModel.findByIdAndDelete(announcementId).exec()
+    if (!deleted) throw new NotFoundException(&#x60;Announcement &#x27;${announcementId}&#x27; not found&#x60;)
+    return deleted
   }
 
   public batchDelete(announcementIds: MongooseId[]) {

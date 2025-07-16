@@ -241,22 +241,19 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Request } from &#x27;express&#x27;
-import { Observable } from &#x27;rxjs&#x27;
-import { tap } from &#x27;rxjs/operators&#x27;
-import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from &#x27;@nestjs/common&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { Observable } from &#x27;rxjs&#x27;
+import type { FastifyRequest } from &#x27;fastify&#x27;
+import type { CallHandler, ExecutionContext } from &#x27;@nestjs/common&#x27;
+import { Injectable, NestInterceptor } from &#x27;@nestjs/common&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
+import { tap } from &#x27;rxjs/operators&#x27;
 
-const logger &#x3D; createLogger({ scope: &#x27;LoggingInterceptor&#x27;, time: isDevEnv })
+const logger &#x3D; createLogger({ scope: &#x27;LoggingInterceptor&#x27;, time: true })
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler&lt;any&gt;): Observable&lt;any&gt; {
-    if (!isDevEnv) {
-      return next.handle()
-    }
-    const request &#x3D; context.switchToHttp().getRequest&lt;Request&gt;()
+    const request &#x3D; context.switchToHttp().getRequest&lt;FastifyRequest&gt;()
     const content &#x3D; request.method.padStart(6, &#x27;_&#x27;) + &#x27; -&gt; &#x27; + request.url
     logger.debug(&#x27;+++ REQ:&#x27;, content)
     const now &#x3D; Date.now()

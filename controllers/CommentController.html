@@ -174,7 +174,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getComments" >getComments</a>
                             </li>
                             <li>
@@ -229,7 +228,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createComment(comment: <a href="../classes/CommentBase.html" target="_self">CommentBase</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>createComment(comment: <a href="../classes/CommentBase.html" target="_self">CommentBase</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -237,14 +236,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@Throttle({default: undefined})<br />@(&#x27;Create comment&#x27;)<br /></code>
+                    <code>@Post()<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Create comment succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="85"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:85</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -278,7 +277,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -318,7 +317,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delComment(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>delComment(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -326,14 +325,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete comment&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete comment succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="131"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:131</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:125</a></div>
                         </td>
                     </tr>
 
@@ -355,7 +354,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -403,14 +402,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete comments&#x27;)<br /></code>
+                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete comments succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="101"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:101</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:97</a></div>
                         </td>
                     </tr>
 
@@ -473,7 +472,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getComment(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getComment(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -481,14 +480,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@({message: &#x27;Get comment detail&#x27;, error: undefined})<br /></code>
+                    <code>@Get(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Get comment detail succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="108"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:108</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="104"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -510,7 +509,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -550,7 +549,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCommentCalendar(query: <a href="../classes/CommentCalendarQueryDTO.html" target="_self">CommentCalendarQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getCommentCalendar(query: <a href="../classes/CommentCalendarQueryDTO.html" target="_self">CommentCalendarQueryDTO</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -558,14 +557,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;calendar&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get comment calendar&#x27;)<br /></code>
+                    <code>@Get(&#x27;calendar&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get comment calendar succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="75"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:75</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="73"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -599,7 +598,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -631,7 +630,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getComments</b></span>
                         <a href="#getComments"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -640,7 +638,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getComments(query: <a href="../classes/CommentPaginateQueryDTO.html" target="_self">CommentPaginateQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getComments(query: <a href="../classes/CommentPaginateQueryDTO.html" target="_self">CommentPaginateQueryDTO</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -648,14 +646,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminMaybeGuard)<br />@()<br />@(&#x27;Get comments&#x27;)<br /></code>
+                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get comments succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -689,7 +687,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -729,7 +727,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>patchComments(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, body: <a href="../classes/CommentsStateDTO.html" target="_self">CommentsStateDTO</a>)</code>
+                    <code>patchComments(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, body: <a href="../classes/CommentsStateDTO.html" target="_self">CommentsStateDTO</a>)</code>
                 </td>
             </tr>
 
@@ -737,14 +735,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update comments&#x27;)<br /></code>
+                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update comments succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:90</a></div>
                         </td>
                     </tr>
 
@@ -766,7 +764,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -818,7 +816,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putComment(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, comment: <a href="../classes/Comment.html" target="_self">Comment</a>)</code>
+                    <code>putComment(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, comment: <a href="../classes/Comment.html" target="_self">Comment</a>)</code>
                 </td>
             </tr>
 
@@ -826,14 +824,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update comment&#x27;)<br /></code>
+                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update comment succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="117"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:117</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="111"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:111</a></div>
                         </td>
                     </tr>
 
@@ -855,7 +853,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -907,7 +905,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putCommentIPLocation(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>putCommentIPLocation(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -915,14 +913,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id/ip_location&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update comment IP location&#x27;)<br /></code>
+                    <code>@Put(&#x27;:id/ip_location&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update comment IP location succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="124"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:124</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:118</a></div>
                         </td>
                     </tr>
 
@@ -944,7 +942,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -979,15 +977,14 @@
 
 import _trim from &#x27;lodash/trim&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
-import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from &#x27;@nestjs/common&#x27;
+import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
+import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStateDTO } from &#x27;./comment.dto&#x27;
 import { CommentService } from &#x27;./comment.service&#x27;
@@ -998,12 +995,11 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle(&#x27;Get comments&#x27;)
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: &#x27;Get comments succeeded&#x27;, usePaginate: true })
   getComments(
-    @Query(PermissionPipe, ExposePipe) query: CommentPaginateQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query(PermissionPipe) query: CommentPaginateQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise&lt;PaginateResult&lt;Comment&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
     const paginateQuery: PaginateQuery&lt;Comment&gt; &#x3D; {}
@@ -1039,69 +1035,65 @@ export class CommentController {
       ]
     }
 
-    return this.commentService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
+    return this.commentService.paginate(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
   @Get(&#x27;calendar&#x27;)
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle(&#x27;Get comment calendar&#x27;)
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse(&#x27;Get comment calendar succeeded&#x27;)
   getCommentCalendar(
-    @Query(ExposePipe) query: CommentCalendarQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query() query: CommentCalendarQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ) {
     return this.commentService.getCalendar(isUnauthenticated, query.timezone)
   }
 
   @Post()
   @Throttle({ default: { ttl: seconds(30), limit: 6 } })
-  @Responser.handle(&#x27;Create comment&#x27;)
-  createComment(@Body() comment: CommentBase, @QueryParams() { visitor }: QueryParamsResult): Promise&lt;Comment&gt; {
-    return comment.author.email
-      ? this.commentService.createFormClient(comment, visitor)
-      : Promise.reject(&#x60;author email should not be empty&#x60;)
+  @SuccessResponse(&#x27;Create comment succeeded&#x27;)
+  createComment(@Body() comment: CommentBase, @RequestContext() { visitor }: IRequestContext): Promise&lt;Comment&gt; {
+    return this.commentService.createFormClient(comment, visitor)
   }
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update comments&#x27;)
-  patchComments(@QueryParams() { visitor }: QueryParamsResult, @Body() body: CommentsStateDTO) {
+  @SuccessResponse(&#x27;Update comments succeeded&#x27;)
+  patchComments(@RequestContext() { visitor }: IRequestContext, @Body() body: CommentsStateDTO) {
     return this.commentService.batchPatchState(body, visitor.referer)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete comments&#x27;)
+  @SuccessResponse(&#x27;Delete comments succeeded&#x27;)
   delComments(@Body() body: CommentsDTO) {
     return this.commentService.batchDelete(body.comment_ids, body.post_ids)
   }
 
   @Get(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle({ message: &#x27;Get comment detail&#x27;, error: HttpStatus.NOT_FOUND })
-  getComment(@QueryParams() { params }: QueryParamsResult): Promise&lt;Comment&gt; {
-    return this.commentService.getDetailByObjectId(params.id).then((comment) &#x3D;&gt; {
-      return comment ? comment : Promise.reject(&#x27;Comment not found&#x27;)
-    })
+  @SuccessResponse(&#x27;Get comment detail succeeded&#x27;)
+  getComment(@RequestContext() { params }: IRequestContext): Promise&lt;Comment&gt; {
+    return this.commentService.getDetailByObjectId(params.id)
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update comment&#x27;)
-  putComment(@QueryParams() { params, visitor }: QueryParamsResult, @Body() comment: Comment): Promise&lt;Comment&gt; {
+  @SuccessResponse(&#x27;Update comment succeeded&#x27;)
+  putComment(@RequestContext() { params, visitor }: IRequestContext, @Body() comment: Comment): Promise&lt;Comment&gt; {
     return this.commentService.update(params.id, comment, visitor.referer)
   }
 
   @Put(&#x27;:id/ip_location&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update comment IP location&#x27;)
-  putCommentIPLocation(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Update comment IP location succeeded&#x27;)
+  putCommentIPLocation(@RequestContext() { params }: IRequestContext) {
     return this.commentService.reviseIPLocation(params.id)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete comment&#x27;)
-  delComment(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Delete comment succeeded&#x27;)
+  delComment(@RequestContext() { params }: IRequestContext) {
     return this.commentService.delete(params.id)
   }
 }

@@ -91,7 +91,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >ExposePipe</li>
+  <li class="breadcrumb-item" >NoopMiddleware</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -115,7 +115,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/pipes/expose.pipe.ts</code>
+            <code>src/middlewares/noop.middleware.ts</code>
         </p>
 
 
@@ -136,7 +136,7 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#transform" >transform</a>
+                                <a href="#use" >use</a>
                             </li>
                         </ul>
                     </td>
@@ -150,54 +150,6 @@
     </table>
 </section>
 
-            <section data-compodoc="block-constructor">
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(request: <a href="../interfaces/Request.html" target="_self">Request</a>)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/pipes/expose.pipe.ts:25</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>request</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../interfaces/Request.html" target="_self" >Request</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
 
             <section data-compodoc="block-methods">
     
@@ -208,24 +160,24 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="transform"></a>
+                    <a name="use"></a>
                     <span class="name">
-                        <span ><b>transform</b></span>
-                        <a href="#transform"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>use</b></span>
+                        <a href="#use"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>transform(value)</code>
+<code>use(request: IncomingMessage, response: OutgoingMessage, next: () => void)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/pipes/expose.pipe.ts:28</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="14"
+                                    class="link-to-prism">src/middlewares/noop.middleware.ts:14</a></div>
                         </td>
                     </tr>
 
@@ -240,12 +192,40 @@
                                     <thead>
                                         <tr>
                                             <td>Name</td>
+                                                <td>Type</td>
                                             <td>Optional</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>value</td>
+                                                <td>request</td>
+                                            <td>
+                                                        <code>IncomingMessage</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>response</td>
+                                            <td>
+                                                        <code>OutgoingMessage</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>next</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
 
                                             <td>
                                                     No
@@ -257,7 +237,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
                             <div class="io-description">
@@ -273,30 +253,15 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _cloneDeep from &#x27;lodash/cloneDeep&#x27;
-import { Request } from &#x27;express&#x27;
-import { REQUEST } from &#x27;@nestjs/core&#x27;
-import { Injectable, Inject, Scope, PipeTransform } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { IncomingMessage, OutgoingMessage } from &#x27;http&#x27;
+import { Injectable, NestMiddleware } from &#x27;@nestjs/common&#x27;
 
-declare global {
-  namespace Express {
-    interface Request {
-      $validatedPayload?: any
-    }
-  }
-}
-
-/**
- * @class ExposePipe
- * @classdesc Expose request params to request context
- */
-@Injectable({ scope: Scope.REQUEST })
-export class ExposePipe implements PipeTransform&lt;any&gt; {
-  constructor(@Inject(REQUEST) protected readonly request: Request) {}
-
-  transform(value) {
-    this.request.$validatedPayload &#x3D; _cloneDeep(value)
-    return value
+@Injectable()
+export class NoopMiddleware implements NestMiddleware {
+  // https://github.com/nestjs/nest/issues/9865#issuecomment-1174056923
+  use(request: IncomingMessage, response: OutgoingMessage, next: () &#x3D;&gt; void) {
+    // MARK: noop middleware
+    next()
   }
 }
 </code></pre>
@@ -342,7 +307,7 @@ export class ExposePipe implements PipeTransform&lt;any&gt; {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'ExposePipe.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'NoopMiddleware.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

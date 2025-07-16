@@ -112,28 +112,16 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
-                            <a href="#ActionURL" title="src/processors/helper/helper.service.seo.ts" ><b>ActionURL</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.seo.ts)</a>
+                            <a href="#ActionURL" title="src/core/helper/helper.service.seo.ts" ><b>ActionURL</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.seo.ts)</a>
                         </li>
                         <li>
                             <a href="#DefaultArgs" title="src/utils/args.ts" ><b>DefaultArgs</b>&nbsp;&nbsp;&nbsp;(src/.../args.ts)</a>
                         </li>
                         <li>
-                            <a href="#ExceptionInfo" title="src/interfaces/response.interface.ts" ><b>ExceptionInfo</b>&nbsp;&nbsp;&nbsp;(src/.../response.interface.ts)</a>
+                            <a href="#ExceptionResponse" title="src/filters/exception.filter.ts" ><b>ExceptionResponse</b>&nbsp;&nbsp;&nbsp;(src/.../exception.filter.ts)</a>
                         </li>
                         <li>
-                            <a href="#HandleOptionConfig" title="src/decorators/responser.decorator.ts" ><b>HandleOptionConfig</b>&nbsp;&nbsp;&nbsp;(src/.../responser.decorator.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#HttpResponse" title="src/interfaces/response.interface.ts" ><b>HttpResponse</b>&nbsp;&nbsp;&nbsp;(src/.../response.interface.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#HttpResponseError" title="src/interfaces/response.interface.ts" ><b>HttpResponseError</b>&nbsp;&nbsp;&nbsp;(src/.../response.interface.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#HttpResponseSuccess" title="src/interfaces/response.interface.ts" ><b>HttpResponseSuccess</b>&nbsp;&nbsp;&nbsp;(src/.../response.interface.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#IP" title="src/processors/helper/helper.service.ip.ts" ><b>IP</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.ip.ts)</a>
+                            <a href="#IP" title="src/core/helper/helper.service.ip.ts" ><b>IP</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.ip.ts)</a>
                         </li>
                         <li>
                             <a href="#MongooseDoc" title="src/interfaces/mongoose.interface.ts" ><b>MongooseDoc</b>&nbsp;&nbsp;&nbsp;(src/.../mongoose.interface.ts)</a>
@@ -151,16 +139,19 @@
                             <a href="#PaginateQuery" title="src/utils/paginate.ts" ><b>PaginateQuery</b>&nbsp;&nbsp;&nbsp;(src/.../paginate.ts)</a>
                         </li>
                         <li>
-                            <a href="#RedisClientType" title="src/processors/cache/redis.service.ts" ><b>RedisClientType</b>&nbsp;&nbsp;&nbsp;(src/.../redis.service.ts)</a>
+                            <a href="#RedisClientType" title="src/core/cache/redis.service.ts" ><b>RedisClientType</b>&nbsp;&nbsp;&nbsp;(src/.../redis.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#RedisStore" title="src/processors/cache/redis.store.ts" ><b>RedisStore</b>&nbsp;&nbsp;&nbsp;(src/.../redis.store.ts)</a>
+                            <a href="#RedisStore" title="src/core/cache/redis.store.ts" ><b>RedisStore</b>&nbsp;&nbsp;&nbsp;(src/.../redis.store.ts)</a>
                         </li>
                         <li>
                             <a href="#ResponseMessage" title="src/interfaces/response.interface.ts" ><b>ResponseMessage</b>&nbsp;&nbsp;&nbsp;(src/.../response.interface.ts)</a>
                         </li>
                         <li>
                             <a href="#Statistic" title="src/modules/extension/extension.service.statistic.ts" ><b>Statistic</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.statistic.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SuccessResponseDecoratorOptions" title="src/decorators/success-response.decorator.ts" ><b>SuccessResponseDecoratorOptions</b>&nbsp;&nbsp;&nbsp;(src/.../success-response.decorator.ts)</a>
                         </li>
                         <li>
                             <a href="#WithId" title="src/interfaces/mongoose.interface.ts" ><b>WithId</b>&nbsp;&nbsp;&nbsp;(src/.../mongoose.interface.ts)</a>
@@ -172,7 +163,7 @@
     </table>
 </section>
 
-    <h3>src/processors/helper/helper.service.seo.ts</h3>
+    <h3>src/core/helper/helper.service.seo.ts</h3>
     <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
@@ -208,107 +199,25 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/interfaces/response.interface.ts</h3>
+</section>    <h3>src/filters/exception.filter.ts</h3>
     <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ExceptionInfo"></a>
-                    <span class="name "><b>ExceptionInfo</b><a href="#ExceptionInfo"><span class="icon ion-ios-link"></span></a></span>
+                    <a name="ExceptionResponse"></a>
+                    <span class="name "><b>ExceptionResponse</b><a href="#ExceptionResponse"><span class="icon ion-ios-link"></span></a></span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <code>        <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage | literal type</a></code>
+                    <code>    <code>string | literal type</code>
 </code>
                 </td>
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="HttpResponse"></a>
-                    <span class="name "><b>HttpResponse</b><a href="#HttpResponse"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>    <code>HttpResponseError | HttpResponseSuccess&lt;T&gt;</code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="HttpResponseError"></a>
-                    <span class="name "><b>HttpResponseError</b><a href="#HttpResponseError"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>    <code></code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="HttpResponseSuccess"></a>
-                    <span class="name "><b>HttpResponseSuccess</b><a href="#HttpResponseSuccess"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>    <code></code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="ResponseMessage"></a>
-                    <span class="name "><b>ResponseMessage</b><a href="#ResponseMessage"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    <h3>src/decorators/responser.decorator.ts</h3>
-    <section data-compodoc="block-typealias">
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="HandleOptionConfig"></a>
-                    <span class="name "><b>HandleOptionConfig</b><a href="#HandleOptionConfig"><span class="icon ion-ios-link"></span></a></span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <code>        <code><a href="../interfaces/HandleOption.html" target="_self" >ResponseMessage | HandleOption</a></code>
-</code>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    <h3>src/processors/helper/helper.service.ip.ts</h3>
+</section>    <h3>src/core/helper/helper.service.ip.ts</h3>
     <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
@@ -426,7 +335,7 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/processors/cache/redis.service.ts</h3>
+</section>    <h3>src/core/cache/redis.service.ts</h3>
     <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
@@ -444,7 +353,7 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/processors/cache/redis.store.ts</h3>
+</section>    <h3>src/core/cache/redis.store.ts</h3>
     <section data-compodoc="block-typealias">
     <table class="table table-sm table-bordered">
         <tbody>
@@ -457,6 +366,24 @@
             <tr>
                 <td class="col-md-4">
                     <code>    <code>ReturnType&lt;&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/interfaces/response.interface.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ResponseMessage"></a>
+                    <span class="name "><b>ResponseMessage</b><a href="#ResponseMessage"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                 </td>
             </tr>
@@ -475,6 +402,24 @@
             <tr>
                 <td class="col-md-4">
                     <code>    <code>Record&lt; | number | null&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/decorators/success-response.decorator.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SuccessResponseDecoratorOptions"></a>
+                    <span class="name "><b>SuccessResponseDecoratorOptions</b><a href="#SuccessResponseDecoratorOptions"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../interfaces/SuccessResponseOptions.html" target="_self" >Omit&lt;SuccessResponseOptions | useTransform&gt;</a></code>
 </code>
                 </td>
             </tr>

@@ -119,7 +119,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/filters/error.filter.ts</code>
+            <code>src/filters/exception.filter.ts</code>
         </p>
 
 
@@ -181,15 +181,15 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>catch(exception: HttpException, host: ArgumentsHost)</code>
+<code>catch(exception, host: ArgumentsHost)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="19"
-                                    class="link-to-prism">src/filters/error.filter.ts:19</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="27"
+                                    class="link-to-prism">src/filters/exception.filter.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -212,7 +212,6 @@
                                         <tr>
                                                 <td>exception</td>
                                             <td>
-                                                        <code>HttpException</code>
                                             </td>
 
                                             <td>
@@ -237,7 +236,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
                             <div class="io-description">
@@ -258,39 +257,46 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isString from &#x27;lodash/isString&#x27;
-import { ExceptionFilter, Catch, HttpException, ArgumentsHost, HttpStatus } from &#x27;@nestjs/common&#x27;
-import { ResponseStatus, HttpResponseError, ExceptionInfo } from &#x27;@app/interfaces/response.interface&#x27;
-import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { FastifyReply } from &#x27;fastify&#x27;
+import type { ArgumentsHost } from &#x27;@nestjs/common&#x27;
+import { ExceptionFilter, Catch, HttpStatus, HttpException } from &#x27;@nestjs/common&#x27;
+import { ResponseStatus, HttpErrorResponse } from &#x27;@app/interfaces/response.interface&#x27;
+
+type ExceptionResponse &#x3D;
+  | string
+  | {
+      message: string
+      error?: any
+    }
 
 /**
  * @class HttpExceptionFilter
  * @classdesc catch globally exceptions &amp; formatting error message to &lt;HttpErrorResponse&gt;
+ * @link https://docs.nestjs.com/exception-filters
  */
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpException, host: ArgumentsHost) {
-    const request &#x3D; host.switchToHttp().getRequest()
-    const response &#x3D; host.switchToHttp().getResponse()
-    const exceptionStatus &#x3D; exception.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
-    const errorResponse: ExceptionInfo &#x3D; exception.getResponse() as ExceptionInfo
-    const errorMessage &#x3D; _isString(errorResponse) ? errorResponse : errorResponse.message
-    const errorInfo &#x3D; _isString(errorResponse) ? null : errorResponse.error
+  catch(exception: unknown, host: ArgumentsHost): void {
+    const context &#x3D; host.switchToHttp()
+    const response &#x3D; context.getResponse&lt;FastifyReply&gt;()
+    const timestamp &#x3D; new Date().toISOString()
 
-    const data: HttpResponseError &#x3D; {
-      status: ResponseStatus.Error,
-      message: errorMessage,
-      error: errorInfo?.message || (_isString(errorInfo) ? errorInfo : JSON.stringify(errorInfo)),
-      debug: isDevEnv ? errorInfo?.stack || exception.stack : UNDEFINED
+    if (exception instanceof HttpException) {
+      const errorInfo &#x3D; exception.getResponse() as ExceptionResponse
+      response.code(exception.getStatus()).send({
+        status: ResponseStatus.Error,
+        message: _isString(errorInfo) ? errorInfo : errorInfo.message,
+        error: _isString(errorInfo) ? null : errorInfo.error,
+        timestamp
+      } as HttpErrorResponse)
+    } else {
+      response.code(HttpStatus.INTERNAL_SERVER_ERROR).send({
+        status: ResponseStatus.Error,
+        message: exception instanceof Error ? exception.message : String(exception),
+        error: &#x27;Internal Server Error&#x27;,
+        timestamp
+      } as HttpErrorResponse)
     }
-
-    // default 404
-    if (exceptionStatus &#x3D;&#x3D;&#x3D; HttpStatus.NOT_FOUND) {
-      data.error &#x3D; data.error || &#x60;Not found&#x60;
-      data.message &#x3D; data.message || &#x60;Invalid API: ${request.method} &gt; ${request.url}&#x60;
-    }
-
-    return response.status(errorInfo?.status || exceptionStatus).jsonp(data)
   }
 }
 </code></pre>

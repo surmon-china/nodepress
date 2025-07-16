@@ -162,7 +162,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getAnnouncements" >getAnnouncements</a>
                             </li>
                             <li>
@@ -213,14 +212,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Create announcement&#x27;)<br /></code>
+                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Create announcement succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:56</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:52</a></div>
                         </td>
                     </tr>
 
@@ -283,7 +282,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delAnnouncement(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>delAnnouncement(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -291,14 +290,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete announcement&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete announcement succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="77"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:77</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="73"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -320,7 +319,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -368,14 +367,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete announcements&#x27;)<br /></code>
+                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete announcements succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="63"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:63</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:59</a></div>
                         </td>
                     </tr>
 
@@ -430,7 +429,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getAnnouncements</b></span>
                         <a href="#getAnnouncements"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -447,14 +445,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminMaybeGuard)<br />@()<br />@(&#x27;Get announcements&#x27;)<br /></code>
+                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get announcements succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:28</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:26</a></div>
                         </td>
                     </tr>
 
@@ -490,7 +488,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Announcement&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -517,7 +515,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putAnnouncement(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, announcement: <a href="../classes/Announcement.html" target="_self">Announcement</a>)</code>
+                    <code>putAnnouncement(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, announcement: <a href="../classes/Announcement.html" target="_self">Announcement</a>)</code>
                 </td>
             </tr>
 
@@ -525,14 +523,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update announcement&#x27;)<br /></code>
+                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update announcement succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="70"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:70</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -554,7 +552,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -602,11 +600,10 @@
 import _trim from &#x27;lodash/trim&#x27;
 import { Controller, Get, Put, Post, Delete, Body, UseGuards, Query } from &#x27;@nestjs/common&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
+import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { PaginateResult, PaginateQuery } from &#x27;@app/utils/paginate&#x27;
 import { AnnouncementsDTO, AnnouncementPaginateQueryDTO } from &#x27;./announcement.dto&#x27;
 import { AnnouncementService } from &#x27;./announcement.service&#x27;
@@ -617,12 +614,9 @@ export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle(&#x27;Get announcements&#x27;)
-  getAnnouncements(
-    @Query(PermissionPipe, ExposePipe) query: AnnouncementPaginateQueryDTO
-  ): Promise&lt;PaginateResult&lt;Announcement&gt;&gt; {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: &#x27;Get announcements succeeded&#x27;, usePaginate: true })
+  getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDTO) {
     const { sort, page, per_page, ...filters } &#x3D; query
     const { keyword, state } &#x3D; filters
     const paginateQuery: PaginateQuery&lt;Announcement&gt; &#x3D; {}
@@ -637,8 +631,8 @@ export class AnnouncementController {
       paginateQuery.state &#x3D; state
     }
 
-    // paginator
-    return this.announcementService.paginator(paginateQuery, {
+    // paginate
+    return this.announcementService.paginate(paginateQuery, {
       page,
       perPage: per_page,
       dateSort: sort
@@ -647,29 +641,29 @@ export class AnnouncementController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Create announcement&#x27;)
+  @SuccessResponse(&#x27;Create announcement succeeded&#x27;)
   createAnnouncement(@Body() announcement: Announcement) {
     return this.announcementService.create(announcement)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete announcements&#x27;)
+  @SuccessResponse(&#x27;Delete announcements succeeded&#x27;)
   delAnnouncements(@Body() body: AnnouncementsDTO) {
     return this.announcementService.batchDelete(body.announcement_ids)
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update announcement&#x27;)
-  putAnnouncement(@QueryParams() { params }: QueryParamsResult, @Body() announcement: Announcement) {
+  @SuccessResponse(&#x27;Update announcement succeeded&#x27;)
+  putAnnouncement(@RequestContext() { params }: IRequestContext, @Body() announcement: Announcement) {
     return this.announcementService.update(params.id, announcement)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete announcement&#x27;)
-  delAnnouncement(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Delete announcement succeeded&#x27;)
+  delAnnouncement(@RequestContext() { params }: IRequestContext) {
     return this.announcementService.delete(params.id)
   }
 }

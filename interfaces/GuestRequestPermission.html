@@ -98,7 +98,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  QueryCookies</li>
+  GuestRequestPermission</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -122,109 +122,149 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/decorators/queryparams.decorator.ts</code>
+            <code>src/decorators/guest-permission.decorator.ts</code>
         </p>
 
 
 
 
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#default" 
+>
+                                            default
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#only" 
+>
+                                            only
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
 
-            <section data-compodoc="block-indexables">
-    <h3 id="inputs">Indexable</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <code>[key: string]:        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="default"></a>
+                                        <span class="name "><b>default</b>
+                                            <a href="#default">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>default:     <code>T</code>
 </code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/decorators/queryparams.decorator.ts:17</a></div>
-                            </td>
-                        </tr>
-            </tbody>
-        </table>
-</section>
+                                    </td>
+                                </tr>
 
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>T</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="only"></a>
+                                        <span class="name "><b>only</b>
+                                            <a href="#only">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>only:     <code>T[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>T[]</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Request } from &#x27;express&#x27;
-import { createParamDecorator, ExecutionContext } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { SetMetadata } from &#x27;@nestjs/common&#x27;
+import { reflector } from &#x27;@app/constants/reflector.constant&#x27;
 
-export interface QueryVisitor {
-  ip: string | null
-  ua?: string
-  origin?: string
-  referer?: string
+export interface GuestRequestPermission&lt;T &#x3D; any&gt; {
+  only?: T[]
+  default?: T
 }
 
-export interface QueryCookies {
-  [key: string]: string
+const METADATA_GUEST_PERMISSION_PREFIX &#x3D; &#x27;app:guest_request_permission&#x27;
+
+export const getGuestRequestPermission &#x3D; (target: any, propertyKey: string): GuestRequestPermission | undefined &#x3D;&gt; {
+  return reflector.get(&#x60;${METADATA_GUEST_PERMISSION_PREFIX}:${propertyKey}&#x60;, target)
 }
 
-export interface QueryParamsResult {
-  /** admin role state */
-  isAuthenticated: boolean
-  isUnauthenticated: boolean
-  /** original route params */
-  params: Record&lt;string, string&gt;
-  /** original query params */
-  query: Record&lt;string, string&gt;
-  /** visitor cookies */
-  cookies: QueryCookies
-  /** visitor info */
-  visitor: QueryVisitor
-  /** original request */
-  request: Request
-}
-
-/**
- * @function QueryParams
- * @example &#x60;@QueryParams()&#x60;
- * @example &#x60;@QueryParams(&#x27;query&#x27;)&#x60;
- */
-export const QueryParams &#x3D; createParamDecorator(
-  (field: keyof QueryParamsResult, context: ExecutionContext): QueryParamsResult &#x3D;&gt; {
-    const request &#x3D; context.switchToHttp().getRequest&lt;Request&gt;()
-
-    // from passport middleware
-    // https://github.com/jaredhanson/passport/blob/master/CHANGELOG.md
-    // http://www.passportjs.org/docs/configure/
-    const isAuthenticated &#x3D; request.isAuthenticated()
-    const isUnauthenticated &#x3D; request.isUnauthenticated()
-
-    const ip &#x3D;
-      (request.headers[&#x27;x-forwarded-for&#x27;] as string) ||
-      (request.headers[&#x27;x-real-ip&#x27;] as string) ||
-      request.socket.remoteAddress ||
-      request.ip ||
-      request.ips[0]
-
-    const visitor: QueryVisitor &#x3D; {
-      ip: ip.replace(&#x27;::ffff:&#x27;, &#x27;&#x27;).replace(&#x27;::1&#x27;, &#x27;&#x27;) || null,
-      ua: request.headers[&#x27;user-agent&#x27;],
-      origin: request.headers.origin,
-      referer: request.headers.referer
-    }
-
-    const result &#x3D; {
-      isAuthenticated,
-      isUnauthenticated,
-      params: request.params,
-      query: request.query as any,
-      cookies: request.cookies,
-      visitor,
-      request
-    }
-
-    return field ? result[field] : result
+export function WithGuestPermission(permission: GuestRequestPermission) {
+  return (target: any, propertyKey: string) &#x3D;&gt; {
+    SetMetadata(&#x60;${METADATA_GUEST_PERMISSION_PREFIX}:${propertyKey}&#x60;, permission)(target)
   }
-)
+}
 </code></pre>
     </div>
 </div>
@@ -262,7 +302,7 @@ export const QueryParams &#x3D; createParamDecorator(
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'QueryCookies.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'GuestRequestPermission.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

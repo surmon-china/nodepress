@@ -168,7 +168,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getVotes" >getVotes</a>
                             </li>
                             <li>
@@ -236,14 +235,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete votes&#x27;)<br /></code>
+                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete votes succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="193"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:193</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:191</a></div>
                         </td>
                     </tr>
 
@@ -311,8 +310,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="110"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:110</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="109"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:109</a></div>
                         </td>
                     </tr>
 
@@ -380,8 +379,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:90</a></div>
                         </td>
                     </tr>
 
@@ -450,8 +449,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="48"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:48</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -520,8 +519,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -576,7 +575,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getVotes</b></span>
                         <a href="#getVotes"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -593,14 +591,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOnlyGuard)<br />@()<br />@(&#x27;Get votes&#x27;)<br /></code>
+                    <code>@Get()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse({message: &#x27;Get votes succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="167"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:167</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:165</a></div>
                         </td>
                     </tr>
 
@@ -669,8 +667,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:43</a></div>
                         </td>
                     </tr>
 
@@ -734,7 +732,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>voteComment(voteBody: <a href="../classes/CommentVoteDTO.html" target="_self">CommentVoteDTO</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>voteComment(voteBody: <a href="../classes/CommentVoteDTO.html" target="_self">CommentVoteDTO</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -742,14 +740,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;/comment&#x27;)<br />@Throttle({default: undefined})<br />@(&#x27;Vote comment&#x27;)<br /></code>
+                    <code>@Post(&#x27;/comment&#x27;)<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Vote comment succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="248"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:248</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="246"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:246</a></div>
                         </td>
                     </tr>
 
@@ -795,7 +793,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -840,8 +838,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="152"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:152</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:151</a></div>
                         </td>
                     </tr>
 
@@ -929,7 +927,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>votePost(voteBody: <a href="../classes/PostVoteDTO.html" target="_self">PostVoteDTO</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>votePost(voteBody: <a href="../classes/PostVoteDTO.html" target="_self">PostVoteDTO</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -937,14 +935,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;/post&#x27;)<br />@Throttle({default: undefined})<br />@(&#x27;Vote post&#x27;)<br /></code>
+                    <code>@Post(&#x27;/post&#x27;)<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Vote post succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="200"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:200</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="198"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:198</a></div>
                         </td>
                     </tr>
 
@@ -990,7 +988,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -1028,12 +1026,11 @@ import { UAParser } from &#x27;ua-parser-js&#x27;
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, minutes, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { IPService, IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
-import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { IPService, IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
+import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { OptionService } from &#x27;@app/modules/option/option.service&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
@@ -1123,7 +1120,7 @@ export class VoteController {
     }
 
     // anonymous user
-    return &#x60;Anonymous user&#x60;
+    return &#x27;Anonymous user&#x27;
   }
 
   private emailToTargetVoteMessage(payload: {
@@ -1181,9 +1178,8 @@ export class VoteController {
 
   @Get()
   @UseGuards(AdminOnlyGuard)
-  @Responser.paginate()
-  @Responser.handle(&#x27;Get votes&#x27;)
-  getVotes(@Query(ExposePipe) query: VotePaginateQueryDTO): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
+  @SuccessResponse({ message: &#x27;Get votes succeeded&#x27;, usePaginate: true })
+  getVotes(@Query() query: VotePaginateQueryDTO): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
     const paginateQuery: PaginateQuery&lt;Vote&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
@@ -1203,23 +1199,23 @@ export class VoteController {
     if (!_isUndefined(filters.author_type)) {
       paginateQuery.author_type &#x3D; filters.author_type
     }
-    return this.voteService.paginator(paginateQuery, paginateOptions)
+    return this.voteService.paginate(paginateQuery, paginateOptions)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete votes&#x27;)
+  @SuccessResponse(&#x27;Delete votes succeeded&#x27;)
   deleteVotes(@Body() body: VotesDTO) {
     return this.voteService.batchDelete(body.vote_ids)
   }
 
   @Post(&#x27;/post&#x27;)
   @Throttle({ default: { ttl: minutes(1), limit: 10 } })
-  @Responser.handle(&#x27;Vote post&#x27;)
+  @SuccessResponse(&#x27;Vote post succeeded&#x27;)
   async votePost(
     @Body() voteBody: PostVoteDTO,
     @DisqusToken() token: AccessToken | null,
-    @QueryParams() { visitor }: QueryParamsResult
+    @RequestContext() { visitor }: IRequestContext
   ) {
     // NodePress
     const likes &#x3D;
@@ -1263,11 +1259,11 @@ export class VoteController {
 
   @Post(&#x27;/comment&#x27;)
   @Throttle({ default: { ttl: seconds(30), limit: 10 } })
-  @Responser.handle(&#x27;Vote comment&#x27;)
+  @SuccessResponse(&#x27;Vote comment succeeded&#x27;)
   async voteComment(
     @Body() voteBody: CommentVoteDTO,
     @DisqusToken() token: AccessToken | null,
-    @QueryParams() { visitor }: QueryParamsResult
+    @RequestContext() { visitor }: IRequestContext
   ) {
     // NodePress
     const result &#x3D; await this.commentService.vote(voteBody.comment_id, voteBody.vote &gt; 0)

@@ -122,7 +122,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/helper/helper.service.aws.ts</code>
+            <code>src/core/helper/helper.service.aws.ts</code>
         </p>
 
 
@@ -174,9 +174,9 @@
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#name" 
+                                        <a href="#key" 
 >
-                                            name
+                                            key
                                         </a>
                                 </li>
                                 <li>
@@ -380,9 +380,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="name"></a>
-                                        <span class="name "><b>name</b>
-                                            <a href="#name">
+                                        <a name="key"></a>
+                                        <span class="name "><b>key</b>
+                                            <a href="#key">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -390,7 +390,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>name:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        <code>key:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -447,23 +447,17 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
-  S3Client,
-  PutObjectCommand,
-  ListObjectsV2Command,
-  GetObjectAttributesCommand,
-  ObjectAttributes,
-  StorageClass,
-  ServerSideEncryption,
-  PutObjectRequest
-} from &#x27;@aws-sdk/client-s3&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { PutObjectRequest } from &#x27;@aws-sdk/client-s3&#x27;
+import { S3Client, StorageClass, ObjectAttributes, ServerSideEncryption } from &#x27;@aws-sdk/client-s3&#x27;
+import { PutObjectCommand, ListObjectsV2Command, GetObjectAttributesCommand } from &#x27;@aws-sdk/client-s3&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-export { StorageClass as AWSStorageClass, ServerSideEncryption as AWSServerSideEncryption } from &#x27;@aws-sdk/client-s3&#x27;
+export { StorageClass as AWSStorageClass } from &#x27;@aws-sdk/client-s3&#x27;
+export { ServerSideEncryption as AWSServerSideEncryption } from &#x27;@aws-sdk/client-s3&#x27;
 
 export interface FileUploader {
-  name: string
+  key: string
   file: PutObjectRequest[&#x27;Body&#x27;] | string | Uint8Array | Buffer
   fileContentType?: string
   region: string
@@ -509,7 +503,7 @@ export class AWSService {
   }
 
   public uploadFile(payload: FileUploader): Promise&lt;S3FileObject&gt; {
-    const { region, bucket, name: key } &#x3D; payload
+    const { region, bucket, key } &#x3D; payload
     const s3Client &#x3D; this.createClient(region)
     const command &#x3D; new PutObjectCommand({
       Bucket: bucket,

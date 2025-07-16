@@ -330,8 +330,9 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import yargsArgv from &#x27;yargs-parser&#x27;
-import { isNil, isUndefined } from &#x27;@app/constants/value.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isNil from &#x27;lodash/isNil&#x27;
+import _isUndefined from &#x27;lodash/isUndefined&#x27;
+import yargsArgv from &#x27;yargs-parser&#x27;
 
 export type DefaultArgs &#x3D; Record&lt;string, string | boolean | number&gt;
 export const parseArgv &#x3D; &lt;T &#x3D; DefaultArgs&gt;(argv: string[]): T &#x3D;&gt; yargsArgv(argv)
@@ -348,14 +349,14 @@ export function parseArgs(parsedArgs: Record&lt;string, any&gt;) {
   function get&lt;T &#x3D; any&gt;(key: string, defaultValue?: T): T
   function get&lt;T &#x3D; any&gt;(input: string | ArgGetOptions&lt;T&gt;, defaultValue?: T): T {
     // If options is not provided, throw an error
-    if (isNil(input)) {
+    if (_isNil(input)) {
       throw new Error(&#x27;Argument options must be a string or an object with key and default properties.&#x27;)
     }
 
     // If options is a string, return the value directly
     if (typeof input &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
       const value &#x3D; parsedArgs[input]
-      return isUndefined(value) ? (defaultValue as T) : value
+      return _isUndefined(value) ? (defaultValue as T) : value
     }
 
     // If options is an object, extract the key and handle default and required logic
@@ -363,12 +364,12 @@ export function parseArgs(parsedArgs: Record&lt;string, any&gt;) {
     const value &#x3D; parsedArgs[key]
 
     // If the key is required and the value is nil, throw an error
-    if (input.required &amp;&amp; isNil(value)) {
+    if (input.required &amp;&amp; _isNil(value)) {
       throw new Error(input.message || &#x60;Missing required argument: &quot;${key}&quot;. Please pass it using --${key}&#x3D;&lt;value&gt;&#x60;)
     }
 
     // If the value is undefined, return the default value if provided
-    if (isUndefined(value)) {
+    if (_isUndefined(value)) {
       return input.default as T
     }
 

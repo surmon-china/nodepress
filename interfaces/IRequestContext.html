@@ -98,7 +98,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  DecoratorCreatorOption</li>
+  IRequestContext</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -122,7 +122,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/decorators/responser.decorator.ts</code>
+            <code>src/decorators/request-context.decorator.ts</code>
         </p>
 
 
@@ -141,38 +141,51 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#errorCode" 
+                                        <a href="#cookies" 
 >
-                                            errorCode
+                                            cookies
                                         </a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#errorMessage" 
+                                        <a href="#isAuthenticated" 
 >
-                                            errorMessage
+                                            isAuthenticated
                                         </a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#successCode" 
+                                        <a href="#isUnauthenticated" 
 >
-                                            successCode
+                                            isUnauthenticated
                                         </a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#successMessage" 
+                                        <a href="#params" 
 >
-                                            successMessage
+                                            params
                                         </a>
                                 </li>
                                 <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#usePaginate" 
+                                        <a href="#query" 
 >
-                                            usePaginate
+                                            query
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#request" 
+>
+                                            request
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#token" 
+>
+                                            token
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#visitor" 
+>
+                                            visitor
                                         </a>
                                 </li>
                             </ul>
@@ -190,9 +203,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="errorCode"></a>
-                                        <span class="name "><b>errorCode</b>
-                                            <a href="#errorCode">
+                                        <a name="cookies"></a>
+                                        <span class="name "><b>cookies</b>
+                                            <a href="#cookies">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -200,7 +213,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>errorCode:     <code>HttpStatus</code>
+                                        <code>cookies:     <code>Record&lt;string | string | undefined&gt;</code>
 </code>
                                     </td>
                                 </tr>
@@ -208,29 +221,30 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>HttpStatus</code>
+                                            <i>Type : </i>    <code>Record&lt;string | string | undefined&gt;</code>
 
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
 
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>visitor cookies</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="errorMessage"></a>
-                                        <span class="name "><b>errorMessage</b>
-                                            <a href="#errorMessage">
+                                        <a name="isAuthenticated"></a>
+                                        <span class="name "><b>isAuthenticated</b>
+                                            <a href="#isAuthenticated">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -238,121 +252,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>errorMessage:         <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="successCode"></a>
-                                        <span class="name "><b>successCode</b>
-                                            <a href="#successCode">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>successCode:     <code>HttpStatus</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>HttpStatus</code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="successMessage"></a>
-                                        <span class="name "><b>successMessage</b>
-                                            <a href="#successMessage">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>successMessage:         <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="usePaginate"></a>
-                                        <span class="name "><b>usePaginate</b>
-                                            <a href="#usePaginate">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>usePaginate:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <code>isAuthenticated:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -365,15 +265,238 @@
                                         </td>
                                     </tr>
 
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="isUnauthenticated"></a>
+                                        <span class="name "><b>isUnauthenticated</b>
+                                            <a href="#isUnauthenticated">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>isUnauthenticated:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Optional</i>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
                                         </td>
                                     </tr>
 
 
 
 
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="params"></a>
+                                        <span class="name "><b>params</b>
+                                            <a href="#params">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>params:     <code>Record&lt;string | string&gt;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>Record&lt;string | string&gt;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>original route params</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="query"></a>
+                                        <span class="name "><b>query</b>
+                                            <a href="#query">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>query:     <code>Record&lt;string | string&gt;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>Record&lt;string | string&gt;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>original query params</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="request"></a>
+                                        <span class="name "><b>request</b>
+                                            <a href="#request">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>request:     <code>FastifyRequest</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>FastifyRequest</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>original request</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="token"></a>
+                                        <span class="name "><b>token</b>
+                                            <a href="#token">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>token:     <code>string | undefined</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string | undefined</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>admin role state</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="visitor"></a>
+                                        <span class="name "><b>visitor</b>
+                                            <a href="#visitor">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>visitor:         <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>visitor info</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -381,122 +504,62 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isObject from &#x27;lodash/isObject&#x27;
-import { SetMetadata, HttpStatus } from &#x27;@nestjs/common&#x27;
-import { ResponseMessage } from &#x27;@app/interfaces/response.interface&#x27;
-import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
-import { reflector } from &#x27;@app/constants/reflector.constant&#x27;
-import * as META from &#x27;@app/constants/meta.constant&#x27;
-import * as TEXT from &#x27;@app/constants/text.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { FastifyRequest } from &#x27;fastify&#x27;
+import type { ExecutionContext } from &#x27;@nestjs/common&#x27;
+import { createParamDecorator } from &#x27;@nestjs/common&#x27;
 
-export interface ResponserOptions extends Omit&lt;DecoratorCreatorOption, &#x27;usePaginate&#x27;&gt; {
-  transform?: boolean
-  paginate?: boolean
+export interface QueryVisitor {
+  ip: string | null
+  ua: string | undefined
+  origin: string | undefined
+  referer: string | undefined
 }
 
-export const getResponserOptions &#x3D; (target: any): ResponserOptions &#x3D;&gt; {
+export interface IRequestContext {
+  /** admin role state */
+  token: string | undefined
+  isAuthenticated: boolean
+  isUnauthenticated: boolean
+  /** original route params */
+  params: Record&lt;string, string&gt;
+  /** original query params */
+  query: Record&lt;string, string&gt;
+  /** visitor cookies */
+  cookies: Record&lt;string, string | undefined&gt;
+  /** visitor info */
+  visitor: QueryVisitor
+  /** original request */
+  request: FastifyRequest
+}
+
+/**
+ * @function RequestContext
+ * @example &#x60;&#x60;&#x60;@RequestContext()&#x60;&#x60;&#x60;
+ */
+export const RequestContext &#x3D; createParamDecorator((_, context: ExecutionContext): IRequestContext &#x3D;&gt; {
+  const request &#x3D; context.switchToHttp().getRequest&lt;FastifyRequest&gt;()
+  // NOTE: Fastify already handles proxy IPs via trustProxy.
+  // https://fastify.dev/docs/latest/Reference/Server/#trustproxy
+  const ip &#x3D; request.ip ?? request.ips?.[0]
+
+  const visitor: QueryVisitor &#x3D; {
+    ip: ip?.replace(&#x27;::ffff:&#x27;, &#x27;&#x27;).replace(&#x27;::1&#x27;, &#x27;&#x27;) || null,
+    ua: request.headers[&#x27;user-agent&#x27;],
+    origin: request.headers.origin,
+    referer: request.headers.referer
+  }
+
   return {
-    errorCode: reflector.get(META.HTTP_ERROR_CODE, target),
-    successCode: reflector.get(META.HTTP_SUCCESS_CODE, target),
-    errorMessage: reflector.get(META.HTTP_ERROR_MESSAGE, target),
-    successMessage: reflector.get(META.HTTP_SUCCESS_MESSAGE, target),
-    transform: reflector.get(META.HTTP_RESPONSE_TRANSFORM, target),
-    paginate: reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target)
+    token: request.locals.token,
+    isAuthenticated: request.locals.isAuthenticated,
+    isUnauthenticated: request.locals.isUnauthenticated,
+    params: request.params as Record&lt;string, string&gt;,
+    query: request.query as Record&lt;string, string&gt;,
+    cookies: request.cookies,
+    visitor,
+    request
   }
-}
-
-interface DecoratorCreatorOption {
-  errorCode?: HttpStatus
-  successCode?: HttpStatus
-  errorMessage?: ResponseMessage
-  successMessage?: ResponseMessage
-  usePaginate?: boolean
-}
-
-interface HandleOption {
-  error?: HttpStatus
-  success?: HttpStatus
-  message: ResponseMessage
-  usePaginate?: boolean
-}
-
-type HandleOptionConfig &#x3D; ResponseMessage | HandleOption
-
-const createDecorator &#x3D; (options: DecoratorCreatorOption): MethodDecorator &#x3D;&gt; {
-  const { errorMessage, successMessage, errorCode, successCode, usePaginate } &#x3D; options
-  return (_, __, descriptor: PropertyDescriptor) &#x3D;&gt; {
-    SetMetadata(META.HTTP_RESPONSE_TRANSFORM, true)(descriptor.value)
-    if (errorCode) {
-      SetMetadata(META.HTTP_ERROR_CODE, errorCode)(descriptor.value)
-    }
-    if (successCode) {
-      SetMetadata(META.HTTP_SUCCESS_CODE, successCode)(descriptor.value)
-    }
-    if (errorMessage) {
-      SetMetadata(META.HTTP_ERROR_MESSAGE, errorMessage)(descriptor.value)
-    }
-    if (successMessage) {
-      SetMetadata(META.HTTP_SUCCESS_MESSAGE, successMessage)(descriptor.value)
-    }
-    if (usePaginate) {
-      SetMetadata(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, true)(descriptor.value)
-    }
-    return descriptor
-  }
-}
-
-/**
- * @exports success
- * @example &#x60;&#x60;&#x60;@HttpProcessor.success(&#x27;error message&#x27;, 500)&#x60;&#x60;&#x60;
- */
-export const error &#x3D; (message: ResponseMessage, statusCode?: HttpStatus): MethodDecorator &#x3D;&gt; {
-  return createDecorator({ errorMessage: message, errorCode: statusCode })
-}
-
-/**
- * @exports success
- * @example &#x60;&#x60;&#x60;@HttpProcessor.success(&#x27;success message&#x27;, 200)&#x60;&#x60;&#x60;
- */
-export const success &#x3D; (message: ResponseMessage, statusCode?: HttpStatus): MethodDecorator &#x3D;&gt; {
-  return createDecorator({
-    successMessage: message,
-    successCode: statusCode
-  })
-}
-
-/**
- * @function handle
- * @example &#x60;&#x60;&#x60;@HttpProcessor.handle(&#x27;Some request&#x27;)&#x60;&#x60;&#x60;
- * @example &#x60;&#x60;&#x60;@HttpProcessor.handle({ message: &#x27;Some request&#x27;, error: error, success: 200, usePaginate: true })&#x60;&#x60;&#x60;
- */
-export function handle(args: HandleOptionConfig): MethodDecorator
-export function handle(...args) {
-  const option &#x3D; args[0]
-  const isOption &#x3D; (value: HandleOptionConfig): value is HandleOption &#x3D;&gt; _isObject(value)
-  const message: ResponseMessage &#x3D; isOption(option) ? option.message : option
-  const errorMessage: ResponseMessage &#x3D; message + TEXT.HTTP_ERROR_SUFFIX
-  const successMessage: ResponseMessage &#x3D; message + TEXT.HTTP_SUCCESS_SUFFIX
-  const errorCode &#x3D; isOption(option) ? option.error : UNDEFINED
-  const successCode &#x3D; isOption(option) ? option.success : UNDEFINED
-  const usePaginate &#x3D; isOption(option) ? option.usePaginate : false
-  return createDecorator({
-    errorCode,
-    successCode,
-    errorMessage,
-    successMessage,
-    usePaginate
-  })
-}
-
-/**
- * @exports paginate
- * @example &#x60;&#x60;&#x60;@HttpProcessor.paginate()&#x60;&#x60;&#x60;
- */
-export const paginate &#x3D; (): MethodDecorator &#x3D;&gt; {
-  return createDecorator({ usePaginate: true })
-}
-
-export const Responser &#x3D; { error, success, handle, paginate }
+})
 </code></pre>
     </div>
 </div>
@@ -534,7 +597,7 @@ export const Responser &#x3D; { error, success, handle, paginate }
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'DecoratorCreatorOption.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'IRequestContext.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

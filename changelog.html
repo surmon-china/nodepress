@@ -84,6 +84,17 @@
 
 <h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3>5.1.0 (2025-07-16)</h3>
+<p><strong>Feature</strong></p>
+<ul>
+<li>Replaced Express with Fastify as the HTTP server</li>
+<li>Renamed <code>AuthModule</code> to <code>AdminModule</code></li>
+<li>Refactored the global JWT authentication mechanism</li>
+<li>Refactored decorators</li>
+<li>Removed all legacy middleware (CORS)</li>
+<li>Removed the unused Cache decorator</li>
+<li>Removed unnecessary global constants</li>
+</ul>
 <h3>5.0.0 (2025-06-16)</h3>
 <p><strong>Feature</strong></p>
 <ul>
@@ -371,8 +382,7 @@
 </ul>
 <p><strong>Chore</strong></p>
 <ul>
-<li><p>Upgrade deps</p>
-<ul>
+<li>Upgrade deps<ul>
 <li><code>Redis</code> &gt; v4</li>
 <li><code>nest</code> &gt; v8</li>
 <li><code>mongoose</code> &gt; v6</li>

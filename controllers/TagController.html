@@ -168,7 +168,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getTags" >getTags</a>
                             </li>
                             <li>
@@ -219,14 +218,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Create tag&#x27;)<br /></code>
+                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Create tag succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:59</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -289,7 +288,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delTag(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>delTag(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -297,14 +296,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete tag&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete tag succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="80"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:80</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="78"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:78</a></div>
                         </td>
                     </tr>
 
@@ -326,7 +325,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -374,14 +373,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete tags&#x27;)<br /></code>
+                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete tags succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="66"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:66</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -444,7 +443,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAllTags(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getAllTags(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -452,14 +451,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;all&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get all tags&#x27;)<br /></code>
+                    <code>@Get(&#x27;all&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get all tags succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -481,7 +480,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -494,7 +493,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;Array&lt;Tag&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;Tag[]&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -513,7 +512,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getTags</b></span>
                         <a href="#getTags"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -522,7 +520,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getTags(query: <a href="../classes/TagPaginateQueryDTO.html" target="_self">TagPaginateQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getTags(query: <a href="../classes/TagPaginateQueryDTO.html" target="_self">TagPaginateQueryDTO</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -530,14 +528,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminMaybeGuard)<br />@()<br />@(&#x27;Get tags&#x27;)<br /></code>
+                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get tags succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:28</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:26</a></div>
                         </td>
                     </tr>
 
@@ -571,7 +569,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -611,7 +609,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putTag(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, tag: <a href="../classes/Tag.html" target="_self">Tag</a>)</code>
+                    <code>putTag(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, tag: <a href="../classes/Tag.html" target="_self">Tag</a>)</code>
                 </td>
             </tr>
 
@@ -619,14 +617,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update Tag&#x27;)<br /></code>
+                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update Tag succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="73"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:73</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -648,7 +646,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -696,11 +694,10 @@
 import _trim from &#x27;lodash/trim&#x27;
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
+import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { TagsDTO, TagPaginateQueryDTO } from &#x27;./tag.dto&#x27;
 import { TagService } from &#x27;./tag.service&#x27;
@@ -711,12 +708,11 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle(&#x27;Get tags&#x27;)
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: &#x27;Get tags succeeded&#x27;, usePaginate: true })
   getTags(
-    @Query(PermissionPipe, ExposePipe) query: TagPaginateQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query(PermissionPipe) query: TagPaginateQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise&lt;PaginateResult&lt;Tag&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
     const paginateQuery: PaginateQuery&lt;Tag&gt; &#x3D; {}
@@ -730,13 +726,13 @@ export class TagController {
     }
 
     // paginate
-    return this.tagService.paginator(paginateQuery, paginateOptions, isUnauthenticated)
+    return this.tagService.paginate(paginateQuery, paginateOptions, isUnauthenticated)
   }
 
   @Get(&#x27;all&#x27;)
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle(&#x27;Get all tags&#x27;)
-  getAllTags(@QueryParams() { isAuthenticated }: QueryParamsResult): Promise&lt;Array&lt;Tag&gt;&gt; {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse(&#x27;Get all tags succeeded&#x27;)
+  getAllTags(@RequestContext() { isAuthenticated }: IRequestContext): Promise&lt;Tag[]&gt; {
     return isAuthenticated
       ? this.tagService.getAllTags({ aggregatePublicOnly: false })
       : this.tagService.getAllTagsCache()
@@ -744,29 +740,29 @@ export class TagController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Create tag&#x27;)
+  @SuccessResponse(&#x27;Create tag succeeded&#x27;)
   createTag(@Body() tag: Tag): Promise&lt;Tag&gt; {
     return this.tagService.create(tag)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete tags&#x27;)
+  @SuccessResponse(&#x27;Delete tags succeeded&#x27;)
   delTags(@Body() body: TagsDTO) {
     return this.tagService.batchDelete(body.tag_ids)
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update Tag&#x27;)
-  putTag(@QueryParams() { params }: QueryParamsResult, @Body() tag: Tag): Promise&lt;Tag&gt; {
+  @SuccessResponse(&#x27;Update Tag succeeded&#x27;)
+  putTag(@RequestContext() { params }: IRequestContext, @Body() tag: Tag): Promise&lt;Tag&gt; {
     return this.tagService.update(params.id, tag)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete tag&#x27;)
-  delTag(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Delete tag succeeded&#x27;)
+  delTag(@RequestContext() { params }: IRequestContext) {
     return this.tagService.delete(params.id)
   }
 }

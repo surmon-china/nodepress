@@ -168,7 +168,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getCategories" >getCategories</a>
                             </li>
                             <li>
@@ -224,14 +223,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Create category&#x27;)<br /></code>
+                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Create category succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -302,14 +301,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete categories&#x27;)<br /></code>
+                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete categories succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -372,7 +371,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>delCategory(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -380,14 +379,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete category&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete category succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="77"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:77</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="75"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:75</a></div>
                         </td>
                     </tr>
 
@@ -409,7 +408,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -449,7 +448,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAllCategories(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getAllCategories(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -457,14 +456,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;all&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get all categories&#x27;)<br /></code>
+                    <code>@Get(&#x27;all&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get all categories succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:41</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -486,7 +485,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -518,7 +517,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getCategories</b></span>
                         <a href="#getCategories"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -527,7 +525,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCategories(query: <a href="../classes/CategoryPaginateQueryDTO.html" target="_self">CategoryPaginateQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getCategories(query: <a href="../classes/CategoryPaginateQueryDTO.html" target="_self">CategoryPaginateQueryDTO</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -535,14 +533,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminMaybeGuard)<br />@()<br />@(&#x27;Get categories&#x27;)<br /></code>
+                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get categories succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="27"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:27</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:25</a></div>
                         </td>
                     </tr>
 
@@ -576,7 +574,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -615,7 +613,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getCategory(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -623,14 +621,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;:id&#x27;)<br />@(&#x27;Get categories tree&#x27;)<br /></code>
+                    <code>@Get(&#x27;:id&#x27;)<br />@SuccessResponse(&#x27;Get categories tree succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="63"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:63</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="61"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:61</a></div>
                         </td>
                     </tr>
 
@@ -652,7 +650,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -692,7 +690,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putCategory(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, category: <a href="../classes/Category.html" target="_self">Category</a>)</code>
+                    <code>putCategory(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, category: <a href="../classes/Category.html" target="_self">Category</a>)</code>
                 </td>
             </tr>
 
@@ -700,14 +698,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update category&#x27;)<br /></code>
+                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update category succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="70"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:70</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -729,7 +727,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -776,11 +774,10 @@
 
 import { Controller, UseGuards, Get, Put, Post, Delete, Query, Body } from &#x27;@nestjs/common&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
+import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { CategoriesDTO, CategoryPaginateQueryDTO } from &#x27;./category.dto&#x27;
 import { CategoryService } from &#x27;./category.service&#x27;
@@ -791,14 +788,13 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle(&#x27;Get categories&#x27;)
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: &#x27;Get categories succeeded&#x27;, usePaginate: true })
   getCategories(
-    @Query(PermissionPipe, ExposePipe) query: CategoryPaginateQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query(PermissionPipe) query: CategoryPaginateQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise&lt;PaginateResult&lt;Category&gt;&gt; {
-    return this.categoryService.paginator(
+    return this.categoryService.paginate(
       {},
       { page: query.page, perPage: query.per_page, dateSort: query.sort },
       isUnauthenticated
@@ -806,9 +802,9 @@ export class CategoryController {
   }
 
   @Get(&#x27;all&#x27;)
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle(&#x27;Get all categories&#x27;)
-  getAllCategories(@QueryParams() { isAuthenticated }: QueryParamsResult): Promise&lt;Array&lt;Category&gt;&gt; {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse(&#x27;Get all categories succeeded&#x27;)
+  getAllCategories(@RequestContext() { isAuthenticated }: IRequestContext): Promise&lt;Array&lt;Category&gt;&gt; {
     return isAuthenticated
       ? this.categoryService.getAllCategories({ aggregatePublicOnly: false })
       : this.categoryService.getAllCategoriesCache()
@@ -816,35 +812,35 @@ export class CategoryController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Create category&#x27;)
+  @SuccessResponse(&#x27;Create category succeeded&#x27;)
   createCategory(@Body() category: Category): Promise&lt;Category&gt; {
     return this.categoryService.create(category)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete categories&#x27;)
+  @SuccessResponse(&#x27;Delete categories succeeded&#x27;)
   delCategories(@Body() body: CategoriesDTO) {
     return this.categoryService.batchDelete(body.category_ids)
   }
 
   @Get(&#x27;:id&#x27;)
-  @Responser.handle(&#x27;Get categories tree&#x27;)
-  getCategory(@QueryParams() { params }: QueryParamsResult): Promise&lt;Category[]&gt; {
+  @SuccessResponse(&#x27;Get categories tree succeeded&#x27;)
+  getCategory(@RequestContext() { params }: IRequestContext): Promise&lt;Category[]&gt; {
     return this.categoryService.getGenealogyById(params.id)
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update category&#x27;)
-  putCategory(@QueryParams() { params }: QueryParamsResult, @Body() category: Category): Promise&lt;Category&gt; {
+  @SuccessResponse(&#x27;Update category succeeded&#x27;)
+  putCategory(@RequestContext() { params }: IRequestContext, @Body() category: Category): Promise&lt;Category&gt; {
     return this.categoryService.update(params.id, category)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete category&#x27;)
-  delCategory(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Delete category succeeded&#x27;)
+  delCategory(@RequestContext() { params }: IRequestContext) {
     return this.categoryService.delete(params.id)
   }
 }

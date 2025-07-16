@@ -98,7 +98,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  QueryParamsResult</li>
+  IUploadedFile</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -122,7 +122,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/decorators/queryparams.decorator.ts</code>
+            <code>src/decorators/uploaded-file.decorator.ts</code>
         </p>
 
 
@@ -141,45 +141,45 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#cookies" 
+                                        <a href="#buffer" 
 >
-                                            cookies
+                                            buffer
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#isAuthenticated" 
+                                        <a href="#encoding" 
 >
-                                            isAuthenticated
+                                            encoding
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#isUnauthenticated" 
+                                        <a href="#fields" 
 >
-                                            isUnauthenticated
+                                            fields
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#params" 
+                                        <a href="#file" 
 >
-                                            params
+                                            file
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#query" 
+                                        <a href="#fileName" 
 >
-                                            query
+                                            fileName
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#request" 
+                                        <a href="#fileSize" 
 >
-                                            request
+                                            fileSize
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#visitor" 
+                                        <a href="#mimetype" 
 >
-                                            visitor
+                                            mimetype
                                         </a>
                                 </li>
                             </ul>
@@ -197,9 +197,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="cookies"></a>
-                                        <span class="name "><b>cookies</b>
-                                            <a href="#cookies">
+                                        <a name="buffer"></a>
+                                        <span class="name "><b>buffer</b>
+                                            <a href="#buffer">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -207,7 +207,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>cookies:         <code><a href="../interfaces/QueryCookies.html" target="_self" >QueryCookies</a></code>
+                                        <code>buffer:     <code>Buffer</code>
 </code>
                                     </td>
                                 </tr>
@@ -215,85 +215,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../interfaces/QueryCookies.html" target="_self" >QueryCookies</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>visitor cookies</p>
-</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="isAuthenticated"></a>
-                                        <span class="name "><b>isAuthenticated</b>
-                                            <a href="#isAuthenticated">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>isAuthenticated:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>admin role state</p>
-</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="isUnauthenticated"></a>
-                                        <span class="name "><b>isUnauthenticated</b>
-                                            <a href="#isUnauthenticated">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>isUnauthenticated:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            <i>Type : </i>    <code>Buffer</code>
 
                                         </td>
                                     </tr>
@@ -308,9 +230,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="params"></a>
-                                        <span class="name "><b>params</b>
-                                            <a href="#params">
+                                        <a name="encoding"></a>
+                                        <span class="name "><b>encoding</b>
+                                            <a href="#encoding">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -318,7 +240,40 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>params:     <code>Record&lt;string | string&gt;</code>
+                                        <code>encoding:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="fields"></a>
+                                        <span class="name "><b>fields</b>
+                                            <a href="#fields">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>fields:     <code>Record&lt;string | string&gt;</code>
 </code>
                                     </td>
                                 </tr>
@@ -335,21 +290,15 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>original route params</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="query"></a>
-                                        <span class="name "><b>query</b>
-                                            <a href="#query">
+                                        <a name="file"></a>
+                                        <span class="name "><b>file</b>
+                                            <a href="#file">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -357,7 +306,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>query:     <code>Record&lt;string | string&gt;</code>
+                                        <code>file:     <code>MultipartFile</code>
 </code>
                                     </td>
                                 </tr>
@@ -365,7 +314,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>Record&lt;string | string&gt;</code>
+                                            <i>Type : </i>    <code>MultipartFile</code>
 
                                         </td>
                                     </tr>
@@ -374,21 +323,15 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>original query params</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="request"></a>
-                                        <span class="name "><b>request</b>
-                                            <a href="#request">
+                                        <a name="fileName"></a>
+                                        <span class="name "><b>fileName</b>
+                                            <a href="#fileName">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -396,7 +339,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>request:         <code><a href="../interfaces/Request.html" target="_self" >Request</a></code>
+                                        <code>fileName:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -404,7 +347,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../interfaces/Request.html" target="_self" >Request</a></code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -413,21 +356,15 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>original request</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="visitor"></a>
-                                        <span class="name "><b>visitor</b>
-                                            <a href="#visitor">
+                                        <a name="fileSize"></a>
+                                        <span class="name "><b>fileSize</b>
+                                            <a href="#fileSize">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -435,7 +372,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>visitor:         <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
+                                        <code>fileSize:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -443,7 +380,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                                         </td>
                                     </tr>
@@ -452,12 +389,39 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>visitor info</p>
-</div>
-                                </td>
-                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="mimetype"></a>
+                                        <span class="name "><b>mimetype</b>
+                                            <a href="#mimetype">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>mimetype:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
                         </tbody>
                     </table>
             </section>
@@ -465,78 +429,58 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Request } from &#x27;express&#x27;
-import { createParamDecorator, ExecutionContext } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { FastifyRequest } from &#x27;fastify&#x27;
+import type { MultipartFile } from &#x27;@fastify/multipart&#x27;
+import { createParamDecorator, ExecutionContext, BadRequestException } from &#x27;@nestjs/common&#x27;
 
-export interface QueryVisitor {
-  ip: string | null
-  ua?: string
-  origin?: string
-  referer?: string
-}
-
-export interface QueryCookies {
-  [key: string]: string
-}
-
-export interface QueryParamsResult {
-  /** admin role state */
-  isAuthenticated: boolean
-  isUnauthenticated: boolean
-  /** original route params */
-  params: Record&lt;string, string&gt;
-  /** original query params */
-  query: Record&lt;string, string&gt;
-  /** visitor cookies */
-  cookies: QueryCookies
-  /** visitor info */
-  visitor: QueryVisitor
-  /** original request */
-  request: Request
+export interface IUploadedFile {
+  file: MultipartFile[&#x27;file&#x27;]
+  fileName: string
+  fileSize: number
+  mimetype: string
+  encoding: string
+  buffer: Buffer
+  fields: Record&lt;string, string&gt;
 }
 
 /**
- * @function QueryParams
- * @example &#x60;@QueryParams()&#x60;
- * @example &#x60;@QueryParams(&#x27;query&#x27;)&#x60;
+ * @function UploadedFile
+ * @example &#x60;&#x60;&#x60;@UploadedFile() file: IUploadedFile&#x60;&#x60;&#x60;
  */
-export const QueryParams &#x3D; createParamDecorator(
-  (field: keyof QueryParamsResult, context: ExecutionContext): QueryParamsResult &#x3D;&gt; {
-    const request &#x3D; context.switchToHttp().getRequest&lt;Request&gt;()
+export const UploadedFile &#x3D; createParamDecorator(async (_, context: ExecutionContext): Promise&lt;IUploadedFile&gt; &#x3D;&gt; {
+  const request &#x3D; context.switchToHttp().getRequest&lt;FastifyRequest&gt;()
 
-    // from passport middleware
-    // https://github.com/jaredhanson/passport/blob/master/CHANGELOG.md
-    // http://www.passportjs.org/docs/configure/
-    const isAuthenticated &#x3D; request.isAuthenticated()
-    const isUnauthenticated &#x3D; request.isUnauthenticated()
+  // Fastify MultipartFile
+  const file &#x3D; await request.file()
+  if (!file) throw new BadRequestException(&#x27;No file uploaded&#x27;)
 
-    const ip &#x3D;
-      (request.headers[&#x27;x-forwarded-for&#x27;] as string) ||
-      (request.headers[&#x27;x-real-ip&#x27;] as string) ||
-      request.socket.remoteAddress ||
-      request.ip ||
-      request.ips[0]
+  // https://github.com/fastify/fastify-multipart/issues/196
+  // https://github.com/fastify/fastify-multipart/issues/250
+  // https://github.com/fastify/fastify-multipart
+  // NOTE: This decorator reads the entire file into memory (Buffer).
+  const buffer &#x3D; await file.toBuffer()
 
-    const visitor: QueryVisitor &#x3D; {
-      ip: ip.replace(&#x27;::ffff:&#x27;, &#x27;&#x27;).replace(&#x27;::1&#x27;, &#x27;&#x27;) || null,
-      ua: request.headers[&#x27;user-agent&#x27;],
-      origin: request.headers.origin,
-      referer: request.headers.referer
+  // Extract fields from the file
+  const fields: IUploadedFile[&#x27;fields&#x27;] &#x3D; {}
+  for (const [key, field] of Object.entries(file.fields ?? {})) {
+    const item &#x3D; Array.isArray(field) ? field[0] : field
+    if (item &amp;&amp; item.type &#x3D;&#x3D;&#x3D; &#x27;field&#x27;) {
+      fields[key] &#x3D; item.value as string
     }
-
-    const result &#x3D; {
-      isAuthenticated,
-      isUnauthenticated,
-      params: request.params,
-      query: request.query as any,
-      cookies: request.cookies,
-      visitor,
-      request
-    }
-
-    return field ? result[field] : result
   }
-)
+
+  const uploadedFile: IUploadedFile &#x3D; {
+    file: file.file,
+    fileName: file.filename,
+    fileSize: buffer.byteLength,
+    mimetype: file.mimetype,
+    encoding: file.encoding,
+    buffer,
+    fields
+  }
+
+  return uploadedFile
+})
 </code></pre>
     </div>
 </div>
@@ -574,7 +518,7 @@ export const QueryParams &#x3D; createParamDecorator(
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'QueryParamsResult.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'IUploadedFile.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

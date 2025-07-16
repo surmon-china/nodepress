@@ -215,8 +215,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="11"
-                                    class="link-to-prism">src/utils/logger.ts:11</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="12"
+                                    class="link-to-prism">src/utils/logger.ts:12</a></div>
                         </td>
                     </tr>
 
@@ -414,6 +414,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import pico from &#x27;picocolors&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
 
 interface LoggerRenderOptions {
   consoler: (...messages: any[]) &#x3D;&gt; void
@@ -468,7 +469,7 @@ export const createLogger &#x3D; (opts?: LoggerOptions) &#x3D;&gt; ({
   failure: renderLogger({ label: &#x27;🔴&#x27;, consoler: console.warn, formatter: pico.redBright, ...opts })
 })
 
-export default createLogger()
+export default createLogger({ time: isDevEnv })
 </code></pre>
     </div>
 </div>

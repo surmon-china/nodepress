@@ -258,7 +258,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/modules/article/article.dto.ts:75</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/article/article.dto.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -298,7 +298,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/article/article.dto.ts:65</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/article/article.dto.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -337,7 +337,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/modules/article/article.dto.ts:81</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/modules/article/article.dto.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -378,7 +378,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/modules/article/article.dto.ts:59</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/modules/article/article.dto.ts:49</a></div>
                         </td>
                     </tr>
 
@@ -414,13 +414,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @WhenGuest({only: undefined, default: undefined})<br />@IsIn(ARTICLE_PUBLIC_STATES)<br />@IsInt()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
+                            @WithGuestPermission({only: undefined, default: undefined})<br />@IsIn(ARTICLE_PUBLIC_STATES)<br />@IsInt()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/modules/article/article.dto.ts:52</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/article/article.dto.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -456,13 +456,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @WhenGuest({only: undefined, default: undefined})<br />@IsIn(ARTICLE_PUBLISH_STATES)<br />@IsInt()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
+                            @WithGuestPermission({only: undefined, default: undefined})<br />@IsIn(ARTICLE_PUBLISH_STATES)<br />@IsInt()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/modules/article/article.dto.ts:44</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/modules/article/article.dto.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -501,7 +501,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/article/article.dto.ts:70</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/article/article.dto.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -522,20 +522,10 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IntersectionType } from &#x27;@nestjs/mapped-types&#x27;
 import { Transform } from &#x27;class-transformer&#x27;
-import {
-  IsString,
-  IsNotEmpty,
-  IsArray,
-  IsOptional,
-  IsDefined,
-  IsBoolean,
-  IsIn,
-  IsInt,
-  ArrayNotEmpty,
-  ArrayUnique
-} from &#x27;class-validator&#x27;
+import { IsString, IsArray, IsBoolean, IsIn, IsInt } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, IsDefined, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
-import { WhenGuest } from &#x27;@app/decorators/guest.decorator&#x27;
+import { WithGuestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
 import { unknownToNumber, unknownToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
 import { DateQueryDTO, KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
@@ -551,7 +541,7 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   KeywordQueryDTO,
   DateQueryDTO
 ) {
-  @WhenGuest({ only: [PublishState.Published], default: PublishState.Published })
+  @WithGuestPermission({ only: [PublishState.Published], default: PublishState.Published })
   @IsIn(ARTICLE_PUBLISH_STATES)
   @IsInt()
   @IsNotEmpty()
@@ -559,7 +549,7 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   state?: PublishState
 
-  @WhenGuest({ only: [PublicState.Public], default: PublicState.Public })
+  @WithGuestPermission({ only: [PublicState.Public], default: PublicState.Public })
   @IsIn(ARTICLE_PUBLIC_STATES)
   @IsInt()
   @IsNotEmpty()

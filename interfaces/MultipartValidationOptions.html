@@ -98,7 +98,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  HandleOption</li>
+  MultipartValidationOptions</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -122,7 +122,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/decorators/responser.decorator.ts</code>
+            <code>src/pipes/multipart.pipe.ts</code>
         </p>
 
 
@@ -142,29 +142,16 @@
                             <ul class="index-list">
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#error" 
+                                        <a href="#allowedType" 
 >
-                                            error
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#message" 
->
-                                            message
+                                            allowedType
                                         </a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#success" 
+                                        <a href="#maxFileSize" 
 >
-                                            success
-                                        </a>
-                                </li>
-                                <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#usePaginate" 
->
-                                            usePaginate
+                                            maxFileSize
                                         </a>
                                 </li>
                             </ul>
@@ -182,9 +169,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="error"></a>
-                                        <span class="name "><b>error</b>
-                                            <a href="#error">
+                                        <a name="allowedType"></a>
+                                        <span class="name "><b>allowedType</b>
+                                            <a href="#allowedType">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -192,7 +179,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>error:     <code>HttpStatus</code>
+                                        <code>allowedType:         <code><a href="../classes/Option.html#fileType" target="_self" >FileTypeValidatorOptions['fileType']</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -200,7 +187,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>HttpStatus</code>
+                                            <i>Type : </i>        <code><a href="../classes/Option.html#fileType" target="_self" >FileTypeValidatorOptions['fileType']</a></code>
 
                                         </td>
                                     </tr>
@@ -220,9 +207,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="message"></a>
-                                        <span class="name "><b>message</b>
-                                            <a href="#message">
+                                        <a name="maxFileSize"></a>
+                                        <span class="name "><b>maxFileSize</b>
+                                            <a href="#maxFileSize">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -230,7 +217,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>message:         <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage</a></code>
+                                        <code>maxFileSize:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -238,78 +225,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage</a></code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="success"></a>
-                                        <span class="name "><b>success</b>
-                                            <a href="#success">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>success:     <code>HttpStatus</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>HttpStatus</code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="usePaginate"></a>
-                                        <span class="name "><b>usePaginate</b>
-                                            <a href="#usePaginate">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>usePaginate:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                                         </td>
                                     </tr>
@@ -330,122 +246,54 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isObject from &#x27;lodash/isObject&#x27;
-import { SetMetadata, HttpStatus } from &#x27;@nestjs/common&#x27;
-import { ResponseMessage } from &#x27;@app/interfaces/response.interface&#x27;
-import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
-import { reflector } from &#x27;@app/constants/reflector.constant&#x27;
-import * as META from &#x27;@app/constants/meta.constant&#x27;
-import * as TEXT from &#x27;@app/constants/text.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isUndefined from &#x27;lodash/isUndefined&#x27;
+import type { PipeTransform } from &#x27;@nestjs/common&#x27;
+import type { IFile } from &#x27;@nestjs/common/pipes/file/interfaces&#x27;
+import type { FileTypeValidatorOptions } from &#x27;@nestjs/common/pipes/file&#x27;
+import { Injectable, FileTypeValidator, MaxFileSizeValidator } from &#x27;@nestjs/common&#x27;
+import { UnprocessableEntityException, PayloadTooLargeException } from &#x27;@nestjs/common&#x27;
+import type { IUploadedFile } from &#x27;@app/decorators/uploaded-file.decorator&#x27;
 
-export interface ResponserOptions extends Omit&lt;DecoratorCreatorOption, &#x27;usePaginate&#x27;&gt; {
-  transform?: boolean
-  paginate?: boolean
+export interface MultipartValidationOptions {
+  allowedType?: FileTypeValidatorOptions[&#x27;fileType&#x27;]
+  maxFileSize?: number
 }
 
-export const getResponserOptions &#x3D; (target: any): ResponserOptions &#x3D;&gt; {
-  return {
-    errorCode: reflector.get(META.HTTP_ERROR_CODE, target),
-    successCode: reflector.get(META.HTTP_SUCCESS_CODE, target),
-    errorMessage: reflector.get(META.HTTP_ERROR_MESSAGE, target),
-    successMessage: reflector.get(META.HTTP_SUCCESS_MESSAGE, target),
-    transform: reflector.get(META.HTTP_RESPONSE_TRANSFORM, target),
-    paginate: reflector.get(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, target)
+/**
+ * @class MultipartValidationPipe
+ * @classdesc Validate multipart.
+ * @link https://medium.com/@davidkasumovfrontend/file-uploading-using-nestjs-fastify-64703cd83d02
+ */
+@Injectable()
+export class MultipartValidationPipe implements PipeTransform {
+  constructor(private options: MultipartValidationOptions &#x3D; {}) {}
+
+  async transform(file: IUploadedFile): Promise&lt;IUploadedFile&gt; {
+    const validatorFile: IFile &#x3D; {
+      mimetype: file.mimetype,
+      size: file.fileSize,
+      buffer: file.buffer
+    }
+
+    // Validate file type
+    if (this.options.allowedType) {
+      const typeValidator &#x3D; new FileTypeValidator({ fileType: this.options.allowedType })
+      if (!(await typeValidator.isValid(validatorFile))) {
+        throw new UnprocessableEntityException(typeValidator.buildErrorMessage(validatorFile))
+      }
+    }
+
+    // Validate file size
+    if (this.options.maxFileSize) {
+      const sizeValidator &#x3D; new MaxFileSizeValidator({ maxSize: this.options.maxFileSize })
+      if (!(await sizeValidator.isValid(validatorFile))) {
+        throw new PayloadTooLargeException(sizeValidator.buildErrorMessage(validatorFile))
+      }
+    }
+
+    return file
   }
 }
-
-interface DecoratorCreatorOption {
-  errorCode?: HttpStatus
-  successCode?: HttpStatus
-  errorMessage?: ResponseMessage
-  successMessage?: ResponseMessage
-  usePaginate?: boolean
-}
-
-interface HandleOption {
-  error?: HttpStatus
-  success?: HttpStatus
-  message: ResponseMessage
-  usePaginate?: boolean
-}
-
-type HandleOptionConfig &#x3D; ResponseMessage | HandleOption
-
-const createDecorator &#x3D; (options: DecoratorCreatorOption): MethodDecorator &#x3D;&gt; {
-  const { errorMessage, successMessage, errorCode, successCode, usePaginate } &#x3D; options
-  return (_, __, descriptor: PropertyDescriptor) &#x3D;&gt; {
-    SetMetadata(META.HTTP_RESPONSE_TRANSFORM, true)(descriptor.value)
-    if (errorCode) {
-      SetMetadata(META.HTTP_ERROR_CODE, errorCode)(descriptor.value)
-    }
-    if (successCode) {
-      SetMetadata(META.HTTP_SUCCESS_CODE, successCode)(descriptor.value)
-    }
-    if (errorMessage) {
-      SetMetadata(META.HTTP_ERROR_MESSAGE, errorMessage)(descriptor.value)
-    }
-    if (successMessage) {
-      SetMetadata(META.HTTP_SUCCESS_MESSAGE, successMessage)(descriptor.value)
-    }
-    if (usePaginate) {
-      SetMetadata(META.HTTP_RESPONSE_TRANSFORM_TO_PAGINATE, true)(descriptor.value)
-    }
-    return descriptor
-  }
-}
-
-/**
- * @exports success
- * @example &#x60;&#x60;&#x60;@HttpProcessor.success(&#x27;error message&#x27;, 500)&#x60;&#x60;&#x60;
- */
-export const error &#x3D; (message: ResponseMessage, statusCode?: HttpStatus): MethodDecorator &#x3D;&gt; {
-  return createDecorator({ errorMessage: message, errorCode: statusCode })
-}
-
-/**
- * @exports success
- * @example &#x60;&#x60;&#x60;@HttpProcessor.success(&#x27;success message&#x27;, 200)&#x60;&#x60;&#x60;
- */
-export const success &#x3D; (message: ResponseMessage, statusCode?: HttpStatus): MethodDecorator &#x3D;&gt; {
-  return createDecorator({
-    successMessage: message,
-    successCode: statusCode
-  })
-}
-
-/**
- * @function handle
- * @example &#x60;&#x60;&#x60;@HttpProcessor.handle(&#x27;Some request&#x27;)&#x60;&#x60;&#x60;
- * @example &#x60;&#x60;&#x60;@HttpProcessor.handle({ message: &#x27;Some request&#x27;, error: error, success: 200, usePaginate: true })&#x60;&#x60;&#x60;
- */
-export function handle(args: HandleOptionConfig): MethodDecorator
-export function handle(...args) {
-  const option &#x3D; args[0]
-  const isOption &#x3D; (value: HandleOptionConfig): value is HandleOption &#x3D;&gt; _isObject(value)
-  const message: ResponseMessage &#x3D; isOption(option) ? option.message : option
-  const errorMessage: ResponseMessage &#x3D; message + TEXT.HTTP_ERROR_SUFFIX
-  const successMessage: ResponseMessage &#x3D; message + TEXT.HTTP_SUCCESS_SUFFIX
-  const errorCode &#x3D; isOption(option) ? option.error : UNDEFINED
-  const successCode &#x3D; isOption(option) ? option.success : UNDEFINED
-  const usePaginate &#x3D; isOption(option) ? option.usePaginate : false
-  return createDecorator({
-    errorCode,
-    successCode,
-    errorMessage,
-    successMessage,
-    usePaginate
-  })
-}
-
-/**
- * @exports paginate
- * @example &#x60;&#x60;&#x60;@HttpProcessor.paginate()&#x60;&#x60;&#x60;
- */
-export const paginate &#x3D; (): MethodDecorator &#x3D;&gt; {
-  return createDecorator({ usePaginate: true })
-}
-
-export const Responser &#x3D; { error, success, handle, paginate }
 </code></pre>
     </div>
 </div>
@@ -483,7 +331,7 @@ export const Responser &#x3D; { error, success, handle, paginate }
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'HandleOption.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'MultipartValidationOptions.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

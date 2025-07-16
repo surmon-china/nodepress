@@ -156,12 +156,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(request: <a href="../interfaces/Request.html" target="_self">Request</a>)</code>
+<code>constructor(request: FastifyRequest)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/pipes/permission.pipe.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/pipes/permission.pipe.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -182,7 +182,7 @@
                                                         <td>request</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../interfaces/Request.html" target="_self" >Request</a></code>
+                                                                    <code>FastifyRequest</code>
                                                         </td>
                                                   
                                                     <td>
@@ -224,8 +224,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="23"
-                                    class="link-to-prism">src/pipes/permission.pipe.ts:23</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/pipes/permission.pipe.ts:22</a></div>
                         </td>
                     </tr>
 
@@ -274,56 +274,48 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isUndefined from &#x27;lodash/isUndefined&#x27;
-import { Request } from &#x27;express&#x27;
+import type { FastifyRequest } from &#x27;fastify&#x27;
+import type { PipeTransform } from &#x27;@nestjs/common&#x27;
+import { Injectable, Inject, Scope, ForbiddenException } from &#x27;@nestjs/common&#x27;
+import { getGuestRequestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
 import { REQUEST } from &#x27;@nestjs/core&#x27;
-import { Injectable, Inject, Scope, PipeTransform } from &#x27;@nestjs/common&#x27;
-import { HTTP_PARAMS_PERMISSION_ERROR_DEFAULT } from &#x27;@app/constants/text.constant&#x27;
-import { HttpForbiddenError } from &#x27;@app/errors/forbidden.error&#x27;
-import { getGuestRequestOptions } from &#x27;@app/decorators/guest.decorator&#x27;
 
 /**
  * @class PermissionPipe
- * @classdesc validate metatype class permission &amp; guest default value
+ * @classdesc Validate metatype class permission &amp; set default value.
  */
 @Injectable({ scope: Scope.REQUEST })
 export class PermissionPipe implements PipeTransform&lt;any&gt; {
-  constructor(@Inject(REQUEST) protected readonly request: Request) {}
+  constructor(@Inject(REQUEST) protected readonly request: FastifyRequest) {}
 
   transform(value) {
-    // admin &gt; any request params
-    if (this.request.isAuthenticated()) {
+    // Allow any authenticated user to pass through without validation.
+    if (this.request.locals.isAuthenticated) {
       return value
     }
 
-    // guest request params permission config
-    const guestRequestOptions &#x3D; getGuestRequestOptions(value)
-    if (!guestRequestOptions) {
-      return value
-    }
-
-    // validate guest user request params&#x27;s field permission
     Object.keys(value).forEach((field) &#x3D;&gt; {
-      const v &#x3D; value[field]
-      const o &#x3D; guestRequestOptions[field]
-      if (o?.only?.length) {
-        if (!o.only.includes(v)) {
-          const message &#x3D; &#x60;${HTTP_PARAMS_PERMISSION_ERROR_DEFAULT}: &#x27;${field}&#x3D;${v}&#x27;&#x60;
-          const description &#x3D; &#x60;&#x27;${field}&#x27; must be one of the following values: ${o.only.join(&#x27;, &#x27;)}&#x60;
-          throw new HttpForbiddenError(&#x60;${message}, ${description}&#x60;)
+      const fieldValue &#x3D; value[field]
+      const fieldMeta &#x3D; getGuestRequestPermission(value, field)
+
+      // Only validate permission when user explicitly provides the query param.
+      if (!_isUndefined(fieldValue)) {
+        // Validate guest user request params&#x27;s field permission.
+        if (fieldMeta?.only?.length &amp;&amp; !fieldMeta.only.includes(fieldValue)) {
+          throw new ForbiddenException(
+            &#x60;Invalid value for field &#x27;${field}&#x27;: allowed values are [${fieldMeta.only.join(&#x27;, &#x27;)}]&#x60;
+          )
         }
+      }
+
+      // Set default value for guest param if not provided and default is defined.
+      if (_isUndefined(fieldValue) &amp;&amp; !_isUndefined(fieldMeta?.default)) {
+        value[field] &#x3D; fieldMeta.default
       }
     })
 
-    // set default value for guest request params
-    Object.keys(guestRequestOptions).forEach((field) &#x3D;&gt; {
-      const v &#x3D; value[field]
-      const o &#x3D; guestRequestOptions[field]
-      if (o?.default) {
-        if (_isUndefined(v)) {
-          value[field] &#x3D; o.default
-        }
-      }
-    })
+    // HACK: Persisting validated query params to request.locals for debugging (non-standard side effect)
+    this.request.locals.validatedQueryParams &#x3D; { ...value }
 
     return value
   }

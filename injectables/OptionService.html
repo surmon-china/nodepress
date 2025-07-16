@@ -630,7 +630,7 @@ import _uniq from &#x27;lodash/uniq&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
+import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
 import { Option, Blocklist, DEFAULT_OPTION } from &#x27;./option.model&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
@@ -662,7 +662,7 @@ export class OptionService {
 
   public async ensureAppOption(): Promise&lt;MongooseDoc&lt;Option&gt;&gt; {
     const option &#x3D; await this.optionModel.findOne().exec()
-    return option || (await this.optionModel.create({ ...DEFAULT_OPTION }))
+    return option ?? (await this.optionModel.create({ ...DEFAULT_OPTION }))
   }
 
   public getOptionCacheForGuest() {

@@ -180,7 +180,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#getArticles" >getArticles</a>
                             </li>
@@ -238,14 +237,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Create article&#x27;)<br /></code>
+                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Create article succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="157"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:157</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:147</a></div>
                         </td>
                     </tr>
 
@@ -308,7 +307,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>delArticle(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -316,14 +315,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete article&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete article succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="171"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:171</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="161"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:161</a></div>
                         </td>
                     </tr>
 
@@ -345,7 +344,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -393,14 +392,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Delete articles&#x27;)<br /></code>
+                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete articles succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="185"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:185</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:175</a></div>
                         </td>
                     </tr>
 
@@ -463,7 +462,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getArticle(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -471,14 +470,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;:id&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@({message: &#x27;Get article detail&#x27;, error: undefined})<br /></code>
+                    <code>@Get(&#x27;:id&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get article detail succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="142"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:142</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="132"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:132</a></div>
                         </td>
                     </tr>
 
@@ -500,7 +499,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -540,7 +539,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getArticleCalendar(query: <a href="../classes/ArticleCalendarQueryDTO.html" target="_self">ArticleCalendarQueryDTO</a>, undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getArticleCalendar(query: <a href="../classes/ArticleCalendarQueryDTO.html" target="_self">ArticleCalendarQueryDTO</a>, undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -548,14 +547,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;calendar&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get article calendar&#x27;)<br /></code>
+                    <code>@Get(&#x27;calendar&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get article calendar succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="108"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:108</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="104"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -589,7 +588,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -629,7 +628,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getArticleContext(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getArticleContext(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -637,14 +636,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;:id/context&#x27;)<br />@({message: &#x27;Get context articles&#x27;, error: undefined})<br /></code>
+                    <code>@Get(&#x27;:id/context&#x27;)<br />@SuccessResponse(&#x27;Get context articles succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="120"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:120</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:113</a></div>
                         </td>
                     </tr>
 
@@ -666,7 +665,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -698,7 +697,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                             <span class="modifier">Async</span>
                         <span ><b>getArticles</b></span>
                         <a href="#getArticles"><span class="icon ion-ios-link"></span></a>
@@ -716,14 +714,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminMaybeGuard)<br />@()<br />@(&#x27;Get articles&#x27;)<br /></code>
+                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get articles succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:38</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -794,14 +792,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update articles&#x27;)<br /></code>
+                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update articles succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="178"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:178</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="168"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:168</a></div>
                         </td>
                     </tr>
 
@@ -864,7 +862,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putArticle(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, article: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>putArticle(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, article: <a href="../classes/Article.html" target="_self">Article</a>)</code>
                 </td>
             </tr>
 
@@ -872,14 +870,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update article&#x27;)<br /></code>
+                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update article succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="164"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:164</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:154</a></div>
                         </td>
                     </tr>
 
@@ -901,7 +899,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -949,13 +947,12 @@
 import _trim from &#x27;lodash/trim&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import { Types } from &#x27;mongoose&#x27;
-import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards, HttpStatus } from &#x27;@nestjs/common&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
+import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { ExposePipe } from &#x27;@app/pipes/expose.pipe&#x27;
+import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
+import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
@@ -974,12 +971,9 @@ export class ArticleController {
   ) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.paginate()
-  @Responser.handle(&#x27;Get articles&#x27;)
-  async getArticles(
-    @Query(PermissionPipe, ExposePipe) query: ArticlePaginateQueryDTO
-  ): Promise&lt;PaginateResult&lt;Article&gt;&gt; {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse({ message: &#x27;Get articles succeeded&#x27;, usePaginate: true })
+  async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDTO): Promise&lt;PaginateResult&lt;Article&gt;&gt; {
     const { page, per_page, sort, ...filters } &#x3D; query
     const paginateQuery: PaginateQuery&lt;Article&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page }
@@ -1041,25 +1035,22 @@ export class ArticleController {
     }
 
     // paginate
-    return this.articleService.paginator(paginateQuery, paginateOptions)
+    return this.articleService.paginate(paginateQuery, paginateOptions)
   }
 
   @Get(&#x27;calendar&#x27;)
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle(&#x27;Get article calendar&#x27;)
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse(&#x27;Get article calendar succeeded&#x27;)
   getArticleCalendar(
-    @Query(ExposePipe) query: ArticleCalendarQueryDTO,
-    @QueryParams() { isUnauthenticated }: QueryParamsResult
+    @Query() query: ArticleCalendarQueryDTO,
+    @RequestContext() { isUnauthenticated }: IRequestContext
   ) {
     return this.articleService.getCalendar(isUnauthenticated, query.timezone)
   }
 
   @Get(&#x27;:id/context&#x27;)
-  @Responser.handle({
-    message: &#x27;Get context articles&#x27;,
-    error: HttpStatus.NOT_FOUND
-  })
-  async getArticleContext(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Get context articles succeeded&#x27;)
+  async getArticleContext(@RequestContext() { params }: IRequestContext) {
     const articleId &#x3D; Number(params.id)
     const [prevArticles, nextArticles, relatedArticles] &#x3D; await Promise.all([
       this.articleService.getNearArticles(articleId, &#x27;early&#x27;, 1),
@@ -1076,18 +1067,15 @@ export class ArticleController {
   }
 
   @Get(&#x27;:id&#x27;)
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle({
-    message: &#x27;Get article detail&#x27;,
-    error: HttpStatus.NOT_FOUND
-  })
-  getArticle(@QueryParams() { params, isUnauthenticated }: QueryParamsResult): Promise&lt;Article&gt; {
-    // guest user &gt; number ID | slug
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse(&#x27;Get article detail succeeded&#x27;)
+  getArticle(@RequestContext() { params, isUnauthenticated }: IRequestContext): Promise&lt;Article&gt; {
+    // Guest user &gt; number ID | slug
     if (isUnauthenticated) {
       const idOrSlug &#x3D; isNaN(Number(params.id)) ? String(params.id) : Number(params.id)
       return this.articleService.getFullDetailForGuest(idOrSlug)
     }
-    // admin user &gt; Object ID | number ID
+    // Admin user &gt; Object ID | number ID
     return Types.ObjectId.isValid(params.id)
       ? this.articleService.getDetailByObjectId(params.id)
       : this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: Number(params.id) })
@@ -1095,35 +1083,35 @@ export class ArticleController {
 
   @Post()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Create article&#x27;)
+  @SuccessResponse(&#x27;Create article succeeded&#x27;)
   createArticle(@Body() article: Article): Promise&lt;Article&gt; {
     return this.articleService.create(article)
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update article&#x27;)
-  putArticle(@QueryParams() { params }: QueryParamsResult, @Body() article: Article): Promise&lt;Article&gt; {
+  @SuccessResponse(&#x27;Update article succeeded&#x27;)
+  putArticle(@RequestContext() { params }: IRequestContext, @Body() article: Article): Promise&lt;Article&gt; {
     return this.articleService.update(params.id, article)
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete article&#x27;)
-  delArticle(@QueryParams() { params }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Delete article succeeded&#x27;)
+  delArticle(@RequestContext() { params }: IRequestContext) {
     return this.articleService.delete(params.id)
   }
 
   @Patch()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update articles&#x27;)
+  @SuccessResponse(&#x27;Update articles succeeded&#x27;)
   patchArticles(@Body() body: ArticlesStateDTO) {
     return this.articleService.batchPatchState(body.article_ids, body.state)
   }
 
   @Delete()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Delete articles&#x27;)
+  @SuccessResponse(&#x27;Delete articles succeeded&#x27;)
   delArticles(@Body() body: ArticleIdsDTO) {
     return this.articleService.batchDelete(body.article_ids)
   }

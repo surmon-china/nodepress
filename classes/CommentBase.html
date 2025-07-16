@@ -223,7 +223,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/comment/comment.model.ts:100</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/modules/comment/comment.model.ts:85</a></div>
                         </td>
                     </tr>
 
@@ -264,7 +264,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/modules/comment/comment.model.ts:108</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/modules/comment/comment.model.ts:93</a></div>
                         </td>
                     </tr>
 
@@ -304,7 +304,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/modules/comment/comment.model.ts:95</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/modules/comment/comment.model.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -341,7 +341,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/comment/comment.model.ts:88</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/comment/comment.model.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -379,7 +379,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/comment/comment.model.ts:83</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/comment/comment.model.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -401,30 +401,15 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
-import {
-  IsString,
-  MinLength,
-  MaxLength,
-  IsDefined,
-  IsIn,
-  IsIP,
-  IsUrl,
-  IsEmail,
-  IsInt,
-  IsOptional,
-  IsNotEmpty,
-  IsArray,
-  IsObject,
-  ValidateNested,
-  ArrayUnique
-} from &#x27;class-validator&#x27;
-import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/increment.constant&#x27;
+import { IsString, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsArray, IsObject, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsDefined, IsOptional, IsNotEmpty, ValidateNested, MinLength, MaxLength } from &#x27;class-validator&#x27;
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
-import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
 import { ROOT_COMMENT_PID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
-import { IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
+import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
 
 export const COMMENT_STATES &#x3D; [
   CommentState.Auditing,
@@ -503,7 +488,7 @@ export class CommentBase {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },

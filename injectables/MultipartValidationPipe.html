@@ -91,7 +91,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >AdminMaybeGuard</li>
+  <li class="breadcrumb-item" >MultipartValidationPipe</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -115,23 +115,11 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/guards/admin-maybe.guard.ts</code>
+            <code>src/pipes/multipart.pipe.ts</code>
         </p>
 
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <b>Example :</b><div><pre class="line-numbers"><code class="language-html"></code></pre></div>
-            </p>
 
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                        <code>AuthGuard(&#x27;jwt&#x27;)</code>
-            </p>
 
 
             <section data-compodoc="block-index">
@@ -148,10 +136,8 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#canActivate" >canActivate</a>
-                            </li>
-                            <li>
-                                <a href="#handleRequest" >handleRequest</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#transform" >transform</a>
                             </li>
                         </ul>
                     </td>
@@ -165,6 +151,54 @@
     </table>
 </section>
 
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(options: <a href="../interfaces/MultipartValidationOptions.html" target="_self">MultipartValidationOptions</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/pipes/multipart.pipe.ts:26</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>options</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/MultipartValidationOptions.html" target="_self" >MultipartValidationOptions</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
 
             <section data-compodoc="block-methods">
     
@@ -175,24 +209,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="canActivate"></a>
+                    <a name="transform"></a>
                     <span class="name">
-                        <span ><b>canActivate</b></span>
-                        <a href="#canActivate"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>transform</b></span>
+                        <a href="#transform"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>canActivate(context: ExecutionContext)</code>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>transform(file: <a href="../interfaces/IUploadedFile.html" target="_self">IUploadedFile</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="19"
-                                    class="link-to-prism">src/guards/admin-maybe.guard.ts:19</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/pipes/multipart.pipe.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -213,9 +249,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>context</td>
+                                                <td>file</td>
                                             <td>
-                                                        <code>ExecutionContext</code>
+                                                            <code><a href="../interfaces/IUploadedFile.html" target="_self" >IUploadedFile</a></code>
                                             </td>
 
                                             <td>
@@ -228,88 +264,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="handleRequest"></a>
-                    <span class="name">
-                        <span ><b>handleRequest</b></span>
-                        <a href="#handleRequest"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>handleRequest(error, authInfo, errInfo)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="23"
-                                    class="link-to-prism">src/guards/admin-maybe.guard.ts:23</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>error</td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>authInfo</td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>errInfo</td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/IUploadedFile.html" target="_self" >Promise&lt;IUploadedFile&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -325,31 +280,52 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AuthGuard } from &#x27;@nestjs/passport&#x27;
-import { ExecutionContext, Injectable } from &#x27;@nestjs/common&#x27;
-import { HttpUnauthorizedError } from &#x27;@app/errors/unauthorized.error&#x27;
-import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isUndefined from &#x27;lodash/isUndefined&#x27;
+import type { PipeTransform } from &#x27;@nestjs/common&#x27;
+import type { IFile } from &#x27;@nestjs/common/pipes/file/interfaces&#x27;
+import type { FileTypeValidatorOptions } from &#x27;@nestjs/common/pipes/file&#x27;
+import { Injectable, FileTypeValidator, MaxFileSizeValidator } from &#x27;@nestjs/common&#x27;
+import { UnprocessableEntityException, PayloadTooLargeException } from &#x27;@nestjs/common&#x27;
+import type { IUploadedFile } from &#x27;@app/decorators/uploaded-file.decorator&#x27;
+
+export interface MultipartValidationOptions {
+  allowedType?: FileTypeValidatorOptions[&#x27;fileType&#x27;]
+  maxFileSize?: number
+}
 
 /**
- * @class AdminMaybeGuard
- * @classdesc Token isn&#x27;t existed | Token validated
- * @example &#x60;&#x60;&#x60;@UseGuards(AdminMaybeGuard)&#x60;&#x60;&#x60;
+ * @class MultipartValidationPipe
+ * @classdesc Validate multipart.
+ * @link https://medium.com/@davidkasumovfrontend/file-uploading-using-nestjs-fastify-64703cd83d02
  */
 @Injectable()
-export class AdminMaybeGuard extends AuthGuard(&#x27;jwt&#x27;) {
-  canActivate(context: ExecutionContext) {
-    return super.canActivate(context)
-  }
+export class MultipartValidationPipe implements PipeTransform {
+  constructor(private options: MultipartValidationOptions &#x3D; {}) {}
 
-  handleRequest(error, authInfo, errInfo) {
-    const validToken &#x3D; Boolean(authInfo)
-    // MARK: https://github.com/mikenicholson/passport-jwt/issues/174
-    const emptyToken &#x3D; !authInfo &amp;&amp; errInfo?.message &#x3D;&#x3D;&#x3D; &#x27;No auth token&#x27;
-    if (!error &amp;&amp; (validToken || emptyToken)) {
-      return authInfo
-    } else {
-      throw error || new HttpUnauthorizedError(UNDEFINED, errInfo?.message)
+  async transform(file: IUploadedFile): Promise&lt;IUploadedFile&gt; {
+    const validatorFile: IFile &#x3D; {
+      mimetype: file.mimetype,
+      size: file.fileSize,
+      buffer: file.buffer
     }
+
+    // Validate file type
+    if (this.options.allowedType) {
+      const typeValidator &#x3D; new FileTypeValidator({ fileType: this.options.allowedType })
+      if (!(await typeValidator.isValid(validatorFile))) {
+        throw new UnprocessableEntityException(typeValidator.buildErrorMessage(validatorFile))
+      }
+    }
+
+    // Validate file size
+    if (this.options.maxFileSize) {
+      const sizeValidator &#x3D; new MaxFileSizeValidator({ maxSize: this.options.maxFileSize })
+      if (!(await sizeValidator.isValid(validatorFile))) {
+        throw new PayloadTooLargeException(sizeValidator.buildErrorMessage(validatorFile))
+      }
+    }
+
+    return file
   }
 }
 </code></pre>
@@ -395,7 +371,7 @@ export class AdminMaybeGuard extends AuthGuard(&#x27;jwt&#x27;) {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'AdminMaybeGuard.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'MultipartValidationPipe.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

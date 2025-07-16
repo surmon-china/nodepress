@@ -429,8 +429,8 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
-import { CacheService } from &#x27;@app/processors/cache/cache.service&#x27;
-import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
+import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
+import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { VoteTarget, VoteType } from &#x27;@app/modules/vote/vote.model&#x27;
 import { VoteService } from &#x27;@app/modules/vote/vote.service&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
@@ -519,34 +519,34 @@ export class StatisticService {
   }
 
   public getStatistic(publicOnly: boolean) {
-    const resultData: Statistic &#x3D; { ...DEFAULT_STATISTIC }
+    const statisticData: Statistic &#x3D; { ...DEFAULT_STATISTIC }
     const tasks &#x3D; Promise.all([
       this.tagService.getTotalCount().then((value) &#x3D;&gt; {
-        resultData.tags &#x3D; value
+        statisticData.tags &#x3D; value
       }),
       this.articleService.getTotalCount(publicOnly).then((value) &#x3D;&gt; {
-        resultData.articles &#x3D; value
+        statisticData.articles &#x3D; value
       }),
       this.commentService.getTotalCount(publicOnly).then((value) &#x3D;&gt; {
-        resultData.comments &#x3D; value
+        statisticData.comments &#x3D; value
       }),
       this.feedbackService.getRootFeedbackAverageEmotion().then((value) &#x3D;&gt; {
-        resultData.averageEmotion &#x3D; value ?? 0
+        statisticData.averageEmotion &#x3D; value ?? 0
       }),
       this.articleService.getMetaStatistic().then((value) &#x3D;&gt; {
-        resultData.totalViews &#x3D; value?.totalViews ?? 0
-        resultData.totalLikes &#x3D; value?.totalLikes ?? 0
+        statisticData.totalViews &#x3D; value?.totalViews ?? 0
+        statisticData.totalLikes &#x3D; value?.totalLikes ?? 0
       }),
       getTodayViewsCount(this.cacheService).then((value) &#x3D;&gt; {
-        resultData.todayViews &#x3D; value
+        statisticData.todayViews &#x3D; value
       })
     ])
 
     return tasks
-      .then(() &#x3D;&gt; resultData)
+      .then(() &#x3D;&gt; statisticData)
       .catch((error) &#x3D;&gt; {
         logger.warn(&#x27;getStatistic task partial failed!&#x27;, error)
-        return Promise.resolve(resultData)
+        return Promise.resolve(statisticData)
       })
   }
 }

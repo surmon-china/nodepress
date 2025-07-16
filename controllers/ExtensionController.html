@@ -181,7 +181,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#uploadStaticFile" >uploadStaticFile</a>
                             </li>
@@ -220,7 +219,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getStaticFileList(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getStaticFileList(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -228,14 +227,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;static/list&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Get file list from cloud storage&#x27;)<br /></code>
+                    <code>@Get(&#x27;static/list&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Get file list succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -257,7 +256,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -297,7 +296,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getSystemStatistics(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getSystemStatistics(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -305,14 +304,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;statistic&#x27;)<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get statistics&#x27;)<br /></code>
+                    <code>@Get(&#x27;statistic&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get statistics succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -334,7 +333,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -382,14 +381,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;google-analytics/batch-run-pivot-reports&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Google analytics batchRunPivotReports&#x27;)<br /></code>
+                    <code>@Post(&#x27;google-analytics/batch-run-pivot-reports&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Google analytics batchRunPivotReports succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:102</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="106"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:106</a></div>
                         </td>
                     </tr>
 
@@ -456,14 +455,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;google-analytics/batch-run-reports&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Google analytics batchRunReports&#x27;)<br /></code>
+                    <code>@Post(&#x27;google-analytics/batch-run-reports&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Google analytics batchRunReports succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -530,14 +529,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;google-analytics/run-realtime-report&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Google analytics runRealtimeReport&#x27;)<br /></code>
+                    <code>@Post(&#x27;google-analytics/run-realtime-report&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Google analytics runRealtimeReport succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="113"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:113</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:117</a></div>
                         </td>
                     </tr>
 
@@ -604,14 +603,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Patch(&#x27;database-backup&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update database backup&#x27;)<br /></code>
+                    <code>@Patch(&#x27;database-backup&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update database backup succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:38</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/extension/extension.controller.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -636,7 +635,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                             <span class="modifier">Async</span>
                         <span ><b>uploadStaticFile</b></span>
                         <a href="#uploadStaticFile"><span class="icon ion-ios-link"></span></a>
@@ -646,7 +644,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>uploadStaticFile(file: Express.Multer.File, body)</code>
+                    <code>uploadStaticFile(file: <a href="../interfaces/IUploadedFile.html" target="_self">IUploadedFile</a>)</code>
                 </td>
             </tr>
 
@@ -654,7 +652,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;static/upload&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@UseInterceptors(undefined)<br />@(&#x27;Upload file to cloud storage&#x27;)<br /></code>
+                    <code>@Post(&#x27;static/upload&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Upload file to cloud storage succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -684,18 +682,7 @@
                                         <tr>
                                                 <td>file</td>
                                             <td>
-                                                        <code>Express.Multer.File</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>body</td>
-                                            <td>
+                                                            <code><a href="../interfaces/IUploadedFile.html" target="_self" >IUploadedFile</a></code>
                                             </td>
 
                                             <td>
@@ -728,14 +715,15 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import { Controller, Get, Post, Patch, UploadedFile, Body, UseGuards, UseInterceptors } from &#x27;@nestjs/common&#x27;
-import { FileInterceptor } from &#x27;@nestjs/platform-express&#x27;
+import { Get, Post, Patch, Body } from &#x27;@nestjs/common&#x27;
+import { Controller, UseGuards, BadRequestException } from &#x27;@nestjs/common&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { GoogleService } from &#x27;@app/processors/helper/helper.service.google&#x27;
-import { AWSService } from &#x27;@app/processors/helper/helper.service.aws&#x27;
+import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { UploadedFile, IUploadedFile } from &#x27;@app/decorators/uploaded-file.decorator&#x27;
+import { GoogleService } from &#x27;@app/core/helper/helper.service.google&#x27;
+import { AWSService } from &#x27;@app/core/helper/helper.service.aws&#x27;
 import { StatisticService, Statistic } from &#x27;./extension.service.statistic&#x27;
 import { DBBackupService } from &#x27;./extension.service.dbbackup&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -750,23 +738,23 @@ export class ExtensionController {
   ) {}
 
   @Get(&#x27;statistic&#x27;)
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle(&#x27;Get statistics&#x27;)
-  getSystemStatistics(@QueryParams() { isUnauthenticated }: QueryParamsResult): Promise&lt;Statistic&gt; {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse(&#x27;Get statistics succeeded&#x27;)
+  getSystemStatistics(@RequestContext() { isUnauthenticated }: IRequestContext): Promise&lt;Statistic&gt; {
     return this.statisticService.getStatistic(isUnauthenticated)
   }
 
   @Patch(&#x27;database-backup&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update database backup&#x27;)
+  @SuccessResponse(&#x27;Update database backup succeeded&#x27;)
   updateDatabaseBackup() {
     return this.dbBackupService.backup()
   }
 
   @Get(&#x27;static/list&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Get file list from cloud storage&#x27;)
-  async getStaticFileList(@QueryParams() { query }: QueryParamsResult) {
+  @SuccessResponse(&#x27;Get file list succeeded&#x27;)
+  async getStaticFileList(@RequestContext() { query }: IRequestContext) {
     const minLimit &#x3D; 200
     const numberLimit &#x3D; Number(query.limit)
     const limit &#x3D; Number.isInteger(numberLimit) ? numberLimit : minLimit
@@ -791,11 +779,14 @@ export class ExtensionController {
 
   @Post(&#x27;static/upload&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @UseInterceptors(FileInterceptor(&#x27;file&#x27;))
-  @Responser.handle(&#x27;Upload file to cloud storage&#x27;)
-  async uploadStaticFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
+  @SuccessResponse(&#x27;Upload file to cloud storage succeeded&#x27;)
+  async uploadStaticFile(@UploadedFile() file: IUploadedFile) {
+    if (!file.fields.key) {
+      throw new BadRequestException(&#x27;Missing required field: key&#x27;)
+    }
+
     const result &#x3D; await this.awsService.uploadFile({
-      name: body.name,
+      key: file.fields.key,
       file: file.buffer,
       fileContentType: file.mimetype,
       region: APP_CONFIG.AWS.s3StaticRegion,
@@ -811,7 +802,7 @@ export class ExtensionController {
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunReports
   @Post(&#x27;google-analytics/batch-run-reports&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Google analytics batchRunReports&#x27;)
+  @SuccessResponse(&#x27;Google analytics batchRunReports succeeded&#x27;)
   googleAnalyticsBatchRunReports(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.batchRunReports({
       property: &#x60;properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}&#x60;,
@@ -822,7 +813,7 @@ export class ExtensionController {
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunPivotReports
   @Post(&#x27;google-analytics/batch-run-pivot-reports&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Google analytics batchRunPivotReports&#x27;)
+  @SuccessResponse(&#x27;Google analytics batchRunPivotReports succeeded&#x27;)
   googleAnalyticsBatchRunPivotReports(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.batchRunPivotReports({
       property: &#x60;properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}&#x60;,
@@ -833,7 +824,7 @@ export class ExtensionController {
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runRealtimeReport
   @Post(&#x27;google-analytics/run-realtime-report&#x27;)
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Google analytics runRealtimeReport&#x27;)
+  @SuccessResponse(&#x27;Google analytics runRealtimeReport succeeded&#x27;)
   googleAnalyticsRunRealtimeReport(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.runRealtimeReport({
       property: &#x60;properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}&#x60;,

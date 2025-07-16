@@ -122,7 +122,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/helper/helper.service.akismet.ts</code>
+            <code>src/core/helper/helper.service.akismet.ts</code>
         </p>
 
 
@@ -545,7 +545,6 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AkismetClient } from &#x27;akismet-api&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
-import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -618,11 +617,11 @@ export class AkismetService {
         logger.log(&#x60;${handleType}...&#x60;, new Date())
         this.client[handleType]({
           ...content,
-          permalink: content.permalink || UNDEFINED,
-          comment_author: content.comment_author || UNDEFINED,
-          comment_author_email: content.comment_author_email || UNDEFINED,
-          comment_author_url: content.comment_author_url || UNDEFINED,
-          comment_content: content.comment_content || UNDEFINED
+          permalink: content.permalink || undefined,
+          comment_author: content.comment_author || undefined,
+          comment_author_email: content.comment_author_email || undefined,
+          comment_author_url: content.comment_author_url || undefined,
+          comment_content: content.comment_content || undefined
         })
           .then((result) &#x3D;&gt; {
             if (handleType &#x3D;&#x3D;&#x3D; AkismetAction.CheckSpam &amp;&amp; result) {

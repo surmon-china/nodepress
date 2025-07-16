@@ -244,7 +244,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/modules/feedback/feedback.model.ts:94</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/feedback/feedback.model.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -283,7 +283,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/modules/feedback/feedback.model.ts:79</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/feedback/feedback.model.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -322,7 +322,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/feedback/feedback.model.ts:73</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/feedback/feedback.model.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -361,7 +361,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/modules/feedback/feedback.model.ts:106</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/modules/feedback/feedback.model.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -400,7 +400,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/feedback/feedback.model.ts:100</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/modules/feedback/feedback.model.ts:89</a></div>
                         </td>
                     </tr>
 
@@ -435,7 +435,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/modules/feedback/feedback.model.ts:81</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/feedback/feedback.model.ts:70</a></div>
                                 </td>
                             </tr>
 
@@ -457,7 +457,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/modules/feedback/feedback.model.ts:85</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/modules/feedback/feedback.model.ts:74</a></div>
                                 </td>
                             </tr>
 
@@ -470,23 +470,12 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
-import {
-  IsString,
-  MinLength,
-  MaxLength,
-  Min,
-  IsIP,
-  IsBoolean,
-  IsEmail,
-  IsIn,
-  IsInt,
-  IsOptional,
-  IsNotEmpty
-} from &#x27;class-validator&#x27;
-import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/increment.constant&#x27;
+import { IsString, IsBoolean, IsEmail, IsInt, IsIP, Min, MinLength, MaxLength } from &#x27;class-validator&#x27;
+import { IsOptional, IsNotEmpty, IsIn } from &#x27;class-validator&#x27;
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
-import { IPLocation } from &#x27;@app/processors/helper/helper.service.ip&#x27;
+import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
 
 export enum FeedbackEmotion {
   Terrible &#x3D; 1,
@@ -571,7 +560,7 @@ export class FeedbackBase {
 }
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {

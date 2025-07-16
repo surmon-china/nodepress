@@ -115,7 +115,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/helper/helper.service.google.ts</code>
+            <code>src/core/helper/helper.service.google.ts</code>
         </p>
 
 
@@ -185,7 +185,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/helper/helper.service.google.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/core/helper/helper.service.google.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -221,7 +221,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:65</a></div>
+                                    class="link-to-prism">src/core/helper/helper.service.google.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -260,7 +260,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="42"
-                                    class="link-to-prism">src/processors/helper/helper.service.google.ts:42</a></div>
+                                    class="link-to-prism">src/core/helper/helper.service.google.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -307,7 +307,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/processors/helper/helper.service.google.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/core/helper/helper.service.google.ts:19</a></div>
                         </td>
                     </tr>
 
@@ -339,7 +339,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/processors/helper/helper.service.google.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/core/helper/helper.service.google.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -412,7 +412,7 @@ export class GoogleService {
   // https://developers.google.com/analytics/devguides/reporting/data/v1/basics
   public getAnalyticsDataClient() {
     if (!this.authJWT || !this.analyticsDataClient) {
-      throw new Error(&#x27;GoogleAPI analyticsData initialization failed!&#x27;)
+      throw new Error(&#x27;Google Analytics Data client is not ready.&#x27;)
     } else {
       return this.analyticsDataClient
     }

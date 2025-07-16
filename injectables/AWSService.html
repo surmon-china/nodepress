@@ -115,7 +115,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/helper/helper.service.aws.ts</code>
+            <code>src/core/helper/helper.service.aws.ts</code>
         </p>
 
 
@@ -200,8 +200,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="43"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:43</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/core/helper/helper.service.aws.ts:37</a></div>
                         </td>
                     </tr>
 
@@ -270,8 +270,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="128"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:128</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="122"
+                                    class="link-to-prism">src/core/helper/helper.service.aws.ts:122</a></div>
                         </td>
                     </tr>
 
@@ -309,8 +309,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="53"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:53</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/core/helper/helper.service.aws.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -402,8 +402,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">src/core/helper/helper.service.aws.ts:85</a></div>
                         </td>
                     </tr>
 
@@ -471,8 +471,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="58"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:58</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/core/helper/helper.service.aws.ts:52</a></div>
                         </td>
                     </tr>
 
@@ -540,8 +540,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/processors/helper/helper.service.aws.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/core/helper/helper.service.aws.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -593,23 +593,17 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
-  S3Client,
-  PutObjectCommand,
-  ListObjectsV2Command,
-  GetObjectAttributesCommand,
-  ObjectAttributes,
-  StorageClass,
-  ServerSideEncryption,
-  PutObjectRequest
-} from &#x27;@aws-sdk/client-s3&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { PutObjectRequest } from &#x27;@aws-sdk/client-s3&#x27;
+import { S3Client, StorageClass, ObjectAttributes, ServerSideEncryption } from &#x27;@aws-sdk/client-s3&#x27;
+import { PutObjectCommand, ListObjectsV2Command, GetObjectAttributesCommand } from &#x27;@aws-sdk/client-s3&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-export { StorageClass as AWSStorageClass, ServerSideEncryption as AWSServerSideEncryption } from &#x27;@aws-sdk/client-s3&#x27;
+export { StorageClass as AWSStorageClass } from &#x27;@aws-sdk/client-s3&#x27;
+export { ServerSideEncryption as AWSServerSideEncryption } from &#x27;@aws-sdk/client-s3&#x27;
 
 export interface FileUploader {
-  name: string
+  key: string
   file: PutObjectRequest[&#x27;Body&#x27;] | string | Uint8Array | Buffer
   fileContentType?: string
   region: string
@@ -655,7 +649,7 @@ export class AWSService {
   }
 
   public uploadFile(payload: FileUploader): Promise&lt;S3FileObject&gt; {
-    const { region, bucket, name: key } &#x3D; payload
+    const { region, bucket, key } &#x3D; payload
     const s3Client &#x3D; this.createClient(region)
     const command &#x3D; new PutObjectCommand({
       Bucket: bucket,

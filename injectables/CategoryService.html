@@ -181,6 +181,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
                                 <a href="#getDetailBySlug" >getDetailBySlug</a>
                             </li>
                             <li>
@@ -190,7 +191,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#paginator" >paginator</a>
+                                <a href="#paginate" >paginate</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -224,7 +225,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/category/category.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/category/category.service.ts:27</a></div>
                             </td>
                         </tr>
 
@@ -420,8 +421,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="171"
-                                    class="link-to-prism">src/modules/category/category.service.ts:171</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="164"
+                                    class="link-to-prism">src/modules/category/category.service.ts:164</a></div>
                         </td>
                     </tr>
 
@@ -490,8 +491,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="89"
-                                    class="link-to-prism">src/modules/category/category.service.ts:89</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="88"
+                                    class="link-to-prism">src/modules/category/category.service.ts:88</a></div>
                         </td>
                     </tr>
 
@@ -560,8 +561,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="146"
-                                    class="link-to-prism">src/modules/category/category.service.ts:146</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="143"
+                                    class="link-to-prism">src/modules/category/category.service.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -723,6 +724,7 @@
                     <a name="getDetailBySlug"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
                         <span ><b>getDetailBySlug</b></span>
                         <a href="#getDetailBySlug"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -807,8 +809,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="103"
-                                    class="link-to-prism">src/modules/category/category.service.ts:103</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/modules/category/category.service.ts:102</a></div>
                         </td>
                     </tr>
 
@@ -858,19 +860,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="paginator"></a>
+                    <a name="paginate"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>paginator</b></span>
-                        <a href="#paginator"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>paginate</b></span>
+                        <a href="#paginate"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginator(query: <a href="../classes/Category.html" target="_self">PaginateQuery&lt;Category&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>paginate(query: <a href="../classes/Category.html" target="_self">PaginateQuery&lt;Category&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -971,8 +973,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="129"
-                                    class="link-to-prism">src/modules/category/category.service.ts:129</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">src/modules/category/category.service.ts:128</a></div>
                         </td>
                     </tr>
 
@@ -1095,7 +1097,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/category/category.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/category/category.service.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -1108,14 +1110,15 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getCategoryUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseId, MongooseObjectId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import type { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import type { MongooseId, MongooseObjectId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
+import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
-import { SeoService } from &#x27;@app/processors/helper/helper.service.seo&#x27;
+import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.model&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
@@ -1140,7 +1143,6 @@ export class CategoryService {
       key: CacheKeys.AllCategories,
       promise: () &#x3D;&gt; this.getAllCategories({ aggregatePublicOnly: true })
     })
-
     this.allCategoriesCache.update().catch((error) &#x3D;&gt; {
       logger.warn(&#x27;init getAllCategories failed!&#x27;, error)
     })
@@ -1171,7 +1173,7 @@ export class CategoryService {
     return this.allCategoriesCache.update()
   }
 
-  public async paginator(
+  public async paginate(
     query: PaginateQuery&lt;Category&gt;,
     options: PaginateOptions,
     publicOnly: boolean
@@ -1181,19 +1183,18 @@ export class CategoryService {
     return { ...categories, documents }
   }
 
-  // get detail by slug
-  public getDetailBySlug(slug: string): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
-    return this.categoryModel
-      .findOne({ slug })
-      .exec()
-      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Category &#x27;${slug}&#x27; not found&#x60;))
+  // Get detail by slug
+  public async getDetailBySlug(slug: string): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
+    const category &#x3D; await this.categoryModel.findOne({ slug }).exec()
+    if (!category) throw new NotFoundException(&#x60;Category &#x27;${slug}&#x27; not found&#x60;)
+    return category
   }
 
-  // create category
+  // Create category
   public async create(newCategory: Category): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
     const existedCategory &#x3D; await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
     if (existedCategory) {
-      throw &#x60;Category slug &#x27;${newCategory.slug}&#x27; is existed&#x60;
+      throw new ConflictException(&#x60;Category slug &#x27;${newCategory.slug}&#x27; already exists&#x60;)
     }
 
     const category &#x3D; await this.categoryModel.create(newCategory)
@@ -1203,7 +1204,7 @@ export class CategoryService {
     return category
   }
 
-  // get categories genealogy
+  // Get categories genealogy
   public getGenealogyById(categoryId: MongooseId): Promise&lt;Category[]&gt; {
     const categories: Category[] &#x3D; []
     const findById &#x3D; (id: MongooseId) &#x3D;&gt; this.categoryModel.findById(id).exec()
@@ -1214,7 +1215,7 @@ export class CategoryService {
           .then((category) &#x3D;&gt; {
             if (!category) {
               if (id &#x3D;&#x3D;&#x3D; categoryId) {
-                return reject(&#x60;Category &#x27;${categoryId}&#x27; not found&#x60;)
+                return reject(new NotFoundException(&#x60;Category &#x27;${categoryId}&#x27; not found&#x60;))
               } else {
                 return resolve(categories)
               }
@@ -1229,29 +1230,25 @@ export class CategoryService {
     })
   }
 
-  // update category
+  // Update category
   public async update(categoryId: MongooseId, newCategory: Category): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
     const existedCategory &#x3D; await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
     if (existedCategory &amp;&amp; !existedCategory._id.equals(categoryId)) {
-      throw &#x60;Category slug &#x27;${newCategory.slug}&#x27; is existed&#x60;
+      throw new ConflictException(&#x60;Category slug &#x27;${newCategory.slug}&#x27; already exists&#x60;)
     }
 
     const category &#x3D; await this.categoryModel.findByIdAndUpdate(categoryId, newCategory, { new: true }).exec()
-    if (!category) {
-      throw &#x60;Category &#x27;${categoryId}&#x27; not found&#x60;
-    }
+    if (!category) throw new NotFoundException(&#x60;Category &#x27;${categoryId}&#x27; not found&#x60;)
     this.seoService.push(getCategoryUrl(category.slug))
     this.archiveService.updateCache()
     this.updateAllCategoriesCache()
     return category
   }
 
-  // delete category
+  // Delete category
   public async delete(categoryId: MongooseId) {
     const category &#x3D; await this.categoryModel.findByIdAndDelete(categoryId, null).exec()
-    if (!category) {
-      throw &#x60;Category &#x27;${categoryId}&#x27; not found&#x60;
-    }
+    if (!category) throw new NotFoundException(&#x60;Category &#x27;${categoryId}&#x27; not found&#x60;)
 
     // cache
     this.archiveService.updateCache()
@@ -1260,9 +1257,7 @@ export class CategoryService {
     // children categories
     const categories &#x3D; await this.categoryModel.find({ pid: categoryId }).exec()
     // delete when root category -&gt; { pid: target.id }
-    if (!categories.length) {
-      return category
-    }
+    if (!categories.length) return category
     // recursive delete parents -&gt; { pid: target.id } -&gt; { pid: target.pid || null }
     await this.categoryModel.collection
       .initializeOrderedBulkOp()

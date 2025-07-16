@@ -186,7 +186,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getOption(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>)</code>
+                    <code>getOption(undefined: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -194,7 +194,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminMaybeGuard)<br />@(&#x27;Get app options&#x27;)<br /></code>
+                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get app options succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -223,7 +223,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
                                             </td>
 
                                             <td>
@@ -271,7 +271,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put()<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update app options&#x27;)<br /></code>
+                    <code>@Put()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update app options succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -335,10 +335,10 @@
  */
 
 import { Controller, Get, Put, Body, UseGuards } from &#x27;@nestjs/common&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminMaybeGuard } from &#x27;@app/guards/admin-maybe.guard&#x27;
+import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { OptionService } from &#x27;./option.service&#x27;
 import { Option } from &#x27;./option.model&#x27;
 
@@ -347,15 +347,15 @@ export class OptionController {
   constructor(private readonly optionService: OptionService) {}
 
   @Get()
-  @UseGuards(AdminMaybeGuard)
-  @Responser.handle(&#x27;Get app options&#x27;)
-  getOption(@QueryParams() { isAuthenticated }: QueryParamsResult) {
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse(&#x27;Get app options succeeded&#x27;)
+  getOption(@RequestContext() { isAuthenticated }: IRequestContext) {
     return isAuthenticated ? this.optionService.ensureAppOption() : this.optionService.getOptionCacheForGuest()
   }
 
   @Put()
   @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update app options&#x27;)
+  @SuccessResponse(&#x27;Update app options succeeded&#x27;)
   putOption(@Body() option: Option): Promise&lt;Option&gt; {
     return this.optionService.putOption(option)
   }

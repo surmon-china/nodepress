@@ -79,7 +79,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content injectable">
+               <div class="content interface">
                    <div class="content-data">
 
 
@@ -89,9 +89,16 @@
 
 
 
+
+
+
+
+
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >JwtStrategy</li>
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  PaginationPayload</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -115,208 +122,150 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/auth/jwt.strategy.ts</code>
+            <code>src/interfaces/response.interface.ts</code>
         </p>
 
 
 
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                        <code>PassportStrategy(Strategy)</code>
-            </p>
 
-
-            <section data-compodoc="block-index">
-    <h3 id="index">Index</h3>
-    <table class="table table-sm table-bordered index-table">
-        <tbody>
-
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Methods</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                <a href="#validate" >validate</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-
-
-
-
-
-        </tbody>
-    </table>
-</section>
-
-            <section data-compodoc="block-constructor">
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(authService: <a href="../injectables/AuthService.html" target="_self">AuthService</a>)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/modules/auth/jwt.strategy.ts:16</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>authService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
-
-            <section data-compodoc="block-methods">
-    
-    <h3 id="methods">
-        Methods
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="validate"></a>
-                    <span class="name">
-                        <span ><b>validate</b></span>
-                        <a href="#validate"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>validate(payload: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                </td>
-            </tr>
-
-
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/modules/auth/jwt.strategy.ts:24</a></div>
+                            <h6><b>Properties</b></h6>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#data" 
+>
+                                            data
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#pagination" 
+>
+                                            pagination
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
 
-            <tr>
-                <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="data"></a>
+                                        <span class="name "><b>data</b>
+                                            <a href="#data">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>data:     <code>T</code>
+</code>
+                                    </td>
+                                </tr>
 
 
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>T</code>
 
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>
+                                        </td>
+                                    </tr>
 
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="pagination"></a>
+                                        <span class="name "><b>pagination</b>
+                                            <a href="#pagination">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>pagination:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
-import { PassportStrategy } from &#x27;@nestjs/passport&#x27;
-import { ExtractJwt, Strategy } from &#x27;passport-jwt&#x27;
-import { HttpUnauthorizedError } from &#x27;@app/errors/unauthorized.error&#x27;
-import { AuthService } from &#x27;./auth.service&#x27;
-import { APP_BIZ } from &#x27;@app/app.config&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export type ResponseMessage &#x3D; string
+export enum ResponseStatus {
+  Error &#x3D; &#x27;error&#x27;,
+  Success &#x3D; &#x27;success&#x27;
+}
 
-@Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authService: AuthService) {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: APP_BIZ.AUTH.jwtSecret
-    })
+export interface PaginationPayload&lt;T&gt; {
+  data: T
+  pagination: {
+    total: number
+    current_page: number
+    total_page: number
+    per_page: number
   }
+}
 
-  validate(payload: any) {
-    const data &#x3D; this.authService.validateAuthData(payload)
-    if (data) {
-      return data
-    } else {
-      throw new HttpUnauthorizedError()
-    }
-  }
+export interface HttpErrorResponse {
+  status: ResponseStatus.Error
+  message: ResponseMessage
+  error: string
+  timestamp: string
+}
+
+export interface HttpSuccessResponse&lt;T&gt; {
+  status: ResponseStatus.Success
+  message: ResponseMessage
+  result: T | PaginationPayload&lt;T&gt;
+  context?: any
 }
 </code></pre>
     </div>
-
 </div>
-
-
-
-
-
 
 
 
@@ -350,8 +299,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'JwtStrategy.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'PaginationPayload.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

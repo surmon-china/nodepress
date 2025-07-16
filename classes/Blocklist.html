@@ -211,7 +211,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/option/option.model.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/modules/option/option.model.ts:50</a></div>
                         </td>
                     </tr>
 
@@ -250,7 +250,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/modules/option/option.model.ts:72</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/option/option.model.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -289,7 +289,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/modules/option/option.model.ts:66</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/option/option.model.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -310,18 +310,8 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { prop, modelOptions } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
-import {
-  IsString,
-  IsEmail,
-  IsOptional,
-  IsInt,
-  IsObject,
-  IsUrl,
-  IsNotEmpty,
-  IsArray,
-  ValidateNested,
-  ArrayUnique
-} from &#x27;class-validator&#x27;
+import { IsString, IsInt, IsObject, IsUrl, IsEmail, IsArray } from &#x27;class-validator&#x27;
+import { IsOptional, IsNotEmpty, ValidateNested, ArrayUnique } from &#x27;class-validator&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;

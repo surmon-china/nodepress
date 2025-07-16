@@ -225,7 +225,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;T | HttpResponseSuccess&gt;</code>
+                            <b>Returns : </b>        <code><a href="../interfaces/HttpSuccessResponse.html" target="_self" >Observable&lt;T | HttpSuccessResponse&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -241,43 +241,49 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Request } from &#x27;express&#x27;
-import { Observable } from &#x27;rxjs&#x27;
-import { map } from &#x27;rxjs/operators&#x27;
-import { Injectable, NestInterceptor, CallHandler, ExecutionContext } from &#x27;@nestjs/common&#x27;
-import { HttpResponseSuccess, ResponseStatus } from &#x27;@app/interfaces/response.interface&#x27;
-import { getResponserOptions } from &#x27;@app/decorators/responser.decorator&#x27;
-import * as TEXT from &#x27;@app/constants/text.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { map } from &#x27;rxjs/operators&#x27;
+import type { Observable } from &#x27;rxjs&#x27;
+import type { FastifyRequest, FastifyReply } from &#x27;fastify&#x27;
+import type { CallHandler, ExecutionContext } from &#x27;@nestjs/common&#x27;
+import { Injectable, NestInterceptor } from &#x27;@nestjs/common&#x27;
+import { HttpSuccessResponse, ResponseStatus } from &#x27;@app/interfaces/response.interface&#x27;
+import { getSuccessResponseOptions } from &#x27;@app/decorators/success-response.decorator&#x27;
 
 /**
  * @class TransformInterceptor
  * @classdesc transform &#x60;T&#x60; to &#x60;HttpResponseSuccess&lt;T&gt;&#x60; when controller &#x60;Promise&#x60; resolved
  */
 @Injectable()
-export class TransformInterceptor&lt;T&gt; implements NestInterceptor&lt;T, T | HttpResponseSuccess&lt;T&gt;&gt; {
-  intercept(context: ExecutionContext, next: CallHandler&lt;T&gt;): Observable&lt;T | HttpResponseSuccess&lt;T&gt;&gt; {
-    const target &#x3D; context.getHandler()
-    const { successMessage, transform, paginate } &#x3D; getResponserOptions(target)
-    if (!transform) {
+export class TransformInterceptor&lt;T&gt; implements NestInterceptor&lt;T, T | HttpSuccessResponse&lt;T&gt;&gt; {
+  intercept(context: ExecutionContext, next: CallHandler&lt;T&gt;): Observable&lt;T | HttpSuccessResponse&lt;T&gt;&gt; {
+    const reponseOptions &#x3D; getSuccessResponseOptions(context.getHandler())
+    if (!reponseOptions.useTransform) {
       return next.handle()
     }
 
-    const request &#x3D; context.switchToHttp().getRequest&lt;Request&gt;()
+    const request &#x3D; context.switchToHttp().getRequest&lt;FastifyRequest&gt;()
+    const response &#x3D; context.switchToHttp().getResponse&lt;FastifyReply&gt;()
+
     return next.handle().pipe(
       map((data: any) &#x3D;&gt; {
-        return {
+        if (reponseOptions.status) {
+          response.status(reponseOptions.status)
+        }
+
+        const responseBody: HttpSuccessResponse&lt;T&gt; &#x3D; {
           status: ResponseStatus.Success,
-          message: successMessage || TEXT.HTTP_DEFAULT_SUCCESS_TEXT,
-          params: {
-            isAuthenticated: request.isAuthenticated(),
-            isUnauthenticated: request.isUnauthenticated(),
+          message: reponseOptions.message ?? &#x27;Success&#x27;,
+          context: {
             url: request.url,
             method: request.method,
-            routes: request.params,
-            payload: request.$validatedPayload || {}
+            route_params: request.params ?? {},
+            query_params: request.locals.validatedQueryParams ?? {},
+            is_authenticated: request.locals.isAuthenticated,
+            is_unauthenticated: request.locals.isUnauthenticated
           },
-          result: paginate
-            ? {
+          result: !reponseOptions.usePaginate
+            ? data
+            : {
                 data: data.documents,
                 pagination: {
                   total: data.total,
@@ -286,8 +292,9 @@ export class TransformInterceptor&lt;T&gt; implements NestInterceptor&lt;T, T | 
                   total_page: data.totalPage
                 }
               }
-            : data
         }
+
+        return responseBody
       })
     )
   }

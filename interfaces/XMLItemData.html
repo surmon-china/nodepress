@@ -265,6 +265,7 @@ export interface XMLItemData {
   article: Article
   comments: Array&lt;Comment&gt;
 }
+
 export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comment&gt;) &#x3D;&gt; {
   return &#x60;&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
     &lt;rss version&#x3D;&quot;2.0&quot;

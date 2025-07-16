@@ -115,7 +115,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/processors/helper/helper.service.akismet.ts</code>
+            <code>src/core/helper/helper.service.akismet.ts</code>
         </p>
 
 
@@ -201,7 +201,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:40</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/core/helper/helper.service.akismet.ts:39</a></div>
                             </td>
                         </tr>
 
@@ -236,8 +236,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="106"
-                                    class="link-to-prism">src/processors/helper/helper.service.akismet.ts:106</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/core/helper/helper.service.akismet.ts:105</a></div>
                         </td>
                     </tr>
 
@@ -305,8 +305,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/processors/helper/helper.service.akismet.ts:47</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/core/helper/helper.service.akismet.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -344,8 +344,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="55"
-                                    class="link-to-prism">src/processors/helper/helper.service.akismet.ts:55</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/core/helper/helper.service.akismet.ts:54</a></div>
                         </td>
                     </tr>
 
@@ -383,8 +383,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="69"
-                                    class="link-to-prism">src/processors/helper/helper.service.akismet.ts:69</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/core/helper/helper.service.akismet.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -452,8 +452,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="114"
-                                    class="link-to-prism">src/processors/helper/helper.service.akismet.ts:114</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/core/helper/helper.service.akismet.ts:113</a></div>
                         </td>
                     </tr>
 
@@ -521,8 +521,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="110"
-                                    class="link-to-prism">src/processors/helper/helper.service.akismet.ts:110</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="109"
+                                    class="link-to-prism">src/core/helper/helper.service.akismet.ts:109</a></div>
                         </td>
                     </tr>
 
@@ -594,7 +594,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:39</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/core/helper/helper.service.akismet.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -620,7 +620,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/processors/helper/helper.service.akismet.ts:40</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/core/helper/helper.service.akismet.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -635,7 +635,6 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AkismetClient } from &#x27;akismet-api&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
-import { UNDEFINED } from &#x27;@app/constants/value.constant&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -708,11 +707,11 @@ export class AkismetService {
         logger.log(&#x60;${handleType}...&#x60;, new Date())
         this.client[handleType]({
           ...content,
-          permalink: content.permalink || UNDEFINED,
-          comment_author: content.comment_author || UNDEFINED,
-          comment_author_email: content.comment_author_email || UNDEFINED,
-          comment_author_url: content.comment_author_url || UNDEFINED,
-          comment_content: content.comment_content || UNDEFINED
+          permalink: content.permalink || undefined,
+          comment_author: content.comment_author || undefined,
+          comment_author_email: content.comment_author_email || undefined,
+          comment_author_url: content.comment_author_url || undefined,
+          comment_content: content.comment_content || undefined
         })
           .then((result) &#x3D;&gt; {
             if (handleType &#x3D;&#x3D;&#x3D; AkismetAction.CheckSpam &amp;&amp; result) {

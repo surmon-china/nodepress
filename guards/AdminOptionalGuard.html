@@ -79,7 +79,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content class">
+               <div class="content guard">
                    <div class="content-data">
 
 
@@ -91,11 +91,9 @@
 
 
 
-
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >CustomError</li>
+    <li class="breadcrumb-item">Guards</li>
+    <li class="breadcrumb-item" >AdminOptionalGuard</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -114,121 +112,167 @@
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="info">
-        <p class="comment">
+        <div class="tab-pane fade active in" id="info">
+            <p class="comment">
             <h3>File</h3>
-        </p>
-        <p class="comment">
-            <code>src/errors/custom.error.ts</code>
-        </p>
-
-
+            </p>
             <p class="comment">
+                <code>src/guards/admin-optional.guard.ts</code>
+            </p>
+
+
+                <p class="comment">
                 <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <b>Example :</b><div><pre class="line-numbers"><code class="language-html">```html</code></pre></div>
-            </p>
-
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                        <code>HttpException</code>
-            </p>
+                </p>
+                <p class="comment">
+                    <b>Example :</b><div><pre class="line-numbers"><code class="language-html"></code></pre></div>
+                </p>
 
 
 
 
-            <section data-compodoc="block-constructor">
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(options: <a href="../undefineds/ExceptionInfo.html" target="_self">ExceptionInfo</a>, statusCode?: HttpStatus)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/errors/custom.error.ts:16</a></div>
-                            </td>
-                        </tr>
+                <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
 
                 <tr>
                     <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>options</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../miscellaneous/typealiases.html#ExceptionInfo" target="_self" >ExceptionInfo</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>statusCode</td>
-                                                  
-                                                        <td>
-                                                                    <code>HttpStatus</code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            Yes
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
+                        <h6><b>Methods</b></h6>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#canActivate" >canActivate</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
 </section>
 
 
+                <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canActivate"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>canActivate</b></span>
+                        <a href="#canActivate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>canActivate(context: ExecutionContext)</code>
+                </td>
+            </tr>
 
 
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="18"
+                                    class="link-to-prism">src/guards/admin-optional.guard.ts:18</a></div>
+                        </td>
+                    </tr>
 
 
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>context</td>
+                                            <td>
+                                                        <code>ExecutionContext</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
 
 
-    </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+        </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpException, HttpStatus } from &#x27;@nestjs/common&#x27;
-import { ExceptionInfo } from &#x27;@app/interfaces/response.interface&#x27;
+        <div class="tab-pane fade  tab-source-code" id="source">
+            <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { FastifyRequest } from &#x27;fastify&#x27;
+import type { ExecutionContext } from &#x27;@nestjs/common&#x27;
+import { Injectable, CanActivate, UnauthorizedException } from &#x27;@nestjs/common&#x27;
 
 /**
- * @class CustomError
- * @classdesc default 500 -&gt; server error
- * @example new CustomError({ message: &#x27;error message&#x27; }, 400)
- * @example new CustomError({ message: &#x27;error message&#x27;, error: new Error(xxx) })
+ * @class AdminOptionalGuard
+ * @classdesc Allows access if no token is provided, or if a valid token is provided. Denies access if an invalid token is provided.
+ * @example &#x60;&#x60;&#x60;@UseGuards(AdminOptionalGuard)&#x60;&#x60;&#x60;
  */
-export class CustomError extends HttpException {
-  constructor(options: ExceptionInfo, statusCode?: HttpStatus) {
-    super(options, statusCode || HttpStatus.INTERNAL_SERVER_ERROR)
+@Injectable()
+export class AdminOptionalGuard implements CanActivate {
+  async canActivate(context: ExecutionContext): Promise&lt;boolean&gt; {
+    const request &#x3D; context.switchToHttp().getRequest&lt;FastifyRequest&gt;()
+
+    // Allow access if no token is provided
+    if (!request.locals.token) {
+      return true
+    }
+
+    // Allow access if token is valid
+    if (request.locals.isAuthenticated) {
+      return true
+    }
+
+    // Deny access if token is invalid
+    throw new UnauthorizedException(&#x27;Invalid authentication token&#x27;)
   }
 }
 </code></pre>
-    </div>
+        </div>
 </div>
+
+
 
 
 
@@ -263,8 +307,8 @@ export class CustomError extends HttpException {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'CustomError.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'guard';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminOptionalGuard.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

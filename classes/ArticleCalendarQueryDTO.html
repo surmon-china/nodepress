@@ -197,7 +197,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/article/article.dto.ts:88</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/modules/article/article.dto.ts:78</a></div>
                         </td>
                     </tr>
 
@@ -218,20 +218,10 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IntersectionType } from &#x27;@nestjs/mapped-types&#x27;
 import { Transform } from &#x27;class-transformer&#x27;
-import {
-  IsString,
-  IsNotEmpty,
-  IsArray,
-  IsOptional,
-  IsDefined,
-  IsBoolean,
-  IsIn,
-  IsInt,
-  ArrayNotEmpty,
-  ArrayUnique
-} from &#x27;class-validator&#x27;
+import { IsString, IsArray, IsBoolean, IsIn, IsInt } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, IsDefined, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
-import { WhenGuest } from &#x27;@app/decorators/guest.decorator&#x27;
+import { WithGuestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
 import { unknownToNumber, unknownToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
 import { DateQueryDTO, KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
@@ -247,7 +237,7 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   KeywordQueryDTO,
   DateQueryDTO
 ) {
-  @WhenGuest({ only: [PublishState.Published], default: PublishState.Published })
+  @WithGuestPermission({ only: [PublishState.Published], default: PublishState.Published })
   @IsIn(ARTICLE_PUBLISH_STATES)
   @IsInt()
   @IsNotEmpty()
@@ -255,7 +245,7 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   state?: PublishState
 
-  @WhenGuest({ only: [PublicState.Public], default: PublicState.Public })
+  @WithGuestPermission({ only: [PublicState.Public], default: PublicState.Public })
   @IsIn(ARTICLE_PUBLIC_STATES)
   @IsInt()
   @IsNotEmpty()

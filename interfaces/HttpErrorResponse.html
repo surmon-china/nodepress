@@ -98,7 +98,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  HttpPaginateResult</li>
+  HttpErrorResponse</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -141,15 +141,27 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#data" 
+                                        <a href="#error" 
 >
-                                            data
+                                            error
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#pagination" 
+                                        <a href="#message" 
 >
-                                            pagination
+                                            message
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#status" 
+>
+                                            status
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#timestamp" 
+>
+                                            timestamp
                                         </a>
                                 </li>
                             </ul>
@@ -167,9 +179,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="data"></a>
-                                        <span class="name "><b>data</b>
-                                            <a href="#data">
+                                        <a name="error"></a>
+                                        <span class="name "><b>error</b>
+                                            <a href="#error">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -177,7 +189,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>data:     <code>T</code>
+                                        <code>error:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -185,7 +197,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>T</code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -200,9 +212,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="pagination"></a>
-                                        <span class="name "><b>pagination</b>
-                                            <a href="#pagination">
+                                        <a name="message"></a>
+                                        <span class="name "><b>message</b>
+                                            <a href="#message">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -210,7 +222,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>pagination:     <code>literal type</code>
+                                        <code>message:         <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -218,7 +230,73 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>literal type</code>
+                                            <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#ResponseMessage" target="_self" >ResponseMessage</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="status"></a>
+                                        <span class="name "><b>status</b>
+                                            <a href="#status">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>status:         <code><a href="../miscellaneous/enumerations.html#ResponseStatus" target="_self" >ResponseStatus.Error</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#ResponseStatus" target="_self" >ResponseStatus.Error</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="timestamp"></a>
+                                        <span class="name "><b>timestamp</b>
+                                            <a href="#timestamp">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>timestamp:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -240,20 +318,7 @@ export enum ResponseStatus {
   Success &#x3D; &#x27;success&#x27;
 }
 
-export interface HttpResponseBase {
-  status: ResponseStatus
-  message: ResponseMessage
-}
-
-export type ExceptionInfo &#x3D;
-  | ResponseMessage
-  | {
-      message: ResponseMessage
-      error?: any
-    }
-
-// paginate data
-export interface HttpPaginateResult&lt;T&gt; {
+export interface PaginationPayload&lt;T&gt; {
   data: T
   pagination: {
     total: number
@@ -263,20 +328,19 @@ export interface HttpPaginateResult&lt;T&gt; {
   }
 }
 
-// HTTP error
-export type HttpResponseError &#x3D; HttpResponseBase &amp; {
-  error: any
-  debug?: string
+export interface HttpErrorResponse {
+  status: ResponseStatus.Error
+  message: ResponseMessage
+  error: string
+  timestamp: string
 }
 
-// HTTP success
-export type HttpResponseSuccess&lt;T&gt; &#x3D; HttpResponseBase &amp; {
-  params?: any
-  result: T | HttpPaginateResult&lt;T&gt;
+export interface HttpSuccessResponse&lt;T&gt; {
+  status: ResponseStatus.Success
+  message: ResponseMessage
+  result: T | PaginationPayload&lt;T&gt;
+  context?: any
 }
-
-// HTTP response
-export type HttpResponse&lt;T&gt; &#x3D; HttpResponseError | HttpResponseSuccess&lt;T&gt;
 </code></pre>
     </div>
 </div>
@@ -314,7 +378,7 @@ export type HttpResponse&lt;T&gt; &#x3D; HttpResponseError | HttpResponseSuccess
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'HttpPaginateResult.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'HttpErrorResponse.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -181,6 +181,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
                                 <a href="#getDetailBySlug" >getDetailBySlug</a>
                             </li>
                             <li>
@@ -191,7 +192,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#paginator" >paginator</a>
+                                <a href="#paginate" >paginate</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -225,7 +226,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/tag/tag.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/tag/tag.service.ts:27</a></div>
                             </td>
                         </tr>
 
@@ -421,8 +422,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="129"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:129</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="122"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:122</a></div>
                         </td>
                     </tr>
 
@@ -491,8 +492,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="87"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:87</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:86</a></div>
                         </td>
                     </tr>
 
@@ -561,8 +562,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="117"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:117</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -724,6 +725,7 @@
                     <a name="getDetailBySlug"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
                         <span ><b>getDetailBySlug</b></span>
                         <a href="#getDetailBySlug"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -809,8 +811,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="141"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:141</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:134</a></div>
                         </td>
                     </tr>
 
@@ -830,19 +832,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="paginator"></a>
+                    <a name="paginate"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>paginator</b></span>
-                        <a href="#paginator"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>paginate</b></span>
+                        <a href="#paginate"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginator(query: <a href="../classes/Tag.html" target="_self">PaginateQuery&lt;Tag&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>paginate(query: <a href="../classes/Tag.html" target="_self">PaginateQuery&lt;Tag&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -943,8 +945,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="100"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:100</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:97</a></div>
                         </td>
                     </tr>
 
@@ -1067,7 +1069,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/tag/tag.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/tag/tag.service.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -1080,17 +1082,18 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { getTagUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseId, MongooseObjectId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { CacheService, CacheManualResult } from &#x27;@app/processors/cache/cache.service&#x27;
-import { SeoService } from &#x27;@app/processors/helper/helper.service.seo&#x27;
+import type { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import type { MongooseId, MongooseObjectId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
+import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.model&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
+import { getTagUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { Tag } from &#x27;./tag.model&#x27;
@@ -1112,7 +1115,6 @@ export class TagService {
       key: CacheKeys.AllTags,
       promise: () &#x3D;&gt; this.getAllTags({ aggregatePublicOnly: true })
     })
-
     this.allTagsCache.update().catch((error) &#x3D;&gt; {
       logger.warn(&#x27;init getAllTags failed!&#x27;, error)
     })
@@ -1143,7 +1145,7 @@ export class TagService {
     return this.allTagsCache.update()
   }
 
-  public async paginator(
+  public async paginate(
     query: PaginateQuery&lt;Tag&gt;,
     options: PaginateOptions,
     publicOnly: boolean
@@ -1153,18 +1155,15 @@ export class TagService {
     return { ...tags, documents }
   }
 
-  public getDetailBySlug(slug: string): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
-    return this.tagModel
-      .findOne({ slug })
-      .exec()
-      .then((result) &#x3D;&gt; result || Promise.reject(&#x60;Tag &#x27;${slug}&#x27; not found&#x60;))
+  public async getDetailBySlug(slug: string): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
+    const tag &#x3D; await this.tagModel.findOne({ slug }).exec()
+    if (!tag) throw new NotFoundException(&#x60;Tag &#x27;${slug}&#x27; not found&#x60;)
+    return tag
   }
 
   public async create(newTag: Tag): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
     const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).exec()
-    if (existedTag) {
-      throw &#x60;Tag slug &#x27;${newTag.slug}&#x27; is existed&#x60;
-    }
+    if (existedTag) throw new ConflictException(&#x60;Tag slug &#x27;${newTag.slug}&#x27; already exists&#x60;)
 
     const tag &#x3D; await this.tagModel.create(newTag)
     this.seoService.push(getTagUrl(tag.slug))
@@ -1176,30 +1175,26 @@ export class TagService {
   public async update(tagId: MongooseId, newTag: Tag): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
     const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).exec()
     if (existedTag &amp;&amp; !existedTag._id.equals(tagId)) {
-      throw &#x60;Tag slug &#x27;${newTag.slug}&#x27; is existed&#x60;
+      throw new ConflictException(&#x60;Tag slug &#x27;${newTag.slug}&#x27; already exists&#x60;)
     }
 
-    const tag &#x3D; await this.tagModel.findByIdAndUpdate(tagId, newTag as any, { new: true }).exec()
-    if (!tag) {
-      throw &#x60;Tag &#x27;${tagId}&#x27; not found&#x60;
-    }
+    const updated &#x3D; await this.tagModel.findByIdAndUpdate(tagId, newTag as any, { new: true }).exec()
+    if (!updated) throw new NotFoundException(&#x60;Tag &#x27;${tagId}&#x27; not found&#x60;)
 
-    this.seoService.push(getTagUrl(tag.slug))
+    this.seoService.push(getTagUrl(updated.slug))
     this.archiveService.updateCache()
     this.updateAllTagsCache()
-    return tag
+    return updated
   }
 
   public async delete(tagId: MongooseId) {
-    const tag &#x3D; await this.tagModel.findByIdAndDelete(tagId, null).exec()
-    if (!tag) {
-      throw &#x60;Tag &#x27;${tagId}&#x27; not found&#x60;
-    }
+    const deleted &#x3D; await this.tagModel.findByIdAndDelete(tagId, null).exec()
+    if (!deleted) throw new NotFoundException(&#x60;Tag &#x27;${tagId}&#x27; not found&#x60;)
 
-    this.seoService.delete(getTagUrl(tag.slug))
+    this.seoService.delete(getTagUrl(deleted.slug))
     this.archiveService.updateCache()
     this.updateAllTagsCache()
-    return tag
+    return deleted
   }
 
   public async batchDelete(tagIds: MongooseId[]) {

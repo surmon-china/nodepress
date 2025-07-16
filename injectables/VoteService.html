@@ -155,7 +155,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#paginator" >paginator</a>
+                                <a href="#paginate" >paginate</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -250,8 +250,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="42"
-                                    class="link-to-prism">src/modules/vote/vote.service.ts:42</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/modules/vote/vote.service.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -320,8 +320,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">src/modules/vote/vote.service.ts:46</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/modules/vote/vote.service.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -471,8 +471,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/modules/vote/vote.service.ts:34</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/modules/vote/vote.service.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -522,18 +522,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="paginator"></a>
+                    <a name="paginate"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>paginator</b></span>
-                        <a href="#paginator"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>paginate</b></span>
+                        <a href="#paginate"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginator(query: <a href="../classes/Vote.html" target="_self">PaginateQuery&lt;Vote&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
+                    <code>paginate(query: <a href="../classes/Vote.html" target="_self">PaginateQuery&lt;Vote&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
@@ -687,7 +687,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
 import { FilterQuery, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
@@ -698,7 +698,7 @@ import { Vote } from &#x27;./vote.model&#x27;
 export class VoteService {
   constructor(@InjectModel(Vote) private readonly voteModel: MongooseModel&lt;Vote&gt;) {}
 
-  public paginator(query: PaginateQuery&lt;Vote&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
+  public paginate(query: PaginateQuery&lt;Vote&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
     return this.voteModel.paginate(query, options)
   }
 
@@ -707,26 +707,25 @@ export class VoteService {
   }
 
   public async update(voteId: MongooseId, newVote: Partial&lt;Vote&gt;): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
-    const vote &#x3D; await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec()
-    if (!vote) {
-      throw &#x60;Vote &#x27;${voteId}&#x27; not found&#x60;
-    }
-    return vote
+    const updated &#x3D; await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec()
+    if (!updated) throw new NotFoundException(&#x60;Vote &#x27;${voteId}&#x27; not found&#x60;)
+    return updated
   }
 
   public async delete(voteId: MongooseId) {
-    const vote &#x3D; await this.voteModel.findByIdAndDelete(voteId, null).exec()
-    if (!vote) {
-      throw &#x60;Vote &#x27;${voteId}&#x27; not found&#x60;
-    }
-    return vote
+    const deleted &#x3D; await this.voteModel.findByIdAndDelete(voteId, null).exec()
+    if (!deleted) throw new NotFoundException(&#x60;Vote &#x27;${voteId}&#x27; not found&#x60;)
+    return deleted
   }
 
   public batchDelete(voteIds: MongooseId[]) {
     return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec()
   }
 
-  public async countDocuments(filter: FilterQuery&lt;Vote&gt;, options?: MongooseBaseQueryOptions&lt;Vote&gt;): Promise&lt;number&gt; {
+  public async countDocuments(
+    filter: FilterQuery&lt;Vote&gt;,
+    options?: MongooseBaseQueryOptions&lt;Vote&gt;
+  ): Promise&lt;number&gt; {
     return await this.voteModel.countDocuments(filter, options).exec()
   }
 }

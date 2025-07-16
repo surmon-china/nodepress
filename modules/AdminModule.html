@@ -86,7 +86,7 @@
 
 <ol class="breadcrumb">
     <li class="breadcrumb-item">Modules</li>
-    <li class="breadcrumb-item" >TagModule</li>
+    <li class="breadcrumb-item" >AdminModule</li>
 </ol>
 
 <div class="text-center module-graph-container">
@@ -114,62 +114,46 @@
 <polygon fill="#fb8072" stroke="transparent" points="406,-10 406,-30 426,-30 426,-10 406,-10"/>
 <text text-anchor="start" x="429.73" y="-15.4" font-family="Times-12" font-size="14.00"> &#160;Exports</text>
 <g id="clust1" class="cluster">
-<title>cluster_TagModule</title>
-<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="113,-70 113,-268 383,-268 383,-70 113,-70"/>
-</g>
-<g id="clust6" class="cluster">
-<title>cluster_TagModule_providers</title>
-<polygon fill="none" stroke="black" points="249,-78 249,-130 375,-130 375,-78 249,-78"/>
+<title>cluster_AdminModule</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="165,-70 165,-268 331,-268 331,-70 165,-70"/>
 </g>
 <g id="clust4" class="cluster">
-<title>cluster_TagModule_exports</title>
-<polygon fill="none" stroke="black" points="196,-208 196,-260 296,-260 296,-208 196,-208"/>
+<title>cluster_AdminModule_exports</title>
+<polygon fill="none" stroke="black" points="190,-208 190,-260 306,-260 306,-208 190,-208"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_TagModule_imports</title>
-<polygon fill="none" stroke="black" points="121,-78 121,-130 241,-130 241,-78 121,-78"/>
+<g id="clust6" class="cluster">
+<title>cluster_AdminModule_providers</title>
+<polygon fill="none" stroke="black" points="173,-78 173,-130 323,-130 323,-78 173,-78"/>
 </g>
-<!-- ArchiveModule -->
+<!-- AdminService  -->
 <g id="node1" class="node">
-<title>ArchiveModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="233.14,-122 230.14,-126 209.14,-126 206.14,-122 128.86,-122 128.86,-86 233.14,-86 233.14,-122"/>
-<text text-anchor="middle" x="181" y="-99.8" font-family="Times,serif" font-size="14.00">ArchiveModule</text>
+<title>AdminService </title>
+<polygon fill="#fb8072" stroke="black" points="298.37,-252 197.63,-252 197.63,-216 298.37,-216 298.37,-252"/>
+<text text-anchor="middle" x="248" y="-229.8" font-family="Times,serif" font-size="14.00">AdminService </text>
 </g>
-<!-- TagModule -->
+<!-- AdminModule -->
 <g id="node2" class="node">
-<title>TagModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="286.82,-187 283.82,-191 262.82,-191 259.82,-187 205.18,-187 205.18,-151 286.82,-151 286.82,-187"/>
-<text text-anchor="middle" x="246" y="-164.8" font-family="Times,serif" font-size="14.00">TagModule</text>
+<title>AdminModule</title>
+<polygon fill="#8dd3c7" stroke="black" points="297.44,-187 294.44,-191 273.44,-191 270.44,-187 198.56,-187 198.56,-151 297.44,-151 297.44,-187"/>
+<text text-anchor="middle" x="248" y="-164.8" font-family="Times,serif" font-size="14.00">AdminModule</text>
 </g>
-<!-- ArchiveModule&#45;&gt;TagModule -->
+<!-- AdminModule&#45;&gt;AdminService  -->
 <g id="edge1" class="edge">
-<title>ArchiveModule&#45;&gt;TagModule</title>
-<path fill="none" stroke="black" d="M219.33,-122.11C219.33,-122.11 219.33,-140.99 219.33,-140.99"/>
-<polygon fill="black" stroke="black" points="215.83,-140.99 219.33,-150.99 222.83,-140.99 215.83,-140.99"/>
+<title>AdminModule&#45;&gt;AdminService </title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M248,-187.11C248,-187.11 248,-205.99 248,-205.99"/>
+<polygon fill="black" stroke="black" points="244.5,-205.99 248,-215.99 251.5,-205.99 244.5,-205.99"/>
 </g>
-<!-- TagService  -->
+<!-- AdminService -->
 <g id="node3" class="node">
-<title>TagService </title>
-<polygon fill="#fb8072" stroke="black" points="287.75,-252 204.25,-252 204.25,-216 287.75,-216 287.75,-252"/>
-<text text-anchor="middle" x="246" y="-229.8" font-family="Times,serif" font-size="14.00">TagService </text>
+<title>AdminService</title>
+<ellipse fill="#fdb462" stroke="black" cx="248" cy="-104" rx="66.63" ry="18"/>
+<text text-anchor="middle" x="248" y="-99.8" font-family="Times,serif" font-size="14.00">AdminService</text>
 </g>
-<!-- TagModule&#45;&gt;TagService  -->
+<!-- AdminService&#45;&gt;AdminModule -->
 <g id="edge2" class="edge">
-<title>TagModule&#45;&gt;TagService </title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M246,-187.11C246,-187.11 246,-205.99 246,-205.99"/>
-<polygon fill="black" stroke="black" points="242.5,-205.99 246,-215.99 249.5,-205.99 242.5,-205.99"/>
-</g>
-<!-- TagService -->
-<g id="node4" class="node">
-<title>TagService</title>
-<ellipse fill="#fdb462" stroke="black" cx="312" cy="-104" rx="55.01" ry="18"/>
-<text text-anchor="middle" x="312" y="-99.8" font-family="Times,serif" font-size="14.00">TagService</text>
-</g>
-<!-- TagService&#45;&gt;TagModule -->
-<g id="edge3" class="edge">
-<title>TagService&#45;&gt;TagModule</title>
-<path fill="none" stroke="black" d="M271.83,-116.53C271.83,-116.53 271.83,-140.85 271.83,-140.85"/>
-<polygon fill="black" stroke="black" points="268.33,-140.85 271.83,-150.85 275.33,-140.85 268.33,-140.85"/>
+<title>AdminService&#45;&gt;AdminModule</title>
+<path fill="none" stroke="black" d="M248,-122.11C248,-122.11 248,-140.99 248,-140.99"/>
+<polygon fill="black" stroke="black" points="244.5,-140.99 248,-150.99 251.5,-140.99 244.5,-140.99"/>
 </g>
 </g>
 </svg>
@@ -207,7 +191,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/tag/tag.module.ts</code>
+            <code>src/modules/admin/admin.module.ts</code>
         </p>
 
 
@@ -221,7 +205,7 @@
                             title="Official documentation about module providers"><span class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="../injectables/TagService.html">TagService</a>
+                            <a href="../injectables/AdminService.html">AdminService</a>
                         </li>
                     </ul>
                 </div>
@@ -231,17 +215,7 @@
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="../controllers/TagController.html">TagController</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h3>Imports<a href="https://angular.io/api/core/NgModule#imports" target="_blank" rel="noopener noreferrer"
-                            title="Official documentation about module imports"><span
-                                class="icon ion-ios-information-circle-outline"></a></h3>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <a href="../modules/ArchiveModule.html">ArchiveModule</a>
+                            <a href="../controllers/AdminController.html">AdminController</a>
                         </li>
                     </ul>
                 </div>
@@ -251,7 +225,7 @@
                                 class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
-                            <a href="../injectables/TagService.html">TagService</a>
+                            <a href="../injectables/AdminService.html">AdminService</a>
                         </li>
                     </ul>
                 </div>
@@ -264,25 +238,22 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
- * @file Tag module
- * @module module/tag/module
+ * @file Admin module
+ * @module module/admin/module
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
 import { Module } from &#x27;@nestjs/common&#x27;
-import { ArchiveModule } from &#x27;@app/modules/archive/archive.module&#x27;
-import { ArticleProvider } from &#x27;@app/modules/article/article.model&#x27;
-import { TagController } from &#x27;./tag.controller&#x27;
-import { TagProvider } from &#x27;./tag.model&#x27;
-import { TagService } from &#x27;./tag.service&#x27;
+import { AdminController } from &#x27;./admin.controller&#x27;
+import { AdminProvider } from &#x27;./admin.model&#x27;
+import { AdminService } from &#x27;./admin.service&#x27;
 
 @Module({
-  imports: [ArchiveModule],
-  controllers: [TagController],
-  providers: [ArticleProvider, TagProvider, TagService],
-  exports: [TagService]
+  controllers: [AdminController],
+  providers: [AdminService, AdminProvider],
+  exports: [AdminService]
 })
-export class TagModule {}
+export class AdminModule {}
 </code></pre>
     </div>
 </div>
@@ -329,7 +300,7 @@ export class TagModule {}
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'module';
-            var COMPODOC_CURRENT_PAGE_URL = 'TagModule.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminModule.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

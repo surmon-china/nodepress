@@ -79,16 +79,19 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content controller">
+               <div class="content injectable">
                    <div class="content-data">
 
 
 
 
 
+
+
+
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >AuthController</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >AdminService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -112,16 +115,8 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/auth/auth.controller.ts</code>
+            <code>src/modules/admin/admin.service.ts</code>
         </p>
-
-            <p class="comment">
-                <h3>Prefix</h3>
-            </p>
-            <p class="comment">
-                <code>auth</code>
-            </p>
-
 
 
 
@@ -141,33 +136,28 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#checkToken" >checkToken</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#createToken" >createToken</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#getAdminProfile" >getAdminProfile</a>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getExistedPassword" >getExistedPassword</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getProfile" >getProfile</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#login" >login</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#putAdminProfile" >putAdminProfile</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#renewalToken" >renewalToken</a>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateProfile" >updateProfile</a>
                             </li>
                         </ul>
                     </td>
@@ -181,6 +171,67 @@
     </table>
 </section>
 
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(authService: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, adminModel: <a href="../classes/Admin.html" target="_self">MongooseModel&lt;Admin&gt;</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/modules/admin/admin.service.ts:17</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>adminModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../classes/Admin.html" target="_self" >MongooseModel&lt;Admin&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
             <section data-compodoc="block-methods">
     
     <h3 id="methods">
@@ -190,35 +241,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="checkToken"></a>
+                    <a name="createToken"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>checkToken</b></span>
-                        <a href="#checkToken"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Public</span>
+                        <span ><b>createToken</b></span>
+                        <a href="#createToken"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>checkToken()</code>
+                    <code>createToken()</code>
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Post(&#x27;check&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Check token&#x27;)<br /></code>
-                </td>
-            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:54</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -227,7 +269,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/TokenResult.html" target="_self" >TokenResult</a></code>
 
                         </div>
                 </td>
@@ -238,34 +280,67 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getAdminProfile"></a>
+                    <a name="getExistedPassword"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>getAdminProfile</b></span>
-                        <a href="#getAdminProfile"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getExistedPassword</b></span>
+                        <a href="#getExistedPassword"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAdminProfile()</code>
+                    <code>getExistedPassword()</code>
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Get(&#x27;admin&#x27;)<br />@(&#x27;Get admin profile&#x27;)<br /></code>
-                </td>
-            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="23"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getProfile"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getProfile</b></span>
+                        <a href="#getProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getProfile()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -287,8 +362,7 @@
                 <td class="col-md-4">
                     <a name="login"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
+                            <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
                         <span ><b>login</b></span>
                         <a href="#login"><span class="icon ion-ios-link"></span></a>
@@ -298,22 +372,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>login(undefined: <a href="../interfaces/QueryParamsResult.html" target="_self">QueryParamsResult</a>, body: <a href="../classes/AuthLoginDTO.html" target="_self">AuthLoginDTO</a>)</code>
+                    <code>login(password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Post(&#x27;login&#x27;)<br />@({message: &#x27;Login&#x27;, error: undefined})<br /></code>
-                </td>
-            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="35"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:35</a></div>
                         </td>
                     </tr>
 
@@ -334,20 +401,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>password</td>
                                             <td>
-                                                            <code><a href="../interfaces/QueryParamsResult.html" target="_self" >QueryParamsResult</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>body</td>
-                                            <td>
-                                                            <code><a href="../classes/AuthLoginDTO.html" target="_self" >AuthLoginDTO</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                             </td>
 
                                             <td>
@@ -374,35 +430,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putAdminProfile"></a>
+                    <a name="updateProfile"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>putAdminProfile</b></span>
-                        <a href="#putAdminProfile"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>updateProfile</b></span>
+                        <a href="#updateProfile"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putAdminProfile(adminProfile: <a href="../classes/AdminUpdateDTO.html" target="_self">AdminUpdateDTO</a>)</code>
+                    <code>updateProfile(adminProfile: <a href="../classes/AdminUpdateDTO.html" target="_self">AdminUpdateDTO</a>)</code>
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Put(&#x27;admin&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Update admin profile&#x27;)<br /></code>
-                </td>
-            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="75"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:75</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="50"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:50</a></div>
                         </td>
                     </tr>
 
@@ -448,142 +496,92 @@
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="renewalToken"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>renewalToken</b></span>
-                        <a href="#renewalToken"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>renewalToken()</code>
-                </td>
-            </tr>
+</section>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Post(&#x27;renewal&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@(&#x27;Renewal token&#x27;)<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="62"
-                                    class="link-to-prism">src/modules/auth/auth.controller.ts:62</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/TokenResult.html" target="_self" >TokenResult</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    </div>
+    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
- * @file Auth controller
- * @module module/auth/controller
- * @author Surmon &lt;https://github.com/surmon-china&gt;
- */
-
-import { Controller, Get, Put, Post, Body, UseGuards, HttpStatus } from &#x27;@nestjs/common&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { IPService } from &#x27;@app/processors/helper/helper.service.ip&#x27;
-import { EmailService } from &#x27;@app/processors/helper/helper.service.email&#x27;
-import { Responser } from &#x27;@app/decorators/responser.decorator&#x27;
-import { QueryParams, QueryParamsResult } from &#x27;@app/decorators/queryparams.decorator&#x27;
-import { AuthLoginDTO, AdminUpdateDTO } from &#x27;./auth.dto&#x27;
-import { AuthService } from &#x27;./auth.service&#x27;
-import { TokenResult } from &#x27;./auth.interface&#x27;
-import { Admin } from &#x27;./auth.model&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, UnauthorizedException, BadRequestException } from &#x27;@nestjs/common&#x27;
+import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
+import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { AuthService } from &#x27;@app/core/auth/auth.service&#x27;
+import { decodeBase64, decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
+import { Admin, DEFAULT_ADMIN_PROFILE } from &#x27;./admin.model&#x27;
+import { TokenResult } from &#x27;./admin.interface&#x27;
+import { AdminUpdateDTO } from &#x27;./admin.dto&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
-@Controller(&#x27;auth&#x27;)
-export class AuthController {
+@Injectable()
+export class AdminService {
   constructor(
-    private readonly ipService: IPService,
-    private readonly emailService: EmailService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    @InjectModel(Admin) private readonly adminModel: MongooseModel&lt;Admin&gt;
   ) {}
 
-  @Post(&#x27;login&#x27;)
-  @Responser.handle({ message: &#x27;Login&#x27;, error: HttpStatus.BAD_REQUEST })
-  async login(
-    @QueryParams() { visitor: { ip } }: QueryParamsResult,
-    @Body() body: AuthLoginDTO
-  ): Promise&lt;TokenResult&gt; {
-    const token &#x3D; await this.authService.adminLogin(body.password)
-    if (ip) {
-      this.ipService.queryLocation(ip).then((location) &#x3D;&gt; {
-        const subject &#x3D; &#x60;App has a new login activity&#x60;
-        const locationText &#x3D; location ? [location.country, location.region, location.city].join(&#x27; · &#x27;) : &#x27;unknow&#x27;
-        const content &#x3D; &#x60;${subject}. IP: ${ip}, location: ${locationText}&#x60;
-        this.emailService.sendMailAs(APP_BIZ.NAME, {
-          to: APP_BIZ.ADMIN_EMAIL,
-          subject,
-          text: content,
-          html: content
-        })
-      })
+  private async getExistedPassword(): Promise&lt;string&gt; {
+    const auth &#x3D; await this.adminModel.findOne(undefined, &#x27;+password&#x27;).exec()
+    return auth?.password || decodeMD5(APP_BIZ.AUTH.defaultPassword)
+  }
+
+  public createToken(): TokenResult {
+    return {
+      access_token: this.authService.signToken(),
+      expires_in: APP_BIZ.AUTH.expiresIn
     }
-    return token
   }
 
-  // check token
-  @Post(&#x27;check&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Check token&#x27;)
-  checkToken(): string {
-    return &#x27;ok&#x27;
+  public async login(password: string): Promise&lt;TokenResult&gt; {
+    const existedPassword &#x3D; await this.getExistedPassword()
+    const loginPassword &#x3D; decodeMD5(decodeBase64(password))
+    if (loginPassword &#x3D;&#x3D;&#x3D; existedPassword) {
+      return this.createToken()
+    } else {
+      throw new UnauthorizedException(&#x27;Password incorrect&#x27;)
+    }
   }
 
-  // refresh token
-  @Post(&#x27;renewal&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Renewal token&#x27;)
-  renewalToken(): TokenResult {
-    return this.authService.createToken()
+  public async getProfile(): Promise&lt;Admin&gt; {
+    const adminProfile &#x3D; await this.adminModel.findOne(undefined, &#x27;-_id&#x27;).exec()
+    return adminProfile ? adminProfile.toObject() : DEFAULT_ADMIN_PROFILE
   }
 
-  @Get(&#x27;admin&#x27;)
-  @Responser.handle(&#x27;Get admin profile&#x27;)
-  getAdminProfile(): Promise&lt;Admin&gt; {
-    return this.authService.getAdminProfile()
-  }
+  public async updateProfile(adminProfile: AdminUpdateDTO): Promise&lt;Admin&gt; {
+    const { password, new_password, ...profile } &#x3D; adminProfile
+    const payload: Admin &#x3D; { ...profile }
 
-  @Put(&#x27;admin&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @Responser.handle(&#x27;Update admin profile&#x27;)
-  putAdminProfile(@Body() adminProfile: AdminUpdateDTO): Promise&lt;Admin&gt; {
-    return this.authService.putAdminProfile(adminProfile)
+    // verify password
+    if (password || new_password) {
+      if (!password || !new_password) {
+        throw new BadRequestException(&#x27;Incomplete passwords&#x27;)
+      }
+      if (password &#x3D;&#x3D;&#x3D; new_password) {
+        throw new BadRequestException(&#x27;Old password and new password cannot be the same&#x27;)
+      }
+      const oldPassword &#x3D; decodeMD5(decodeBase64(password))
+      const existedPassword &#x3D; await this.getExistedPassword()
+      if (oldPassword !&#x3D;&#x3D; existedPassword) {
+        throw new BadRequestException(&#x27;Old password incorrect&#x27;)
+      }
+      // set new password
+      payload.password &#x3D; decodeMD5(decodeBase64(new_password))
+    }
+
+    // save
+    const existedAuth &#x3D; await this.adminModel.findOne(undefined, &#x27;+password&#x27;).exec()
+    if (existedAuth) {
+      await Object.assign(existedAuth, payload).save()
+    } else {
+      await this.adminModel.create(payload)
+    }
+
+    return this.getProfile()
   }
 }
 </code></pre>
     </div>
+
 </div>
-
-
-
 
 
 
@@ -622,8 +620,8 @@ export class AuthController {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
-            var COMPODOC_CURRENT_PAGE_URL = 'AuthController.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

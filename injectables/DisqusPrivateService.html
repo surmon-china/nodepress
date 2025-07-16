@@ -163,7 +163,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#exportXML" >exportXML</a>
+                                <a href="#exportXMLFromNodepress" >exportXMLFromNodepress</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -178,7 +178,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#importXML" >importXML</a>
+                                <a href="#importXMLToNodepress" >importXMLToNodepress</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -412,19 +412,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="exportXML"></a>
+                    <a name="exportXMLFromNodepress"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>exportXML</b></span>
-                        <a href="#exportXML"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>exportXMLFromNodepress</b></span>
+                        <a href="#exportXMLFromNodepress"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>exportXML()</code>
+                    <code>exportXMLFromNodepress()</code>
                 </td>
             </tr>
 
@@ -592,19 +592,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="importXML"></a>
+                    <a name="importXMLToNodepress"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>importXML</b></span>
-                        <a href="#importXML"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>importXMLToNodepress</b></span>
+                        <a href="#importXMLToNodepress"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>importXML(file: Express.Multer.File)</code>
+                    <code>importXMLToNodepress(xmlFileBuffer: Buffer)</code>
                 </td>
             </tr>
 
@@ -633,9 +633,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>file</td>
+                                                <td>xmlFileBuffer</td>
                                             <td>
-                                                        <code>Express.Multer.File</code>
+                                                        <code>Buffer</code>
                                             </td>
 
                                             <td>
@@ -839,7 +839,7 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import dayjs from &#x27;dayjs&#x27;
 import { XMLParser } from &#x27;fast-xml-parser&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
+import { Injectable, BadRequestException } from &#x27;@nestjs/common&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
@@ -961,7 +961,7 @@ export class DisqusPrivateService {
 
   // export NodePress to Disqus
   // https://help.disqus.com/en/articles/1717222-custom-xml-import-format
-  public async exportXML(): Promise&lt;string&gt; {
+  public async exportXMLFromNodepress(): Promise&lt;string&gt; {
     const treeMap &#x3D; new Map&lt;number, { comments: Array&lt;Comment&gt;; article: Article }&gt;()
     const guestbook: Comment[] &#x3D; []
 
@@ -1000,16 +1000,18 @@ export class DisqusPrivateService {
 
   // import Disqus data to NodePress
   // https://help.disqus.com/en/articles/1717164-comments-export
-  public async importXML(file: Express.Multer.File) {
-    const xml &#x3D; file.buffer.toString()
+  public async importXMLToNodepress(xmlFileBuffer: Buffer) {
     const parser &#x3D; new XMLParser({
       ignoreAttributes: false,
       allowBooleanAttributes: true,
       attributeNamePrefix: &#x27;@&#x27;
     })
-    const object &#x3D; parser.parse(xml)
-    // const threads: any[] &#x3D; object.disqus.thread
-    const posts: any[] &#x3D; object.disqus.post
+    const object &#x3D; parser.parse(xmlFileBuffer)
+    const posts: any[] &#x3D; object?.disqus?.post
+    if (!posts || !Array.isArray(posts)) {
+      throw new BadRequestException(&#x27;Invalid XML format: missing disqus.post&#x27;)
+    }
+
     // filter new data
     const filtered &#x3D; posts.filter((post) &#x3D;&gt; Boolean(post.id))
     const getEach &#x3D; (post: any) &#x3D;&gt; ({

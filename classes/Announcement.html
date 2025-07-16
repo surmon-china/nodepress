@@ -387,7 +387,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions } from &#x27;@typegoose/typegoose&#x27;
 import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty } from &#x27;class-validator&#x27;
-import { GENERAL_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/increment.constant&#x27;
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { PublishState } from &#x27;@app/constants/biz.constant&#x27;
@@ -395,7 +395,7 @@ import { PublishState } from &#x27;@app/constants/biz.constant&#x27;
 export const ANNOUNCEMENT_STATES &#x3D; [PublishState.Draft, PublishState.Published] as const
 
 @plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_AUTO_INCREMENT_ID_CONFIG)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
     versionKey: false,

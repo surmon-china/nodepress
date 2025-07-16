@@ -1570,13 +1570,13 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from &#x27;@nestjs/common&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { Comment, CommentBase } from &#x27;@app/modules/comment/comment.model&#x27;
-import { QueryVisitor } from &#x27;@app/decorators/queryparams.decorator&#x27;
+import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { CommentState } from &#x27;@app/constants/biz.constant&#x27;
 import { getDisqusCacheKey } from &#x27;@app/constants/cache.constant&#x27;
-import { CacheService } from &#x27;@app/processors/cache/cache.service&#x27;
+import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
 import { DISQUS } from &#x27;@app/app.config&#x27;
 import { Disqus } from &#x27;@app/utils/disqus&#x27;
 import { getExtendObject, getExtendValue } from &#x27;@app/transformers/extend.transformer&#x27;
@@ -1787,22 +1787,20 @@ export class DisqusPublicService {
   public async deleteUniversalComment(commentId: number, accessToken: string) {
     // comment
     const comment &#x3D; await this.commentService.getDetailByNumberId(commentId)
-    if (!comment) {
-      throw &#x27;Comment not found&#x27;
-    }
+    if (!comment) throw new NotFoundException(&#x60;Comment &#x27;${commentId}&#x27; not found&#x60;)
 
     // disqus extend info
     const extendsObject &#x3D; getExtendObject(comment.extends)
     const commentDisqusPostId &#x3D; extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
     const commentDisqusAuthorId &#x3D; extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
     if (!commentDisqusAuthorId || !commentDisqusPostId) {
-      throw &#x27;Comment not deletable&#x27;
+      throw new BadRequestException(&#x60;Comment &#x27;${commentId}&#x27; cannot be deleted (missing Disqus metadata)&#x60;)
     }
 
     // user ID &#x3D;&#x3D;&#x3D; author ID
     const userInfo &#x3D; await this.getUserInfo(accessToken)
     if (userInfo.id !&#x3D;&#x3D; commentDisqusAuthorId) {
-      throw &#x60;You do not have write privileges on comment &#x27;${commentId}&#x27;&#x60;
+      throw new ForbiddenException(&#x60;You do not have permission to delete comment &#x27;${commentId}&#x27;&#x60;)
     }
 
     // disqus delete
