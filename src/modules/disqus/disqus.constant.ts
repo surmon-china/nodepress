@@ -10,7 +10,7 @@ import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 
 export const DISQUS_OAUTH_CALLBACK_URL = isProdEnv
   ? `${APP_BIZ.URL}/disqus/oauth-callback`
-  : `http://localhost:8000/disqus/oauth-callback`
+  : `http://localhost:${APP_BIZ.PORT}/disqus/oauth-callback`
 
 // extends
 export const COMMENT_POST_ID_EXTEND_KEY = 'disqus-post-id'

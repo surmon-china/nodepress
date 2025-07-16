@@ -41,6 +41,11 @@ export class DisqusController {
     }
   }
 
+  @Get('close-window.js')
+  closeWindowScript(@Response() response: FastifyReply) {
+    response.type('application/javascript').send('window.close();')
+  }
+
   @Get('oauth-callback')
   async oauthCallback(@Query() query: CallbackCodeDTO, @Response() response: FastifyReply) {
     const accessToken = await this.disqusPublicService.getAccessToken(query.code)
@@ -57,9 +62,10 @@ export class DisqusController {
       secure: 'auto'
     })
     // Close the popup window
-    response.header('content-security-policy', "script-src 'unsafe-inline'")
     response.header('content-type', 'text/html')
-    response.send(`<script>window.close();</script>`)
+    response.send(`<!DOCTYPE html><html><script src="/disqus/close-window.js"></script></html>`)
+    // To maintain a secure `content-security-policy`, inline JavaScript is not used here.
+    // response.send(`<script>window.close();</script>`)
   }
 
   @Post('oauth-logout')
