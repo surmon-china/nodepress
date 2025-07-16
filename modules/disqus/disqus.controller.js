@@ -41,6 +41,9 @@ let DisqusController = class DisqusController {
             authorize_url: this.disqusPublicService.getAuthorizeURL()
         };
     }
+    closeWindowScript(response) {
+        response.type('application/javascript').send('window.close();');
+    }
     async oauthCallback(query, response) {
         const accessToken = await this.disqusPublicService.getAccessToken(query.code);
         this.disqusPublicService.setUserInfoCache(accessToken.user_id, await this.disqusPublicService.getUserInfo(accessToken.access_token), accessToken.expires_in);
@@ -49,9 +52,8 @@ let DisqusController = class DisqusController {
             httpOnly: true,
             secure: 'auto'
         });
-        response.header('content-security-policy', "script-src 'unsafe-inline'");
         response.header('content-type', 'text/html');
-        response.send(`<script>window.close();</script>`);
+        response.send(`<!DOCTYPE html><html><script src="/disqus/close-window.js"></script></html>`);
     }
     oauthLogout(token, response) {
         if (token)
@@ -108,6 +110,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], DisqusController.prototype, "getConfig", null);
+__decorate([
+    (0, common_2.Get)('close-window.js'),
+    __param(0, (0, common_2.Response)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], DisqusController.prototype, "closeWindowScript", null);
 __decorate([
     (0, common_2.Get)('oauth-callback'),
     __param(0, (0, common_2.Query)()),
