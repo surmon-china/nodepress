@@ -70,6 +70,7 @@ class VoteAuthorDTO {
 }
 exports.VoteAuthorDTO = VoteAuthorDTO;
 __decorate([
+    (0, class_transformer_1.Type)(() => comment_model_1.Author),
     (0, class_validator_2.ValidateNested)(),
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.IsOptional)(),

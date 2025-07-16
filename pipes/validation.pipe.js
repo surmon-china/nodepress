@@ -6,15 +6,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ValidationPipe = exports.isUnverifiableMetaType = void 0;
+exports.ValidationPipe = void 0;
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const common_1 = require("@nestjs/common");
-const isUnverifiableMetaType = (metatype) => {
-    const basicTypes = [String, Boolean, Number, Array, Object];
-    return !metatype || basicTypes.includes(metatype);
-};
-exports.isUnverifiableMetaType = isUnverifiableMetaType;
+const UNVERIFIABLE_TYPES = [String, Boolean, Number, Array, Object];
 const collectMessages = (errors) => {
     const messages = [];
     for (const error of errors) {
@@ -28,8 +24,11 @@ const collectMessages = (errors) => {
     return messages;
 };
 let ValidationPipe = class ValidationPipe {
-    async transform(value, { metatype }) {
-        if ((0, exports.isUnverifiableMetaType)(metatype)) {
+    async transform(value, { type, metatype }) {
+        if (type === 'custom') {
+            return value;
+        }
+        if (!metatype || UNVERIFIABLE_TYPES.includes(metatype)) {
             return value;
         }
         const object = (0, class_transformer_1.plainToInstance)(metatype, value);

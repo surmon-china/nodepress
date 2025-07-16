@@ -12,7 +12,6 @@ const core_1 = require("@nestjs/core");
 const throttler_1 = require("@nestjs/throttler");
 const app_controller_1 = require("./app.controller");
 const noop_middleware_1 = require("./middlewares/noop.middleware");
-const validation_pipe_1 = require("./pipes/validation.pipe");
 const database_module_1 = require("./core/database/database.module");
 const cache_module_1 = require("./core/cache/cache.module");
 const auth_module_1 = require("./core/auth/auth.module");
@@ -73,10 +72,6 @@ exports.AppModule = AppModule = __decorate([
             {
                 provide: core_1.APP_GUARD,
                 useClass: throttler_1.ThrottlerGuard
-            },
-            {
-                provide: core_1.APP_PIPE,
-                useClass: validation_pipe_1.ValidationPipe
             }
         ]
     })

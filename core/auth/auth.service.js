@@ -48,7 +48,7 @@ let AuthService = class AuthService {
             return false;
         }
         try {
-            const payload = this.jwtService.verify(token, { secret: app_config_1.APP_BIZ.AUTH_JWT.secret });
+            const payload = await this.jwtService.verifyAsync(token, { secret: app_config_1.APP_BIZ.AUTH_JWT.secret });
             return (0, isEqual_1.default)(payload.data, app_config_1.APP_BIZ.AUTH_JWT.data);
         }
         catch {

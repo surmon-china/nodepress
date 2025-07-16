@@ -10,6 +10,7 @@ const platform_fastify_1 = require("@nestjs/platform-fastify");
 const transform_interceptor_1 = require("./interceptors/transform.interceptor");
 const logging_interceptor_1 = require("./interceptors/logging.interceptor");
 const exception_filter_1 = require("./filters/exception.filter");
+const validation_pipe_1 = require("./pipes/validation.pipe");
 const auth_service_1 = require("./core/auth/auth.service");
 const app_environment_1 = require("./app.environment");
 const app_module_1 = require("./app.module");
@@ -37,6 +38,7 @@ async function bootstrap() {
         maxAge: 600,
         methods: ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     });
+    app.useGlobalPipes(new validation_pipe_1.ValidationPipe());
     app.useGlobalFilters(new exception_filter_1.HttpExceptionFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
     if (app_environment_1.isDevEnv)
