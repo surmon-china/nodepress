@@ -49,6 +49,8 @@ export const APP_BIZ = {
   FE_URL: 'https://surmon.me',
   /** Static resource host URL */
   STATIC_URL: 'https://static.surmon.me',
+  /** Allowed CORS origins */
+  CORS_ALLOWED_ORIGINS: ['https://surmon.me', /\.surmon\.me$/],
   /** Authentication config */
   AUTH: {
     /** JWT token expiration time in seconds */

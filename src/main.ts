@@ -43,19 +43,36 @@ async function bootstrap() {
     request.locals.isUnauthenticated = !isAuthenticated
   })
 
+  // Enable CORS https://github.com/fastify/fastify-cors
+  app.enableCors({
+    // Allow all origins in development, restrict in production
+    origin: isDevEnv ? true : APP_BIZ.CORS_ALLOWED_ORIGINS,
+    preflight: true,
+    credentials: true,
+    maxAge: 600,
+    methods: ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    // Defaults to reflecting the headers specified in the request's Access-Control-Request-Headers header if not specified.
+    // allowedHeaders: [
+    //   'Authorization',
+    //   'Origin',
+    //   'No-Cache',
+    //   'X-Requested-With',
+    //   'If-Modified-Since',
+    //   'Pragma',
+    //   'Last-Modified',
+    //   'Cache-Control',
+    //   'Expires',
+    //   'Content-Type',
+    //   'X-E4M-With',
+    //   'Sentry-Trace',
+    //   'Baggage'
+    // ]
+  })
+
   // Register global filters and interceptors
   app.useGlobalFilters(new HttpExceptionFilter())
   app.useGlobalInterceptors(new TransformInterceptor())
-  if (isDevEnv) {
-    app.useGlobalInterceptors(new LoggingInterceptor())
-    app.enableCors({
-      origin: true,
-      preflight: true,
-      credentials: true,
-      maxAge: 86400,
-      methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH']
-    })
-  }
+  if (isDevEnv) app.useGlobalInterceptors(new LoggingInterceptor())
 
   return await app.listen(APP_BIZ.PORT)
 }
