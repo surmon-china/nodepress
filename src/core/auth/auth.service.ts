@@ -2,6 +2,7 @@
  * @file Auth jwt service
  * @module core/auth/service
  * @author Surmon <https://github.com/surmon-china>
+ * @link https://docs.nestjs.com/security/authentication#enable-authentication-globally
  */
 
 import _isEqual from 'lodash/isEqual'
@@ -45,7 +46,7 @@ export class AuthService {
     }
 
     try {
-      const payload = this.jwtService.verify(token, { secret: APP_BIZ.AUTH_JWT.secret })
+      const payload = await this.jwtService.verifyAsync(token, { secret: APP_BIZ.AUTH_JWT.secret })
       return _isEqual(payload.data, APP_BIZ.AUTH_JWT.data)
     } catch {
       return false

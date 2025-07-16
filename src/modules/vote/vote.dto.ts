@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Transform } from 'class-transformer'
+import { Transform, Type } from 'class-transformer'
 import { IsInt, IsObject, IsArray, IsDefined, IsOptional, IsNotEmpty } from 'class-validator'
 import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { PaginateOptionDTO } from '@app/models/paginate.model'
@@ -49,6 +49,7 @@ export class VotesDTO {
 }
 
 export class VoteAuthorDTO {
+  @Type(() => Author)
   @ValidateNested()
   @IsObject()
   @IsOptional()

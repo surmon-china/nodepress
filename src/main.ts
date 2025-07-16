@@ -11,6 +11,7 @@ import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify
 import { TransformInterceptor } from '@app/interceptors/transform.interceptor'
 import { LoggingInterceptor } from '@app/interceptors/logging.interceptor'
 import { HttpExceptionFilter } from '@app/filters/exception.filter'
+import { ValidationPipe } from '@app/pipes/validation.pipe'
 import { AuthService } from '@app/core/auth/auth.service'
 import { environment, isDevEnv } from './app.environment'
 import { AppModule } from './app.module'
@@ -52,24 +53,11 @@ async function bootstrap() {
     maxAge: 600,
     methods: ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     // Defaults to reflecting the headers specified in the request's Access-Control-Request-Headers header if not specified.
-    // allowedHeaders: [
-    //   'Authorization',
-    //   'Origin',
-    //   'No-Cache',
-    //   'X-Requested-With',
-    //   'If-Modified-Since',
-    //   'Pragma',
-    //   'Last-Modified',
-    //   'Cache-Control',
-    //   'Expires',
-    //   'Content-Type',
-    //   'X-E4M-With',
-    //   'Sentry-Trace',
-    //   'Baggage'
-    // ]
+    // allowedHeaders: [...]
   })
 
   // Register global filters and interceptors
+  app.useGlobalPipes(new ValidationPipe())
   app.useGlobalFilters(new HttpExceptionFilter())
   app.useGlobalInterceptors(new TransformInterceptor())
   if (isDevEnv) app.useGlobalInterceptors(new LoggingInterceptor())

@@ -7,13 +7,12 @@
 import type { FastifyRequest } from 'fastify'
 import type { MiddlewareConsumer } from '@nestjs/common'
 import { Module, NestModule } from '@nestjs/common'
-import { APP_GUARD, APP_PIPE } from '@nestjs/core'
+import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerGuard, ThrottlerModule, minutes } from '@nestjs/throttler'
 import { AppController } from '@app/app.controller'
 
 // Framework
 import { NoopMiddleware } from '@app/middlewares/noop.middleware'
-import { ValidationPipe } from '@app/pipes/validation.pipe'
 
 // Global modules
 import { DatabaseModule } from '@app/core/database/database.module'
@@ -78,10 +77,6 @@ import { ExtensionModule } from '@app/modules/extension/extension.module'
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard
-    },
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe
     }
   ]
 })
