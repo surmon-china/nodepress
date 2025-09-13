@@ -42,7 +42,7 @@
     "@typegoose/auto-increment": "^4.13.x",
     "@typegoose/typegoose": "^12.17.x",
     "akismet-api": "^6.x",
-    "axios": "^1.10.x",
+    "axios": "^1.12.x",
     "bcryptjs": "^3.0.x",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.x",
