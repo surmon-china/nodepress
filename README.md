@@ -26,11 +26,11 @@
 - [API Documentation](https://github.surmon.me/nodepress)
 - [Architecture Documentation](/ARCHITECTURE.md)
 
-**[Related Projects](https://github.com/stars/surmon-china/lists/surmon-me)**
+**[Related projects](https://github.com/stars/surmon-china/lists/surmon-me)**
 
-- **SSR Blog:** [`surmon.me`](https://github.com/surmon-china/surmon.me) built with Vue.
-- **Blog Admin:** [`surmon.me.admin`](https://github.com/surmon-china/surmon.me.admin) built with React and [`Veact`](https://github.com/veactjs/veact).
-- **Blog Native App:** [`surmon.me.native`](https://github.com/surmon-china/surmon.me.native) built with React Native.
+- **SSR blog:** [`surmon.me`](https://github.com/surmon-china/surmon.me) built with Vue.
+- **Blog admin site:** [`surmon.me.admin`](https://github.com/surmon-china/surmon.me.admin) built with React and [`Veact`](https://github.com/veactjs/veact).
+- **Blog native app:** [`surmon.me.native`](https://github.com/surmon-china/surmon.me.native) built with React Native.
 
 ---
 
