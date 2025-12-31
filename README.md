@@ -26,7 +26,7 @@
 - [API Documentation](https://github.surmon.me/nodepress)
 - [Architecture Documentation](/ARCHITECTURE.md)
 
-**[Related projects](https://github.com/stars/surmon-china/lists/surmon-me)**
+**Related projects:**
 
 - **SSR blog:** [`surmon.me`](https://github.com/surmon-china/surmon.me) built with Vue.
 - **Blog admin site:** [`surmon.me.admin`](https://github.com/surmon-china/surmon.me.admin) built with React and [Veact](https://github.com/veactjs/veact).
