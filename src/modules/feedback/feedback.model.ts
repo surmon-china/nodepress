@@ -100,6 +100,7 @@ export class FeedbackBase {
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    id: false,
     versionKey: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },

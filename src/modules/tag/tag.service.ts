@@ -4,6 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import type { QueryFilter } from 'mongoose'
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import type { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
@@ -11,7 +12,7 @@ import type { MongooseId, MongooseObjectId, WithId } from '@app/interfaces/mongo
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { SeoService } from '@app/core/helper/helper.service.seo'
 import { ArchiveService } from '@app/modules/archive/archive.service'
-import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { SortType } from '@app/constants/biz.constant'
@@ -38,7 +39,7 @@ export class TagService {
       promise: () => this.getAllTags({ aggregatePublicOnly: true })
     })
     this.allTagsCache.update().catch((error) => {
-      logger.warn('init getAllTags failed!', error)
+      logger.warn('Init getAllTags failed!', error)
     })
   }
 
@@ -68,23 +69,23 @@ export class TagService {
   }
 
   public async paginate(
-    query: PaginateQuery<Tag>,
+    filter: QueryFilter<Tag>,
     options: PaginateOptions,
     publicOnly: boolean
   ): Promise<PaginateResult<Tag>> {
-    const tags = await this.tagModel.paginate(query, { ...options, lean: true })
-    const documents = await this.aggregateArticleCount(publicOnly, tags.documents)
-    return { ...tags, documents }
+    const result = await this.tagModel.paginateRaw(filter, options)
+    const documents = await this.aggregateArticleCount(publicOnly, result.documents)
+    return { ...result, documents }
   }
 
-  public async getDetailBySlug(slug: string): Promise<MongooseDoc<Tag>> {
-    const tag = await this.tagModel.findOne({ slug }).exec()
+  public async getDetailBySlug(slug: string): Promise<WithId<Tag>> {
+    const tag = await this.tagModel.findOne({ slug }).lean().exec()
     if (!tag) throw new NotFoundException(`Tag '${slug}' not found`)
     return tag
   }
 
   public async create(newTag: Tag): Promise<MongooseDoc<Tag>> {
-    const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec()
+    const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).lean().exec()
     if (existedTag) throw new ConflictException(`Tag slug '${newTag.slug}' already exists`)
 
     const tag = await this.tagModel.create(newTag)
@@ -95,7 +96,7 @@ export class TagService {
   }
 
   public async update(tagId: MongooseId, newTag: Tag): Promise<MongooseDoc<Tag>> {
-    const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec()
+    const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).lean().exec()
     if (existedTag && !existedTag._id.equals(tagId)) {
       throw new ConflictException(`Tag slug '${newTag.slug}' already exists`)
     }

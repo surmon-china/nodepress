@@ -5,13 +5,14 @@
  */
 
 import _trim from 'lodash/trim'
+import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
-import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { TagsDTO, TagPaginateQueryDTO } from './tag.dto'
 import { TagService } from './tag.service'
 import { Tag } from './tag.model'
@@ -28,18 +29,18 @@ export class TagController {
     @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise<PaginateResult<Tag>> {
     const { sort, page, per_page, ...filters } = query
-    const paginateQuery: PaginateQuery<Tag> = {}
+    const queryFilter: QueryFilter<Tag> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page, dateSort: sort }
 
     // search
     if (filters.keyword) {
       const trimmed = _trim(filters.keyword)
       const keywordRegExp = new RegExp(trimmed, 'i')
-      paginateQuery.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
+      queryFilter.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
     }
 
     // paginate
-    return this.tagService.paginate(paginateQuery, paginateOptions, isUnauthenticated)
+    return this.tagService.paginate(queryFilter, paginateOptions, isUnauthenticated)
   }
 
   @Get('all')

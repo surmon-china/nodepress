@@ -61,6 +61,7 @@ export class ArticleMeta {
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
+    id: false,
     versionKey: false,
     toObject: { getters: true },
     timestamps: {

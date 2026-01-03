@@ -17,6 +17,7 @@ import { KeyValueModel } from '@app/models/key-value.model'
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
+    id: false,
     versionKey: false,
     timestamps: {
       createdAt: 'created_at',

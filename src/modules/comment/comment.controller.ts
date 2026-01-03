@@ -6,6 +6,7 @@
 
 import _trim from 'lodash/trim'
 import _isUndefined from 'lodash/isUndefined'
+import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { Throttle, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
@@ -14,7 +15,7 @@ import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { SortType } from '@app/constants/biz.constant'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
-import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStateDTO } from './comment.dto'
 import { CommentService } from './comment.service'
 import { Comment, CommentBase } from './comment.model'
@@ -26,12 +27,12 @@ export class CommentController {
   @Get()
   @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: 'Get comments succeeded', usePaginate: true })
-  getComments(
+  async getComments(
     @Query(PermissionPipe) query: CommentPaginateQueryDTO,
     @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise<PaginateResult<Comment>> {
     const { sort, page, per_page, ...filters } = query
-    const paginateQuery: PaginateQuery<Comment> = {}
+    const queryFilter: QueryFilter<Comment> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page }
 
     // sort
@@ -45,26 +46,38 @@ export class CommentController {
 
     // state
     if (!_isUndefined(filters.state)) {
-      paginateQuery.state = filters.state
+      queryFilter.state = filters.state
     }
 
     // post ID
     if (!_isUndefined(filters.post_id)) {
-      paginateQuery.post_id = filters.post_id
+      queryFilter.post_id = filters.post_id
     }
 
     // search
     if (filters.keyword) {
       const trimmed = _trim(filters.keyword)
       const keywordRegExp = new RegExp(trimmed, 'i')
-      paginateQuery.$or = [
+      queryFilter.$or = [
         { content: keywordRegExp },
         { 'author.name': keywordRegExp },
         { 'author.email': keywordRegExp }
       ]
     }
 
-    return this.commentService.paginate(paginateQuery, paginateOptions, isUnauthenticated)
+    const result = await this.commentService.paginate(queryFilter, paginateOptions)
+    // for admin: original structure data
+    if (!isUnauthenticated) return result
+    // for guest: desensitizing personal information
+    return {
+      ...result,
+      documents: result.documents.map((document) => {
+        const comment = document.toObject()
+        Reflect.deleteProperty(comment, 'ip')
+        Reflect.deleteProperty(comment.author, 'email')
+        return comment
+      })
+    }
   }
 
   @Get('calendar')

@@ -45,7 +45,7 @@ export class SeoService {
         return this.httpService.axiosRef
           .request({
             method: 'post',
-            url: `https://indexing.googleapis.com/v3/urlNotifications:publish`,
+            url: 'https://indexing.googleapis.com/v3/urlNotifications:publish',
             data: { url, type },
             headers: {
               'Content-Type': 'application/json',

@@ -42,6 +42,7 @@ export const VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    id: false,
     versionKey: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },

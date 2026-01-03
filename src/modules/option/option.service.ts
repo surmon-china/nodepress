@@ -35,7 +35,7 @@ export class OptionService {
     })
 
     this.optionCache.update().catch((error) => {
-      logger.warn('init getAppOption failed!', error)
+      logger.warn('Init getAppOption failed!', error)
     })
   }
 
@@ -77,7 +77,7 @@ export class OptionService {
     return option.blocklist
   }
 
-  public async incrementLikes(): Promise<number> {
+  public async incrementMetaLikes(): Promise<number> {
     const option = await this.ensureAppOption()
     option.meta.likes++
     await option.save({ timestamps: false })

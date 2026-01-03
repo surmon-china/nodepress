@@ -6,11 +6,12 @@
 
 import _isUndefined from 'lodash/isUndefined'
 import { UAParser } from 'ua-parser-js'
+import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from '@nestjs/common'
 import { Throttle, minutes, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
-import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { IPService, IPLocation } from '@app/core/helper/helper.service.ip'
 import { EmailService } from '@app/core/helper/helper.service.email'
@@ -45,12 +46,11 @@ export class VoteController {
   }
 
   private async getPostTitle(postId: number) {
-    if (postId === GUESTBOOK_POST_ID) {
-      return 'guestbook'
-    } else {
-      const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId })
-      return article.toObject().title
-    }
+    return postId === GUESTBOOK_POST_ID
+      ? 'guestbook'
+      : await this.articleService
+          .getDetailByNumberIdOrSlug({ numberId: postId, lean: true })
+          .then((article) => article.title)
   }
 
   private async getVoteAuthor(payload: { guestAuthor?: Author; disqusToken?: string }) {
@@ -92,7 +92,7 @@ export class VoteController {
     if (voteAuthor.type === VoteAuthorType.Disqus) {
       const disqusUser = voteAuthor.data
       const isAdmin = disqusUser.username === APP_CONFIG.DISQUS.adminUsername
-      const userType = `Disqus ${isAdmin ? `moderator` : 'user'}`
+      const userType = `Disqus ${isAdmin ? 'moderator' : 'user'}`
       return [`${disqusUser.name} (${userType})`, disqusUser.profileUrl].filter(Boolean).join(' · ')
     }
 
@@ -164,25 +164,26 @@ export class VoteController {
   @SuccessResponse({ message: 'Get votes succeeded', usePaginate: true })
   getVotes(@Query() query: VotePaginateQueryDTO): Promise<PaginateResult<Vote>> {
     const { sort, page, per_page, ...filters } = query
-    const paginateQuery: PaginateQuery<Vote> = {}
+    const queryFilter: QueryFilter<Vote> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page, dateSort: sort }
     // target type
     if (!_isUndefined(filters.target_type)) {
-      paginateQuery.target_type = filters.target_type
+      queryFilter.target_type = filters.target_type
     }
     // target ID
     if (!_isUndefined(filters.target_id)) {
-      paginateQuery.target_id = filters.target_id
+      queryFilter.target_id = filters.target_id
     }
     // vote type
     if (!_isUndefined(filters.vote_type)) {
-      paginateQuery.vote_type = filters.vote_type
+      queryFilter.vote_type = filters.vote_type
     }
     // author type
     if (!_isUndefined(filters.author_type)) {
-      paginateQuery.author_type = filters.author_type
+      queryFilter.author_type = filters.author_type
     }
-    return this.voteService.paginate(paginateQuery, paginateOptions)
+
+    return this.voteService.paginate(queryFilter, paginateOptions)
   }
 
   @Delete()
@@ -203,8 +204,8 @@ export class VoteController {
     // NodePress
     const likes =
       voteBody.post_id === GUESTBOOK_POST_ID
-        ? await this.optionService.incrementLikes()
-        : await this.articleService.incrementLikes(voteBody.post_id)
+        ? await this.optionService.incrementMetaLikes()
+        : await this.articleService.incrementMetaStatistic(voteBody.post_id, 'likes')
     // Disqus
     this.voteDisqusThread(voteBody.post_id, voteBody.vote, token?.access_token).catch(() => {})
     // author
@@ -226,7 +227,7 @@ export class VoteController {
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-          subject: `You have a new post vote`,
+          subject: 'You have a new post vote',
           on: await this.getPostTitle(voteBody.post_id),
           vote: voteTypeMap.get(voteBody.vote)!,
           author: this.getAuthorString(voteAuthor),
@@ -296,7 +297,7 @@ export class VoteController {
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-          subject: `You have a new comment vote`,
+          subject: 'You have a new comment vote',
           ...mailPayload
         })
         // email to author

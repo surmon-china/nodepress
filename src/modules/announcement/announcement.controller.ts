@@ -5,13 +5,13 @@
  */
 
 import _trim from 'lodash/trim'
+import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Put, Post, Delete, Body, UseGuards, Query } from '@nestjs/common'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
-import { PaginateResult, PaginateQuery } from '@app/utils/paginate'
 import { AnnouncementsDTO, AnnouncementPaginateQueryDTO } from './announcement.dto'
 import { AnnouncementService } from './announcement.service'
 import { Announcement } from './announcement.model'
@@ -26,20 +26,20 @@ export class AnnouncementController {
   getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDTO) {
     const { sort, page, per_page, ...filters } = query
     const { keyword, state } = filters
-    const paginateQuery: PaginateQuery<Announcement> = {}
+    const queryFilter: QueryFilter<Announcement> = {}
 
     // search
     if (keyword) {
-      paginateQuery.content = new RegExp(_trim(keyword), 'i')
+      queryFilter.content = new RegExp(_trim(keyword), 'i')
     }
 
     // state
     if (state != null) {
-      paginateQuery.state = state
+      queryFilter.state = state
     }
 
     // paginate
-    return this.announcementService.paginate(paginateQuery, {
+    return this.announcementService.paginate(queryFilter, {
       page,
       perPage: per_page,
       dateSort: sort

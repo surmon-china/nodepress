@@ -6,12 +6,13 @@
 
 import _trim from 'lodash/trim'
 import _isUndefined from 'lodash/isUndefined'
+import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { Throttle, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
-import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { numberToBoolean } from '@app/transformers/value.transformer'
 import { FeedbackPaginateQueryDTO, FeedbacksDTO } from './feedback.dto'
@@ -31,25 +32,25 @@ export class FeedbackController {
   @SuccessResponse({ message: 'Get feedbacks succeeded', usePaginate: true })
   getFeedbacks(@Query() query: FeedbackPaginateQueryDTO): Promise<PaginateResult<Feedback>> {
     const { sort, page, per_page, ...filters } = query
-    const paginateQuery: PaginateQuery<Feedback> = {}
+    const queryFilter: QueryFilter<Feedback> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page, dateSort: sort }
     // target ID
     if (!_isUndefined(filters.tid)) {
-      paginateQuery.tid = filters.tid
+      queryFilter.tid = filters.tid
     }
     // emotion
     if (!_isUndefined(filters.emotion)) {
-      paginateQuery.emotion = filters.emotion
+      queryFilter.emotion = filters.emotion
     }
     // marked
     if (!_isUndefined(filters.marked)) {
-      paginateQuery.marked = numberToBoolean(filters.marked)
+      queryFilter.marked = numberToBoolean(filters.marked) as boolean
     }
     // search
     if (filters.keyword) {
       const trimmed = _trim(filters.keyword)
       const keywordRegExp = new RegExp(trimmed, 'i')
-      paginateQuery.$or = [
+      queryFilter.$or = [
         { content: keywordRegExp },
         { user_name: keywordRegExp },
         { user_email: keywordRegExp },
@@ -57,7 +58,7 @@ export class FeedbackController {
       ]
     }
 
-    return this.feedbackService.paginate(paginateQuery, paginateOptions)
+    return this.feedbackService.paginate(queryFilter, paginateOptions)
   }
 
   @Post()
@@ -65,7 +66,7 @@ export class FeedbackController {
   @SuccessResponse('Create feedback succeeded')
   async createFeedback(@Body() feedback: FeedbackBase, @RequestContext() { visitor }: IRequestContext) {
     const created = await this.feedbackService.create(feedback, visitor)
-    const subject = `You have a new feedback`
+    const subject = 'You have a new feedback'
     const texts = [
       `${subject} on ${created.tid}.`,
       `Author: ${created.user_name || 'Anonymous user'}`,

@@ -14,7 +14,7 @@ import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { FeedbackService } from '@app/modules/feedback/feedback.service'
 import { TagService } from '@app/modules/tag/tag.service'
-import { getTodayViewsCount, resetTodayViewsCount } from './extension.helper'
+import { getGlobalTodayViewsCount, resetGlobalTodayViewsCount } from './extension.helper'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
@@ -47,10 +47,10 @@ export class StatisticService {
     // daily data cleaning at 00:01
     schedule.scheduleJob('1 0 0 * * *', async () => {
       try {
-        const todayViewsCount = await getTodayViewsCount(this.cacheService)
+        const todayViewsCount = await getGlobalTodayViewsCount(this.cacheService)
         await this.dailyStatisticsTask(todayViewsCount)
       } finally {
-        resetTodayViewsCount(this.cacheService).catch((error) => {
+        resetGlobalTodayViewsCount(this.cacheService).catch((error) => {
           logger.warn('reset TODAY_VIEWS failed!', error)
         })
       }
@@ -114,7 +114,7 @@ export class StatisticService {
         statisticData.totalViews = value?.totalViews ?? 0
         statisticData.totalLikes = value?.totalLikes ?? 0
       }),
-      getTodayViewsCount(this.cacheService).then((value) => {
+      getGlobalTodayViewsCount(this.cacheService).then((value) => {
         statisticData.todayViews = value
       })
     ])

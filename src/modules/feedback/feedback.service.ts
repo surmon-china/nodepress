@@ -5,10 +5,11 @@
  */
 
 import { Types } from 'mongoose'
+import type { QueryFilter } from 'mongoose'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
-import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { ROOT_FEEDBACK_TID } from '@app/constants/biz.constant'
 import { IPService } from '@app/core/helper/helper.service.ip'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
@@ -21,8 +22,8 @@ export class FeedbackService {
     @InjectModel(Feedback) private readonly feedbackModel: MongooseModel<Feedback>
   ) {}
 
-  public paginate(query: PaginateQuery<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>> {
-    return this.feedbackModel.paginate(query, options)
+  public paginate(filter: QueryFilter<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>> {
+    return this.feedbackModel.paginateRaw(filter, options)
   }
 
   public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise<MongooseDoc<Feedback>> {
@@ -33,12 +34,6 @@ export class FeedbackService {
       ip: visitor.ip,
       ip_location: visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
     })
-  }
-
-  public async getDetail(feedbackId: MongooseId): Promise<MongooseDoc<Feedback>> {
-    const feedback = await this.feedbackModel.findById(feedbackId).exec()
-    if (!feedback) throw new NotFoundException(`Feedback '${feedbackId}' not found`)
-    return feedback
   }
 
   public async update(feedbackId: MongooseId, newFeedback: Partial<Feedback>): Promise<MongooseDoc<Feedback>> {

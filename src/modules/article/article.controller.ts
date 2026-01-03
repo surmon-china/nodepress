@@ -5,8 +5,10 @@
  */
 
 import _trim from 'lodash/trim'
+import _isInteger from 'lodash/isInteger'
 import _isUndefined from 'lodash/isUndefined'
 import { Types } from 'mongoose'
+import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
@@ -14,9 +16,11 @@ import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { SortType } from '@app/constants/biz.constant'
+import { CacheService } from '@app/core/cache/cache.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
-import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
+import { incrementGlobalTodayViewsCount } from '@app/modules/extension/extension.helper'
 import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStateDTO } from './article.dto'
 import { ARTICLE_HOTTEST_SORT_PARAMS } from './article.model'
 import { ArticleService } from './article.service'
@@ -27,7 +31,8 @@ export class ArticleController {
   constructor(
     private readonly tagService: TagService,
     private readonly categoryService: CategoryService,
-    private readonly articleService: ArticleService
+    private readonly articleService: ArticleService,
+    private readonly cacheService: CacheService
   ) {}
 
   @Get()
@@ -35,7 +40,7 @@ export class ArticleController {
   @SuccessResponse({ message: 'Get articles succeeded', usePaginate: true })
   async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDTO): Promise<PaginateResult<Article>> {
     const { page, per_page, sort, ...filters } = query
-    const paginateQuery: PaginateQuery<Article> = {}
+    const queryFilter: QueryFilter<Article> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page }
 
     // sort
@@ -49,36 +54,36 @@ export class ArticleController {
 
     // featured
     if (!_isUndefined(filters.featured)) {
-      paginateQuery.featured = filters.featured
+      queryFilter.featured = filters.featured
     }
 
     // language
     if (!_isUndefined(filters.lang)) {
-      paginateQuery.lang = filters.lang
+      queryFilter.lang = filters.lang
     }
 
     // states
     if (!_isUndefined(filters.state)) {
-      paginateQuery.state = filters.state
+      queryFilter.state = filters.state
     }
     if (!_isUndefined(filters.public)) {
-      paginateQuery.public = filters.public
+      queryFilter.public = filters.public
     }
     if (!_isUndefined(filters.origin)) {
-      paginateQuery.origin = filters.origin
+      queryFilter.origin = filters.origin
     }
 
     // search
     if (filters.keyword) {
       const trimmed = _trim(filters.keyword)
       const keywordRegExp = new RegExp(trimmed, 'i')
-      paginateQuery.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
+      queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
     }
 
     // date
     if (filters.date) {
       const queryDateMS = new Date(filters.date).getTime()
-      paginateQuery.created_at = {
+      queryFilter.created_at = {
         $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
         $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000)
       }
@@ -87,15 +92,15 @@ export class ArticleController {
     // tag | category
     if (filters.tag_slug) {
       const tag = await this.tagService.getDetailBySlug(filters.tag_slug)
-      paginateQuery.tags = tag._id
+      queryFilter.tags = tag._id
     }
     if (filters.category_slug) {
       const category = await this.categoryService.getDetailBySlug(filters.category_slug)
-      paginateQuery.categories = category._id
+      queryFilter.categories = category._id
     }
 
     // paginate
-    return this.articleService.paginate(paginateQuery, paginateOptions)
+    return this.articleService.paginate(queryFilter, paginateOptions)
   }
 
   @Get('calendar')
@@ -116,7 +121,7 @@ export class ArticleController {
       this.articleService.getNearArticles(articleId, 'early', 1),
       this.articleService.getNearArticles(articleId, 'later', 1),
       this.articleService
-        .getDetailByNumberIdOrSlug({ idOrSlug: articleId, publicOnly: true })
+        .getDetailByNumberIdOrSlug({ numberId: articleId, publicOnly: true, lean: true })
         .then((article) => this.articleService.getRelatedArticles(article, 20))
     ])
     return {
@@ -129,16 +134,28 @@ export class ArticleController {
   @Get(':id')
   @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get article detail succeeded')
-  getArticle(@RequestContext() { params, isUnauthenticated }: IRequestContext): Promise<Article> {
+  async getArticle(@RequestContext() { params, isUnauthenticated }: IRequestContext): Promise<Article> {
     // Guest user > number ID | slug
     if (isUnauthenticated) {
-      const idOrSlug = isNaN(Number(params.id)) ? String(params.id) : Number(params.id)
-      return this.articleService.getFullDetailForGuest(idOrSlug)
+      const isNumberTypeId = _isInteger(Number(params.id))
+      const article = await this.articleService.getDetailByNumberIdOrSlug({
+        numberId: isNumberTypeId ? Number(params.id) : undefined,
+        slug: isNumberTypeId ? undefined : String(params.id),
+        publicOnly: true,
+        populate: true,
+        lean: true
+      })
+      // increment article views
+      this.articleService.incrementMetaStatistic(article.id, 'views')
+      // increment global today views
+      incrementGlobalTodayViewsCount(this.cacheService)
+      return article
     }
+
     // Admin user > Object ID | number ID
     return Types.ObjectId.isValid(params.id)
       ? this.articleService.getDetailByObjectId(params.id)
-      : this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: Number(params.id) })
+      : this.articleService.getDetailByNumberIdOrSlug({ numberId: Number(params.id), lean: true })
   }
 
   @Post()

@@ -99,6 +99,7 @@ export class CommentBase {
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    id: false,
     versionKey: false,
     timestamps: {
       createdAt: 'created_at',

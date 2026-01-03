@@ -12,6 +12,16 @@ import { KeyValueModel } from '@app/models/key-value.model'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { APP_BIZ } from '@app/app.config'
 
+const DEFAULT_OPTION_APP_META: AppMeta = Object.freeze({
+  likes: 0
+})
+
+const DEFAULT_OPTION_BLOCKLIST: Blocklist = Object.freeze({
+  ips: [],
+  mails: [],
+  keywords: []
+})
+
 export const DEFAULT_OPTION: Option = Object.freeze<Option>({
   title: 'NodePress',
   sub_title: 'Blog server app',
@@ -26,12 +36,8 @@ export const DEFAULT_OPTION: Option = Object.freeze<Option>({
       value: APP_BIZ.FE_URL
     }
   ],
-  meta: { likes: 0 },
-  blocklist: {
-    ips: [],
-    mails: [],
-    keywords: []
-  },
+  meta: DEFAULT_OPTION_APP_META,
+  blocklist: DEFAULT_OPTION_BLOCKLIST,
   ad_config: ''
 })
 
@@ -116,7 +122,7 @@ export class Option {
   friend_links: KeyValueModel[]
 
   // site meta info
-  @prop({ _id: false, default: { ...DEFAULT_OPTION.meta } })
+  @prop({ _id: false, default: { ...DEFAULT_OPTION_APP_META } })
   meta: AppMeta
 
   // site user block list
@@ -124,7 +130,7 @@ export class Option {
   @ValidateNested()
   @IsObject()
   @IsOptional()
-  @prop({ _id: false, default: { ...DEFAULT_OPTION.blocklist } })
+  @prop({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } })
   blocklist: Blocklist
 
   // ad config

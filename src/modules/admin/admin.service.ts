@@ -53,8 +53,8 @@ export class AdminService {
   }
 
   public async getProfile(): Promise<Admin> {
-    const adminProfile = await this.adminModel.findOne(undefined, '-_id').exec()
-    return adminProfile ? adminProfile.toObject() : DEFAULT_ADMIN_PROFILE
+    const adminProfile = await this.adminModel.findOne(undefined, '-_id').lean().exec()
+    return adminProfile ?? DEFAULT_ADMIN_PROFILE
   }
 
   public async updateProfile(adminProfile: AdminUpdateDTO): Promise<Admin> {

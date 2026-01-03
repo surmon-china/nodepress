@@ -18,6 +18,7 @@ export const ANNOUNCEMENT_STATES = [PublishState.Draft, PublishState.Published] 
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   schemaOptions: {
+    id: false,
     versionKey: false,
     timestamps: {
       createdAt: 'created_at',

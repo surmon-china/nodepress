@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### 5.4.0 (2026-01-04)
+
+**Feature**
+
+- Update all dependencies to their latest versions.
+- Upgrade `mongoose` to v9.
+- Redesign the paginate utility to provide stricter type constraints.
+- Use the correct schema option `{ id: false }` to reduce ambiguity.
+- Improve query performance by leveraging the `lean` option.
+
 ### 5.3.0 (2025-07-16)
 
 **Feature**

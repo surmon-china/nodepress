@@ -43,22 +43,23 @@ export class ArchiveService {
       promise: this.getArchiveData.bind(this)
     })
     this.updateCache().catch((error) => {
-      logger.warn('init getArchiveData failed!', error)
+      logger.warn('Init getArchiveData failed!', error)
     })
   }
 
   private getAllTags(): Promise<Tag[]> {
-    return this.tagModel.find().sort({ _id: SortType.Desc }).exec()
+    return this.tagModel.find().sort({ _id: SortType.Desc }).lean().exec()
   }
 
   private getAllCategories(): Promise<Category[]> {
-    return this.categoryModel.find().sort({ _id: SortType.Desc }).exec()
+    return this.categoryModel.find().sort({ _id: SortType.Desc }).lean().exec()
   }
 
   private getAllArticles(): Promise<Article[]> {
     return this.articleModel
       .find(ARTICLE_LIST_QUERY_GUEST_FILTER, ARTICLE_LIST_QUERY_PROJECTION)
       .sort({ _id: SortType.Desc })
+      .lean()
       .exec()
   }
 

@@ -4,12 +4,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import type { FilterQuery, MongooseBaseQueryOptions } from 'mongoose'
+import type { QueryFilter, MongooseBaseQueryOptions } from 'mongoose'
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ForbiddenException, BadRequestException, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
-import { PaginateResult, PaginateQuery, PaginateOptions } from '@app/utils/paginate'
+import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
 import { ArticleService } from '@app/modules/article/article.service'
 import { IPService } from '@app/core/helper/helper.service.ip'
@@ -38,13 +38,12 @@ export class CommentService {
   ) {}
 
   private async emailToAdminAndTargetAuthor(comment: Comment) {
-    let onWhere = ''
-    if (comment.post_id === GUESTBOOK_POST_ID) {
-      onWhere = 'guestbook'
-    } else {
-      const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: comment.post_id })
-      onWhere = `"${article.toObject().title}"`
-    }
+    const onWhere =
+      comment.post_id === GUESTBOOK_POST_ID
+        ? 'guestbook'
+        : await this.articleService
+            .getDetailByNumberIdOrSlug({ numberId: comment.post_id, lean: true })
+            .then((article) => `"${article.title}"`)
 
     const authorName = comment.author.name
     const getMailContent = (subject = '') => {
@@ -164,32 +163,19 @@ export class CommentService {
   }
 
   public getAll(): Promise<Array<Comment>> {
-    return this.commentModel.find().exec()
+    return this.commentModel.find().lean().exec()
   }
 
-  // Get comment list for client user
-  public async paginate(
-    query: PaginateQuery<Comment>,
-    options: PaginateOptions,
-    hideIPEmail = false
-  ): Promise<PaginateResult<Comment>> {
+  // Get comment list
+  public paginate(
+    filter: QueryFilter<Comment>,
+    options: PaginateOptions
+  ): Promise<PaginateResult<MongooseDoc<Comment>>> {
     // MARK: can't use 'lean' with virtual 'email_hash'
     // MARK: can't use select('-email') with virtual 'email_hash'
+    // MARK: keep 'paginate', the 'paginateRaw' method is not available here.
     // https://github.com/Automattic/mongoose/issues/3130#issuecomment-395750197
-    const result = await this.commentModel.paginate(query, options)
-    if (!hideIPEmail) {
-      return result
-    }
-
-    return {
-      ...result,
-      documents: result.documents.map((item) => {
-        const data = item.toJSON()
-        Reflect.deleteProperty(data, 'ip')
-        Reflect.deleteProperty(data.author, 'email')
-        return data as Comment
-      })
-    }
+    return this.commentModel.paginate(filter, options)
   }
 
   public normalizeNewComment(comment: CommentBase, visitor: QueryVisitor): Comment {
@@ -278,7 +264,7 @@ export class CommentService {
   public async batchPatchState(action: CommentsStateDTO, referer?: string) {
     const { comment_ids, post_ids, state } = action
     const actionResult = await this.commentModel
-      .updateMany({ _id: { $in: comment_ids } }, { $set: { state } }, { multi: true })
+      .updateMany({ _id: { $in: comment_ids } }, { $set: { state } })
       .exec()
     // update ref article.meta.comments
     this.updateCommentsCountWithArticles(post_ids)
@@ -298,10 +284,10 @@ export class CommentService {
   }
 
   public async countDocuments(
-    filter: FilterQuery<Comment>,
-    options?: MongooseBaseQueryOptions<Comment>
+    queryFilter: QueryFilter<Comment>,
+    queryOptions?: MongooseBaseQueryOptions<Comment>
   ): Promise<number> {
-    return await this.commentModel.countDocuments(filter, options).exec()
+    return await this.commentModel.countDocuments(queryFilter, queryOptions).exec()
   }
 
   public async getTotalCount(publicOnly: boolean): Promise<number> {
