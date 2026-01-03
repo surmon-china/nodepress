@@ -44,7 +44,7 @@ let CategoryService = class CategoryService {
             promise: () => this.getAllCategories({ aggregatePublicOnly: true })
         });
         this.allCategoriesCache.update().catch((error) => {
-            logger.warn('init getAllCategories failed!', error);
+            logger.warn('Init getAllCategories failed!', error);
         });
     }
     async aggregateArticleCount(publicOnly, categories) {
@@ -68,19 +68,19 @@ let CategoryService = class CategoryService {
     updateAllCategoriesCache() {
         return this.allCategoriesCache.update();
     }
-    async paginate(query, options, publicOnly) {
-        const categories = await this.categoryModel.paginate(query, { ...options, lean: true });
-        const documents = await this.aggregateArticleCount(publicOnly, categories.documents);
-        return { ...categories, documents };
+    async paginate(filter, options, publicOnly) {
+        const result = await this.categoryModel.paginateRaw(filter, options);
+        const documents = await this.aggregateArticleCount(publicOnly, result.documents);
+        return { ...result, documents };
     }
     async getDetailBySlug(slug) {
-        const category = await this.categoryModel.findOne({ slug }).exec();
+        const category = await this.categoryModel.findOne({ slug }).lean().exec();
         if (!category)
             throw new common_1.NotFoundException(`Category '${slug}' not found`);
         return category;
     }
     async create(newCategory) {
-        const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
+        const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).lean().exec();
         if (existedCategory) {
             throw new common_1.ConflictException(`Category slug '${newCategory.slug}' already exists`);
         }
@@ -92,21 +92,20 @@ let CategoryService = class CategoryService {
     }
     getGenealogyById(categoryId) {
         const categories = [];
-        const findById = (id) => this.categoryModel.findById(id).exec();
+        const findById = this.categoryModel.findById.bind(this.categoryModel);
         return new Promise((resolve, reject) => {
             ;
             (function findCateItem(id) {
                 findById(id)
+                    .lean()
+                    .exec()
                     .then((category) => {
                     if (!category) {
-                        if (id === categoryId) {
-                            return reject(new common_1.NotFoundException(`Category '${categoryId}' not found`));
-                        }
-                        else {
-                            return resolve(categories);
-                        }
+                        return id === categoryId
+                            ? reject(new common_1.NotFoundException(`Category '${categoryId}' not found`))
+                            : resolve(categories);
                     }
-                    categories.unshift(category.toObject());
+                    categories.unshift(category);
                     const parentId = category.pid;
                     const hasParent = parentId && parentId.toString() !== category._id.toString();
                     return hasParent ? findCateItem(parentId) : resolve(categories);
@@ -116,7 +115,7 @@ let CategoryService = class CategoryService {
         });
     }
     async update(categoryId, newCategory) {
-        const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).exec();
+        const existedCategory = await this.categoryModel.findOne({ slug: newCategory.slug }).lean().exec();
         if (existedCategory && !existedCategory._id.equals(categoryId)) {
             throw new common_1.ConflictException(`Category slug '${newCategory.slug}' already exists`);
         }
@@ -135,7 +134,7 @@ let CategoryService = class CategoryService {
         this.archiveService.updateCache();
         this.seoService.delete((0, urlmap_transformer_1.getCategoryUrl)(category.slug));
         this.updateAllCategoriesCache();
-        const categories = await this.categoryModel.find({ pid: categoryId }).exec();
+        const categories = await this.categoryModel.find({ pid: categoryId }).lean().exec();
         if (!categories.length)
             return category;
         await this.categoryModel.collection
@@ -146,11 +145,14 @@ let CategoryService = class CategoryService {
         return category;
     }
     async batchDelete(categoryIds) {
-        const categories = await this.categoryModel.find({ _id: { $in: categoryIds } }).exec();
-        this.seoService.delete(categories.map((category) => (0, urlmap_transformer_1.getCategoryUrl)(category.slug)));
+        const categories = await this.categoryModel
+            .find({ _id: { $in: categoryIds } })
+            .lean()
+            .exec();
         const actionResult = await this.categoryModel.deleteMany({ _id: { $in: categoryIds } }).exec();
         this.archiveService.updateCache();
         this.updateAllCategoriesCache();
+        this.seoService.delete(categories.map((category) => (0, urlmap_transformer_1.getCategoryUrl)(category.slug)));
         return actionResult;
     }
 };

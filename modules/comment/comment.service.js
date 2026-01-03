@@ -77,14 +77,11 @@ let CommentService = class CommentService {
         this.commentModel = commentModel;
     }
     async emailToAdminAndTargetAuthor(comment) {
-        let onWhere = '';
-        if (comment.post_id === biz_constant_1.GUESTBOOK_POST_ID) {
-            onWhere = 'guestbook';
-        }
-        else {
-            const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: comment.post_id });
-            onWhere = `"${article.toObject().title}"`;
-        }
+        const onWhere = comment.post_id === biz_constant_1.GUESTBOOK_POST_ID
+            ? 'guestbook'
+            : await this.articleService
+                .getDetailByNumberIdOrSlug({ numberId: comment.post_id, lean: true })
+                .then((article) => `"${article.title}"`);
         const authorName = comment.author.name;
         const getMailContent = (subject = '') => {
             const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`];
@@ -184,22 +181,10 @@ let CommentService = class CommentService {
         }
     }
     getAll() {
-        return this.commentModel.find().exec();
+        return this.commentModel.find().lean().exec();
     }
-    async paginate(query, options, hideIPEmail = false) {
-        const result = await this.commentModel.paginate(query, options);
-        if (!hideIPEmail) {
-            return result;
-        }
-        return {
-            ...result,
-            documents: result.documents.map((item) => {
-                const data = item.toJSON();
-                Reflect.deleteProperty(data, 'ip');
-                Reflect.deleteProperty(data.author, 'email');
-                return data;
-            })
-        };
+    paginate(filter, options) {
+        return this.commentModel.paginate(filter, options);
     }
     normalizeNewComment(comment, visitor) {
         return {
@@ -267,7 +252,7 @@ let CommentService = class CommentService {
     async batchPatchState(action, referer) {
         const { comment_ids, post_ids, state } = action;
         const actionResult = await this.commentModel
-            .updateMany({ _id: { $in: comment_ids } }, { $set: { state } }, { multi: true })
+            .updateMany({ _id: { $in: comment_ids } }, { $set: { state } })
             .exec();
         this.updateCommentsCountWithArticles(post_ids);
         try {
@@ -284,8 +269,8 @@ let CommentService = class CommentService {
         this.updateCommentsCountWithArticles(postIds);
         return result;
     }
-    async countDocuments(filter, options) {
-        return await this.commentModel.countDocuments(filter, options).exec();
+    async countDocuments(queryFilter, queryOptions) {
+        return await this.commentModel.countDocuments(queryFilter, queryOptions).exec();
     }
     async getTotalCount(publicOnly) {
         return await this.countDocuments(publicOnly ? comment_model_1.COMMENT_GUEST_QUERY_FILTER : {});

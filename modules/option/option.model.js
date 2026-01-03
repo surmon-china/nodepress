@@ -17,6 +17,14 @@ const class_validator_2 = require("class-validator");
 const key_value_model_1 = require("../../models/key-value.model");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const app_config_1 = require("../../app.config");
+const DEFAULT_OPTION_APP_META = Object.freeze({
+    likes: 0
+});
+const DEFAULT_OPTION_BLOCKLIST = Object.freeze({
+    ips: [],
+    mails: [],
+    keywords: []
+});
 exports.DEFAULT_OPTION = Object.freeze({
     title: 'NodePress',
     sub_title: 'Blog server app',
@@ -31,12 +39,8 @@ exports.DEFAULT_OPTION = Object.freeze({
             value: app_config_1.APP_BIZ.FE_URL
         }
     ],
-    meta: { likes: 0 },
-    blocklist: {
-        ips: [],
-        mails: [],
-        keywords: []
-    },
+    meta: DEFAULT_OPTION_APP_META,
+    blocklist: DEFAULT_OPTION_BLOCKLIST,
     ad_config: ''
 });
 class AppMeta {
@@ -141,7 +145,7 @@ __decorate([
     __metadata("design:type", Array)
 ], Option.prototype, "friend_links", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ _id: false, default: { ...exports.DEFAULT_OPTION.meta } }),
+    (0, typegoose_1.prop)({ _id: false, default: { ...DEFAULT_OPTION_APP_META } }),
     __metadata("design:type", AppMeta)
 ], Option.prototype, "meta", void 0);
 __decorate([
@@ -149,7 +153,7 @@ __decorate([
     (0, class_validator_2.ValidateNested)(),
     (0, class_validator_1.IsObject)(),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ _id: false, default: { ...exports.DEFAULT_OPTION.blocklist } }),
+    (0, typegoose_1.prop)({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } }),
     __metadata("design:type", Blocklist)
 ], Option.prototype, "blocklist", void 0);
 __decorate([

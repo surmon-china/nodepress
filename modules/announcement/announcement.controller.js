@@ -34,14 +34,14 @@ let AnnouncementController = class AnnouncementController {
     getAnnouncements(query) {
         const { sort, page, per_page, ...filters } = query;
         const { keyword, state } = filters;
-        const paginateQuery = {};
+        const queryFilter = {};
         if (keyword) {
-            paginateQuery.content = new RegExp((0, trim_1.default)(keyword), 'i');
+            queryFilter.content = new RegExp((0, trim_1.default)(keyword), 'i');
         }
         if (state != null) {
-            paginateQuery.state = state;
+            queryFilter.state = state;
         }
-        return this.announcementService.paginate(paginateQuery, {
+        return this.announcementService.paginate(queryFilter, {
             page,
             perPage: per_page,
             dateSort: sort

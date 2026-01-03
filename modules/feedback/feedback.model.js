@@ -166,6 +166,7 @@ exports.Feedback = Feedback = __decorate([
     (0, typegoose_1.modelOptions)({
         options: { allowMixed: typegoose_1.Severity.ALLOW },
         schemaOptions: {
+            id: false,
             versionKey: false,
             toJSON: { virtuals: true },
             toObject: { virtuals: true },

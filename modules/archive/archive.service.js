@@ -40,19 +40,20 @@ let ArchiveService = class ArchiveService {
             promise: this.getArchiveData.bind(this)
         });
         this.updateCache().catch((error) => {
-            logger.warn('init getArchiveData failed!', error);
+            logger.warn('Init getArchiveData failed!', error);
         });
     }
     getAllTags() {
-        return this.tagModel.find().sort({ _id: biz_constant_1.SortType.Desc }).exec();
+        return this.tagModel.find().sort({ _id: biz_constant_1.SortType.Desc }).lean().exec();
     }
     getAllCategories() {
-        return this.categoryModel.find().sort({ _id: biz_constant_1.SortType.Desc }).exec();
+        return this.categoryModel.find().sort({ _id: biz_constant_1.SortType.Desc }).lean().exec();
     }
     getAllArticles() {
         return this.articleModel
             .find(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
             .sort({ _id: biz_constant_1.SortType.Desc })
+            .lean()
             .exec();
     }
     async getArchiveData() {

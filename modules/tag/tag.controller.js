@@ -33,14 +33,14 @@ let TagController = class TagController {
     }
     getTags(query, { isUnauthenticated }) {
         const { sort, page, per_page, ...filters } = query;
-        const paginateQuery = {};
+        const queryFilter = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
         if (filters.keyword) {
             const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
-            paginateQuery.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }];
+            queryFilter.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }];
         }
-        return this.tagService.paginate(paginateQuery, paginateOptions, isUnauthenticated);
+        return this.tagService.paginate(queryFilter, paginateOptions, isUnauthenticated);
     }
     getAllTags({ isAuthenticated }) {
         return isAuthenticated

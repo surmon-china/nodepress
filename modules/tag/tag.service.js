@@ -44,7 +44,7 @@ let TagService = class TagService {
             promise: () => this.getAllTags({ aggregatePublicOnly: true })
         });
         this.allTagsCache.update().catch((error) => {
-            logger.warn('init getAllTags failed!', error);
+            logger.warn('Init getAllTags failed!', error);
         });
     }
     async aggregateArticleCount(publicOnly, tags) {
@@ -68,19 +68,19 @@ let TagService = class TagService {
     updateAllTagsCache() {
         return this.allTagsCache.update();
     }
-    async paginate(query, options, publicOnly) {
-        const tags = await this.tagModel.paginate(query, { ...options, lean: true });
-        const documents = await this.aggregateArticleCount(publicOnly, tags.documents);
-        return { ...tags, documents };
+    async paginate(filter, options, publicOnly) {
+        const result = await this.tagModel.paginateRaw(filter, options);
+        const documents = await this.aggregateArticleCount(publicOnly, result.documents);
+        return { ...result, documents };
     }
     async getDetailBySlug(slug) {
-        const tag = await this.tagModel.findOne({ slug }).exec();
+        const tag = await this.tagModel.findOne({ slug }).lean().exec();
         if (!tag)
             throw new common_1.NotFoundException(`Tag '${slug}' not found`);
         return tag;
     }
     async create(newTag) {
-        const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
+        const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).lean().exec();
         if (existedTag)
             throw new common_1.ConflictException(`Tag slug '${newTag.slug}' already exists`);
         const tag = await this.tagModel.create(newTag);
@@ -90,7 +90,7 @@ let TagService = class TagService {
         return tag;
     }
     async update(tagId, newTag) {
-        const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).exec();
+        const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).lean().exec();
         if (existedTag && !existedTag._id.equals(tagId)) {
             throw new common_1.ConflictException(`Tag slug '${newTag.slug}' already exists`);
         }

@@ -25,8 +25,8 @@ let FeedbackService = class FeedbackService {
         this.ipService = ipService;
         this.feedbackModel = feedbackModel;
     }
-    paginate(query, options) {
-        return this.feedbackModel.paginate(query, options);
+    paginate(filter, options) {
+        return this.feedbackModel.paginateRaw(filter, options);
     }
     async create(feedback, visitor) {
         return this.feedbackModel.create({
@@ -36,12 +36,6 @@ let FeedbackService = class FeedbackService {
             ip: visitor.ip,
             ip_location: visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
         });
-    }
-    async getDetail(feedbackId) {
-        const feedback = await this.feedbackModel.findById(feedbackId).exec();
-        if (!feedback)
-            throw new common_1.NotFoundException(`Feedback '${feedbackId}' not found`);
-        return feedback;
     }
     async update(feedbackId, newFeedback) {
         const updated = await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec();

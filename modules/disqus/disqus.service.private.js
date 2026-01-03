@@ -75,7 +75,11 @@ let DisqusPrivateService = class DisqusPrivateService {
     }
     async createThread(postId) {
         try {
-            const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId, publicOnly: true });
+            const article = await this.articleService.getDetailByNumberIdOrSlug({
+                numberId: postId,
+                publicOnly: true,
+                lean: true
+            });
             const response = await this.disqus.request('threads/create', {
                 forum: app_config_1.DISQUS.forum,
                 identifier: DISQUS_CONST.getThreadIdentifierById(postId),

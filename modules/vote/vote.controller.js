@@ -90,13 +90,11 @@ let VoteController = class VoteController {
         return ip ? await this.ipService.queryLocation(ip) : null;
     }
     async getPostTitle(postId) {
-        if (postId === biz_constant_1.GUESTBOOK_POST_ID) {
-            return 'guestbook';
-        }
-        else {
-            const article = await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId });
-            return article.toObject().title;
-        }
+        return postId === biz_constant_1.GUESTBOOK_POST_ID
+            ? 'guestbook'
+            : await this.articleService
+                .getDetailByNumberIdOrSlug({ numberId: postId, lean: true })
+                .then((article) => article.title);
     }
     async getVoteAuthor(payload) {
         const { guestAuthor, disqusToken } = payload ?? {};
@@ -131,7 +129,7 @@ let VoteController = class VoteController {
         if (voteAuthor.type === vote_model_1.VoteAuthorType.Disqus) {
             const disqusUser = voteAuthor.data;
             const isAdmin = disqusUser.username === APP_CONFIG.DISQUS.adminUsername;
-            const userType = `Disqus ${isAdmin ? `moderator` : 'user'}`;
+            const userType = `Disqus ${isAdmin ? 'moderator' : 'user'}`;
             return [`${disqusUser.name} (${userType})`, disqusUser.profileUrl].filter(Boolean).join(' · ');
         }
         if (voteAuthor.type === vote_model_1.VoteAuthorType.Guest) {
@@ -179,29 +177,29 @@ let VoteController = class VoteController {
     }
     getVotes(query) {
         const { sort, page, per_page, ...filters } = query;
-        const paginateQuery = {};
+        const queryFilter = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
         if (!(0, isUndefined_1.default)(filters.target_type)) {
-            paginateQuery.target_type = filters.target_type;
+            queryFilter.target_type = filters.target_type;
         }
         if (!(0, isUndefined_1.default)(filters.target_id)) {
-            paginateQuery.target_id = filters.target_id;
+            queryFilter.target_id = filters.target_id;
         }
         if (!(0, isUndefined_1.default)(filters.vote_type)) {
-            paginateQuery.vote_type = filters.vote_type;
+            queryFilter.vote_type = filters.vote_type;
         }
         if (!(0, isUndefined_1.default)(filters.author_type)) {
-            paginateQuery.author_type = filters.author_type;
+            queryFilter.author_type = filters.author_type;
         }
-        return this.voteService.paginate(paginateQuery, paginateOptions);
+        return this.voteService.paginate(queryFilter, paginateOptions);
     }
     deleteVotes(body) {
         return this.voteService.batchDelete(body.vote_ids);
     }
     async votePost(voteBody, token, { visitor }) {
         const likes = voteBody.post_id === biz_constant_1.GUESTBOOK_POST_ID
-            ? await this.optionService.incrementLikes()
-            : await this.articleService.incrementLikes(voteBody.post_id);
+            ? await this.optionService.incrementMetaLikes()
+            : await this.articleService.incrementMetaStatistic(voteBody.post_id, 'likes');
         this.voteDisqusThread(voteBody.post_id, voteBody.vote, token?.access_token).catch(() => { });
         this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(async (voteAuthor) => {
             const ipLocation = await this.queryIPLocation(visitor.ip);
@@ -217,7 +215,7 @@ let VoteController = class VoteController {
             });
             this.emailToTargetVoteMessage({
                 to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-                subject: `You have a new post vote`,
+                subject: 'You have a new post vote',
                 on: await this.getPostTitle(voteBody.post_id),
                 vote: vote_model_1.voteTypeMap.get(voteBody.vote),
                 author: this.getAuthorString(voteAuthor),
@@ -267,7 +265,7 @@ let VoteController = class VoteController {
             };
             this.emailToTargetVoteMessage({
                 to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-                subject: `You have a new comment vote`,
+                subject: 'You have a new comment vote',
                 ...mailPayload
             });
             if (comment.author.email) {

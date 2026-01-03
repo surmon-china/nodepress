@@ -21,8 +21,8 @@ let VoteService = class VoteService {
     constructor(voteModel) {
         this.voteModel = voteModel;
     }
-    paginate(query, options) {
-        return this.voteModel.paginate(query, options);
+    paginate(filter, options) {
+        return this.voteModel.paginateRaw(filter, options);
     }
     create(vote) {
         return this.voteModel.create(vote);
@@ -42,8 +42,8 @@ let VoteService = class VoteService {
     batchDelete(voteIds) {
         return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec();
     }
-    async countDocuments(filter, options) {
-        return await this.voteModel.countDocuments(filter, options).exec();
+    countDocuments(filter, options) {
+        return this.voteModel.countDocuments(filter, options).exec();
     }
 };
 exports.VoteService = VoteService;

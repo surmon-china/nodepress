@@ -34,9 +34,9 @@ let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
     }
-    getComments(query, { isUnauthenticated }) {
+    async getComments(query, { isUnauthenticated }) {
         const { sort, page, per_page, ...filters } = query;
-        const paginateQuery = {};
+        const queryFilter = {};
         const paginateOptions = { page, perPage: per_page };
         if (!(0, isUndefined_1.default)(sort)) {
             if (sort === biz_constant_1.SortType.Hottest) {
@@ -47,21 +47,32 @@ let CommentController = class CommentController {
             }
         }
         if (!(0, isUndefined_1.default)(filters.state)) {
-            paginateQuery.state = filters.state;
+            queryFilter.state = filters.state;
         }
         if (!(0, isUndefined_1.default)(filters.post_id)) {
-            paginateQuery.post_id = filters.post_id;
+            queryFilter.post_id = filters.post_id;
         }
         if (filters.keyword) {
             const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
-            paginateQuery.$or = [
+            queryFilter.$or = [
                 { content: keywordRegExp },
                 { 'author.name': keywordRegExp },
                 { 'author.email': keywordRegExp }
             ];
         }
-        return this.commentService.paginate(paginateQuery, paginateOptions, isUnauthenticated);
+        const result = await this.commentService.paginate(queryFilter, paginateOptions);
+        if (!isUnauthenticated)
+            return result;
+        return {
+            ...result,
+            documents: result.documents.map((document) => {
+                const comment = document.toObject();
+                Reflect.deleteProperty(comment, 'ip');
+                Reflect.deleteProperty(comment.author, 'email');
+                return comment;
+            })
+        };
     }
     getCommentCalendar(query, { isUnauthenticated }) {
         return this.commentService.getCalendar(isUnauthenticated, query.timezone);

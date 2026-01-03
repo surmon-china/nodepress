@@ -88,11 +88,11 @@ let StatisticService = class StatisticService {
         this.tagService = tagService;
         node_schedule_1.default.scheduleJob('1 0 0 * * *', async () => {
             try {
-                const todayViewsCount = await (0, extension_helper_1.getTodayViewsCount)(this.cacheService);
+                const todayViewsCount = await (0, extension_helper_1.getGlobalTodayViewsCount)(this.cacheService);
                 await this.dailyStatisticsTask(todayViewsCount);
             }
             finally {
-                (0, extension_helper_1.resetTodayViewsCount)(this.cacheService).catch((error) => {
+                (0, extension_helper_1.resetGlobalTodayViewsCount)(this.cacheService).catch((error) => {
                     logger.warn('reset TODAY_VIEWS failed!', error);
                 });
             }
@@ -152,7 +152,7 @@ let StatisticService = class StatisticService {
                 statisticData.totalViews = value?.totalViews ?? 0;
                 statisticData.totalLikes = value?.totalLikes ?? 0;
             }),
-            (0, extension_helper_1.getTodayViewsCount)(this.cacheService).then((value) => {
+            (0, extension_helper_1.getGlobalTodayViewsCount)(this.cacheService).then((value) => {
                 statisticData.todayViews = value;
             })
         ]);

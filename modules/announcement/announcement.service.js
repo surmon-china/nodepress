@@ -21,8 +21,8 @@ let AnnouncementService = class AnnouncementService {
     constructor(announcementModel) {
         this.announcementModel = announcementModel;
     }
-    paginate(query, options) {
-        return this.announcementModel.paginate(query, options);
+    paginate(filter, options) {
+        return this.announcementModel.paginateRaw(filter, options);
     }
     create(announcement) {
         return this.announcementModel.create(announcement);
@@ -31,9 +31,8 @@ let AnnouncementService = class AnnouncementService {
         const updated = await this.announcementModel
             .findByIdAndUpdate(announcementId, announcement, { new: true })
             .exec();
-        if (!updated) {
+        if (!updated)
             throw new common_1.NotFoundException(`Announcement '${announcementId}' not found`);
-        }
         return updated;
     }
     async delete(announcementId) {

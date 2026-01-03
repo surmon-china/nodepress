@@ -71,32 +71,32 @@ let FeedbackController = class FeedbackController {
     }
     getFeedbacks(query) {
         const { sort, page, per_page, ...filters } = query;
-        const paginateQuery = {};
+        const queryFilter = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
         if (!(0, isUndefined_1.default)(filters.tid)) {
-            paginateQuery.tid = filters.tid;
+            queryFilter.tid = filters.tid;
         }
         if (!(0, isUndefined_1.default)(filters.emotion)) {
-            paginateQuery.emotion = filters.emotion;
+            queryFilter.emotion = filters.emotion;
         }
         if (!(0, isUndefined_1.default)(filters.marked)) {
-            paginateQuery.marked = (0, value_transformer_1.numberToBoolean)(filters.marked);
+            queryFilter.marked = (0, value_transformer_1.numberToBoolean)(filters.marked);
         }
         if (filters.keyword) {
             const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
-            paginateQuery.$or = [
+            queryFilter.$or = [
                 { content: keywordRegExp },
                 { user_name: keywordRegExp },
                 { user_email: keywordRegExp },
                 { remark: keywordRegExp }
             ];
         }
-        return this.feedbackService.paginate(paginateQuery, paginateOptions);
+        return this.feedbackService.paginate(queryFilter, paginateOptions);
     }
     async createFeedback(feedback, { visitor }) {
         const created = await this.feedbackService.create(feedback, visitor);
-        const subject = `You have a new feedback`;
+        const subject = 'You have a new feedback';
         const texts = [
             `${subject} on ${created.tid}.`,
             `Author: ${created.user_name || 'Anonymous user'}`,

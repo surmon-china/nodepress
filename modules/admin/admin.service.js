@@ -54,8 +54,8 @@ let AdminService = class AdminService {
         }
     }
     async getProfile() {
-        const adminProfile = await this.adminModel.findOne(undefined, '-_id').exec();
-        return adminProfile ? adminProfile.toObject() : admin_model_1.DEFAULT_ADMIN_PROFILE;
+        const adminProfile = await this.adminModel.findOne(undefined, '-_id').lean().exec();
+        return adminProfile ?? admin_model_1.DEFAULT_ADMIN_PROFILE;
     }
     async updateProfile(adminProfile) {
         const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = adminProfile;

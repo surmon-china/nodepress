@@ -17,6 +17,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticleController = void 0;
 const trim_1 = __importDefault(require("lodash/trim"));
+const isInteger_1 = __importDefault(require("lodash/isInteger"));
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const mongoose_1 = require("mongoose");
 const common_1 = require("@nestjs/common");
@@ -26,8 +27,10 @@ const permission_pipe_1 = require("../../pipes/permission.pipe");
 const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const biz_constant_1 = require("../../constants/biz.constant");
+const cache_service_1 = require("../../core/cache/cache.service");
 const tag_service_1 = require("../tag/tag.service");
 const category_service_1 = require("../category/category.service");
+const extension_helper_1 = require("../extension/extension.helper");
 const article_dto_1 = require("./article.dto");
 const article_model_1 = require("./article.model");
 const article_service_1 = require("./article.service");
@@ -36,14 +39,16 @@ let ArticleController = class ArticleController {
     tagService;
     categoryService;
     articleService;
-    constructor(tagService, categoryService, articleService) {
+    cacheService;
+    constructor(tagService, categoryService, articleService, cacheService) {
         this.tagService = tagService;
         this.categoryService = categoryService;
         this.articleService = articleService;
+        this.cacheService = cacheService;
     }
     async getArticles(query) {
         const { page, per_page, sort, ...filters } = query;
-        const paginateQuery = {};
+        const queryFilter = {};
         const paginateOptions = { page, perPage: per_page };
         if (!(0, isUndefined_1.default)(sort)) {
             if (sort === biz_constant_1.SortType.Hottest) {
@@ -54,41 +59,41 @@ let ArticleController = class ArticleController {
             }
         }
         if (!(0, isUndefined_1.default)(filters.featured)) {
-            paginateQuery.featured = filters.featured;
+            queryFilter.featured = filters.featured;
         }
         if (!(0, isUndefined_1.default)(filters.lang)) {
-            paginateQuery.lang = filters.lang;
+            queryFilter.lang = filters.lang;
         }
         if (!(0, isUndefined_1.default)(filters.state)) {
-            paginateQuery.state = filters.state;
+            queryFilter.state = filters.state;
         }
         if (!(0, isUndefined_1.default)(filters.public)) {
-            paginateQuery.public = filters.public;
+            queryFilter.public = filters.public;
         }
         if (!(0, isUndefined_1.default)(filters.origin)) {
-            paginateQuery.origin = filters.origin;
+            queryFilter.origin = filters.origin;
         }
         if (filters.keyword) {
             const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
-            paginateQuery.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }];
+            queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }];
         }
         if (filters.date) {
             const queryDateMS = new Date(filters.date).getTime();
-            paginateQuery.created_at = {
+            queryFilter.created_at = {
                 $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
                 $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000)
             };
         }
         if (filters.tag_slug) {
             const tag = await this.tagService.getDetailBySlug(filters.tag_slug);
-            paginateQuery.tags = tag._id;
+            queryFilter.tags = tag._id;
         }
         if (filters.category_slug) {
             const category = await this.categoryService.getDetailBySlug(filters.category_slug);
-            paginateQuery.categories = category._id;
+            queryFilter.categories = category._id;
         }
-        return this.articleService.paginate(paginateQuery, paginateOptions);
+        return this.articleService.paginate(queryFilter, paginateOptions);
     }
     getArticleCalendar(query, { isUnauthenticated }) {
         return this.articleService.getCalendar(isUnauthenticated, query.timezone);
@@ -99,7 +104,7 @@ let ArticleController = class ArticleController {
             this.articleService.getNearArticles(articleId, 'early', 1),
             this.articleService.getNearArticles(articleId, 'later', 1),
             this.articleService
-                .getDetailByNumberIdOrSlug({ idOrSlug: articleId, publicOnly: true })
+                .getDetailByNumberIdOrSlug({ numberId: articleId, publicOnly: true, lean: true })
                 .then((article) => this.articleService.getRelatedArticles(article, 20))
         ]);
         return {
@@ -108,14 +113,23 @@ let ArticleController = class ArticleController {
             related_articles: relatedArticles || []
         };
     }
-    getArticle({ params, isUnauthenticated }) {
+    async getArticle({ params, isUnauthenticated }) {
         if (isUnauthenticated) {
-            const idOrSlug = isNaN(Number(params.id)) ? String(params.id) : Number(params.id);
-            return this.articleService.getFullDetailForGuest(idOrSlug);
+            const isNumberTypeId = (0, isInteger_1.default)(Number(params.id));
+            const article = await this.articleService.getDetailByNumberIdOrSlug({
+                numberId: isNumberTypeId ? Number(params.id) : undefined,
+                slug: isNumberTypeId ? undefined : String(params.id),
+                publicOnly: true,
+                populate: true,
+                lean: true
+            });
+            this.articleService.incrementMetaStatistic(article.id, 'views');
+            (0, extension_helper_1.incrementGlobalTodayViewsCount)(this.cacheService);
+            return article;
         }
         return mongoose_1.Types.ObjectId.isValid(params.id)
             ? this.articleService.getDetailByObjectId(params.id)
-            : this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: Number(params.id) });
+            : this.articleService.getDetailByNumberIdOrSlug({ numberId: Number(params.id), lean: true });
     }
     createArticle(article) {
         return this.articleService.create(article);
@@ -220,6 +234,7 @@ exports.ArticleController = ArticleController = __decorate([
     (0, common_1.Controller)('article'),
     __metadata("design:paramtypes", [tag_service_1.TagService,
         category_service_1.CategoryService,
-        article_service_1.ArticleService])
+        article_service_1.ArticleService,
+        cache_service_1.CacheService])
 ], ArticleController);
 //# sourceMappingURL=article.controller.js.map

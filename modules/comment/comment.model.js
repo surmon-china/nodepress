@@ -173,6 +173,7 @@ exports.Comment = Comment = __decorate([
     (0, typegoose_1.modelOptions)({
         options: { allowMixed: typegoose_1.Severity.ALLOW },
         schemaOptions: {
+            id: false,
             versionKey: false,
             timestamps: {
                 createdAt: 'created_at',
