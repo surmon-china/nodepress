@@ -691,10 +691,10 @@ export class FeedbackController {
     const created &#x3D; await this.feedbackService.create(feedback, visitor)
     const subject &#x3D; &#x27;You have a new feedback&#x27;
     const texts &#x3D; [
-      &#x60;${subject} on ${created.tid}.&#x60;,
+      &#x60;${subject} on &#x27;${created.tid}&#x27;.&#x60;,
       &#x60;Author: ${created.user_name || &#x27;Anonymous user&#x27;}&#x60;,
       &#x60;Emotion: ${created.emotion_emoji} ${created.emotion_text} (${created.emotion})&#x60;,
-      &#x60;Feedback: ${created.content}&#x60;
+      &#x60;Content: ${created.content}&#x60;
     ]
 
     this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {

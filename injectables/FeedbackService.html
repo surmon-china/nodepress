@@ -281,8 +281,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="51"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:51</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:53</a></div>
                         </td>
                     </tr>
 
@@ -351,8 +351,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="31"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -433,8 +433,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -503,8 +503,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="55"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:55</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -624,8 +624,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="39"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:39</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -708,7 +708,9 @@ export class FeedbackService {
   ) {}
 
   public paginate(filter: QueryFilter&lt;Feedback&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
-    return this.feedbackModel.paginateRaw(filter, options)
+    // MARK: can&#x27;t use &#x27;lean&#x27; with virtual &#x27;emotion_text&#x27; | &#x27;emotion_emoji&#x27;
+    // MARK: keep &#x27;paginate&#x27;, the &#x27;paginateRaw&#x27; method is not available here.
+    return this.feedbackModel.paginate(filter, options)
   }
 
   public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
