@@ -26,7 +26,7 @@ let FeedbackService = class FeedbackService {
         this.feedbackModel = feedbackModel;
     }
     paginate(filter, options) {
-        return this.feedbackModel.paginateRaw(filter, options);
+        return this.feedbackModel.paginate(filter, options);
     }
     async create(feedback, visitor) {
         return this.feedbackModel.create({

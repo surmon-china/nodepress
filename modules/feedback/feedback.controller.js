@@ -98,10 +98,10 @@ let FeedbackController = class FeedbackController {
         const created = await this.feedbackService.create(feedback, visitor);
         const subject = 'You have a new feedback';
         const texts = [
-            `${subject} on ${created.tid}.`,
+            `${subject} on '${created.tid}'.`,
             `Author: ${created.user_name || 'Anonymous user'}`,
             `Emotion: ${created.emotion_emoji} ${created.emotion_text} (${created.emotion})`,
-            `Feedback: ${created.content}`
+            `Content: ${created.content}`
         ];
         this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
             to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
