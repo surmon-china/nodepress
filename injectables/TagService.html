@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -226,7 +244,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/tag/tag.service.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/modules/tag/tag.service.ts:28</a></div>
                             </td>
                         </tr>
 
@@ -340,8 +358,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -422,8 +440,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="122"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:122</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="123"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:123</a></div>
                         </td>
                     </tr>
 
@@ -492,8 +510,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="86"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:86</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="87"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:87</a></div>
                         </td>
                     </tr>
 
@@ -562,8 +580,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="112"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:112</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="113"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:113</a></div>
                         </td>
                     </tr>
 
@@ -632,8 +650,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -701,8 +719,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="62"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:62</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:63</a></div>
                         </td>
                     </tr>
 
@@ -741,8 +759,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="80"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:80</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="81"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:81</a></div>
                         </td>
                     </tr>
 
@@ -778,7 +796,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;MongooseDoc&lt;Tag&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;WithId&lt;Tag&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -811,8 +829,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="134"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:134</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="135"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:135</a></div>
                         </td>
                     </tr>
 
@@ -844,15 +862,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginate(query: <a href="../classes/Tag.html" target="_self">PaginateQuery&lt;Tag&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>paginate(filter: <a href="../classes/Tag.html" target="_self">QueryFilter&lt;Tag&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="70"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:70</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -873,9 +891,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>query</td>
+                                                <td>filter</td>
                                             <td>
-                                                            <code><a href="../classes/Tag.html" target="_self" >PaginateQuery&lt;Tag&gt;</a></code>
+                                                            <code><a href="../classes/Tag.html" target="_self" >QueryFilter&lt;Tag&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -945,8 +963,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="97"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:97</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -1026,8 +1044,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="66"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:66</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -1069,7 +1087,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/tag/tag.service.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/modules/tag/tag.service.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -1082,14 +1100,15 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter } from &#x27;mongoose&#x27;
+import { Injectable, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import type { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import type { MongooseId, MongooseObjectId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
 import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.model&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
@@ -1116,7 +1135,7 @@ export class TagService {
       promise: () &#x3D;&gt; this.getAllTags({ aggregatePublicOnly: true })
     })
     this.allTagsCache.update().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;init getAllTags failed!&#x27;, error)
+      logger.warn(&#x27;Init getAllTags failed!&#x27;, error)
     })
   }
 
@@ -1146,23 +1165,23 @@ export class TagService {
   }
 
   public async paginate(
-    query: PaginateQuery&lt;Tag&gt;,
+    filter: QueryFilter&lt;Tag&gt;,
     options: PaginateOptions,
     publicOnly: boolean
   ): Promise&lt;PaginateResult&lt;Tag&gt;&gt; {
-    const tags &#x3D; await this.tagModel.paginate(query, { ...options, lean: true })
-    const documents &#x3D; await this.aggregateArticleCount(publicOnly, tags.documents)
-    return { ...tags, documents }
+    const result &#x3D; await this.tagModel.paginateRaw(filter, options)
+    const documents &#x3D; await this.aggregateArticleCount(publicOnly, result.documents)
+    return { ...result, documents }
   }
 
-  public async getDetailBySlug(slug: string): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
-    const tag &#x3D; await this.tagModel.findOne({ slug }).exec()
+  public async getDetailBySlug(slug: string): Promise&lt;WithId&lt;Tag&gt;&gt; {
+    const tag &#x3D; await this.tagModel.findOne({ slug }).lean().exec()
     if (!tag) throw new NotFoundException(&#x60;Tag &#x27;${slug}&#x27; not found&#x60;)
     return tag
   }
 
   public async create(newTag: Tag): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
-    const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).exec()
+    const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).lean().exec()
     if (existedTag) throw new ConflictException(&#x60;Tag slug &#x27;${newTag.slug}&#x27; already exists&#x60;)
 
     const tag &#x3D; await this.tagModel.create(newTag)
@@ -1173,7 +1192,7 @@ export class TagService {
   }
 
   public async update(tagId: MongooseId, newTag: Tag): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
-    const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).exec()
+    const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).lean().exec()
     if (existedTag &amp;&amp; !existedTag._id.equals(tagId)) {
       throw new ConflictException(&#x60;Tag slug &#x27;${newTag.slug}&#x27; already exists&#x60;)
     }

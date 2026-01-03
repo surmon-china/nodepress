@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content controller">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -114,7 +132,6 @@
         <p class="comment">
             <code>src/modules/feedback/feedback.controller.ts</code>
         </p>
-
             <p class="comment">
                 <h3>Prefix</h3>
             </p>
@@ -220,8 +237,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="66"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:66</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -309,8 +326,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="103"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:103</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="104"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -386,8 +403,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="89"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:89</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:90</a></div>
                         </td>
                     </tr>
 
@@ -464,8 +481,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="32"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:32</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -542,8 +559,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="96"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:96</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:97</a></div>
                         </td>
                     </tr>
 
@@ -612,12 +629,13 @@
 
 import _trim from &#x27;lodash/trim&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
+import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { numberToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
 import { FeedbackPaginateQueryDTO, FeedbacksDTO } from &#x27;./feedback.dto&#x27;
@@ -637,25 +655,25 @@ export class FeedbackController {
   @SuccessResponse({ message: &#x27;Get feedbacks succeeded&#x27;, usePaginate: true })
   getFeedbacks(@Query() query: FeedbackPaginateQueryDTO): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
-    const paginateQuery: PaginateQuery&lt;Feedback&gt; &#x3D; {}
+    const queryFilter: QueryFilter&lt;Feedback&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
     // target ID
     if (!_isUndefined(filters.tid)) {
-      paginateQuery.tid &#x3D; filters.tid
+      queryFilter.tid &#x3D; filters.tid
     }
     // emotion
     if (!_isUndefined(filters.emotion)) {
-      paginateQuery.emotion &#x3D; filters.emotion
+      queryFilter.emotion &#x3D; filters.emotion
     }
     // marked
     if (!_isUndefined(filters.marked)) {
-      paginateQuery.marked &#x3D; numberToBoolean(filters.marked)
+      queryFilter.marked &#x3D; numberToBoolean(filters.marked) as boolean
     }
     // search
     if (filters.keyword) {
       const trimmed &#x3D; _trim(filters.keyword)
       const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
-      paginateQuery.$or &#x3D; [
+      queryFilter.$or &#x3D; [
         { content: keywordRegExp },
         { user_name: keywordRegExp },
         { user_email: keywordRegExp },
@@ -663,7 +681,7 @@ export class FeedbackController {
       ]
     }
 
-    return this.feedbackService.paginate(paginateQuery, paginateOptions)
+    return this.feedbackService.paginate(queryFilter, paginateOptions)
   }
 
   @Post()
@@ -671,7 +689,7 @@ export class FeedbackController {
   @SuccessResponse(&#x27;Create feedback succeeded&#x27;)
   async createFeedback(@Body() feedback: FeedbackBase, @RequestContext() { visitor }: IRequestContext) {
     const created &#x3D; await this.feedbackService.create(feedback, visitor)
-    const subject &#x3D; &#x60;You have a new feedback&#x60;
+    const subject &#x3D; &#x27;You have a new feedback&#x27;
     const texts &#x3D; [
       &#x60;${subject} on ${created.tid}.&#x60;,
       &#x60;Author: ${created.user_name || &#x27;Anonymous user&#x27;}&#x60;,

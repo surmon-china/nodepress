@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content interface">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -152,13 +170,6 @@
                                         <a href="#dateSort" 
 >
                                             dateSort
-                                        </a>
-                                </li>
-                                <li>
-                                            <span class="modifier">Optional</span>
-                                        <a href="#lean" 
->
-                                            lean
                                         </a>
                                 </li>
                                 <li>
@@ -265,7 +276,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>dateSort:     <code>&quot;1&quot; | </code>
+                                        <code>dateSort:     <code>&quot;1&quot; | unknown</code>
 </code>
                                     </td>
                                 </tr>
@@ -273,45 +284,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>&quot;1&quot; | </code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="lean"></a>
-                                        <span class="name "><b>lean</b>
-                                            <a href="#lean">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>lean:         <code><a href="../classes/Option.html#lean" target="_self" >QueryOptions['lean']</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/Option.html#lean" target="_self" >QueryOptions['lean']</a></code>
+                                            <i>Type : </i>    <code>&quot;1&quot; | unknown</code>
 
                                         </td>
                                     </tr>
@@ -541,7 +514,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _merge from &#x27;lodash/merge&#x27;
-import type { Model, Document, Schema, FilterQuery, QueryOptions } from &#x27;mongoose&#x27;
+import type { Model, Schema, QueryFilter, QueryOptions, HydratedDocument } from &#x27;mongoose&#x27;
 
 export interface PaginateResult&lt;T&gt; {
   documents: Array&lt;T&gt;
@@ -551,7 +524,6 @@ export interface PaginateResult&lt;T&gt; {
   totalPage: number
 }
 
-export type PaginateQuery&lt;T &#x3D; any&gt; &#x3D; FilterQuery&lt;T&gt;
 export interface PaginateOptions {
   /** paginate options */
   page?: number
@@ -561,57 +533,64 @@ export interface PaginateOptions {
   projection?: string | object | null
   /** mongoose queryOptions */
   sort?: QueryOptions[&#x27;sort&#x27;]
-  lean?: QueryOptions[&#x27;lean&#x27;]
   populate?: QueryOptions[&#x27;populate&#x27;]
   /** original options for &#x60;model.find&#x60; */
   $queryOptions?: QueryOptions
 }
 
-const DEFAULT_OPTIONS: Required&lt;Pick&lt;PaginateOptions, &#x27;page&#x27; | &#x27;perPage&#x27; | &#x27;dateSort&#x27; | &#x27;lean&#x27;&gt;&gt; &#x3D; Object.freeze({
+const DEFAULT_OPTIONS: Required&lt;Pick&lt;PaginateOptions, &#x27;page&#x27; | &#x27;perPage&#x27; | &#x27;dateSort&#x27;&gt;&gt; &#x3D; Object.freeze({
   page: 1,
   perPage: 16,
-  dateSort: -1,
-  lean: false
+  dateSort: -1 as const
 })
 
-export interface PaginateModel&lt;T extends Document&gt; extends Model&lt;T&gt; {
-  paginate(query?: PaginateQuery&lt;T&gt;, options?: PaginateOptions): Promise&lt;PaginateResult&lt;T&gt;&gt;
-}
-
-export function mongoosePaginate(schema: Schema) {
-  schema.statics.paginate &#x3D; paginate
-}
-
-export function paginate&lt;T&gt;(this: Model&lt;T&gt;, filterQuery: PaginateQuery&lt;T&gt; &#x3D; {}, options: PaginateOptions &#x3D; {}) {
-  const { page, perPage, dateSort, projection, $queryOptions, ...resetOptions } &#x3D; _merge(
+function doPaginate&lt;TRawDocType&gt;(
+  this: Model&lt;TRawDocType&gt;,
+  queryFilter: QueryFilter&lt;TRawDocType&gt; &#x3D; {},
+  paginateOptions: PaginateOptions &#x3D; {},
+  forceLean &#x3D; false
+) {
+  const { page, perPage, dateSort, projection, $queryOptions, ...restOptions } &#x3D; _merge(
     { ...DEFAULT_OPTIONS },
-    { ...options }
+    { ...paginateOptions }
   )
 
-  const findQueryOptions &#x3D; {
-    ...resetOptions,
-    ...$queryOptions
+  const findQueryOptions: QueryOptions&lt;TRawDocType&gt; &#x3D; {
+    ...restOptions,
+    ...$queryOptions,
+    lean: forceLean
   }
 
   // query
-  const countQuery &#x3D; this.countDocuments(filterQuery).exec()
-  const pageQuery &#x3D; this.find(filterQuery, projection, {
+  const countQuery &#x3D; this.countDocuments(queryFilter).exec()
+  const listQuery &#x3D; this.find(queryFilter, projection, {
     skip: (page - 1) * perPage,
     limit: perPage,
     sort: dateSort ? { _id: dateSort } : findQueryOptions.sort,
     ...findQueryOptions
   }).exec()
 
-  return Promise.all([countQuery, pageQuery]).then(([countResult, pageResult]) &#x3D;&gt; {
-    const result: PaginateResult&lt;T&gt; &#x3D; {
-      documents: pageResult,
-      total: countResult,
-      page,
-      perPage,
-      totalPage: Math.ceil(countResult / perPage) || 1
-    }
-    return result
-  })
+  return Promise.all([countQuery, listQuery]).then(([countResult, listResult]) &#x3D;&gt; ({
+    documents: listResult,
+    total: countResult,
+    page,
+    perPage,
+    totalPage: Math.ceil(countResult / perPage) || 1
+  }))
+}
+
+export type PaginateStatics&lt;TRawDocType, THydratedDocType &#x3D; HydratedDocument&lt;TRawDocType&gt;&gt; &#x3D; {
+  paginate(filter?: QueryFilter&lt;TRawDocType&gt;, options?: PaginateOptions): Promise&lt;PaginateResult&lt;THydratedDocType&gt;&gt;
+  paginateRaw(filter?: QueryFilter&lt;TRawDocType&gt;, options?: PaginateOptions): Promise&lt;PaginateResult&lt;TRawDocType&gt;&gt;
+}
+
+export function mongoosePaginate(schema: Schema) {
+  schema.statics.paginate &#x3D; function (this: any, filter?: any, options?: any) {
+    return doPaginate.call(this, filter, options, false)
+  }
+  schema.statics.paginateRaw &#x3D; function (this: any, filter?: any, options?: any) {
+    return doPaginate.call(this, filter, options, true)
+  }
 }
 </code></pre>
     </div>

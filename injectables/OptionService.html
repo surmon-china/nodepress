@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -167,7 +185,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#incrementLikes" >incrementLikes</a>
+                                <a href="#incrementMetaLikes" >incrementMetaLikes</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -410,19 +428,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="incrementLikes"></a>
+                    <a name="incrementMetaLikes"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>incrementLikes</b></span>
-                        <a href="#incrementLikes"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>incrementMetaLikes</b></span>
+                        <a href="#incrementMetaLikes"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>incrementLikes()</code>
+                    <code>incrementMetaLikes()</code>
                 </td>
             </tr>
 
@@ -656,7 +674,7 @@ export class OptionService {
     })
 
     this.optionCache.update().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;init getAppOption failed!&#x27;, error)
+      logger.warn(&#x27;Init getAppOption failed!&#x27;, error)
     })
   }
 
@@ -698,7 +716,7 @@ export class OptionService {
     return option.blocklist
   }
 
-  public async incrementLikes(): Promise&lt;number&gt; {
+  public async incrementMetaLikes(): Promise&lt;number&gt; {
     const option &#x3D; await this.ensureAppOption()
     option.meta.likes++
     await option.save({ timestamps: false })

@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content controller">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -114,7 +132,6 @@
         <p class="comment">
             <code>src/modules/announcement/announcement.controller.ts</code>
         </p>
-
             <p class="comment">
                 <h3>Prefix</h3>
             </p>
@@ -598,13 +615,13 @@
  */
 
 import _trim from &#x27;lodash/trim&#x27;
+import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Controller, Get, Put, Post, Delete, Body, UseGuards, Query } from &#x27;@nestjs/common&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { PaginateResult, PaginateQuery } from &#x27;@app/utils/paginate&#x27;
 import { AnnouncementsDTO, AnnouncementPaginateQueryDTO } from &#x27;./announcement.dto&#x27;
 import { AnnouncementService } from &#x27;./announcement.service&#x27;
 import { Announcement } from &#x27;./announcement.model&#x27;
@@ -619,20 +636,20 @@ export class AnnouncementController {
   getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDTO) {
     const { sort, page, per_page, ...filters } &#x3D; query
     const { keyword, state } &#x3D; filters
-    const paginateQuery: PaginateQuery&lt;Announcement&gt; &#x3D; {}
+    const queryFilter: QueryFilter&lt;Announcement&gt; &#x3D; {}
 
     // search
     if (keyword) {
-      paginateQuery.content &#x3D; new RegExp(_trim(keyword), &#x27;i&#x27;)
+      queryFilter.content &#x3D; new RegExp(_trim(keyword), &#x27;i&#x27;)
     }
 
     // state
     if (state !&#x3D; null) {
-      paginateQuery.state &#x3D; state
+      queryFilter.state &#x3D; state
     }
 
     // paginate
-    return this.announcementService.paginate(paginateQuery, {
+    return this.announcementService.paginate(queryFilter, {
       page,
       perPage: per_page,
       dateSort: sort

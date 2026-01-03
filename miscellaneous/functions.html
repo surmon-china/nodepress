@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content miscellaneous-functions">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -121,6 +139,9 @@
                             <a href="#decodeMD5" title="src/transformers/codec.transformer.ts" ><b>decodeMD5</b>&nbsp;&nbsp;&nbsp;(src/.../codec.transformer.ts)</a>
                         </li>
                         <li>
+                            <a href="#doPaginate" title="src/utils/paginate.ts" ><b>doPaginate</b>&nbsp;&nbsp;&nbsp;(src/.../paginate.ts)</a>
+                        </li>
+                        <li>
                             <a href="#getArticleUrl" title="src/transformers/urlmap.transformer.ts" ><b>getArticleUrl</b>&nbsp;&nbsp;&nbsp;(src/.../urlmap.transformer.ts)</a>
                         </li>
                         <li>
@@ -155,9 +176,6 @@
                         </li>
                         <li>
                             <a href="#numberToBoolean" title="src/transformers/value.transformer.ts" ><b>numberToBoolean</b>&nbsp;&nbsp;&nbsp;(src/.../value.transformer.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#paginate" title="src/utils/paginate.ts" ><b>paginate</b>&nbsp;&nbsp;&nbsp;(src/.../paginate.ts)</a>
                         </li>
                         <li>
                             <a href="#parseArgs" title="src/utils/args.ts" ><b>parseArgs</b>&nbsp;&nbsp;&nbsp;(src/.../args.ts)</a>
@@ -327,6 +345,164 @@
                         </div>
                             <div class="io-description">
                                 
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>src/utils/paginate.ts</h3>
+    <section data-compodoc="block-methods">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="doPaginate"></a>
+                    <span class="name">
+                        <span ><b>doPaginate</b></span>
+                        <a href="#doPaginate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>doPaginate(this: Model, queryFilter: QueryFilter, paginateOptions: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, forceLean: unknown)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>this</td>
+                                            <td>
+                                                        <code>Model</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>queryFilter</td>
+                                            <td>
+                                                        <code>QueryFilter</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>paginateOptions</td>
+                                            <td>
+                                                            <code><a href="../interfaces/PaginateOptions.html" target="_self" >PaginateOptions</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>forceLean</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>false</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mongoosePaginate"></a>
+                    <span class="name">
+                        <span ><b>mongoosePaginate</b></span>
+                        <a href="#mongoosePaginate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mongoosePaginate(schema: Schema)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>schema</td>
+                                            <td>
+                                                        <code>Schema</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                 </td>
             </tr>
@@ -907,149 +1083,6 @@
             </tr>
         </tbody>
     </table>
-</section>    <h3>src/utils/paginate.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="mongoosePaginate"></a>
-                    <span class="name">
-                        <span ><b>mongoosePaginate</b></span>
-                        <a href="#mongoosePaginate"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>mongoosePaginate(schema: Schema)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>schema</td>
-                                            <td>
-                                                        <code>Schema</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="paginate"></a>
-                    <span class="name">
-                        <span ><b>paginate</b></span>
-                        <a href="#paginate"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>paginate(this: Model, filterQuery: <a href="../undefineds/PaginateQuery.html" target="_self">PaginateQuery</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                                <td>Default value</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>this</td>
-                                            <td>
-                                                        <code>Model</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                                <td>filterQuery</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#PaginateQuery" target="_self" >PaginateQuery</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                                    <code>{}</code>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                                <td>options</td>
-                                            <td>
-                                                            <code><a href="../interfaces/PaginateOptions.html" target="_self" >PaginateOptions</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                                    <code>{}</code>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </section>    <h3>src/transformers/value.transformer.ts</h3>
     <section data-compodoc="block-methods">
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -1160,7 +1193,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>boolean | </code>
+                            <b>Returns : </b>    <code>boolean | unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -1217,7 +1250,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Date | </code>
+                            <b>Returns : </b>    <code>Date | unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -1274,7 +1307,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>number | </code>
+                            <b>Returns : </b>    <code>number | unknown</code>
 
                         </div>
                             <div class="io-description">

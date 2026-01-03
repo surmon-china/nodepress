@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -291,8 +309,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="116"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:116</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:120</a></div>
                         </td>
                     </tr>
 
@@ -431,8 +449,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="131"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:131</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="135"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:135</a></div>
                         </td>
                     </tr>
 
@@ -471,8 +489,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="76"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:76</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -541,8 +559,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="62"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:62</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -611,8 +629,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="170"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:170</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:174</a></div>
                         </td>
                     </tr>
 
@@ -681,8 +699,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="103"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:103</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:107</a></div>
                         </td>
                     </tr>
 
@@ -751,8 +769,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="90"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:90</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.private.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -873,7 +891,11 @@ export class DisqusPrivateService {
 
   public async createThread(postId: number) {
     try {
-      const article &#x3D; await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId, publicOnly: true })
+      const article &#x3D; await this.articleService.getDetailByNumberIdOrSlug({
+        numberId: postId,
+        publicOnly: true,
+        lean: true
+      })
       // https://disqus.com/api/docs/threads/create/
       const response &#x3D; await this.disqus.request(&#x27;threads/create&#x27;, {
         forum: DISQUS.forum,

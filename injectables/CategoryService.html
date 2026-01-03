@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -225,7 +243,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/category/category.service.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/modules/category/category.service.ts:28</a></div>
                             </td>
                         </tr>
 
@@ -339,8 +357,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/modules/category/category.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/modules/category/category.service.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -421,8 +439,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="164"
-                                    class="link-to-prism">src/modules/category/category.service.ts:164</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/modules/category/category.service.ts:165</a></div>
                         </td>
                     </tr>
 
@@ -491,8 +509,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="88"
-                                    class="link-to-prism">src/modules/category/category.service.ts:88</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/modules/category/category.service.ts:89</a></div>
                         </td>
                     </tr>
 
@@ -561,8 +579,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="143"
-                                    class="link-to-prism">src/modules/category/category.service.ts:143</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/modules/category/category.service.ts:144</a></div>
                         </td>
                     </tr>
 
@@ -631,8 +649,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/category/category.service.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/modules/category/category.service.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -700,8 +718,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="62"
-                                    class="link-to-prism">src/modules/category/category.service.ts:62</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/modules/category/category.service.ts:63</a></div>
                         </td>
                     </tr>
 
@@ -740,8 +758,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="81"
-                                    class="link-to-prism">src/modules/category/category.service.ts:81</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="82"
+                                    class="link-to-prism">src/modules/category/category.service.ts:82</a></div>
                         </td>
                     </tr>
 
@@ -777,7 +795,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;MongooseDoc&lt;Category&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;WithId&lt;Category&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -809,8 +827,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/modules/category/category.service.ts:102</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/modules/category/category.service.ts:103</a></div>
                         </td>
                     </tr>
 
@@ -872,15 +890,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginate(query: <a href="../classes/Category.html" target="_self">PaginateQuery&lt;Category&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>paginate(filter: <a href="../classes/Category.html" target="_self">QueryFilter&lt;Category&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="70"
-                                    class="link-to-prism">src/modules/category/category.service.ts:70</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/category/category.service.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -901,9 +919,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>query</td>
+                                                <td>filter</td>
                                             <td>
-                                                            <code><a href="../classes/Category.html" target="_self" >PaginateQuery&lt;Category&gt;</a></code>
+                                                            <code><a href="../classes/Category.html" target="_self" >QueryFilter&lt;Category&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -973,8 +991,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="128"
-                                    class="link-to-prism">src/modules/category/category.service.ts:128</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">src/modules/category/category.service.ts:129</a></div>
                         </td>
                     </tr>
 
@@ -1054,8 +1072,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="66"
-                                    class="link-to-prism">src/modules/category/category.service.ts:66</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/modules/category/category.service.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -1097,7 +1115,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/category/category.service.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/modules/category/category.service.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -1110,12 +1128,13 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter } from &#x27;mongoose&#x27;
+import { Injectable, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { getCategoryUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import type { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import type { MongooseId, MongooseObjectId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
@@ -1144,7 +1163,7 @@ export class CategoryService {
       promise: () &#x3D;&gt; this.getAllCategories({ aggregatePublicOnly: true })
     })
     this.allCategoriesCache.update().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;init getAllCategories failed!&#x27;, error)
+      logger.warn(&#x27;Init getAllCategories failed!&#x27;, error)
     })
   }
 
@@ -1174,25 +1193,25 @@ export class CategoryService {
   }
 
   public async paginate(
-    query: PaginateQuery&lt;Category&gt;,
+    filter: QueryFilter&lt;Category&gt;,
     options: PaginateOptions,
     publicOnly: boolean
   ): Promise&lt;PaginateResult&lt;Category&gt;&gt; {
-    const categories &#x3D; await this.categoryModel.paginate(query, { ...options, lean: true })
-    const documents &#x3D; await this.aggregateArticleCount(publicOnly, categories.documents)
-    return { ...categories, documents }
+    const result &#x3D; await this.categoryModel.paginateRaw(filter, options)
+    const documents &#x3D; await this.aggregateArticleCount(publicOnly, result.documents)
+    return { ...result, documents }
   }
 
   // Get detail by slug
-  public async getDetailBySlug(slug: string): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
-    const category &#x3D; await this.categoryModel.findOne({ slug }).exec()
+  public async getDetailBySlug(slug: string): Promise&lt;WithId&lt;Category&gt;&gt; {
+    const category &#x3D; await this.categoryModel.findOne({ slug }).lean().exec()
     if (!category) throw new NotFoundException(&#x60;Category &#x27;${slug}&#x27; not found&#x60;)
     return category
   }
 
   // Create category
   public async create(newCategory: Category): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
-    const existedCategory &#x3D; await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
+    const existedCategory &#x3D; await this.categoryModel.findOne({ slug: newCategory.slug }).lean().exec()
     if (existedCategory) {
       throw new ConflictException(&#x60;Category slug &#x27;${newCategory.slug}&#x27; already exists&#x60;)
     }
@@ -1207,20 +1226,20 @@ export class CategoryService {
   // Get categories genealogy
   public getGenealogyById(categoryId: MongooseId): Promise&lt;Category[]&gt; {
     const categories: Category[] &#x3D; []
-    const findById &#x3D; (id: MongooseId) &#x3D;&gt; this.categoryModel.findById(id).exec()
+    const findById &#x3D; this.categoryModel.findById.bind(this.categoryModel)
 
     return new Promise((resolve, reject) &#x3D;&gt; {
       ;(function findCateItem(id) {
         findById(id)
+          .lean()
+          .exec()
           .then((category) &#x3D;&gt; {
             if (!category) {
-              if (id &#x3D;&#x3D;&#x3D; categoryId) {
-                return reject(new NotFoundException(&#x60;Category &#x27;${categoryId}&#x27; not found&#x60;))
-              } else {
-                return resolve(categories)
-              }
+              return id &#x3D;&#x3D;&#x3D; categoryId
+                ? reject(new NotFoundException(&#x60;Category &#x27;${categoryId}&#x27; not found&#x60;))
+                : resolve(categories)
             }
-            categories.unshift(category.toObject())
+            categories.unshift(category)
             const parentId &#x3D; category.pid
             const hasParent &#x3D; parentId &amp;&amp; parentId.toString() !&#x3D;&#x3D; category._id.toString()
             return hasParent ? findCateItem(parentId) : resolve(categories)
@@ -1232,7 +1251,7 @@ export class CategoryService {
 
   // Update category
   public async update(categoryId: MongooseId, newCategory: Category): Promise&lt;MongooseDoc&lt;Category&gt;&gt; {
-    const existedCategory &#x3D; await this.categoryModel.findOne({ slug: newCategory.slug }).exec()
+    const existedCategory &#x3D; await this.categoryModel.findOne({ slug: newCategory.slug }).lean().exec()
     if (existedCategory &amp;&amp; !existedCategory._id.equals(categoryId)) {
       throw new ConflictException(&#x60;Category slug &#x27;${newCategory.slug}&#x27; already exists&#x60;)
     }
@@ -1255,7 +1274,7 @@ export class CategoryService {
     this.seoService.delete(getCategoryUrl(category.slug))
     this.updateAllCategoriesCache()
     // children categories
-    const categories &#x3D; await this.categoryModel.find({ pid: categoryId }).exec()
+    const categories &#x3D; await this.categoryModel.find({ pid: categoryId }).lean().exec()
     // delete when root category -&gt; { pid: target.id }
     if (!categories.length) return category
     // recursive delete parents -&gt; { pid: target.id } -&gt; { pid: target.pid || null }
@@ -1268,13 +1287,16 @@ export class CategoryService {
   }
 
   public async batchDelete(categoryIds: MongooseId[]) {
-    // SEO remove
-    const categories &#x3D; await this.categoryModel.find({ _id: { $in: categoryIds } }).exec()
-    this.seoService.delete(categories.map((category) &#x3D;&gt; getCategoryUrl(category.slug)))
+    const categories &#x3D; await this.categoryModel
+      .find({ _id: { $in: categoryIds } })
+      .lean()
+      .exec()
     // DB remove
     const actionResult &#x3D; await this.categoryModel.deleteMany({ _id: { $in: categoryIds } }).exec()
     this.archiveService.updateCache()
     this.updateAllCategoriesCache()
+    // SEO remove
+    this.seoService.delete(categories.map((category) &#x3D;&gt; getCategoryUrl(category.slug)))
     return actionResult
   }
 }

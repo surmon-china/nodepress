@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -79,8 +93,9 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content getting-started">
+               <div class="content readme">
                    <div class="content-data">
+
 
 <br />
 
@@ -100,18 +115,18 @@
 <a href="https://stats.uptimerobot.com/Q2k7OTXxJN/791570584"><img src="https://img.shields.io/uptimerobot/ratio/m791570584-8027b44860687b0ac0af7b4c?style=for-the-badge" alt="Uptime Robot ratio (30 days)" class="img-responsive"></a>
 &nbsp;
 <a href="/LICENSE"><img src="https://img.shields.io/github/license/surmon-china/nodepress.svg?style=for-the-badge" alt="GitHub license" class="img-responsive"></a></p>
-<p><strong>RESTful API service for <a href="https://github.com/surmon-china/surmon.me">surmon.me</a> blog, powered by <a href="https://github.com/nestjs/nest">NestJS</a>, required <a href="https://www.mongodb.com/">MongoDB</a> &amp; <a href="https://redis.io/">Redis</a>.</strong></p>
+<p><strong>A RESTful API service for <a href="https://github.com/surmon-china/surmon.me">surmon.me</a> blog, built with <a href="https://github.com/nestjs/nest">NestJS</a>, required <a href="https://www.mongodb.com/">MongoDB</a> and <a href="https://redis.io/">Redis</a>.</strong></p>
 <p>适用于 <a href="https://github.com/surmon-china/surmon.me">surmon.me</a> 的 RESTful API 服务端应用；基于 <a href="https://github.com/nestjs/nest">NestJS</a> 开发，需安装 <a href="https://www.mongodb.com/">MongoDB</a> 和 <a href="https://redis.io/">Redis</a> 方可完整运行。</p>
 <ul>
 <li><a href="/CHANGELOG.md#changelog">Changelog</a></li>
 <li><a href="https://github.surmon.me/nodepress">API Documentation</a></li>
 <li><a href="/ARCHITECTURE.md">Architecture Documentation</a></li>
 </ul>
-<p><strong>Related <a href="https://github.com/stars/surmon-china/lists/surmon-me">Projects</a></strong></p>
+<p><strong>Related projects:</strong></p>
 <ul>
-<li><strong>SSR Blog:</strong> <a href="https://github.com/surmon-china/surmon.me"><code>surmon.me</code></a> powered by Vue(3)</li>
-<li><strong>Blog admin:</strong> <a href="https://github.com/surmon-china/surmon.admin"><code>surmon.admin</code></a> powered by React &amp; <a href="https://github.com/veactjs/veact"><code>Veact</code></a></li>
-<li><strong>Blog native app:</strong> <a href="https://github.com/surmon-china/surmon.me.native"><code>surmon.me.native</code></a> powered by react-native</li>
+<li><strong>SSR blog:</strong> <a href="https://github.com/surmon-china/surmon.me"><code>surmon.me</code></a> built with Vue.</li>
+<li><strong>Blog admin site:</strong> <a href="https://github.com/surmon-china/surmon.me.admin"><code>surmon.me.admin</code></a> built with React and <a href="https://github.com/veactjs/veact">Veact</a>.</li>
+<li><strong>Blog native app:</strong> <a href="https://github.com/surmon-china/surmon.me.native"><code>surmon.me.native</code></a> built with React Native.</li>
 </ul>
 <hr>
 <h3>Development</h3>
@@ -165,6 +180,9 @@ $ pnpm run start:prod</code></pre></div><h3>Actions</h3>
 
 
 
+
+
+
                    </div><div class="search-results">
     <div class="has-results">
         <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
@@ -190,7 +208,7 @@ $ pnpm run start:prod</code></pre></div><h3>Actions</h3>
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 0;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'readme';
             var COMPODOC_CURRENT_PAGE_URL = 'index.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>

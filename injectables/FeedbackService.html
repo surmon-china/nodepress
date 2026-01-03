@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -152,11 +170,6 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getDetail" >getDetail</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#getRootFeedbackAverageEmotion" >getRootFeedbackAverageEmotion</a>
                             </li>
                             <li>
@@ -191,7 +204,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/feedback/feedback.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/feedback/feedback.service.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -268,8 +281,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:56</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -338,8 +351,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:28</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -420,8 +433,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -471,76 +484,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getDetail"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getDetail</b></span>
-                        <a href="#getDetail"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetail(feedbackId: <a href="../undefineds/MongooseId.html" target="_self">MongooseId</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:38</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>feedbackId</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Feedback.html" target="_self" >Promise&lt;MongooseDoc&lt;Feedback&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="getRootFeedbackAverageEmotion"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -560,8 +503,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="60"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:60</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -592,15 +535,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginate(query: <a href="../classes/Feedback.html" target="_self">PaginateQuery&lt;Feedback&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
+                    <code>paginate(filter: <a href="../classes/Feedback.html" target="_self">QueryFilter&lt;Feedback&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:24</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:25</a></div>
                         </td>
                     </tr>
 
@@ -621,9 +564,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>query</td>
+                                                <td>filter</td>
                                             <td>
-                                                            <code><a href="../classes/Feedback.html" target="_self" >PaginateQuery&lt;Feedback&gt;</a></code>
+                                                            <code><a href="../classes/Feedback.html" target="_self" >QueryFilter&lt;Feedback&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -681,8 +624,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -747,10 +690,11 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types } from &#x27;mongoose&#x27;
+import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { ROOT_FEEDBACK_TID } from &#x27;@app/constants/biz.constant&#x27;
 import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
@@ -763,8 +707,8 @@ export class FeedbackService {
     @InjectModel(Feedback) private readonly feedbackModel: MongooseModel&lt;Feedback&gt;
   ) {}
 
-  public paginate(query: PaginateQuery&lt;Feedback&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
-    return this.feedbackModel.paginate(query, options)
+  public paginate(filter: QueryFilter&lt;Feedback&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
+    return this.feedbackModel.paginateRaw(filter, options)
   }
 
   public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
@@ -775,12 +719,6 @@ export class FeedbackService {
       ip: visitor.ip,
       ip_location: visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
     })
-  }
-
-  public async getDetail(feedbackId: MongooseId): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    const feedback &#x3D; await this.feedbackModel.findById(feedbackId).exec()
-    if (!feedback) throw new NotFoundException(&#x60;Feedback &#x27;${feedbackId}&#x27; not found&#x60;)
-    return feedback
   }
 
   public async update(feedbackId: MongooseId, newFeedback: Partial&lt;Feedback&gt;): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {

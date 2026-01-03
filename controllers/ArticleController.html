@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content controller">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -114,7 +132,6 @@
         <p class="comment">
             <code>src/modules/article/article.controller.ts</code>
         </p>
-
             <p class="comment">
                 <h3>Prefix</h3>
             </p>
@@ -162,6 +179,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#getArticle" >getArticle</a>
                             </li>
                             <li>
@@ -243,8 +261,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="147"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:147</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="164"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:164</a></div>
                         </td>
                     </tr>
 
@@ -321,8 +339,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="161"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:161</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="178"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:178</a></div>
                         </td>
                     </tr>
 
@@ -398,8 +416,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="175"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:175</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="192"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:192</a></div>
                         </td>
                     </tr>
 
@@ -454,6 +472,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>getArticle</b></span>
                         <a href="#getArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -476,8 +495,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="132"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:132</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="137"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:137</a></div>
                         </td>
                     </tr>
 
@@ -553,8 +572,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="104"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:104</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="109"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:109</a></div>
                         </td>
                     </tr>
 
@@ -642,8 +661,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="113"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:113</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:118</a></div>
                         </td>
                     </tr>
 
@@ -720,8 +739,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="36"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:36</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -798,8 +817,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="168"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:168</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:185</a></div>
                         </td>
                     </tr>
 
@@ -876,8 +895,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="154"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:154</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:171</a></div>
                         </td>
                     </tr>
 
@@ -945,8 +964,10 @@
  */
 
 import _trim from &#x27;lodash/trim&#x27;
+import _isInteger from &#x27;lodash/isInteger&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import { Types } from &#x27;mongoose&#x27;
+import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
@@ -954,9 +975,11 @@ import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
 import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
+import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { incrementGlobalTodayViewsCount } from &#x27;@app/modules/extension/extension.helper&#x27;
 import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStateDTO } from &#x27;./article.dto&#x27;
 import { ARTICLE_HOTTEST_SORT_PARAMS } from &#x27;./article.model&#x27;
 import { ArticleService } from &#x27;./article.service&#x27;
@@ -967,7 +990,8 @@ export class ArticleController {
   constructor(
     private readonly tagService: TagService,
     private readonly categoryService: CategoryService,
-    private readonly articleService: ArticleService
+    private readonly articleService: ArticleService,
+    private readonly cacheService: CacheService
   ) {}
 
   @Get()
@@ -975,7 +999,7 @@ export class ArticleController {
   @SuccessResponse({ message: &#x27;Get articles succeeded&#x27;, usePaginate: true })
   async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDTO): Promise&lt;PaginateResult&lt;Article&gt;&gt; {
     const { page, per_page, sort, ...filters } &#x3D; query
-    const paginateQuery: PaginateQuery&lt;Article&gt; &#x3D; {}
+    const queryFilter: QueryFilter&lt;Article&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page }
 
     // sort
@@ -989,36 +1013,36 @@ export class ArticleController {
 
     // featured
     if (!_isUndefined(filters.featured)) {
-      paginateQuery.featured &#x3D; filters.featured
+      queryFilter.featured &#x3D; filters.featured
     }
 
     // language
     if (!_isUndefined(filters.lang)) {
-      paginateQuery.lang &#x3D; filters.lang
+      queryFilter.lang &#x3D; filters.lang
     }
 
     // states
     if (!_isUndefined(filters.state)) {
-      paginateQuery.state &#x3D; filters.state
+      queryFilter.state &#x3D; filters.state
     }
     if (!_isUndefined(filters.public)) {
-      paginateQuery.public &#x3D; filters.public
+      queryFilter.public &#x3D; filters.public
     }
     if (!_isUndefined(filters.origin)) {
-      paginateQuery.origin &#x3D; filters.origin
+      queryFilter.origin &#x3D; filters.origin
     }
 
     // search
     if (filters.keyword) {
       const trimmed &#x3D; _trim(filters.keyword)
       const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
-      paginateQuery.$or &#x3D; [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
+      queryFilter.$or &#x3D; [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
     }
 
     // date
     if (filters.date) {
       const queryDateMS &#x3D; new Date(filters.date).getTime()
-      paginateQuery.created_at &#x3D; {
+      queryFilter.created_at &#x3D; {
         $gte: new Date((queryDateMS / 1000 - 60 * 60 * 8) * 1000),
         $lt: new Date((queryDateMS / 1000 + 60 * 60 * 16) * 1000)
       }
@@ -1027,15 +1051,15 @@ export class ArticleController {
     // tag | category
     if (filters.tag_slug) {
       const tag &#x3D; await this.tagService.getDetailBySlug(filters.tag_slug)
-      paginateQuery.tags &#x3D; tag._id
+      queryFilter.tags &#x3D; tag._id
     }
     if (filters.category_slug) {
       const category &#x3D; await this.categoryService.getDetailBySlug(filters.category_slug)
-      paginateQuery.categories &#x3D; category._id
+      queryFilter.categories &#x3D; category._id
     }
 
     // paginate
-    return this.articleService.paginate(paginateQuery, paginateOptions)
+    return this.articleService.paginate(queryFilter, paginateOptions)
   }
 
   @Get(&#x27;calendar&#x27;)
@@ -1056,7 +1080,7 @@ export class ArticleController {
       this.articleService.getNearArticles(articleId, &#x27;early&#x27;, 1),
       this.articleService.getNearArticles(articleId, &#x27;later&#x27;, 1),
       this.articleService
-        .getDetailByNumberIdOrSlug({ idOrSlug: articleId, publicOnly: true })
+        .getDetailByNumberIdOrSlug({ numberId: articleId, publicOnly: true, lean: true })
         .then((article) &#x3D;&gt; this.articleService.getRelatedArticles(article, 20))
     ])
     return {
@@ -1069,16 +1093,28 @@ export class ArticleController {
   @Get(&#x27;:id&#x27;)
   @UseGuards(AdminOptionalGuard)
   @SuccessResponse(&#x27;Get article detail succeeded&#x27;)
-  getArticle(@RequestContext() { params, isUnauthenticated }: IRequestContext): Promise&lt;Article&gt; {
+  async getArticle(@RequestContext() { params, isUnauthenticated }: IRequestContext): Promise&lt;Article&gt; {
     // Guest user &gt; number ID | slug
     if (isUnauthenticated) {
-      const idOrSlug &#x3D; isNaN(Number(params.id)) ? String(params.id) : Number(params.id)
-      return this.articleService.getFullDetailForGuest(idOrSlug)
+      const isNumberTypeId &#x3D; _isInteger(Number(params.id))
+      const article &#x3D; await this.articleService.getDetailByNumberIdOrSlug({
+        numberId: isNumberTypeId ? Number(params.id) : undefined,
+        slug: isNumberTypeId ? undefined : String(params.id),
+        publicOnly: true,
+        populate: true,
+        lean: true
+      })
+      // increment article views
+      this.articleService.incrementMetaStatistic(article.id, &#x27;views&#x27;)
+      // increment global today views
+      incrementGlobalTodayViewsCount(this.cacheService)
+      return article
     }
+
     // Admin user &gt; Object ID | number ID
     return Types.ObjectId.isValid(params.id)
       ? this.articleService.getDetailByObjectId(params.id)
-      : this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: Number(params.id) })
+      : this.articleService.getDetailByNumberIdOrSlug({ numberId: Number(params.id), lean: true })
   }
 
   @Post()

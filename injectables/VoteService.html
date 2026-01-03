@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -141,7 +159,6 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#countDocuments" >countDocuments</a>
                             </li>
                             <li>
@@ -304,7 +321,6 @@
                     <a name="countDocuments"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
                         <span ><b>countDocuments</b></span>
                         <a href="#countDocuments"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -313,7 +329,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>countDocuments(filter: <a href="../classes/Vote.html" target="_self">FilterQuery&lt;Vote&gt;</a>, options?: MongooseBaseQueryOptions<Vote>)</code>
+                    <code>countDocuments(filter: <a href="../classes/Vote.html" target="_self">QueryFilter&lt;Vote&gt;</a>, options?: MongooseBaseQueryOptions<Vote>)</code>
                 </td>
             </tr>
 
@@ -344,7 +360,7 @@
                                         <tr>
                                                 <td>filter</td>
                                             <td>
-                                                            <code><a href="../classes/Vote.html" target="_self" >FilterQuery&lt;Vote&gt;</a></code>
+                                                            <code><a href="../classes/Vote.html" target="_self" >QueryFilter&lt;Vote&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -533,7 +549,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginate(query: <a href="../classes/Vote.html" target="_self">PaginateQuery&lt;Vote&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
+                    <code>paginate(filter: <a href="../classes/Vote.html" target="_self">QueryFilter&lt;Vote&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
@@ -562,9 +578,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>query</td>
+                                                <td>filter</td>
                                             <td>
-                                                            <code><a href="../classes/Vote.html" target="_self" >PaginateQuery&lt;Vote&gt;</a></code>
+                                                            <code><a href="../classes/Vote.html" target="_self" >QueryFilter&lt;Vote&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -687,19 +703,19 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
-import { FilterQuery, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
+import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { Vote } from &#x27;./vote.model&#x27;
 
 @Injectable()
 export class VoteService {
   constructor(@InjectModel(Vote) private readonly voteModel: MongooseModel&lt;Vote&gt;) {}
 
-  public paginate(query: PaginateQuery&lt;Vote&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
-    return this.voteModel.paginate(query, options)
+  public paginate(filter: QueryFilter&lt;Vote&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
+    return this.voteModel.paginateRaw(filter, options)
   }
 
   public create(vote: Vote): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
@@ -722,11 +738,8 @@ export class VoteService {
     return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec()
   }
 
-  public async countDocuments(
-    filter: FilterQuery&lt;Vote&gt;,
-    options?: MongooseBaseQueryOptions&lt;Vote&gt;
-  ): Promise&lt;number&gt; {
-    return await this.voteModel.countDocuments(filter, options).exec()
+  public countDocuments(filter: QueryFilter&lt;Vote&gt;, options?: MongooseBaseQueryOptions&lt;Vote&gt;): Promise&lt;number&gt; {
+    return this.voteModel.countDocuments(filter, options).exec()
   }
 }
 </code></pre>

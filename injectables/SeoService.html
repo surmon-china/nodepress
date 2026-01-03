@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -710,7 +728,7 @@ export class SeoService {
         return this.httpService.axiosRef
           .request({
             method: &#x27;post&#x27;,
-            url: &#x60;https://indexing.googleapis.com/v3/urlNotifications:publish&#x60;,
+            url: &#x27;https://indexing.googleapis.com/v3/urlNotifications:publish&#x27;,
             data: { url, type },
             headers: {
               &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,

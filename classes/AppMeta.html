@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content class">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -193,7 +211,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/modules/option/option.model.ts:41</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/modules/option/option.model.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -220,6 +238,16 @@ import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
+const DEFAULT_OPTION_APP_META: AppMeta &#x3D; Object.freeze({
+  likes: 0
+})
+
+const DEFAULT_OPTION_BLOCKLIST: Blocklist &#x3D; Object.freeze({
+  ips: [],
+  mails: [],
+  keywords: []
+})
+
 export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   title: &#x27;NodePress&#x27;,
   sub_title: &#x27;Blog server app&#x27;,
@@ -234,12 +262,8 @@ export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
       value: APP_BIZ.FE_URL
     }
   ],
-  meta: { likes: 0 },
-  blocklist: {
-    ips: [],
-    mails: [],
-    keywords: []
-  },
+  meta: DEFAULT_OPTION_APP_META,
+  blocklist: DEFAULT_OPTION_BLOCKLIST,
   ad_config: &#x27;&#x27;
 })
 
@@ -324,7 +348,7 @@ export class Option {
   friend_links: KeyValueModel[]
 
   // site meta info
-  @prop({ _id: false, default: { ...DEFAULT_OPTION.meta } })
+  @prop({ _id: false, default: { ...DEFAULT_OPTION_APP_META } })
   meta: AppMeta
 
   // site user block list
@@ -332,7 +356,7 @@ export class Option {
   @ValidateNested()
   @IsObject()
   @IsOptional()
-  @prop({ _id: false, default: { ...DEFAULT_OPTION.blocklist } })
+  @prop({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } })
   blocklist: Blocklist
 
   // ad config

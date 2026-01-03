@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content class">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -235,7 +253,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">src/modules/comment/comment.model.ts:139</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="140" class="link-to-prism">src/modules/comment/comment.model.ts:140</a></div>
                         </td>
                     </tr>
 
@@ -272,7 +290,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">src/modules/comment/comment.model.ts:126</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="127" class="link-to-prism">src/modules/comment/comment.model.ts:127</a></div>
                         </td>
                     </tr>
 
@@ -310,7 +328,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="147" class="link-to-prism">src/modules/comment/comment.model.ts:147</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/modules/comment/comment.model.ts:148</a></div>
                         </td>
                     </tr>
 
@@ -347,7 +365,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/modules/comment/comment.model.ts:111</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/modules/comment/comment.model.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -385,7 +403,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="132" class="link-to-prism">src/modules/comment/comment.model.ts:132</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/modules/comment/comment.model.ts:133</a></div>
                         </td>
                     </tr>
 
@@ -421,7 +439,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">src/modules/comment/comment.model.ts:136</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/modules/comment/comment.model.ts:137</a></div>
                         </td>
                     </tr>
 
@@ -458,7 +476,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">src/modules/comment/comment.model.ts:122</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="123" class="link-to-prism">src/modules/comment/comment.model.ts:123</a></div>
                         </td>
                     </tr>
 
@@ -496,7 +514,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/modules/comment/comment.model.ts:117</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/modules/comment/comment.model.ts:118</a></div>
                         </td>
                     </tr>
 
@@ -533,7 +551,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/modules/comment/comment.model.ts:142</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/comment/comment.model.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -647,6 +665,7 @@ export class CommentBase {
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    id: false,
     versionKey: false,
     timestamps: {
       createdAt: &#x27;created_at&#x27;,

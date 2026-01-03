@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -180,7 +198,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/modules/announcement/announcement.service.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/modules/announcement/announcement.service.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -245,8 +263,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:40</a></div>
                         </td>
                     </tr>
 
@@ -314,8 +332,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:24</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:22</a></div>
                         </td>
                     </tr>
 
@@ -384,8 +402,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="39"
-                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:39</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -446,15 +464,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginate(query: <a href="../classes/Announcement.html" target="_self">PaginateQuery&lt;Announcement&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
+                    <code>paginate(filter: <a href="../classes/Announcement.html" target="_self">QueryFilter&lt;Announcement&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="17"
-                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:17</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="18"
+                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -475,9 +493,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>query</td>
+                                                <td>filter</td>
                                             <td>
-                                                            <code><a href="../classes/Announcement.html" target="_self" >PaginateQuery&lt;Announcement&gt;</a></code>
+                                                            <code><a href="../classes/Announcement.html" target="_self" >QueryFilter&lt;Announcement&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -502,7 +520,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Announcement&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -535,8 +553,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:28</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/modules/announcement/announcement.service.ts:26</a></div>
                         </td>
                     </tr>
 
@@ -600,21 +618,19 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter } from &#x27;mongoose&#x27;
+import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { PaginateResult, PaginateOptions, PaginateQuery } from &#x27;@app/utils/paginate&#x27;
+import type { PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { Announcement } from &#x27;./announcement.model&#x27;
 
 @Injectable()
 export class AnnouncementService {
   constructor(@InjectModel(Announcement) private readonly announcementModel: MongooseModel&lt;Announcement&gt;) {}
 
-  public paginate(
-    query: PaginateQuery&lt;Announcement&gt;,
-    options: PaginateOptions
-  ): Promise&lt;PaginateResult&lt;Announcement&gt;&gt; {
-    return this.announcementModel.paginate(query, options)
+  public paginate(filter: QueryFilter&lt;Announcement&gt;, options: PaginateOptions) {
+    return this.announcementModel.paginateRaw(filter, options)
   }
 
   public create(announcement: Announcement): Promise&lt;MongooseDoc&lt;Announcement&gt;&gt; {
@@ -625,10 +641,7 @@ export class AnnouncementService {
     const updated &#x3D; await this.announcementModel
       .findByIdAndUpdate(announcementId, announcement, { new: true })
       .exec()
-
-    if (!updated) {
-      throw new NotFoundException(&#x60;Announcement &#x27;${announcementId}&#x27; not found&#x60;)
-    }
+    if (!updated) throw new NotFoundException(&#x60;Announcement &#x27;${announcementId}&#x27; not found&#x60;)
     return updated
   }
 

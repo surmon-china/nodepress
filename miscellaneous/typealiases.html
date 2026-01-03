@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content miscellaneous-typealiases">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -136,7 +154,7 @@
                             <a href="#MongooseObjectId" title="src/interfaces/mongoose.interface.ts" ><b>MongooseObjectId</b>&nbsp;&nbsp;&nbsp;(src/.../mongoose.interface.ts)</a>
                         </li>
                         <li>
-                            <a href="#PaginateQuery" title="src/utils/paginate.ts" ><b>PaginateQuery</b>&nbsp;&nbsp;&nbsp;(src/.../paginate.ts)</a>
+                            <a href="#PaginateStatics" title="src/utils/paginate.ts" ><b>PaginateStatics</b>&nbsp;&nbsp;&nbsp;(src/.../paginate.ts)</a>
                         </li>
                         <li>
                             <a href="#RedisClientType" title="src/core/cache/redis.service.ts" ><b>RedisClientType</b>&nbsp;&nbsp;&nbsp;(src/.../redis.service.ts)</a>
@@ -247,7 +265,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <code>    <code></code>
+                    <code>        <code><a href="../miscellaneous/typealiases.html#WithId" target="_self" >HydratedDocument&lt;WithId&lt;T&gt;&gt;</a></code>
 </code>
                 </td>
             </tr>
@@ -279,7 +297,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <code>    <code></code>
+                    <code>    <code>unknown</code>
 </code>
                 </td>
             </tr>
@@ -311,7 +329,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <code>    <code></code>
+                    <code>    <code>unknown</code>
 </code>
                 </td>
             </tr>
@@ -323,13 +341,13 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="PaginateQuery"></a>
-                    <span class="name "><b>PaginateQuery</b><a href="#PaginateQuery"><span class="icon ion-ios-link"></span></a></span>
+                    <a name="PaginateStatics"></a>
+                    <span class="name "><b>PaginateStatics</b><a href="#PaginateStatics"><span class="icon ion-ios-link"></span></a></span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <code>    <code>FilterQuery&lt;T&gt;</code>
+                    <code>    <code>literal type</code>
 </code>
                 </td>
             </tr>
@@ -347,7 +365,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <code>    <code>ReturnType&lt;&gt;</code>
+                    <code>    <code>ReturnType&lt;unknown&gt;</code>
 </code>
                 </td>
             </tr>
@@ -365,7 +383,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <code>    <code>ReturnType&lt;&gt;</code>
+                    <code>    <code>ReturnType&lt;unknown&gt;</code>
 </code>
                 </td>
             </tr>
@@ -401,7 +419,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <code>    <code>Record&lt; | number | null&gt;</code>
+                    <code>    <code>Record&lt;unknown | number | null&gt;</code>
 </code>
                 </td>
             </tr>

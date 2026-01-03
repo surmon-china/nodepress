@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content controller">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -114,7 +132,6 @@
         <p class="comment">
             <code>src/modules/vote/vote.controller.ts</code>
         </p>
-
             <p class="comment">
                 <h3>Prefix</h3>
             </p>
@@ -241,8 +258,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="191"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:191</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="192"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:192</a></div>
                         </td>
                     </tr>
 
@@ -449,8 +466,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:47</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -667,8 +684,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="43"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:43</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -746,8 +763,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="246"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:246</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="247"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:247</a></div>
                         </td>
                     </tr>
 
@@ -941,8 +958,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="198"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:198</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="199"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:199</a></div>
                         </td>
                     </tr>
 
@@ -1023,11 +1040,12 @@
 
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import { UAParser } from &#x27;ua-parser-js&#x27;
+import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, minutes, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { IPService, IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
@@ -1062,12 +1080,11 @@ export class VoteController {
   }
 
   private async getPostTitle(postId: number) {
-    if (postId &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID) {
-      return &#x27;guestbook&#x27;
-    } else {
-      const article &#x3D; await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: postId })
-      return article.toObject().title
-    }
+    return postId &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID
+      ? &#x27;guestbook&#x27;
+      : await this.articleService
+          .getDetailByNumberIdOrSlug({ numberId: postId, lean: true })
+          .then((article) &#x3D;&gt; article.title)
   }
 
   private async getVoteAuthor(payload: { guestAuthor?: Author; disqusToken?: string }) {
@@ -1109,7 +1126,7 @@ export class VoteController {
     if (voteAuthor.type &#x3D;&#x3D;&#x3D; VoteAuthorType.Disqus) {
       const disqusUser &#x3D; voteAuthor.data
       const isAdmin &#x3D; disqusUser.username &#x3D;&#x3D;&#x3D; APP_CONFIG.DISQUS.adminUsername
-      const userType &#x3D; &#x60;Disqus ${isAdmin ? &#x60;moderator&#x60; : &#x27;user&#x27;}&#x60;
+      const userType &#x3D; &#x60;Disqus ${isAdmin ? &#x27;moderator&#x27; : &#x27;user&#x27;}&#x60;
       return [&#x60;${disqusUser.name} (${userType})&#x60;, disqusUser.profileUrl].filter(Boolean).join(&#x27; · &#x27;)
     }
 
@@ -1181,25 +1198,26 @@ export class VoteController {
   @SuccessResponse({ message: &#x27;Get votes succeeded&#x27;, usePaginate: true })
   getVotes(@Query() query: VotePaginateQueryDTO): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
-    const paginateQuery: PaginateQuery&lt;Vote&gt; &#x3D; {}
+    const queryFilter: QueryFilter&lt;Vote&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
     // target type
     if (!_isUndefined(filters.target_type)) {
-      paginateQuery.target_type &#x3D; filters.target_type
+      queryFilter.target_type &#x3D; filters.target_type
     }
     // target ID
     if (!_isUndefined(filters.target_id)) {
-      paginateQuery.target_id &#x3D; filters.target_id
+      queryFilter.target_id &#x3D; filters.target_id
     }
     // vote type
     if (!_isUndefined(filters.vote_type)) {
-      paginateQuery.vote_type &#x3D; filters.vote_type
+      queryFilter.vote_type &#x3D; filters.vote_type
     }
     // author type
     if (!_isUndefined(filters.author_type)) {
-      paginateQuery.author_type &#x3D; filters.author_type
+      queryFilter.author_type &#x3D; filters.author_type
     }
-    return this.voteService.paginate(paginateQuery, paginateOptions)
+
+    return this.voteService.paginate(queryFilter, paginateOptions)
   }
 
   @Delete()
@@ -1220,8 +1238,8 @@ export class VoteController {
     // NodePress
     const likes &#x3D;
       voteBody.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID
-        ? await this.optionService.incrementLikes()
-        : await this.articleService.incrementLikes(voteBody.post_id)
+        ? await this.optionService.incrementMetaLikes()
+        : await this.articleService.incrementMetaStatistic(voteBody.post_id, &#x27;likes&#x27;)
     // Disqus
     this.voteDisqusThread(voteBody.post_id, voteBody.vote, token?.access_token).catch(() &#x3D;&gt; {})
     // author
@@ -1243,7 +1261,7 @@ export class VoteController {
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-          subject: &#x60;You have a new post vote&#x60;,
+          subject: &#x27;You have a new post vote&#x27;,
           on: await this.getPostTitle(voteBody.post_id),
           vote: voteTypeMap.get(voteBody.vote)!,
           author: this.getAuthorString(voteAuthor),
@@ -1313,7 +1331,7 @@ export class VoteController {
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-          subject: &#x60;You have a new comment vote&#x60;,
+          subject: &#x27;You have a new comment vote&#x27;,
           ...mailPayload
         })
         // email to author

@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content class">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -263,7 +281,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="134" class="link-to-prism">src/modules/option/option.model.ts:134</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="140" class="link-to-prism">src/modules/option/option.model.ts:140</a></div>
                         </td>
                     </tr>
 
@@ -303,7 +321,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="128" class="link-to-prism">src/modules/option/option.model.ts:128</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="134" class="link-to-prism">src/modules/option/option.model.ts:134</a></div>
                         </td>
                     </tr>
 
@@ -341,7 +359,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/option/option.model.ts:88</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/modules/option/option.model.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -379,7 +397,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">src/modules/option/option.model.ts:116</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">src/modules/option/option.model.ts:122</a></div>
                         </td>
                     </tr>
 
@@ -418,7 +436,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/modules/option/option.model.ts:94</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/option/option.model.ts:100</a></div>
                         </td>
                     </tr>
 
@@ -454,7 +472,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/modules/option/option.model.ts:120</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">src/modules/option/option.model.ts:126</a></div>
                         </td>
                     </tr>
 
@@ -493,7 +511,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/modules/option/option.model.ts:106</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/modules/option/option.model.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -532,7 +550,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/option/option.model.ts:100</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/modules/option/option.model.ts:106</a></div>
                         </td>
                     </tr>
 
@@ -570,7 +588,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/modules/option/option.model.ts:111</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/modules/option/option.model.ts:117</a></div>
                         </td>
                     </tr>
 
@@ -608,7 +626,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/option/option.model.ts:83</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/modules/option/option.model.ts:89</a></div>
                         </td>
                     </tr>
 
@@ -646,7 +664,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/modules/option/option.model.ts:78</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/modules/option/option.model.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -683,7 +701,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/modules/option/option.model.ts:137</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/option/option.model.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -710,6 +728,16 @@ import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
+const DEFAULT_OPTION_APP_META: AppMeta &#x3D; Object.freeze({
+  likes: 0
+})
+
+const DEFAULT_OPTION_BLOCKLIST: Blocklist &#x3D; Object.freeze({
+  ips: [],
+  mails: [],
+  keywords: []
+})
+
 export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   title: &#x27;NodePress&#x27;,
   sub_title: &#x27;Blog server app&#x27;,
@@ -724,12 +752,8 @@ export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
       value: APP_BIZ.FE_URL
     }
   ],
-  meta: { likes: 0 },
-  blocklist: {
-    ips: [],
-    mails: [],
-    keywords: []
-  },
+  meta: DEFAULT_OPTION_APP_META,
+  blocklist: DEFAULT_OPTION_BLOCKLIST,
   ad_config: &#x27;&#x27;
 })
 
@@ -814,7 +838,7 @@ export class Option {
   friend_links: KeyValueModel[]
 
   // site meta info
-  @prop({ _id: false, default: { ...DEFAULT_OPTION.meta } })
+  @prop({ _id: false, default: { ...DEFAULT_OPTION_APP_META } })
   meta: AppMeta
 
   // site user block list
@@ -822,7 +846,7 @@ export class Option {
   @ValidateNested()
   @IsObject()
   @IsOptional()
-  @prop({ _id: false, default: { ...DEFAULT_OPTION.blocklist } })
+  @prop({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } })
   blocklist: Blocklist
 
   // ad config

@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -96,12 +110,16 @@
 
 
 
+
+
+
+
     <ol class="breadcrumb">
         <li class="breadcrumb-item">Dependencies</li>
     </ol>
     <ul class="dependencies-list">
         <li>
-            <b>@aws-sdk/client-s3</b> : ^3.846.x</li>
+            <b>@aws-sdk/client-s3</b> : ^3.962.x</li>
         <li>
             <b>@fastify/cookie</b> : ^11.x</li>
         <li>
@@ -119,17 +137,17 @@
         <li>
             <b>@nestjs/platform-fastify</b> : ^11.x</li>
         <li>
-            <b>@nestjs/throttler</b> : ^6.4.x</li>
+            <b>@nestjs/throttler</b> : ^6.5.x</li>
         <li>
             <b>@redis/client</b> : ^5.x</li>
         <li>
-            <b>@typegoose/auto-increment</b> : ^4.13.x</li>
+            <b>@typegoose/auto-increment</b> : ^5.x</li>
         <li>
-            <b>@typegoose/typegoose</b> : ^12.17.x</li>
+            <b>@typegoose/typegoose</b> : ^13.x</li>
         <li>
             <b>akismet-api</b> : ^6.x</li>
         <li>
-            <b>axios</b> : ^1.10.x</li>
+            <b>axios</b> : ^1.13.x</li>
         <li>
             <b>bcryptjs</b> : ^3.0.x</li>
         <li>
@@ -137,13 +155,13 @@
         <li>
             <b>class-validator</b> : ^0.14.x</li>
         <li>
-            <b>cross-env</b> : ^7.x</li>
+            <b>cross-env</b> : ^10.x</li>
         <li>
             <b>dayjs</b> : ^1.11.x</li>
         <li>
-            <b>fast-xml-parser</b> : ^5.2.x</li>
+            <b>fast-xml-parser</b> : ^5.3.x</li>
         <li>
-            <b>googleapis</b> : ^153.x</li>
+            <b>googleapis</b> : ^169.x</li>
         <li>
             <b>js-base64</b> : ^3.7.x</li>
         <li>
@@ -151,7 +169,7 @@
         <li>
             <b>lodash</b> : ^4.x</li>
         <li>
-            <b>mongoose</b> : ~8.16.0</li>
+            <b>mongoose</b> : ~9.0.0</li>
         <li>
             <b>node-schedule</b> : ^2.1.x</li>
         <li>

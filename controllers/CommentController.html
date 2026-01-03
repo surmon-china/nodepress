@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content controller">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -114,7 +132,6 @@
         <p class="comment">
             <code>src/modules/comment/comment.controller.ts</code>
         </p>
-
             <p class="comment">
                 <h3>Prefix</h3>
             </p>
@@ -174,6 +191,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#getComments" >getComments</a>
                             </li>
                             <li>
@@ -242,8 +260,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="83"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:83</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="96"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:96</a></div>
                         </td>
                     </tr>
 
@@ -331,8 +349,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="125"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:125</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="138"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:138</a></div>
                         </td>
                     </tr>
 
@@ -408,8 +426,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="97"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:97</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="110"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:110</a></div>
                         </td>
                     </tr>
 
@@ -486,8 +504,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="104"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:104</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:117</a></div>
                         </td>
                     </tr>
 
@@ -563,8 +581,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="73"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:73</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:86</a></div>
                         </td>
                     </tr>
 
@@ -630,6 +648,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>getComments</b></span>
                         <a href="#getComments"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -652,8 +671,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="30"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -741,8 +760,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="90"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:90</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:103</a></div>
                         </td>
                     </tr>
 
@@ -830,8 +849,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="111"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:111</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="124"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:124</a></div>
                         </td>
                     </tr>
 
@@ -919,8 +938,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="118"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:118</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:131</a></div>
                         </td>
                     </tr>
 
@@ -977,6 +996,7 @@
 
 import _trim from &#x27;lodash/trim&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
+import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
@@ -985,7 +1005,7 @@ import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
 import { SortType } from &#x27;@app/constants/biz.constant&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStateDTO } from &#x27;./comment.dto&#x27;
 import { CommentService } from &#x27;./comment.service&#x27;
 import { Comment, CommentBase } from &#x27;./comment.model&#x27;
@@ -997,12 +1017,12 @@ export class CommentController {
   @Get()
   @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: &#x27;Get comments succeeded&#x27;, usePaginate: true })
-  getComments(
+  async getComments(
     @Query(PermissionPipe) query: CommentPaginateQueryDTO,
     @RequestContext() { isUnauthenticated }: IRequestContext
   ): Promise&lt;PaginateResult&lt;Comment&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
-    const paginateQuery: PaginateQuery&lt;Comment&gt; &#x3D; {}
+    const queryFilter: QueryFilter&lt;Comment&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page }
 
     // sort
@@ -1016,26 +1036,38 @@ export class CommentController {
 
     // state
     if (!_isUndefined(filters.state)) {
-      paginateQuery.state &#x3D; filters.state
+      queryFilter.state &#x3D; filters.state
     }
 
     // post ID
     if (!_isUndefined(filters.post_id)) {
-      paginateQuery.post_id &#x3D; filters.post_id
+      queryFilter.post_id &#x3D; filters.post_id
     }
 
     // search
     if (filters.keyword) {
       const trimmed &#x3D; _trim(filters.keyword)
       const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
-      paginateQuery.$or &#x3D; [
+      queryFilter.$or &#x3D; [
         { content: keywordRegExp },
         { &#x27;author.name&#x27;: keywordRegExp },
         { &#x27;author.email&#x27;: keywordRegExp }
       ]
     }
 
-    return this.commentService.paginate(paginateQuery, paginateOptions, isUnauthenticated)
+    const result &#x3D; await this.commentService.paginate(queryFilter, paginateOptions)
+    // for admin: original structure data
+    if (!isUnauthenticated) return result
+    // for guest: desensitizing personal information
+    return {
+      ...result,
+      documents: result.documents.map((document) &#x3D;&gt; {
+        const comment &#x3D; document.toObject()
+        Reflect.deleteProperty(comment, &#x27;ip&#x27;)
+        Reflect.deleteProperty(comment.author, &#x27;email&#x27;)
+        return comment
+      })
+    }
   }
 
   @Get(&#x27;calendar&#x27;)

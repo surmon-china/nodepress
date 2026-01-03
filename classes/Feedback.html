@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content class">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -235,7 +253,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/feedback/feedback.model.ts:143</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="144" class="link-to-prism">src/modules/feedback/feedback.model.ts:144</a></div>
                         </td>
                     </tr>
 
@@ -271,7 +289,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="114" class="link-to-prism">src/modules/feedback/feedback.model.ts:114</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/modules/feedback/feedback.model.ts:115</a></div>
                         </td>
                     </tr>
 
@@ -309,7 +327,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/modules/feedback/feedback.model.ts:137</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/modules/feedback/feedback.model.ts:138</a></div>
                         </td>
                     </tr>
 
@@ -345,7 +363,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="140" class="link-to-prism">src/modules/feedback/feedback.model.ts:140</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="141" class="link-to-prism">src/modules/feedback/feedback.model.ts:141</a></div>
                         </td>
                     </tr>
 
@@ -382,7 +400,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/modules/feedback/feedback.model.ts:118</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="119" class="link-to-prism">src/modules/feedback/feedback.model.ts:119</a></div>
                         </td>
                     </tr>
 
@@ -420,7 +438,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="128" class="link-to-prism">src/modules/feedback/feedback.model.ts:128</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">src/modules/feedback/feedback.model.ts:129</a></div>
                         </td>
                     </tr>
 
@@ -458,7 +476,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="123" class="link-to-prism">src/modules/feedback/feedback.model.ts:123</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/modules/feedback/feedback.model.ts:124</a></div>
                         </td>
                     </tr>
 
@@ -495,7 +513,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">src/modules/feedback/feedback.model.ts:146</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="147" class="link-to-prism">src/modules/feedback/feedback.model.ts:147</a></div>
                         </td>
                     </tr>
 
@@ -533,7 +551,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="132" class="link-to-prism">src/modules/feedback/feedback.model.ts:132</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/modules/feedback/feedback.model.ts:133</a></div>
                         </td>
                     </tr>
 
@@ -648,6 +666,7 @@ export class FeedbackBase {
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
+    id: false,
     versionKey: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },

@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -200,7 +218,6 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#paginate" >paginate</a>
                             </li>
                             <li>
@@ -390,8 +407,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="294"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:294</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="280"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:280</a></div>
                         </td>
                     </tr>
 
@@ -472,8 +489,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="278"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:278</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="264"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:264</a></div>
                         </td>
                     </tr>
 
@@ -547,15 +564,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>countDocuments(filter: <a href="../classes/Comment.html" target="_self">FilterQuery&lt;Comment&gt;</a>, options?: MongooseBaseQueryOptions<Comment>)</code>
+                    <code>countDocuments(queryFilter: <a href="../classes/Comment.html" target="_self">QueryFilter&lt;Comment&gt;</a>, queryOptions?: MongooseBaseQueryOptions<Comment>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="300"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:300</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="286"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:286</a></div>
                         </td>
                     </tr>
 
@@ -576,9 +593,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>filter</td>
+                                                <td>queryFilter</td>
                                             <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >FilterQuery&lt;Comment&gt;</a></code>
+                                                            <code><a href="../classes/Comment.html" target="_self" >QueryFilter&lt;Comment&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -588,7 +605,7 @@
 
                                         </tr>
                                         <tr>
-                                                <td>options</td>
+                                                <td>queryOptions</td>
                                             <td>
                                                         <code>MongooseBaseQueryOptions&lt;Comment&gt;</code>
                                             </td>
@@ -636,8 +653,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="211"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:211</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="197"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:197</a></div>
                         </td>
                     </tr>
 
@@ -706,8 +723,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="224"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:224</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="210"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:210</a></div>
                         </td>
                     </tr>
 
@@ -788,8 +805,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="270"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:270</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="256"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:256</a></div>
                         </td>
                     </tr>
 
@@ -927,8 +944,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="166"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:166</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:165</a></div>
                         </td>
                     </tr>
 
@@ -967,8 +984,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="311"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:311</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="297"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:297</a></div>
                         </td>
                     </tr>
 
@@ -1055,8 +1072,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="249"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:249</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="235"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:235</a></div>
                         </td>
                     </tr>
 
@@ -1125,8 +1142,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="242"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:242</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="228"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:228</a></div>
                         </td>
                     </tr>
 
@@ -1195,8 +1212,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="307"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:307</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="293"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:293</a></div>
                         </td>
                     </tr>
 
@@ -1264,8 +1281,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="195"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:195</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:181</a></div>
                         </td>
                     </tr>
 
@@ -1330,7 +1347,6 @@
                     <a name="paginate"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
                         <span ><b>paginate</b></span>
                         <a href="#paginate"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -1339,15 +1355,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>paginate(query: <a href="../classes/Comment.html" target="_self">PaginateQuery&lt;Comment&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>, hideIPEmail)</code>
+                    <code>paginate(filter: <a href="../classes/Comment.html" target="_self">QueryFilter&lt;Comment&gt;</a>, options: <a href="../interfaces/PaginateOptions.html" target="_self">PaginateOptions</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="171"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:171</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="170"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:170</a></div>
                         </td>
                     </tr>
 
@@ -1364,22 +1380,19 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
-                                                <td>Default value</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>query</td>
+                                                <td>filter</td>
                                             <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >PaginateQuery&lt;Comment&gt;</a></code>
+                                                            <code><a href="../classes/Comment.html" target="_self" >QueryFilter&lt;Comment&gt;</a></code>
                                             </td>
 
                                             <td>
                                                     No
                                             </td>
 
-                                            <td>
-                                            </td>
 
                                         </tr>
                                         <tr>
@@ -1392,29 +1405,13 @@
                                                     No
                                             </td>
 
-                                            <td>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                                <td>hideIPEmail</td>
-                                            <td>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                                    <code>false</code>
-                                            </td>
 
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Comment&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;MongooseDoc&lt;Comment&gt;&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -1447,8 +1444,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="325"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:325</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="311"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:311</a></div>
                         </td>
                     </tr>
 
@@ -1516,8 +1513,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="85"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:85</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -1610,8 +1607,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="256"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:256</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="242"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:242</a></div>
                         </td>
                     </tr>
 
@@ -1703,8 +1700,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="126"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:126</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:125</a></div>
                         </td>
                     </tr>
 
@@ -1797,8 +1794,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="99"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:99</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -1867,8 +1864,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="145"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:145</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:144</a></div>
                         </td>
                     </tr>
 
@@ -1937,8 +1934,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="158"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:158</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="157"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:157</a></div>
                         </td>
                     </tr>
 
@@ -2007,8 +2004,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="341"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:341</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="327"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:327</a></div>
                         </td>
                     </tr>
 
@@ -2072,12 +2069,12 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { FilterQuery, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
 import { Injectable, InternalServerErrorException } from &#x27;@nestjs/common&#x27;
 import { ForbiddenException, BadRequestException, NotFoundException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { PaginateResult, PaginateQuery, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { GUESTBOOK_POST_ID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
@@ -2106,13 +2103,12 @@ export class CommentService {
   ) {}
 
   private async emailToAdminAndTargetAuthor(comment: Comment) {
-    let onWhere &#x3D; &#x27;&#x27;
-    if (comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID) {
-      onWhere &#x3D; &#x27;guestbook&#x27;
-    } else {
-      const article &#x3D; await this.articleService.getDetailByNumberIdOrSlug({ idOrSlug: comment.post_id })
-      onWhere &#x3D; &#x60;&quot;${article.toObject().title}&quot;&#x60;
-    }
+    const onWhere &#x3D;
+      comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID
+        ? &#x27;guestbook&#x27;
+        : await this.articleService
+            .getDetailByNumberIdOrSlug({ numberId: comment.post_id, lean: true })
+            .then((article) &#x3D;&gt; &#x60;&quot;${article.title}&quot;&#x60;)
 
     const authorName &#x3D; comment.author.name
     const getMailContent &#x3D; (subject &#x3D; &#x27;&#x27;) &#x3D;&gt; {
@@ -2232,32 +2228,19 @@ export class CommentService {
   }
 
   public getAll(): Promise&lt;Array&lt;Comment&gt;&gt; {
-    return this.commentModel.find().exec()
+    return this.commentModel.find().lean().exec()
   }
 
-  // Get comment list for client user
-  public async paginate(
-    query: PaginateQuery&lt;Comment&gt;,
-    options: PaginateOptions,
-    hideIPEmail &#x3D; false
-  ): Promise&lt;PaginateResult&lt;Comment&gt;&gt; {
+  // Get comment list
+  public paginate(
+    filter: QueryFilter&lt;Comment&gt;,
+    options: PaginateOptions
+  ): Promise&lt;PaginateResult&lt;MongooseDoc&lt;Comment&gt;&gt;&gt; {
     // MARK: can&#x27;t use &#x27;lean&#x27; with virtual &#x27;email_hash&#x27;
     // MARK: can&#x27;t use select(&#x27;-email&#x27;) with virtual &#x27;email_hash&#x27;
+    // MARK: keep &#x27;paginate&#x27;, the &#x27;paginateRaw&#x27; method is not available here.
     // https://github.com/Automattic/mongoose/issues/3130#issuecomment-395750197
-    const result &#x3D; await this.commentModel.paginate(query, options)
-    if (!hideIPEmail) {
-      return result
-    }
-
-    return {
-      ...result,
-      documents: result.documents.map((item) &#x3D;&gt; {
-        const data &#x3D; item.toJSON()
-        Reflect.deleteProperty(data, &#x27;ip&#x27;)
-        Reflect.deleteProperty(data.author, &#x27;email&#x27;)
-        return data as Comment
-      })
-    }
+    return this.commentModel.paginate(filter, options)
   }
 
   public normalizeNewComment(comment: CommentBase, visitor: QueryVisitor): Comment {
@@ -2346,7 +2329,7 @@ export class CommentService {
   public async batchPatchState(action: CommentsStateDTO, referer?: string) {
     const { comment_ids, post_ids, state } &#x3D; action
     const actionResult &#x3D; await this.commentModel
-      .updateMany({ _id: { $in: comment_ids } }, { $set: { state } }, { multi: true })
+      .updateMany({ _id: { $in: comment_ids } }, { $set: { state } })
       .exec()
     // update ref article.meta.comments
     this.updateCommentsCountWithArticles(post_ids)
@@ -2366,10 +2349,10 @@ export class CommentService {
   }
 
   public async countDocuments(
-    filter: FilterQuery&lt;Comment&gt;,
-    options?: MongooseBaseQueryOptions&lt;Comment&gt;
+    queryFilter: QueryFilter&lt;Comment&gt;,
+    queryOptions?: MongooseBaseQueryOptions&lt;Comment&gt;
   ): Promise&lt;number&gt; {
-    return await this.commentModel.countDocuments(filter, options).exec()
+    return await this.commentModel.countDocuments(queryFilter, queryOptions).exec()
   }
 
   public async getTotalCount(publicOnly: boolean): Promise&lt;number&gt; {

@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -417,8 +435,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/modules/archive/archive.service.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/archive/archive.service.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -456,8 +474,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="79"
-                                    class="link-to-prism">src/modules/archive/archive.service.ts:79</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/modules/archive/archive.service.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -495,8 +513,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="83"
-                                    class="link-to-prism">src/modules/archive/archive.service.ts:83</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/modules/archive/archive.service.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -590,22 +608,23 @@ export class ArchiveService {
       promise: this.getArchiveData.bind(this)
     })
     this.updateCache().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;init getArchiveData failed!&#x27;, error)
+      logger.warn(&#x27;Init getArchiveData failed!&#x27;, error)
     })
   }
 
   private getAllTags(): Promise&lt;Tag[]&gt; {
-    return this.tagModel.find().sort({ _id: SortType.Desc }).exec()
+    return this.tagModel.find().sort({ _id: SortType.Desc }).lean().exec()
   }
 
   private getAllCategories(): Promise&lt;Category[]&gt; {
-    return this.categoryModel.find().sort({ _id: SortType.Desc }).exec()
+    return this.categoryModel.find().sort({ _id: SortType.Desc }).lean().exec()
   }
 
   private getAllArticles(): Promise&lt;Article[]&gt; {
     return this.articleModel
       .find(ARTICLE_LIST_QUERY_GUEST_FILTER, ARTICLE_LIST_QUERY_PROJECTION)
       .sort({ _id: SortType.Desc })
+      .lean()
       .exec()
   }
 

@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content injectable">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -437,7 +455,7 @@ import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { FeedbackService } from &#x27;@app/modules/feedback/feedback.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import { getTodayViewsCount, resetTodayViewsCount } from &#x27;./extension.helper&#x27;
+import { getGlobalTodayViewsCount, resetGlobalTodayViewsCount } from &#x27;./extension.helper&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -470,10 +488,10 @@ export class StatisticService {
     // daily data cleaning at 00:01
     schedule.scheduleJob(&#x27;1 0 0 * * *&#x27;, async () &#x3D;&gt; {
       try {
-        const todayViewsCount &#x3D; await getTodayViewsCount(this.cacheService)
+        const todayViewsCount &#x3D; await getGlobalTodayViewsCount(this.cacheService)
         await this.dailyStatisticsTask(todayViewsCount)
       } finally {
-        resetTodayViewsCount(this.cacheService).catch((error) &#x3D;&gt; {
+        resetGlobalTodayViewsCount(this.cacheService).catch((error) &#x3D;&gt; {
           logger.warn(&#x27;reset TODAY_VIEWS failed!&#x27;, error)
         })
       }
@@ -537,7 +555,7 @@ export class StatisticService {
         statisticData.totalViews &#x3D; value?.totalViews ?? 0
         statisticData.totalLikes &#x3D; value?.totalLikes ?? 0
       }),
-      getTodayViewsCount(this.cacheService).then((value) &#x3D;&gt; {
+      getGlobalTodayViewsCount(this.cacheService).then((value) &#x3D;&gt; {
         statisticData.todayViews &#x3D; value
       })
     ])

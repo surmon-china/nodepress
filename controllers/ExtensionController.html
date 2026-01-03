@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content controller">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -114,7 +132,6 @@
         <p class="comment">
             <code>src/modules/extension/extension.controller.ts</code>
         </p>
-
             <p class="comment">
                 <h3>Prefix</h3>
             </p>
@@ -373,7 +390,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>googleAnalyticsBatchRunPivotReports(requestBody)</code>
+                    <code>googleAnalyticsBatchRunPivotReports(requestBody: unknown)</code>
                 </td>
             </tr>
 
@@ -403,12 +420,16 @@
                                     <thead>
                                         <tr>
                                             <td>Name</td>
+                                                <td>Type</td>
                                             <td>Optional</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                                 <td>requestBody</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
 
                                             <td>
                                                     No
@@ -447,7 +468,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>googleAnalyticsBatchRunReports(requestBody)</code>
+                    <code>googleAnalyticsBatchRunReports(requestBody: unknown)</code>
                 </td>
             </tr>
 
@@ -477,12 +498,16 @@
                                     <thead>
                                         <tr>
                                             <td>Name</td>
+                                                <td>Type</td>
                                             <td>Optional</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                                 <td>requestBody</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
 
                                             <td>
                                                     No
@@ -521,7 +546,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>googleAnalyticsRunRealtimeReport(requestBody)</code>
+                    <code>googleAnalyticsRunRealtimeReport(requestBody: unknown)</code>
                 </td>
             </tr>
 
@@ -551,12 +576,16 @@
                                     <thead>
                                         <tr>
                                             <td>Name</td>
+                                                <td>Type</td>
                                             <td>Optional</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                                 <td>requestBody</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
 
                                             <td>
                                                     No

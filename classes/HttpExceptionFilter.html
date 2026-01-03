@@ -61,6 +61,20 @@
                }
                toggleDarkMode(darkModeState);
           </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
 
         <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
                <div class="d-flex">
@@ -81,6 +95,10 @@
                <!-- START CONTENT -->
                <div class="content class">
                    <div class="content-data">
+
+
+
+
 
 
 
@@ -181,7 +199,7 @@
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>catch(exception, host: ArgumentsHost)</code>
+<code>catch(exception: unknown, host: ArgumentsHost)</code>
                 </td>
             </tr>
 
@@ -212,6 +230,7 @@
                                         <tr>
                                                 <td>exception</td>
                                             <td>
+                                                        <code>unknown</code>
                                             </td>
 
                                             <td>
