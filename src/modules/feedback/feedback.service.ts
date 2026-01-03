@@ -23,7 +23,9 @@ export class FeedbackService {
   ) {}
 
   public paginate(filter: QueryFilter<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>> {
-    return this.feedbackModel.paginateRaw(filter, options)
+    // MARK: can't use 'lean' with virtual 'emotion_text' | 'emotion_emoji'
+    // MARK: keep 'paginate', the 'paginateRaw' method is not available here.
+    return this.feedbackModel.paginate(filter, options)
   }
 
   public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise<MongooseDoc<Feedback>> {
