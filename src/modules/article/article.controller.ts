@@ -103,6 +103,13 @@ export class ArticleController {
     return this.articleService.paginate(queryFilter, paginateOptions)
   }
 
+  @Get('all')
+  @UseGuards(AdminOnlyGuard)
+  @SuccessResponse('Get all articles succeeded')
+  getAllArticle() {
+    return this.articleService.getAll()
+  }
+
   @Get('calendar')
   @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get article calendar succeeded')

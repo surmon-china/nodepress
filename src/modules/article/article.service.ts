@@ -81,11 +81,19 @@ export class ArticleService {
     ])
   }
 
-  // get paginate articles
+  // Get paginate articles
   public paginate(filter: QueryFilter<Article>, options: PaginateOptions): Promise<PaginateResult<Article>> {
     return this.articleModel.paginateRaw(filter, {
       ...options,
       projection: ARTICLE_LIST_QUERY_PROJECTION,
+      populate: ARTICLE_FULL_QUERY_REF_POPULATE
+    })
+  }
+
+  // Get all articles
+  // MARK: Providing this capability only for admin. (Consumes a lot of computing resources.)
+  public getAll(): Promise<Array<Article>> {
+    return this.articleModel.find({}, null, {
       populate: ARTICLE_FULL_QUERY_REF_POPULATE
     })
   }
