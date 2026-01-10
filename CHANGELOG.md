@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+### 5.5.0 (2026-01-10)
+
+- Added new API endpoint: `/article/all`.
+- Renamed `option` field `ad_config` to `app_config` for broader client configuration usage.
+
 ### 5.4.0 (2026-01-04)
 
 **Feature**
