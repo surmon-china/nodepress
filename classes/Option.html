@@ -161,7 +161,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#ad_config" >ad_config</a>
+                                <a href="#app_config" >app_config</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -254,13 +254,13 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ad_config"></a>
+                    <a name="app_config"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>ad_config</b></span>
-                        <a href="#ad_config"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>app_config</b></span>
+                        <a href="#app_config"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -754,7 +754,7 @@ export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   ],
   meta: DEFAULT_OPTION_APP_META,
   blocklist: DEFAULT_OPTION_BLOCKLIST,
-  ad_config: &#x27;&#x27;
+  app_config: &#x27;&#x27;
 })
 
 class AppMeta {
@@ -849,11 +849,11 @@ export class Option {
   @prop({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } })
   blocklist: Blocklist
 
-  // ad config
+  // app config (for broader client configuration usage)
   @IsString()
   @IsOptional()
   @prop({ type: String, default: null })
-  ad_config: string | null
+  app_config: string | null
 
   @prop({ default: Date.now })
   updated_at?: Date
