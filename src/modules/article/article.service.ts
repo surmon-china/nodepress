@@ -94,6 +94,7 @@ export class ArticleService {
   // MARK: Providing this capability only for admin. (Consumes a lot of computing resources.)
   public getAll(): Promise<Array<Article>> {
     return this.articleModel.find({}, null, {
+      sort: { _id: -1 },
       populate: ARTICLE_FULL_QUERY_REF_POPULATE
     })
   }
