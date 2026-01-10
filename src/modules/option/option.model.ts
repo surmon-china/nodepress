@@ -38,7 +38,7 @@ export const DEFAULT_OPTION: Option = Object.freeze<Option>({
   ],
   meta: DEFAULT_OPTION_APP_META,
   blocklist: DEFAULT_OPTION_BLOCKLIST,
-  ad_config: ''
+  app_config: ''
 })
 
 class AppMeta {
@@ -133,11 +133,11 @@ export class Option {
   @prop({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } })
   blocklist: Blocklist
 
-  // ad config
+  // app config (for broader client configuration usage)
   @IsString()
   @IsOptional()
   @prop({ type: String, default: null })
-  ad_config: string | null
+  app_config: string | null
 
   @prop({ default: Date.now })
   updated_at?: Date
