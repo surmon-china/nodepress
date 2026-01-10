@@ -76,6 +76,11 @@ let ArticleService = class ArticleService {
             populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE
         });
     }
+    getAll() {
+        return this.articleModel.find({}, null, {
+            populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE
+        });
+    }
     getList(articleIds) {
         return this.articleModel
             .find({ id: { $in: articleIds } })

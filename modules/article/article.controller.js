@@ -95,6 +95,9 @@ let ArticleController = class ArticleController {
         }
         return this.articleService.paginate(queryFilter, paginateOptions);
     }
+    getAllArticle() {
+        return this.articleService.getAll();
+    }
     getArticleCalendar(query, { isUnauthenticated }) {
         return this.articleService.getCalendar(isUnauthenticated, query.timezone);
     }
@@ -157,6 +160,14 @@ __decorate([
     __metadata("design:paramtypes", [article_dto_1.ArticlePaginateQueryDTO]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticles", null);
+__decorate([
+    (0, common_1.Get)('all'),
+    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, success_response_decorator_1.SuccessResponse)('Get all articles succeeded'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ArticleController.prototype, "getAllArticle", null);
 __decorate([
     (0, common_1.Get)('calendar'),
     (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),

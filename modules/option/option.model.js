@@ -41,7 +41,7 @@ exports.DEFAULT_OPTION = Object.freeze({
     ],
     meta: DEFAULT_OPTION_APP_META,
     blocklist: DEFAULT_OPTION_BLOCKLIST,
-    ad_config: ''
+    app_config: ''
 });
 class AppMeta {
     likes;
@@ -89,7 +89,7 @@ let Option = class Option {
     friend_links;
     meta;
     blocklist;
-    ad_config;
+    app_config;
     updated_at;
 };
 exports.Option = Option;
@@ -161,7 +161,7 @@ __decorate([
     (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
-], Option.prototype, "ad_config", void 0);
+], Option.prototype, "app_config", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
