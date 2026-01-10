@@ -78,6 +78,7 @@ let ArticleService = class ArticleService {
     }
     getAll() {
         return this.articleModel.find({}, null, {
+            sort: { _id: -1 },
             populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE
         });
     }
