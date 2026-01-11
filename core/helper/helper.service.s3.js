@@ -39,7 +39,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AWSService = exports.AWSServerSideEncryption = exports.AWSStorageClass = void 0;
+exports.S3Service = exports.AWSServerSideEncryption = exports.AWSStorageClass = void 0;
 const client_s3_1 = require("@aws-sdk/client-s3");
 const client_s3_2 = require("@aws-sdk/client-s3");
 const common_1 = require("@nestjs/common");
@@ -48,31 +48,28 @@ var client_s3_3 = require("@aws-sdk/client-s3");
 Object.defineProperty(exports, "AWSStorageClass", { enumerable: true, get: function () { return client_s3_3.StorageClass; } });
 var client_s3_4 = require("@aws-sdk/client-s3");
 Object.defineProperty(exports, "AWSServerSideEncryption", { enumerable: true, get: function () { return client_s3_4.ServerSideEncryption; } });
-let AWSService = class AWSService {
+let S3Service = class S3Service {
     createClient(region) {
         return new client_s3_1.S3Client({
             region,
+            endpoint: APP_CONFIG.S3_STORAGE.s3Endpoint,
             credentials: {
-                accessKeyId: APP_CONFIG.AWS.accessKeyId,
-                secretAccessKey: APP_CONFIG.AWS.secretAccessKey
+                accessKeyId: APP_CONFIG.S3_STORAGE.accessKeyId,
+                secretAccessKey: APP_CONFIG.S3_STORAGE.secretAccessKey
             }
         });
     }
-    getAwsGeneralFileUrl(region, bucket, key) {
-        return `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
-    }
-    getObjectAttributes(payload) {
-        const s3Client = this.createClient(payload.region);
-        const command = new client_s3_2.GetObjectAttributesCommand({
+    getFileDetail(payload) {
+        const client = this.createClient(payload.region);
+        const command = new client_s3_2.GetObjectCommand({
             Bucket: payload.bucket,
-            Key: payload.key,
-            ObjectAttributes: Object.values(client_s3_1.ObjectAttributes)
+            Key: payload.key
         });
-        return s3Client.send(command);
+        return client.send(command);
     }
     uploadFile(payload) {
         const { region, bucket, key } = payload;
-        const s3Client = this.createClient(region);
+        const client = this.createClient(region);
         const command = new client_s3_2.PutObjectCommand({
             Bucket: bucket,
             Key: key,
@@ -81,19 +78,18 @@ let AWSService = class AWSService {
             StorageClass: payload.classType ?? 'STANDARD',
             ServerSideEncryption: payload.encryption
         });
-        return s3Client.send(command).then(() => {
-            return this.getObjectAttributes({ region, bucket, key }).then((attributes) => ({
+        return client.send(command).then(() => {
+            return this.getFileDetail({ region, bucket, key }).then((result) => ({
                 key,
-                url: this.getAwsGeneralFileUrl(region, bucket, key),
-                size: attributes.ObjectSize,
-                eTag: attributes.ETag,
-                lastModified: attributes.LastModified,
-                storageClass: attributes.StorageClass
+                eTag: result.ETag,
+                size: result.ContentLength,
+                lastModified: result.LastModified,
+                storageClass: result.StorageClass
             }));
         });
     }
     getFileList(payload) {
-        const s3Client = this.createClient(payload.region);
+        const client = this.createClient(payload.region);
         const command = new client_s3_2.ListObjectsV2Command({
             Bucket: payload.bucket,
             Prefix: payload.prefix,
@@ -101,7 +97,7 @@ let AWSService = class AWSService {
             Delimiter: payload.delimiter,
             StartAfter: payload.startAfter
         });
-        return s3Client.send(command).then((result) => ({
+        return client.send(command).then((result) => ({
             name: result.Name,
             limit: result.MaxKeys,
             prefix: result.Prefix,
@@ -110,7 +106,6 @@ let AWSService = class AWSService {
             commonPrefixes: result.CommonPrefixes,
             files: (result.Contents ?? []).map((object) => ({
                 key: object.Key,
-                url: this.getAwsGeneralFileUrl(payload.region, payload.bucket, object.Key),
                 eTag: object.ETag,
                 size: object.Size,
                 lastModified: object.LastModified,
@@ -120,8 +115,8 @@ let AWSService = class AWSService {
     }
     async deleteFile() { }
 };
-exports.AWSService = AWSService;
-exports.AWSService = AWSService = __decorate([
+exports.S3Service = S3Service;
+exports.S3Service = S3Service = __decorate([
     (0, common_1.Injectable)()
-], AWSService);
-//# sourceMappingURL=helper.service.aws.js.map
+], S3Service);
+//# sourceMappingURL=helper.service.s3.js.map

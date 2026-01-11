@@ -20,7 +20,7 @@ const dayjs_1 = __importDefault(require("dayjs"));
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
-const helper_service_aws_1 = require("../../core/helper/helper.service.aws");
+const helper_service_s3_1 = require("../../core/helper/helper.service.s3");
 const app_config_1 = require("../../app.config");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
@@ -31,10 +31,10 @@ const BACKUP_FILE_NAME = 'nodepress.zip';
 const BACKUP_DIR_PATH = path_1.default.join(app_config_1.APP_BIZ.ROOT_PATH, 'dbbackup');
 let DBBackupService = class DBBackupService {
     emailService;
-    awsService;
-    constructor(emailService, awsService) {
+    s3Service;
+    constructor(emailService, s3Service) {
         this.emailService = emailService;
-        this.awsService = awsService;
+        this.s3Service = s3Service;
         logger.info('schedule job initialized.');
         node_schedule_1.default.scheduleJob(UPLOAD_INTERVAL, () => {
             this.backup().catch(() => {
@@ -93,18 +93,18 @@ let DBBackupService = class DBBackupService {
                 const filePath = path_1.default.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME);
                 logger.log(`uploading: ${fileName}`);
                 logger.log(`file source: ${filePath}`);
-                this.awsService
+                this.s3Service
                     .uploadFile({
                     key: fileName,
                     file: fs_1.default.createReadStream(filePath),
                     fileContentType: 'application/zip',
                     region: app_config_1.DB_BACKUP.s3Region,
                     bucket: app_config_1.DB_BACKUP.s3Bucket,
-                    classType: helper_service_aws_1.AWSStorageClass.GLACIER,
-                    encryption: helper_service_aws_1.AWSServerSideEncryption.AES256
+                    classType: helper_service_s3_1.AWSStorageClass.STANDARD_IA,
+                    encryption: helper_service_s3_1.AWSServerSideEncryption.AES256
                 })
                     .then((result) => {
-                    logger.success('upload succeeded.', result.url);
+                    logger.success('upload succeeded.', result.key);
                     resolve(result);
                 })
                     .catch((error) => {
@@ -120,6 +120,6 @@ exports.DBBackupService = DBBackupService;
 exports.DBBackupService = DBBackupService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [helper_service_email_1.EmailService,
-        helper_service_aws_1.AWSService])
+        helper_service_s3_1.S3Service])
 ], DBBackupService);
 //# sourceMappingURL=extension.service.dbbackup.js.map

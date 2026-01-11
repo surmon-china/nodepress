@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GOOGLE = exports.BING_INDEXED = exports.DB_BACKUP = exports.AWS = exports.DISQUS = exports.AKISMET = exports.EMAIL = exports.REDIS = exports.MONGO_DB = exports.APP_BIZ = exports.PROJECT = void 0;
+exports.GOOGLE = exports.BING_INDEXED = exports.DB_BACKUP = exports.S3_STORAGE = exports.DISQUS = exports.AKISMET = exports.EMAIL = exports.REDIS = exports.MONGO_DB = exports.APP_BIZ = exports.PROJECT = void 0;
 const path_1 = __importDefault(require("path"));
 const args_1 = require("./utils/args");
 const argvs = process.argv.slice(2);
@@ -68,11 +68,12 @@ exports.DISQUS = {
     publicKey: arg('disqus_public_key'),
     secretKey: arg('disqus_secret_key')
 };
-exports.AWS = {
-    accessKeyId: arg('aws_access_key_id'),
-    secretAccessKey: arg('aws_secret_access_key'),
-    s3StaticRegion: arg('aws_s3_static_region'),
-    s3StaticBucket: arg('aws_s3_static_bucket')
+exports.S3_STORAGE = {
+    s3Endpoint: arg('s3_endpoint'),
+    accessKeyId: arg('s3_access_key_id'),
+    secretAccessKey: arg('s3_secret_access_key'),
+    s3StaticFileRegion: arg('s3_static_file_region'),
+    s3StaticFileBucket: arg('s3_static_file_bucket')
 };
 exports.DB_BACKUP = {
     s3Region: arg('db_backup_s3_region'),

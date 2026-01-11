@@ -54,17 +54,17 @@ const success_response_decorator_1 = require("../../decorators/success-response.
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const uploaded_file_decorator_1 = require("../../decorators/uploaded-file.decorator");
 const helper_service_google_1 = require("../../core/helper/helper.service.google");
-const helper_service_aws_1 = require("../../core/helper/helper.service.aws");
+const helper_service_s3_1 = require("../../core/helper/helper.service.s3");
 const extension_service_statistic_1 = require("./extension.service.statistic");
 const extension_service_dbbackup_1 = require("./extension.service.dbbackup");
 const APP_CONFIG = __importStar(require("../../app.config"));
 let ExtensionController = class ExtensionController {
-    awsService;
+    s3Service;
     googleService;
     dbBackupService;
     statisticService;
-    constructor(awsService, googleService, dbBackupService, statisticService) {
-        this.awsService = awsService;
+    constructor(s3Service, googleService, dbBackupService, statisticService) {
+        this.s3Service = s3Service;
         this.googleService = googleService;
         this.dbBackupService = dbBackupService;
         this.statisticService = statisticService;
@@ -79,13 +79,13 @@ let ExtensionController = class ExtensionController {
         const minLimit = 200;
         const numberLimit = Number(query.limit);
         const limit = Number.isInteger(numberLimit) ? numberLimit : minLimit;
-        const result = await this.awsService.getFileList({
+        const result = await this.s3Service.getFileList({
             limit: limit < minLimit ? minLimit : limit,
             prefix: query.prefix,
             startAfter: query.startAfter,
             delimiter: query.delimiter,
-            region: APP_CONFIG.AWS.s3StaticRegion,
-            bucket: APP_CONFIG.AWS.s3StaticBucket
+            region: APP_CONFIG.S3_STORAGE.s3StaticFileRegion,
+            bucket: APP_CONFIG.S3_STORAGE.s3StaticFileBucket
         });
         return {
             ...result,
@@ -100,12 +100,12 @@ let ExtensionController = class ExtensionController {
         if (!file.fields.key) {
             throw new common_2.BadRequestException('Missing required field: key');
         }
-        const result = await this.awsService.uploadFile({
+        const result = await this.s3Service.uploadFile({
             key: file.fields.key,
             file: file.buffer,
             fileContentType: file.mimetype,
-            region: APP_CONFIG.AWS.s3StaticRegion,
-            bucket: APP_CONFIG.AWS.s3StaticBucket
+            region: APP_CONFIG.S3_STORAGE.s3StaticFileRegion,
+            bucket: APP_CONFIG.S3_STORAGE.s3StaticFileBucket
         });
         return {
             ...result,
@@ -196,7 +196,7 @@ __decorate([
 ], ExtensionController.prototype, "googleAnalyticsRunRealtimeReport", null);
 exports.ExtensionController = ExtensionController = __decorate([
     (0, common_2.Controller)('extension'),
-    __metadata("design:paramtypes", [helper_service_aws_1.AWSService,
+    __metadata("design:paramtypes", [helper_service_s3_1.S3Service,
         helper_service_google_1.GoogleService,
         extension_service_dbbackup_1.DBBackupService,
         extension_service_statistic_1.StatisticService])
