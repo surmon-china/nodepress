@@ -121,16 +121,18 @@ export const DISQUS = {
   secretKey: arg<string>('disqus_secret_key')
 }
 
-// AWS S3 Configuration
-export const AWS = {
-  /** AWS Access Key ID */
-  accessKeyId: arg<string>('aws_access_key_id'),
-  /** AWS Secret Access Key */
-  secretAccessKey: arg<string>('aws_secret_access_key'),
-  /** AWS S3 Region for static file bucket */
-  s3StaticRegion: arg<string>('aws_s3_static_region'),
-  /** AWS S3 Bucket name for static files */
-  s3StaticBucket: arg<string>('aws_s3_static_bucket')
+// S3 Storage Configuration
+export const S3_STORAGE = {
+  /** S3 endpoint */
+  s3Endpoint: arg<string>('s3_endpoint'),
+  /** S3 Access Key ID */
+  accessKeyId: arg<string>('s3_access_key_id'),
+  /** S3 Secret Access Key */
+  secretAccessKey: arg<string>('s3_secret_access_key'),
+  /** S3 Region for static file bucket */
+  s3StaticFileRegion: arg<string>('s3_static_file_region'),
+  /** S3 Bucket name for static files */
+  s3StaticFileBucket: arg<string>('s3_static_file_bucket')
 }
 
 // Database Backup Configuration

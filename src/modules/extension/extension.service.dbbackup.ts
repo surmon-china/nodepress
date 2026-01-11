@@ -11,8 +11,8 @@ import dayjs from 'dayjs'
 import schedule from 'node-schedule'
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { EmailService } from '@app/core/helper/helper.service.email'
-import type { S3FileObject } from '@app/core/helper/helper.service.aws'
-import { AWSService, AWSStorageClass, AWSServerSideEncryption } from '@app/core/helper/helper.service.aws'
+import type { S3FileObject } from '@app/core/helper/helper.service.s3'
+import { S3Service, AWSStorageClass, AWSServerSideEncryption } from '@app/core/helper/helper.service.s3'
 import { APP_BIZ, MONGO_DB, DB_BACKUP } from '@app/app.config'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
@@ -28,7 +28,7 @@ const BACKUP_DIR_PATH = path.join(APP_BIZ.ROOT_PATH, 'dbbackup')
 export class DBBackupService {
   constructor(
     private readonly emailService: EmailService,
-    private readonly awsService: AWSService
+    private readonly s3Service: S3Service
   ) {
     logger.info('schedule job initialized.')
     schedule.scheduleJob(UPLOAD_INTERVAL, () => {
@@ -99,7 +99,7 @@ export class DBBackupService {
         logger.log(`file source: ${filePath}`)
 
         // Upload to cloud storage
-        this.awsService
+        this.s3Service
           .uploadFile({
             key: fileName,
             file: fs.createReadStream(filePath),
@@ -110,7 +110,7 @@ export class DBBackupService {
             encryption: AWSServerSideEncryption.AES256
           })
           .then((result) => {
-            logger.success('upload succeeded.', result.url)
+            logger.success('upload succeeded.', result.key)
             resolve(result)
           })
           .catch((error) => {

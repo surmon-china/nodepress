@@ -1,6 +1,6 @@
 /**
- * @file AWS storage service
- * @module module/extension/aws.service
+ * @file S3 storage service
+ * @module module/extension/s3.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -25,7 +25,6 @@ export interface FileUploader {
 
 export interface S3FileObject {
   key: string
-  url: string
   eTag: string
   size: number
   lastModified?: Date
@@ -33,20 +32,18 @@ export interface S3FileObject {
 }
 
 @Injectable()
-export class AWSService {
+export class S3Service {
   private createClient(region: string) {
+    // https://github.com/aws/aws-sdk-js-v3
+    // https://developers.cloudflare.com/r2/examples/aws/aws-sdk-js-v3/
     return new S3Client({
       region,
+      endpoint: APP_CONFIG.S3_STORAGE.s3Endpoint,
       credentials: {
-        accessKeyId: APP_CONFIG.AWS.accessKeyId,
-        secretAccessKey: APP_CONFIG.AWS.secretAccessKey
+        accessKeyId: APP_CONFIG.S3_STORAGE.accessKeyId,
+        secretAccessKey: APP_CONFIG.S3_STORAGE.secretAccessKey
       }
     })
-  }
-
-  private getAwsGeneralFileUrl(region: string, bucket: string, key: string) {
-    // https://stackoverflow.com/questions/44400227/how-to-get-the-url-of-a-file-on-aws-s3-using-aws-sdk
-    return `https://${bucket}.s3.${region}.amazonaws.com/${key}`
   }
 
   public getObjectAttributes(payload: { region: string; bucket: string; key: string }) {
@@ -73,7 +70,6 @@ export class AWSService {
     return s3Client.send(command).then(() => {
       return this.getObjectAttributes({ region, bucket, key }).then((attributes) => ({
         key,
-        url: this.getAwsGeneralFileUrl(region, bucket, key),
         size: attributes.ObjectSize!,
         eTag: attributes.ETag!,
         lastModified: attributes.LastModified,
@@ -109,7 +105,6 @@ export class AWSService {
       commonPrefixes: result.CommonPrefixes,
       files: (result.Contents ?? []).map<S3FileObject>((object) => ({
         key: object.Key!,
-        url: this.getAwsGeneralFileUrl(payload.region, payload.bucket, object.Key!),
         eTag: object.ETag!,
         size: object.Size!,
         lastModified: object.LastModified,
