@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 5.6.0 (2026-01-12)
+
+- Refactor AWS service into a generic S3 service, decoupling from AWS S3.
+
 ### 5.5.0 (2026-01-10)
 
 - Added new API endpoint: `/article/all`.

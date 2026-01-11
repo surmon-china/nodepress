@@ -1,6 +1,6 @@
 {
   "name": "nodepress",
-  "version": "5.5.1",
+  "version": "5.6.0",
   "description": "RESTful API service for Surmon.me blog",
   "author": "Surmon",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "release": ". ./scripts/release-via-github.sh"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.962.x",
+    "@aws-sdk/client-s3": "^3.966.x",
     "@fastify/cookie": "^11.x",
     "@fastify/multipart": "^9.x",
     "@nestjs/axios": "^4.0.x",

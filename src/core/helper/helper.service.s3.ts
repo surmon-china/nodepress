@@ -5,8 +5,8 @@
  */
 
 import type { PutObjectRequest } from '@aws-sdk/client-s3'
-import { S3Client, StorageClass, ObjectAttributes, ServerSideEncryption } from '@aws-sdk/client-s3'
-import { PutObjectCommand, ListObjectsV2Command, GetObjectAttributesCommand } from '@aws-sdk/client-s3'
+import { S3Client, StorageClass, ServerSideEncryption } from '@aws-sdk/client-s3'
+import { GetObjectCommand, PutObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { Injectable } from '@nestjs/common'
 import * as APP_CONFIG from '@app/app.config'
 
@@ -46,19 +46,18 @@ export class S3Service {
     })
   }
 
-  public getObjectAttributes(payload: { region: string; bucket: string; key: string }) {
-    const s3Client = this.createClient(payload.region)
-    const command = new GetObjectAttributesCommand({
+  public getFileDetail(payload: { region: string; bucket: string; key: string }) {
+    const client = this.createClient(payload.region)
+    const command = new GetObjectCommand({
       Bucket: payload.bucket,
-      Key: payload.key,
-      ObjectAttributes: Object.values(ObjectAttributes)
+      Key: payload.key
     })
-    return s3Client.send(command)
+    return client.send(command)
   }
 
   public uploadFile(payload: FileUploader): Promise<S3FileObject> {
     const { region, bucket, key } = payload
-    const s3Client = this.createClient(region)
+    const client = this.createClient(region)
     const command = new PutObjectCommand({
       Bucket: bucket,
       Key: key,
@@ -67,13 +66,14 @@ export class S3Service {
       StorageClass: payload.classType ?? 'STANDARD',
       ServerSideEncryption: payload.encryption
     })
-    return s3Client.send(command).then(() => {
-      return this.getObjectAttributes({ region, bucket, key }).then((attributes) => ({
+
+    return client.send(command).then(() => {
+      return this.getFileDetail({ region, bucket, key }).then((result) => ({
         key,
-        size: attributes.ObjectSize!,
-        eTag: attributes.ETag!,
-        lastModified: attributes.LastModified,
-        storageClass: attributes.StorageClass
+        eTag: result.ETag!,
+        size: result.ContentLength!,
+        lastModified: result.LastModified,
+        storageClass: result.StorageClass
       }))
     })
   }
@@ -86,7 +86,7 @@ export class S3Service {
     delimiter?: string
     startAfter?: string
   }) {
-    const s3Client = this.createClient(payload.region)
+    const client = this.createClient(payload.region)
     // https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListObjectsV2.html
     const command = new ListObjectsV2Command({
       Bucket: payload.bucket,
@@ -96,7 +96,7 @@ export class S3Service {
       StartAfter: payload.startAfter
     })
 
-    return s3Client.send(command).then((result) => ({
+    return client.send(command).then((result) => ({
       name: result.Name,
       limit: result.MaxKeys,
       prefix: result.Prefix,

@@ -106,7 +106,7 @@ export class DBBackupService {
             fileContentType: 'application/zip',
             region: DB_BACKUP.s3Region,
             bucket: DB_BACKUP.s3Bucket,
-            classType: AWSStorageClass.GLACIER,
+            classType: AWSStorageClass.STANDARD_IA,
             encryption: AWSServerSideEncryption.AES256
           })
           .then((result) => {
