@@ -196,9 +196,6 @@
                             <a href="#AUTHORIZE_URL" title="src/utils/disqus.ts" ><b>AUTHORIZE_URL</b>&nbsp;&nbsp;&nbsp;(src/.../disqus.ts)</a>
                         </li>
                         <li>
-                            <a href="#AWS" title="src/app.config.ts" ><b>AWS</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
-                        </li>
-                        <li>
                             <a href="#BACKUP_DIR_PATH" title="src/modules/extension/extension.service.dbbackup.ts" ><b>BACKUP_DIR_PATH</b>&nbsp;&nbsp;&nbsp;(src/.../extension.service.dbbackup.ts)</a>
                         </li>
                         <li>
@@ -485,6 +482,9 @@
                         </li>
                         <li>
                             <a href="#ROOT_PATH" title="src/app.config.ts" ><b>ROOT_PATH</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#S3_STORAGE" title="src/app.config.ts" ><b>S3_STORAGE</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
                             <a href="#services" title="src/core/helper/helper.module.ts" ><b>services</b>&nbsp;&nbsp;&nbsp;(src/.../helper.module.ts)</a>
@@ -963,41 +963,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="AWS"></a>
-                    <span class="name">
-                        <span ><b>AWS</b></span>
-                        <a href="#AWS"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>{
-  /** AWS Access Key ID */
-  accessKeyId: arg&lt;string&gt;(&#x27;aws_access_key_id&#x27;),
-  /** AWS Secret Access Key */
-  secretAccessKey: arg&lt;string&gt;(&#x27;aws_secret_access_key&#x27;),
-  /** AWS S3 Region for static file bucket */
-  s3StaticRegion: arg&lt;string&gt;(&#x27;aws_s3_static_region&#x27;),
-  /** AWS S3 Bucket name for static files */
-  s3StaticBucket: arg&lt;string&gt;(&#x27;aws_s3_static_bucket&#x27;)
-}</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="BING_INDEXED"></a>
                     <span class="name">
                         <span ><b>BING_INDEXED</b></span>
@@ -1304,6 +1269,43 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>path.join(__dirname, &#x27;..&#x27;)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="S3_STORAGE"></a>
+                    <span class="name">
+                        <span ><b>S3_STORAGE</b></span>
+                        <a href="#S3_STORAGE"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  /** S3 endpoint */
+  s3Endpoint: arg&lt;string&gt;(&#x27;s3_endpoint&#x27;),
+  /** S3 Access Key ID */
+  accessKeyId: arg&lt;string&gt;(&#x27;s3_access_key_id&#x27;),
+  /** S3 Secret Access Key */
+  secretAccessKey: arg&lt;string&gt;(&#x27;s3_secret_access_key&#x27;),
+  /** S3 Region for static file bucket */
+  s3StaticFileRegion: arg&lt;string&gt;(&#x27;s3_static_file_region&#x27;),
+  /** S3 Bucket name for static files */
+  s3StaticFileBucket: arg&lt;string&gt;(&#x27;s3_static_file_bucket&#x27;)
+}</code>
                     </td>
                 </tr>
 
@@ -4468,7 +4470,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>[GoogleService, AkismetService, AWSService, EmailService, SeoService, IPService]</code>
+                        <i>Default value : </i><code>[GoogleService, AkismetService, S3Service, EmailService, SeoService, IPService]</code>
                     </td>
                 </tr>
 

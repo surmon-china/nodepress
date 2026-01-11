@@ -24,13 +24,13 @@
 <title>cluster_AnnouncementModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="133,-70 133,-268 363,-268 363,-70 133,-70"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_AnnouncementModule_exports</title>
-<polygon fill="none" stroke="black" points="166,-208 166,-260 330,-260 330,-208 166,-208"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_AnnouncementModule_providers</title>
 <polygon fill="none" stroke="black" points="141,-78 141,-130 355,-130 355,-78 141,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_AnnouncementModule_exports</title>
+<polygon fill="none" stroke="black" points="166,-208 166,-260 330,-260 330,-208 166,-208"/>
 </g>
 <!-- AnnouncementService  -->
 <g id="node1" class="node">

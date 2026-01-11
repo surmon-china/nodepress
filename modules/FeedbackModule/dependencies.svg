@@ -24,13 +24,13 @@
 <title>cluster_FeedbackModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="155,-70 155,-268 341,-268 341,-70 155,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_FeedbackModule_providers</title>
-<polygon fill="none" stroke="black" points="163,-78 163,-130 333,-130 333,-78 163,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_FeedbackModule_exports</title>
 <polygon fill="none" stroke="black" points="182,-208 182,-260 314,-260 314,-208 182,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_FeedbackModule_providers</title>
+<polygon fill="none" stroke="black" points="163,-78 163,-130 333,-130 333,-78 163,-78"/>
 </g>
 <!-- FeedbackService  -->
 <g id="node1" class="node">

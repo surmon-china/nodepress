@@ -184,7 +184,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, awsService: <a href="../injectables/AWSService.html" target="_self">AWSService</a>)</code>
+<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, s3Service: <a href="../injectables/S3Service.html" target="_self">S3Service</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -219,10 +219,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>awsService</td>
+                                                        <td>s3Service</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/AWSService.html" target="_self" >AWSService</a></code>
+                                                                        <code><a href="../injectables/S3Service.html" target="_self" >S3Service</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -429,8 +429,8 @@ import dayjs from &#x27;dayjs&#x27;
 import schedule from &#x27;node-schedule&#x27;
 import { Injectable, InternalServerErrorException } from &#x27;@nestjs/common&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import type { S3FileObject } from &#x27;@app/core/helper/helper.service.aws&#x27;
-import { AWSService, AWSStorageClass, AWSServerSideEncryption } from &#x27;@app/core/helper/helper.service.aws&#x27;
+import type { S3FileObject } from &#x27;@app/core/helper/helper.service.s3&#x27;
+import { S3Service, AWSStorageClass, AWSServerSideEncryption } from &#x27;@app/core/helper/helper.service.s3&#x27;
 import { APP_BIZ, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -446,7 +446,7 @@ const BACKUP_DIR_PATH &#x3D; path.join(APP_BIZ.ROOT_PATH, &#x27;dbbackup&#x27;)
 export class DBBackupService {
   constructor(
     private readonly emailService: EmailService,
-    private readonly awsService: AWSService
+    private readonly s3Service: S3Service
   ) {
     logger.info(&#x27;schedule job initialized.&#x27;)
     schedule.scheduleJob(UPLOAD_INTERVAL, () &#x3D;&gt; {
@@ -517,18 +517,18 @@ export class DBBackupService {
         logger.log(&#x60;file source: ${filePath}&#x60;)
 
         // Upload to cloud storage
-        this.awsService
+        this.s3Service
           .uploadFile({
             key: fileName,
             file: fs.createReadStream(filePath),
             fileContentType: &#x27;application/zip&#x27;,
             region: DB_BACKUP.s3Region,
             bucket: DB_BACKUP.s3Bucket,
-            classType: AWSStorageClass.GLACIER,
+            classType: AWSStorageClass.STANDARD_IA,
             encryption: AWSServerSideEncryption.AES256
           })
           .then((result) &#x3D;&gt; {
-            logger.success(&#x27;upload succeeded.&#x27;, result.url)
+            logger.success(&#x27;upload succeeded.&#x27;, result.key)
             resolve(result)
           })
           .catch((error) &#x3D;&gt; {

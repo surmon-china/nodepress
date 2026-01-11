@@ -24,6 +24,10 @@
 <title>cluster_CommentModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="35,-70 35,-268 461,-268 461,-70 35,-70"/>
 </g>
+<g id="clust4" class="cluster">
+<title>cluster_CommentModule_exports</title>
+<polygon fill="none" stroke="black" points="150,-208 150,-260 282,-260 282,-208 150,-208"/>
+</g>
 <g id="clust6" class="cluster">
 <title>cluster_CommentModule_providers</title>
 <polygon fill="none" stroke="black" points="281,-78 281,-130 453,-130 453,-78 281,-78"/>
@@ -31,10 +35,6 @@
 <g id="clust3" class="cluster">
 <title>cluster_CommentModule_imports</title>
 <polygon fill="none" stroke="black" points="43,-78 43,-130 273,-130 273,-78 43,-78"/>
-</g>
-<g id="clust4" class="cluster">
-<title>cluster_CommentModule_exports</title>
-<polygon fill="none" stroke="black" points="150,-208 150,-260 282,-260 282,-208 150,-208"/>
 </g>
 <!-- ArticleModule -->
 <g id="node1" class="node">

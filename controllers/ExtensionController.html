@@ -752,7 +752,7 @@ import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { UploadedFile, IUploadedFile } from &#x27;@app/decorators/uploaded-file.decorator&#x27;
 import { GoogleService } from &#x27;@app/core/helper/helper.service.google&#x27;
-import { AWSService } from &#x27;@app/core/helper/helper.service.aws&#x27;
+import { S3Service } from &#x27;@app/core/helper/helper.service.s3&#x27;
 import { StatisticService, Statistic } from &#x27;./extension.service.statistic&#x27;
 import { DBBackupService } from &#x27;./extension.service.dbbackup&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -760,7 +760,7 @@ import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 @Controller(&#x27;extension&#x27;)
 export class ExtensionController {
   constructor(
-    private readonly awsService: AWSService,
+    private readonly s3Service: S3Service,
     private readonly googleService: GoogleService,
     private readonly dbBackupService: DBBackupService,
     private readonly statisticService: StatisticService
@@ -787,13 +787,13 @@ export class ExtensionController {
     const minLimit &#x3D; 200
     const numberLimit &#x3D; Number(query.limit)
     const limit &#x3D; Number.isInteger(numberLimit) ? numberLimit : minLimit
-    const result &#x3D; await this.awsService.getFileList({
+    const result &#x3D; await this.s3Service.getFileList({
       limit: limit &lt; minLimit ? minLimit : limit,
       prefix: query.prefix,
       startAfter: query.startAfter,
       delimiter: query.delimiter,
-      region: APP_CONFIG.AWS.s3StaticRegion,
-      bucket: APP_CONFIG.AWS.s3StaticBucket
+      region: APP_CONFIG.S3_STORAGE.s3StaticFileRegion,
+      bucket: APP_CONFIG.S3_STORAGE.s3StaticFileBucket
     })
 
     return {
@@ -814,12 +814,12 @@ export class ExtensionController {
       throw new BadRequestException(&#x27;Missing required field: key&#x27;)
     }
 
-    const result &#x3D; await this.awsService.uploadFile({
+    const result &#x3D; await this.s3Service.uploadFile({
       key: file.fields.key,
       file: file.buffer,
       fileContentType: file.mimetype,
-      region: APP_CONFIG.AWS.s3StaticRegion,
-      bucket: APP_CONFIG.AWS.s3StaticBucket
+      region: APP_CONFIG.S3_STORAGE.s3StaticFileRegion,
+      bucket: APP_CONFIG.S3_STORAGE.s3StaticFileBucket
     })
 
     return {
