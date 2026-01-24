@@ -88,8 +88,8 @@ let DBBackupService = class DBBackupService {
                     return reject('DB Backup script requires [zip]');
                 }
                 shelljs_1.default.exec(`zip -q -r -P ${app_config_1.DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup`);
-                const fileDate = (0, dayjs_1.default)(new Date()).format('YYYY-MM-DD-HH:mm');
-                const fileName = `nodepress-mongodb/backup-${fileDate}.zip`;
+                const fileDate = (0, dayjs_1.default)(new Date()).format('YYYY-MM-DD-HH-mm');
+                const fileName = `nodepress-mongodb-backup_${fileDate}.zip`;
                 const filePath = path_1.default.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME);
                 logger.log(`uploading: ${fileName}`);
                 logger.log(`file source: ${filePath}`);
@@ -100,8 +100,7 @@ let DBBackupService = class DBBackupService {
                     fileContentType: 'application/zip',
                     region: app_config_1.DB_BACKUP.s3Region,
                     bucket: app_config_1.DB_BACKUP.s3Bucket,
-                    classType: helper_service_s3_1.AWSStorageClass.STANDARD_IA,
-                    encryption: helper_service_s3_1.AWSServerSideEncryption.AES256
+                    encryption: helper_service_s3_1.S3ServerSideEncryption.AES256
                 })
                     .then((result) => {
                     logger.success('upload succeeded.', result.key);

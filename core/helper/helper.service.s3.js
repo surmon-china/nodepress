@@ -39,20 +39,20 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.S3Service = exports.AWSServerSideEncryption = exports.AWSStorageClass = void 0;
+exports.S3Service = exports.S3ServerSideEncryption = exports.S3StorageClass = void 0;
 const client_s3_1 = require("@aws-sdk/client-s3");
 const client_s3_2 = require("@aws-sdk/client-s3");
 const common_1 = require("@nestjs/common");
 const APP_CONFIG = __importStar(require("../../app.config"));
 var client_s3_3 = require("@aws-sdk/client-s3");
-Object.defineProperty(exports, "AWSStorageClass", { enumerable: true, get: function () { return client_s3_3.StorageClass; } });
+Object.defineProperty(exports, "S3StorageClass", { enumerable: true, get: function () { return client_s3_3.StorageClass; } });
 var client_s3_4 = require("@aws-sdk/client-s3");
-Object.defineProperty(exports, "AWSServerSideEncryption", { enumerable: true, get: function () { return client_s3_4.ServerSideEncryption; } });
+Object.defineProperty(exports, "S3ServerSideEncryption", { enumerable: true, get: function () { return client_s3_4.ServerSideEncryption; } });
 let S3Service = class S3Service {
     createClient(region) {
         return new client_s3_1.S3Client({
             region,
-            endpoint: APP_CONFIG.S3_STORAGE.s3Endpoint,
+            endpoint: APP_CONFIG.S3_STORAGE.endpoint,
             credentials: {
                 accessKeyId: APP_CONFIG.S3_STORAGE.accessKeyId,
                 secretAccessKey: APP_CONFIG.S3_STORAGE.secretAccessKey

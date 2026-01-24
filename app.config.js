@@ -69,11 +69,11 @@ exports.DISQUS = {
     secretKey: arg('disqus_secret_key')
 };
 exports.S3_STORAGE = {
-    s3Endpoint: arg('s3_endpoint'),
+    endpoint: arg('s3_endpoint'),
     accessKeyId: arg('s3_access_key_id'),
     secretAccessKey: arg('s3_secret_access_key'),
-    s3StaticFileRegion: arg('s3_static_file_region'),
-    s3StaticFileBucket: arg('s3_static_file_bucket')
+    s3StaticFileBucket: arg('s3_static_file_bucket'),
+    s3StaticFileRegion: arg('s3_static_file_region')
 };
 exports.DB_BACKUP = {
     s3Region: arg('db_backup_s3_region'),
