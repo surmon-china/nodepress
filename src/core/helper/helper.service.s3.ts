@@ -10,8 +10,8 @@ import { GetObjectCommand, PutObjectCommand, ListObjectsV2Command } from '@aws-s
 import { Injectable } from '@nestjs/common'
 import * as APP_CONFIG from '@app/app.config'
 
-export { StorageClass as AWSStorageClass } from '@aws-sdk/client-s3'
-export { ServerSideEncryption as AWSServerSideEncryption } from '@aws-sdk/client-s3'
+export { StorageClass as S3StorageClass } from '@aws-sdk/client-s3'
+export { ServerSideEncryption as S3ServerSideEncryption } from '@aws-sdk/client-s3'
 
 export interface FileUploader {
   key: string
@@ -38,7 +38,7 @@ export class S3Service {
     // https://developers.cloudflare.com/r2/examples/aws/aws-sdk-js-v3/
     return new S3Client({
       region,
-      endpoint: APP_CONFIG.S3_STORAGE.s3Endpoint,
+      endpoint: APP_CONFIG.S3_STORAGE.endpoint,
       credentials: {
         accessKeyId: APP_CONFIG.S3_STORAGE.accessKeyId,
         secretAccessKey: APP_CONFIG.S3_STORAGE.secretAccessKey

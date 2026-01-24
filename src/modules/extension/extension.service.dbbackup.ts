@@ -12,7 +12,7 @@ import schedule from 'node-schedule'
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import type { S3FileObject } from '@app/core/helper/helper.service.s3'
-import { S3Service, AWSStorageClass, AWSServerSideEncryption } from '@app/core/helper/helper.service.s3'
+import { S3Service, S3ServerSideEncryption } from '@app/core/helper/helper.service.s3'
 import { APP_BIZ, MONGO_DB, DB_BACKUP } from '@app/app.config'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
@@ -92,8 +92,8 @@ export class DBBackupService {
         // tar -czf - backup | openssl des3 -salt -k <password> -out target.tar.gz
         // shell.exec(`tar -czf ${BACKUP_FILE_NAME} ./backup`)
         shell.exec(`zip -q -r -P ${DB_BACKUP.password} ${BACKUP_FILE_NAME} ./backup`)
-        const fileDate = dayjs(new Date()).format('YYYY-MM-DD-HH:mm')
-        const fileName = `nodepress-mongodb/backup-${fileDate}.zip`
+        const fileDate = dayjs(new Date()).format('YYYY-MM-DD-HH-mm')
+        const fileName = `nodepress-mongodb-backup_${fileDate}.zip`
         const filePath = path.join(BACKUP_DIR_PATH, BACKUP_FILE_NAME)
         logger.log(`uploading: ${fileName}`)
         logger.log(`file source: ${filePath}`)
@@ -106,8 +106,9 @@ export class DBBackupService {
             fileContentType: 'application/zip',
             region: DB_BACKUP.s3Region,
             bucket: DB_BACKUP.s3Bucket,
-            classType: AWSStorageClass.STANDARD_IA,
-            encryption: AWSServerSideEncryption.AES256
+            // MARK: To avoid the high cost of IA storage in R2, the standard storage class is used here.
+            // classType: S3StorageClass.STANDARD_IA,
+            encryption: S3ServerSideEncryption.AES256
           })
           .then((result) => {
             logger.success('upload succeeded.', result.key)

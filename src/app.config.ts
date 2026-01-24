@@ -124,15 +124,15 @@ export const DISQUS = {
 // S3 Storage Configuration
 export const S3_STORAGE = {
   /** S3 endpoint */
-  s3Endpoint: arg<string>('s3_endpoint'),
+  endpoint: arg<string>('s3_endpoint'),
   /** S3 Access Key ID */
   accessKeyId: arg<string>('s3_access_key_id'),
   /** S3 Secret Access Key */
   secretAccessKey: arg<string>('s3_secret_access_key'),
-  /** S3 Region for static file bucket */
-  s3StaticFileRegion: arg<string>('s3_static_file_region'),
   /** S3 Bucket name for static files */
-  s3StaticFileBucket: arg<string>('s3_static_file_bucket')
+  s3StaticFileBucket: arg<string>('s3_static_file_bucket'),
+  /** S3 Region for static file bucket */
+  s3StaticFileRegion: arg<string>('s3_static_file_region')
 }
 
 // Database Backup Configuration
