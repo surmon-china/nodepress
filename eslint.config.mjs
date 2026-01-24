@@ -1,7 +1,7 @@
 import globals from 'globals'
 import pluginJs from '@eslint/js'
-import tsEslint from 'typescript-eslint'
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import pluginTs from 'typescript-eslint'
+import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 const globalsConfig = {
   ...globals.node,
@@ -10,7 +10,6 @@ const globalsConfig = {
 
 const rules = {
   'no-empty': 'off',
-  '@typescript-eslint/camelcase': 'off',
   '@typescript-eslint/interface-name-prefix': 'off',
   '@typescript-eslint/explicit-function-return-type': 'off',
   '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -27,7 +26,7 @@ const rules = {
 export default [
   { languageOptions: { globals: globalsConfig } },
   pluginJs.configs.recommended,
-  ...tsEslint.configs.recommended,
-  eslintPluginPrettierRecommended,
+  ...pluginTs.configs.recommended,
+  pluginPrettierRecommended,
   { rules }
 ]
