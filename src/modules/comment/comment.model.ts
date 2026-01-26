@@ -12,21 +12,11 @@ import { IsDefined, IsOptional, IsNotEmpty, ValidateNested, MinLength, MaxLength
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
-import { ROOT_COMMENT_PID, CommentState } from '@app/constants/biz.constant'
+import { ROOT_COMMENT_PID } from '@app/constants/biz.constant'
 import { IPLocation } from '@app/core/helper/helper.service.ip'
-import { KeyValueModel } from '@app/models/key-value.model'
 import { decodeMD5 } from '@app/transformers/codec.transformer'
-
-export const COMMENT_STATES = [
-  CommentState.Auditing,
-  CommentState.Published,
-  CommentState.Deleted,
-  CommentState.Spam
-] as const
-
-export const COMMENT_GUEST_QUERY_FILTER = Object.freeze({
-  state: CommentState.Published
-})
+import { KeyValueModel } from '@app/models/key-value.model'
+import { CommentStatus, COMMENT_STATUSES } from './comment.constant'
 
 @modelOptions({
   schemaOptions: {
@@ -89,7 +79,7 @@ export class CommentBase {
   @IsObject()
   @IsNotEmpty()
   @IsDefined({ message: 'comment author?' })
-  @prop({ required: true, _id: false })
+  @prop({ _id: false, required: true })
   author: Author
 }
 
@@ -111,11 +101,10 @@ export class Comment extends CommentBase {
   @prop({ unique: true })
   id?: number
 
-  // state
-  @IsIn(COMMENT_STATES)
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
-  @prop({ enum: CommentState, default: CommentState.Published, index: true })
-  state: CommentState
+  @prop({ enum: CommentStatus, default: CommentStatus.Published, index: true })
+  status: CommentStatus
 
   // likes
   @IsInt()
@@ -136,16 +125,18 @@ export class Comment extends CommentBase {
   @prop({ type: Object, default: null })
   ip_location: Partial<IPLocation> | null
 
+  @Type(() => KeyValueModel)
+  @ValidateNested()
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
+  extras: KeyValueModel[]
+
   @prop({ default: Date.now, immutable: true })
   created_at?: Date
 
   @prop({ default: Date.now })
   updated_at?: Date
-
-  @ArrayUnique()
-  @IsArray()
-  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
-  extends: KeyValueModel[]
 }
 
 export const CommentProvider = getProviderByTypegooseClass(Comment)

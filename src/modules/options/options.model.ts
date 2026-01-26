@@ -1,28 +1,23 @@
 /**
- * @file Option model
- * @module module/option/model
+ * @file Options model
+ * @module module/options/model
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { prop, modelOptions } from '@typegoose/typegoose'
 import { Type } from 'class-transformer'
-import { IsString, IsInt, IsObject, IsUrl, IsEmail, IsArray } from 'class-validator'
-import { IsOptional, IsNotEmpty, ValidateNested, ArrayUnique } from 'class-validator'
-import { KeyValueModel } from '@app/models/key-value.model'
+import { ValidateNested, ArrayUnique } from 'class-validator'
+import { IsString, IsObject, IsUrl, IsEmail, IsArray, IsOptional, IsNotEmpty } from 'class-validator'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { APP_BIZ } from '@app/app.config'
 
-const DEFAULT_OPTION_APP_META: AppMeta = Object.freeze({
-  likes: 0
-})
-
-const DEFAULT_OPTION_BLOCKLIST: Blocklist = Object.freeze({
+const DEFAULT_OPTIONS_BLOCKLIST: Blocklist = Object.freeze({
   ips: [],
   mails: [],
   keywords: []
 })
 
-export const DEFAULT_OPTION: Option = Object.freeze<Option>({
+export const DEFAULT_OPTIONS: Option = Object.freeze<Option>({
   title: 'NodePress',
   sub_title: 'Blog server app',
   description: 'RESTful API service for blog',
@@ -33,18 +28,24 @@ export const DEFAULT_OPTION: Option = Object.freeze<Option>({
   friend_links: [
     {
       name: APP_BIZ.FE_NAME,
-      value: APP_BIZ.FE_URL
+      url: APP_BIZ.FE_URL
     }
   ],
-  meta: DEFAULT_OPTION_APP_META,
-  blocklist: DEFAULT_OPTION_BLOCKLIST,
+  blocklist: DEFAULT_OPTIONS_BLOCKLIST,
   app_config: ''
 })
 
-class AppMeta {
-  @IsInt()
-  @prop({ default: 0 })
-  likes: number
+export class FriendLink {
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true, trim: true, validate: /\S+/ })
+  name: string
+
+  @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true, trim: true })
+  url: string
 }
 
 // user block list
@@ -116,21 +117,19 @@ export class Option {
   @prop({ default: '' })
   statement: string
 
+  @Type(() => FriendLink)
+  @ValidateNested()
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
-  friend_links: KeyValueModel[]
-
-  // site meta info
-  @prop({ _id: false, default: { ...DEFAULT_OPTION_APP_META } })
-  meta: AppMeta
+  @prop({ _id: false, default: [], type: () => [FriendLink] })
+  friend_links: FriendLink[]
 
   // site user block list
   @Type(() => Blocklist)
   @ValidateNested()
   @IsObject()
   @IsOptional()
-  @prop({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } })
+  @prop({ _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } })
   blocklist: Blocklist
 
   // app config (for broader client configuration usage)
@@ -143,4 +142,4 @@ export class Option {
   updated_at?: Date
 }
 
-export const OptionProvider = getProviderByTypegooseClass(Option)
+export const OptionsProvider = getProviderByTypegooseClass(Option)

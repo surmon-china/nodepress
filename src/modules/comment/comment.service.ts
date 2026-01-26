@@ -10,16 +10,17 @@ import { ForbiddenException, BadRequestException, NotFoundException } from '@nes
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
+import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 import { ArticleService } from '@app/modules/article/article.service'
 import { IPService } from '@app/core/helper/helper.service.ip'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { AkismetService, AkismetAction } from '@app/core/helper/helper.service.akismet'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
-import { OptionService } from '@app/modules/option/option.service'
+import { OptionsService } from '@app/modules/options/options.service'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
-import { Comment, CommentBase, COMMENT_GUEST_QUERY_FILTER } from './comment.model'
-import { CommentsStateDTO } from './comment.dto'
+import { CommentStatus, COMMENT_GUEST_QUERY_FILTER } from './comment.constant'
+import { Comment, CommentBase } from './comment.model'
+import { CommentsStatusDTO } from './comment.dto'
 import { isDevEnv, isProdEnv } from '@app/app.environment'
 import { createLogger } from '@app/utils/logger'
 import * as APP_CONFIG from '@app/app.config'
@@ -32,7 +33,7 @@ export class CommentService {
     private readonly ipService: IPService,
     private readonly emailService: EmailService,
     private readonly akismetService: AkismetService,
-    private readonly optionService: OptionService,
+    private readonly optionsService: OptionsService,
     private readonly articleService: ArticleService,
     @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>
   ) {}
@@ -108,11 +109,11 @@ export class CommentService {
         { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } }
       ])
       if (!counts || !counts.length) {
-        await this.articleService.updateMetaComments(postIds[0], 0)
+        await this.articleService.updateStatsComments(postIds[0], 0)
       } else {
         await Promise.all(
           counts.map((count) => {
-            return this.articleService.updateMetaComments(count._id, count.num_tutorial)
+            return this.articleService.updateStatsComments(count._id, count.num_tutorial)
           })
         )
       }
@@ -121,9 +122,9 @@ export class CommentService {
     }
   }
 
-  // Comment state effects
-  private updateBlocklistAkismetWithComment(comments: Comment[], state: CommentState, referer?: string) {
-    const isSPAM = state === CommentState.Spam
+  // Comment status effects
+  private updateBlocklistAkismetWithComment(comments: Comment[], status: CommentStatus, referer?: string) {
+    const isSPAM = status === CommentStatus.Spam
     const action = isSPAM ? AkismetAction.SubmitSpam : AkismetAction.SubmitHam
     // SPAM > append to blocklist & submitSpam
     // HAM > remove from blocklist & submitHAM
@@ -133,8 +134,8 @@ export class CommentService {
     const ips: string[] = comments.map((comment) => comment.ip!).filter(Boolean)
     const emails: string[] = comments.map((comment) => comment.author.email!).filter(Boolean)
     const blocklistAction = isSPAM
-      ? this.optionService.appendToBlocklist({ ips, emails })
-      : this.optionService.removeFromBlocklist({ ips, emails })
+      ? this.optionsService.appendToBlocklist({ ips, emails })
+      : this.optionsService.removeFromBlocklist({ ips, emails })
     blocklistAction
       .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeeded.'))
       .catch((error) => logger.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error))
@@ -142,7 +143,7 @@ export class CommentService {
 
   // Validate comment by NodePress IP/email/keywords
   public async verifyCommentValidity(comment: Comment): Promise<void> {
-    const { blocklist } = await this.optionService.ensureAppOption()
+    const { blocklist } = await this.optionsService.ensureAppOptions()
     const { keywords, mails, ips } = blocklist
     const blockByIP = ips.includes(comment.ip!)
     const blockByEmail = mails.includes(comment.author.email!)
@@ -183,13 +184,13 @@ export class CommentService {
       ...comment,
       pid: Number(comment.pid),
       post_id: Number(comment.post_id),
-      state: CommentState.Published,
+      status: CommentStatus.Published,
       likes: 0,
       dislikes: 0,
       ip: visitor.ip,
       ip_location: {},
       agent: visitor.ua || comment.agent,
-      extends: []
+      extras: []
     }
   }
 
@@ -248,7 +249,7 @@ export class CommentService {
     if (!updated) throw new NotFoundException(`Comment '${commentId}' not found`)
 
     this.updateCommentsCountWithArticles([updated.post_id])
-    this.updateBlocklistAkismetWithComment([updated], updated.state, referer)
+    this.updateBlocklistAkismetWithComment([updated], updated.status, referer)
     return updated
   }
 
@@ -261,18 +262,18 @@ export class CommentService {
     return deleted
   }
 
-  public async batchPatchState(action: CommentsStateDTO, referer?: string) {
-    const { comment_ids, post_ids, state } = action
+  public async batchPatchStatus(action: CommentsStatusDTO, referer?: string) {
+    const { comment_ids, post_ids, status } = action
     const actionResult = await this.commentModel
-      .updateMany({ _id: { $in: comment_ids } }, { $set: { state } })
+      .updateMany({ _id: { $in: comment_ids } }, { $set: { status } })
       .exec()
-    // update ref article.meta.comments
+    // update ref article.stats.comments
     this.updateCommentsCountWithArticles(post_ids)
     try {
       const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } })
-      this.updateBlocklistAkismetWithComment(todoComments, state, referer)
+      this.updateBlocklistAkismetWithComment(todoComments, status, referer)
     } catch (error) {
-      logger.warn(`batchPatchState to ${state} failed!`, error)
+      logger.warn(`batchPatchStatus to ${status} failed!`, error)
     }
     return actionResult
   }

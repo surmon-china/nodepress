@@ -8,51 +8,44 @@ import { IntersectionType } from '@nestjs/mapped-types'
 import { Transform } from 'class-transformer'
 import { IsString, IsArray, IsBoolean, IsIn, IsInt } from 'class-validator'
 import { IsNotEmpty, IsOptional, IsDefined, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
 import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
 import { unknownToNumber, unknownToBoolean } from '@app/transformers/value.transformer'
 import { DateQueryDTO, KeywordQueryDTO } from '@app/models/query.model'
 import { PaginateOptionWithHotSortDTO } from '@app/models/paginate.model'
-import {
-  ARTICLE_PUBLISH_STATES,
-  ARTICLE_PUBLIC_STATES,
-  ARTICLE_ORIGIN_STATES,
-  ARTICLE_LANGUAGES
-} from './article.model'
+import { ARTICLE_STATUSES, ARTICLE_ORIGINS, ARTICLE_LANGUAGES } from './article.constant'
+import { ArticleStatus, ArticleOrigin } from './article.constant'
 
 export class ArticlePaginateQueryDTO extends IntersectionType(
   PaginateOptionWithHotSortDTO,
   KeywordQueryDTO,
   DateQueryDTO
 ) {
-  @WithGuestPermission({ only: [PublishState.Published], default: PublishState.Published })
-  @IsIn(ARTICLE_PUBLISH_STATES)
+  @WithGuestPermission({ only: [ArticleStatus.Published], default: ArticleStatus.Published })
+  @IsIn(ARTICLE_STATUSES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  state?: PublishState
+  status?: ArticleStatus
 
-  @WithGuestPermission({ only: [PublicState.Public], default: PublicState.Public })
-  @IsIn(ARTICLE_PUBLIC_STATES)
+  @IsIn(ARTICLE_ORIGINS)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  public?: PublicState
-
-  @IsIn(ARTICLE_ORIGIN_STATES)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) => unknownToNumber(value))
-  origin?: OriginState
+  origin?: ArticleOrigin
 
   @IsBoolean()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToBoolean(value))
   featured?: boolean
+
+  @IsIn(ARTICLE_LANGUAGES)
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  lang: string
 
   @IsString()
   @IsNotEmpty()
@@ -63,12 +56,6 @@ export class ArticlePaginateQueryDTO extends IntersectionType(
   @IsNotEmpty()
   @IsOptional()
   category_slug?: string
-
-  @IsIn(ARTICLE_LANGUAGES)
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  lang: string
 }
 
 export class ArticleCalendarQueryDTO {
@@ -85,9 +72,9 @@ export class ArticleIdsDTO {
   article_ids: string[]
 }
 
-export class ArticlesStateDTO extends ArticleIdsDTO {
-  @IsIn(ARTICLE_PUBLISH_STATES)
+export class ArticlesStatusDTO extends ArticleIdsDTO {
+  @IsIn(ARTICLE_STATUSES)
   @IsInt()
   @IsDefined()
-  state: PublishState
+  status: ArticleStatus
 }

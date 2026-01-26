@@ -8,11 +8,6 @@ import { IsIn, IsInt, IsOptional, IsNotEmpty, IsDateString, IsString } from 'cla
 import { Transform } from 'class-transformer'
 import { unknownToNumber } from '@app/transformers/value.transformer'
 
-export const enum BooleanNumberValue {
-  False = 0, // Number(false)
-  True = 1 // Number(true)
-}
-
 // https://www.progress.com/blogs/understanding-iso-8601-date-and-time-format
 export class DateQueryDTO {
   @IsDateString()
@@ -26,6 +21,11 @@ export class KeywordQueryDTO {
   @IsNotEmpty()
   @IsOptional()
   keyword?: string
+}
+
+export const enum BooleanNumberValue {
+  False = 0, // Number(false)
+  True = 1 // Number(true)
 }
 
 // MARK: example

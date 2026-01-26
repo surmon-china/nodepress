@@ -20,7 +20,7 @@ const ROOT_PATH = path.join(__dirname, '..')
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const packageJSON = require(path.resolve(ROOT_PATH, 'package.json'))
 
-// Project Metadata
+// Project Information
 export const PROJECT = {
   name: packageJSON.name,
   version: packageJSON.version,

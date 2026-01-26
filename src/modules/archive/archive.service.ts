@@ -9,14 +9,14 @@ import { InjectModel } from '@app/transformers/model.transformer'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { CacheKeys } from '@app/constants/cache.constant'
-import { SortType } from '@app/constants/biz.constant'
+import { SortOrder } from '@app/constants/biz.constant'
 import { Category } from '@app/modules/category/category.model'
 import { Tag } from '@app/modules/tag/tag.model'
+import { Article } from '@app/modules/article/article.model'
 import {
-  Article,
   ARTICLE_LIST_QUERY_GUEST_FILTER,
   ARTICLE_LIST_QUERY_PROJECTION
-} from '@app/modules/article/article.model'
+} from '@app/modules/article/article.constant'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 
@@ -48,17 +48,17 @@ export class ArchiveService {
   }
 
   private getAllTags(): Promise<Tag[]> {
-    return this.tagModel.find().sort({ _id: SortType.Desc }).lean().exec()
+    return this.tagModel.find().sort({ _id: SortOrder.Desc }).lean().exec()
   }
 
   private getAllCategories(): Promise<Category[]> {
-    return this.categoryModel.find().sort({ _id: SortType.Desc }).lean().exec()
+    return this.categoryModel.find().sort({ _id: SortOrder.Desc }).lean().exec()
   }
 
   private getAllArticles(): Promise<Article[]> {
     return this.articleModel
       .find(ARTICLE_LIST_QUERY_GUEST_FILTER, ARTICLE_LIST_QUERY_PROJECTION)
-      .sort({ _id: SortType.Desc })
+      .sort({ _id: SortOrder.Desc })
       .lean()
       .exec()
   }

@@ -20,6 +20,9 @@ import { CacheModule } from '@app/core/cache/cache.module'
 import { AuthModule } from '@app/core/auth/auth.module'
 import { HelperModule } from '@app/core/helper/helper.module'
 
+// system module
+import { SystemModule } from '@app/modules/system/system.module'
+
 // BIZ modules
 import { AnnouncementModule } from '@app/modules/announcement/announcement.module'
 import { CategoryModule } from '@app/modules/category/category.module'
@@ -29,12 +32,9 @@ import { CommentModule } from '@app/modules/comment/comment.module'
 import { ArchiveModule } from '@app/modules/archive/archive.module'
 import { FeedbackModule } from '@app/modules/feedback/feedback.module'
 import { VoteModule } from '@app/modules/vote/vote.module'
-import { OptionModule } from '@app/modules/option/option.module'
+import { OptionsModule } from '@app/modules/options/options.module'
 import { AdminModule } from '@app/modules/admin/admin.module'
 import { DisqusModule } from '@app/modules/disqus/disqus.module'
-
-// BIZ helper module
-import { ExtensionModule } from '@app/modules/extension/extension.module'
 
 @Module({
   imports: [
@@ -59,9 +59,9 @@ import { ExtensionModule } from '@app/modules/extension/extension.module'
     DatabaseModule,
     CacheModule,
     AuthModule,
-    ExtensionModule,
+    SystemModule,
     AdminModule,
-    OptionModule,
+    OptionsModule,
     FeedbackModule,
     AnnouncementModule,
     TagModule,

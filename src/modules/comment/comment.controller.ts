@@ -12,11 +12,11 @@ import { Throttle, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { SortType } from '@app/constants/biz.constant'
+import { SortMode, SortOrder } from '@app/constants/biz.constant'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
-import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStateDTO } from './comment.dto'
+import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStatusDTO } from './comment.dto'
 import { CommentService } from './comment.service'
 import { Comment, CommentBase } from './comment.model'
 
@@ -37,16 +37,16 @@ export class CommentController {
 
     // sort
     if (!_isUndefined(sort)) {
-      if (sort === SortType.Hottest) {
-        paginateOptions.sort = { likes: SortType.Desc }
+      if (sort === SortMode.Hottest) {
+        paginateOptions.sort = { likes: SortOrder.Desc }
       } else {
         paginateOptions.dateSort = sort
       }
     }
 
-    // state
-    if (!_isUndefined(filters.state)) {
-      queryFilter.state = filters.state
+    // status
+    if (!_isUndefined(filters.status)) {
+      queryFilter.status = filters.status
     }
 
     // post ID
@@ -82,8 +82,8 @@ export class CommentController {
 
   @Get('calendar')
   @UseGuards(AdminOptionalGuard)
-  @SuccessResponse('Get comment calendar succeeded')
-  getCommentCalendar(
+  @SuccessResponse('Get comments calendar succeeded')
+  getCommentsCalendar(
     @Query() query: CommentCalendarQueryDTO,
     @RequestContext() { isUnauthenticated }: IRequestContext
   ) {
@@ -100,8 +100,8 @@ export class CommentController {
   @Patch()
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Update comments succeeded')
-  patchComments(@RequestContext() { visitor }: IRequestContext, @Body() body: CommentsStateDTO) {
-    return this.commentService.batchPatchState(body, visitor.referer)
+  patchComments(@RequestContext() { visitor }: IRequestContext, @Body() body: CommentsStatusDTO) {
+    return this.commentService.batchPatchStatus(body, visitor.referer)
   }
 
   @Delete()

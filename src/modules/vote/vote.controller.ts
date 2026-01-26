@@ -15,7 +15,6 @@ import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { IPService, IPLocation } from '@app/core/helper/helper.service.ip'
 import { EmailService } from '@app/core/helper/helper.service.email'
-import { OptionService } from '@app/modules/option/option.service'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { Author } from '@app/modules/comment/comment.model'
@@ -24,9 +23,10 @@ import { DisqusToken } from '@app/modules/disqus/disqus.token'
 import { AccessToken } from '@app/utils/disqus'
 import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
-import { CommentVoteDTO, PostVoteDTO, VotePaginateQueryDTO, VotesDTO } from './vote.dto'
-import { Vote, VoteTarget, VoteAuthorType, voteTypeMap } from './vote.model'
+import { CommentVoteDTO, ArticleVoteDTO, VotePaginateQueryDTO, VotesDTO } from './vote.dto'
+import { VoteTarget, VoteAuthorType, voteTypesMap } from './vote.constant'
 import { VoteService } from './vote.service'
+import { Vote } from './vote.model'
 import * as APP_CONFIG from '@app/app.config'
 
 @Controller('vote')
@@ -37,7 +37,6 @@ export class VoteController {
     private readonly disqusPublicService: DisqusPublicService,
     private readonly commentService: CommentService,
     private readonly articleService: ArticleService,
-    private readonly optionService: OptionService,
     private readonly voteService: VoteService
   ) {}
 
@@ -193,30 +192,27 @@ export class VoteController {
     return this.voteService.batchDelete(body.vote_ids)
   }
 
-  @Post('/post')
+  @Post('/article')
   @Throttle({ default: { ttl: minutes(1), limit: 10 } })
-  @SuccessResponse('Vote post succeeded')
+  @SuccessResponse('Vote article succeeded')
   async votePost(
-    @Body() voteBody: PostVoteDTO,
+    @Body() voteBody: ArticleVoteDTO,
     @DisqusToken() token: AccessToken | null,
     @RequestContext() { visitor }: IRequestContext
   ) {
     // NodePress
-    const likes =
-      voteBody.post_id === GUESTBOOK_POST_ID
-        ? await this.optionService.incrementMetaLikes()
-        : await this.articleService.incrementMetaStatistic(voteBody.post_id, 'likes')
+    const likes = await this.articleService.incrementStatistics(voteBody.article_id, 'likes')
     // Disqus
-    this.voteDisqusThread(voteBody.post_id, voteBody.vote, token?.access_token).catch(() => {})
+    this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() => {})
     // author
     this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(
       async (voteAuthor) => {
-        // location
+        // IP location
         const ipLocation = await this.queryIPLocation(visitor.ip)
         // database
         await this.voteService.create({
-          target_type: VoteTarget.Post,
-          target_id: voteBody.post_id,
+          target_type: VoteTarget.Article,
+          target_id: voteBody.article_id,
           vote_type: voteBody.vote,
           author_type: voteAuthor.type,
           author: voteAuthor.data,
@@ -228,12 +224,12 @@ export class VoteController {
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
           subject: 'You have a new post vote',
-          on: await this.getPostTitle(voteBody.post_id),
-          vote: voteTypeMap.get(voteBody.vote)!,
+          on: await this.getPostTitle(voteBody.article_id),
+          vote: voteTypesMap.get(voteBody.vote)!,
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,
           location: ipLocation,
-          link: getPermalinkById(voteBody.post_id)
+          link: getPermalinkById(voteBody.article_id)
         })
       }
     )
@@ -287,7 +283,7 @@ export class VoteController {
         const targetTitle = await this.getPostTitle(comment.post_id)
         // email to author and admin
         const mailPayload = {
-          vote: voteTypeMap.get(voteBody.vote)!,
+          vote: voteTypesMap.get(voteBody.vote)!,
           on: `${targetTitle} #${comment.id}`,
           author: this.getAuthorString(voteAuthor),
           userAgent: visitor.ua,

@@ -10,7 +10,7 @@ export interface GeneralDisqusParams {
   [key: string]: any
 }
 
-export enum ThreadState {
+export enum ThreadStatus {
   Open = 'open',
   Closed = 'closed'
 }

@@ -5,14 +5,14 @@
  */
 
 import { Module } from '@nestjs/common'
-import { OptionModule } from '@app/modules/option/option.module'
+import { OptionsModule } from '@app/modules/options/options.module'
 import { ArticleModule } from '@app/modules/article/article.module'
 import { CommentController } from './comment.controller'
 import { CommentProvider } from './comment.model'
 import { CommentService } from './comment.service'
 
 @Module({
-  imports: [OptionModule, ArticleModule],
+  imports: [OptionsModule, ArticleModule],
   controllers: [CommentController],
   providers: [CommentProvider, CommentService],
   exports: [CommentService]

@@ -9,10 +9,11 @@ import { XMLParser } from 'fast-xml-parser'
 import { Injectable, BadRequestException } from '@nestjs/common'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
+import { CommentStatus } from '@app/modules/comment/comment.constant'
 import { Comment } from '@app/modules/comment/comment.model'
 import { Article } from '@app/modules/article/article.model'
-import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
-import { getExtendObject } from '@app/transformers/extend.transformer'
+import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
+import { getExtraObject } from '@app/transformers/extra.transformer'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
@@ -50,7 +51,7 @@ export class DisqusPrivateService {
         forum: DISQUS.forum,
         identifier: DISQUS_CONST.getThreadIdentifierById(postId),
         title: article.title,
-        message: article.description,
+        message: article.summary,
         slug: article.slug || DISQUS_CONST.getThreadIdentifierById(postId),
         date: dayjs(article.created_at).unix(),
         url: getPermalinkById(postId),
@@ -139,7 +140,7 @@ export class DisqusPrivateService {
     // 1. get comments
     const allComments = await this.commentService.getAll()
     const todoComments = allComments.filter((comment) =>
-      [CommentState.Auditing, CommentState.Published].includes(comment.state)
+      [CommentStatus.Pending, CommentStatus.Published].includes(comment.status)
     )
     const todoCommentIds = todoComments.map((comment) => comment.id)
     todoComments.forEach((comment) => {
@@ -203,27 +204,27 @@ export class DisqusPrivateService {
         throw `Invalid comment '${comment}'`
       }
 
-      const _extends = comment.extends || []
-      const extendsObject = getExtendObject(_extends)
+      const _extras = comment.extras || []
+      const extrasObject = getExtraObject(_extras)
       // post ID
-      if (!extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]) {
-        _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postId })
+      if (!extrasObject[DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY]) {
+        _extras.push({ key: DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY, value: each.postId })
       }
       // thread ID
-      if (!extendsObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY]) {
-        _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadId })
+      if (!extrasObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY]) {
+        _extras.push({ key: DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY, value: each.threadId })
       }
       // guest(anonymous) | disqus user
       if (each.isAnonymous) {
-        if (!extendsObject[DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY]) {
-          _extends.push({ name: DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY, value: 'true' })
+        if (!extrasObject[DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY]) {
+          _extras.push({ key: DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY, value: 'true' })
         }
       } else if (each.username) {
-        if (!extendsObject[DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY]) {
-          _extends.push({ name: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY, value: each.username })
+        if (!extrasObject[DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY]) {
+          _extras.push({ key: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY, value: each.username })
         }
       }
-      comment.extends = _extends
+      comment.extras = _extras
       return await comment.save()
     }
 

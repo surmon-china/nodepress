@@ -12,47 +12,7 @@ import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.con
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { IPLocation } from '@app/core/helper/helper.service.ip'
-
-export enum FeedbackEmotion {
-  Terrible = 1,
-  Bad = 2,
-  Neutral = 3,
-  Great = 4,
-  Amazing = 5
-}
-
-const emotionMap = new Map(
-  [
-    {
-      value: FeedbackEmotion.Terrible,
-      text: FeedbackEmotion[FeedbackEmotion.Terrible],
-      emoji: '😠'
-    },
-    {
-      value: FeedbackEmotion.Bad,
-      text: FeedbackEmotion[FeedbackEmotion.Bad],
-      emoji: '🙁'
-    },
-    {
-      value: FeedbackEmotion.Neutral,
-      text: FeedbackEmotion[FeedbackEmotion.Neutral],
-      emoji: '😐'
-    },
-    {
-      value: FeedbackEmotion.Great,
-      text: FeedbackEmotion[FeedbackEmotion.Great],
-      emoji: '😃'
-    },
-    {
-      value: FeedbackEmotion.Amazing,
-      text: FeedbackEmotion[FeedbackEmotion.Amazing],
-      emoji: '🥰'
-    }
-  ].map((item) => [item.value, item])
-)
-
-export const FEEDBACK_EMOTIONS = Array.from(emotionMap.values())
-export const FEEDBACK_EMOTION_VALUES = FEEDBACK_EMOTIONS.map((e) => e.value)
+import { emotionsMap, FEEDBACK_EMOTION_VALUES } from './feedback.constant'
 
 export class FeedbackBase {
   @Min(0)
@@ -68,11 +28,11 @@ export class FeedbackBase {
   emotion: number
 
   public get emotion_text() {
-    return emotionMap.get(this.emotion)!.text
+    return emotionsMap.get(this.emotion)!.text
   }
 
   public get emotion_emoji() {
-    return emotionMap.get(this.emotion)!.emoji
+    return emotionsMap.get(this.emotion)!.emoji
   }
 
   @MinLength(3)

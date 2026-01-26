@@ -25,17 +25,16 @@ export class AnnouncementController {
   @SuccessResponse({ message: 'Get announcements succeeded', usePaginate: true })
   getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDTO) {
     const { sort, page, per_page, ...filters } = query
-    const { keyword, state } = filters
     const queryFilter: QueryFilter<Announcement> = {}
 
     // search
-    if (keyword) {
-      queryFilter.content = new RegExp(_trim(keyword), 'i')
+    if (filters.keyword) {
+      queryFilter.content = new RegExp(_trim(filters.keyword), 'i')
     }
 
-    // state
-    if (state != null) {
-      queryFilter.state = state
+    // status
+    if (filters.status != null) {
+      queryFilter.status = filters.status
     }
 
     // paginate

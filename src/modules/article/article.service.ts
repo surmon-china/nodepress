@@ -12,17 +12,16 @@ import { SeoService } from '@app/core/helper/helper.service.seo'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { TagService } from '@app/modules/tag/tag.service'
-import { PublishState } from '@app/constants/biz.constant'
 import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
+import { Article, ArticleStats } from './article.model'
 import {
-  Article,
-  ArticleMeta,
+  ArticleStatus,
   ARTICLE_LIST_QUERY_GUEST_FILTER,
   ARTICLE_LIST_QUERY_PROJECTION,
   ARTICLE_FULL_QUERY_REF_POPULATE
-} from './article.model'
+} from './article.constant'
 
 @Injectable()
 export class ArticleService {
@@ -180,7 +179,7 @@ export class ArticleService {
       }
     }
 
-    Reflect.deleteProperty(newArticle, 'meta')
+    Reflect.deleteProperty(newArticle, 'stats')
     Reflect.deleteProperty(newArticle, 'created_at')
     Reflect.deleteProperty(newArticle, 'updated_at')
 
@@ -205,9 +204,9 @@ export class ArticleService {
     return article
   }
 
-  public async batchPatchState(articleIds: MongooseId[], state: PublishState) {
+  public async batchPatchStatus(articleIds: MongooseId[], status: ArticleStatus) {
     const actionResult = await this.articleModel
-      .updateMany({ _id: { $in: articleIds } }, { $set: { state } })
+      .updateMany({ _id: { $in: articleIds } }, { $set: { status } })
       .exec()
     this.tagService.updateAllTagsCache()
     this.categoryService.updateAllCategoriesCache()
@@ -247,17 +246,17 @@ export class ArticleService {
     }
   }
 
-  public async incrementMetaStatistic(articleId: number, field: keyof ArticleMeta) {
+  public async incrementStatistics(articleId: number, field: keyof ArticleStats) {
     const article = await this.getDetailByNumberIdOrSlug({
       numberId: articleId,
       publicOnly: true
     })
-    article.meta[field]++
+    article.stats[field]++
     article.save({ timestamps: false })
-    return article.meta[field]
+    return article.stats[field]
   }
 
-  public async getMetaStatistic() {
+  public async getTotalStatistics() {
     const [result] = await this.articleModel.aggregate<{
       _id: Types.ObjectId
       totalViews: number
@@ -266,8 +265,8 @@ export class ArticleService {
       {
         $group: {
           _id: null,
-          totalViews: { $sum: '$meta.views' },
-          totalLikes: { $sum: '$meta.likes' }
+          totalViews: { $sum: '$stats.views' },
+          totalLikes: { $sum: '$stats.likes' }
         }
       }
     ])
@@ -289,9 +288,9 @@ export class ArticleService {
   }
 
   // Update article comments count
-  public async updateMetaComments(articleId: number, commentCount: number) {
+  public async updateStatsComments(articleId: number, commentCount: number) {
     const findParams = { id: articleId }
-    const patchParams = { $set: { 'meta.comments': commentCount } }
+    const patchParams = { $set: { 'stats.comments': commentCount } }
     return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec()
   }
 }

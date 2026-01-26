@@ -5,12 +5,13 @@
  */
 
 import dayjs from 'dayjs'
-import { Comment } from '@app/modules/comment/comment.model'
 import { Article } from '@app/modules/article/article.model'
-import { GUESTBOOK_POST_ID, CommentState } from '@app/constants/biz.constant'
+import { Comment } from '@app/modules/comment/comment.model'
+import { CommentStatus } from '@app/modules/comment/comment.constant'
+import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { getThreadIdentifierById } from './disqus.constant'
-import { ThreadState } from './disqus.dto'
+import { ThreadStatus } from './disqus.dto'
 import { APP_BIZ } from '@app/app.config'
 
 // DOC: https://help.disqus.com/en/articles/1717222-custom-xml-import-format
@@ -26,7 +27,7 @@ const getCommentItemXML = (comment: Comment) => {
       <wp:comment_author_IP>${comment.ip || ''}</wp:comment_author_IP>
       <wp:comment_date_gmt>${dayjs(comment.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:comment_date_gmt>
       <wp:comment_content><![CDATA[${comment.content || ''}]]></wp:comment_content>
-      <wp:comment_approved>${comment.state === CommentState.Published ? 1 : 0}</wp:comment_approved>
+      <wp:comment_approved>${comment.status === CommentStatus.Published ? 1 : 0}</wp:comment_approved>
     </wp:comment>
   `
 }
@@ -60,11 +61,11 @@ export const getDisqusXML = (data: XMLItemData[], guestbook: Array<Comment>) => 
             <item>
               <title>${item.article.title}</title>
               <link>${getPermalinkById(item.article.id)}</link>
-              <content:encoded><![CDATA[${item.article.description || ''}]]></content:encoded>
+              <content:encoded><![CDATA[${item.article.summary || ''}]]></content:encoded>
               <dsq:thread_identifier>${getThreadIdentifierById(item.article.id)}</dsq:thread_identifier>
               <wp:post_date_gmt>${dayjs(item.article.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:post_date_gmt>
               <wp:comment_status>${
-                item.article.disabled_comments ? ThreadState.Closed : ThreadState.Open
+                item.article.disabled_comments ? ThreadStatus.Closed : ThreadStatus.Open
               }</wp:comment_status>
               ${item.comments.map(getCommentItemXML).join('\n')}
             </item>

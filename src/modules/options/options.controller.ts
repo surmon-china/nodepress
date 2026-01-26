@@ -1,6 +1,6 @@
 /**
- * @file Option controller
- * @module module/option/controller
+ * @file Options controller
+ * @module module/options/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -9,24 +9,24 @@ import { RequestContext, IRequestContext } from '@app/decorators/request-context
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
-import { OptionService } from './option.service'
-import { Option } from './option.model'
+import { OptionsService } from './options.service'
+import { Option } from './options.model'
 
-@Controller('option')
-export class OptionController {
-  constructor(private readonly optionService: OptionService) {}
+@Controller('options')
+export class OptionsController {
+  constructor(private readonly optionsService: OptionsService) {}
 
   @Get()
   @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get app options succeeded')
-  getOption(@RequestContext() { isAuthenticated }: IRequestContext) {
-    return isAuthenticated ? this.optionService.ensureAppOption() : this.optionService.getOptionCacheForGuest()
+  getOptions(@RequestContext() { isAuthenticated }: IRequestContext) {
+    return isAuthenticated ? this.optionsService.ensureAppOptions() : this.optionsService.getOptionsCacheForGuest()
   }
 
   @Put()
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Update app options succeeded')
-  putOption(@Body() option: Option): Promise<Option> {
-    return this.optionService.putOption(option)
+  putOptions(@Body() options: Option): Promise<Option> {
+    return this.optionsService.putOptions(options)
   }
 }

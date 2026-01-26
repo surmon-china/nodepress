@@ -1,6 +1,6 @@
 /**
- * @file Extension statistic service
- * @module module/extension/statistic.service
+ * @file System statistics service
+ * @module module/system/statistics.service
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -8,20 +8,20 @@ import schedule from 'node-schedule'
 import { Injectable } from '@nestjs/common'
 import { CacheService } from '@app/core/cache/cache.service'
 import { EmailService } from '@app/core/helper/helper.service.email'
-import { VoteTarget, VoteType } from '@app/modules/vote/vote.model'
+import { VoteTarget, VoteType } from '@app/modules/vote/vote.constant'
 import { VoteService } from '@app/modules/vote/vote.service'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { FeedbackService } from '@app/modules/feedback/feedback.service'
 import { TagService } from '@app/modules/tag/tag.service'
-import { getGlobalTodayViewsCount, resetGlobalTodayViewsCount } from './extension.helper'
+import { getGlobalTodayViewsCount, resetGlobalTodayViewsCount } from './system.helper'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
 
-const logger = createLogger({ scope: 'StatisticService', time: isDevEnv })
+const logger = createLogger({ scope: 'StatisticsService', time: isDevEnv })
 
-const DEFAULT_STATISTIC = Object.freeze({
+const DEFAULT_STATISTICS = Object.freeze({
   tags: null,
   articles: null,
   comments: null,
@@ -31,10 +31,10 @@ const DEFAULT_STATISTIC = Object.freeze({
   averageEmotion: null
 })
 
-export type Statistic = Record<keyof typeof DEFAULT_STATISTIC, number | null>
+export type Statistics = Record<keyof typeof DEFAULT_STATISTICS, number | null>
 
 @Injectable()
-export class StatisticService {
+export class StatisticsService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly emailService: EmailService,
@@ -65,7 +65,7 @@ export class StatisticService {
       this.commentService.countDocuments({ created_at: createdAt }),
       this.voteService.countDocuments({
         created_at: createdAt,
-        target_type: VoteTarget.Post,
+        target_type: VoteTarget.Article,
         vote_type: VoteType.Upvote
       }),
       this.voteService.countDocuments({
@@ -95,35 +95,35 @@ export class StatisticService {
     })
   }
 
-  public getStatistic(publicOnly: boolean) {
-    const statisticData: Statistic = { ...DEFAULT_STATISTIC }
+  public getStatistics(publicOnly: boolean) {
+    const statistics: Statistics = { ...DEFAULT_STATISTICS }
     const tasks = Promise.all([
       this.tagService.getTotalCount().then((value) => {
-        statisticData.tags = value
+        statistics.tags = value
       }),
       this.articleService.getTotalCount(publicOnly).then((value) => {
-        statisticData.articles = value
+        statistics.articles = value
       }),
       this.commentService.getTotalCount(publicOnly).then((value) => {
-        statisticData.comments = value
+        statistics.comments = value
       }),
       this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
-        statisticData.averageEmotion = value ?? 0
+        statistics.averageEmotion = value ?? 0
       }),
-      this.articleService.getMetaStatistic().then((value) => {
-        statisticData.totalViews = value?.totalViews ?? 0
-        statisticData.totalLikes = value?.totalLikes ?? 0
+      this.articleService.getTotalStatistics().then((value) => {
+        statistics.totalViews = value?.totalViews ?? 0
+        statistics.totalLikes = value?.totalLikes ?? 0
       }),
       getGlobalTodayViewsCount(this.cacheService).then((value) => {
-        statisticData.todayViews = value
+        statistics.todayViews = value
       })
     ])
 
     return tasks
-      .then(() => statisticData)
+      .then(() => statistics)
       .catch((error) => {
-        logger.warn('getStatistic task partial failed!', error)
-        return Promise.resolve(statisticData)
+        logger.warn('getStatistics task partial failed!', error)
+        return Promise.resolve(statistics)
       })
   }
 }

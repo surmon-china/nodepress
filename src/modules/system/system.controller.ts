@@ -1,6 +1,6 @@
 /**
- * @file Extension controller
- * @module module/extension/controller
+ * @file System controller
+ * @module module/system/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -13,24 +13,24 @@ import { RequestContext, IRequestContext } from '@app/decorators/request-context
 import { UploadedFile, IUploadedFile } from '@app/decorators/uploaded-file.decorator'
 import { GoogleService } from '@app/core/helper/helper.service.google'
 import { S3Service } from '@app/core/helper/helper.service.s3'
-import { StatisticService, Statistic } from './extension.service.statistic'
-import { DBBackupService } from './extension.service.dbbackup'
+import { DBBackupService } from './system.service.dbbackup'
+import { StatisticsService, Statistics } from './system.service.statistics'
 import * as APP_CONFIG from '@app/app.config'
 
-@Controller('extension')
-export class ExtensionController {
+@Controller('system')
+export class SystemController {
   constructor(
     private readonly s3Service: S3Service,
     private readonly googleService: GoogleService,
     private readonly dbBackupService: DBBackupService,
-    private readonly statisticService: StatisticService
+    private readonly statisticsService: StatisticsService
   ) {}
 
-  @Get('statistic')
+  @Get('statistics')
   @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get statistics succeeded')
-  getSystemStatistics(@RequestContext() { isUnauthenticated }: IRequestContext): Promise<Statistic> {
-    return this.statisticService.getStatistic(isUnauthenticated)
+  getSystemStatistics(@RequestContext() { isUnauthenticated }: IRequestContext): Promise<Statistics> {
+    return this.statisticsService.getStatistics(isUnauthenticated)
   }
 
   @Patch('database-backup')

@@ -13,9 +13,10 @@ import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { SeoService } from '@app/core/helper/helper.service.seo'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
+import { ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.constant'
+import { Article } from '@app/modules/article/article.model'
 import { CacheKeys } from '@app/constants/cache.constant'
-import { SortType } from '@app/constants/biz.constant'
+import { SortOrder } from '@app/constants/biz.constant'
 import { getTagUrl } from '@app/transformers/urlmap.transformer'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
@@ -56,7 +57,7 @@ export class TagService {
   }
 
   public async getAllTags(options: { aggregatePublicOnly: boolean }): Promise<Array<Tag>> {
-    const allTags = await this.tagModel.find().lean().sort({ _id: SortType.Desc }).exec()
+    const allTags = await this.tagModel.find().lean().sort({ _id: SortOrder.Desc }).exec()
     return await this.aggregateArticleCount(options.aggregatePublicOnly, allTags)
   }
 

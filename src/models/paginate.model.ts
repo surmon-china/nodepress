@@ -6,7 +6,7 @@
 
 import { IsIn, IsInt, IsOptional, IsNotEmpty, Min, Max } from 'class-validator'
 import { Transform } from 'class-transformer'
-import { SortType } from '@app/constants/biz.constant'
+import { SortMode } from '@app/constants/biz.constant'
 import { unknownToNumber } from '@app/transformers/value.transformer'
 
 export class PaginateBaseOptionDTO {
@@ -27,19 +27,19 @@ export class PaginateBaseOptionDTO {
 }
 
 export class PaginateOptionDTO extends PaginateBaseOptionDTO {
-  @IsIn([SortType.Asc, SortType.Desc])
+  @IsIn([SortMode.Oldest, SortMode.Latest])
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  sort?: SortType.Asc | SortType.Desc
+  sort?: SortMode.Oldest | SortMode.Latest
 }
 
 export class PaginateOptionWithHotSortDTO extends PaginateBaseOptionDTO {
-  @IsIn([SortType.Asc, SortType.Desc, SortType.Hottest])
+  @IsIn([SortMode.Oldest, SortMode.Latest, SortMode.Hottest])
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  sort?: SortType
+  sort?: SortMode
 }

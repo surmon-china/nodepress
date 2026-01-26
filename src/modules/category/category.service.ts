@@ -14,9 +14,10 @@ import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { ArchiveService } from '@app/modules/archive/archive.service'
 import { SeoService } from '@app/core/helper/helper.service.seo'
-import { Article, ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.model'
+import { Article } from '@app/modules/article/article.model'
+import { ARTICLE_LIST_QUERY_GUEST_FILTER } from '@app/modules/article/article.constant'
 import { CacheKeys } from '@app/constants/cache.constant'
-import { SortType } from '@app/constants/biz.constant'
+import { SortOrder } from '@app/constants/biz.constant'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import { Category } from './category.model'
@@ -56,7 +57,7 @@ export class CategoryService {
   }
 
   public async getAllCategories(options: { aggregatePublicOnly: boolean }): Promise<Array<Category>> {
-    const allCategories = await this.categoryModel.find().lean().sort({ _id: SortType.Desc }).exec()
+    const allCategories = await this.categoryModel.find().lean().sort({ _id: SortOrder.Desc }).exec()
     return await this.aggregateArticleCount(options.aggregatePublicOnly, allCategories)
   }
 

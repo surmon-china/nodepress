@@ -10,7 +10,7 @@ import { IsNotEmpty, IsArray, IsIn, IsInt, IsOptional, Min, ArrayNotEmpty, Array
 import { KeywordQueryDTO, BooleanNumberValue } from '@app/models/query.model'
 import { PaginateOptionDTO } from '@app/models/paginate.model'
 import { unknownToNumber } from '@app/transformers/value.transformer'
-import { FEEDBACK_EMOTION_VALUES } from './feedback.model'
+import { FEEDBACK_EMOTION_VALUES } from './feedback.constant'
 
 export class FeedbackPaginateQueryDTO extends IntersectionType(PaginateOptionDTO, KeywordQueryDTO) {
   @Min(0)

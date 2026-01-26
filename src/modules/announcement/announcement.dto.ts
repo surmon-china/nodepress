@@ -9,19 +9,21 @@ import { Transform } from 'class-transformer'
 import { IsInt, IsIn, IsNotEmpty, IsOptional, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { unknownToNumber } from '@app/transformers/value.transformer'
 import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
-import { PublishState } from '@app/constants/biz.constant'
 import { PaginateOptionDTO } from '@app/models/paginate.model'
 import { KeywordQueryDTO } from '@app/models/query.model'
-import { ANNOUNCEMENT_STATES } from './announcement.model'
+import { AnnouncementStatus, ANNOUNCEMENT_STATUSES } from './announcement.constant'
 
 export class AnnouncementPaginateQueryDTO extends IntersectionType(PaginateOptionDTO, KeywordQueryDTO) {
-  @WithGuestPermission({ only: [PublishState.Published], default: PublishState.Published })
-  @IsIn(ANNOUNCEMENT_STATES)
+  @WithGuestPermission({
+    only: [AnnouncementStatus.Published],
+    default: AnnouncementStatus.Published
+  })
+  @IsIn(ANNOUNCEMENT_STATUSES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  state?: PublishState
+  status?: AnnouncementStatus
 }
 
 export class AnnouncementsDTO {

@@ -15,14 +15,14 @@ import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { SortType } from '@app/constants/biz.constant'
+import { SortMode } from '@app/constants/biz.constant'
 import { CacheService } from '@app/core/cache/cache.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { incrementGlobalTodayViewsCount } from '@app/modules/extension/extension.helper'
-import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStateDTO } from './article.dto'
-import { ARTICLE_HOTTEST_SORT_PARAMS } from './article.model'
+import { incrementGlobalTodayViewsCount } from '@app/modules/system/system.helper'
+import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStatusDTO } from './article.dto'
+import { ARTICLE_HOTTEST_SORT_CONFIG } from './article.constant'
 import { ArticleService } from './article.service'
 import { Article } from './article.model'
 
@@ -45,39 +45,32 @@ export class ArticleController {
 
     // sort
     if (!_isUndefined(sort)) {
-      if (sort === SortType.Hottest) {
-        paginateOptions.sort = ARTICLE_HOTTEST_SORT_PARAMS
+      if (sort === SortMode.Hottest) {
+        paginateOptions.sort = ARTICLE_HOTTEST_SORT_CONFIG
       } else {
         paginateOptions.dateSort = sort
       }
     }
 
-    // featured
-    if (!_isUndefined(filters.featured)) {
-      queryFilter.featured = filters.featured
-    }
-
-    // language
-    if (!_isUndefined(filters.lang)) {
-      queryFilter.lang = filters.lang
-    }
-
     // states
-    if (!_isUndefined(filters.state)) {
-      queryFilter.state = filters.state
-    }
-    if (!_isUndefined(filters.public)) {
-      queryFilter.public = filters.public
+    if (!_isUndefined(filters.status)) {
+      queryFilter.status = filters.status
     }
     if (!_isUndefined(filters.origin)) {
       queryFilter.origin = filters.origin
+    }
+    if (!_isUndefined(filters.featured)) {
+      queryFilter.featured = filters.featured
+    }
+    if (!_isUndefined(filters.lang)) {
+      queryFilter.lang = filters.lang
     }
 
     // search
     if (filters.keyword) {
       const trimmed = _trim(filters.keyword)
       const keywordRegExp = new RegExp(trimmed, 'i')
-      queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }]
+      queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { summary: keywordRegExp }]
     }
 
     // date
@@ -106,14 +99,14 @@ export class ArticleController {
   @Get('all')
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Get all articles succeeded')
-  getAllArticle() {
+  getAllArticles() {
     return this.articleService.getAll()
   }
 
   @Get('calendar')
   @UseGuards(AdminOptionalGuard)
-  @SuccessResponse('Get article calendar succeeded')
-  getArticleCalendar(
+  @SuccessResponse('Get articles calendar succeeded')
+  getArticlesCalendar(
     @Query() query: ArticleCalendarQueryDTO,
     @RequestContext() { isUnauthenticated }: IRequestContext
   ) {
@@ -153,7 +146,7 @@ export class ArticleController {
         lean: true
       })
       // increment article views
-      this.articleService.incrementMetaStatistic(article.id, 'views')
+      this.articleService.incrementStatistics(article.id, 'views')
       // increment global today views
       incrementGlobalTodayViewsCount(this.cacheService)
       return article
@@ -189,8 +182,8 @@ export class ArticleController {
   @Patch()
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Update articles succeeded')
-  patchArticles(@Body() body: ArticlesStateDTO) {
-    return this.articleService.batchPatchState(body.article_ids, body.state)
+  patchArticles(@Body() body: ArticlesStatusDTO) {
+    return this.articleService.batchPatchStatus(body.article_ids, body.status)
   }
 
   @Delete()

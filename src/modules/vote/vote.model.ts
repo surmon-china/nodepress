@@ -11,31 +11,7 @@ import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.con
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { IPLocation } from '@app/core/helper/helper.service.ip'
-
-export enum VoteTarget {
-  Post = 1,
-  Comment = 2
-}
-
-export enum VoteType {
-  Upvote = 1,
-  Downvote = -1
-}
-
-export const voteTypeMap = new Map([
-  [VoteType.Upvote, '+1'],
-  [VoteType.Downvote, '-1']
-])
-
-export enum VoteAuthorType {
-  Anonymous = 0,
-  Guest = 1,
-  Disqus = 2
-}
-
-export const VOTE_TYPES = [VoteType.Upvote, VoteType.Downvote] as const
-export const VOTE_TARGETS = [VoteTarget.Post, VoteTarget.Comment] as const
-export const VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus] as const
+import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from './vote.constant'
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)

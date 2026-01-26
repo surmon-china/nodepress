@@ -10,9 +10,7 @@ import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty } from 'class-validator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { PublishState } from '@app/constants/biz.constant'
-
-export const ANNOUNCEMENT_STATES = [PublishState.Draft, PublishState.Published] as const
+import { AnnouncementStatus, ANNOUNCEMENT_STATUSES } from './announcement.constant'
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
@@ -35,11 +33,11 @@ export class Announcement {
   @prop({ required: true, validate: /\S+/ })
   content: string
 
-  @IsIn(ANNOUNCEMENT_STATES)
+  @IsIn(ANNOUNCEMENT_STATUSES)
   @IsInt()
   @IsDefined()
-  @prop({ enum: PublishState, default: PublishState.Published, index: true })
-  state: PublishState
+  @prop({ enum: AnnouncementStatus, default: AnnouncementStatus.Published, index: true })
+  status: AnnouncementStatus
 
   @prop({ default: Date.now, immutable: true })
   created_at?: Date

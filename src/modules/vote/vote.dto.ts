@@ -10,7 +10,7 @@ import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from 'class-validato
 import { PaginateOptionDTO } from '@app/models/paginate.model'
 import { Author } from '@app/modules/comment/comment.model'
 import { unknownToNumber } from '@app/transformers/value.transformer'
-import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from './vote.model'
+import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from './vote.constant'
 
 export class VotePaginateQueryDTO extends PaginateOptionDTO {
   @IsIn(VOTE_TARGETS)
@@ -67,10 +67,10 @@ export class CommentVoteDTO extends VoteAuthorDTO {
   vote: number
 }
 
-export class PostVoteDTO extends VoteAuthorDTO {
+export class ArticleVoteDTO extends VoteAuthorDTO {
   @IsInt()
   @IsDefined()
-  post_id: number
+  article_id: number
 
   @IsIn([VoteType.Upvote])
   @IsInt()

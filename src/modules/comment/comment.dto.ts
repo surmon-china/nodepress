@@ -9,20 +9,19 @@ import { IsString, IsArray, IsIn, IsInt, Min } from 'class-validator'
 import { IsNotEmpty, IsOptional, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { Transform } from 'class-transformer'
 import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
-import { CommentState } from '@app/constants/biz.constant'
-import { COMMENT_STATES } from './comment.model'
 import { KeywordQueryDTO } from '@app/models/query.model'
 import { PaginateOptionWithHotSortDTO } from '@app/models/paginate.model'
 import { unknownToNumber } from '@app/transformers/value.transformer'
+import { CommentStatus, COMMENT_STATUSES } from './comment.constant'
 
 export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWithHotSortDTO, KeywordQueryDTO) {
-  @WithGuestPermission({ only: [CommentState.Published], default: CommentState.Published })
-  @IsIn(COMMENT_STATES)
+  @WithGuestPermission({ only: [CommentStatus.Published], default: CommentStatus.Published })
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
-  state?: CommentState
+  status?: CommentStatus
 
   @Min(0)
   @IsInt()
@@ -50,8 +49,8 @@ export class CommentsDTO {
   post_ids: number[]
 }
 
-export class CommentsStateDTO extends CommentsDTO {
-  @IsIn(COMMENT_STATES)
+export class CommentsStatusDTO extends CommentsDTO {
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
-  state: CommentState
+  status: CommentStatus
 }

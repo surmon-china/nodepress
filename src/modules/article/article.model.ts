@@ -6,40 +6,25 @@
 
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, index, plugin, Ref, modelOptions } from '@typegoose/typegoose'
+import { Type } from 'class-transformer'
 import { IsString, IsBoolean, IsArray, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength } from 'class-validator'
-import { Language, SortType, PublishState, PublicState, OriginState } from '@app/constants/biz.constant'
+import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength, ValidateNested } from 'class-validator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { KeyValueModel } from '@app/models/key-value.model'
 import { Category } from '@app/modules/category/category.model'
 import { Tag } from '@app/modules/tag/tag.model'
+import { ArticleStatus, ArticleOrigin, ArticleLanguage } from './article.constant'
+import { ARTICLE_STATUSES, ARTICLE_ORIGINS, ARTICLE_LANGUAGES } from './article.constant'
 
-export const ARTICLE_LANGUAGES = [Language.English, Language.Chinese, Language.Mixed] as const
-export const ARTICLE_PUBLISH_STATES = [PublishState.Draft, PublishState.Published, PublishState.Recycle] as const
-export const ARTICLE_PUBLIC_STATES = [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
-export const ARTICLE_ORIGIN_STATES = [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
-
-export const ARTICLE_FULL_QUERY_REF_POPULATE = ['categories', 'tags']
-export const ARTICLE_LIST_QUERY_PROJECTION = { content: false }
-export const ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
-  state: PublishState.Published,
-  public: PublicState.Public
-})
-
-export const ARTICLE_HOTTEST_SORT_PARAMS = Object.freeze({
-  'meta.comments': SortType.Desc,
-  'meta.likes': SortType.Desc
-})
-
-const ARTICLE_DEFAULT_META: ArticleMeta = Object.freeze({
+const ARTICLE_DEFAULT_STATS: ArticleStats = Object.freeze({
   likes: 0,
   views: 0,
   comments: 0
 })
 
-export class ArticleMeta {
+export class ArticleStats {
   @IsInt()
   @prop({ default: 0 })
   likes: number
@@ -71,13 +56,13 @@ export class ArticleMeta {
   }
 })
 @index(
-  { title: 'text', content: 'text', description: 'text' },
+  { title: 'text', content: 'text', summary: 'text' },
   {
     name: 'SearchIndex',
     weights: {
       title: 10,
-      description: 18,
-      content: 3
+      summary: 12,
+      content: 8
     }
   }
 )
@@ -89,7 +74,7 @@ export class Article {
   @MaxLength(50)
   @IsString()
   @IsOptional()
-  @prop({ default: null, validate: /^[a-zA-Z0-9-_]+$/, index: true })
+  @prop({ default: null, trim: true, validate: /^[a-zA-Z0-9-_]+$/, index: true })
   slug: string
 
   @IsString()
@@ -104,7 +89,7 @@ export class Article {
 
   @IsString()
   @prop({ default: '', text: true })
-  description: string
+  summary: string
 
   @ArrayUnique()
   @IsArray()
@@ -117,38 +102,18 @@ export class Article {
   @prop({ type: String, default: null })
   thumbnail: string | null
 
-  // publish state
-  @IsIn(ARTICLE_PUBLISH_STATES)
+  @IsIn(ARTICLE_STATUSES)
   @IsInt()
   @IsDefined()
-  @prop({ enum: PublishState, default: PublishState.Published, index: true })
-  state: PublishState
-
-  // public state
-  @IsIn(ARTICLE_PUBLIC_STATES)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: PublicState, default: PublicState.Public, index: true })
-  public: PublicState
+  @prop({ enum: ArticleStatus, default: ArticleStatus.Published, index: true })
+  status: ArticleStatus
 
   // origin state
-  @IsIn(ARTICLE_ORIGIN_STATES)
+  @IsIn(ARTICLE_ORIGINS)
   @IsInt()
   @IsDefined()
-  @prop({ enum: OriginState, default: OriginState.Original, index: true })
-  origin: OriginState
-
-  // category
-  @ArrayUnique()
-  @ArrayNotEmpty()
-  @IsArray()
-  @prop({ ref: () => Category, required: true, index: true })
-  categories: Ref<Category>[]
-
-  // tag
-  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
-  @prop({ ref: () => Tag, index: true })
-  tags: Ref<Tag>[]
+  @prop({ enum: ArticleOrigin, default: ArticleOrigin.Original, index: true })
+  origin: ArticleOrigin
 
   // language
   // MARK: can't use 'language' field
@@ -157,8 +122,8 @@ export class Article {
   @IsIn(ARTICLE_LANGUAGES)
   @IsString()
   @IsDefined()
-  @prop({ default: Language.Chinese, index: true })
-  lang: Language
+  @prop({ default: ArticleLanguage.Chinese, index: true })
+  lang: ArticleLanguage
 
   // featured
   @IsBoolean()
@@ -170,19 +135,33 @@ export class Article {
   @prop({ default: false })
   disabled_comments: boolean
 
-  @prop({ _id: false, default: { ...ARTICLE_DEFAULT_META } })
-  meta: ArticleMeta
+  @prop({ _id: false, default: { ...ARTICLE_DEFAULT_STATS } })
+  stats: ArticleStats
+
+  @Type(() => KeyValueModel)
+  @ValidateNested()
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
+  extras: KeyValueModel[]
+
+  // tag
+  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
+  @prop({ ref: () => Tag, index: true })
+  tags: Ref<Tag>[]
+
+  // category
+  @ArrayUnique()
+  @ArrayNotEmpty()
+  @IsArray()
+  @prop({ ref: () => Category, required: true, index: true })
+  categories: Ref<Category>[]
 
   @prop({ default: Date.now, index: true, immutable: true })
   created_at?: Date
 
   @prop({ default: Date.now })
   updated_at?: Date
-
-  @ArrayUnique()
-  @IsArray()
-  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
-  extends: KeyValueModel[]
 }
 
 export const ArticleProvider = getProviderByTypegooseClass(Article)

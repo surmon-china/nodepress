@@ -8,12 +8,12 @@ import { Injectable, NotFoundException, ForbiddenException, BadRequestException 
 import { CommentService } from '@app/modules/comment/comment.service'
 import { Comment, CommentBase } from '@app/modules/comment/comment.model'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
-import { CommentState } from '@app/constants/biz.constant'
+import { CommentStatus } from '@app/modules/comment/comment.constant'
 import { getDisqusCacheKey } from '@app/constants/cache.constant'
 import { CacheService } from '@app/core/cache/cache.service'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
-import { getExtendObject, getExtendValue } from '@app/transformers/extend.transformer'
+import { getExtraObject, getExtraValue } from '@app/transformers/extra.transformer'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { DisqusPrivateService } from './disqus.service.private'
 import { createLogger } from '@app/utils/logger'
@@ -119,7 +119,7 @@ export class DisqusPublicService {
   public async getDisqusPostIdByCommentId(commentId: number): Promise<string | null> {
     try {
       const comment = await this.commentService.getDetailByNumberId(commentId)
-      return getExtendValue(comment.extends, DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY) || null
+      return getExtraValue(comment.extras, DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY) || null
     } catch (error) {
       return null
     }
@@ -190,18 +190,18 @@ export class DisqusPublicService {
     // 7. create nodepress comment
     newComment.author.name = disqusPost.author.name || newComment.author.name
     newComment.author.site = disqusPost.author.url || newComment.author.site
-    newComment.extends.push(
-      { name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: disqusPost.id },
-      { name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: disqusPost.thread }
+    newComment.extras.push(
+      { key: DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY, value: disqusPost.id },
+      { key: DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY, value: disqusPost.thread }
     )
     if (disqusPost.author.isAnonymous || !accessToken) {
       // guest comment
-      newComment.extends.push({ name: DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY, value: 'true' })
+      newComment.extras.push({ key: DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY, value: 'true' })
     } else {
       // disqus user comment
-      newComment.extends.push(
-        { name: DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY, value: disqusPost.author.id },
-        { name: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY, value: disqusPost.author.username }
+      newComment.extras.push(
+        { key: DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY, value: disqusPost.author.id },
+        { key: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY, value: disqusPost.author.username }
       )
     }
 
@@ -224,9 +224,9 @@ export class DisqusPublicService {
     if (!comment) throw new NotFoundException(`Comment '${commentId}' not found`)
 
     // disqus extend info
-    const extendsObject = getExtendObject(comment.extends)
-    const commentDisqusPostId = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
-    const commentDisqusAuthorId = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
+    const extrasObject = getExtraObject(comment.extras)
+    const commentDisqusPostId = extrasObject[DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY]
+    const commentDisqusAuthorId = extrasObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY]
     if (!commentDisqusAuthorId || !commentDisqusPostId) {
       throw new BadRequestException(`Comment '${commentId}' cannot be deleted (missing Disqus metadata)`)
     }
@@ -244,6 +244,6 @@ export class DisqusPublicService {
     })
 
     // NodePress delete
-    return await this.commentService.update(comment._id, { state: CommentState.Deleted })
+    return await this.commentService.update(comment._id, { status: CommentStatus.Trash })
   }
 }

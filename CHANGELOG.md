@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file.
 
+### 6.0.0 (2026-01-24)
+
+#### Global Data Schema
+
+- Renamed all `extends` fields to `extras` across all database tables.
+- **KeyValueModel**: Renamed the `name` property to `key` within the `KeyValueModel`.
+
+#### Options Module
+
+- Renamed the module from `option` to `options`.
+- Refactored `options.friend_links` structure to `[{ name: string, url: string }]`.
+- Removed the `options.meta` field.
+
+#### Article Module
+
+- Renamed `article.description` to `article.summary`.
+- Renamed `article.meta` to `article.stats`.
+- Renamed `article.state` to `article.status`.
+- Added a new status value `Private` to `article.status`.
+- Updated `ArticleLanguage.Mixed` value from `mix` to `mul`.
+- Removed the `article.public` field and its associated states.
+- Removed the `article.password` field and its associated states.
+
+#### Comment Module
+
+- Renamed `comment.state` to `comment.status`.
+- Removed the legacy `comment.is_top` field.
+
+#### Announcement Module
+
+- Renamed `announcement.state` to `announcement.status`.
+
+#### System Module
+
+- Renamed the module from `extension` to `system`.
+- **API Endpoints**: Updated `/system/statistic` to `/system/statistics`.
+
+#### Vote Module
+
+- **API Endpoints**: Updated `/vote/post` to `/vote/article`.
+- **DTOs**: Renamed `ArticleVoteDTO.post_id` to `ArticleVoteDTO.article_id`.
+
 ### 5.6.0 (2026-01-12)
 
 - Refactor AWS service into a generic S3 service, decoupling from AWS S3.

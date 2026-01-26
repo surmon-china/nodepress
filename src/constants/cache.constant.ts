@@ -5,7 +5,7 @@
  */
 
 export enum CacheKeys {
-  Option = 'option',
+  Options = 'options',
   Archive = 'archive',
   AllTags = 'all-tags',
   AllCategories = 'all-categories',
