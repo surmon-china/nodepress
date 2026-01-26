@@ -253,12 +253,13 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import dayjs from &#x27;dayjs&#x27;
-import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
 import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import { GUESTBOOK_POST_ID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
+import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
+import { CommentStatus } from &#x27;@app/modules/comment/comment.constant&#x27;
+import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
 import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { getThreadIdentifierById } from &#x27;./disqus.constant&#x27;
-import { ThreadState } from &#x27;./disqus.dto&#x27;
+import { ThreadStatus } from &#x27;./disqus.dto&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 // DOC: https://help.disqus.com/en/articles/1717222-custom-xml-import-format
@@ -274,7 +275,7 @@ const getCommentItemXML &#x3D; (comment: Comment) &#x3D;&gt; {
       &lt;wp:comment_author_IP&gt;${comment.ip || &#x27;&#x27;}&lt;/wp:comment_author_IP&gt;
       &lt;wp:comment_date_gmt&gt;${dayjs(comment.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:comment_date_gmt&gt;
       &lt;wp:comment_content&gt;&lt;![CDATA[${comment.content || &#x27;&#x27;}]]&gt;&lt;/wp:comment_content&gt;
-      &lt;wp:comment_approved&gt;${comment.state &#x3D;&#x3D;&#x3D; CommentState.Published ? 1 : 0}&lt;/wp:comment_approved&gt;
+      &lt;wp:comment_approved&gt;${comment.status &#x3D;&#x3D;&#x3D; CommentStatus.Published ? 1 : 0}&lt;/wp:comment_approved&gt;
     &lt;/wp:comment&gt;
   &#x60;
 }
@@ -308,11 +309,11 @@ export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comme
             &lt;item&gt;
               &lt;title&gt;${item.article.title}&lt;/title&gt;
               &lt;link&gt;${getPermalinkById(item.article.id)}&lt;/link&gt;
-              &lt;content:encoded&gt;&lt;![CDATA[${item.article.description || &#x27;&#x27;}]]&gt;&lt;/content:encoded&gt;
+              &lt;content:encoded&gt;&lt;![CDATA[${item.article.summary || &#x27;&#x27;}]]&gt;&lt;/content:encoded&gt;
               &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(item.article.id)}&lt;/dsq:thread_identifier&gt;
               &lt;wp:post_date_gmt&gt;${dayjs(item.article.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:post_date_gmt&gt;
               &lt;wp:comment_status&gt;${
-                item.article.disabled_comments ? ThreadState.Closed : ThreadState.Open
+                item.article.disabled_comments ? ThreadStatus.Closed : ThreadStatus.Open
               }&lt;/wp:comment_status&gt;
               ${item.comments.map(getCommentItemXML).join(&#x27;\n&#x27;)}
             &lt;/item&gt;

@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >StatisticService</li>
+  <li class="breadcrumb-item" >StatisticsService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/extension/extension.service.statistic.ts</code>
+            <code>src/modules/system/system.service.statistics.ts</code>
         </p>
 
 
@@ -160,7 +160,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getStatistic" >getStatistic</a>
+                                <a href="#getStatistics" >getStatistics</a>
                             </li>
                         </ul>
                     </td>
@@ -185,7 +185,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/modules/extension/extension.service.statistic.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/modules/system/system.service.statistics.ts:37</a></div>
                             </td>
                         </tr>
 
@@ -324,7 +324,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="60"
-                                    class="link-to-prism">src/modules/extension/extension.service.statistic.ts:60</a></div>
+                                    class="link-to-prism">src/modules/system/system.service.statistics.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -374,18 +374,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getStatistic"></a>
+                    <a name="getStatistics"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getStatistic</b></span>
-                        <a href="#getStatistic"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getStatistics</b></span>
+                        <a href="#getStatistics"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getStatistic(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>getStatistics(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
@@ -393,7 +393,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="98"
-                                    class="link-to-prism">src/modules/extension/extension.service.statistic.ts:98</a></div>
+                                    class="link-to-prism">src/modules/system/system.service.statistics.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -449,20 +449,20 @@
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import { VoteTarget, VoteType } from &#x27;@app/modules/vote/vote.model&#x27;
+import { VoteTarget, VoteType } from &#x27;@app/modules/vote/vote.constant&#x27;
 import { VoteService } from &#x27;@app/modules/vote/vote.service&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { FeedbackService } from &#x27;@app/modules/feedback/feedback.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import { getGlobalTodayViewsCount, resetGlobalTodayViewsCount } from &#x27;./extension.helper&#x27;
+import { getGlobalTodayViewsCount, resetGlobalTodayViewsCount } from &#x27;./system.helper&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-const logger &#x3D; createLogger({ scope: &#x27;StatisticService&#x27;, time: isDevEnv })
+const logger &#x3D; createLogger({ scope: &#x27;StatisticsService&#x27;, time: isDevEnv })
 
-const DEFAULT_STATISTIC &#x3D; Object.freeze({
+const DEFAULT_STATISTICS &#x3D; Object.freeze({
   tags: null,
   articles: null,
   comments: null,
@@ -472,10 +472,10 @@ const DEFAULT_STATISTIC &#x3D; Object.freeze({
   averageEmotion: null
 })
 
-export type Statistic &#x3D; Record&lt;keyof typeof DEFAULT_STATISTIC, number | null&gt;
+export type Statistics &#x3D; Record&lt;keyof typeof DEFAULT_STATISTICS, number | null&gt;
 
 @Injectable()
-export class StatisticService {
+export class StatisticsService {
   constructor(
     private readonly cacheService: CacheService,
     private readonly emailService: EmailService,
@@ -506,7 +506,7 @@ export class StatisticService {
       this.commentService.countDocuments({ created_at: createdAt }),
       this.voteService.countDocuments({
         created_at: createdAt,
-        target_type: VoteTarget.Post,
+        target_type: VoteTarget.Article,
         vote_type: VoteType.Upvote
       }),
       this.voteService.countDocuments({
@@ -536,35 +536,35 @@ export class StatisticService {
     })
   }
 
-  public getStatistic(publicOnly: boolean) {
-    const statisticData: Statistic &#x3D; { ...DEFAULT_STATISTIC }
+  public getStatistics(publicOnly: boolean) {
+    const statistics: Statistics &#x3D; { ...DEFAULT_STATISTICS }
     const tasks &#x3D; Promise.all([
       this.tagService.getTotalCount().then((value) &#x3D;&gt; {
-        statisticData.tags &#x3D; value
+        statistics.tags &#x3D; value
       }),
       this.articleService.getTotalCount(publicOnly).then((value) &#x3D;&gt; {
-        statisticData.articles &#x3D; value
+        statistics.articles &#x3D; value
       }),
       this.commentService.getTotalCount(publicOnly).then((value) &#x3D;&gt; {
-        statisticData.comments &#x3D; value
+        statistics.comments &#x3D; value
       }),
       this.feedbackService.getRootFeedbackAverageEmotion().then((value) &#x3D;&gt; {
-        statisticData.averageEmotion &#x3D; value ?? 0
+        statistics.averageEmotion &#x3D; value ?? 0
       }),
-      this.articleService.getMetaStatistic().then((value) &#x3D;&gt; {
-        statisticData.totalViews &#x3D; value?.totalViews ?? 0
-        statisticData.totalLikes &#x3D; value?.totalLikes ?? 0
+      this.articleService.getTotalStatistics().then((value) &#x3D;&gt; {
+        statistics.totalViews &#x3D; value?.totalViews ?? 0
+        statistics.totalLikes &#x3D; value?.totalLikes ?? 0
       }),
       getGlobalTodayViewsCount(this.cacheService).then((value) &#x3D;&gt; {
-        statisticData.todayViews &#x3D; value
+        statistics.todayViews &#x3D; value
       })
     ])
 
     return tasks
-      .then(() &#x3D;&gt; statisticData)
+      .then(() &#x3D;&gt; statistics)
       .catch((error) &#x3D;&gt; {
-        logger.warn(&#x27;getStatistic task partial failed!&#x27;, error)
-        return Promise.resolve(statisticData)
+        logger.warn(&#x27;getStatistics task partial failed!&#x27;, error)
+        return Promise.resolve(statistics)
       })
   }
 }
@@ -611,7 +611,7 @@ export class StatisticService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'StatisticService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'StatisticsService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

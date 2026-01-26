@@ -100,6 +100,47 @@
 
 <h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3>6.0.0 (2026-01-24)</h3>
+<h4>Global Data Schema</h4>
+<ul>
+<li>Renamed all <code>extends</code> fields to <code>extras</code> across all database tables.</li>
+<li>Renamed the <code>name</code> property to <code>key</code> within the <code>KeyValueModel</code>.</li>
+</ul>
+<h4>Options Module</h4>
+<ul>
+<li>Renamed the module from <code>option</code> to <code>options</code>.</li>
+<li>Refactored <code>options.friend_links</code> structure to <code>[{ name: string, url: string }]</code>.</li>
+<li>Removed the <code>options.meta</code> field.</li>
+</ul>
+<h4>Article Module</h4>
+<ul>
+<li>Renamed <code>article.description</code> to <code>article.summary</code>.</li>
+<li>Renamed <code>article.meta</code> to <code>article.stats</code>.</li>
+<li>Renamed <code>article.state</code> to <code>article.status</code>.</li>
+<li>Added a new status value <code>Private</code> to <code>article.status</code>.</li>
+<li>Updated <code>ArticleLanguage.Mixed</code> value from <code>mix</code> to <code>mul</code>.</li>
+<li>Removed the <code>article.public</code> field and its associated states.</li>
+<li>Removed the <code>article.password</code> field and its associated states.</li>
+</ul>
+<h4>Comment Module</h4>
+<ul>
+<li>Renamed <code>comment.state</code> to <code>comment.status</code>.</li>
+<li>Removed the legacy <code>comment.is_top</code> field.</li>
+</ul>
+<h4>Announcement Module</h4>
+<ul>
+<li>Renamed <code>announcement.state</code> to <code>announcement.status</code>.</li>
+</ul>
+<h4>System Module</h4>
+<ul>
+<li>Renamed the module from <code>extension</code> to <code>system</code>.</li>
+<li><strong>API Endpoints</strong>: Updated <code>/system/statistic</code> to <code>/system/statistics</code>.</li>
+</ul>
+<h4>Vote Module</h4>
+<ul>
+<li><strong>API Endpoints</strong>: Updated <code>/vote/post</code> to <code>/vote/article</code>.</li>
+<li><strong>DTOs</strong>: Renamed <code>ArticleVoteDTO.post_id</code> to <code>ArticleVoteDTO.article_id</code>.</li>
+</ul>
 <h3>5.6.0 (2026-01-12)</h3>
 <ul>
 <li>Refactor AWS service into a generic S3 service, decoupling from AWS S3.</li>

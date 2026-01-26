@@ -215,7 +215,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/modules/comment/comment.dto.ts:39</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/modules/comment/comment.dto.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -239,20 +239,19 @@ import { IsString, IsArray, IsIn, IsInt, Min } from &#x27;class-validator&#x27;
 import { IsNotEmpty, IsOptional, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { Transform } from &#x27;class-transformer&#x27;
 import { WithGuestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
-import { CommentState } from &#x27;@app/constants/biz.constant&#x27;
-import { COMMENT_STATES } from &#x27;./comment.model&#x27;
 import { KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
 import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
+import { CommentStatus, COMMENT_STATUSES } from &#x27;./comment.constant&#x27;
 
 export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWithHotSortDTO, KeywordQueryDTO) {
-  @WithGuestPermission({ only: [CommentState.Published], default: CommentState.Published })
-  @IsIn(COMMENT_STATES)
+  @WithGuestPermission({ only: [CommentStatus.Published], default: CommentStatus.Published })
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  state?: CommentState
+  status?: CommentStatus
 
   @Min(0)
   @IsInt()
@@ -280,10 +279,10 @@ export class CommentsDTO {
   post_ids: number[]
 }
 
-export class CommentsStateDTO extends CommentsDTO {
-  @IsIn(COMMENT_STATES)
+export class CommentsStatusDTO extends CommentsDTO {
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
-  state: CommentState
+  status: CommentStatus
 }
 </code></pre>
     </div>

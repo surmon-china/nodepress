@@ -241,7 +241,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/modules/comment/comment.model.ts:85</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/modules/comment/comment.model.ts:75</a></div>
                         </td>
                     </tr>
 
@@ -276,13 +276,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @Type(undefined)<br />@ValidateNested()<br />@IsObject()<br />@IsNotEmpty()<br />@IsDefined({message: &#x27;comment author?&#x27;})<br />@prop({required: true, _id: false})<br />
+                            @Type(undefined)<br />@ValidateNested()<br />@IsObject()<br />@IsNotEmpty()<br />@IsDefined({message: &#x27;comment author?&#x27;})<br />@prop({_id: false, required: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/modules/comment/comment.model.ts:93</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/comment/comment.model.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -322,7 +322,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/modules/comment/comment.model.ts:80</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/comment/comment.model.ts:70</a></div>
                         </td>
                     </tr>
 
@@ -359,7 +359,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/comment/comment.model.ts:73</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/modules/comment/comment.model.ts:63</a></div>
                         </td>
                     </tr>
 
@@ -397,7 +397,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/comment/comment.model.ts:68</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/modules/comment/comment.model.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -424,21 +424,11 @@ import { IsDefined, IsOptional, IsNotEmpty, ValidateNested, MinLength, MaxLength
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
-import { ROOT_COMMENT_PID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
+import { ROOT_COMMENT_PID } from &#x27;@app/constants/biz.constant&#x27;
 import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
-import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
-
-export const COMMENT_STATES &#x3D; [
-  CommentState.Auditing,
-  CommentState.Published,
-  CommentState.Deleted,
-  CommentState.Spam
-] as const
-
-export const COMMENT_GUEST_QUERY_FILTER &#x3D; Object.freeze({
-  state: CommentState.Published
-})
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { CommentStatus, COMMENT_STATUSES } from &#x27;./comment.constant&#x27;
 
 @modelOptions({
   schemaOptions: {
@@ -501,7 +491,7 @@ export class CommentBase {
   @IsObject()
   @IsNotEmpty()
   @IsDefined({ message: &#x27;comment author?&#x27; })
-  @prop({ required: true, _id: false })
+  @prop({ _id: false, required: true })
   author: Author
 }
 
@@ -523,11 +513,10 @@ export class Comment extends CommentBase {
   @prop({ unique: true })
   id?: number
 
-  // state
-  @IsIn(COMMENT_STATES)
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
-  @prop({ enum: CommentState, default: CommentState.Published, index: true })
-  state: CommentState
+  @prop({ enum: CommentStatus, default: CommentStatus.Published, index: true })
+  status: CommentStatus
 
   // likes
   @IsInt()
@@ -548,16 +537,18 @@ export class Comment extends CommentBase {
   @prop({ type: Object, default: null })
   ip_location: Partial&lt;IPLocation&gt; | null
 
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested()
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  extras: KeyValueModel[]
+
   @prop({ default: Date.now, immutable: true })
   created_at?: Date
 
   @prop({ default: Date.now })
   updated_at?: Date
-
-  @ArrayUnique()
-  @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  extends: KeyValueModel[]
 }
 
 export const CommentProvider &#x3D; getProviderByTypegooseClass(Comment)

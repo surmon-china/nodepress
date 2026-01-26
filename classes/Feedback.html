@@ -253,7 +253,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="144" class="link-to-prism">src/modules/feedback/feedback.model.ts:144</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/modules/feedback/feedback.model.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -289,7 +289,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/modules/feedback/feedback.model.ts:115</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/modules/feedback/feedback.model.ts:75</a></div>
                         </td>
                     </tr>
 
@@ -327,7 +327,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/modules/feedback/feedback.model.ts:138</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/modules/feedback/feedback.model.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -363,7 +363,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="141" class="link-to-prism">src/modules/feedback/feedback.model.ts:141</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">src/modules/feedback/feedback.model.ts:101</a></div>
                         </td>
                     </tr>
 
@@ -400,7 +400,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="119" class="link-to-prism">src/modules/feedback/feedback.model.ts:119</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/modules/feedback/feedback.model.ts:79</a></div>
                         </td>
                     </tr>
 
@@ -438,7 +438,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">src/modules/feedback/feedback.model.ts:129</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/modules/feedback/feedback.model.ts:89</a></div>
                         </td>
                     </tr>
 
@@ -476,7 +476,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/modules/feedback/feedback.model.ts:124</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/modules/feedback/feedback.model.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -513,7 +513,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="147" class="link-to-prism">src/modules/feedback/feedback.model.ts:147</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/modules/feedback/feedback.model.ts:107</a></div>
                         </td>
                     </tr>
 
@@ -551,7 +551,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/modules/feedback/feedback.model.ts:133</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/modules/feedback/feedback.model.ts:93</a></div>
                         </td>
                     </tr>
 
@@ -578,47 +578,7 @@ import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/databas
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
-
-export enum FeedbackEmotion {
-  Terrible &#x3D; 1,
-  Bad &#x3D; 2,
-  Neutral &#x3D; 3,
-  Great &#x3D; 4,
-  Amazing &#x3D; 5
-}
-
-const emotionMap &#x3D; new Map(
-  [
-    {
-      value: FeedbackEmotion.Terrible,
-      text: FeedbackEmotion[FeedbackEmotion.Terrible],
-      emoji: &#x27;😠&#x27;
-    },
-    {
-      value: FeedbackEmotion.Bad,
-      text: FeedbackEmotion[FeedbackEmotion.Bad],
-      emoji: &#x27;🙁&#x27;
-    },
-    {
-      value: FeedbackEmotion.Neutral,
-      text: FeedbackEmotion[FeedbackEmotion.Neutral],
-      emoji: &#x27;😐&#x27;
-    },
-    {
-      value: FeedbackEmotion.Great,
-      text: FeedbackEmotion[FeedbackEmotion.Great],
-      emoji: &#x27;😃&#x27;
-    },
-    {
-      value: FeedbackEmotion.Amazing,
-      text: FeedbackEmotion[FeedbackEmotion.Amazing],
-      emoji: &#x27;🥰&#x27;
-    }
-  ].map((item) &#x3D;&gt; [item.value, item])
-)
-
-export const FEEDBACK_EMOTIONS &#x3D; Array.from(emotionMap.values())
-export const FEEDBACK_EMOTION_VALUES &#x3D; FEEDBACK_EMOTIONS.map((e) &#x3D;&gt; e.value)
+import { emotionsMap, FEEDBACK_EMOTION_VALUES } from &#x27;./feedback.constant&#x27;
 
 export class FeedbackBase {
   @Min(0)
@@ -634,11 +594,11 @@ export class FeedbackBase {
   emotion: number
 
   public get emotion_text() {
-    return emotionMap.get(this.emotion)!.text
+    return emotionsMap.get(this.emotion)!.text
   }
 
   public get emotion_emoji() {
-    return emotionMap.get(this.emotion)!.emoji
+    return emotionsMap.get(this.emotion)!.emoji
   }
 
   @MinLength(3)

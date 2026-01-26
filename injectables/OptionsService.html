@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >OptionService</li>
+  <li class="breadcrumb-item" >OptionsService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/option/option.service.ts</code>
+            <code>src/modules/options/options.service.ts</code>
         </p>
 
 
@@ -154,7 +154,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#optionCache" >optionCache</a>
+                                <a href="#optionsCache" >optionsCache</a>
                             </li>
                         </ul>
                     </td>
@@ -176,21 +176,16 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#ensureAppOption" >ensureAppOption</a>
+                                <a href="#ensureAppOptions" >ensureAppOptions</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getOptionCacheForGuest" >getOptionCacheForGuest</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#incrementMetaLikes" >incrementMetaLikes</a>
+                                <a href="#getOptionsCacheForGuest" >getOptionsCacheForGuest</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#putOption" >putOption</a>
+                                <a href="#putOptions" >putOptions</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -215,12 +210,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(optionModel: <a href="../classes/Option.html" target="_self">MongooseModel&lt;Option&gt;</a>, cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>)</code>
+<code>constructor(optionsModel: <a href="../classes/Option.html" target="_self">MongooseModel&lt;Option&gt;</a>, cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/option/option.service.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/options/options.service.ts:22</a></div>
                             </td>
                         </tr>
 
@@ -238,7 +233,7 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>optionModel</td>
+                                                        <td>optionsModel</td>
                                                   
                                                         <td>
                                                                         <code><a href="../classes/Option.html" target="_self" >MongooseModel&lt;Option&gt;</a></code>
@@ -298,8 +293,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="64"
-                                    class="link-to-prism">src/modules/option/option.service.ts:64</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="63"
+                                    class="link-to-prism">src/modules/options/options.service.ts:63</a></div>
                         </td>
                     </tr>
 
@@ -349,19 +344,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ensureAppOption"></a>
+                    <a name="ensureAppOptions"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>ensureAppOption</b></span>
-                        <a href="#ensureAppOption"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>ensureAppOptions</b></span>
+                        <a href="#ensureAppOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>ensureAppOption()</code>
+                    <code>ensureAppOptions()</code>
                 </td>
             </tr>
 
@@ -369,7 +364,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="42"
-                                    class="link-to-prism">src/modules/option/option.service.ts:42</a></div>
+                                    class="link-to-prism">src/modules/options/options.service.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -389,26 +384,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getOptionCacheForGuest"></a>
+                    <a name="getOptionsCacheForGuest"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getOptionCacheForGuest</b></span>
-                        <a href="#getOptionCacheForGuest"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getOptionsCacheForGuest</b></span>
+                        <a href="#getOptionsCacheForGuest"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getOptionCacheForGuest()</code>
+                    <code>getOptionsCacheForGuest()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/modules/option/option.service.ts:47</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/options/options.service.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -428,67 +423,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="incrementMetaLikes"></a>
+                    <a name="putOptions"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>incrementMetaLikes</b></span>
-                        <a href="#incrementMetaLikes"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>putOptions</b></span>
+                        <a href="#putOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>incrementMetaLikes()</code>
+                    <code>putOptions(newOptions: <a href="../classes/Option.html" target="_self">Option</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="80"
-                                    class="link-to-prism">src/modules/option/option.service.ts:80</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="putOption"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>putOption</b></span>
-                        <a href="#putOption"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putOption(newOption: <a href="../classes/Option.html" target="_self">Option</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="51"
-                                    class="link-to-prism">src/modules/option/option.service.ts:51</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/modules/options/options.service.ts:52</a></div>
                         </td>
                     </tr>
 
@@ -509,7 +464,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>newOption</td>
+                                                <td>newOptions</td>
                                             <td>
                                                             <code><a href="../classes/Option.html" target="_self" >Option</a></code>
                                             </td>
@@ -557,8 +512,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="72"
-                                    class="link-to-prism">src/modules/option/option.service.ts:72</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/options/options.service.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -614,11 +569,11 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="optionCache"></a>
+                    <a name="optionsCache"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
-                        <span ><b>optionCache</b></span>
-                        <a href="#optionCache"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>optionsCache</b></span>
+                        <a href="#optionsCache"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -630,7 +585,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/option/option.service.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/options/options.service.ts:22</a></div>
                         </td>
                     </tr>
 
@@ -649,79 +604,70 @@ import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
-import { Option, Blocklist, DEFAULT_OPTION } from &#x27;./option.model&#x27;
+import { Option, Blocklist, DEFAULT_OPTIONS } from &#x27;./options.model&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 
-const logger &#x3D; createLogger({ scope: &#x27;OptionService&#x27;, time: isDevEnv })
+const logger &#x3D; createLogger({ scope: &#x27;OptionsService&#x27;, time: isDevEnv })
 
 @Injectable()
-export class OptionService {
-  private optionCache: CacheManualResult&lt;Omit&lt;Option, &#x27;blocklist&#x27;&gt;&gt;
+export class OptionsService {
+  private optionsCache: CacheManualResult&lt;Omit&lt;Option, &#x27;blocklist&#x27;&gt;&gt;
 
   constructor(
-    @InjectModel(Option) private readonly optionModel: MongooseModel&lt;Option&gt;,
+    @InjectModel(Option) private readonly optionsModel: MongooseModel&lt;Option&gt;,
     private readonly cacheService: CacheService
   ) {
-    this.optionCache &#x3D; this.cacheService.manual({
-      key: CacheKeys.Option,
+    this.optionsCache &#x3D; this.cacheService.manual({
+      key: CacheKeys.Options,
       promise: () &#x3D;&gt; {
-        return this.ensureAppOption().then((option) &#x3D;&gt; {
-          return _omit(option.toObject&lt;Option&gt;(), [&#x27;blocklist&#x27;])
+        return this.ensureAppOptions().then((option) &#x3D;&gt; {
+          return _omit(option.toObject&lt;Option&gt;(), [&#x27;blocklist&#x27;, &#x27;_id&#x27;])
         })
       }
     })
 
-    this.optionCache.update().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;Init getAppOption failed!&#x27;, error)
+    this.optionsCache.update().catch((error) &#x3D;&gt; {
+      logger.warn(&#x27;Init getAppOptions failed!&#x27;, error)
     })
   }
 
-  public async ensureAppOption(): Promise&lt;MongooseDoc&lt;Option&gt;&gt; {
-    const option &#x3D; await this.optionModel.findOne().exec()
-    return option ?? (await this.optionModel.create({ ...DEFAULT_OPTION }))
+  public async ensureAppOptions(): Promise&lt;MongooseDoc&lt;Option&gt;&gt; {
+    // MARK: To avoid blocking subsequent write operations, &#x60;.select(-1)&#x60; should not be used here.
+    const options &#x3D; await this.optionsModel.findOne().exec()
+    return options ?? (await this.optionsModel.create({ ...DEFAULT_OPTIONS }))
   }
 
-  public getOptionCacheForGuest() {
-    return this.optionCache.get()
+  public getOptionsCacheForGuest() {
+    return this.optionsCache.get()
   }
 
-  public async putOption(newOption: Option): Promise&lt;Option&gt; {
-    // delete _id,likes fields
-    Reflect.deleteProperty(newOption, &#x27;_id&#x27;)
-    Reflect.deleteProperty(newOption, &#x27;meta&#x27;)
-
-    await this.ensureAppOption()
-    await this.optionModel.updateOne({}, newOption).exec()
-
-    // update cache when option updated
-    await this.optionCache.update()
-    return await this.ensureAppOption()
+  public async putOptions(newOptions: Option): Promise&lt;Option&gt; {
+    // delete _id fields
+    Reflect.deleteProperty(newOptions, &#x27;_id&#x27;)
+    // create and update
+    await this.ensureAppOptions()
+    await this.optionsModel.updateOne({}, newOptions).exec()
+    // update cache when options updated
+    await this.optionsCache.update()
+    return await this.ensureAppOptions()
   }
 
   public async appendToBlocklist(payload: { ips: string[]; emails: string[] }): Promise&lt;Blocklist&gt; {
-    const option &#x3D; await this.ensureAppOption()
-    option.blocklist.ips &#x3D; _uniq([...option.blocklist.ips, ...payload.ips])
-    option.blocklist.mails &#x3D; _uniq([...option.blocklist.mails, ...payload.emails])
-    await option.save()
-    return option.blocklist
+    const options &#x3D; await this.ensureAppOptions()
+    options.blocklist.ips &#x3D; _uniq([...options.blocklist.ips, ...payload.ips])
+    options.blocklist.mails &#x3D; _uniq([...options.blocklist.mails, ...payload.emails])
+    await options.save()
+    return options.blocklist
   }
 
   public async removeFromBlocklist(payload: { ips: string[]; emails: string[] }): Promise&lt;Blocklist&gt; {
-    const option &#x3D; await this.ensureAppOption()
-    option.blocklist.ips &#x3D; option.blocklist.ips.filter((ip) &#x3D;&gt; !payload.ips.includes(ip))
-    option.blocklist.mails &#x3D; option.blocklist.mails.filter((email) &#x3D;&gt; !payload.emails.includes(email))
-    await option.save()
-    return option.blocklist
-  }
-
-  public async incrementMetaLikes(): Promise&lt;number&gt; {
-    const option &#x3D; await this.ensureAppOption()
-    option.meta.likes++
-    await option.save({ timestamps: false })
-    await this.optionCache.update()
-    return option.meta.likes
+    const options &#x3D; await this.ensureAppOptions()
+    options.blocklist.ips &#x3D; options.blocklist.ips.filter((ip) &#x3D;&gt; !payload.ips.includes(ip))
+    options.blocklist.mails &#x3D; options.blocklist.mails.filter((email) &#x3D;&gt; !payload.emails.includes(email))
+    await options.save()
+    return options.blocklist
   }
 }
 </code></pre>
@@ -767,7 +713,7 @@ export class OptionService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'OptionService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'OptionsService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

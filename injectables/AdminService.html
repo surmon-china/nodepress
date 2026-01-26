@@ -580,7 +580,7 @@ export class AdminService {
    * - If no password exists (e.g., initial state), fall back to comparing with the default password.
    */
   private async validatePassword(plainPassword: string): Promise&lt;boolean&gt; {
-    const existedProfile &#x3D; await this.adminModel.findOne(undefined, &#x27;+password&#x27;).exec()
+    const existedProfile &#x3D; await this.adminModel.findOne().select(&#x27;+password&#x27;).exec()
     if (existedProfile?.password) {
       // Password exists in database → validate using bcrypt
       return await bcrypt.compare(plainPassword, existedProfile.password)
@@ -606,7 +606,7 @@ export class AdminService {
   }
 
   public async getProfile(): Promise&lt;Admin&gt; {
-    const adminProfile &#x3D; await this.adminModel.findOne(undefined, &#x27;-_id&#x27;).lean().exec()
+    const adminProfile &#x3D; await this.adminModel.findOne().select(&#x27;-_id&#x27;).lean().exec()
     return adminProfile ?? DEFAULT_ADMIN_PROFILE
   }
 
@@ -631,7 +631,7 @@ export class AdminService {
     }
 
     // save
-    const existedProfile &#x3D; await this.adminModel.findOne(undefined, &#x27;+password&#x27;).exec()
+    const existedProfile &#x3D; await this.adminModel.findOne().select(&#x27;+password&#x27;).exec()
     if (existedProfile) {
       await Object.assign(existedProfile, newProfile).save()
     } else {

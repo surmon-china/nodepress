@@ -1592,12 +1592,12 @@
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { Comment, CommentBase } from &#x27;@app/modules/comment/comment.model&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { CommentState } from &#x27;@app/constants/biz.constant&#x27;
+import { CommentStatus } from &#x27;@app/modules/comment/comment.constant&#x27;
 import { getDisqusCacheKey } from &#x27;@app/constants/cache.constant&#x27;
 import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
 import { DISQUS } from &#x27;@app/app.config&#x27;
 import { Disqus } from &#x27;@app/utils/disqus&#x27;
-import { getExtendObject, getExtendValue } from &#x27;@app/transformers/extend.transformer&#x27;
+import { getExtraObject, getExtraValue } from &#x27;@app/transformers/extra.transformer&#x27;
 import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { DisqusPrivateService } from &#x27;./disqus.service.private&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
@@ -1703,7 +1703,7 @@ export class DisqusPublicService {
   public async getDisqusPostIdByCommentId(commentId: number): Promise&lt;string | null&gt; {
     try {
       const comment &#x3D; await this.commentService.getDetailByNumberId(commentId)
-      return getExtendValue(comment.extends, DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY) || null
+      return getExtraValue(comment.extras, DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY) || null
     } catch (error) {
       return null
     }
@@ -1774,18 +1774,18 @@ export class DisqusPublicService {
     // 7. create nodepress comment
     newComment.author.name &#x3D; disqusPost.author.name || newComment.author.name
     newComment.author.site &#x3D; disqusPost.author.url || newComment.author.site
-    newComment.extends.push(
-      { name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: disqusPost.id },
-      { name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: disqusPost.thread }
+    newComment.extras.push(
+      { key: DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY, value: disqusPost.id },
+      { key: DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY, value: disqusPost.thread }
     )
     if (disqusPost.author.isAnonymous || !accessToken) {
       // guest comment
-      newComment.extends.push({ name: DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY, value: &#x27;true&#x27; })
+      newComment.extras.push({ key: DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY, value: &#x27;true&#x27; })
     } else {
       // disqus user comment
-      newComment.extends.push(
-        { name: DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY, value: disqusPost.author.id },
-        { name: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY, value: disqusPost.author.username }
+      newComment.extras.push(
+        { key: DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY, value: disqusPost.author.id },
+        { key: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY, value: disqusPost.author.username }
       )
     }
 
@@ -1808,9 +1808,9 @@ export class DisqusPublicService {
     if (!comment) throw new NotFoundException(&#x60;Comment &#x27;${commentId}&#x27; not found&#x60;)
 
     // disqus extend info
-    const extendsObject &#x3D; getExtendObject(comment.extends)
-    const commentDisqusPostId &#x3D; extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]
-    const commentDisqusAuthorId &#x3D; extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY]
+    const extrasObject &#x3D; getExtraObject(comment.extras)
+    const commentDisqusPostId &#x3D; extrasObject[DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY]
+    const commentDisqusAuthorId &#x3D; extrasObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY]
     if (!commentDisqusAuthorId || !commentDisqusPostId) {
       throw new BadRequestException(&#x60;Comment &#x27;${commentId}&#x27; cannot be deleted (missing Disqus metadata)&#x60;)
     }
@@ -1828,7 +1828,7 @@ export class DisqusPublicService {
     })
 
     // NodePress delete
-    return await this.commentService.update(comment._id, { state: CommentState.Deleted })
+    return await this.commentService.update(comment._id, { status: CommentStatus.Trash })
   }
 }
 </code></pre>

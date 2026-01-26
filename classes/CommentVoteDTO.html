@@ -341,7 +341,7 @@ import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from &#x27;class-val
 import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
 import { Author } from &#x27;@app/modules/comment/comment.model&#x27;
 import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
-import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.model&#x27;
+import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.constant&#x27;
 
 export class VotePaginateQueryDTO extends PaginateOptionDTO {
   @IsIn(VOTE_TARGETS)
@@ -398,10 +398,10 @@ export class CommentVoteDTO extends VoteAuthorDTO {
   vote: number
 }
 
-export class PostVoteDTO extends VoteAuthorDTO {
+export class ArticleVoteDTO extends VoteAuthorDTO {
   @IsInt()
   @IsDefined()
-  post_id: number
+  article_id: number
 
   @IsIn([VoteType.Upvote])
   @IsInt()

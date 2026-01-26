@@ -106,7 +106,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >ExtensionController</li>
+  <li class="breadcrumb-item" >SystemController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -130,13 +130,13 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/extension/extension.controller.ts</code>
+            <code>src/modules/system/system.controller.ts</code>
         </p>
             <p class="comment">
                 <h3>Prefix</h3>
             </p>
             <p class="comment">
-                <code>extension</code>
+                <code>system</code>
             </p>
 
 
@@ -251,7 +251,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:46</a></div>
+                                    class="link-to-prism">src/modules/system/system.controller.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -321,14 +321,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;statistic&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get statistics succeeded&#x27;)<br /></code>
+                    <code>@Get(&#x27;statistics&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get statistics succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="32"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:32</a></div>
+                                    class="link-to-prism">src/modules/system/system.controller.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -363,7 +363,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Statistic" target="_self" >Promise&lt;Statistic&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Statistics" target="_self" >Promise&lt;Statistics&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -405,7 +405,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="106"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:106</a></div>
+                                    class="link-to-prism">src/modules/system/system.controller.ts:106</a></div>
                         </td>
                     </tr>
 
@@ -483,7 +483,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="95"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:95</a></div>
+                                    class="link-to-prism">src/modules/system/system.controller.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -561,7 +561,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="117"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:117</a></div>
+                                    class="link-to-prism">src/modules/system/system.controller.ts:117</a></div>
                         </td>
                     </tr>
 
@@ -639,7 +639,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="39"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:39</a></div>
+                                    class="link-to-prism">src/modules/system/system.controller.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -688,7 +688,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="72"
-                                    class="link-to-prism">src/modules/extension/extension.controller.ts:72</a></div>
+                                    class="link-to-prism">src/modules/system/system.controller.ts:72</a></div>
                         </td>
                     </tr>
 
@@ -739,8 +739,8 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
- * @file Extension controller
- * @module module/extension/controller
+ * @file System controller
+ * @module module/system/controller
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
@@ -753,24 +753,24 @@ import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-co
 import { UploadedFile, IUploadedFile } from &#x27;@app/decorators/uploaded-file.decorator&#x27;
 import { GoogleService } from &#x27;@app/core/helper/helper.service.google&#x27;
 import { S3Service } from &#x27;@app/core/helper/helper.service.s3&#x27;
-import { StatisticService, Statistic } from &#x27;./extension.service.statistic&#x27;
-import { DBBackupService } from &#x27;./extension.service.dbbackup&#x27;
+import { DBBackupService } from &#x27;./system.service.dbbackup&#x27;
+import { StatisticsService, Statistics } from &#x27;./system.service.statistics&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-@Controller(&#x27;extension&#x27;)
-export class ExtensionController {
+@Controller(&#x27;system&#x27;)
+export class SystemController {
   constructor(
     private readonly s3Service: S3Service,
     private readonly googleService: GoogleService,
     private readonly dbBackupService: DBBackupService,
-    private readonly statisticService: StatisticService
+    private readonly statisticsService: StatisticsService
   ) {}
 
-  @Get(&#x27;statistic&#x27;)
+  @Get(&#x27;statistics&#x27;)
   @UseGuards(AdminOptionalGuard)
   @SuccessResponse(&#x27;Get statistics succeeded&#x27;)
-  getSystemStatistics(@RequestContext() { isUnauthenticated }: IRequestContext): Promise&lt;Statistic&gt; {
-    return this.statisticService.getStatistic(isUnauthenticated)
+  getSystemStatistics(@RequestContext() { isUnauthenticated }: IRequestContext): Promise&lt;Statistics&gt; {
+    return this.statisticsService.getStatistics(isUnauthenticated)
   }
 
   @Patch(&#x27;database-backup&#x27;)
@@ -906,7 +906,7 @@ export class ExtensionController {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
-            var COMPODOC_CURRENT_PAGE_URL = 'ExtensionController.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SystemController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

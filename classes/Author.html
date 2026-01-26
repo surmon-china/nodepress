@@ -246,7 +246,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/modules/comment/comment.model.ts:50</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/modules/comment/comment.model.ts:40</a></div>
                         </td>
                     </tr>
 
@@ -285,7 +285,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/modules/comment/comment.model.ts:43</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/modules/comment/comment.model.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -325,7 +325,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/comment/comment.model.ts:56</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/modules/comment/comment.model.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -360,7 +360,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/modules/comment/comment.model.ts:58</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/comment/comment.model.ts:48</a></div>
                                 </td>
                             </tr>
 
@@ -379,21 +379,11 @@ import { IsDefined, IsOptional, IsNotEmpty, ValidateNested, MinLength, MaxLength
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
-import { ROOT_COMMENT_PID, CommentState } from &#x27;@app/constants/biz.constant&#x27;
+import { ROOT_COMMENT_PID } from &#x27;@app/constants/biz.constant&#x27;
 import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
-import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
-
-export const COMMENT_STATES &#x3D; [
-  CommentState.Auditing,
-  CommentState.Published,
-  CommentState.Deleted,
-  CommentState.Spam
-] as const
-
-export const COMMENT_GUEST_QUERY_FILTER &#x3D; Object.freeze({
-  state: CommentState.Published
-})
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { CommentStatus, COMMENT_STATUSES } from &#x27;./comment.constant&#x27;
 
 @modelOptions({
   schemaOptions: {
@@ -456,7 +446,7 @@ export class CommentBase {
   @IsObject()
   @IsNotEmpty()
   @IsDefined({ message: &#x27;comment author?&#x27; })
-  @prop({ required: true, _id: false })
+  @prop({ _id: false, required: true })
   author: Author
 }
 
@@ -478,11 +468,10 @@ export class Comment extends CommentBase {
   @prop({ unique: true })
   id?: number
 
-  // state
-  @IsIn(COMMENT_STATES)
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
-  @prop({ enum: CommentState, default: CommentState.Published, index: true })
-  state: CommentState
+  @prop({ enum: CommentStatus, default: CommentStatus.Published, index: true })
+  status: CommentStatus
 
   // likes
   @IsInt()
@@ -503,16 +492,18 @@ export class Comment extends CommentBase {
   @prop({ type: Object, default: null })
   ip_location: Partial&lt;IPLocation&gt; | null
 
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested()
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  extras: KeyValueModel[]
+
   @prop({ default: Date.now, immutable: true })
   created_at?: Date
 
   @prop({ default: Date.now })
   updated_at?: Date
-
-  @ArrayUnique()
-  @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  extends: KeyValueModel[]
 }
 
 export const CommentProvider &#x3D; getProviderByTypegooseClass(Comment)

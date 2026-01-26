@@ -137,7 +137,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/option/option.model.ts</code>
+            <code>src/modules/options/options.model.ts</code>
         </p>
 
 
@@ -229,7 +229,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/option/option.model.ts:56</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/options/options.model.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -268,7 +268,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/option/option.model.ts:68</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/modules/options/options.model.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -307,7 +307,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/option/option.model.ts:62</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/modules/options/options.model.ts:63</a></div>
                         </td>
                     </tr>
 
@@ -328,23 +328,18 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { prop, modelOptions } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
-import { IsString, IsInt, IsObject, IsUrl, IsEmail, IsArray } from &#x27;class-validator&#x27;
-import { IsOptional, IsNotEmpty, ValidateNested, ArrayUnique } from &#x27;class-validator&#x27;
-import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { ValidateNested, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsString, IsObject, IsUrl, IsEmail, IsArray, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
-const DEFAULT_OPTION_APP_META: AppMeta &#x3D; Object.freeze({
-  likes: 0
-})
-
-const DEFAULT_OPTION_BLOCKLIST: Blocklist &#x3D; Object.freeze({
+const DEFAULT_OPTIONS_BLOCKLIST: Blocklist &#x3D; Object.freeze({
   ips: [],
   mails: [],
   keywords: []
 })
 
-export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
+export const DEFAULT_OPTIONS: Option &#x3D; Object.freeze&lt;Option&gt;({
   title: &#x27;NodePress&#x27;,
   sub_title: &#x27;Blog server app&#x27;,
   description: &#x27;RESTful API service for blog&#x27;,
@@ -355,18 +350,24 @@ export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
   friend_links: [
     {
       name: APP_BIZ.FE_NAME,
-      value: APP_BIZ.FE_URL
+      url: APP_BIZ.FE_URL
     }
   ],
-  meta: DEFAULT_OPTION_APP_META,
-  blocklist: DEFAULT_OPTION_BLOCKLIST,
+  blocklist: DEFAULT_OPTIONS_BLOCKLIST,
   app_config: &#x27;&#x27;
 })
 
-class AppMeta {
-  @IsInt()
-  @prop({ default: 0 })
-  likes: number
+export class FriendLink {
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true, trim: true, validate: /\S+/ })
+  name: string
+
+  @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true, trim: true })
+  url: string
 }
 
 // user block list
@@ -438,21 +439,19 @@ export class Option {
   @prop({ default: &#x27;&#x27; })
   statement: string
 
+  @Type(() &#x3D;&gt; FriendLink)
+  @ValidateNested()
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  friend_links: KeyValueModel[]
-
-  // site meta info
-  @prop({ _id: false, default: { ...DEFAULT_OPTION_APP_META } })
-  meta: AppMeta
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [FriendLink] })
+  friend_links: FriendLink[]
 
   // site user block list
   @Type(() &#x3D;&gt; Blocklist)
   @ValidateNested()
   @IsObject()
   @IsOptional()
-  @prop({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } })
+  @prop({ _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } })
   blocklist: Blocklist
 
   // app config (for broader client configuration usage)
@@ -465,7 +464,7 @@ export class Option {
   updated_at?: Date
 }
 
-export const OptionProvider &#x3D; getProviderByTypegooseClass(Option)
+export const OptionsProvider &#x3D; getProviderByTypegooseClass(Option)
 </code></pre>
     </div>
 </div>

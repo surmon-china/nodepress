@@ -242,11 +242,6 @@
 import { Transform } from &#x27;class-transformer&#x27;
 import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
 
-export const enum BooleanNumberValue {
-  False &#x3D; 0, // Number(false)
-  True &#x3D; 1 // Number(true)
-}
-
 // https://www.progress.com/blogs/understanding-iso-8601-date-and-time-format
 export class DateQueryDTO {
   @IsDateString()
@@ -260,6 +255,11 @@ export class KeywordQueryDTO {
   @IsNotEmpty()
   @IsOptional()
   keyword?: string
+}
+
+export const enum BooleanNumberValue {
+  False &#x3D; 0, // Number(false)
+  True &#x3D; 1 // Number(true)
 }
 
 // MARK: example

@@ -22,25 +22,25 @@
 <text text-anchor="start" x="429.73" y="-15.4" font-family="Times-12" font-size="14.00"> &#160;Exports</text>
 <g id="clust1" class="cluster">
 <title>cluster_CommentModule</title>
-<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="35,-70 35,-268 461,-268 461,-70 35,-70"/>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="32,-70 32,-268 464,-268 464,-70 32,-70"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_CommentModule_imports</title>
+<polygon fill="none" stroke="black" points="220,-78 220,-130 456,-130 456,-78 220,-78"/>
 </g>
 <g id="clust4" class="cluster">
 <title>cluster_CommentModule_exports</title>
 <polygon fill="none" stroke="black" points="214,-208 214,-260 346,-260 346,-208 214,-208"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_CommentModule_imports</title>
-<polygon fill="none" stroke="black" points="223,-78 223,-130 453,-130 453,-78 223,-78"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_CommentModule_providers</title>
-<polygon fill="none" stroke="black" points="43,-78 43,-130 215,-130 215,-78 43,-78"/>
+<polygon fill="none" stroke="black" points="40,-78 40,-130 212,-130 212,-78 40,-78"/>
 </g>
 <!-- ArticleModule -->
 <g id="node1" class="node">
 <title>ArticleModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="445.42,-122 442.42,-126 421.42,-126 418.42,-122 346.58,-122 346.58,-86 445.42,-86 445.42,-122"/>
-<text text-anchor="middle" x="396" y="-99.8" font-family="Times,serif" font-size="14.00">ArticleModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="448.42,-122 445.42,-126 424.42,-126 421.42,-122 349.58,-122 349.58,-86 448.42,-86 448.42,-122"/>
+<text text-anchor="middle" x="399" y="-99.8" font-family="Times,serif" font-size="14.00">ArticleModule</text>
 </g>
 <!-- CommentModule -->
 <g id="node3" class="node">
@@ -51,18 +51,18 @@
 <!-- ArticleModule&#45;&gt;CommentModule -->
 <g id="edge1" class="edge">
 <title>ArticleModule&#45;&gt;CommentModule</title>
-<path fill="none" stroke="black" d="M346.6,-104C338.83,-104 333.3,-104 333.3,-104 333.3,-104 333.3,-140.89 333.3,-140.89"/>
-<polygon fill="black" stroke="black" points="329.8,-140.89 333.3,-150.89 336.8,-140.89 329.8,-140.89"/>
+<path fill="none" stroke="black" d="M399,-122.11C399,-141.34 399,-169 399,-169 399,-169 347.41,-169 347.41,-169"/>
+<polygon fill="black" stroke="black" points="347.41,-165.5 337.41,-169 347.41,-172.5 347.41,-165.5"/>
 </g>
-<!-- OptionModule -->
+<!-- OptionsModule -->
 <g id="node2" class="node">
-<title>OptionModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="329.44,-122 326.44,-126 305.44,-126 302.44,-122 230.56,-122 230.56,-86 329.44,-86 329.44,-122"/>
-<text text-anchor="middle" x="280" y="-99.8" font-family="Times,serif" font-size="14.00">OptionModule</text>
+<title>OptionsModule</title>
+<polygon fill="#8dd3c7" stroke="black" points="331.88,-122 328.88,-126 307.88,-126 304.88,-122 228.12,-122 228.12,-86 331.88,-86 331.88,-122"/>
+<text text-anchor="middle" x="280" y="-99.8" font-family="Times,serif" font-size="14.00">OptionsModule</text>
 </g>
-<!-- OptionModule&#45;&gt;CommentModule -->
+<!-- OptionsModule&#45;&gt;CommentModule -->
 <g id="edge2" class="edge">
-<title>OptionModule&#45;&gt;CommentModule</title>
+<title>OptionsModule&#45;&gt;CommentModule</title>
 <path fill="none" stroke="black" d="M280,-122.11C280,-122.11 280,-140.99 280,-140.99"/>
 <polygon fill="black" stroke="black" points="276.5,-140.99 280,-150.99 283.5,-140.99 276.5,-140.99"/>
 </g>
@@ -81,14 +81,14 @@
 <!-- CommentService -->
 <g id="node5" class="node">
 <title>CommentService</title>
-<ellipse fill="#fdb462" stroke="black" cx="129" cy="-104" rx="78.17" ry="18"/>
-<text text-anchor="middle" x="129" y="-99.8" font-family="Times,serif" font-size="14.00">CommentService</text>
+<ellipse fill="#fdb462" stroke="black" cx="126" cy="-104" rx="78.17" ry="18"/>
+<text text-anchor="middle" x="126" y="-99.8" font-family="Times,serif" font-size="14.00">CommentService</text>
 </g>
 <!-- CommentService&#45;&gt;CommentModule -->
 <g id="edge4" class="edge">
 <title>CommentService&#45;&gt;CommentModule</title>
-<path fill="none" stroke="black" d="M207.4,-104C218.75,-104 226.7,-104 226.7,-104 226.7,-104 226.7,-140.89 226.7,-140.89"/>
-<polygon fill="black" stroke="black" points="223.2,-140.89 226.7,-150.89 230.2,-140.89 223.2,-140.89"/>
+<path fill="none" stroke="black" d="M126,-122.11C126,-141.34 126,-169 126,-169 126,-169 212.66,-169 212.66,-169"/>
+<polygon fill="black" stroke="black" points="212.66,-172.5 222.66,-169 212.66,-165.5 212.66,-172.5"/>
 </g>
 </g>
 </svg>

@@ -93,7 +93,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content class">
+               <div class="content controller">
                    <div class="content-data">
 
 
@@ -104,16 +104,9 @@
 
 
 
-
-
-
-
-
-
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >ArticleMeta</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >OptionsController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -137,8 +130,14 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/article/article.model.ts</code>
+            <code>src/modules/options/options.controller.ts</code>
         </p>
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>options</code>
+            </p>
 
 
 
@@ -149,9 +148,10 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+
                 <tr>
                     <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
+                        <h6><b>Methods</b></h6>
                     </td>
                 </tr>
                 <tr>
@@ -160,17 +160,14 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#comments" >comments</a>
+                                    <span class="modifier"></span>
+                                <a href="#getOptions" >getOptions</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#likes" >likes</a>
-                            </li>
-                            <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#views" >views</a>
+                                <a href="#putOptions" >putOptions</a>
                             </li>
                         </ul>
                     </td>
@@ -180,325 +177,216 @@
 
 
 
-
         </tbody>
     </table>
 </section>
 
-
-            <section data-compodoc="block-properties">
+            <section data-compodoc="block-methods">
     
-    <h3 id="inputs">
-        Properties
+    <h3 id="methods">
+        Methods
     </h3>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="comments"></a>
+                    <a name="getOptions"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>comments</b></span>
-                        <a href="#comments"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                        <span ><b>getOptions</b></span>
+                        <a href="#getOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getOptions(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                </td>
+            </tr>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @IsInt()<br />@prop({default: 0})<br />
-                        </code>
-                    </td>
-                </tr>
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get app options succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/article/article.model.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/modules/options/options.controller.ts:22</a></div>
                         </td>
                     </tr>
 
 
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="likes"></a>
+                    <a name="putOptions"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>likes</b></span>
-                        <a href="#likes"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                        <span ><b>putOptions</b></span>
+                        <a href="#putOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @IsInt()<br />@prop({default: 0})<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/article/article.model.ts:45</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="views"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>views</b></span>
-                        <a href="#views"><span class="icon ion-ios-link"></span></a>
-                    </span>
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>putOptions(options: <a href="../classes/Option.html" target="_self">Option</a>)</code>
                 </td>
             </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @IsInt()<br />@prop({default: 0})<br />
-                        </code>
-                    </td>
-                </tr>
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Put()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update app options succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/modules/article/article.model.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/options/options.controller.ts:29</a></div>
                         </td>
                     </tr>
 
 
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                            <code><a href="../classes/Option.html" target="_self" >Option</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;Option&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
         </tbody>
     </table>
-</section>
-
-
-
-
-
-
-
-    </div>
+</section>    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
-import { prop, index, plugin, Ref, modelOptions } from &#x27;@typegoose/typegoose&#x27;
-import { IsString, IsBoolean, IsArray, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
-import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength } from &#x27;class-validator&#x27;
-import { Language, SortType, PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
-import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
-import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
-import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
-import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
-import { Category } from &#x27;@app/modules/category/category.model&#x27;
-import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
+ * @file Options controller
+ * @module module/options/controller
+ * @author Surmon &lt;https://github.com/surmon-china&gt;
+ */
 
-export const ARTICLE_LANGUAGES &#x3D; [Language.English, Language.Chinese, Language.Mixed] as const
-export const ARTICLE_PUBLISH_STATES &#x3D; [PublishState.Draft, PublishState.Published, PublishState.Recycle] as const
-export const ARTICLE_PUBLIC_STATES &#x3D; [PublicState.Public, PublicState.Secret, PublicState.Reserve] as const
-export const ARTICLE_ORIGIN_STATES &#x3D; [OriginState.Original, OriginState.Reprint, OriginState.Hybrid] as const
+import { Controller, Get, Put, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
+import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
+import { OptionsService } from &#x27;./options.service&#x27;
+import { Option } from &#x27;./options.model&#x27;
 
-export const ARTICLE_FULL_QUERY_REF_POPULATE &#x3D; [&#x27;categories&#x27;, &#x27;tags&#x27;]
-export const ARTICLE_LIST_QUERY_PROJECTION &#x3D; { content: false }
-export const ARTICLE_LIST_QUERY_GUEST_FILTER &#x3D; Object.freeze({
-  state: PublishState.Published,
-  public: PublicState.Public
-})
+@Controller(&#x27;options&#x27;)
+export class OptionsController {
+  constructor(private readonly optionsService: OptionsService) {}
 
-export const ARTICLE_HOTTEST_SORT_PARAMS &#x3D; Object.freeze({
-  &#x27;meta.comments&#x27;: SortType.Desc,
-  &#x27;meta.likes&#x27;: SortType.Desc
-})
-
-const ARTICLE_DEFAULT_META: ArticleMeta &#x3D; Object.freeze({
-  likes: 0,
-  views: 0,
-  comments: 0
-})
-
-export class ArticleMeta {
-  @IsInt()
-  @prop({ default: 0 })
-  likes: number
-
-  @IsInt()
-  @prop({ default: 0 })
-  views: number
-
-  // MARK: keep comments field manual
-  // 1. &#x60;.sort()&#x60; can&#x27;t by other model schema
-  // https://stackoverflow.com/questions/66174791/how-to-access-a-different-schema-in-a-virtual-method
-  // 2. &#x60;virtual&#x60; can&#x27;t support publicOnly params and can&#x27;t access other schema
-  @IsInt()
-  @prop({ default: 0 })
-  comments: number
-}
-
-@plugin(mongoosePaginate)
-@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
-@modelOptions({
-  schemaOptions: {
-    id: false,
-    versionKey: false,
-    toObject: { getters: true },
-    timestamps: {
-      createdAt: &#x27;created_at&#x27;,
-      updatedAt: &#x27;updated_at&#x27;
-    }
+  @Get()
+  @UseGuards(AdminOptionalGuard)
+  @SuccessResponse(&#x27;Get app options succeeded&#x27;)
+  getOptions(@RequestContext() { isAuthenticated }: IRequestContext) {
+    return isAuthenticated ? this.optionsService.ensureAppOptions() : this.optionsService.getOptionsCacheForGuest()
   }
-})
-@index(
-  { title: &#x27;text&#x27;, content: &#x27;text&#x27;, description: &#x27;text&#x27; },
-  {
-    name: &#x27;SearchIndex&#x27;,
-    weights: {
-      title: 10,
-      description: 18,
-      content: 3
-    }
+
+  @Put()
+  @UseGuards(AdminOnlyGuard)
+  @SuccessResponse(&#x27;Update app options succeeded&#x27;)
+  putOptions(@Body() options: Option): Promise&lt;Option&gt; {
+    return this.optionsService.putOptions(options)
   }
-)
-export class Article {
-  @prop({ unique: true })
-  id: number
-
-  @Matches(/^[a-zA-Z0-9-_]+$/)
-  @MaxLength(50)
-  @IsString()
-  @IsOptional()
-  @prop({ default: null, validate: /^[a-zA-Z0-9-_]+$/, index: true })
-  slug: string
-
-  @IsString()
-  @IsNotEmpty({ message: &#x27;title?&#x27; })
-  @prop({ required: true, validate: /\S+/, text: true })
-  title: string
-
-  @IsString()
-  @IsNotEmpty({ message: &#x27;content?&#x27; })
-  @prop({ required: true, validate: /\S+/, text: true })
-  content: string
-
-  @IsString()
-  @prop({ default: &#x27;&#x27;, text: true })
-  description: string
-
-  @ArrayUnique()
-  @IsArray()
-  @IsDefined()
-  @prop({ default: [], type: () &#x3D;&gt; [String] })
-  keywords: string[]
-
-  @IsString()
-  @IsOptional()
-  @prop({ type: String, default: null })
-  thumbnail: string | null
-
-  // publish state
-  @IsIn(ARTICLE_PUBLISH_STATES)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: PublishState, default: PublishState.Published, index: true })
-  state: PublishState
-
-  // public state
-  @IsIn(ARTICLE_PUBLIC_STATES)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: PublicState, default: PublicState.Public, index: true })
-  public: PublicState
-
-  // origin state
-  @IsIn(ARTICLE_ORIGIN_STATES)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: OriginState, default: OriginState.Original, index: true })
-  origin: OriginState
-
-  // category
-  @ArrayUnique()
-  @ArrayNotEmpty()
-  @IsArray()
-  @prop({ ref: () &#x3D;&gt; Category, required: true, index: true })
-  categories: Ref&lt;Category&gt;[]
-
-  // tag
-  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
-  @prop({ ref: () &#x3D;&gt; Tag, index: true })
-  tags: Ref&lt;Tag&gt;[]
-
-  // language
-  // MARK: can&#x27;t use &#x27;language&#x27; field
-  // https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/
-  // https://docs.mongodb.com/manual/reference/text-search-languages/#std-label-text-search-languages
-  @IsIn(ARTICLE_LANGUAGES)
-  @IsString()
-  @IsDefined()
-  @prop({ default: Language.Chinese, index: true })
-  lang: Language
-
-  // featured
-  @IsBoolean()
-  @prop({ default: false, index: true })
-  featured: boolean
-
-  // disabled comments
-  @IsBoolean()
-  @prop({ default: false })
-  disabled_comments: boolean
-
-  @prop({ _id: false, default: { ...ARTICLE_DEFAULT_META } })
-  meta: ArticleMeta
-
-  @prop({ default: Date.now, index: true, immutable: true })
-  created_at?: Date
-
-  @prop({ default: Date.now })
-  updated_at?: Date
-
-  @ArrayUnique()
-  @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  extends: KeyValueModel[]
 }
-
-export const ArticleProvider &#x3D; getProviderByTypegooseClass(Article)
 </code></pre>
     </div>
 </div>
+
+
+
+
+
+
+
 
 
 
@@ -533,8 +421,8 @@ export const ArticleProvider &#x3D; getProviderByTypegooseClass(Article)
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'ArticleMeta.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'OptionsController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

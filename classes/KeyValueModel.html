@@ -161,7 +161,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#name" >name</a>
+                                <a href="#key" >key</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -192,13 +192,13 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="name"></a>
+                    <a name="key"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>name</b></span>
-                        <a href="#name"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>key</b></span>
+                        <a href="#key"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -213,7 +213,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty()<br />@prop({required: false, validate: /\S+/})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@prop({required: true, trim: true, validate: /\S+/})<br />
                         </code>
                     </td>
                 </tr>
@@ -251,7 +251,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty()<br />@prop({required: false, validate: /\S+/})<br />
+                            @IsString()<br />@IsOptional()<br />@prop({required: false})<br />
                         </code>
                     </td>
                 </tr>
@@ -277,17 +277,17 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { prop } from &#x27;@typegoose/typegoose&#x27;
-import { IsString, IsNotEmpty } from &#x27;class-validator&#x27;
+import { IsString, IsNotEmpty, IsOptional } from &#x27;class-validator&#x27;
 
 export class KeyValueModel {
   @IsString()
   @IsNotEmpty()
-  @prop({ required: false, validate: /\S+/ })
-  name: string
+  @prop({ required: true, trim: true, validate: /\S+/ })
+  key: string
 
   @IsString()
-  @IsNotEmpty()
-  @prop({ required: false, validate: /\S+/ })
+  @IsOptional()
+  @prop({ required: false })
   value: string
 }
 </code></pre>

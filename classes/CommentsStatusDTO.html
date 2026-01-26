@@ -113,7 +113,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >ArticlesStateDTO</li>
+  <li class="breadcrumb-item" >CommentsStatusDTO</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -137,7 +137,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/article/article.dto.ts</code>
+            <code>src/modules/comment/comment.dto.ts</code>
         </p>
 
 
@@ -146,7 +146,7 @@
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                            <code><a href="../classes/ArticleIdsDTO.html" target="_self" >ArticleIdsDTO</a></code>
+                            <code><a href="../classes/CommentsDTO.html" target="_self" >CommentsDTO</a></code>
             </p>
 
 
@@ -166,14 +166,18 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#state" >state</a>
+                                <a href="#status" >status</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#article_ids" >article_ids</a>
+                                <a href="#comment_ids" >comment_ids</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#post_ids" >post_ids</a>
                             </li>
                         </ul>
                     </td>
@@ -198,19 +202,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="state"></a>
+                    <a name="status"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>state</b></span>
-                        <a href="#state"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>status</b></span>
+                        <a href="#status"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#PublishState" target="_self" >PublishState</a></code>
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#CommentStatus" target="_self" >CommentStatus</a></code>
 
                     </td>
                 </tr>
@@ -219,13 +222,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(ARTICLE_PUBLISH_STATES)<br />@IsInt()<br />@IsDefined()<br />
+                            @IsIn(COMMENT_STATUSES)<br />@IsInt()<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/modules/article/article.dto.ts:92</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/comment/comment.dto.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -236,13 +239,13 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="article_ids"></a>
+                    <a name="comment_ids"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>article_ids</b></span>
-                        <a href="#article_ids"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>comment_ids</b></span>
+                        <a href="#comment_ids"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -257,19 +260,63 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ArrayNotEmpty()<br />@ArrayUnique()<br />@IsArray()<br />
+                            @IsArray()<br />@ArrayNotEmpty()<br />@ArrayUnique()<br />
                         </code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Inherited from         <code><a href="../classes/ArticleIdsDTO.html" target="_self" >ArticleIdsDTO</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/CommentsDTO.html" target="_self" >CommentsDTO</a></code>
 </div>
                             </td>
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/ArticleIdsDTO.html#source" target="_self" >ArticleIdsDTO:85</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/CommentsDTO.html#source" target="_self" >CommentsDTO:45</a></code>
+</div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="post_ids"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>post_ids</b></span>
+                        <a href="#post_ids"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsArray()<br />@ArrayUnique()<br />
+                        </code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/CommentsDTO.html" target="_self" >CommentsDTO</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/CommentsDTO.html#source" target="_self" >CommentsDTO:49</a></code>
 </div>
                         </td>
                     </tr>
@@ -290,91 +337,54 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IntersectionType } from &#x27;@nestjs/mapped-types&#x27;
+import { IsString, IsArray, IsIn, IsInt, Min } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { Transform } from &#x27;class-transformer&#x27;
-import { IsString, IsArray, IsBoolean, IsIn, IsInt } from &#x27;class-validator&#x27;
-import { IsNotEmpty, IsOptional, IsDefined, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
-import { PublishState, PublicState, OriginState } from &#x27;@app/constants/biz.constant&#x27;
 import { WithGuestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
-import { unknownToNumber, unknownToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
-import { DateQueryDTO, KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
+import { KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
-import {
-  ARTICLE_PUBLISH_STATES,
-  ARTICLE_PUBLIC_STATES,
-  ARTICLE_ORIGIN_STATES,
-  ARTICLE_LANGUAGES
-} from &#x27;./article.model&#x27;
+import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
+import { CommentStatus, COMMENT_STATUSES } from &#x27;./comment.constant&#x27;
 
-export class ArticlePaginateQueryDTO extends IntersectionType(
-  PaginateOptionWithHotSortDTO,
-  KeywordQueryDTO,
-  DateQueryDTO
-) {
-  @WithGuestPermission({ only: [PublishState.Published], default: PublishState.Published })
-  @IsIn(ARTICLE_PUBLISH_STATES)
+export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWithHotSortDTO, KeywordQueryDTO) {
+  @WithGuestPermission({ only: [CommentStatus.Published], default: CommentStatus.Published })
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  state?: PublishState
+  status?: CommentStatus
 
-  @WithGuestPermission({ only: [PublicState.Public], default: PublicState.Public })
-  @IsIn(ARTICLE_PUBLIC_STATES)
+  @Min(0)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  public?: PublicState
-
-  @IsIn(ARTICLE_ORIGIN_STATES)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  origin?: OriginState
-
-  @IsBoolean()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToBoolean(value))
-  featured?: boolean
-
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  tag_slug?: string
-
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  category_slug?: string
-
-  @IsIn(ARTICLE_LANGUAGES)
-  @IsString()
-  @IsNotEmpty()
-  @IsOptional()
-  lang: string
+  post_id?: number
 }
 
-export class ArticleCalendarQueryDTO {
+export class CommentCalendarQueryDTO {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
   timezone?: string
 }
 
-export class ArticleIdsDTO {
+export class CommentsDTO {
+  @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
+  comment_ids: string[]
+
   @IsArray()
-  article_ids: string[]
+  @ArrayUnique()
+  post_ids: number[]
 }
 
-export class ArticlesStateDTO extends ArticleIdsDTO {
-  @IsIn(ARTICLE_PUBLISH_STATES)
+export class CommentsStatusDTO extends CommentsDTO {
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
-  @IsDefined()
-  state: PublishState
+  status: CommentStatus
 }
 </code></pre>
     </div>
@@ -414,7 +424,7 @@ export class ArticlesStateDTO extends ArticleIdsDTO {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'ArticlesStateDTO.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'CommentsStatusDTO.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

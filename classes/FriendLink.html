@@ -93,7 +93,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content controller">
+               <div class="content class">
                    <div class="content-data">
 
 
@@ -104,9 +104,16 @@
 
 
 
+
+
+
+
+
+
+
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >OptionController</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >FriendLink</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -130,14 +137,8 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/option/option.controller.ts</code>
+            <code>src/modules/options/options.model.ts</code>
         </p>
-            <p class="comment">
-                <h3>Prefix</h3>
-            </p>
-            <p class="comment">
-                <code>option</code>
-            </p>
 
 
 
@@ -148,10 +149,9 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-
                 <tr>
                     <td class="col-md-4">
-                        <h6><b>Methods</b></h6>
+                        <h6><b>Properties</b></h6>
                     </td>
                 </tr>
                 <tr>
@@ -161,13 +161,14 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#getOption" >getOption</a>
+                                <a href="#name" >name</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#putOption" >putOption</a>
+                                    <span class="modifier"></span>
+                                <a href="#url" >url</a>
                             </li>
                         </ul>
                     </td>
@@ -177,216 +178,248 @@
 
 
 
+
         </tbody>
     </table>
 </section>
 
-            <section data-compodoc="block-methods">
+
+            <section data-compodoc="block-properties">
     
-    <h3 id="methods">
-        Methods
+    <h3 id="inputs">
+        Properties
     </h3>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getOption"></a>
+                    <a name="name"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>getOption</b></span>
-                        <a href="#getOption"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>name</b></span>
+                        <a href="#name"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getOption(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
-                </td>
-            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get app options succeeded&#x27;)<br /></code>
-                </td>
-            </tr>
-
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsString()<br />@IsNotEmpty()<br />@prop({required: true, trim: true, validate: /\S+/})<br />
+                        </code>
+                    </td>
+                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">src/modules/option/option.controller.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/options/options.model.ts:42</a></div>
                         </td>
                     </tr>
 
 
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
         </tbody>
     </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putOption"></a>
+                    <a name="url"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>putOption</b></span>
-                        <a href="#putOption"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                        <span ><b>url</b></span>
+                        <a href="#url"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putOption(option: <a href="../classes/Option.html" target="_self">Option</a>)</code>
-                </td>
-            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Put()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update app options succeeded&#x27;)<br /></code>
-                </td>
-            </tr>
-
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsUrl({require_protocol: true})<br />@IsString()<br />@IsNotEmpty()<br />@prop({required: true, trim: true})<br />
+                        </code>
+                    </td>
+                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/option/option.controller.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/options/options.model.ts:48</a></div>
                         </td>
                     </tr>
 
 
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>option</td>
-                                            <td>
-                                                            <code><a href="../classes/Option.html" target="_self" >Option</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;Option&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
         </tbody>
     </table>
-</section>    </div>
+</section>
+
+
+
+
+
+
+
+    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
- * @file Option controller
- * @module module/option/controller
- * @author Surmon &lt;https://github.com/surmon-china&gt;
- */
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { prop, modelOptions } from &#x27;@typegoose/typegoose&#x27;
+import { Type } from &#x27;class-transformer&#x27;
+import { ValidateNested, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsString, IsObject, IsUrl, IsEmail, IsArray, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
+import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
-import { Controller, Get, Put, Body, UseGuards } from &#x27;@nestjs/common&#x27;
-import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
-import { OptionService } from &#x27;./option.service&#x27;
-import { Option } from &#x27;./option.model&#x27;
+const DEFAULT_OPTIONS_BLOCKLIST: Blocklist &#x3D; Object.freeze({
+  ips: [],
+  mails: [],
+  keywords: []
+})
 
-@Controller(&#x27;option&#x27;)
-export class OptionController {
-  constructor(private readonly optionService: OptionService) {}
+export const DEFAULT_OPTIONS: Option &#x3D; Object.freeze&lt;Option&gt;({
+  title: &#x27;NodePress&#x27;,
+  sub_title: &#x27;Blog server app&#x27;,
+  description: &#x27;RESTful API service for blog&#x27;,
+  keywords: [],
+  statement: &#x27;&#x27;,
+  site_url: &#x27;https://github.com/surmon-china/nodepress&#x27;,
+  site_email: &#x27;admin@example.com&#x27;,
+  friend_links: [
+    {
+      name: APP_BIZ.FE_NAME,
+      url: APP_BIZ.FE_URL
+    }
+  ],
+  blocklist: DEFAULT_OPTIONS_BLOCKLIST,
+  app_config: &#x27;&#x27;
+})
 
-  @Get()
-  @UseGuards(AdminOptionalGuard)
-  @SuccessResponse(&#x27;Get app options succeeded&#x27;)
-  getOption(@RequestContext() { isAuthenticated }: IRequestContext) {
-    return isAuthenticated ? this.optionService.ensureAppOption() : this.optionService.getOptionCacheForGuest()
-  }
+export class FriendLink {
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true, trim: true, validate: /\S+/ })
+  name: string
 
-  @Put()
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse(&#x27;Update app options succeeded&#x27;)
-  putOption(@Body() option: Option): Promise&lt;Option&gt; {
-    return this.optionService.putOption(option)
-  }
+  @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true, trim: true })
+  url: string
 }
+
+// user block list
+export class Blocklist {
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [String], default: [] })
+  ips: string[]
+
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [String], default: [] })
+  mails: string[]
+
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [String], default: [] })
+  keywords: string[]
+}
+
+@modelOptions({
+  schemaOptions: {
+    versionKey: false,
+    timestamps: {
+      createdAt: false,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
+})
+export class Option {
+  @IsString()
+  @IsNotEmpty({ message: &#x27;title?&#x27; })
+  @prop({ required: true, validate: /\S+/ })
+  title: string
+
+  @IsString()
+  @IsNotEmpty({ message: &#x27;sub title?&#x27; })
+  @prop({ required: true, validate: /\S+/ })
+  sub_title: string
+
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true })
+  description: string
+
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ default: [], type: () &#x3D;&gt; [String] })
+  keywords: string[]
+
+  @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true })
+  site_url: string
+
+  @IsEmail()
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true })
+  site_email: string
+
+  @IsString()
+  @IsOptional()
+  @prop({ default: &#x27;&#x27; })
+  statement: string
+
+  @Type(() &#x3D;&gt; FriendLink)
+  @ValidateNested()
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [FriendLink] })
+  friend_links: FriendLink[]
+
+  // site user block list
+  @Type(() &#x3D;&gt; Blocklist)
+  @ValidateNested()
+  @IsObject()
+  @IsOptional()
+  @prop({ _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } })
+  blocklist: Blocklist
+
+  // app config (for broader client configuration usage)
+  @IsString()
+  @IsOptional()
+  @prop({ type: String, default: null })
+  app_config: string | null
+
+  @prop({ default: Date.now })
+  updated_at?: Date
+}
+
+export const OptionsProvider &#x3D; getProviderByTypegooseClass(Option)
 </code></pre>
     </div>
 </div>
-
-
-
-
-
-
-
 
 
 
@@ -421,8 +454,8 @@ export class OptionController {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
-            var COMPODOC_CURRENT_PAGE_URL = 'OptionController.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'FriendLink.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -113,7 +113,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >AppMeta</li>
+  <li class="breadcrumb-item" >ArticlesStatusDTO</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -137,11 +137,17 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/option/option.model.ts</code>
+            <code>src/modules/article/article.dto.ts</code>
         </p>
 
 
 
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                            <code><a href="../classes/ArticleIdsDTO.html" target="_self" >ArticleIdsDTO</a></code>
+            </p>
 
 
 
@@ -160,7 +166,14 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#likes" >likes</a>
+                                    <span class="modifier"></span>
+                                <a href="#status" >status</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#article_ids" >article_ids</a>
                             </li>
                         </ul>
                     </td>
@@ -185,18 +198,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="likes"></a>
+                    <a name="status"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>likes</b></span>
-                        <a href="#likes"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                        <span ><b>status</b></span>
+                        <a href="#status"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#ArticleStatus" target="_self" >ArticleStatus</a></code>
 
                     </td>
                 </tr>
@@ -205,13 +219,58 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@prop({default: 0})<br />
+                            @IsIn(ARTICLE_STATUSES)<br />@IsInt()<br />@IsDefined()<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/modules/option/option.model.ts:47</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/modules/article/article.dto.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="article_ids"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>article_ids</b></span>
+                        <a href="#article_ids"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ArrayNotEmpty()<br />@ArrayUnique()<br />@IsArray()<br />
+                        </code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/ArticleIdsDTO.html" target="_self" >ArticleIdsDTO</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/ArticleIdsDTO.html#source" target="_self" >ArticleIdsDTO:72</a></code>
+</div>
                         </td>
                     </tr>
 
@@ -230,146 +289,80 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { prop, modelOptions } from &#x27;@typegoose/typegoose&#x27;
-import { Type } from &#x27;class-transformer&#x27;
-import { IsString, IsInt, IsObject, IsUrl, IsEmail, IsArray } from &#x27;class-validator&#x27;
-import { IsOptional, IsNotEmpty, ValidateNested, ArrayUnique } from &#x27;class-validator&#x27;
-import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
-import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
-import { APP_BIZ } from &#x27;@app/app.config&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IntersectionType } from &#x27;@nestjs/mapped-types&#x27;
+import { Transform } from &#x27;class-transformer&#x27;
+import { IsString, IsArray, IsBoolean, IsIn, IsInt } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, IsDefined, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
+import { WithGuestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
+import { unknownToNumber, unknownToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
+import { DateQueryDTO, KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
+import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
+import { ARTICLE_STATUSES, ARTICLE_ORIGINS, ARTICLE_LANGUAGES } from &#x27;./article.constant&#x27;
+import { ArticleStatus, ArticleOrigin } from &#x27;./article.constant&#x27;
 
-const DEFAULT_OPTION_APP_META: AppMeta &#x3D; Object.freeze({
-  likes: 0
-})
-
-const DEFAULT_OPTION_BLOCKLIST: Blocklist &#x3D; Object.freeze({
-  ips: [],
-  mails: [],
-  keywords: []
-})
-
-export const DEFAULT_OPTION: Option &#x3D; Object.freeze&lt;Option&gt;({
-  title: &#x27;NodePress&#x27;,
-  sub_title: &#x27;Blog server app&#x27;,
-  description: &#x27;RESTful API service for blog&#x27;,
-  keywords: [],
-  statement: &#x27;&#x27;,
-  site_url: &#x27;https://github.com/surmon-china/nodepress&#x27;,
-  site_email: &#x27;admin@example.com&#x27;,
-  friend_links: [
-    {
-      name: APP_BIZ.FE_NAME,
-      value: APP_BIZ.FE_URL
-    }
-  ],
-  meta: DEFAULT_OPTION_APP_META,
-  blocklist: DEFAULT_OPTION_BLOCKLIST,
-  app_config: &#x27;&#x27;
-})
-
-class AppMeta {
+export class ArticlePaginateQueryDTO extends IntersectionType(
+  PaginateOptionWithHotSortDTO,
+  KeywordQueryDTO,
+  DateQueryDTO
+) {
+  @WithGuestPermission({ only: [ArticleStatus.Published], default: ArticleStatus.Published })
+  @IsIn(ARTICLE_STATUSES)
   @IsInt()
-  @prop({ default: 0 })
-  likes: number
-}
-
-// user block list
-export class Blocklist {
-  @ArrayUnique()
-  @IsArray()
+  @IsNotEmpty()
   @IsOptional()
-  @prop({ type: () &#x3D;&gt; [String], default: [] })
-  ips: string[]
+  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
+  status?: ArticleStatus
 
-  @ArrayUnique()
-  @IsArray()
+  @IsIn(ARTICLE_ORIGINS)
+  @IsInt()
+  @IsNotEmpty()
   @IsOptional()
-  @prop({ type: () &#x3D;&gt; [String], default: [] })
-  mails: string[]
+  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
+  origin?: ArticleOrigin
 
-  @ArrayUnique()
-  @IsArray()
+  @IsBoolean()
+  @IsNotEmpty()
   @IsOptional()
-  @prop({ type: () &#x3D;&gt; [String], default: [] })
-  keywords: string[]
-}
+  @Transform(({ value }) &#x3D;&gt; unknownToBoolean(value))
+  featured?: boolean
 
-@modelOptions({
-  schemaOptions: {
-    versionKey: false,
-    timestamps: {
-      createdAt: false,
-      updatedAt: &#x27;updated_at&#x27;
-    }
-  }
-})
-export class Option {
+  @IsIn(ARTICLE_LANGUAGES)
   @IsString()
-  @IsNotEmpty({ message: &#x27;title?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
-  title: string
-
-  @IsString()
-  @IsNotEmpty({ message: &#x27;sub title?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
-  sub_title: string
+  @IsNotEmpty()
+  @IsOptional()
+  lang: string
 
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true })
-  description: string
-
-  @ArrayUnique()
-  @IsArray()
   @IsOptional()
-  @prop({ default: [], type: () &#x3D;&gt; [String] })
-  keywords: string[]
+  tag_slug?: string
 
-  @IsUrl({ require_protocol: true })
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true })
-  site_url: string
-
-  @IsEmail()
-  @IsString()
-  @IsNotEmpty()
-  @prop({ required: true })
-  site_email: string
-
-  @IsString()
   @IsOptional()
-  @prop({ default: &#x27;&#x27; })
-  statement: string
-
-  @ArrayUnique()
-  @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  friend_links: KeyValueModel[]
-
-  // site meta info
-  @prop({ _id: false, default: { ...DEFAULT_OPTION_APP_META } })
-  meta: AppMeta
-
-  // site user block list
-  @Type(() &#x3D;&gt; Blocklist)
-  @ValidateNested()
-  @IsObject()
-  @IsOptional()
-  @prop({ _id: false, default: { ...DEFAULT_OPTION_BLOCKLIST } })
-  blocklist: Blocklist
-
-  // app config (for broader client configuration usage)
-  @IsString()
-  @IsOptional()
-  @prop({ type: String, default: null })
-  app_config: string | null
-
-  @prop({ default: Date.now })
-  updated_at?: Date
+  category_slug?: string
 }
 
-export const OptionProvider &#x3D; getProviderByTypegooseClass(Option)
+export class ArticleCalendarQueryDTO {
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  timezone?: string
+}
+
+export class ArticleIdsDTO {
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsArray()
+  article_ids: string[]
+}
+
+export class ArticlesStatusDTO extends ArticleIdsDTO {
+  @IsIn(ARTICLE_STATUSES)
+  @IsInt()
+  @IsDefined()
+  status: ArticleStatus
+}
 </code></pre>
     </div>
 </div>
@@ -408,7 +401,7 @@ export const OptionProvider &#x3D; getProviderByTypegooseClass(Option)
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'AppMeta.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ArticlesStatusDTO.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

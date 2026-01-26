@@ -113,7 +113,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >PostVoteDTO</li>
+  <li class="breadcrumb-item" >ArticleStats</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -137,17 +137,11 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/vote/vote.dto.ts</code>
+            <code>src/modules/article/article.model.ts</code>
         </p>
 
 
 
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                            <code><a href="../classes/VoteAuthorDTO.html" target="_self" >VoteAuthorDTO</a></code>
-            </p>
 
 
 
@@ -166,21 +160,17 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#post_id" >post_id</a>
+                                <a href="#comments" >comments</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#vote" >vote</a>
+                                <a href="#likes" >likes</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier">Optional</span>
-                                <a href="#author" >author</a>
+                                <a href="#views" >views</a>
                             </li>
                         </ul>
                     </td>
@@ -205,12 +195,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="post_id"></a>
+                    <a name="comments"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>post_id</b></span>
-                        <a href="#post_id"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>comments</b></span>
+                        <a href="#comments"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -225,13 +215,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@IsDefined()<br />
+                            @IsInt()<br />@prop({default: 0})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/modules/vote/vote.dto.ts:73</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/article/article.model.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -242,13 +232,12 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="vote"></a>
+                    <a name="likes"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>vote</b></span>
-                        <a href="#vote"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>likes</b></span>
+                        <a href="#likes"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -263,13 +252,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn([&#x27;undefined&#x27;])<br />@IsInt()<br />@IsDefined()<br />
+                            @IsInt()<br />@prop({default: 0})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/modules/vote/vote.dto.ts:78</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/article/article.model.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -280,21 +269,18 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="author"></a>
+                    <a name="views"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Optional</span>
-                        <span ><b>author</b></span>
-                        <a href="#author"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>views</b></span>
+                        <a href="#views"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../classes/Author.html" target="_self" >Author</a></code>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                     </td>
                 </tr>
@@ -303,20 +289,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @Type(undefined)<br />@ValidateNested()<br />@IsObject()<br />@IsOptional()<br />
+                            @IsInt()<br />@prop({default: 0})<br />
                         </code>
                     </td>
                 </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Inherited from         <code><a href="../classes/VoteAuthorDTO.html" target="_self" >VoteAuthorDTO</a></code>
-</div>
-                            </td>
-                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/VoteAuthorDTO.html#source" target="_self" >VoteAuthorDTO:56</a></code>
-</div>
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/modules/article/article.model.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -335,79 +314,167 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform, Type } from &#x27;class-transformer&#x27;
-import { IsInt, IsObject, IsArray, IsDefined, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
-import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
-import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
-import { Author } from &#x27;@app/modules/comment/comment.model&#x27;
-import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
-import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.model&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
+import { prop, index, plugin, Ref, modelOptions } from &#x27;@typegoose/typegoose&#x27;
+import { Type } from &#x27;class-transformer&#x27;
+import { IsString, IsBoolean, IsArray, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength, ValidateNested } from &#x27;class-validator&#x27;
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
+import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { Category } from &#x27;@app/modules/category/category.model&#x27;
+import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
+import { ArticleStatus, ArticleOrigin, ArticleLanguage } from &#x27;./article.constant&#x27;
+import { ARTICLE_STATUSES, ARTICLE_ORIGINS, ARTICLE_LANGUAGES } from &#x27;./article.constant&#x27;
 
-export class VotePaginateQueryDTO extends PaginateOptionDTO {
-  @IsIn(VOTE_TARGETS)
+const ARTICLE_DEFAULT_STATS: ArticleStats &#x3D; Object.freeze({
+  likes: 0,
+  views: 0,
+  comments: 0
+})
+
+export class ArticleStats {
   @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  target_type?: number
+  @prop({ default: 0 })
+  likes: number
 
   @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  target_id?: number
+  @prop({ default: 0 })
+  views: number
 
-  @IsIn(VOTE_TYPES)
+  // MARK: keep comments field manual
+  // 1. &#x60;.sort()&#x60; can&#x27;t by other model schema
+  // https://stackoverflow.com/questions/66174791/how-to-access-a-different-schema-in-a-virtual-method
+  // 2. &#x60;virtual&#x60; can&#x27;t support publicOnly params and can&#x27;t access other schema
   @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  vote_type?: number
-
-  @IsIn(VOTE_AUTHOR_TYPES)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  author_type?: number
+  @prop({ default: 0 })
+  comments: number
 }
 
-export class VotesDTO {
-  @IsArray()
-  @ArrayNotEmpty()
+@plugin(mongoosePaginate)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@modelOptions({
+  schemaOptions: {
+    id: false,
+    versionKey: false,
+    toObject: { getters: true },
+    timestamps: {
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
+})
+@index(
+  { title: &#x27;text&#x27;, content: &#x27;text&#x27;, summary: &#x27;text&#x27; },
+  {
+    name: &#x27;SearchIndex&#x27;,
+    weights: {
+      title: 10,
+      summary: 12,
+      content: 8
+    }
+  }
+)
+export class Article {
+  @prop({ unique: true })
+  id: number
+
+  @Matches(/^[a-zA-Z0-9-_]+$/)
+  @MaxLength(50)
+  @IsString()
+  @IsOptional()
+  @prop({ default: null, trim: true, validate: /^[a-zA-Z0-9-_]+$/, index: true })
+  slug: string
+
+  @IsString()
+  @IsNotEmpty({ message: &#x27;title?&#x27; })
+  @prop({ required: true, validate: /\S+/, text: true })
+  title: string
+
+  @IsString()
+  @IsNotEmpty({ message: &#x27;content?&#x27; })
+  @prop({ required: true, validate: /\S+/, text: true })
+  content: string
+
+  @IsString()
+  @prop({ default: &#x27;&#x27;, text: true })
+  summary: string
+
   @ArrayUnique()
-  vote_ids: string[]
-}
+  @IsArray()
+  @IsDefined()
+  @prop({ default: [], type: () &#x3D;&gt; [String] })
+  keywords: string[]
 
-export class VoteAuthorDTO {
-  @Type(() &#x3D;&gt; Author)
-  @ValidateNested()
-  @IsObject()
+  @IsString()
   @IsOptional()
-  author?: Author
+  @prop({ type: String, default: null })
+  thumbnail: string | null
+
+  @IsIn(ARTICLE_STATUSES)
+  @IsInt()
+  @IsDefined()
+  @prop({ enum: ArticleStatus, default: ArticleStatus.Published, index: true })
+  status: ArticleStatus
+
+  // origin state
+  @IsIn(ARTICLE_ORIGINS)
+  @IsInt()
+  @IsDefined()
+  @prop({ enum: ArticleOrigin, default: ArticleOrigin.Original, index: true })
+  origin: ArticleOrigin
+
+  // language
+  // MARK: can&#x27;t use &#x27;language&#x27; field
+  // https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/
+  // https://docs.mongodb.com/manual/reference/text-search-languages/#std-label-text-search-languages
+  @IsIn(ARTICLE_LANGUAGES)
+  @IsString()
+  @IsDefined()
+  @prop({ default: ArticleLanguage.Chinese, index: true })
+  lang: ArticleLanguage
+
+  // featured
+  @IsBoolean()
+  @prop({ default: false, index: true })
+  featured: boolean
+
+  // disabled comments
+  @IsBoolean()
+  @prop({ default: false })
+  disabled_comments: boolean
+
+  @prop({ _id: false, default: { ...ARTICLE_DEFAULT_STATS } })
+  stats: ArticleStats
+
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested()
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  extras: KeyValueModel[]
+
+  // tag
+  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
+  @prop({ ref: () &#x3D;&gt; Tag, index: true })
+  tags: Ref&lt;Tag&gt;[]
+
+  // category
+  @ArrayUnique()
+  @ArrayNotEmpty()
+  @IsArray()
+  @prop({ ref: () &#x3D;&gt; Category, required: true, index: true })
+  categories: Ref&lt;Category&gt;[]
+
+  @prop({ default: Date.now, index: true, immutable: true })
+  created_at?: Date
+
+  @prop({ default: Date.now })
+  updated_at?: Date
 }
 
-export class CommentVoteDTO extends VoteAuthorDTO {
-  @IsInt()
-  @IsDefined()
-  comment_id: number
-
-  @IsIn(VOTE_TYPES)
-  @IsInt()
-  @IsDefined()
-  vote: number
-}
-
-export class PostVoteDTO extends VoteAuthorDTO {
-  @IsInt()
-  @IsDefined()
-  post_id: number
-
-  @IsIn([VoteType.Upvote])
-  @IsInt()
-  @IsDefined()
-  vote: number
-}
+export const ArticleProvider &#x3D; getProviderByTypegooseClass(Article)
 </code></pre>
     </div>
 </div>
@@ -446,7 +513,7 @@ export class PostVoteDTO extends VoteAuthorDTO {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'PostVoteDTO.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ArticleStats.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

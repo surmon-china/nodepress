@@ -175,7 +175,9 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#extends" >extends</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#extras" >extras</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -239,7 +241,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/modules/tag/tag.model.ts:59</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/tag/tag.model.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -276,7 +278,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/tag/tag.model.ts:48</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/tag/tag.model.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -313,7 +315,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/tag/tag.model.ts:45</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/modules/tag/tag.model.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -324,13 +326,15 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="extends"></a>
+                    <a name="extras"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>extends</b></span>
-                        <a href="#extends"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>extras</b></span>
+                        <a href="#extras"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -345,13 +349,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsArray()<br />@ArrayUnique()<br />@prop({_id: false, default: undefined, type: () &#x3D;&gt; })<br />
+                            @Type(undefined)<br />@ValidateNested()<br />@IsArray()<br />@ArrayUnique()<br />@prop({_id: false, default: undefined, type: () &#x3D;&gt; })<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/tag/tag.model.ts:56</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/modules/tag/tag.model.ts:53</a></div>
                         </td>
                     </tr>
 
@@ -387,7 +391,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/modules/tag/tag.model.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/tag/tag.model.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -425,7 +429,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/modules/tag/tag.model.ts:34</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/modules/tag/tag.model.ts:35</a></div>
                         </td>
                     </tr>
 
@@ -465,7 +469,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/modules/tag/tag.model.ts:41</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/tag/tag.model.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -502,7 +506,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/modules/tag/tag.model.ts:51</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/modules/tag/tag.model.ts:59</a></div>
                         </td>
                     </tr>
 
@@ -523,7 +527,8 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions } from &#x27;@typegoose/typegoose&#x27;
-import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayUnique } from &#x27;class-validator&#x27;
+import { Type } from &#x27;class-transformer&#x27;
+import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayUnique, ValidateNested } from &#x27;class-validator&#x27;
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
@@ -561,16 +566,18 @@ export class Tag {
   @prop({ default: &#x27;&#x27; })
   description: string
 
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested()
+  @IsArray()
+  @ArrayUnique()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  extras: KeyValueModel[]
+
   @prop({ default: Date.now, immutable: true })
   created_at?: Date
 
   @prop({ default: Date.now })
   updated_at?: Date
-
-  @IsArray()
-  @ArrayUnique()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  extends: KeyValueModel[]
 
   // for article aggregate
   article_count?: number

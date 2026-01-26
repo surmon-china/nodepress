@@ -215,7 +215,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/models/query.model.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/models/query.model.ts:16</a></div>
                         </td>
                     </tr>
 
@@ -238,11 +238,6 @@
 import { Transform } from &#x27;class-transformer&#x27;
 import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
 
-export const enum BooleanNumberValue {
-  False &#x3D; 0, // Number(false)
-  True &#x3D; 1 // Number(true)
-}
-
 // https://www.progress.com/blogs/understanding-iso-8601-date-and-time-format
 export class DateQueryDTO {
   @IsDateString()
@@ -256,6 +251,11 @@ export class KeywordQueryDTO {
   @IsNotEmpty()
   @IsOptional()
   keyword?: string
+}
+
+export const enum BooleanNumberValue {
+  False &#x3D; 0, // Number(false)
+  True &#x3D; 1 // Number(true)
 }
 
 // MARK: example

@@ -161,7 +161,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#batchPatchState" >batchPatchState</a>
+                                <a href="#batchPatchStatus" >batchPatchStatus</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -209,11 +209,6 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getMetaStatistic" >getMetaStatistic</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#getNearArticles" >getNearArticles</a>
                             </li>
                             <li>
@@ -228,7 +223,12 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#incrementMetaStatistic" >incrementMetaStatistic</a>
+                                <a href="#getTotalStatistics" >getTotalStatistics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#incrementStatistics" >incrementStatistics</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -247,7 +247,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#updateMetaComments" >updateMetaComments</a>
+                                <a href="#updateStatsComments" >updateStatsComments</a>
                             </li>
                         </ul>
                     </td>
@@ -272,7 +272,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/modules/article/article.service.ts:28</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/article/article.service.ts:27</a></div>
                             </td>
                         </tr>
 
@@ -386,8 +386,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="218"
-                                    class="link-to-prism">src/modules/article/article.service.ts:218</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="217"
+                                    class="link-to-prism">src/modules/article/article.service.ts:217</a></div>
                         </td>
                     </tr>
 
@@ -437,27 +437,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="batchPatchState"></a>
+                    <a name="batchPatchStatus"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>batchPatchState</b></span>
-                        <a href="#batchPatchState"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>batchPatchStatus</b></span>
+                        <a href="#batchPatchStatus"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchPatchState(articleIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId[]</a>, state: <a href="../miscellaneous/enumerations.html#PublishState" target="_self">PublishState</a>)</code>
+                    <code>batchPatchStatus(articleIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId[]</a>, status: <a href="../miscellaneous/enumerations.html#ArticleStatus" target="_self">ArticleStatus</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="208"
-                                    class="link-to-prism">src/modules/article/article.service.ts:208</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="207"
+                                    class="link-to-prism">src/modules/article/article.service.ts:207</a></div>
                         </td>
                     </tr>
 
@@ -490,9 +490,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>state</td>
+                                                <td>status</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/enumerations.html#PublishState" target="_self" >PublishState</a></code>
+                                                            <code><a href="../miscellaneous/enumerations.html#ArticleStatus" target="_self" >ArticleStatus</a></code>
                                             </td>
 
                                             <td>
@@ -538,8 +538,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="161"
-                                    class="link-to-prism">src/modules/article/article.service.ts:161</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="160"
+                                    class="link-to-prism">src/modules/article/article.service.ts:160</a></div>
                         </td>
                     </tr>
 
@@ -608,8 +608,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="197"
-                                    class="link-to-prism">src/modules/article/article.service.ts:197</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="196"
+                                    class="link-to-prism">src/modules/article/article.service.ts:196</a></div>
                         </td>
                     </tr>
 
@@ -677,8 +677,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="95"
-                                    class="link-to-prism">src/modules/article/article.service.ts:95</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/modules/article/article.service.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -717,8 +717,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="236"
-                                    class="link-to-prism">src/modules/article/article.service.ts:236</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="235"
+                                    class="link-to-prism">src/modules/article/article.service.ts:235</a></div>
                         </td>
                     </tr>
 
@@ -805,8 +805,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="118"
-                                    class="link-to-prism">src/modules/article/article.service.ts:118</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/modules/article/article.service.ts:117</a></div>
                         </td>
                     </tr>
 
@@ -875,8 +875,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="126"
-                                    class="link-to-prism">src/modules/article/article.service.ts:126</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/modules/article/article.service.ts:125</a></div>
                         </td>
                     </tr>
 
@@ -945,8 +945,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="134"
-                                    class="link-to-prism">src/modules/article/article.service.ts:134</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="133"
+                                    class="link-to-prism">src/modules/article/article.service.ts:133</a></div>
                         </td>
                     </tr>
 
@@ -1014,8 +1014,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="111"
-                                    class="link-to-prism">src/modules/article/article.service.ts:111</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="110"
+                                    class="link-to-prism">src/modules/article/article.service.ts:110</a></div>
                         </td>
                     </tr>
 
@@ -1083,8 +1083,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="103"
-                                    class="link-to-prism">src/modules/article/article.service.ts:103</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/modules/article/article.service.ts:102</a></div>
                         </td>
                     </tr>
 
@@ -1134,46 +1134,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getMetaStatistic"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getMetaStatistic</b></span>
-                        <a href="#getMetaStatistic"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getMetaStatistic()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="260"
-                                    class="link-to-prism">src/modules/article/article.service.ts:260</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="getNearArticles"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -1193,8 +1153,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/modules/article/article.service.ts:38</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="37"
+                                    class="link-to-prism">src/modules/article/article.service.ts:37</a></div>
                         </td>
                     </tr>
 
@@ -1286,8 +1246,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/article/article.service.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/modules/article/article.service.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -1368,8 +1328,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="232"
-                                    class="link-to-prism">src/modules/article/article.service.ts:232</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="231"
+                                    class="link-to-prism">src/modules/article/article.service.ts:231</a></div>
                         </td>
                     </tr>
 
@@ -1419,27 +1379,67 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="incrementMetaStatistic"></a>
+                    <a name="getTotalStatistics"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>incrementMetaStatistic</b></span>
-                        <a href="#incrementMetaStatistic"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getTotalStatistics</b></span>
+                        <a href="#getTotalStatistics"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>incrementMetaStatistic(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, field: unknown)</code>
+                    <code>getTotalStatistics()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="250"
-                                    class="link-to-prism">src/modules/article/article.service.ts:250</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="259"
+                                    class="link-to-prism">src/modules/article/article.service.ts:259</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="incrementStatistics"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>incrementStatistics</b></span>
+                        <a href="#incrementStatistics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>incrementStatistics(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, field: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="249"
+                                    class="link-to-prism">src/modules/article/article.service.ts:249</a></div>
                         </td>
                     </tr>
 
@@ -1520,8 +1520,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="286"
-                                    class="link-to-prism">src/modules/article/article.service.ts:286</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="285"
+                                    class="link-to-prism">src/modules/article/article.service.ts:285</a></div>
                         </td>
                     </tr>
 
@@ -1589,8 +1589,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="85"
-                                    class="link-to-prism">src/modules/article/article.service.ts:85</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/modules/article/article.service.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -1671,8 +1671,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="175"
-                                    class="link-to-prism">src/modules/article/article.service.ts:175</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/modules/article/article.service.ts:174</a></div>
                         </td>
                     </tr>
 
@@ -1734,27 +1734,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="updateMetaComments"></a>
+                    <a name="updateStatsComments"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>updateMetaComments</b></span>
-                        <a href="#updateMetaComments"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateStatsComments</b></span>
+                        <a href="#updateStatsComments"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateMetaComments(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, commentCount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>updateStatsComments(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, commentCount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="292"
-                                    class="link-to-prism">src/modules/article/article.service.ts:292</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="291"
+                                    class="link-to-prism">src/modules/article/article.service.ts:291</a></div>
                         </td>
                     </tr>
 
@@ -1826,17 +1826,16 @@ import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import { PublishState } from &#x27;@app/constants/biz.constant&#x27;
 import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { getArticleUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
+import { Article, ArticleStats } from &#x27;./article.model&#x27;
 import {
-  Article,
-  ArticleMeta,
+  ArticleStatus,
   ARTICLE_LIST_QUERY_GUEST_FILTER,
   ARTICLE_LIST_QUERY_PROJECTION,
   ARTICLE_FULL_QUERY_REF_POPULATE
-} from &#x27;./article.model&#x27;
+} from &#x27;./article.constant&#x27;
 
 @Injectable()
 export class ArticleService {
@@ -1994,7 +1993,7 @@ export class ArticleService {
       }
     }
 
-    Reflect.deleteProperty(newArticle, &#x27;meta&#x27;)
+    Reflect.deleteProperty(newArticle, &#x27;stats&#x27;)
     Reflect.deleteProperty(newArticle, &#x27;created_at&#x27;)
     Reflect.deleteProperty(newArticle, &#x27;updated_at&#x27;)
 
@@ -2019,9 +2018,9 @@ export class ArticleService {
     return article
   }
 
-  public async batchPatchState(articleIds: MongooseId[], state: PublishState) {
+  public async batchPatchStatus(articleIds: MongooseId[], status: ArticleStatus) {
     const actionResult &#x3D; await this.articleModel
-      .updateMany({ _id: { $in: articleIds } }, { $set: { state } })
+      .updateMany({ _id: { $in: articleIds } }, { $set: { status } })
       .exec()
     this.tagService.updateAllTagsCache()
     this.categoryService.updateAllCategoriesCache()
@@ -2061,17 +2060,17 @@ export class ArticleService {
     }
   }
 
-  public async incrementMetaStatistic(articleId: number, field: keyof ArticleMeta) {
+  public async incrementStatistics(articleId: number, field: keyof ArticleStats) {
     const article &#x3D; await this.getDetailByNumberIdOrSlug({
       numberId: articleId,
       publicOnly: true
     })
-    article.meta[field]++
+    article.stats[field]++
     article.save({ timestamps: false })
-    return article.meta[field]
+    return article.stats[field]
   }
 
-  public async getMetaStatistic() {
+  public async getTotalStatistics() {
     const [result] &#x3D; await this.articleModel.aggregate&lt;{
       _id: Types.ObjectId
       totalViews: number
@@ -2080,8 +2079,8 @@ export class ArticleService {
       {
         $group: {
           _id: null,
-          totalViews: { $sum: &#x27;$meta.views&#x27; },
-          totalLikes: { $sum: &#x27;$meta.likes&#x27; }
+          totalViews: { $sum: &#x27;$stats.views&#x27; },
+          totalLikes: { $sum: &#x27;$stats.likes&#x27; }
         }
       }
     ])
@@ -2103,9 +2102,9 @@ export class ArticleService {
   }
 
   // Update article comments count
-  public async updateMetaComments(articleId: number, commentCount: number) {
+  public async updateStatsComments(articleId: number, commentCount: number) {
     const findParams &#x3D; { id: articleId }
-    const patchParams &#x3D; { $set: { &#x27;meta.comments&#x27;: commentCount } }
+    const patchParams &#x3D; { $set: { &#x27;stats.comments&#x27;: commentCount } }
     return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec()
   }
 }

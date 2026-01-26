@@ -213,7 +213,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/announcement/announcement.dto.ts:31</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/modules/announcement/announcement.dto.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -237,19 +237,21 @@ import { Transform } from &#x27;class-transformer&#x27;
 import { IsInt, IsIn, IsNotEmpty, IsOptional, IsArray, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
 import { WithGuestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
-import { PublishState } from &#x27;@app/constants/biz.constant&#x27;
 import { PaginateOptionDTO } from &#x27;@app/models/paginate.model&#x27;
 import { KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
-import { ANNOUNCEMENT_STATES } from &#x27;./announcement.model&#x27;
+import { AnnouncementStatus, ANNOUNCEMENT_STATUSES } from &#x27;./announcement.constant&#x27;
 
 export class AnnouncementPaginateQueryDTO extends IntersectionType(PaginateOptionDTO, KeywordQueryDTO) {
-  @WithGuestPermission({ only: [PublishState.Published], default: PublishState.Published })
-  @IsIn(ANNOUNCEMENT_STATES)
+  @WithGuestPermission({
+    only: [AnnouncementStatus.Published],
+    default: AnnouncementStatus.Published
+  })
+  @IsIn(ANNOUNCEMENT_STATUSES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  state?: PublishState
+  status?: AnnouncementStatus
 }
 
 export class AnnouncementsDTO {

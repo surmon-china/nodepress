@@ -235,8 +235,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="52"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:52</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -313,8 +313,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="73"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:73</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:72</a></div>
                         </td>
                     </tr>
 
@@ -390,8 +390,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:59</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -546,8 +546,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="66"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:66</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -635,17 +635,16 @@ export class AnnouncementController {
   @SuccessResponse({ message: &#x27;Get announcements succeeded&#x27;, usePaginate: true })
   getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDTO) {
     const { sort, page, per_page, ...filters } &#x3D; query
-    const { keyword, state } &#x3D; filters
     const queryFilter: QueryFilter&lt;Announcement&gt; &#x3D; {}
 
     // search
-    if (keyword) {
-      queryFilter.content &#x3D; new RegExp(_trim(keyword), &#x27;i&#x27;)
+    if (filters.keyword) {
+      queryFilter.content &#x3D; new RegExp(_trim(filters.keyword), &#x27;i&#x27;)
     }
 
-    // state
-    if (state !&#x3D; null) {
-      queryFilter.state &#x3D; state
+    // status
+    if (filters.status !&#x3D; null) {
+      queryFilter.status &#x3D; filters.status
     }
 
     // paginate

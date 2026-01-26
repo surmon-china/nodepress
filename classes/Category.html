@@ -175,7 +175,9 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#extends" >extends</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#extras" >extras</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -243,7 +245,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/modules/category/category.model.ts:63</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/modules/category/category.model.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -280,7 +282,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/modules/category/category.model.ts:52</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/category/category.model.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -317,7 +319,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/modules/category/category.model.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/modules/category/category.model.ts:50</a></div>
                         </td>
                     </tr>
 
@@ -328,13 +330,15 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="extends"></a>
+                    <a name="extras"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>extends</b></span>
-                        <a href="#extends"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>extras</b></span>
+                        <a href="#extras"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -349,13 +353,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ArrayUnique()<br />@IsArray()<br />@prop({_id: false, default: undefined, type: () &#x3D;&gt; })<br />
+                            @Type(undefined)<br />@ValidateNested()<br />@ArrayUnique()<br />@IsArray()<br />@prop({_id: false, default: undefined, type: () &#x3D;&gt; })<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/category/category.model.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/category/category.model.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -391,7 +395,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/category/category.model.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/category/category.model.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -429,7 +433,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/modules/category/category.model.ts:35</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/modules/category/category.model.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -465,7 +469,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/modules/category/category.model.ts:49</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/modules/category/category.model.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -505,7 +509,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/category/category.model.ts:42</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/modules/category/category.model.ts:46</a></div>
                         </td>
                     </tr>
 
@@ -542,7 +546,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/category/category.model.ts:55</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/modules/category/category.model.ts:63</a></div>
                         </td>
                     </tr>
 
@@ -564,7 +568,8 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types } from &#x27;mongoose&#x27;
 import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, plugin, modelOptions } from &#x27;@typegoose/typegoose&#x27;
-import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayUnique } from &#x27;class-validator&#x27;
+import { Type } from &#x27;class-transformer&#x27;
+import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayUnique, ValidateNested } from &#x27;class-validator&#x27;
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
@@ -586,6 +591,9 @@ export class Category {
   @prop({ unique: true })
   id: number
 
+  @prop({ ref: Category, default: null })
+  pid: Types.ObjectId
+
   @IsString()
   @IsNotEmpty()
   @prop({ required: true, validate: /\S+/ })
@@ -602,19 +610,18 @@ export class Category {
   @prop({ default: &#x27;&#x27; })
   description: string
 
-  @prop({ ref: Category, default: null })
-  pid: Types.ObjectId
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested()
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  extras: KeyValueModel[]
 
   @prop({ default: Date.now, immutable: true })
   created_at?: Date
 
   @prop({ default: Date.now })
   updated_at?: Date
-
-  @ArrayUnique()
-  @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  extends: KeyValueModel[]
 
   // for article aggregate
   article_count?: number

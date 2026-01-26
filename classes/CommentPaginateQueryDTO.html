@@ -180,7 +180,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#state" >state</a>
+                                <a href="#status" >status</a>
                             </li>
                         </ul>
                     </td>
@@ -235,7 +235,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/modules/comment/comment.dto.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/comment/comment.dto.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -246,7 +246,7 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="state"></a>
+                    <a name="status"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -255,14 +255,14 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>state</b></span>
-                        <a href="#state"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>status</b></span>
+                        <a href="#status"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#CommentState" target="_self" >CommentState</a></code>
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#CommentStatus" target="_self" >CommentStatus</a></code>
 
                     </td>
                 </tr>
@@ -271,13 +271,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @WithGuestPermission({only: undefined, default: undefined})<br />@IsIn(COMMENT_STATES)<br />@IsInt()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
+                            @WithGuestPermission({only: undefined, default: undefined})<br />@IsIn(COMMENT_STATUSES)<br />@IsInt()<br />@IsNotEmpty()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/modules/comment/comment.dto.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/modules/comment/comment.dto.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -301,20 +301,19 @@ import { IsString, IsArray, IsIn, IsInt, Min } from &#x27;class-validator&#x27;
 import { IsNotEmpty, IsOptional, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { Transform } from &#x27;class-transformer&#x27;
 import { WithGuestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
-import { CommentState } from &#x27;@app/constants/biz.constant&#x27;
-import { COMMENT_STATES } from &#x27;./comment.model&#x27;
 import { KeywordQueryDTO } from &#x27;@app/models/query.model&#x27;
 import { PaginateOptionWithHotSortDTO } from &#x27;@app/models/paginate.model&#x27;
 import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
+import { CommentStatus, COMMENT_STATUSES } from &#x27;./comment.constant&#x27;
 
 export class CommentPaginateQueryDTO extends IntersectionType(PaginateOptionWithHotSortDTO, KeywordQueryDTO) {
-  @WithGuestPermission({ only: [CommentState.Published], default: CommentState.Published })
-  @IsIn(COMMENT_STATES)
+  @WithGuestPermission({ only: [CommentStatus.Published], default: CommentStatus.Published })
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
   @IsNotEmpty()
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  state?: CommentState
+  status?: CommentStatus
 
   @Min(0)
   @IsInt()
@@ -342,10 +341,10 @@ export class CommentsDTO {
   post_ids: number[]
 }
 
-export class CommentsStateDTO extends CommentsDTO {
-  @IsIn(COMMENT_STATES)
+export class CommentsStatusDTO extends CommentsDTO {
+  @IsIn(COMMENT_STATUSES)
   @IsInt()
-  state: CommentState
+  status: CommentStatus
 }
 </code></pre>
     </div>
