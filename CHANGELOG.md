@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 #### Global Data Schema
 
 - Renamed all `extends` fields to `extras` across all database tables.
-- **KeyValueModel**: Renamed the `name` property to `key` within the `KeyValueModel`.
+- Renamed the `name` property to `key` within the `KeyValueModel`.
 
 #### Options Module
 
