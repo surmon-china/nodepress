@@ -18,6 +18,7 @@ const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_service_1 = require("../../core/cache/cache.service");
 const helper_service_seo_1 = require("../../core/helper/helper.service.seo");
 const archive_service_1 = require("../archive/archive.service");
+const article_constant_1 = require("../article/article.constant");
 const article_model_1 = require("../article/article.model");
 const cache_constant_1 = require("../../constants/cache.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
@@ -49,7 +50,7 @@ let TagService = class TagService {
     }
     async aggregateArticleCount(publicOnly, tags) {
         const counts = await this.articleModel.aggregate([
-            { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
+            { $match: publicOnly ? article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
             { $unwind: '$tags' },
             { $group: { _id: '$tags', count: { $sum: 1 } } }
         ]);
@@ -59,7 +60,7 @@ let TagService = class TagService {
         });
     }
     async getAllTags(options) {
-        const allTags = await this.tagModel.find().lean().sort({ _id: biz_constant_1.SortType.Desc }).exec();
+        const allTags = await this.tagModel.find().lean().sort({ _id: biz_constant_1.SortOrder.Desc }).exec();
         return await this.aggregateArticleCount(options.aggregatePublicOnly, allTags);
     }
     getAllTagsCache() {

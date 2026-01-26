@@ -12,27 +12,27 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OptionController = void 0;
+exports.OptionsController = void 0;
 const common_1 = require("@nestjs/common");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
-const option_service_1 = require("./option.service");
-const option_model_1 = require("./option.model");
-let OptionController = class OptionController {
-    optionService;
-    constructor(optionService) {
-        this.optionService = optionService;
+const options_service_1 = require("./options.service");
+const options_model_1 = require("./options.model");
+let OptionsController = class OptionsController {
+    optionsService;
+    constructor(optionsService) {
+        this.optionsService = optionsService;
     }
-    getOption({ isAuthenticated }) {
-        return isAuthenticated ? this.optionService.ensureAppOption() : this.optionService.getOptionCacheForGuest();
+    getOptions({ isAuthenticated }) {
+        return isAuthenticated ? this.optionsService.ensureAppOptions() : this.optionsService.getOptionsCacheForGuest();
     }
-    putOption(option) {
-        return this.optionService.putOption(option);
+    putOptions(options) {
+        return this.optionsService.putOptions(options);
     }
 };
-exports.OptionController = OptionController;
+exports.OptionsController = OptionsController;
 __decorate([
     (0, common_1.Get)(),
     (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
@@ -41,18 +41,18 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], OptionController.prototype, "getOption", null);
+], OptionsController.prototype, "getOptions", null);
 __decorate([
     (0, common_1.Put)(),
     (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     (0, success_response_decorator_1.SuccessResponse)('Update app options succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [option_model_1.Option]),
+    __metadata("design:paramtypes", [options_model_1.Option]),
     __metadata("design:returntype", Promise)
-], OptionController.prototype, "putOption", null);
-exports.OptionController = OptionController = __decorate([
-    (0, common_1.Controller)('option'),
-    __metadata("design:paramtypes", [option_service_1.OptionService])
-], OptionController);
-//# sourceMappingURL=option.controller.js.map
+], OptionsController.prototype, "putOptions", null);
+exports.OptionsController = OptionsController = __decorate([
+    (0, common_1.Controller)('options'),
+    __metadata("design:paramtypes", [options_service_1.OptionsService])
+], OptionsController);
+//# sourceMappingURL=options.controller.js.map

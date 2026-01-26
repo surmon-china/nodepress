@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDisqusXML = void 0;
 const dayjs_1 = __importDefault(require("dayjs"));
+const comment_constant_1 = require("../comment/comment.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const disqus_constant_1 = require("./disqus.constant");
@@ -21,7 +22,7 @@ const getCommentItemXML = (comment) => {
       <wp:comment_author_IP>${comment.ip || ''}</wp:comment_author_IP>
       <wp:comment_date_gmt>${(0, dayjs_1.default)(comment.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:comment_date_gmt>
       <wp:comment_content><![CDATA[${comment.content || ''}]]></wp:comment_content>
-      <wp:comment_approved>${comment.state === biz_constant_1.CommentState.Published ? 1 : 0}</wp:comment_approved>
+      <wp:comment_approved>${comment.status === comment_constant_1.CommentStatus.Published ? 1 : 0}</wp:comment_approved>
     </wp:comment>
   `;
 };
@@ -48,10 +49,10 @@ const getDisqusXML = (data, guestbook) => {
             <item>
               <title>${item.article.title}</title>
               <link>${(0, urlmap_transformer_1.getPermalinkById)(item.article.id)}</link>
-              <content:encoded><![CDATA[${item.article.description || ''}]]></content:encoded>
+              <content:encoded><![CDATA[${item.article.summary || ''}]]></content:encoded>
               <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierById)(item.article.id)}</dsq:thread_identifier>
               <wp:post_date_gmt>${(0, dayjs_1.default)(item.article.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:post_date_gmt>
-              <wp:comment_status>${item.article.disabled_comments ? disqus_dto_1.ThreadState.Closed : disqus_dto_1.ThreadState.Open}</wp:comment_status>
+              <wp:comment_status>${item.article.disabled_comments ? disqus_dto_1.ThreadStatus.Closed : disqus_dto_1.ThreadStatus.Open}</wp:comment_status>
               ${item.comments.map(getCommentItemXML).join('\n')}
             </item>
           `)

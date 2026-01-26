@@ -21,6 +21,7 @@ const category_service_1 = require("../category/category.service");
 const tag_service_1 = require("../tag/tag.service");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const article_model_1 = require("./article.model");
+const article_constant_1 = require("./article.constant");
 let ArticleService = class ArticleService {
     seoService;
     tagService;
@@ -41,8 +42,8 @@ let ArticleService = class ArticleService {
         };
         const targetType = typeFieldMap[type];
         return this.articleModel
-            .find({ ...article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [targetType.field]: articleId } }, article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
-            .populate(article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE)
+            .find({ ...article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [targetType.field]: articleId } }, article_constant_1.ARTICLE_LIST_QUERY_PROJECTION)
+            .populate(article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE)
             .sort({ id: targetType.sort })
             .limit(count)
             .lean()
@@ -50,7 +51,7 @@ let ArticleService = class ArticleService {
     }
     getRelatedArticles(article, count) {
         const queryFilter = {
-            ...article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER,
+            ...article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER,
             tags: { $in: article.tags },
             categories: { $in: article.categories },
             id: { $ne: article.id }
@@ -58,8 +59,8 @@ let ArticleService = class ArticleService {
         return this.articleModel.aggregate([
             { $match: queryFilter },
             { $sample: { size: count } },
-            { $project: article_model_1.ARTICLE_LIST_QUERY_PROJECTION },
-            ...article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE.map((field) => ({
+            { $project: article_constant_1.ARTICLE_LIST_QUERY_PROJECTION },
+            ...article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE.map((field) => ({
                 $lookup: {
                     from: field,
                     localField: field,
@@ -72,14 +73,14 @@ let ArticleService = class ArticleService {
     paginate(filter, options) {
         return this.articleModel.paginateRaw(filter, {
             ...options,
-            projection: article_model_1.ARTICLE_LIST_QUERY_PROJECTION,
-            populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE
+            projection: article_constant_1.ARTICLE_LIST_QUERY_PROJECTION,
+            populate: article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE
         });
     }
     getAll() {
         return this.articleModel.find({}, null, {
             sort: { _id: -1 },
-            populate: article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE
+            populate: article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE
         });
     }
     getList(articleIds) {
@@ -101,8 +102,8 @@ let ArticleService = class ArticleService {
         if (numberId)
             queryFilter.id = numberId;
         const articleQuery = this.articleModel
-            .findOne(publicOnly ? { ...queryFilter, ...article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER } : queryFilter)
-            .populate(populate ? article_model_1.ARTICLE_FULL_QUERY_REF_POPULATE : []);
+            .findOne(publicOnly ? { ...queryFilter, ...article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER } : queryFilter)
+            .populate(populate ? article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE : []);
         const article = lean ? await articleQuery.lean().exec() : await articleQuery.exec();
         if (!article)
             throw new common_1.NotFoundException(`Article '${numberId ?? slug}' not found`);
@@ -128,7 +129,7 @@ let ArticleService = class ArticleService {
                 throw new common_1.ConflictException(`Article slug '${newArticle.slug}' already exists`);
             }
         }
-        Reflect.deleteProperty(newArticle, 'meta');
+        Reflect.deleteProperty(newArticle, 'stats');
         Reflect.deleteProperty(newArticle, 'created_at');
         Reflect.deleteProperty(newArticle, 'updated_at');
         const article = await this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).exec();
@@ -150,9 +151,9 @@ let ArticleService = class ArticleService {
         this.archiveService.updateCache();
         return article;
     }
-    async batchPatchState(articleIds, state) {
+    async batchPatchStatus(articleIds, status) {
         const actionResult = await this.articleModel
-            .updateMany({ _id: { $in: articleIds } }, { $set: { state } })
+            .updateMany({ _id: { $in: articleIds } }, { $set: { status } })
             .exec();
         this.tagService.updateAllTagsCache();
         this.categoryService.updateAllCategoriesCache();
@@ -172,12 +173,12 @@ let ArticleService = class ArticleService {
         return actionResult;
     }
     async getTotalCount(publicOnly) {
-        return await this.articleModel.countDocuments(publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {}).exec();
+        return await this.articleModel.countDocuments(publicOnly ? article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {}).exec();
     }
     async getCalendar(publicOnly, timezone = 'GMT') {
         try {
             const calendar = await this.articleModel.aggregate([
-                { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
+                { $match: publicOnly ? article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
                 { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
                 { $group: { _id: '$day', count: { $sum: 1 } } },
                 { $sort: { _id: 1 } }
@@ -188,22 +189,22 @@ let ArticleService = class ArticleService {
             throw new common_1.BadRequestException(`Invalid timezone identifier: '${timezone}'`);
         }
     }
-    async incrementMetaStatistic(articleId, field) {
+    async incrementStatistics(articleId, field) {
         const article = await this.getDetailByNumberIdOrSlug({
             numberId: articleId,
             publicOnly: true
         });
-        article.meta[field]++;
+        article.stats[field]++;
         article.save({ timestamps: false });
-        return article.meta[field];
+        return article.stats[field];
     }
-    async getMetaStatistic() {
+    async getTotalStatistics() {
         const [result] = await this.articleModel.aggregate([
             {
                 $group: {
                     _id: null,
-                    totalViews: { $sum: '$meta.views' },
-                    totalLikes: { $sum: '$meta.likes' }
+                    totalViews: { $sum: '$stats.views' },
+                    totalLikes: { $sum: '$stats.likes' }
                 }
             }
         ]);
@@ -219,9 +220,9 @@ let ArticleService = class ArticleService {
         const article = await this.articleModel.findOne({ id: articleId }).lean().exec();
         return Boolean(article && !article.disabled_comments);
     }
-    async updateMetaComments(articleId, commentCount) {
+    async updateStatsComments(articleId, commentCount) {
         const findParams = { id: articleId };
-        const patchParams = { $set: { 'meta.comments': commentCount } };
+        const patchParams = { $set: { 'stats.comments': commentCount } };
         return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec();
     }
 };

@@ -13,20 +13,20 @@ exports.KeyValueModel = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
 class KeyValueModel {
-    name;
+    key;
     value;
 }
 exports.KeyValueModel = KeyValueModel;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: false, validate: /\S+/ }),
+    (0, typegoose_1.prop)({ required: true, trim: true, validate: /\S+/ }),
     __metadata("design:type", String)
-], KeyValueModel.prototype, "name", void 0);
+], KeyValueModel.prototype, "key", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: false, validate: /\S+/ }),
+    (0, class_validator_1.IsOptional)(),
+    (0, typegoose_1.prop)({ required: false }),
     __metadata("design:type", String)
 ], KeyValueModel.prototype, "value", void 0);
 //# sourceMappingURL=key-value.model.js.map

@@ -9,36 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.VoteProvider = exports.Vote = exports.VOTE_AUTHOR_TYPES = exports.VOTE_TARGETS = exports.VOTE_TYPES = exports.VoteAuthorType = exports.voteTypeMap = exports.VoteType = exports.VoteTarget = void 0;
+exports.VoteProvider = exports.Vote = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
-var VoteTarget;
-(function (VoteTarget) {
-    VoteTarget[VoteTarget["Post"] = 1] = "Post";
-    VoteTarget[VoteTarget["Comment"] = 2] = "Comment";
-})(VoteTarget || (exports.VoteTarget = VoteTarget = {}));
-var VoteType;
-(function (VoteType) {
-    VoteType[VoteType["Upvote"] = 1] = "Upvote";
-    VoteType[VoteType["Downvote"] = -1] = "Downvote";
-})(VoteType || (exports.VoteType = VoteType = {}));
-exports.voteTypeMap = new Map([
-    [VoteType.Upvote, '+1'],
-    [VoteType.Downvote, '-1']
-]);
-var VoteAuthorType;
-(function (VoteAuthorType) {
-    VoteAuthorType[VoteAuthorType["Anonymous"] = 0] = "Anonymous";
-    VoteAuthorType[VoteAuthorType["Guest"] = 1] = "Guest";
-    VoteAuthorType[VoteAuthorType["Disqus"] = 2] = "Disqus";
-})(VoteAuthorType || (exports.VoteAuthorType = VoteAuthorType = {}));
-exports.VOTE_TYPES = [VoteType.Upvote, VoteType.Downvote];
-exports.VOTE_TARGETS = [VoteTarget.Post, VoteTarget.Comment];
-exports.VOTE_AUTHOR_TYPES = [VoteAuthorType.Anonymous, VoteAuthorType.Guest, VoteAuthorType.Disqus];
+const vote_constant_1 = require("./vote.constant");
 let Vote = class Vote {
     id;
     target_type;
@@ -58,7 +36,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Vote.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(exports.VOTE_TARGETS),
+    (0, class_validator_1.IsIn)(vote_constant_1.VOTE_TARGETS),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true, index: true }),
@@ -71,14 +49,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Vote.prototype, "target_id", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(exports.VOTE_TYPES),
+    (0, class_validator_1.IsIn)(vote_constant_1.VOTE_TYPES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true, index: true }),
     __metadata("design:type", Number)
 ], Vote.prototype, "vote_type", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(exports.VOTE_AUTHOR_TYPES),
+    (0, class_validator_1.IsIn)(vote_constant_1.VOTE_AUTHOR_TYPES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true, index: true }),

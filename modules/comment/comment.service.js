@@ -54,8 +54,9 @@ const article_service_1 = require("../article/article.service");
 const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
 const helper_service_akismet_1 = require("../../core/helper/helper.service.akismet");
-const option_service_1 = require("../option/option.service");
+const options_service_1 = require("../options/options.service");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
+const comment_constant_1 = require("./comment.constant");
 const comment_model_1 = require("./comment.model");
 const app_environment_1 = require("../../app.environment");
 const logger_1 = require("../../utils/logger");
@@ -65,14 +66,14 @@ let CommentService = class CommentService {
     ipService;
     emailService;
     akismetService;
-    optionService;
+    optionsService;
     articleService;
     commentModel;
-    constructor(ipService, emailService, akismetService, optionService, articleService, commentModel) {
+    constructor(ipService, emailService, akismetService, optionsService, articleService, commentModel) {
         this.ipService = ipService;
         this.emailService = emailService;
         this.akismetService = akismetService;
-        this.optionService = optionService;
+        this.optionsService = optionsService;
         this.articleService = articleService;
         this.commentModel = commentModel;
     }
@@ -133,15 +134,15 @@ let CommentService = class CommentService {
         }
         try {
             const counts = await this.commentModel.aggregate([
-                { $match: { ...comment_model_1.COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIds } } },
+                { $match: { ...comment_constant_1.COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIds } } },
                 { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } }
             ]);
             if (!counts || !counts.length) {
-                await this.articleService.updateMetaComments(postIds[0], 0);
+                await this.articleService.updateStatsComments(postIds[0], 0);
             }
             else {
                 await Promise.all(counts.map((count) => {
-                    return this.articleService.updateMetaComments(count._id, count.num_tutorial);
+                    return this.articleService.updateStatsComments(count._id, count.num_tutorial);
                 }));
             }
         }
@@ -149,21 +150,21 @@ let CommentService = class CommentService {
             logger.warn('updateCommentCountWithArticle failed!', error);
         }
     }
-    updateBlocklistAkismetWithComment(comments, state, referer) {
-        const isSPAM = state === biz_constant_1.CommentState.Spam;
+    updateBlocklistAkismetWithComment(comments, status, referer) {
+        const isSPAM = status === comment_constant_1.CommentStatus.Spam;
         const action = isSPAM ? helper_service_akismet_1.AkismetAction.SubmitSpam : helper_service_akismet_1.AkismetAction.SubmitHam;
         comments.forEach((comment) => this.submitCommentAkismet(action, comment, referer));
         const ips = comments.map((comment) => comment.ip).filter(Boolean);
         const emails = comments.map((comment) => comment.author.email).filter(Boolean);
         const blocklistAction = isSPAM
-            ? this.optionService.appendToBlocklist({ ips, emails })
-            : this.optionService.removeFromBlocklist({ ips, emails });
+            ? this.optionsService.appendToBlocklist({ ips, emails })
+            : this.optionsService.removeFromBlocklist({ ips, emails });
         blocklistAction
             .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeeded.'))
             .catch((error) => logger.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error));
     }
     async verifyCommentValidity(comment) {
-        const { blocklist } = await this.optionService.ensureAppOption();
+        const { blocklist } = await this.optionsService.ensureAppOptions();
         const { keywords, mails, ips } = blocklist;
         const blockByIP = ips.includes(comment.ip);
         const blockByEmail = mails.includes(comment.author.email);
@@ -191,13 +192,13 @@ let CommentService = class CommentService {
             ...comment,
             pid: Number(comment.pid),
             post_id: Number(comment.post_id),
-            state: biz_constant_1.CommentState.Published,
+            status: comment_constant_1.CommentStatus.Published,
             likes: 0,
             dislikes: 0,
             ip: visitor.ip,
             ip_location: {},
             agent: visitor.ua || comment.agent,
-            extends: []
+            extras: []
         };
     }
     async create(comment) {
@@ -239,7 +240,7 @@ let CommentService = class CommentService {
         if (!updated)
             throw new common_2.NotFoundException(`Comment '${commentId}' not found`);
         this.updateCommentsCountWithArticles([updated.post_id]);
-        this.updateBlocklistAkismetWithComment([updated], updated.state, referer);
+        this.updateBlocklistAkismetWithComment([updated], updated.status, referer);
         return updated;
     }
     async delete(commentId) {
@@ -249,18 +250,18 @@ let CommentService = class CommentService {
         this.updateCommentsCountWithArticles([deleted.post_id]);
         return deleted;
     }
-    async batchPatchState(action, referer) {
-        const { comment_ids, post_ids, state } = action;
+    async batchPatchStatus(action, referer) {
+        const { comment_ids, post_ids, status } = action;
         const actionResult = await this.commentModel
-            .updateMany({ _id: { $in: comment_ids } }, { $set: { state } })
+            .updateMany({ _id: { $in: comment_ids } }, { $set: { status } })
             .exec();
         this.updateCommentsCountWithArticles(post_ids);
         try {
             const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } });
-            this.updateBlocklistAkismetWithComment(todoComments, state, referer);
+            this.updateBlocklistAkismetWithComment(todoComments, status, referer);
         }
         catch (error) {
-            logger.warn(`batchPatchState to ${state} failed!`, error);
+            logger.warn(`batchPatchStatus to ${status} failed!`, error);
         }
         return actionResult;
     }
@@ -273,12 +274,12 @@ let CommentService = class CommentService {
         return await this.commentModel.countDocuments(queryFilter, queryOptions).exec();
     }
     async getTotalCount(publicOnly) {
-        return await this.countDocuments(publicOnly ? comment_model_1.COMMENT_GUEST_QUERY_FILTER : {});
+        return await this.countDocuments(publicOnly ? comment_constant_1.COMMENT_GUEST_QUERY_FILTER : {});
     }
     async getCalendar(publicOnly, timezone = 'GMT') {
         try {
             const calendar = await this.commentModel.aggregate([
-                { $match: publicOnly ? comment_model_1.COMMENT_GUEST_QUERY_FILTER : {} },
+                { $match: publicOnly ? comment_constant_1.COMMENT_GUEST_QUERY_FILTER : {} },
                 { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
                 { $group: { _id: '$day', count: { $sum: 1 } } },
                 { $sort: { _id: 1 } }
@@ -318,7 +319,7 @@ exports.CommentService = CommentService = __decorate([
     __metadata("design:paramtypes", [helper_service_ip_1.IPService,
         helper_service_email_1.EmailService,
         helper_service_akismet_1.AkismetService,
-        option_service_1.OptionService,
+        options_service_1.OptionsService,
         article_service_1.ArticleService, Object])
 ], CommentService);
 //# sourceMappingURL=comment.service.js.map

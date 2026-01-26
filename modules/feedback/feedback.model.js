@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FeedbackProvider = exports.Feedback = exports.FeedbackBase = exports.FEEDBACK_EMOTION_VALUES = exports.FEEDBACK_EMOTIONS = exports.FeedbackEmotion = void 0;
+exports.FeedbackProvider = exports.Feedback = exports.FeedbackBase = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
@@ -17,51 +17,15 @@ const class_validator_2 = require("class-validator");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
-var FeedbackEmotion;
-(function (FeedbackEmotion) {
-    FeedbackEmotion[FeedbackEmotion["Terrible"] = 1] = "Terrible";
-    FeedbackEmotion[FeedbackEmotion["Bad"] = 2] = "Bad";
-    FeedbackEmotion[FeedbackEmotion["Neutral"] = 3] = "Neutral";
-    FeedbackEmotion[FeedbackEmotion["Great"] = 4] = "Great";
-    FeedbackEmotion[FeedbackEmotion["Amazing"] = 5] = "Amazing";
-})(FeedbackEmotion || (exports.FeedbackEmotion = FeedbackEmotion = {}));
-const emotionMap = new Map([
-    {
-        value: FeedbackEmotion.Terrible,
-        text: FeedbackEmotion[FeedbackEmotion.Terrible],
-        emoji: '😠'
-    },
-    {
-        value: FeedbackEmotion.Bad,
-        text: FeedbackEmotion[FeedbackEmotion.Bad],
-        emoji: '🙁'
-    },
-    {
-        value: FeedbackEmotion.Neutral,
-        text: FeedbackEmotion[FeedbackEmotion.Neutral],
-        emoji: '😐'
-    },
-    {
-        value: FeedbackEmotion.Great,
-        text: FeedbackEmotion[FeedbackEmotion.Great],
-        emoji: '😃'
-    },
-    {
-        value: FeedbackEmotion.Amazing,
-        text: FeedbackEmotion[FeedbackEmotion.Amazing],
-        emoji: '🥰'
-    }
-].map((item) => [item.value, item]));
-exports.FEEDBACK_EMOTIONS = Array.from(emotionMap.values());
-exports.FEEDBACK_EMOTION_VALUES = exports.FEEDBACK_EMOTIONS.map((e) => e.value);
+const feedback_constant_1 = require("./feedback.constant");
 class FeedbackBase {
     tid;
     emotion;
     get emotion_text() {
-        return emotionMap.get(this.emotion).text;
+        return feedback_constant_1.emotionsMap.get(this.emotion).text;
     }
     get emotion_emoji() {
-        return emotionMap.get(this.emotion).emoji;
+        return feedback_constant_1.emotionsMap.get(this.emotion).emoji;
     }
     content;
     user_name;
@@ -76,7 +40,7 @@ __decorate([
     __metadata("design:type", Number)
 ], FeedbackBase.prototype, "tid", void 0);
 __decorate([
-    (0, class_validator_2.IsIn)(exports.FEEDBACK_EMOTION_VALUES),
+    (0, class_validator_2.IsIn)(feedback_constant_1.FEEDBACK_EMOTION_VALUES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_2.IsNotEmpty)(),
     (0, typegoose_1.prop)({ required: true, index: true }),

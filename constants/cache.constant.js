@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getInvalidatedTokenCacheKey = exports.getDisqusCacheKey = exports.CacheKeys = void 0;
 var CacheKeys;
 (function (CacheKeys) {
-    CacheKeys["Option"] = "option";
+    CacheKeys["Options"] = "options";
     CacheKeys["Archive"] = "archive";
     CacheKeys["AllTags"] = "all-tags";
     CacheKeys["AllCategories"] = "all-categories";

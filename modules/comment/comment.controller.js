@@ -39,15 +39,15 @@ let CommentController = class CommentController {
         const queryFilter = {};
         const paginateOptions = { page, perPage: per_page };
         if (!(0, isUndefined_1.default)(sort)) {
-            if (sort === biz_constant_1.SortType.Hottest) {
-                paginateOptions.sort = { likes: biz_constant_1.SortType.Desc };
+            if (sort === biz_constant_1.SortMode.Hottest) {
+                paginateOptions.sort = { likes: biz_constant_1.SortOrder.Desc };
             }
             else {
                 paginateOptions.dateSort = sort;
             }
         }
-        if (!(0, isUndefined_1.default)(filters.state)) {
-            queryFilter.state = filters.state;
+        if (!(0, isUndefined_1.default)(filters.status)) {
+            queryFilter.status = filters.status;
         }
         if (!(0, isUndefined_1.default)(filters.post_id)) {
             queryFilter.post_id = filters.post_id;
@@ -74,14 +74,14 @@ let CommentController = class CommentController {
             })
         };
     }
-    getCommentCalendar(query, { isUnauthenticated }) {
+    getCommentsCalendar(query, { isUnauthenticated }) {
         return this.commentService.getCalendar(isUnauthenticated, query.timezone);
     }
     createComment(comment, { visitor }) {
         return this.commentService.createFormClient(comment, visitor);
     }
     patchComments({ visitor }, body) {
-        return this.commentService.batchPatchState(body, visitor.referer);
+        return this.commentService.batchPatchStatus(body, visitor.referer);
     }
     delComments(body) {
         return this.commentService.batchDelete(body.comment_ids, body.post_ids);
@@ -113,13 +113,13 @@ __decorate([
 __decorate([
     (0, common_1.Get)('calendar'),
     (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
-    (0, success_response_decorator_1.SuccessResponse)('Get comment calendar succeeded'),
+    (0, success_response_decorator_1.SuccessResponse)('Get comments calendar succeeded'),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [comment_dto_1.CommentCalendarQueryDTO, Object]),
     __metadata("design:returntype", void 0)
-], CommentController.prototype, "getCommentCalendar", null);
+], CommentController.prototype, "getCommentsCalendar", null);
 __decorate([
     (0, common_1.Post)(),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 6 } }),
@@ -137,7 +137,7 @@ __decorate([
     __param(0, (0, request_context_decorator_1.RequestContext)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, comment_dto_1.CommentsStateDTO]),
+    __metadata("design:paramtypes", [Object, comment_dto_1.CommentsStatusDTO]),
     __metadata("design:returntype", void 0)
 ], CommentController.prototype, "patchComments", null);
 __decorate([

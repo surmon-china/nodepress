@@ -21,6 +21,7 @@ const biz_constant_1 = require("../../constants/biz.constant");
 const category_model_1 = require("../category/category.model");
 const tag_model_1 = require("../tag/tag.model");
 const article_model_1 = require("../article/article.model");
+const article_constant_1 = require("../article/article.constant");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const logger = (0, logger_1.createLogger)({ scope: 'ArchiveService', time: app_environment_1.isDevEnv });
@@ -44,15 +45,15 @@ let ArchiveService = class ArchiveService {
         });
     }
     getAllTags() {
-        return this.tagModel.find().sort({ _id: biz_constant_1.SortType.Desc }).lean().exec();
+        return this.tagModel.find().sort({ _id: biz_constant_1.SortOrder.Desc }).lean().exec();
     }
     getAllCategories() {
-        return this.categoryModel.find().sort({ _id: biz_constant_1.SortType.Desc }).lean().exec();
+        return this.categoryModel.find().sort({ _id: biz_constant_1.SortOrder.Desc }).lean().exec();
     }
     getAllArticles() {
         return this.articleModel
-            .find(article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER, article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
-            .sort({ _id: biz_constant_1.SortType.Desc })
+            .find(article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER, article_constant_1.ARTICLE_LIST_QUERY_PROJECTION)
+            .sort({ _id: biz_constant_1.SortOrder.Desc })
             .lean()
             .exec();
     }

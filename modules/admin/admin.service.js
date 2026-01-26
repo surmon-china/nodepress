@@ -31,7 +31,7 @@ let AdminService = class AdminService {
         this.adminModel = adminModel;
     }
     async validatePassword(plainPassword) {
-        const existedProfile = await this.adminModel.findOne(undefined, '+password').exec();
+        const existedProfile = await this.adminModel.findOne().select('+password').exec();
         if (existedProfile?.password) {
             return await bcryptjs_1.default.compare(plainPassword, existedProfile.password);
         }
@@ -54,7 +54,7 @@ let AdminService = class AdminService {
         }
     }
     async getProfile() {
-        const adminProfile = await this.adminModel.findOne(undefined, '-_id').lean().exec();
+        const adminProfile = await this.adminModel.findOne().select('-_id').lean().exec();
         return adminProfile ?? admin_model_1.DEFAULT_ADMIN_PROFILE;
     }
     async updateProfile(adminProfile) {
@@ -73,7 +73,7 @@ let AdminService = class AdminService {
             const plainNewPassword = (0, codec_transformer_1.decodeBase64)(inputNewPassword);
             newProfile.password = await bcryptjs_1.default.hash(plainNewPassword, app_config_1.APP_BIZ.PASSWORD.bcryptSaltRounds);
         }
-        const existedProfile = await this.adminModel.findOne(undefined, '+password').exec();
+        const existedProfile = await this.adminModel.findOne().select('+password').exec();
         if (existedProfile) {
             await Object.assign(existedProfile, newProfile).save();
         }

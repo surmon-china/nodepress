@@ -45,23 +45,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StatisticService = void 0;
+exports.StatisticsService = void 0;
 const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const cache_service_1 = require("../../core/cache/cache.service");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
-const vote_model_1 = require("../vote/vote.model");
+const vote_constant_1 = require("../vote/vote.constant");
 const vote_service_1 = require("../vote/vote.service");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
 const feedback_service_1 = require("../feedback/feedback.service");
 const tag_service_1 = require("../tag/tag.service");
-const extension_helper_1 = require("./extension.helper");
+const system_helper_1 = require("./system.helper");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
-const logger = (0, logger_1.createLogger)({ scope: 'StatisticService', time: app_environment_1.isDevEnv });
-const DEFAULT_STATISTIC = Object.freeze({
+const logger = (0, logger_1.createLogger)({ scope: 'StatisticsService', time: app_environment_1.isDevEnv });
+const DEFAULT_STATISTICS = Object.freeze({
     tags: null,
     articles: null,
     comments: null,
@@ -70,7 +70,7 @@ const DEFAULT_STATISTIC = Object.freeze({
     todayViews: null,
     averageEmotion: null
 });
-let StatisticService = class StatisticService {
+let StatisticsService = class StatisticsService {
     cacheService;
     emailService;
     articleService;
@@ -88,11 +88,11 @@ let StatisticService = class StatisticService {
         this.tagService = tagService;
         node_schedule_1.default.scheduleJob('1 0 0 * * *', async () => {
             try {
-                const todayViewsCount = await (0, extension_helper_1.getGlobalTodayViewsCount)(this.cacheService);
+                const todayViewsCount = await (0, system_helper_1.getGlobalTodayViewsCount)(this.cacheService);
                 await this.dailyStatisticsTask(todayViewsCount);
             }
             finally {
-                (0, extension_helper_1.resetGlobalTodayViewsCount)(this.cacheService).catch((error) => {
+                (0, system_helper_1.resetGlobalTodayViewsCount)(this.cacheService).catch((error) => {
                     logger.warn('reset TODAY_VIEWS failed!', error);
                 });
             }
@@ -106,18 +106,18 @@ let StatisticService = class StatisticService {
             this.commentService.countDocuments({ created_at: createdAt }),
             this.voteService.countDocuments({
                 created_at: createdAt,
-                target_type: vote_model_1.VoteTarget.Post,
-                vote_type: vote_model_1.VoteType.Upvote
+                target_type: vote_constant_1.VoteTarget.Article,
+                vote_type: vote_constant_1.VoteType.Upvote
             }),
             this.voteService.countDocuments({
                 created_at: createdAt,
-                target_type: vote_model_1.VoteTarget.Comment,
-                vote_type: vote_model_1.VoteType.Upvote
+                target_type: vote_constant_1.VoteTarget.Comment,
+                vote_type: vote_constant_1.VoteType.Upvote
             }),
             this.voteService.countDocuments({
                 created_at: createdAt,
-                target_type: vote_model_1.VoteTarget.Comment,
-                vote_type: vote_model_1.VoteType.Downvote
+                target_type: vote_constant_1.VoteTarget.Comment,
+                vote_type: vote_constant_1.VoteType.Downvote
             })
         ]);
         const emailContents = [
@@ -133,39 +133,39 @@ let StatisticService = class StatisticService {
             html: emailContents.map((text) => `<p>${text}</p>`).join('\n')
         });
     }
-    getStatistic(publicOnly) {
-        const statisticData = { ...DEFAULT_STATISTIC };
+    getStatistics(publicOnly) {
+        const statistics = { ...DEFAULT_STATISTICS };
         const tasks = Promise.all([
             this.tagService.getTotalCount().then((value) => {
-                statisticData.tags = value;
+                statistics.tags = value;
             }),
             this.articleService.getTotalCount(publicOnly).then((value) => {
-                statisticData.articles = value;
+                statistics.articles = value;
             }),
             this.commentService.getTotalCount(publicOnly).then((value) => {
-                statisticData.comments = value;
+                statistics.comments = value;
             }),
             this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
-                statisticData.averageEmotion = value ?? 0;
+                statistics.averageEmotion = value ?? 0;
             }),
-            this.articleService.getMetaStatistic().then((value) => {
-                statisticData.totalViews = value?.totalViews ?? 0;
-                statisticData.totalLikes = value?.totalLikes ?? 0;
+            this.articleService.getTotalStatistics().then((value) => {
+                statistics.totalViews = value?.totalViews ?? 0;
+                statistics.totalLikes = value?.totalLikes ?? 0;
             }),
-            (0, extension_helper_1.getGlobalTodayViewsCount)(this.cacheService).then((value) => {
-                statisticData.todayViews = value;
+            (0, system_helper_1.getGlobalTodayViewsCount)(this.cacheService).then((value) => {
+                statistics.todayViews = value;
             })
         ]);
         return tasks
-            .then(() => statisticData)
+            .then(() => statistics)
             .catch((error) => {
-            logger.warn('getStatistic task partial failed!', error);
-            return Promise.resolve(statisticData);
+            logger.warn('getStatistics task partial failed!', error);
+            return Promise.resolve(statistics);
         });
     }
 };
-exports.StatisticService = StatisticService;
-exports.StatisticService = StatisticService = __decorate([
+exports.StatisticsService = StatisticsService;
+exports.StatisticsService = StatisticsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [cache_service_1.CacheService,
         helper_service_email_1.EmailService,
@@ -174,5 +174,5 @@ exports.StatisticService = StatisticService = __decorate([
         feedback_service_1.FeedbackService,
         vote_service_1.VoteService,
         tag_service_1.TagService])
-], StatisticService);
-//# sourceMappingURL=extension.service.statistic.js.map
+], StatisticsService);
+//# sourceMappingURL=system.service.statistics.js.map

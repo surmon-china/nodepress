@@ -9,31 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentsStateDTO = exports.CommentsDTO = exports.CommentCalendarQueryDTO = exports.CommentPaginateQueryDTO = void 0;
+exports.CommentsStatusDTO = exports.CommentsDTO = exports.CommentCalendarQueryDTO = exports.CommentPaginateQueryDTO = void 0;
 const mapped_types_1 = require("@nestjs/mapped-types");
 const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 const guest_permission_decorator_1 = require("../../decorators/guest-permission.decorator");
-const biz_constant_1 = require("../../constants/biz.constant");
-const comment_model_1 = require("./comment.model");
 const query_model_1 = require("../../models/query.model");
 const paginate_model_1 = require("../../models/paginate.model");
 const value_transformer_1 = require("../../transformers/value.transformer");
+const comment_constant_1 = require("./comment.constant");
 class CommentPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionWithHotSortDTO, query_model_1.KeywordQueryDTO) {
-    state;
+    status;
     post_id;
 }
 exports.CommentPaginateQueryDTO = CommentPaginateQueryDTO;
 __decorate([
-    (0, guest_permission_decorator_1.WithGuestPermission)({ only: [biz_constant_1.CommentState.Published], default: biz_constant_1.CommentState.Published }),
-    (0, class_validator_1.IsIn)(comment_model_1.COMMENT_STATES),
+    (0, guest_permission_decorator_1.WithGuestPermission)({ only: [comment_constant_1.CommentStatus.Published], default: comment_constant_1.CommentStatus.Published }),
+    (0, class_validator_1.IsIn)(comment_constant_1.COMMENT_STATUSES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_2.IsNotEmpty)(),
     (0, class_validator_2.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
-], CommentPaginateQueryDTO.prototype, "state", void 0);
+], CommentPaginateQueryDTO.prototype, "status", void 0);
 __decorate([
     (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsInt)(),
@@ -68,13 +67,13 @@ __decorate([
     (0, class_validator_2.ArrayUnique)(),
     __metadata("design:type", Array)
 ], CommentsDTO.prototype, "post_ids", void 0);
-class CommentsStateDTO extends CommentsDTO {
-    state;
+class CommentsStatusDTO extends CommentsDTO {
+    status;
 }
-exports.CommentsStateDTO = CommentsStateDTO;
+exports.CommentsStatusDTO = CommentsStatusDTO;
 __decorate([
-    (0, class_validator_1.IsIn)(comment_model_1.COMMENT_STATES),
+    (0, class_validator_1.IsIn)(comment_constant_1.COMMENT_STATUSES),
     (0, class_validator_1.IsInt)(),
     __metadata("design:type", Number)
-], CommentsStateDTO.prototype, "state", void 0);
+], CommentsStatusDTO.prototype, "status", void 0);
 //# sourceMappingURL=comment.dto.js.map

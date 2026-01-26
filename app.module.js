@@ -16,6 +16,7 @@ const database_module_1 = require("./core/database/database.module");
 const cache_module_1 = require("./core/cache/cache.module");
 const auth_module_1 = require("./core/auth/auth.module");
 const helper_module_1 = require("./core/helper/helper.module");
+const system_module_1 = require("./modules/system/system.module");
 const announcement_module_1 = require("./modules/announcement/announcement.module");
 const category_module_1 = require("./modules/category/category.module");
 const tag_module_1 = require("./modules/tag/tag.module");
@@ -24,10 +25,9 @@ const comment_module_1 = require("./modules/comment/comment.module");
 const archive_module_1 = require("./modules/archive/archive.module");
 const feedback_module_1 = require("./modules/feedback/feedback.module");
 const vote_module_1 = require("./modules/vote/vote.module");
-const option_module_1 = require("./modules/option/option.module");
+const options_module_1 = require("./modules/options/options.module");
 const admin_module_1 = require("./modules/admin/admin.module");
 const disqus_module_1 = require("./modules/disqus/disqus.module");
-const extension_module_1 = require("./modules/extension/extension.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(noop_middleware_1.NoopMiddleware).forRoutes('*');
@@ -54,9 +54,9 @@ exports.AppModule = AppModule = __decorate([
             database_module_1.DatabaseModule,
             cache_module_1.CacheModule,
             auth_module_1.AuthModule,
-            extension_module_1.ExtensionModule,
+            system_module_1.SystemModule,
             admin_module_1.AdminModule,
-            option_module_1.OptionModule,
+            options_module_1.OptionsModule,
             feedback_module_1.FeedbackModule,
             announcement_module_1.AnnouncementModule,
             tag_module_1.TagModule,

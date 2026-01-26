@@ -45,7 +45,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExtensionController = void 0;
+exports.SystemController = void 0;
 const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
@@ -55,22 +55,22 @@ const request_context_decorator_1 = require("../../decorators/request-context.de
 const uploaded_file_decorator_1 = require("../../decorators/uploaded-file.decorator");
 const helper_service_google_1 = require("../../core/helper/helper.service.google");
 const helper_service_s3_1 = require("../../core/helper/helper.service.s3");
-const extension_service_statistic_1 = require("./extension.service.statistic");
-const extension_service_dbbackup_1 = require("./extension.service.dbbackup");
+const system_service_dbbackup_1 = require("./system.service.dbbackup");
+const system_service_statistics_1 = require("./system.service.statistics");
 const APP_CONFIG = __importStar(require("../../app.config"));
-let ExtensionController = class ExtensionController {
+let SystemController = class SystemController {
     s3Service;
     googleService;
     dbBackupService;
-    statisticService;
-    constructor(s3Service, googleService, dbBackupService, statisticService) {
+    statisticsService;
+    constructor(s3Service, googleService, dbBackupService, statisticsService) {
         this.s3Service = s3Service;
         this.googleService = googleService;
         this.dbBackupService = dbBackupService;
-        this.statisticService = statisticService;
+        this.statisticsService = statisticsService;
     }
     getSystemStatistics({ isUnauthenticated }) {
-        return this.statisticService.getStatistic(isUnauthenticated);
+        return this.statisticsService.getStatistics(isUnauthenticated);
     }
     updateDatabaseBackup() {
         return this.dbBackupService.backup();
@@ -131,16 +131,16 @@ let ExtensionController = class ExtensionController {
         });
     }
 };
-exports.ExtensionController = ExtensionController;
+exports.SystemController = SystemController;
 __decorate([
-    (0, common_1.Get)('statistic'),
+    (0, common_1.Get)('statistics'),
     (0, common_2.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
     (0, success_response_decorator_1.SuccessResponse)('Get statistics succeeded'),
     __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], ExtensionController.prototype, "getSystemStatistics", null);
+], SystemController.prototype, "getSystemStatistics", null);
 __decorate([
     (0, common_1.Patch)('database-backup'),
     (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
@@ -148,7 +148,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], ExtensionController.prototype, "updateDatabaseBackup", null);
+], SystemController.prototype, "updateDatabaseBackup", null);
 __decorate([
     (0, common_1.Get)('static/list'),
     (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
@@ -157,7 +157,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], ExtensionController.prototype, "getStaticFileList", null);
+], SystemController.prototype, "getStaticFileList", null);
 __decorate([
     (0, common_1.Post)('static/upload'),
     (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
@@ -166,7 +166,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], ExtensionController.prototype, "uploadStaticFile", null);
+], SystemController.prototype, "uploadStaticFile", null);
 __decorate([
     (0, common_1.Post)('google-analytics/batch-run-reports'),
     (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
@@ -175,7 +175,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], ExtensionController.prototype, "googleAnalyticsBatchRunReports", null);
+], SystemController.prototype, "googleAnalyticsBatchRunReports", null);
 __decorate([
     (0, common_1.Post)('google-analytics/batch-run-pivot-reports'),
     (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
@@ -184,7 +184,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], ExtensionController.prototype, "googleAnalyticsBatchRunPivotReports", null);
+], SystemController.prototype, "googleAnalyticsBatchRunPivotReports", null);
 __decorate([
     (0, common_1.Post)('google-analytics/run-realtime-report'),
     (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
@@ -193,12 +193,12 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
-], ExtensionController.prototype, "googleAnalyticsRunRealtimeReport", null);
-exports.ExtensionController = ExtensionController = __decorate([
-    (0, common_2.Controller)('extension'),
+], SystemController.prototype, "googleAnalyticsRunRealtimeReport", null);
+exports.SystemController = SystemController = __decorate([
+    (0, common_2.Controller)('system'),
     __metadata("design:paramtypes", [helper_service_s3_1.S3Service,
         helper_service_google_1.GoogleService,
-        extension_service_dbbackup_1.DBBackupService,
-        extension_service_statistic_1.StatisticService])
-], ExtensionController);
-//# sourceMappingURL=extension.controller.js.map
+        system_service_dbbackup_1.DBBackupService,
+        system_service_statistics_1.StatisticsService])
+], SystemController);
+//# sourceMappingURL=system.controller.js.map

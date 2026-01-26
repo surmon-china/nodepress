@@ -9,78 +9,65 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleProvider = exports.Article = exports.ArticleMeta = exports.ARTICLE_HOTTEST_SORT_PARAMS = exports.ARTICLE_LIST_QUERY_GUEST_FILTER = exports.ARTICLE_LIST_QUERY_PROJECTION = exports.ARTICLE_FULL_QUERY_REF_POPULATE = exports.ARTICLE_ORIGIN_STATES = exports.ARTICLE_PUBLIC_STATES = exports.ARTICLE_PUBLISH_STATES = exports.ARTICLE_LANGUAGES = void 0;
+exports.ArticleProvider = exports.Article = exports.ArticleStats = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
-const biz_constant_1 = require("../../constants/biz.constant");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
 const key_value_model_1 = require("../../models/key-value.model");
 const category_model_1 = require("../category/category.model");
 const tag_model_1 = require("../tag/tag.model");
-exports.ARTICLE_LANGUAGES = [biz_constant_1.Language.English, biz_constant_1.Language.Chinese, biz_constant_1.Language.Mixed];
-exports.ARTICLE_PUBLISH_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published, biz_constant_1.PublishState.Recycle];
-exports.ARTICLE_PUBLIC_STATES = [biz_constant_1.PublicState.Public, biz_constant_1.PublicState.Secret, biz_constant_1.PublicState.Reserve];
-exports.ARTICLE_ORIGIN_STATES = [biz_constant_1.OriginState.Original, biz_constant_1.OriginState.Reprint, biz_constant_1.OriginState.Hybrid];
-exports.ARTICLE_FULL_QUERY_REF_POPULATE = ['categories', 'tags'];
-exports.ARTICLE_LIST_QUERY_PROJECTION = { content: false };
-exports.ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
-    state: biz_constant_1.PublishState.Published,
-    public: biz_constant_1.PublicState.Public
-});
-exports.ARTICLE_HOTTEST_SORT_PARAMS = Object.freeze({
-    'meta.comments': biz_constant_1.SortType.Desc,
-    'meta.likes': biz_constant_1.SortType.Desc
-});
-const ARTICLE_DEFAULT_META = Object.freeze({
+const article_constant_1 = require("./article.constant");
+const article_constant_2 = require("./article.constant");
+const ARTICLE_DEFAULT_STATS = Object.freeze({
     likes: 0,
     views: 0,
     comments: 0
 });
-class ArticleMeta {
+class ArticleStats {
     likes;
     views;
     comments;
 }
-exports.ArticleMeta = ArticleMeta;
+exports.ArticleStats = ArticleStats;
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, typegoose_1.prop)({ default: 0 }),
     __metadata("design:type", Number)
-], ArticleMeta.prototype, "likes", void 0);
+], ArticleStats.prototype, "likes", void 0);
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, typegoose_1.prop)({ default: 0 }),
     __metadata("design:type", Number)
-], ArticleMeta.prototype, "views", void 0);
+], ArticleStats.prototype, "views", void 0);
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, typegoose_1.prop)({ default: 0 }),
     __metadata("design:type", Number)
-], ArticleMeta.prototype, "comments", void 0);
+], ArticleStats.prototype, "comments", void 0);
 let Article = class Article {
     id;
     slug;
     title;
     content;
-    description;
+    summary;
     keywords;
     thumbnail;
-    state;
-    public;
+    status;
     origin;
-    categories;
-    tags;
     lang;
     featured;
     disabled_comments;
-    meta;
+    stats;
+    extras;
+    tags;
+    categories;
     created_at;
     updated_at;
-    extends;
 };
 exports.Article = Article;
 __decorate([
@@ -92,7 +79,7 @@ __decorate([
     (0, class_validator_2.MaxLength)(50),
     (0, class_validator_1.IsString)(),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null, validate: /^[a-zA-Z0-9-_]+$/, index: true }),
+    (0, typegoose_1.prop)({ default: null, trim: true, validate: /^[a-zA-Z0-9-_]+$/, index: true }),
     __metadata("design:type", String)
 ], Article.prototype, "slug", void 0);
 __decorate([
@@ -111,7 +98,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, typegoose_1.prop)({ default: '', text: true }),
     __metadata("design:type", String)
-], Article.prototype, "description", void 0);
+], Article.prototype, "summary", void 0);
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
@@ -126,42 +113,24 @@ __decorate([
     __metadata("design:type", Object)
 ], Article.prototype, "thumbnail", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(exports.ARTICLE_PUBLISH_STATES),
+    (0, class_validator_1.IsIn)(article_constant_2.ARTICLE_STATUSES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_2.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: biz_constant_1.PublishState, default: biz_constant_1.PublishState.Published, index: true }),
+    (0, typegoose_1.prop)({ enum: article_constant_1.ArticleStatus, default: article_constant_1.ArticleStatus.Published, index: true }),
     __metadata("design:type", Number)
-], Article.prototype, "state", void 0);
+], Article.prototype, "status", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(exports.ARTICLE_PUBLIC_STATES),
+    (0, class_validator_1.IsIn)(article_constant_2.ARTICLE_ORIGINS),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_2.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: biz_constant_1.PublicState, default: biz_constant_1.PublicState.Public, index: true }),
-    __metadata("design:type", Number)
-], Article.prototype, "public", void 0);
-__decorate([
-    (0, class_validator_1.IsIn)(exports.ARTICLE_ORIGIN_STATES),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_2.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: biz_constant_1.OriginState, default: biz_constant_1.OriginState.Original, index: true }),
+    (0, typegoose_1.prop)({ enum: article_constant_1.ArticleOrigin, default: article_constant_1.ArticleOrigin.Original, index: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "origin", void 0);
 __decorate([
-    (0, class_validator_1.ArrayUnique)(),
-    (0, class_validator_1.ArrayNotEmpty)(),
-    (0, class_validator_1.IsArray)(),
-    (0, typegoose_1.prop)({ ref: () => category_model_1.Category, required: true, index: true }),
-    __metadata("design:type", Array)
-], Article.prototype, "categories", void 0);
-__decorate([
-    (0, typegoose_1.prop)({ ref: () => tag_model_1.Tag, index: true }),
-    __metadata("design:type", Array)
-], Article.prototype, "tags", void 0);
-__decorate([
-    (0, class_validator_1.IsIn)(exports.ARTICLE_LANGUAGES),
+    (0, class_validator_1.IsIn)(article_constant_2.ARTICLE_LANGUAGES),
     (0, class_validator_1.IsString)(),
     (0, class_validator_2.IsDefined)(),
-    (0, typegoose_1.prop)({ default: biz_constant_1.Language.Chinese, index: true }),
+    (0, typegoose_1.prop)({ default: article_constant_1.ArticleLanguage.Chinese, index: true }),
     __metadata("design:type", String)
 ], Article.prototype, "lang", void 0);
 __decorate([
@@ -175,9 +144,28 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Article.prototype, "disabled_comments", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ _id: false, default: { ...ARTICLE_DEFAULT_META } }),
-    __metadata("design:type", ArticleMeta)
-], Article.prototype, "meta", void 0);
+    (0, typegoose_1.prop)({ _id: false, default: { ...ARTICLE_DEFAULT_STATS } }),
+    __metadata("design:type", ArticleStats)
+], Article.prototype, "stats", void 0);
+__decorate([
+    (0, class_transformer_1.Type)(() => key_value_model_1.KeyValueModel),
+    (0, class_validator_2.ValidateNested)(),
+    (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsArray)(),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
+    __metadata("design:type", Array)
+], Article.prototype, "extras", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ ref: () => tag_model_1.Tag, index: true }),
+    __metadata("design:type", Array)
+], Article.prototype, "tags", void 0);
+__decorate([
+    (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.ArrayNotEmpty)(),
+    (0, class_validator_1.IsArray)(),
+    (0, typegoose_1.prop)({ ref: () => category_model_1.Category, required: true, index: true }),
+    __metadata("design:type", Array)
+], Article.prototype, "categories", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now, index: true, immutable: true }),
     __metadata("design:type", Date)
@@ -186,12 +174,6 @@ __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
 ], Article.prototype, "updated_at", void 0);
-__decorate([
-    (0, class_validator_1.ArrayUnique)(),
-    (0, class_validator_1.IsArray)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
-    __metadata("design:type", Array)
-], Article.prototype, "extends", void 0);
 exports.Article = Article = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
@@ -206,12 +188,12 @@ exports.Article = Article = __decorate([
             }
         }
     }),
-    (0, typegoose_1.index)({ title: 'text', content: 'text', description: 'text' }, {
+    (0, typegoose_1.index)({ title: 'text', content: 'text', summary: 'text' }, {
         name: 'SearchIndex',
         weights: {
             title: 10,
-            description: 18,
-            content: 3
+            summary: 12,
+            content: 8
         }
     })
 ], Article);

@@ -33,13 +33,12 @@ let AnnouncementController = class AnnouncementController {
     }
     getAnnouncements(query) {
         const { sort, page, per_page, ...filters } = query;
-        const { keyword, state } = filters;
         const queryFilter = {};
-        if (keyword) {
-            queryFilter.content = new RegExp((0, trim_1.default)(keyword), 'i');
+        if (filters.keyword) {
+            queryFilter.content = new RegExp((0, trim_1.default)(filters.keyword), 'i');
         }
-        if (state != null) {
-            queryFilter.state = state;
+        if (filters.status != null) {
+            queryFilter.status = filters.status;
         }
         return this.announcementService.paginate(queryFilter, {
             page,

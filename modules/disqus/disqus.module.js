@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DisqusModule = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
-const option_module_1 = require("../option/option.module");
+const options_module_1 = require("../options/options.module");
 const article_module_1 = require("../article/article.module");
 const comment_module_1 = require("../comment/comment.module");
 const disqus_controller_1 = require("./disqus.controller");
@@ -20,7 +20,7 @@ let DisqusModule = class DisqusModule {
 exports.DisqusModule = DisqusModule;
 exports.DisqusModule = DisqusModule = __decorate([
     (0, common_1.Module)({
-        imports: [axios_1.HttpModule, option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule],
+        imports: [axios_1.HttpModule, options_module_1.OptionsModule, article_module_1.ArticleModule, comment_module_1.CommentModule],
         controllers: [disqus_controller_1.DisqusController],
         providers: [disqus_service_public_1.DisqusPublicService, disqus_service_private_1.DisqusPrivateService],
         exports: [disqus_service_public_1.DisqusPublicService, disqus_service_private_1.DisqusPrivateService]

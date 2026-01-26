@@ -9,19 +9,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AnnouncementProvider = exports.Announcement = exports.ANNOUNCEMENT_STATES = void 0;
+exports.AnnouncementProvider = exports.Announcement = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
-const biz_constant_1 = require("../../constants/biz.constant");
-exports.ANNOUNCEMENT_STATES = [biz_constant_1.PublishState.Draft, biz_constant_1.PublishState.Published];
+const announcement_constant_1 = require("./announcement.constant");
 let Announcement = class Announcement {
     id;
     content;
-    state;
+    status;
     created_at;
     updated_at;
 };
@@ -37,12 +36,12 @@ __decorate([
     __metadata("design:type", String)
 ], Announcement.prototype, "content", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(exports.ANNOUNCEMENT_STATES),
+    (0, class_validator_1.IsIn)(announcement_constant_1.ANNOUNCEMENT_STATUSES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: biz_constant_1.PublishState, default: biz_constant_1.PublishState.Published, index: true }),
+    (0, typegoose_1.prop)({ enum: announcement_constant_1.AnnouncementStatus, default: announcement_constant_1.AnnouncementStatus.Published, index: true }),
     __metadata("design:type", Number)
-], Announcement.prototype, "state", void 0);
+], Announcement.prototype, "status", void 0);
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
     __metadata("design:type", Date)

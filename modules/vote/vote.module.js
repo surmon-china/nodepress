@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteModule = void 0;
 const common_1 = require("@nestjs/common");
-const option_module_1 = require("../option/option.module");
 const article_module_1 = require("../article/article.module");
 const comment_module_1 = require("../comment/comment.module");
 const disqus_module_1 = require("../disqus/disqus.module");
@@ -20,7 +19,7 @@ let VoteModule = class VoteModule {
 exports.VoteModule = VoteModule;
 exports.VoteModule = VoteModule = __decorate([
     (0, common_1.Module)({
-        imports: [option_module_1.OptionModule, article_module_1.ArticleModule, comment_module_1.CommentModule, disqus_module_1.DisqusModule],
+        imports: [article_module_1.ArticleModule, comment_module_1.CommentModule, disqus_module_1.DisqusModule],
         providers: [vote_model_1.VoteProvider, vote_service_1.VoteService],
         controllers: [vote_controller_1.VoteController],
         exports: [vote_service_1.VoteService]

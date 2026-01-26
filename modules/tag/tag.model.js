@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TagProvider = exports.Tag = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
@@ -22,9 +23,9 @@ let Tag = class Tag {
     name;
     slug;
     description;
+    extras;
     created_at;
     updated_at;
-    extends;
     article_count;
 };
 exports.Tag = Tag;
@@ -52,6 +53,14 @@ __decorate([
     __metadata("design:type", String)
 ], Tag.prototype, "description", void 0);
 __decorate([
+    (0, class_transformer_1.Type)(() => key_value_model_1.KeyValueModel),
+    (0, class_validator_1.ValidateNested)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ArrayUnique)(),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
+    __metadata("design:type", Array)
+], Tag.prototype, "extras", void 0);
+__decorate([
     (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
     __metadata("design:type", Date)
 ], Tag.prototype, "created_at", void 0);
@@ -59,12 +68,6 @@ __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
 ], Tag.prototype, "updated_at", void 0);
-__decorate([
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ArrayUnique)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
-    __metadata("design:type", Array)
-], Tag.prototype, "extends", void 0);
 exports.Tag = Tag = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),

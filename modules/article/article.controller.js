@@ -30,11 +30,11 @@ const biz_constant_1 = require("../../constants/biz.constant");
 const cache_service_1 = require("../../core/cache/cache.service");
 const tag_service_1 = require("../tag/tag.service");
 const category_service_1 = require("../category/category.service");
-const extension_helper_1 = require("../extension/extension.helper");
+const system_helper_1 = require("../system/system.helper");
 const article_dto_1 = require("./article.dto");
-const article_model_1 = require("./article.model");
+const article_constant_1 = require("./article.constant");
 const article_service_1 = require("./article.service");
-const article_model_2 = require("./article.model");
+const article_model_1 = require("./article.model");
 let ArticleController = class ArticleController {
     tagService;
     categoryService;
@@ -51,12 +51,18 @@ let ArticleController = class ArticleController {
         const queryFilter = {};
         const paginateOptions = { page, perPage: per_page };
         if (!(0, isUndefined_1.default)(sort)) {
-            if (sort === biz_constant_1.SortType.Hottest) {
-                paginateOptions.sort = article_model_1.ARTICLE_HOTTEST_SORT_PARAMS;
+            if (sort === biz_constant_1.SortMode.Hottest) {
+                paginateOptions.sort = article_constant_1.ARTICLE_HOTTEST_SORT_CONFIG;
             }
             else {
                 paginateOptions.dateSort = sort;
             }
+        }
+        if (!(0, isUndefined_1.default)(filters.status)) {
+            queryFilter.status = filters.status;
+        }
+        if (!(0, isUndefined_1.default)(filters.origin)) {
+            queryFilter.origin = filters.origin;
         }
         if (!(0, isUndefined_1.default)(filters.featured)) {
             queryFilter.featured = filters.featured;
@@ -64,19 +70,10 @@ let ArticleController = class ArticleController {
         if (!(0, isUndefined_1.default)(filters.lang)) {
             queryFilter.lang = filters.lang;
         }
-        if (!(0, isUndefined_1.default)(filters.state)) {
-            queryFilter.state = filters.state;
-        }
-        if (!(0, isUndefined_1.default)(filters.public)) {
-            queryFilter.public = filters.public;
-        }
-        if (!(0, isUndefined_1.default)(filters.origin)) {
-            queryFilter.origin = filters.origin;
-        }
         if (filters.keyword) {
             const trimmed = (0, trim_1.default)(filters.keyword);
             const keywordRegExp = new RegExp(trimmed, 'i');
-            queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { description: keywordRegExp }];
+            queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { summary: keywordRegExp }];
         }
         if (filters.date) {
             const queryDateMS = new Date(filters.date).getTime();
@@ -95,10 +92,10 @@ let ArticleController = class ArticleController {
         }
         return this.articleService.paginate(queryFilter, paginateOptions);
     }
-    getAllArticle() {
+    getAllArticles() {
         return this.articleService.getAll();
     }
-    getArticleCalendar(query, { isUnauthenticated }) {
+    getArticlesCalendar(query, { isUnauthenticated }) {
         return this.articleService.getCalendar(isUnauthenticated, query.timezone);
     }
     async getArticleContext({ params }) {
@@ -126,8 +123,8 @@ let ArticleController = class ArticleController {
                 populate: true,
                 lean: true
             });
-            this.articleService.incrementMetaStatistic(article.id, 'views');
-            (0, extension_helper_1.incrementGlobalTodayViewsCount)(this.cacheService);
+            this.articleService.incrementStatistics(article.id, 'views');
+            (0, system_helper_1.incrementGlobalTodayViewsCount)(this.cacheService);
             return article;
         }
         return mongoose_1.Types.ObjectId.isValid(params.id)
@@ -144,7 +141,7 @@ let ArticleController = class ArticleController {
         return this.articleService.delete(params.id);
     }
     patchArticles(body) {
-        return this.articleService.batchPatchState(body.article_ids, body.state);
+        return this.articleService.batchPatchStatus(body.article_ids, body.status);
     }
     delArticles(body) {
         return this.articleService.batchDelete(body.article_ids);
@@ -167,17 +164,17 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], ArticleController.prototype, "getAllArticle", null);
+], ArticleController.prototype, "getAllArticles", null);
 __decorate([
     (0, common_1.Get)('calendar'),
     (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
-    (0, success_response_decorator_1.SuccessResponse)('Get article calendar succeeded'),
+    (0, success_response_decorator_1.SuccessResponse)('Get articles calendar succeeded'),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticleCalendarQueryDTO, Object]),
     __metadata("design:returntype", void 0)
-], ArticleController.prototype, "getArticleCalendar", null);
+], ArticleController.prototype, "getArticlesCalendar", null);
 __decorate([
     (0, common_1.Get)(':id/context'),
     (0, success_response_decorator_1.SuccessResponse)('Get context articles succeeded'),
@@ -201,7 +198,7 @@ __decorate([
     (0, success_response_decorator_1.SuccessResponse)('Create article succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_model_2.Article]),
+    __metadata("design:paramtypes", [article_model_1.Article]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "createArticle", null);
 __decorate([
@@ -211,7 +208,7 @@ __decorate([
     __param(0, (0, request_context_decorator_1.RequestContext)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, article_model_2.Article]),
+    __metadata("design:paramtypes", [Object, article_model_1.Article]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "putArticle", null);
 __decorate([
@@ -229,7 +226,7 @@ __decorate([
     (0, success_response_decorator_1.SuccessResponse)('Update articles succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_dto_1.ArticlesStateDTO]),
+    __metadata("design:paramtypes", [article_dto_1.ArticlesStatusDTO]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "patchArticles", null);
 __decorate([

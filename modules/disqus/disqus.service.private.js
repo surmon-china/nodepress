@@ -51,8 +51,9 @@ const fast_xml_parser_1 = require("fast-xml-parser");
 const common_1 = require("@nestjs/common");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
+const comment_constant_1 = require("../comment/comment.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
-const extend_transformer_1 = require("../../transformers/extend.transformer");
+const extra_transformer_1 = require("../../transformers/extra.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const app_config_1 = require("../../app.config");
 const disqus_1 = require("../../utils/disqus");
@@ -84,7 +85,7 @@ let DisqusPrivateService = class DisqusPrivateService {
                 forum: app_config_1.DISQUS.forum,
                 identifier: DISQUS_CONST.getThreadIdentifierById(postId),
                 title: article.title,
-                message: article.description,
+                message: article.summary,
                 slug: article.slug || DISQUS_CONST.getThreadIdentifierById(postId),
                 date: (0, dayjs_1.default)(article.created_at).unix(),
                 url: (0, urlmap_transformer_1.getPermalinkById)(postId),
@@ -158,7 +159,7 @@ let DisqusPrivateService = class DisqusPrivateService {
         const treeMap = new Map();
         const guestbook = [];
         const allComments = await this.commentService.getAll();
-        const todoComments = allComments.filter((comment) => [biz_constant_1.CommentState.Auditing, biz_constant_1.CommentState.Published].includes(comment.state));
+        const todoComments = allComments.filter((comment) => [comment_constant_1.CommentStatus.Pending, comment_constant_1.CommentStatus.Published].includes(comment.status));
         const todoCommentIds = todoComments.map((comment) => comment.id);
         todoComments.forEach((comment) => {
             if (comment.pid && !todoCommentIds.includes(comment.pid)) {
@@ -211,25 +212,25 @@ let DisqusPrivateService = class DisqusPrivateService {
             if (!comment) {
                 throw `Invalid comment '${comment}'`;
             }
-            const _extends = comment.extends || [];
-            const extendsObject = (0, extend_transformer_1.getExtendObject)(_extends);
-            if (!extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY]) {
-                _extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: each.postId });
+            const _extras = comment.extras || [];
+            const extrasObject = (0, extra_transformer_1.getExtraObject)(_extras);
+            if (!extrasObject[DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY]) {
+                _extras.push({ key: DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY, value: each.postId });
             }
-            if (!extendsObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY]) {
-                _extends.push({ name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: each.threadId });
+            if (!extrasObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY]) {
+                _extras.push({ key: DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY, value: each.threadId });
             }
             if (each.isAnonymous) {
-                if (!extendsObject[DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY]) {
-                    _extends.push({ name: DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY, value: 'true' });
+                if (!extrasObject[DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY]) {
+                    _extras.push({ key: DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY, value: 'true' });
                 }
             }
             else if (each.username) {
-                if (!extendsObject[DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY]) {
-                    _extends.push({ name: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY, value: each.username });
+                if (!extrasObject[DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY]) {
+                    _extras.push({ key: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY, value: each.username });
                 }
             }
-            comment.extends = _extends;
+            comment.extras = _extras;
             return await comment.save();
         };
         const done = [];

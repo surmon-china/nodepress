@@ -9,13 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentIdDTO = exports.ThreadPostIdDTO = exports.CallbackCodeDTO = exports.ThreadState = void 0;
+exports.CommentIdDTO = exports.ThreadPostIdDTO = exports.CallbackCodeDTO = exports.ThreadStatus = void 0;
 const class_validator_1 = require("class-validator");
-var ThreadState;
-(function (ThreadState) {
-    ThreadState["Open"] = "open";
-    ThreadState["Closed"] = "closed";
-})(ThreadState || (exports.ThreadState = ThreadState = {}));
+var ThreadStatus;
+(function (ThreadStatus) {
+    ThreadStatus["Open"] = "open";
+    ThreadStatus["Closed"] = "closed";
+})(ThreadStatus || (exports.ThreadStatus = ThreadStatus = {}));
 class CallbackCodeDTO {
     code;
 }

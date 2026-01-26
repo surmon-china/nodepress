@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentProvider = exports.Comment = exports.CommentBase = exports.Author = exports.COMMENT_GUEST_QUERY_FILTER = exports.COMMENT_STATES = void 0;
+exports.CommentProvider = exports.Comment = exports.CommentBase = exports.Author = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_transformer_1 = require("class-transformer");
@@ -19,17 +19,9 @@ const database_constant_1 = require("../../constants/database.constant");
 const paginate_1 = require("../../utils/paginate");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const biz_constant_1 = require("../../constants/biz.constant");
-const key_value_model_1 = require("../../models/key-value.model");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
-exports.COMMENT_STATES = [
-    biz_constant_1.CommentState.Auditing,
-    biz_constant_1.CommentState.Published,
-    biz_constant_1.CommentState.Deleted,
-    biz_constant_1.CommentState.Spam
-];
-exports.COMMENT_GUEST_QUERY_FILTER = Object.freeze({
-    state: biz_constant_1.CommentState.Published
-});
+const key_value_model_1 = require("../../models/key-value.model");
+const comment_constant_1 = require("./comment.constant");
 let Author = class Author {
     name;
     email;
@@ -108,19 +100,19 @@ __decorate([
     (0, class_validator_1.IsObject)(),
     (0, class_validator_2.IsNotEmpty)(),
     (0, class_validator_2.IsDefined)({ message: 'comment author?' }),
-    (0, typegoose_1.prop)({ required: true, _id: false }),
+    (0, typegoose_1.prop)({ _id: false, required: true }),
     __metadata("design:type", Author)
 ], CommentBase.prototype, "author", void 0);
 let Comment = class Comment extends CommentBase {
     id;
-    state;
+    status;
     likes;
     dislikes;
     ip;
     ip_location;
+    extras;
     created_at;
     updated_at;
-    extends;
 };
 exports.Comment = Comment;
 __decorate([
@@ -128,11 +120,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Comment.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(exports.COMMENT_STATES),
+    (0, class_validator_1.IsIn)(comment_constant_1.COMMENT_STATUSES),
     (0, class_validator_1.IsInt)(),
-    (0, typegoose_1.prop)({ enum: biz_constant_1.CommentState, default: biz_constant_1.CommentState.Published, index: true }),
+    (0, typegoose_1.prop)({ enum: comment_constant_1.CommentStatus, default: comment_constant_1.CommentStatus.Published, index: true }),
     __metadata("design:type", Number)
-], Comment.prototype, "state", void 0);
+], Comment.prototype, "status", void 0);
 __decorate([
     (0, class_validator_1.IsInt)(),
     (0, typegoose_1.prop)({ default: 0, index: true }),
@@ -154,6 +146,14 @@ __decorate([
     __metadata("design:type", Object)
 ], Comment.prototype, "ip_location", void 0);
 __decorate([
+    (0, class_transformer_1.Type)(() => key_value_model_1.KeyValueModel),
+    (0, class_validator_2.ValidateNested)(),
+    (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsArray)(),
+    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
+    __metadata("design:type", Array)
+], Comment.prototype, "extras", void 0);
+__decorate([
     (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
     __metadata("design:type", Date)
 ], Comment.prototype, "created_at", void 0);
@@ -161,12 +161,6 @@ __decorate([
     (0, typegoose_1.prop)({ default: Date.now }),
     __metadata("design:type", Date)
 ], Comment.prototype, "updated_at", void 0);
-__decorate([
-    (0, class_validator_1.ArrayUnique)(),
-    (0, class_validator_1.IsArray)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
-    __metadata("design:type", Array)
-], Comment.prototype, "extends", void 0);
 exports.Comment = Comment = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),

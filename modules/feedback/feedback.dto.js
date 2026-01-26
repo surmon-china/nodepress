@@ -16,7 +16,7 @@ const class_validator_1 = require("class-validator");
 const query_model_1 = require("../../models/query.model");
 const paginate_model_1 = require("../../models/paginate.model");
 const value_transformer_1 = require("../../transformers/value.transformer");
-const feedback_model_1 = require("./feedback.model");
+const feedback_constant_1 = require("./feedback.constant");
 class FeedbackPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionDTO, query_model_1.KeywordQueryDTO) {
     tid;
     emotion;
@@ -32,7 +32,7 @@ __decorate([
     __metadata("design:type", Number)
 ], FeedbackPaginateQueryDTO.prototype, "tid", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(feedback_model_1.FEEDBACK_EMOTION_VALUES),
+    (0, class_validator_1.IsIn)(feedback_constant_1.FEEDBACK_EMOTION_VALUES),
     (0, class_validator_1.IsInt)(),
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsOptional)(),

@@ -58,7 +58,6 @@ const success_response_decorator_1 = require("../../decorators/success-response.
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
-const option_service_1 = require("../option/option.service");
 const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
 const disqus_service_public_1 = require("../disqus/disqus.service.public");
@@ -66,7 +65,7 @@ const disqus_token_1 = require("../disqus/disqus.token");
 const biz_constant_1 = require("../../constants/biz.constant");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const vote_dto_1 = require("./vote.dto");
-const vote_model_1 = require("./vote.model");
+const vote_constant_1 = require("./vote.constant");
 const vote_service_1 = require("./vote.service");
 const APP_CONFIG = __importStar(require("../../app.config"));
 let VoteController = class VoteController {
@@ -75,15 +74,13 @@ let VoteController = class VoteController {
     disqusPublicService;
     commentService;
     articleService;
-    optionService;
     voteService;
-    constructor(ipService, emailService, disqusPublicService, commentService, articleService, optionService, voteService) {
+    constructor(ipService, emailService, disqusPublicService, commentService, articleService, voteService) {
         this.ipService = ipService;
         this.emailService = emailService;
         this.disqusPublicService = disqusPublicService;
         this.commentService = commentService;
         this.articleService = articleService;
-        this.optionService = optionService;
         this.voteService = voteService;
     }
     async queryIPLocation(ip) {
@@ -102,7 +99,7 @@ let VoteController = class VoteController {
             try {
                 const disqusUserInfo = await this.disqusPublicService.getUserInfo(disqusToken);
                 return {
-                    type: vote_model_1.VoteAuthorType.Disqus,
+                    type: vote_constant_1.VoteAuthorType.Disqus,
                     data: {
                         id: disqusUserInfo.id,
                         name: disqusUserInfo.name,
@@ -116,23 +113,23 @@ let VoteController = class VoteController {
         }
         if (guestAuthor) {
             return {
-                type: vote_model_1.VoteAuthorType.Guest,
+                type: vote_constant_1.VoteAuthorType.Guest,
                 data: guestAuthor
             };
         }
         return {
-            type: vote_model_1.VoteAuthorType.Anonymous,
+            type: vote_constant_1.VoteAuthorType.Anonymous,
             data: null
         };
     }
     getAuthorString(voteAuthor) {
-        if (voteAuthor.type === vote_model_1.VoteAuthorType.Disqus) {
+        if (voteAuthor.type === vote_constant_1.VoteAuthorType.Disqus) {
             const disqusUser = voteAuthor.data;
             const isAdmin = disqusUser.username === APP_CONFIG.DISQUS.adminUsername;
             const userType = `Disqus ${isAdmin ? 'moderator' : 'user'}`;
             return [`${disqusUser.name} (${userType})`, disqusUser.profileUrl].filter(Boolean).join(' · ');
         }
-        if (voteAuthor.type === vote_model_1.VoteAuthorType.Guest) {
+        if (voteAuthor.type === vote_constant_1.VoteAuthorType.Guest) {
             const guestUser = voteAuthor.data;
             return [`${guestUser.name} (Guest user)`, guestUser.site].filter(Boolean).join(' · ');
         }
@@ -197,15 +194,13 @@ let VoteController = class VoteController {
         return this.voteService.batchDelete(body.vote_ids);
     }
     async votePost(voteBody, token, { visitor }) {
-        const likes = voteBody.post_id === biz_constant_1.GUESTBOOK_POST_ID
-            ? await this.optionService.incrementMetaLikes()
-            : await this.articleService.incrementMetaStatistic(voteBody.post_id, 'likes');
-        this.voteDisqusThread(voteBody.post_id, voteBody.vote, token?.access_token).catch(() => { });
+        const likes = await this.articleService.incrementStatistics(voteBody.article_id, 'likes');
+        this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() => { });
         this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(async (voteAuthor) => {
             const ipLocation = await this.queryIPLocation(visitor.ip);
             await this.voteService.create({
-                target_type: vote_model_1.VoteTarget.Post,
-                target_id: voteBody.post_id,
+                target_type: vote_constant_1.VoteTarget.Article,
+                target_id: voteBody.article_id,
                 vote_type: voteBody.vote,
                 author_type: voteAuthor.type,
                 author: voteAuthor.data,
@@ -216,12 +211,12 @@ let VoteController = class VoteController {
             this.emailToTargetVoteMessage({
                 to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
                 subject: 'You have a new post vote',
-                on: await this.getPostTitle(voteBody.post_id),
-                vote: vote_model_1.voteTypeMap.get(voteBody.vote),
+                on: await this.getPostTitle(voteBody.article_id),
+                vote: vote_constant_1.voteTypesMap.get(voteBody.vote),
                 author: this.getAuthorString(voteAuthor),
                 userAgent: visitor.ua,
                 location: ipLocation,
-                link: (0, urlmap_transformer_1.getPermalinkById)(voteBody.post_id)
+                link: (0, urlmap_transformer_1.getPermalinkById)(voteBody.article_id)
             });
         });
         return likes;
@@ -244,7 +239,7 @@ let VoteController = class VoteController {
         this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(async (voteAuthor) => {
             const ipLocation = await this.queryIPLocation(visitor.ip);
             await this.voteService.create({
-                target_type: vote_model_1.VoteTarget.Comment,
+                target_type: vote_constant_1.VoteTarget.Comment,
                 target_id: voteBody.comment_id,
                 vote_type: voteBody.vote,
                 author_type: voteAuthor.type,
@@ -256,7 +251,7 @@ let VoteController = class VoteController {
             const comment = await this.commentService.getDetailByNumberId(voteBody.comment_id);
             const targetTitle = await this.getPostTitle(comment.post_id);
             const mailPayload = {
-                vote: vote_model_1.voteTypeMap.get(voteBody.vote),
+                vote: vote_constant_1.voteTypesMap.get(voteBody.vote),
                 on: `${targetTitle} #${comment.id}`,
                 author: this.getAuthorString(voteAuthor),
                 userAgent: visitor.ua,
@@ -299,14 +294,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], VoteController.prototype, "deleteVotes", null);
 __decorate([
-    (0, common_1.Post)('/post'),
+    (0, common_1.Post)('/article'),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.minutes)(1), limit: 10 } }),
-    (0, success_response_decorator_1.SuccessResponse)('Vote post succeeded'),
+    (0, success_response_decorator_1.SuccessResponse)('Vote article succeeded'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, disqus_token_1.DisqusToken)()),
     __param(2, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [vote_dto_1.PostVoteDTO, Object, Object]),
+    __metadata("design:paramtypes", [vote_dto_1.ArticleVoteDTO, Object, Object]),
     __metadata("design:returntype", Promise)
 ], VoteController.prototype, "votePost", null);
 __decorate([
@@ -327,7 +322,6 @@ exports.VoteController = VoteController = __decorate([
         disqus_service_public_1.DisqusPublicService,
         comment_service_1.CommentService,
         article_service_1.ArticleService,
-        option_service_1.OptionService,
         vote_service_1.VoteService])
 ], VoteController);
 //# sourceMappingURL=vote.controller.js.map

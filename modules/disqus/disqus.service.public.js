@@ -45,12 +45,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DisqusPublicService = void 0;
 const common_1 = require("@nestjs/common");
 const comment_service_1 = require("../comment/comment.service");
-const biz_constant_1 = require("../../constants/biz.constant");
+const comment_constant_1 = require("../comment/comment.constant");
 const cache_constant_1 = require("../../constants/cache.constant");
 const cache_service_1 = require("../../core/cache/cache.service");
 const app_config_1 = require("../../app.config");
 const disqus_1 = require("../../utils/disqus");
-const extend_transformer_1 = require("../../transformers/extend.transformer");
+const extra_transformer_1 = require("../../transformers/extra.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const disqus_service_private_1 = require("./disqus.service.private");
 const logger_1 = require("../../utils/logger");
@@ -138,7 +138,7 @@ let DisqusPublicService = class DisqusPublicService {
     async getDisqusPostIdByCommentId(commentId) {
         try {
             const comment = await this.commentService.getDetailByNumberId(commentId);
-            return (0, extend_transformer_1.getExtendValue)(comment.extends, DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY) || null;
+            return (0, extra_transformer_1.getExtraValue)(comment.extras, DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY) || null;
         }
         catch (error) {
             return null;
@@ -190,12 +190,12 @@ let DisqusPublicService = class DisqusPublicService {
         }
         newComment.author.name = disqusPost.author.name || newComment.author.name;
         newComment.author.site = disqusPost.author.url || newComment.author.site;
-        newComment.extends.push({ name: DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY, value: disqusPost.id }, { name: DISQUS_CONST.COMMENT_THREAD_ID_EXTEND_KEY, value: disqusPost.thread });
+        newComment.extras.push({ key: DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY, value: disqusPost.id }, { key: DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY, value: disqusPost.thread });
         if (disqusPost.author.isAnonymous || !accessToken) {
-            newComment.extends.push({ name: DISQUS_CONST.COMMENT_ANONYMOUS_EXTEND_KEY, value: 'true' });
+            newComment.extras.push({ key: DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY, value: 'true' });
         }
         else {
-            newComment.extends.push({ name: DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY, value: disqusPost.author.id }, { name: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTEND_KEY, value: disqusPost.author.username });
+            newComment.extras.push({ key: DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY, value: disqusPost.author.id }, { key: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY, value: disqusPost.author.username });
         }
         return await this.commentService.create(newComment);
     }
@@ -212,9 +212,9 @@ let DisqusPublicService = class DisqusPublicService {
         const comment = await this.commentService.getDetailByNumberId(commentId);
         if (!comment)
             throw new common_1.NotFoundException(`Comment '${commentId}' not found`);
-        const extendsObject = (0, extend_transformer_1.getExtendObject)(comment.extends);
-        const commentDisqusPostId = extendsObject[DISQUS_CONST.COMMENT_POST_ID_EXTEND_KEY];
-        const commentDisqusAuthorId = extendsObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTEND_KEY];
+        const extrasObject = (0, extra_transformer_1.getExtraObject)(comment.extras);
+        const commentDisqusPostId = extrasObject[DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY];
+        const commentDisqusAuthorId = extrasObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY];
         if (!commentDisqusAuthorId || !commentDisqusPostId) {
             throw new common_1.BadRequestException(`Comment '${commentId}' cannot be deleted (missing Disqus metadata)`);
         }
@@ -226,7 +226,7 @@ let DisqusPublicService = class DisqusPublicService {
             post: commentDisqusPostId,
             access_token: accessToken
         });
-        return await this.commentService.update(comment._id, { state: biz_constant_1.CommentState.Deleted });
+        return await this.commentService.update(comment._id, { status: comment_constant_1.CommentStatus.Trash });
     }
 };
 exports.DisqusPublicService = DisqusPublicService;

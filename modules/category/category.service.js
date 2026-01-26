@@ -20,6 +20,7 @@ const cache_service_1 = require("../../core/cache/cache.service");
 const archive_service_1 = require("../archive/archive.service");
 const helper_service_seo_1 = require("../../core/helper/helper.service.seo");
 const article_model_1 = require("../article/article.model");
+const article_constant_1 = require("../article/article.constant");
 const cache_constant_1 = require("../../constants/cache.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
 const logger_1 = require("../../utils/logger");
@@ -49,7 +50,7 @@ let CategoryService = class CategoryService {
     }
     async aggregateArticleCount(publicOnly, categories) {
         const counts = await this.articleModel.aggregate([
-            { $match: publicOnly ? article_model_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
+            { $match: publicOnly ? article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
             { $unwind: '$categories' },
             { $group: { _id: '$categories', count: { $sum: 1 } } }
         ]);
@@ -59,7 +60,7 @@ let CategoryService = class CategoryService {
         });
     }
     async getAllCategories(options) {
-        const allCategories = await this.categoryModel.find().lean().sort({ _id: biz_constant_1.SortType.Desc }).exec();
+        const allCategories = await this.categoryModel.find().lean().sort({ _id: biz_constant_1.SortOrder.Desc }).exec();
         return await this.aggregateArticleCount(options.aggregatePublicOnly, allCategories);
     }
     getAllCategoriesCache() {
