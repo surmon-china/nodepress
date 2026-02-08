@@ -5,46 +5,30 @@
  */
 
 import { Controller, Get, Put, Post, Body, UseGuards } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { EmailService } from '@app/core/helper/helper.service.email'
-import { IPService } from '@app/core/helper/helper.service.ip'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { EventKeys } from '@app/constants/events.constant'
 import { AuthService } from '@app/core/auth/auth.service'
 import { AdminService } from './admin.service'
-import { AuthLoginDTO, AdminUpdateDTO } from './admin.dto'
 import { TokenResult } from './admin.interface'
+import { AuthLoginDTO, AdminUpdateDTO } from './admin.dto'
 import { Admin } from './admin.model'
-import { APP_BIZ } from '@app/app.config'
 
 @Controller('admin')
 export class AdminController {
   constructor(
-    private readonly ipService: IPService,
-    private readonly emailService: EmailService,
+    private readonly eventEmitter: EventEmitter2,
     private readonly adminService: AdminService,
     private readonly authService: AuthService
   ) {}
 
   @Post('login')
   @SuccessResponse('Login succeeded')
-  async login(
-    @RequestContext() { visitor: { ip } }: IRequestContext,
-    @Body() body: AuthLoginDTO
-  ): Promise<TokenResult> {
+  async login(@RequestContext() { visitor }: IRequestContext, @Body() body: AuthLoginDTO): Promise<TokenResult> {
     const token = await this.adminService.login(body.password)
-    if (ip) {
-      const location = await this.ipService.queryLocation(ip)
-      const subject = 'App has a new login activity'
-      const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow'
-      const content = `${subject}. IP: ${ip}, location: ${locationText}`
-      this.emailService.sendMailAs(APP_BIZ.NAME, {
-        to: APP_BIZ.ADMIN_EMAIL,
-        subject,
-        text: content,
-        html: content
-      })
-    }
+    this.eventEmitter.emit(EventKeys.AdminLoggedIn, visitor)
     return token
   }
 
@@ -53,6 +37,7 @@ export class AdminController {
   @SuccessResponse('Logout succeeded')
   async logout(@RequestContext() { token }: IRequestContext): Promise<string> {
     await this.authService.invalidateToken(token!)
+    this.eventEmitter.emit(EventKeys.AdminLoggedOut, token)
     return 'ok'
   }
 

@@ -8,6 +8,7 @@ import type { FastifyRequest } from 'fastify'
 import type { MiddlewareConsumer } from '@nestjs/common'
 import { Module, NestModule } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 import { ThrottlerGuard, ThrottlerModule, minutes } from '@nestjs/throttler'
 import { AppController } from '@app/app.controller'
 
@@ -38,6 +39,8 @@ import { DisqusModule } from '@app/modules/disqus/disqus.module'
 
 @Module({
   imports: [
+    // https://docs.nestjs.com/techniques/events
+    EventEmitterModule.forRoot(),
     // https://github.com/nestjs/throttler#readme
     ThrottlerModule.forRoot([
       {

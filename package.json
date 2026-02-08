@@ -34,6 +34,7 @@
     "@nestjs/axios": "^4.0.x",
     "@nestjs/common": "^11.1.x",
     "@nestjs/core": "^11.1.x",
+    "@nestjs/event-emitter": "^3.x",
     "@nestjs/jwt": "^11.x",
     "@nestjs/mapped-types": "^2.1.x",
     "@nestjs/platform-fastify": "^11.x",
