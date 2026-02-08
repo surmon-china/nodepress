@@ -241,8 +241,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="71"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:71</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -288,8 +288,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="77"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:77</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -336,8 +336,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -426,8 +426,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:54</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -503,8 +503,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="84"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:84</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -581,8 +581,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="63"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:63</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -609,46 +609,30 @@
  */
 
 import { Controller, Get, Put, Post, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { AuthService } from &#x27;@app/core/auth/auth.service&#x27;
 import { AdminService } from &#x27;./admin.service&#x27;
-import { AuthLoginDTO, AdminUpdateDTO } from &#x27;./admin.dto&#x27;
 import { TokenResult } from &#x27;./admin.interface&#x27;
+import { AuthLoginDTO, AdminUpdateDTO } from &#x27;./admin.dto&#x27;
 import { Admin } from &#x27;./admin.model&#x27;
-import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 @Controller(&#x27;admin&#x27;)
 export class AdminController {
   constructor(
-    private readonly ipService: IPService,
-    private readonly emailService: EmailService,
+    private readonly eventEmitter: EventEmitter2,
     private readonly adminService: AdminService,
     private readonly authService: AuthService
   ) {}
 
   @Post(&#x27;login&#x27;)
   @SuccessResponse(&#x27;Login succeeded&#x27;)
-  async login(
-    @RequestContext() { visitor: { ip } }: IRequestContext,
-    @Body() body: AuthLoginDTO
-  ): Promise&lt;TokenResult&gt; {
+  async login(@RequestContext() { visitor }: IRequestContext, @Body() body: AuthLoginDTO): Promise&lt;TokenResult&gt; {
     const token &#x3D; await this.adminService.login(body.password)
-    if (ip) {
-      const location &#x3D; await this.ipService.queryLocation(ip)
-      const subject &#x3D; &#x27;App has a new login activity&#x27;
-      const locationText &#x3D; location ? [location.country, location.region, location.city].join(&#x27; · &#x27;) : &#x27;unknow&#x27;
-      const content &#x3D; &#x60;${subject}. IP: ${ip}, location: ${locationText}&#x60;
-      this.emailService.sendMailAs(APP_BIZ.NAME, {
-        to: APP_BIZ.ADMIN_EMAIL,
-        subject,
-        text: content,
-        html: content
-      })
-    }
+    this.eventEmitter.emit(EventKeys.AdminLoggedIn, visitor)
     return token
   }
 
@@ -657,6 +641,7 @@ export class AdminController {
   @SuccessResponse(&#x27;Logout succeeded&#x27;)
   async logout(@RequestContext() { token }: IRequestContext): Promise&lt;string&gt; {
     await this.authService.invalidateToken(token!)
+    this.eventEmitter.emit(EventKeys.AdminLoggedOut, token)
     return &#x27;ok&#x27;
   }
 

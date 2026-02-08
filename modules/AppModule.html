@@ -475,8 +475,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="84"
-                                    class="link-to-prism">src/app.module.ts:84</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="87"
+                                    class="link-to-prism">src/app.module.ts:87</a></div>
                         </td>
                     </tr>
 
@@ -537,6 +537,7 @@ import type { FastifyRequest } from &#x27;fastify&#x27;
 import type { MiddlewareConsumer } from &#x27;@nestjs/common&#x27;
 import { Module, NestModule } from &#x27;@nestjs/common&#x27;
 import { APP_GUARD } from &#x27;@nestjs/core&#x27;
+import { EventEmitterModule } from &#x27;@nestjs/event-emitter&#x27;
 import { ThrottlerGuard, ThrottlerModule, minutes } from &#x27;@nestjs/throttler&#x27;
 import { AppController } from &#x27;@app/app.controller&#x27;
 
@@ -567,6 +568,8 @@ import { DisqusModule } from &#x27;@app/modules/disqus/disqus.module&#x27;
 
 @Module({
   imports: [
+    // https://docs.nestjs.com/techniques/events
+    EventEmitterModule.forRoot(),
     // https://github.com/nestjs/throttler#readme
     ThrottlerModule.forRoot([
       {

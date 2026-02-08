@@ -133,45 +133,57 @@
 <text text-anchor="start" x="429.73" y="-15.4" font-family="Times-12" font-size="14.00"> &#160;Exports</text>
 <g id="clust1" class="cluster">
 <title>cluster_AdminModule</title>
-<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="165,-70 165,-268 331,-268 331,-70 165,-70"/>
-</g>
-<g id="clust4" class="cluster">
-<title>cluster_AdminModule_exports</title>
-<polygon fill="none" stroke="black" points="190,-208 190,-260 306,-260 306,-208 190,-208"/>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="64,-70 64,-268 432,-268 432,-70 64,-70"/>
 </g>
 <g id="clust6" class="cluster">
 <title>cluster_AdminModule_providers</title>
-<polygon fill="none" stroke="black" points="173,-78 173,-130 323,-130 323,-78 173,-78"/>
+<polygon fill="none" stroke="black" points="72,-78 72,-130 424,-130 424,-78 72,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_AdminModule_exports</title>
+<polygon fill="none" stroke="black" points="177,-208 177,-260 293,-260 293,-208 177,-208"/>
 </g>
 <!-- AdminService  -->
 <g id="node1" class="node">
 <title>AdminService </title>
-<polygon fill="#fb8072" stroke="black" points="298.37,-252 197.63,-252 197.63,-216 298.37,-216 298.37,-252"/>
-<text text-anchor="middle" x="248" y="-229.8" font-family="Times,serif" font-size="14.00">AdminService </text>
+<polygon fill="#fb8072" stroke="black" points="285.37,-252 184.63,-252 184.63,-216 285.37,-216 285.37,-252"/>
+<text text-anchor="middle" x="235" y="-229.8" font-family="Times,serif" font-size="14.00">AdminService </text>
 </g>
 <!-- AdminModule -->
 <g id="node2" class="node">
 <title>AdminModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="297.44,-187 294.44,-191 273.44,-191 270.44,-187 198.56,-187 198.56,-151 297.44,-151 297.44,-187"/>
-<text text-anchor="middle" x="248" y="-164.8" font-family="Times,serif" font-size="14.00">AdminModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="284.44,-187 281.44,-191 260.44,-191 257.44,-187 185.56,-187 185.56,-151 284.44,-151 284.44,-187"/>
+<text text-anchor="middle" x="235" y="-164.8" font-family="Times,serif" font-size="14.00">AdminModule</text>
 </g>
 <!-- AdminModule&#45;&gt;AdminService  -->
 <g id="edge1" class="edge">
 <title>AdminModule&#45;&gt;AdminService </title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M248,-187.11C248,-187.11 248,-205.99 248,-205.99"/>
-<polygon fill="black" stroke="black" points="244.5,-205.99 248,-215.99 251.5,-205.99 244.5,-205.99"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M235,-187.11C235,-187.11 235,-205.99 235,-205.99"/>
+<polygon fill="black" stroke="black" points="231.5,-205.99 235,-215.99 238.5,-205.99 231.5,-205.99"/>
+</g>
+<!-- AdminEventListener -->
+<g id="node3" class="node">
+<title>AdminEventListener</title>
+<ellipse fill="#fdb462" stroke="black" cx="324" cy="-104" rx="92.05" ry="18"/>
+<text text-anchor="middle" x="324" y="-99.8" font-family="Times,serif" font-size="14.00">AdminEventListener</text>
+</g>
+<!-- AdminEventListener&#45;&gt;AdminModule -->
+<g id="edge2" class="edge">
+<title>AdminEventListener&#45;&gt;AdminModule</title>
+<path fill="none" stroke="black" d="M258.1,-116.84C258.1,-116.84 258.1,-140.52 258.1,-140.52"/>
+<polygon fill="black" stroke="black" points="254.6,-140.52 258.1,-150.52 261.6,-140.52 254.6,-140.52"/>
 </g>
 <!-- AdminService -->
-<g id="node3" class="node">
+<g id="node4" class="node">
 <title>AdminService</title>
-<ellipse fill="#fdb462" stroke="black" cx="248" cy="-104" rx="66.63" ry="18"/>
-<text text-anchor="middle" x="248" y="-99.8" font-family="Times,serif" font-size="14.00">AdminService</text>
+<ellipse fill="#fdb462" stroke="black" cx="147" cy="-104" rx="66.63" ry="18"/>
+<text text-anchor="middle" x="147" y="-99.8" font-family="Times,serif" font-size="14.00">AdminService</text>
 </g>
 <!-- AdminService&#45;&gt;AdminModule -->
-<g id="edge2" class="edge">
+<g id="edge3" class="edge">
 <title>AdminService&#45;&gt;AdminModule</title>
-<path fill="none" stroke="black" d="M248,-122.11C248,-122.11 248,-140.99 248,-140.99"/>
-<polygon fill="black" stroke="black" points="244.5,-140.99 248,-150.99 251.5,-140.99 244.5,-140.99"/>
+<path fill="none" stroke="black" d="M199.8,-115.32C199.8,-115.32 199.8,-140.94 199.8,-140.94"/>
+<polygon fill="black" stroke="black" points="196.3,-140.94 199.8,-150.94 203.3,-140.94 196.3,-140.94"/>
 </g>
 </g>
 </svg>
@@ -223,6 +235,9 @@
                             title="Official documentation about module providers"><span class="icon ion-ios-information-circle-outline"></a></h3>
                     <ul class="list-group">
                         <li class="list-group-item">
+                            <a href="../injectables/AdminEventListener.html">AdminEventListener</a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="../injectables/AdminService.html">AdminService</a>
                         </li>
                     </ul>
@@ -265,10 +280,11 @@ import { Module } from &#x27;@nestjs/common&#x27;
 import { AdminController } from &#x27;./admin.controller&#x27;
 import { AdminProvider } from &#x27;./admin.model&#x27;
 import { AdminService } from &#x27;./admin.service&#x27;
+import { AdminEventListener } from &#x27;./admin.listener&#x27;
 
 @Module({
   controllers: [AdminController],
-  providers: [AdminService, AdminProvider],
+  providers: [AdminService, AdminProvider, AdminEventListener],
   exports: [AdminService]
 })
 export class AdminModule {}

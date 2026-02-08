@@ -2223,7 +2223,7 @@ export class CommentService {
   public async verifyTargetCommentable(targetPostId: number): Promise&lt;void&gt; {
     if (targetPostId !&#x3D;&#x3D; GUESTBOOK_POST_ID) {
       if (!(await this.articleService.isCommentableArticle(targetPostId))) {
-        throw new BadRequestException(&#x60;Comment is not allowed on post ID: ${targetPostId}&#x60;)
+        throw new BadRequestException(&#x60;Comment is not allowed on article ${targetPostId}&#x60;)
       }
     }
   }
