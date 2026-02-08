@@ -177,7 +177,7 @@ let CommentService = class CommentService {
     async verifyTargetCommentable(targetPostId) {
         if (targetPostId !== biz_constant_1.GUESTBOOK_POST_ID) {
             if (!(await this.articleService.isCommentableArticle(targetPostId))) {
-                throw new common_2.BadRequestException(`Comment is not allowed on post ID: ${targetPostId}`);
+                throw new common_2.BadRequestException(`Comment is not allowed on article ${targetPostId}`);
             }
         }
     }

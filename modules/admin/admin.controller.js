@@ -14,44 +14,31 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminController = void 0;
 const common_1 = require("@nestjs/common");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const helper_service_email_1 = require("../../core/helper/helper.service.email");
-const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const events_constant_1 = require("../../constants/events.constant");
 const auth_service_1 = require("../../core/auth/auth.service");
 const admin_service_1 = require("./admin.service");
 const admin_dto_1 = require("./admin.dto");
-const app_config_1 = require("../../app.config");
 let AdminController = class AdminController {
-    ipService;
-    emailService;
+    eventEmitter;
     adminService;
     authService;
-    constructor(ipService, emailService, adminService, authService) {
-        this.ipService = ipService;
-        this.emailService = emailService;
+    constructor(eventEmitter, adminService, authService) {
+        this.eventEmitter = eventEmitter;
         this.adminService = adminService;
         this.authService = authService;
     }
-    async login({ visitor: { ip } }, body) {
+    async login({ visitor }, body) {
         const token = await this.adminService.login(body.password);
-        if (ip) {
-            const location = await this.ipService.queryLocation(ip);
-            const subject = 'App has a new login activity';
-            const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknow';
-            const content = `${subject}. IP: ${ip}, location: ${locationText}`;
-            this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
-                to: app_config_1.APP_BIZ.ADMIN_EMAIL,
-                subject,
-                text: content,
-                html: content
-            });
-        }
+        this.eventEmitter.emit(events_constant_1.EventKeys.AdminLoggedIn, visitor);
         return token;
     }
     async logout({ token }) {
         await this.authService.invalidateToken(token);
+        this.eventEmitter.emit(events_constant_1.EventKeys.AdminLoggedOut, token);
         return 'ok';
     }
     refreshToken() {
@@ -120,8 +107,7 @@ __decorate([
 ], AdminController.prototype, "putAdminProfile", null);
 exports.AdminController = AdminController = __decorate([
     (0, common_1.Controller)('admin'),
-    __metadata("design:paramtypes", [helper_service_ip_1.IPService,
-        helper_service_email_1.EmailService,
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
         admin_service_1.AdminService,
         auth_service_1.AuthService])
 ], AdminController);
