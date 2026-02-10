@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CacheService = void 0;
 const isNil_1 = __importDefault(require("lodash/isNil"));
-const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
 const app_environment_1 = require("../../app.environment");
 const logger_1 = require("../../utils/logger");
@@ -64,17 +63,6 @@ let CacheService = class CacheService {
             });
         };
         execIntervalTask();
-        return () => this.get(options.key);
-    }
-    schedule(options) {
-        const execScheduleTask = () => {
-            this.execPromise(options).catch((error) => {
-                logger.failure(`schedule task failed! retry after ${options.retry / 1000}s,`, '|', error);
-                setTimeout(execScheduleTask, options.retry);
-            });
-        };
-        execScheduleTask();
-        node_schedule_1.default.scheduleJob(options.schedule, execScheduleTask);
         return () => this.get(options.key);
     }
 };

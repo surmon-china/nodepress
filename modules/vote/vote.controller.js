@@ -50,7 +50,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteController = void 0;
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
-const ua_parser_js_1 = require("ua-parser-js");
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
@@ -64,6 +63,7 @@ const disqus_service_public_1 = require("../disqus/disqus.service.public");
 const disqus_token_1 = require("../disqus/disqus.token");
 const biz_constant_1 = require("../../constants/biz.constant");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
+const email_transformer_1 = require("../../transformers/email.transformer");
 const vote_dto_1 = require("./vote.dto");
 const vote_constant_1 = require("./vote.constant");
 const vote_service_1 = require("./vote.service");
@@ -136,31 +136,22 @@ let VoteController = class VoteController {
         return 'Anonymous user';
     }
     emailToTargetVoteMessage(payload) {
-        const getLocationText = (location) => {
-            return [location.country, location.region, location.city].join(' · ');
-        };
-        const getAgentText = (ua) => {
-            const parsed = (0, ua_parser_js_1.UAParser)(ua);
-            return [
-                `${parsed.browser.name ?? 'unknown_browser'}@${parsed.browser.version ?? 'unknown'}`,
-                `${parsed.os.name ?? 'unknown_OS'}@${parsed.os.version ?? 'unknown'}`,
-                `${parsed.device.model ?? 'unknown_device'}@${parsed.device.vendor ?? 'unknown'}`
-            ].join(' · ');
-        };
-        const mailTexts = [
+        const lines = [
             `${payload.subject} on "${payload.on}".`,
             `Vote: ${payload.vote}`,
             `Author: ${payload.author}`,
-            `Location: ${payload.location ? getLocationText(payload.location) : 'unknown'}`,
-            `Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : 'unknown'}`
+            `Location: ${payload.location ? (0, email_transformer_1.getLocationText)(payload.location) : 'unknown'}`,
+            `UserAgent: ${payload.userAgent ? (0, email_transformer_1.getUserAgentText)(payload.userAgent) : 'unknown'}`
         ];
-        const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('');
-        const linkHTML = `<a href="${payload.link}" target="_blank">${payload.on}</a>`;
         this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
             to: payload.to,
             subject: payload.subject,
-            text: mailTexts.join('\n'),
-            html: [textHTML, `<br>`, linkHTML].join('\n')
+            text: lines.join('\n'),
+            html: [
+                lines.map((text) => `<p>${text}</p>`).join(''),
+                `<br>`,
+                `<a href="${payload.link}" target="_blank">${payload.on}</a>`
+            ].join('\n')
         });
     }
     async voteDisqusThread(postId, vote, token) {

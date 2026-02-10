@@ -41,6 +41,8 @@ let OptionsService = class OptionsService {
                 });
             }
         });
+    }
+    onModuleInit() {
         this.optionsCache.update().catch((error) => {
             logger.warn('Init getAppOptions failed!', error);
         });

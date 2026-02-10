@@ -66,24 +66,25 @@ let EmailService = class EmailService {
                 pass: APP_CONFIG.EMAIL.password
             }
         });
-        this.verifyClient();
     }
-    verifyClient() {
-        return this.transporter.verify((error) => {
-            if (error) {
-                this.clientIsValid = false;
-                setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30);
-                logger.error(`client initialization failed! retry after 30 mins`, '|', (0, error_transformer_1.getMessageFromNormalError)(error));
-            }
-            else {
-                this.clientIsValid = true;
-                logger.success('client initialized.');
-            }
-        });
+    async onModuleInit() {
+        try {
+            await this.transporter.verify();
+            this.clientIsValid = true;
+            logger.success('client initialized.');
+        }
+        catch {
+            this.clientIsValid = false;
+            logger.failure('client initialization failed! (canot connect to SMTP server)');
+        }
     }
     sendMail(mailOptions) {
         if (!this.clientIsValid) {
             logger.warn('send failed! (initialization failed)');
+            return false;
+        }
+        if (!mailOptions.to) {
+            logger.warn('send failed! (no recipient)');
             return false;
         }
         this.transporter.sendMail({
@@ -91,7 +92,7 @@ let EmailService = class EmailService {
             from: APP_CONFIG.EMAIL.from
         }, (error, info) => {
             if (error) {
-                logger.failure(`send failed!`, (0, error_transformer_1.getMessageFromNormalError)(error));
+                logger.failure('send failed!', (0, error_transformer_1.getMessageFromNormalError)(error));
             }
             else {
                 logger.success('send succeeded.', info.messageId, info.response);

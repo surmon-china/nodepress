@@ -42,7 +42,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SeoService = exports.SEOAction = void 0;
+exports.SeoService = exports.SeoAction = void 0;
 const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const helper_service_google_1 = require("./helper.service.google");
@@ -51,12 +51,12 @@ const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger = (0, logger_1.createLogger)({ scope: 'SeoService', time: app_environment_1.isDevEnv });
-var SEOAction;
-(function (SEOAction) {
-    SEOAction["Push"] = "push";
-    SEOAction["Update"] = "update";
-    SEOAction["Delete"] = "delete";
-})(SEOAction || (exports.SEOAction = SEOAction = {}));
+var SeoAction;
+(function (SeoAction) {
+    SeoAction["Push"] = "push";
+    SeoAction["Update"] = "update";
+    SeoAction["Delete"] = "delete";
+})(SeoAction || (exports.SeoAction = SeoAction = {}));
 let SeoService = class SeoService {
     httpService;
     googleService;
@@ -66,9 +66,9 @@ let SeoService = class SeoService {
     }
     pingGoogle(action, urls) {
         const pingActionMap = {
-            [SEOAction.Push]: 'URL_UPDATED',
-            [SEOAction.Update]: 'URL_UPDATED',
-            [SEOAction.Delete]: 'URL_DELETED'
+            [SeoAction.Push]: 'URL_UPDATED',
+            [SeoAction.Update]: 'URL_UPDATED',
+            [SeoAction.Delete]: 'URL_DELETED'
         };
         const [url] = urls;
         const type = pingActionMap[action];
@@ -114,17 +114,17 @@ let SeoService = class SeoService {
     }
     push(url) {
         const urls = this.humanizedUrl(url);
-        this.pingGoogle(SEOAction.Push, urls);
+        this.pingGoogle(SeoAction.Push, urls);
         this.pingBing(urls);
     }
     update(url) {
         const urls = this.humanizedUrl(url);
-        this.pingGoogle(SEOAction.Update, urls);
+        this.pingGoogle(SeoAction.Update, urls);
         this.pingBing(urls);
     }
     delete(url) {
         const urls = this.humanizedUrl(url);
-        this.pingGoogle(SEOAction.Delete, urls);
+        this.pingGoogle(SeoAction.Delete, urls);
         this.pingBing(urls);
     }
 };

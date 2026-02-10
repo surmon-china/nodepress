@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GOOGLE = exports.BING_INDEXED = exports.DB_BACKUP = exports.S3_STORAGE = exports.DISQUS = exports.AKISMET = exports.EMAIL = exports.REDIS = exports.MONGO_DB = exports.APP_BIZ = exports.PROJECT = void 0;
+exports.WEBHOOK = exports.GOOGLE = exports.BING_INDEXED = exports.DB_BACKUP = exports.S3_STORAGE = exports.DISQUS = exports.AKISMET = exports.EMAIL = exports.REDIS = exports.MONGO_DB = exports.APP_BIZ = exports.PROJECT = void 0;
 const path_1 = __importDefault(require("path"));
 const args_1 = require("./utils/args");
 const argvs = process.argv.slice(2);
@@ -87,5 +87,9 @@ exports.BING_INDEXED = {
 exports.GOOGLE = {
     analyticsV4PropertyId: arg('google_analytics_v4_property_id'),
     jwtServiceAccountCredentials: args.google_jwt_cred_json ? JSON.parse(args.google_jwt_cred_json) : null
+};
+exports.WEBHOOK = {
+    url: arg('webhook_url'),
+    token: arg('webhook_token')
 };
 //# sourceMappingURL=app.config.js.map

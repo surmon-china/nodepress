@@ -20,31 +20,31 @@ const trim_1 = __importDefault(require("lodash/trim"));
 const isInteger_1 = __importDefault(require("lodash/isInteger"));
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const mongoose_1 = require("mongoose");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const common_1 = require("@nestjs/common");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
 const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
+const events_constant_1 = require("../../constants/events.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
-const cache_service_1 = require("../../core/cache/cache.service");
 const tag_service_1 = require("../tag/tag.service");
 const category_service_1 = require("../category/category.service");
-const system_helper_1 = require("../system/system.helper");
 const article_dto_1 = require("./article.dto");
 const article_constant_1 = require("./article.constant");
 const article_service_1 = require("./article.service");
 const article_model_1 = require("./article.model");
 let ArticleController = class ArticleController {
+    eventEmitter;
     tagService;
     categoryService;
     articleService;
-    cacheService;
-    constructor(tagService, categoryService, articleService, cacheService) {
+    constructor(eventEmitter, tagService, categoryService, articleService) {
+        this.eventEmitter = eventEmitter;
         this.tagService = tagService;
         this.categoryService = categoryService;
         this.articleService = articleService;
-        this.cacheService = cacheService;
     }
     async getArticles(query) {
         const { page, per_page, sort, ...filters } = query;
@@ -124,21 +124,27 @@ let ArticleController = class ArticleController {
                 lean: true
             });
             this.articleService.incrementStatistics(article.id, 'views');
-            (0, system_helper_1.incrementGlobalTodayViewsCount)(this.cacheService);
+            this.eventEmitter.emit(events_constant_1.EventKeys.ArticleViewed, article.id);
             return article;
         }
         return mongoose_1.Types.ObjectId.isValid(params.id)
             ? this.articleService.getDetailByObjectId(params.id)
             : this.articleService.getDetailByNumberIdOrSlug({ numberId: Number(params.id), lean: true });
     }
-    createArticle(article) {
-        return this.articleService.create(article);
+    async createArticle(article) {
+        const created = this.articleService.create(article);
+        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleCreated, created);
+        return created;
     }
-    putArticle({ params }, article) {
-        return this.articleService.update(params.id, article);
+    async putArticle({ params }, article) {
+        const updated = await this.articleService.update(params.id, article);
+        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleUpdated, updated);
+        return updated;
     }
-    delArticle({ params }) {
-        return this.articleService.delete(params.id);
+    async delArticle({ params }) {
+        const result = await this.articleService.delete(params.id);
+        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleDeleted, result);
+        return result;
     }
     patchArticles(body) {
         return this.articleService.batchPatchStatus(body.article_ids, body.status);
@@ -218,7 +224,7 @@ __decorate([
     __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "delArticle", null);
 __decorate([
     (0, common_1.Patch)(),
@@ -240,9 +246,9 @@ __decorate([
 ], ArticleController.prototype, "delArticles", null);
 exports.ArticleController = ArticleController = __decorate([
     (0, common_1.Controller)('article'),
-    __metadata("design:paramtypes", [tag_service_1.TagService,
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
+        tag_service_1.TagService,
         category_service_1.CategoryService,
-        article_service_1.ArticleService,
-        cache_service_1.CacheService])
+        article_service_1.ArticleService])
 ], ArticleController);
 //# sourceMappingURL=article.controller.js.map

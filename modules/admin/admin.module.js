@@ -18,7 +18,7 @@ exports.AdminModule = AdminModule;
 exports.AdminModule = AdminModule = __decorate([
     (0, common_1.Module)({
         controllers: [admin_controller_1.AdminController],
-        providers: [admin_service_1.AdminService, admin_model_1.AdminProvider, admin_listener_1.AdminEventListener],
+        providers: [admin_service_1.AdminService, admin_model_1.AdminProvider, admin_listener_1.AdminListener],
         exports: [admin_service_1.AdminService]
     })
 ], AdminModule);

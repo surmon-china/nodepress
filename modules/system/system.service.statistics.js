@@ -41,14 +41,11 @@ var __importStar = (this && this.__importStar) || (function () {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StatisticsService = void 0;
-const node_schedule_1 = __importDefault(require("node-schedule"));
 const common_1 = require("@nestjs/common");
-const cache_service_1 = require("../../core/cache/cache.service");
+const schedule_1 = require("@nestjs/schedule");
+const helper_service_counter_1 = require("../../core/helper/helper.service.counter");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
 const vote_constant_1 = require("../vote/vote.constant");
 const vote_service_1 = require("../vote/vote.service");
@@ -56,7 +53,8 @@ const article_service_1 = require("../article/article.service");
 const comment_service_1 = require("../comment/comment.service");
 const feedback_service_1 = require("../feedback/feedback.service");
 const tag_service_1 = require("../tag/tag.service");
-const system_helper_1 = require("./system.helper");
+const cache_constant_1 = require("../../constants/cache.constant");
+const email_transformer_1 = require("../../transformers/email.transformer");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
@@ -71,67 +69,62 @@ const DEFAULT_STATISTICS = Object.freeze({
     averageEmotion: null
 });
 let StatisticsService = class StatisticsService {
-    cacheService;
     emailService;
+    counterService;
     articleService;
     commentService;
     feedbackService;
     voteService;
     tagService;
-    constructor(cacheService, emailService, articleService, commentService, feedbackService, voteService, tagService) {
-        this.cacheService = cacheService;
+    constructor(emailService, counterService, articleService, commentService, feedbackService, voteService, tagService) {
         this.emailService = emailService;
+        this.counterService = counterService;
         this.articleService = articleService;
         this.commentService = commentService;
         this.feedbackService = feedbackService;
         this.voteService = voteService;
         this.tagService = tagService;
-        node_schedule_1.default.scheduleJob('1 0 0 * * *', async () => {
-            try {
-                const todayViewsCount = await (0, system_helper_1.getGlobalTodayViewsCount)(this.cacheService);
-                await this.dailyStatisticsTask(todayViewsCount);
-            }
-            finally {
-                (0, system_helper_1.resetGlobalTodayViewsCount)(this.cacheService).catch((error) => {
-                    logger.warn('reset TODAY_VIEWS failed!', error);
-                });
-            }
-        });
     }
-    async dailyStatisticsTask(todayViews) {
-        const now = new Date();
-        const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        const createdAt = { $gte: oneDayAgo, $lt: now };
-        const [todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] = await Promise.all([
-            this.commentService.countDocuments({ created_at: createdAt }),
-            this.voteService.countDocuments({
-                created_at: createdAt,
-                target_type: vote_constant_1.VoteTarget.Article,
-                vote_type: vote_constant_1.VoteType.Upvote
-            }),
-            this.voteService.countDocuments({
-                created_at: createdAt,
-                target_type: vote_constant_1.VoteTarget.Comment,
-                vote_type: vote_constant_1.VoteType.Upvote
-            }),
-            this.voteService.countDocuments({
-                created_at: createdAt,
-                target_type: vote_constant_1.VoteTarget.Comment,
-                vote_type: vote_constant_1.VoteType.Downvote
-            })
-        ]);
-        const emailContents = [
-            `Today views: ${todayViews}`,
-            `Today new comments: ${todayNewComments}`,
-            `Today new post votes: +${todayArticleUpVotes}`,
-            `Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}`
-        ];
-        this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
-            to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-            subject: 'Daily Statistics',
-            text: emailContents.join('\n'),
-            html: emailContents.map((text) => `<p>${text}</p>`).join('\n')
-        });
+    async sendDailyStatisticsEmail() {
+        try {
+            const now = new Date();
+            const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+            const createdAt = { $gte: oneDayAgo, $lt: now };
+            const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] = await Promise.all([
+                this.counterService.getGlobalCount(cache_constant_1.CacheKeys.TodayViewCount),
+                this.commentService.countDocuments({ created_at: createdAt }),
+                this.voteService.countDocuments({
+                    created_at: createdAt,
+                    target_type: vote_constant_1.VoteTarget.Article,
+                    vote_type: vote_constant_1.VoteType.Upvote
+                }),
+                this.voteService.countDocuments({
+                    created_at: createdAt,
+                    target_type: vote_constant_1.VoteTarget.Comment,
+                    vote_type: vote_constant_1.VoteType.Upvote
+                }),
+                this.voteService.countDocuments({
+                    created_at: createdAt,
+                    target_type: vote_constant_1.VoteTarget.Comment,
+                    vote_type: vote_constant_1.VoteType.Downvote
+                })
+            ]);
+            this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+                to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
+                subject: 'Daily Statistics',
+                ...(0, email_transformer_1.linesToEmailContent)([
+                    `Today views: ${todayViews}`,
+                    `Today new comments: ${todayNewComments}`,
+                    `Today new post votes: +${todayArticleUpVotes}`,
+                    `Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}`
+                ])
+            });
+        }
+        finally {
+            this.counterService.resetGlobalCount(cache_constant_1.CacheKeys.TodayViewCount).catch((error) => {
+                logger.warn('reset TODAY_VIEWS failed!', error);
+            });
+        }
     }
     getStatistics(publicOnly) {
         const statistics = { ...DEFAULT_STATISTICS };
@@ -152,7 +145,7 @@ let StatisticsService = class StatisticsService {
                 statistics.totalViews = value?.totalViews ?? 0;
                 statistics.totalLikes = value?.totalLikes ?? 0;
             }),
-            (0, system_helper_1.getGlobalTodayViewsCount)(this.cacheService).then((value) => {
+            this.counterService.getGlobalCount(cache_constant_1.CacheKeys.TodayViewCount).then((value) => {
                 statistics.todayViews = value;
             })
         ]);
@@ -165,10 +158,16 @@ let StatisticsService = class StatisticsService {
     }
 };
 exports.StatisticsService = StatisticsService;
+__decorate([
+    (0, schedule_1.Cron)('1 0 0 * * *', { name: 'DailyStatisticsJob' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], StatisticsService.prototype, "sendDailyStatisticsEmail", null);
 exports.StatisticsService = StatisticsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [cache_service_1.CacheService,
-        helper_service_email_1.EmailService,
+    __metadata("design:paramtypes", [helper_service_email_1.EmailService,
+        helper_service_counter_1.CounterService,
         article_service_1.ArticleService,
         comment_service_1.CommentService,
         feedback_service_1.FeedbackService,

@@ -60,27 +60,26 @@ let AkismetService = class AkismetService {
     client;
     clientIsValid = false;
     constructor() {
-        this.initClient();
-        this.initVerify();
-    }
-    initClient() {
         this.client = new akismet_api_1.AkismetClient({
             key: APP_CONFIG.AKISMET.key,
             blog: APP_CONFIG.AKISMET.blog
         });
     }
-    initVerify() {
-        this.client
-            .verifyKey()
-            .then((valid) => (valid ? Promise.resolve(valid) : Promise.reject('Invalid Akismet key')))
-            .then(() => {
-            this.clientIsValid = true;
-            logger.success('client initialized.');
-        })
-            .catch((error) => {
+    async onModuleInit() {
+        try {
+            if (await this.client.verifyKey()) {
+                this.clientIsValid = true;
+                logger.success('client initialized.');
+            }
+            else {
+                this.clientIsValid = false;
+                logger.failure('client initialization failed! (invalid Akismet key)');
+            }
+        }
+        catch (error) {
             this.clientIsValid = false;
-            logger.failure('client initialization failed!', '|', (0, error_transformer_1.getMessageFromNormalError)(error));
-        });
+            logger.failure(`client initialization failed! (${(0, error_transformer_1.getMessageFromNormalError)(error)})`);
+        }
     }
     makeInterceptor(handleType) {
         return (content) => {

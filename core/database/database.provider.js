@@ -38,50 +38,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.databaseProvider = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const event_emitter_1 = require("@nestjs/event-emitter");
 const database_constant_1 = require("../../constants/database.constant");
-const helper_service_email_1 = require("../helper/helper.service.email");
+const events_constant_1 = require("../../constants/events.constant");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger = (0, logger_1.createLogger)({ scope: 'MongoDB', time: app_environment_1.isDevEnv });
+const DATABASE_RECONNECT_INTERVAL = 6000;
 exports.databaseProvider = {
-    inject: [helper_service_email_1.EmailService],
+    inject: [event_emitter_1.EventEmitter2],
     provide: database_constant_1.DB_CONNECTION_TOKEN,
-    useFactory: async (emailService) => {
+    useFactory: async (eventEmitter) => {
         let reconnectionTask = null;
-        const RECONNECT_INTERVAL = 6000;
-        const sendAlarmMail = (error) => {
-            emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
-                to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-                subject: `MongoDB Error!`,
-                text: error,
-                html: `<pre><code>${error}</code></pre>`
+        const connect = () => {
+            return mongoose_1.default.connect(APP_CONFIG.MONGO_DB.uri, {
+                serverSelectionTimeoutMS: 15 * 1000,
+                connectTimeoutMS: 10 * 1000
             });
-        };
-        const connection = () => {
-            return mongoose_1.default.connect(APP_CONFIG.MONGO_DB.uri, {});
         };
         mongoose_1.default.set('strictQuery', false);
         mongoose_1.default.connection.on('connecting', () => {
             logger.log('connecting...');
         });
         mongoose_1.default.connection.on('open', () => {
-            logger.success('readied (open).');
+            logger.success('connected. (opened)');
             if (reconnectionTask) {
                 clearTimeout(reconnectionTask);
                 reconnectionTask = null;
             }
         });
         mongoose_1.default.connection.on('disconnected', () => {
-            logger.error(`disconnected! retry after ${RECONNECT_INTERVAL / 1000}s`);
-            reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL);
+            logger.error(`disconnected! Attempting to reconnect after ${DATABASE_RECONNECT_INTERVAL / 1000}s`);
+            eventEmitter.emit(events_constant_1.EventKeys.DatabaseError, 'MongoDB disconnected from server.');
+            reconnectionTask = setTimeout(connect, DATABASE_RECONNECT_INTERVAL);
         });
         mongoose_1.default.connection.on('error', (error) => {
             logger.error('error!', error);
-            mongoose_1.default.disconnect();
-            sendAlarmMail(String(error));
+            eventEmitter.emit(events_constant_1.EventKeys.DatabaseError, error);
+            if (mongoose_1.default.connection.readyState !== 0) {
+                mongoose_1.default.disconnect();
+            }
         });
-        return await connection();
+        return await connect();
     }
 };
 //# sourceMappingURL=database.provider.js.map

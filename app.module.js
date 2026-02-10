@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
+const schedule_1 = require("@nestjs/schedule");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const throttler_1 = require("@nestjs/throttler");
 const app_controller_1 = require("./app.controller");
@@ -17,7 +18,6 @@ const database_module_1 = require("./core/database/database.module");
 const cache_module_1 = require("./core/cache/cache.module");
 const auth_module_1 = require("./core/auth/auth.module");
 const helper_module_1 = require("./core/helper/helper.module");
-const system_module_1 = require("./modules/system/system.module");
 const announcement_module_1 = require("./modules/announcement/announcement.module");
 const category_module_1 = require("./modules/category/category.module");
 const tag_module_1 = require("./modules/tag/tag.module");
@@ -29,6 +29,8 @@ const vote_module_1 = require("./modules/vote/vote.module");
 const options_module_1 = require("./modules/options/options.module");
 const admin_module_1 = require("./modules/admin/admin.module");
 const disqus_module_1 = require("./modules/disqus/disqus.module");
+const system_module_1 = require("./modules/system/system.module");
+const webhook_module_1 = require("./modules/webhook/webhook.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(noop_middleware_1.NoopMiddleware).forRoutes('*');
@@ -38,6 +40,7 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            schedule_1.ScheduleModule.forRoot(),
             event_emitter_1.EventEmitterModule.forRoot(),
             throttler_1.ThrottlerModule.forRoot([
                 {
@@ -52,11 +55,10 @@ exports.AppModule = AppModule = __decorate([
                     }
                 }
             ]),
-            helper_module_1.HelperModule,
             database_module_1.DatabaseModule,
             cache_module_1.CacheModule,
+            helper_module_1.HelperModule,
             auth_module_1.AuthModule,
-            system_module_1.SystemModule,
             admin_module_1.AdminModule,
             options_module_1.OptionsModule,
             feedback_module_1.FeedbackModule,
@@ -67,7 +69,9 @@ exports.AppModule = AppModule = __decorate([
             comment_module_1.CommentModule,
             disqus_module_1.DisqusModule,
             archive_module_1.ArchiveModule,
-            vote_module_1.VoteModule
+            vote_module_1.VoteModule,
+            system_module_1.SystemModule,
+            webhook_module_1.WebhookModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [

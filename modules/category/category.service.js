@@ -44,6 +44,8 @@ let CategoryService = class CategoryService {
             key: cache_constant_1.CacheKeys.AllCategories,
             promise: () => this.getAllCategories({ aggregatePublicOnly: true })
         });
+    }
+    onModuleInit() {
         this.allCategoriesCache.update().catch((error) => {
             logger.warn('Init getAllCategories failed!', error);
         });

@@ -9,48 +9,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminListener = void 0;
+exports.FeedbackListener = void 0;
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
-const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
 const events_constant_1 = require("../../constants/events.constant");
 const email_transformer_1 = require("../../transformers/email.transformer");
+const feedback_model_1 = require("./feedback.model");
 const app_config_1 = require("../../app.config");
-let AdminListener = class AdminListener {
+let FeedbackListener = class FeedbackListener {
     emailService;
-    ipService;
-    constructor(emailService, ipService) {
+    constructor(emailService) {
         this.emailService = emailService;
-        this.ipService = ipService;
     }
-    async handleAdminLogin({ ip, ua, referer }) {
-        const subject = 'App has a new login activity';
-        const location = ip ? await this.ipService.queryLocation(ip) : null;
-        this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
+    async handleFeedbackCreated(feedback) {
+        const subject = 'You have a new feedback';
+        this.emailService.sendMailAs(app_config_1.APP_BIZ.FE_NAME, {
             to: app_config_1.APP_BIZ.ADMIN_EMAIL,
             subject,
             ...(0, email_transformer_1.linesToEmailContent)([
-                `${subject}!`,
-                `Time: ${(0, email_transformer_1.getTimeText)(new Date())}`,
-                `Referer: ${referer || 'unknown'}`,
-                `IP: ${ip || 'unknown'}`,
-                `Location: ${location ? (0, email_transformer_1.getLocationText)(location) : 'unknown'}`,
-                `UserAgent: ${ua ? (0, email_transformer_1.getUserAgentText)(ua) : 'unknown'}`
+                `${subject} on '${feedback.tid}'.`,
+                `Emotion: ${feedback.emotion_emoji} ${feedback.emotion_text} (${feedback.emotion})`,
+                `Content: ${feedback.content}`,
+                `Author: ${feedback.user_name || 'Anonymous user'}`,
+                `Location: ${feedback.ip_location ? (0, email_transformer_1.getLocationText)(feedback.ip_location) : 'unknown'}`,
+                `UserAgent: ${feedback.user_agent ? (0, email_transformer_1.getUserAgentText)(feedback.user_agent) : 'unknown'}`
             ])
         });
     }
 };
-exports.AdminListener = AdminListener;
+exports.FeedbackListener = FeedbackListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.AdminLoggedIn, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.FeedbackCreated, { async: true }),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [feedback_model_1.Feedback]),
     __metadata("design:returntype", Promise)
-], AdminListener.prototype, "handleAdminLogin", null);
-exports.AdminListener = AdminListener = __decorate([
+], FeedbackListener.prototype, "handleFeedbackCreated", null);
+exports.FeedbackListener = FeedbackListener = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [helper_service_email_1.EmailService,
-        helper_service_ip_1.IPService])
-], AdminListener);
-//# sourceMappingURL=admin.listener.js.map
+    __metadata("design:paramtypes", [helper_service_email_1.EmailService])
+], FeedbackListener);
+//# sourceMappingURL=feedback.listener.js.map

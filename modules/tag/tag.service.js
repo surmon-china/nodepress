@@ -44,6 +44,8 @@ let TagService = class TagService {
             key: cache_constant_1.CacheKeys.AllTags,
             promise: () => this.getAllTags({ aggregatePublicOnly: true })
         });
+    }
+    onModuleInit() {
         this.allTagsCache.update().catch((error) => {
             logger.warn('Init getAllTags failed!', error);
         });

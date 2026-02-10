@@ -6,19 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CacheModule = void 0;
+exports.WebhookModule = void 0;
 const common_1 = require("@nestjs/common");
-const cache_service_1 = require("./cache.service");
-const redis_service_1 = require("./redis.service");
-const redis_listener_1 = require("./redis.listener");
-let CacheModule = class CacheModule {
+const axios_1 = require("@nestjs/axios");
+const webhook_service_1 = require("./webhook.service");
+const webhook_listener_1 = require("./webhook.listener");
+let WebhookModule = class WebhookModule {
 };
-exports.CacheModule = CacheModule;
-exports.CacheModule = CacheModule = __decorate([
-    (0, common_1.Global)(),
+exports.WebhookModule = WebhookModule;
+exports.WebhookModule = WebhookModule = __decorate([
     (0, common_1.Module)({
-        providers: [redis_service_1.RedisService, cache_service_1.CacheService, redis_listener_1.RedisListener],
-        exports: [redis_service_1.RedisService, cache_service_1.CacheService]
+        imports: [axios_1.HttpModule],
+        providers: [webhook_service_1.WebhookService, webhook_listener_1.WebhookListener],
+        exports: [webhook_service_1.WebhookService]
     })
-], CacheModule);
-//# sourceMappingURL=cache.module.js.map
+], WebhookModule);
+//# sourceMappingURL=webhook.module.js.map

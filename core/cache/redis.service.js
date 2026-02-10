@@ -41,26 +41,24 @@ var __importStar = (this && this.__importStar) || (function () {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RedisService = void 0;
-const throttle_1 = __importDefault(require("lodash/throttle"));
 const client_1 = require("@redis/client");
 const common_1 = require("@nestjs/common");
-const helper_service_email_1 = require("../helper/helper.service.email");
+const event_emitter_1 = require("@nestjs/event-emitter");
+const error_transformer_1 = require("../../transformers/error.transformer");
 const logger_1 = require("../../utils/logger");
-const app_environment_1 = require("../../app.environment");
 const redis_store_1 = require("./redis.store");
+const events_constant_1 = require("../../constants/events.constant");
+const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger = (0, logger_1.createLogger)({ scope: 'RedisService', time: app_environment_1.isDevEnv });
 let RedisService = class RedisService {
-    emailService;
+    eventEmitter;
     redisStore;
     redisClient;
-    constructor(emailService) {
-        this.emailService = emailService;
+    constructor(eventEmitter) {
+        this.eventEmitter = eventEmitter;
         this.redisClient = (0, client_1.createClient)(this.getOptions());
         this.redisStore = (0, redis_store_1.createRedisStore)(this.redisClient, {
             defaultTTL: APP_CONFIG.APP_BIZ.DEFAULT_CACHE_TTL,
@@ -68,34 +66,34 @@ let RedisService = class RedisService {
         });
         this.redisClient.on('connect', () => logger.log('connecting...'));
         this.redisClient.on('reconnecting', () => logger.log('reconnecting...'));
-        this.redisClient.on('ready', () => logger.success('readied (connected).'));
+        this.redisClient.on('ready', () => logger.success('connected. (readied)'));
         this.redisClient.on('end', () => logger.info('client end!'));
-        this.redisClient.on('error', (error) => logger.failure(`client error!`, error.message));
-        this.redisClient.connect();
-    }
-    sendAlarmMail = (0, throttle_1.default)((error) => {
-        this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
-            to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-            subject: `Redis Error!`,
-            text: error,
-            html: `<pre><code>${error}</code></pre>`
+        this.redisClient.on('error', (error) => {
+            logger.failure('client error!', String(error));
+            this.eventEmitter.emit(events_constant_1.EventKeys.RedisError, error);
         });
-    }, 1000 * 30);
-    retryStrategy(retries) {
-        const errorMessage = `retryStrategy! retries: ${retries}`;
-        logger.error(errorMessage);
-        this.sendAlarmMail(errorMessage);
-        if (retries > 6) {
-            return new Error('Redis maximum retries!');
+    }
+    async onModuleInit() {
+        try {
+            await this.redisClient.connect();
         }
-        return Math.min(retries * 1000, 3000);
+        catch (error) {
+            logger.failure('Init connect failed!', (0, error_transformer_1.getMessageFromNormalError)(error));
+        }
     }
     getOptions() {
         const redisOptions = {
             socket: {
                 host: APP_CONFIG.REDIS.host,
                 port: APP_CONFIG.REDIS.port,
-                reconnectStrategy: this.retryStrategy.bind(this)
+                reconnectStrategy(retries) {
+                    if (retries > 6) {
+                        return new Error('Redis maximum retries!');
+                    }
+                    else {
+                        return Math.min(retries * 1000, 3000);
+                    }
+                }
             }
         };
         if (APP_CONFIG.REDIS.username) {
@@ -116,6 +114,6 @@ let RedisService = class RedisService {
 exports.RedisService = RedisService;
 exports.RedisService = RedisService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [helper_service_email_1.EmailService])
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2])
 ], RedisService);
 //# sourceMappingURL=redis.service.js.map

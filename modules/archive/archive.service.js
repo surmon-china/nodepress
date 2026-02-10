@@ -38,9 +38,11 @@ let ArchiveService = class ArchiveService {
         this.categoryModel = categoryModel;
         this.archiveCache = this.cacheService.manual({
             key: cache_constant_1.CacheKeys.Archive,
-            promise: this.getArchiveData.bind(this)
+            promise: () => this.getArchiveData()
         });
-        this.updateCache().catch((error) => {
+    }
+    onModuleInit() {
+        this.archiveCache.update().catch((error) => {
             logger.warn('Init getArchiveData failed!', error);
         });
     }
