@@ -53,8 +53,11 @@ export class DBBackupService {
 
     // 4. compress backup files
     // tar -czf - backup | openssl des3 -salt -k <password> -out target.tar.gz
+    const backupFolderName = path.basename(backupPath)
+    const parentFolderPath = path.dirname(backupPath)
     const zipPath = path.join(BACKUP_DIR_PATH, 'nodepress.zip')
-    const zipResult = shell.exec(`zip -q -r -j -P ${DB_BACKUP.password} "${zipPath}" "${backupPath}"`)
+    const zipCmd = `zip -q -r -P ${DB_BACKUP.password} "${zipPath}" "${backupFolderName}"`
+    const zipResult = shell.exec(zipCmd, { cwd: parentFolderPath })
     if (zipResult.code !== 0) throw new Error(`zip failed: ${zipResult.stderr}`)
 
     const fileDate = dayjs(new Date()).format('YYYY-MM-DD-HH-mm')
