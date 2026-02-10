@@ -22,16 +22,16 @@ export class WebhookListener {
 
   @OnEvent(EventKeys.ArticleCreated, { async: true })
   handleArticleCreated(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleCreated, payload.id)
+    return this.webhookService.dispatch(EventKeys.ArticleCreated, { id: payload.id })
   }
 
   @OnEvent(EventKeys.ArticleUpdated, { async: true })
   handleArticleUpdated(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleUpdated, payload.id)
+    return this.webhookService.dispatch(EventKeys.ArticleUpdated, { id: payload.id })
   }
 
   @OnEvent(EventKeys.ArticleDeleted, { async: true })
   handleGeneralEvents(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleDeleted, payload.id)
+    return this.webhookService.dispatch(EventKeys.ArticleDeleted, { id: payload.id })
   }
 }

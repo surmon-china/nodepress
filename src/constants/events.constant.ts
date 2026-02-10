@@ -11,6 +11,7 @@ export enum EventKeys {
   AdminLoggedOut = 'admin.logged_out',
   OptionsUpdated = 'options.updated',
   FeedbackCreated = 'feedback.created',
+  CommentCreated = 'comment.created',
   ArticleCreated = 'article.created',
   ArticleUpdated = 'article.updated',
   ArticleDeleted = 'article.deleted',
