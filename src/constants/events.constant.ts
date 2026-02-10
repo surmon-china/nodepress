@@ -5,9 +5,14 @@
  */
 
 export enum EventKeys {
+  RedisError = 'redis.error',
+  DatabaseError = 'database.error',
   AdminLoggedIn = 'admin.logged_in',
   AdminLoggedOut = 'admin.logged_out',
+  OptionsUpdated = 'options.updated',
+  FeedbackCreated = 'feedback.created',
   ArticleCreated = 'article.created',
   ArticleUpdated = 'article.updated',
-  CommentCreated = 'comment.created'
+  ArticleDeleted = 'article.deleted',
+  ArticleViewed = 'article.viewed'
 }

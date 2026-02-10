@@ -5,32 +5,28 @@
  */
 
 import mongoose from 'mongoose'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import { DB_CONNECTION_TOKEN } from '@app/constants/database.constant'
-import { EmailService } from '@app/core/helper/helper.service.email'
+import { EventKeys } from '@app/constants/events.constant'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
 
 const logger = createLogger({ scope: 'MongoDB', time: isDevEnv })
 
+const DATABASE_RECONNECT_INTERVAL = 6000
+
 export const databaseProvider = {
-  inject: [EmailService],
+  inject: [EventEmitter2],
   provide: DB_CONNECTION_TOKEN,
-  useFactory: async (emailService: EmailService) => {
+  useFactory: async (eventEmitter: EventEmitter2) => {
     let reconnectionTask: NodeJS.Timeout | null = null
-    const RECONNECT_INTERVAL = 6000
 
-    const sendAlarmMail = (error: string) => {
-      emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
-        to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-        subject: `MongoDB Error!`,
-        text: error,
-        html: `<pre><code>${error}</code></pre>`
+    const connect = () => {
+      return mongoose.connect(APP_CONFIG.MONGO_DB.uri, {
+        serverSelectionTimeoutMS: 15 * 1000,
+        connectTimeoutMS: 10 * 1000
       })
-    }
-
-    const connection = () => {
-      return mongoose.connect(APP_CONFIG.MONGO_DB.uri, {})
     }
 
     // DeprecationWarning: Mongoose: the `strictQuery` option will be switched back to `false` by default in Mongoose 7.
@@ -44,7 +40,7 @@ export const databaseProvider = {
     })
 
     mongoose.connection.on('open', () => {
-      logger.success('readied (open).')
+      logger.success('connected. (opened)')
       if (reconnectionTask) {
         clearTimeout(reconnectionTask)
         reconnectionTask = null
@@ -52,16 +48,19 @@ export const databaseProvider = {
     })
 
     mongoose.connection.on('disconnected', () => {
-      logger.error(`disconnected! retry after ${RECONNECT_INTERVAL / 1000}s`)
-      reconnectionTask = setTimeout(connection, RECONNECT_INTERVAL)
+      logger.error(`disconnected! Attempting to reconnect after ${DATABASE_RECONNECT_INTERVAL / 1000}s`)
+      eventEmitter.emit(EventKeys.DatabaseError, 'MongoDB disconnected from server.')
+      reconnectionTask = setTimeout(connect, DATABASE_RECONNECT_INTERVAL)
     })
 
     mongoose.connection.on('error', (error) => {
       logger.error('error!', error)
-      mongoose.disconnect()
-      sendAlarmMail(String(error))
+      eventEmitter.emit(EventKeys.DatabaseError, error)
+      if (mongoose.connection.readyState !== 0) {
+        mongoose.disconnect()
+      }
     })
 
-    return await connection()
+    return await connect()
   }
 }

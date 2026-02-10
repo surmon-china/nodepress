@@ -8,11 +8,11 @@ import { Module } from '@nestjs/common'
 import { AdminController } from './admin.controller'
 import { AdminProvider } from './admin.model'
 import { AdminService } from './admin.service'
-import { AdminEventListener } from './admin.listener'
+import { AdminListener } from './admin.listener'
 
 @Module({
   controllers: [AdminController],
-  providers: [AdminService, AdminProvider, AdminEventListener],
+  providers: [AdminService, AdminProvider, AdminListener],
   exports: [AdminService]
 })
 export class AdminModule {}

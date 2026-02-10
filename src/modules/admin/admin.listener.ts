@@ -10,40 +10,37 @@ import { EmailService } from '@app/core/helper/helper.service.email'
 import { IPService } from '@app/core/helper/helper.service.ip'
 import { EventKeys } from '@app/constants/events.constant'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
+import {
+  getTimeText,
+  getLocationText,
+  getUserAgentText,
+  linesToEmailContent
+} from '@app/transformers/email.transformer'
 import { APP_BIZ } from '@app/app.config'
 
 @Injectable()
-export class AdminEventListener {
+export class AdminListener {
   constructor(
     private readonly emailService: EmailService,
     private readonly ipService: IPService
   ) {}
 
   @OnEvent(EventKeys.AdminLoggedIn, { async: true })
-  async handleAdminLogin({ ip, ua }: QueryVisitor) {
+  async handleAdminLogin({ ip, ua, referer }: QueryVisitor) {
     const subject = 'App has a new login activity'
-
     const location = ip ? await this.ipService.queryLocation(ip) : null
-    const locationText = location ? [location.country, location.region, location.city].join(' · ') : 'unknown'
-
-    const lines = [
-      subject,
-      `Time: ${new Date().toLocaleString('zh-CN')}`,
-      `IP: ${ip || 'unknown'}`,
-      `Location: ${locationText}`,
-      `UA: ${ua || 'unknown'}`
-    ]
 
     this.emailService.sendMailAs(APP_BIZ.NAME, {
       to: APP_BIZ.ADMIN_EMAIL,
       subject,
-      text: lines.join('\n'),
-      html: lines.map((line) => `<p>${line}</p>`).join('\n')
+      ...linesToEmailContent([
+        `${subject}!`,
+        `Time: ${getTimeText(new Date())}`,
+        `Referer: ${referer || 'unknown'}`,
+        `IP: ${ip || 'unknown'}`,
+        `Location: ${location ? getLocationText(location) : 'unknown'}`,
+        `UserAgent: ${ua ? getUserAgentText(ua) : 'unknown'}`
+      ])
     })
-  }
-
-  @OnEvent(EventKeys.AdminLoggedOut, { async: true })
-  async handleAdminLoggedOut(token: string) {
-    // console.log('Admin logged out', token)
   }
 }

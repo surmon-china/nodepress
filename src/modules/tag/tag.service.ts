@@ -5,7 +5,7 @@
  */
 
 import type { QueryFilter } from 'mongoose'
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common'
+import { Injectable, OnModuleInit, NotFoundException, ConflictException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import type { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
 import type { MongooseId, MongooseObjectId, WithId } from '@app/interfaces/mongoose.interface'
@@ -25,7 +25,7 @@ import { Tag } from './tag.model'
 const logger = createLogger({ scope: 'TagService', time: isDevEnv })
 
 @Injectable()
-export class TagService {
+export class TagService implements OnModuleInit {
   private allTagsCache: CacheManualResult<Array<Tag>>
 
   constructor(
@@ -39,6 +39,9 @@ export class TagService {
       key: CacheKeys.AllTags,
       promise: () => this.getAllTags({ aggregatePublicOnly: true })
     })
+  }
+
+  onModuleInit() {
     this.allTagsCache.update().catch((error) => {
       logger.warn('Init getAllTags failed!', error)
     })

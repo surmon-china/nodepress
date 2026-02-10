@@ -15,7 +15,7 @@ import * as APP_CONFIG from '@app/app.config'
 const logger = createLogger({ scope: 'SeoService', time: isDevEnv })
 
 export type ActionURL = string | string[]
-export enum SEOAction {
+export enum SeoAction {
   Push = 'push',
   Update = 'update',
   Delete = 'delete'
@@ -29,11 +29,11 @@ export class SeoService {
   ) {}
 
   // Google: https://developers.google.com/search/apis/indexing-api
-  private pingGoogle(action: SEOAction, urls: string[]): void {
+  private pingGoogle(action: SeoAction, urls: string[]): void {
     const pingActionMap = {
-      [SEOAction.Push]: 'URL_UPDATED',
-      [SEOAction.Update]: 'URL_UPDATED',
-      [SEOAction.Delete]: 'URL_DELETED'
+      [SeoAction.Push]: 'URL_UPDATED',
+      [SeoAction.Update]: 'URL_UPDATED',
+      [SeoAction.Delete]: 'URL_DELETED'
     }
     const [url] = urls
     const type = pingActionMap[action]
@@ -85,19 +85,19 @@ export class SeoService {
 
   public push(url: ActionURL) {
     const urls = this.humanizedUrl(url)
-    this.pingGoogle(SEOAction.Push, urls)
+    this.pingGoogle(SeoAction.Push, urls)
     this.pingBing(urls)
   }
 
   public update(url: ActionURL) {
     const urls = this.humanizedUrl(url)
-    this.pingGoogle(SEOAction.Update, urls)
+    this.pingGoogle(SeoAction.Update, urls)
     this.pingBing(urls)
   }
 
   public delete(url: ActionURL) {
     const urls = this.humanizedUrl(url)
-    this.pingGoogle(SEOAction.Delete, urls)
+    this.pingGoogle(SeoAction.Delete, urls)
     this.pingBing(urls)
   }
 }

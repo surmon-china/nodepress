@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Injectable } from '@nestjs/common'
+import { Injectable, OnModuleInit } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
@@ -29,7 +29,7 @@ export interface ArchiveData {
 }
 
 @Injectable()
-export class ArchiveService {
+export class ArchiveService implements OnModuleInit {
   private archiveCache: CacheManualResult<ArchiveData>
 
   constructor(
@@ -40,9 +40,12 @@ export class ArchiveService {
   ) {
     this.archiveCache = this.cacheService.manual({
       key: CacheKeys.Archive,
-      promise: this.getArchiveData.bind(this)
+      promise: () => this.getArchiveData()
     })
-    this.updateCache().catch((error) => {
+  }
+
+  onModuleInit() {
+    this.archiveCache.update().catch((error) => {
       logger.warn('Init getArchiveData failed!', error)
     })
   }

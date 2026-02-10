@@ -8,22 +8,22 @@ import _trim from 'lodash/trim'
 import _isUndefined from 'lodash/isUndefined'
 import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import { Throttle, seconds } from '@nestjs/throttler'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { EmailService } from '@app/core/helper/helper.service.email'
+import { EventKeys } from '@app/constants/events.constant'
 import { numberToBoolean } from '@app/transformers/value.transformer'
 import { FeedbackPaginateQueryDTO, FeedbacksDTO } from './feedback.dto'
 import { Feedback, FeedbackBase } from './feedback.model'
 import { FeedbackService } from './feedback.service'
-import * as APP_CONFIG from '@app/app.config'
 
 @Controller('feedback')
 export class FeedbackController {
   constructor(
-    private readonly emailService: EmailService,
+    private readonly eventEmitter: EventEmitter2,
     private readonly feedbackService: FeedbackService
   ) {}
 
@@ -66,21 +66,7 @@ export class FeedbackController {
   @SuccessResponse('Create feedback succeeded')
   async createFeedback(@Body() feedback: FeedbackBase, @RequestContext() { visitor }: IRequestContext) {
     const created = await this.feedbackService.create(feedback, visitor)
-    const subject = 'You have a new feedback'
-    const texts = [
-      `${subject} on '${created.tid}'.`,
-      `Author: ${created.user_name || 'Anonymous user'}`,
-      `Emotion: ${created.emotion_emoji} ${created.emotion_text} (${created.emotion})`,
-      `Content: ${created.content}`
-    ]
-
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-      subject,
-      text: texts.join('\n'),
-      html: texts.map((text) => `<p>${text}</p>`).join('\n')
-    })
-
+    this.eventEmitter.emit(EventKeys.FeedbackCreated, created)
     return created
   }
 

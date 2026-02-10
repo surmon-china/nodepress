@@ -5,7 +5,6 @@
  */
 
 import _isUndefined from 'lodash/isUndefined'
-import { UAParser } from 'ua-parser-js'
 import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from '@nestjs/common'
 import { Throttle, minutes, seconds } from '@nestjs/throttler'
@@ -23,6 +22,7 @@ import { DisqusToken } from '@app/modules/disqus/disqus.token'
 import { AccessToken } from '@app/utils/disqus'
 import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
+import { getLocationText, getUserAgentText } from '@app/transformers/email.transformer'
 import { CommentVoteDTO, ArticleVoteDTO, VotePaginateQueryDTO, VotesDTO } from './vote.dto'
 import { VoteTarget, VoteAuthorType, voteTypesMap } from './vote.constant'
 import { VoteService } from './vote.service'
@@ -115,34 +115,23 @@ export class VoteController {
     userAgent?: string
     location?: IPLocation | null
   }) {
-    const getLocationText = (location: IPLocation) => {
-      return [location.country, location.region, location.city].join(' · ')
-    }
-
-    const getAgentText = (ua: string) => {
-      const parsed = UAParser(ua)
-      return [
-        `${parsed.browser.name ?? 'unknown_browser'}@${parsed.browser.version ?? 'unknown'}`,
-        `${parsed.os.name ?? 'unknown_OS'}@${parsed.os.version ?? 'unknown'}`,
-        `${parsed.device.model ?? 'unknown_device'}@${parsed.device.vendor ?? 'unknown'}`
-      ].join(' · ')
-    }
-
-    const mailTexts = [
+    const lines = [
       `${payload.subject} on "${payload.on}".`,
       `Vote: ${payload.vote}`,
       `Author: ${payload.author}`,
       `Location: ${payload.location ? getLocationText(payload.location) : 'unknown'}`,
-      `Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : 'unknown'}`
+      `UserAgent: ${payload.userAgent ? getUserAgentText(payload.userAgent) : 'unknown'}`
     ]
-    const textHTML = mailTexts.map((text) => `<p>${text}</p>`).join('')
-    const linkHTML = `<a href="${payload.link}" target="_blank">${payload.on}</a>`
 
     this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
       to: payload.to,
       subject: payload.subject,
-      text: mailTexts.join('\n'),
-      html: [textHTML, `<br>`, linkHTML].join('\n')
+      text: lines.join('\n'),
+      html: [
+        lines.map((text) => `<p>${text}</p>`).join(''),
+        `<br>`,
+        `<a href="${payload.link}" target="_blank">${payload.on}</a>`
+      ].join('\n')
     })
   }
 
@@ -220,6 +209,7 @@ export class VoteController {
           ip: visitor.ip,
           ip_location: ipLocation
         })
+
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
@@ -279,9 +269,10 @@ export class VoteController {
           ip: visitor.ip,
           ip_location: ipLocation
         })
+
+        // email to author and admin
         const comment = await this.commentService.getDetailByNumberId(voteBody.comment_id)
         const targetTitle = await this.getPostTitle(comment.post_id)
-        // email to author and admin
         const mailPayload = {
           vote: voteTypesMap.get(voteBody.vote)!,
           on: `${targetTitle} #${comment.id}`,
@@ -290,12 +281,14 @@ export class VoteController {
           location: ipLocation,
           link: getPermalinkById(comment.post_id) + `#comment-${comment.id}`
         }
+
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
           subject: 'You have a new comment vote',
           ...mailPayload
         })
+
         // email to author
         if (comment.author.email) {
           this.emailToTargetVoteMessage({

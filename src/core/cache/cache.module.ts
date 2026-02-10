@@ -9,12 +9,13 @@
 // MARK: No longer use cache-manager because the API between `cache-manager` and `@nestjs/cache-manager` is inconsistent.
 
 import { Global, Module } from '@nestjs/common'
-import { RedisService } from './redis.service'
 import { CacheService } from './cache.service'
+import { RedisService } from './redis.service'
+import { RedisListener } from './redis.listener'
 
 @Global()
 @Module({
-  providers: [RedisService, CacheService],
+  providers: [RedisService, CacheService, RedisListener],
   exports: [RedisService, CacheService]
 })
 export class CacheModule {}

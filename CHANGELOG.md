@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+### 6.2.0 (2026-02-10)
+
+#### System Architecture
+
+- **Dependency Management**: Upgraded all project dependencies to their latest stable versions.
+- **Lifecycle Management**: Refactored module initialization logic to strictly distinguish between `constructor` and `onModuleInit` execution phases.
+- **Task Scheduling**: Migrated periodic background tasks from `node-schedule` to the native `@nestjs/schedule` module.
+- **Event-Driven Architecture**: Decoupled serial business logic in controllers by implementing a pub/sub pattern via `@nestjs/event-emitter`.
+
+#### Webhook Module
+
+- **New Feature**: Implemented a centralized `WebhookModule` to support external system integrations.
+- **Event Listeners**: Added `WebhookListener` to asynchronously dispatch notifications for `Options` and `Article` events.
+
 ### 6.0.0 (2026-01-24)
 
 #### Global Data Schema

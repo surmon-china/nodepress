@@ -6,10 +6,11 @@
 
 import { Module, Global } from '@nestjs/common'
 import { databaseProvider } from './database.provider'
+import { DatabaseListener } from './database.listener'
 
 @Global()
 @Module({
-  providers: [databaseProvider],
+  providers: [databaseProvider, DatabaseListener],
   exports: [databaseProvider]
 })
 export class DatabaseModule {}

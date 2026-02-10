@@ -9,18 +9,18 @@ import _isInteger from 'lodash/isInteger'
 import _isUndefined from 'lodash/isUndefined'
 import { Types } from 'mongoose'
 import type { QueryFilter } from 'mongoose'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
+import { EventKeys } from '@app/constants/events.constant'
 import { SortMode } from '@app/constants/biz.constant'
-import { CacheService } from '@app/core/cache/cache.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CategoryService } from '@app/modules/category/category.service'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { incrementGlobalTodayViewsCount } from '@app/modules/system/system.helper'
 import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStatusDTO } from './article.dto'
 import { ARTICLE_HOTTEST_SORT_CONFIG } from './article.constant'
 import { ArticleService } from './article.service'
@@ -29,10 +29,10 @@ import { Article } from './article.model'
 @Controller('article')
 export class ArticleController {
   constructor(
+    private readonly eventEmitter: EventEmitter2,
     private readonly tagService: TagService,
     private readonly categoryService: CategoryService,
-    private readonly articleService: ArticleService,
-    private readonly cacheService: CacheService
+    private readonly articleService: ArticleService
   ) {}
 
   @Get()
@@ -147,8 +147,8 @@ export class ArticleController {
       })
       // increment article views
       this.articleService.incrementStatistics(article.id, 'views')
-      // increment global today views
-      incrementGlobalTodayViewsCount(this.cacheService)
+      // dispatch event to global
+      this.eventEmitter.emit(EventKeys.ArticleViewed, article.id)
       return article
     }
 
@@ -161,22 +161,28 @@ export class ArticleController {
   @Post()
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Create article succeeded')
-  createArticle(@Body() article: Article): Promise<Article> {
-    return this.articleService.create(article)
+  async createArticle(@Body() article: Article): Promise<Article> {
+    const created = this.articleService.create(article)
+    this.eventEmitter.emit(EventKeys.ArticleCreated, created)
+    return created
   }
 
   @Put(':id')
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Update article succeeded')
-  putArticle(@RequestContext() { params }: IRequestContext, @Body() article: Article): Promise<Article> {
-    return this.articleService.update(params.id, article)
+  async putArticle(@RequestContext() { params }: IRequestContext, @Body() article: Article): Promise<Article> {
+    const updated = await this.articleService.update(params.id, article)
+    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated)
+    return updated
   }
 
   @Delete(':id')
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Delete article succeeded')
-  delArticle(@RequestContext() { params }: IRequestContext) {
-    return this.articleService.delete(params.id)
+  async delArticle(@RequestContext() { params }: IRequestContext) {
+    const result = await this.articleService.delete(params.id)
+    this.eventEmitter.emit(EventKeys.ArticleDeleted, result)
+    return result
   }
 
   @Patch()

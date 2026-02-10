@@ -5,7 +5,7 @@
  */
 
 import type { QueryFilter } from 'mongoose'
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common'
+import { Injectable, OnModuleInit, NotFoundException, ConflictException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { getCategoryUrl } from '@app/transformers/urlmap.transformer'
 import type { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
@@ -25,7 +25,7 @@ import { Category } from './category.model'
 const logger = createLogger({ scope: 'CategoryService', time: isDevEnv })
 
 @Injectable()
-export class CategoryService {
+export class CategoryService implements OnModuleInit {
   private allCategoriesCache: CacheManualResult<Array<Category>>
 
   constructor(
@@ -39,6 +39,9 @@ export class CategoryService {
       key: CacheKeys.AllCategories,
       promise: () => this.getAllCategories({ aggregatePublicOnly: true })
     })
+  }
+
+  onModuleInit() {
     this.allCategoriesCache.update().catch((error) => {
       logger.warn('Init getAllCategories failed!', error)
     })

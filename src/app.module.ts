@@ -8,6 +8,7 @@ import type { FastifyRequest } from 'fastify'
 import type { MiddlewareConsumer } from '@nestjs/common'
 import { Module, NestModule } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
+import { ScheduleModule } from '@nestjs/schedule'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { ThrottlerGuard, ThrottlerModule, minutes } from '@nestjs/throttler'
 import { AppController } from '@app/app.controller'
@@ -21,9 +22,6 @@ import { CacheModule } from '@app/core/cache/cache.module'
 import { AuthModule } from '@app/core/auth/auth.module'
 import { HelperModule } from '@app/core/helper/helper.module'
 
-// system module
-import { SystemModule } from '@app/modules/system/system.module'
-
 // BIZ modules
 import { AnnouncementModule } from '@app/modules/announcement/announcement.module'
 import { CategoryModule } from '@app/modules/category/category.module'
@@ -36,9 +34,13 @@ import { VoteModule } from '@app/modules/vote/vote.module'
 import { OptionsModule } from '@app/modules/options/options.module'
 import { AdminModule } from '@app/modules/admin/admin.module'
 import { DisqusModule } from '@app/modules/disqus/disqus.module'
+import { SystemModule } from '@app/modules/system/system.module'
+import { WebhookModule } from '@app/modules/webhook/webhook.module'
 
 @Module({
   imports: [
+    // https://docs.nestjs.com/techniques/task-scheduling
+    ScheduleModule.forRoot(),
     // https://docs.nestjs.com/techniques/events
     EventEmitterModule.forRoot(),
     // https://github.com/nestjs/throttler#readme
@@ -58,11 +60,10 @@ import { DisqusModule } from '@app/modules/disqus/disqus.module'
         }
       }
     ]),
-    HelperModule,
     DatabaseModule,
     CacheModule,
+    HelperModule,
     AuthModule,
-    SystemModule,
     AdminModule,
     OptionsModule,
     FeedbackModule,
@@ -73,7 +74,9 @@ import { DisqusModule } from '@app/modules/disqus/disqus.module'
     CommentModule,
     DisqusModule,
     ArchiveModule,
-    VoteModule
+    VoteModule,
+    SystemModule,
+    WebhookModule
   ],
   controllers: [AppController],
   providers: [

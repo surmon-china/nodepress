@@ -160,3 +160,11 @@ export const GOOGLE = {
   /** Service account credentials (JSON parsed) */
   jwtServiceAccountCredentials: args.google_jwt_cred_json ? JSON.parse(args.google_jwt_cred_json as string) : null
 }
+
+// Webhook Configuration
+export const WEBHOOK = {
+  /** The target URL where the webhook notifications will be sent */
+  url: arg<string>('webhook_url'),
+  /** Secret token for authenticating and verifying webhook requests */
+  token: arg<string>('webhook_token')
+}

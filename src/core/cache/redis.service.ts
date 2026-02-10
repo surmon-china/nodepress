@@ -9,13 +9,14 @@
 // https://gist.github.com/kyle-mccarthy/b6770b49ebfab88e75bcbac87b272a94
 // https://github.com/jaredwray/keyv/blob/main/packages/redis/src/index.ts
 
-import _throttle from 'lodash/throttle'
 import { createClient, RedisClientOptions } from '@redis/client'
-import { Injectable } from '@nestjs/common'
-import { EmailService } from '@app/core/helper/helper.service.email'
+import { Injectable, OnModuleInit } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import { createLogger } from '@app/utils/logger'
-import { isDevEnv } from '@app/app.environment'
 import { createRedisStore, RedisStore } from './redis.store'
+import { EventKeys } from '@app/constants/events.constant'
+import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
 
 const logger = createLogger({ scope: 'RedisService', time: isDevEnv })
@@ -24,44 +25,35 @@ const logger = createLogger({ scope: 'RedisService', time: isDevEnv })
 export type RedisClientType = ReturnType<typeof createClient>
 
 @Injectable()
-export class RedisService {
+export class RedisService implements OnModuleInit {
   private redisStore!: RedisStore
   private redisClient!: RedisClientType
 
-  constructor(private readonly emailService: EmailService) {
+  constructor(private readonly eventEmitter: EventEmitter2) {
+    // https://github.com/redis/node-redis
     this.redisClient = createClient(this.getOptions())
     this.redisStore = createRedisStore(this.redisClient, {
       defaultTTL: APP_CONFIG.APP_BIZ.DEFAULT_CACHE_TTL,
       namespace: APP_CONFIG.REDIS.namespace
     })
+
     // https://github.com/redis/node-redis#events
     this.redisClient.on('connect', () => logger.log('connecting...'))
     this.redisClient.on('reconnecting', () => logger.log('reconnecting...'))
-    this.redisClient.on('ready', () => logger.success('readied (connected).'))
+    this.redisClient.on('ready', () => logger.success('connected. (readied)'))
     this.redisClient.on('end', () => logger.info('client end!'))
-    this.redisClient.on('error', (error) => logger.failure(`client error!`, error.message))
-    // connect
-    this.redisClient.connect()
+    this.redisClient.on('error', (error) => {
+      logger.failure('client error!', String(error))
+      this.eventEmitter.emit(EventKeys.RedisError, error)
+    })
   }
 
-  private sendAlarmMail = _throttle((error: string) => {
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
-      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-      subject: `Redis Error!`,
-      text: error,
-      html: `<pre><code>${error}</code></pre>`
-    })
-  }, 1000 * 30)
-
-  // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#reconnect-strategy
-  private retryStrategy(retries: number): number | Error {
-    const errorMessage = `retryStrategy! retries: ${retries}`
-    logger.error(errorMessage)
-    this.sendAlarmMail(errorMessage)
-    if (retries > 6) {
-      return new Error('Redis maximum retries!')
+  async onModuleInit() {
+    try {
+      await this.redisClient.connect()
+    } catch (error) {
+      logger.failure('Init connect failed!', getMessageFromNormalError(error))
     }
-    return Math.min(retries * 1000, 3000)
   }
 
   // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
@@ -70,9 +62,17 @@ export class RedisService {
       socket: {
         host: APP_CONFIG.REDIS.host,
         port: APP_CONFIG.REDIS.port as number,
-        reconnectStrategy: this.retryStrategy.bind(this)
+        // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#reconnect-strategy
+        reconnectStrategy(retries: number) {
+          if (retries > 6) {
+            return new Error('Redis maximum retries!')
+          } else {
+            return Math.min(retries * 1000, 3000)
+          }
+        }
       }
     }
+
     if (APP_CONFIG.REDIS.username) {
       redisOptions.username = APP_CONFIG.REDIS.username
     }

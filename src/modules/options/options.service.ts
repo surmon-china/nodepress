@@ -6,7 +6,7 @@
 
 import _omit from 'lodash/omit'
 import _uniq from 'lodash/uniq'
-import { Injectable } from '@nestjs/common'
+import { Injectable, OnModuleInit } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
@@ -18,7 +18,7 @@ import { isDevEnv } from '@app/app.environment'
 const logger = createLogger({ scope: 'OptionsService', time: isDevEnv })
 
 @Injectable()
-export class OptionsService {
+export class OptionsService implements OnModuleInit {
   private optionsCache: CacheManualResult<Omit<Option, 'blocklist'>>
 
   constructor(
@@ -33,7 +33,9 @@ export class OptionsService {
         })
       }
     })
+  }
 
+  onModuleInit() {
     this.optionsCache.update().catch((error) => {
       logger.warn('Init getAppOptions failed!', error)
     })

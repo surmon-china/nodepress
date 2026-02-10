@@ -5,7 +5,7 @@
  */
 
 import nodemailer from 'nodemailer'
-import { Injectable } from '@nestjs/common'
+import { Injectable, OnModuleInit } from '@nestjs/common'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
@@ -21,11 +21,12 @@ export interface EmailOptions {
 }
 
 @Injectable()
-export class EmailService {
+export class EmailService implements OnModuleInit {
   private transporter: nodemailer.Transporter
   private clientIsValid: boolean
 
   constructor() {
+    // https://nodemailer.com/
     this.transporter = nodemailer.createTransport({
       host: APP_CONFIG.EMAIL.host,
       port: APP_CONFIG.EMAIL.port,
@@ -35,25 +36,28 @@ export class EmailService {
         pass: APP_CONFIG.EMAIL.password
       }
     })
-    this.verifyClient()
   }
 
-  private verifyClient(): void {
-    return this.transporter.verify((error) => {
-      if (error) {
-        this.clientIsValid = false
-        setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(`client initialization failed! retry after 30 mins`, '|', getMessageFromNormalError(error))
-      } else {
-        this.clientIsValid = true
-        logger.success('client initialized.')
-      }
-    })
+  async onModuleInit() {
+    try {
+      // https://nodemailer.com/usage#verify-the-connection-optional
+      await this.transporter.verify()
+      this.clientIsValid = true
+      logger.success('client initialized.')
+    } catch {
+      this.clientIsValid = false
+      logger.failure('client initialization failed! (canot connect to SMTP server)')
+    }
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
       logger.warn('send failed! (initialization failed)')
+      return false
+    }
+
+    if (!mailOptions.to) {
+      logger.warn('send failed! (no recipient)')
       return false
     }
 
@@ -64,7 +68,7 @@ export class EmailService {
       },
       (error, info) => {
         if (error) {
-          logger.failure(`send failed!`, getMessageFromNormalError(error))
+          logger.failure('send failed!', getMessageFromNormalError(error))
         } else {
           logger.success('send succeeded.', info.messageId, info.response)
         }
