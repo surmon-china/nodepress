@@ -167,6 +167,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#putOptions" >putOptions</a>
                             </li>
                         </ul>
@@ -217,8 +218,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">src/modules/options/options.controller.ts:22</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="27"
+                                    class="link-to-prism">src/modules/options/options.controller.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -272,6 +273,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>putOptions</b></span>
                         <a href="#putOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -294,8 +296,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/options/options.controller.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/modules/options/options.controller.ts:34</a></div>
                         </td>
                     </tr>
 
@@ -351,17 +353,22 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
+import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
 import { Controller, Get, Put, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { OptionsService } from &#x27;./options.service&#x27;
 import { Option } from &#x27;./options.model&#x27;
 
 @Controller(&#x27;options&#x27;)
 export class OptionsController {
-  constructor(private readonly optionsService: OptionsService) {}
+  constructor(
+    private readonly eventEmitter: EventEmitter2,
+    private readonly optionsService: OptionsService
+  ) {}
 
   @Get()
   @UseGuards(AdminOptionalGuard)
@@ -373,8 +380,10 @@ export class OptionsController {
   @Put()
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse(&#x27;Update app options succeeded&#x27;)
-  putOptions(@Body() options: Option): Promise&lt;Option&gt; {
-    return this.optionsService.putOptions(options)
+  async putOptions(@Body() options: Option): Promise&lt;Option&gt; {
+    const updated &#x3D; await this.optionsService.putOptions(options)
+    this.eventEmitter.emit(EventKeys.OptionsUpdated, updated)
+    return updated
   }
 }
 </code></pre>

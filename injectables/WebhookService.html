@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >AdminEventListener</li>
+  <li class="breadcrumb-item" >WebhookService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/admin/admin.listener.ts</code>
+            <code>src/modules/webhook/webhook.service.ts</code>
         </p>
 
 
@@ -154,14 +154,8 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier">Async</span>
-                                <a href="#handleAdminLoggedOut" >handleAdminLoggedOut</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier">Async</span>
-                                <a href="#handleAdminLogin" >handleAdminLogin</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#dispatch" >dispatch</a>
                             </li>
                         </ul>
                     </td>
@@ -181,12 +175,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, ipService: <a href="../injectables/IPService.html" target="_self">IPService</a>)</code>
+<code>constructor(httpService: HttpService)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/modules/admin/admin.listener.ts:16</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/webhook/webhook.service.ts:27</a></div>
                             </td>
                         </tr>
 
@@ -204,22 +198,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>emailService</td>
+                                                        <td>httpService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/EmailService.html" target="_self" >EmailService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>ipService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/IPService.html" target="_self" >IPService</a></code>
+                                                                    <code>HttpService</code>
                                                         </td>
                                                   
                                                     <td>
@@ -245,34 +227,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleAdminLoggedOut"></a>
+                    <a name="dispatch"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
-                        <span ><b>handleAdminLoggedOut</b></span>
-                        <a href="#handleAdminLoggedOut"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Public</span>
+                        <span ><b>dispatch</b></span>
+                        <a href="#dispatch"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleAdminLoggedOut(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>dispatch(event: <a href="../miscellaneous/enumerations.html#EventKeys" target="_self">EventKeys</a>, payload: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@OnEvent(EventKeys.AdminLoggedOut, {async: true})<br /></code>
-                </td>
-            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="46"
-                                    class="link-to-prism">src/modules/admin/admin.listener.ts:46</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="30"
+                                    class="link-to-prism">src/modules/webhook/webhook.service.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -293,9 +267,21 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>token</td>
+                                                <td>event</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            <code><a href="../miscellaneous/enumerations.html#EventKeys" target="_self" >EventKeys</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>payload</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                             </td>
 
                                             <td>
@@ -308,83 +294,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="handleAdminLogin"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier">Async</span>
-                        <span ><b>handleAdminLogin</b></span>
-                        <a href="#handleAdminLogin"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleAdminLogin(: <a href="../interfaces/QueryVisitor.html" target="_self">QueryVisitor</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@OnEvent(EventKeys.AdminLoggedIn, {async: true})<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="23"
-                                    class="link-to-prism">src/modules/admin/admin.listener.ts:23</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                            <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
                             <div class="io-description">
@@ -400,47 +310,55 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
-import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
-import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _omit from &#x27;lodash/omit&#x27;
+import _uniq from &#x27;lodash/uniq&#x27;
+import { lastValueFrom } from &#x27;rxjs&#x27;
+import { Injectable } from &#x27;@nestjs/common&#x27;
+import { HttpService } from &#x27;@nestjs/axios&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { APP_BIZ } from &#x27;@app/app.config&#x27;
+import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transformer&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { APP_BIZ, WEBHOOK } from &#x27;@app/app.config&#x27;
+
+const logger &#x3D; createLogger({ scope: &#x27;WebhookService&#x27;, time: isDevEnv })
+
+export interface WebhookData {
+  event: EventKeys
+  timestamp: number
+  data: any
+}
 
 @Injectable()
-export class AdminEventListener {
-  constructor(
-    private readonly emailService: EmailService,
-    private readonly ipService: IPService
-  ) {}
+export class WebhookService {
+  constructor(private readonly httpService: HttpService) {}
 
-  @OnEvent(EventKeys.AdminLoggedIn, { async: true })
-  async handleAdminLogin({ ip, ua }: QueryVisitor) {
-    const subject &#x3D; &#x27;App has a new login activity&#x27;
+  public dispatch(event: EventKeys, payload: any): void {
+    if (!WEBHOOK.url) return
 
-    const location &#x3D; ip ? await this.ipService.queryLocation(ip) : null
-    const locationText &#x3D; location ? [location.country, location.region, location.city].join(&#x27; · &#x27;) : &#x27;unknown&#x27;
+    const postData: WebhookData &#x3D; {
+      event,
+      timestamp: Date.now(),
+      data: payload
+    }
 
-    const lines &#x3D; [
-      subject,
-      &#x60;Time: ${new Date().toLocaleString(&#x27;zh-CN&#x27;)}&#x60;,
-      &#x60;IP: ${ip || &#x27;unknown&#x27;}&#x60;,
-      &#x60;Location: ${locationText}&#x60;,
-      &#x60;UA: ${ua || &#x27;unknown&#x27;}&#x60;
-    ]
+    logger.log(&#x60;Dispatching event: ${event}...&#x60;)
 
-    this.emailService.sendMailAs(APP_BIZ.NAME, {
-      to: APP_BIZ.ADMIN_EMAIL,
-      subject,
-      text: lines.join(&#x27;\n&#x27;),
-      html: lines.map((line) &#x3D;&gt; &#x60;&lt;p&gt;${line}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;)
-    })
-  }
-
-  @OnEvent(EventKeys.AdminLoggedOut, { async: true })
-  async handleAdminLoggedOut(token: string) {
-    // console.log(&#x27;Admin logged out&#x27;, token)
+    lastValueFrom(
+      this.httpService.post(WEBHOOK.url, postData, {
+        timeout: 15000,
+        headers: {
+          &#x27;X-Webhook-Token&#x27;: WEBHOOK.token || &#x27;&#x27;,
+          &#x27;User-Agent&#x27;: &#x60;${APP_BIZ.NAME}-Webhook-Service&#x60;
+        }
+      })
+    )
+      .then(() &#x3D;&gt; {
+        logger.success(&#x60;Event ${event} dispatched successfully.&#x60;)
+      })
+      .catch((error) &#x3D;&gt; {
+        logger.failure(&#x60;Event ${event} dispatch failed!&#x60;, getMessageFromAxiosError(error))
+      })
   }
 }
 </code></pre>
@@ -486,7 +404,7 @@ export class AdminEventListener {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'AdminEventListener.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'WebhookService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

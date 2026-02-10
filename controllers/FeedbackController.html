@@ -326,8 +326,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="104"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:104</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:90</a></div>
                         </td>
                     </tr>
 
@@ -403,8 +403,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="90"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:90</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:76</a></div>
                         </td>
                     </tr>
 
@@ -559,8 +559,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="97"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:97</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -631,22 +631,22 @@ import _trim from &#x27;lodash/trim&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { numberToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
 import { FeedbackPaginateQueryDTO, FeedbacksDTO } from &#x27;./feedback.dto&#x27;
 import { Feedback, FeedbackBase } from &#x27;./feedback.model&#x27;
 import { FeedbackService } from &#x27;./feedback.service&#x27;
-import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 @Controller(&#x27;feedback&#x27;)
 export class FeedbackController {
   constructor(
-    private readonly emailService: EmailService,
+    private readonly eventEmitter: EventEmitter2,
     private readonly feedbackService: FeedbackService
   ) {}
 
@@ -689,21 +689,7 @@ export class FeedbackController {
   @SuccessResponse(&#x27;Create feedback succeeded&#x27;)
   async createFeedback(@Body() feedback: FeedbackBase, @RequestContext() { visitor }: IRequestContext) {
     const created &#x3D; await this.feedbackService.create(feedback, visitor)
-    const subject &#x3D; &#x27;You have a new feedback&#x27;
-    const texts &#x3D; [
-      &#x60;${subject} on &#x27;${created.tid}&#x27;.&#x60;,
-      &#x60;Author: ${created.user_name || &#x27;Anonymous user&#x27;}&#x60;,
-      &#x60;Emotion: ${created.emotion_emoji} ${created.emotion_text} (${created.emotion})&#x60;,
-      &#x60;Content: ${created.content}&#x60;
-    ]
-
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-      subject,
-      text: texts.join(&#x27;\n&#x27;),
-      html: texts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;)
-    })
-
+    this.eventEmitter.emit(EventKeys.FeedbackCreated, created)
     return created
   }
 

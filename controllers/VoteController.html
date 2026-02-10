@@ -258,8 +258,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="191"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:191</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="180"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:180</a></div>
                         </td>
                     </tr>
 
@@ -614,8 +614,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="164"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:164</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="153"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:153</a></div>
                         </td>
                     </tr>
 
@@ -763,8 +763,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="243"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:243</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="233"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:233</a></div>
                         </td>
                     </tr>
 
@@ -855,8 +855,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="150"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:150</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:139</a></div>
                         </td>
                     </tr>
 
@@ -958,8 +958,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="198"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:198</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:187</a></div>
                         </td>
                     </tr>
 
@@ -1039,7 +1039,6 @@
  */
 
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
-import { UAParser } from &#x27;ua-parser-js&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Controller, Get, Post, Delete, Body, Query, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, minutes, seconds } from &#x27;@nestjs/throttler&#x27;
@@ -1057,6 +1056,7 @@ import { DisqusToken } from &#x27;@app/modules/disqus/disqus.token&#x27;
 import { AccessToken } from &#x27;@app/utils/disqus&#x27;
 import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
 import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
+import { getLocationText, getUserAgentText } from &#x27;@app/transformers/email.transformer&#x27;
 import { CommentVoteDTO, ArticleVoteDTO, VotePaginateQueryDTO, VotesDTO } from &#x27;./vote.dto&#x27;
 import { VoteTarget, VoteAuthorType, voteTypesMap } from &#x27;./vote.constant&#x27;
 import { VoteService } from &#x27;./vote.service&#x27;
@@ -1149,34 +1149,23 @@ export class VoteController {
     userAgent?: string
     location?: IPLocation | null
   }) {
-    const getLocationText &#x3D; (location: IPLocation) &#x3D;&gt; {
-      return [location.country, location.region, location.city].join(&#x27; · &#x27;)
-    }
-
-    const getAgentText &#x3D; (ua: string) &#x3D;&gt; {
-      const parsed &#x3D; UAParser(ua)
-      return [
-        &#x60;${parsed.browser.name ?? &#x27;unknown_browser&#x27;}@${parsed.browser.version ?? &#x27;unknown&#x27;}&#x60;,
-        &#x60;${parsed.os.name ?? &#x27;unknown_OS&#x27;}@${parsed.os.version ?? &#x27;unknown&#x27;}&#x60;,
-        &#x60;${parsed.device.model ?? &#x27;unknown_device&#x27;}@${parsed.device.vendor ?? &#x27;unknown&#x27;}&#x60;
-      ].join(&#x27; · &#x27;)
-    }
-
-    const mailTexts &#x3D; [
+    const lines &#x3D; [
       &#x60;${payload.subject} on &quot;${payload.on}&quot;.&#x60;,
       &#x60;Vote: ${payload.vote}&#x60;,
       &#x60;Author: ${payload.author}&#x60;,
       &#x60;Location: ${payload.location ? getLocationText(payload.location) : &#x27;unknown&#x27;}&#x60;,
-      &#x60;Agent: ${payload.userAgent ? getAgentText(payload.userAgent) : &#x27;unknown&#x27;}&#x60;
+      &#x60;UserAgent: ${payload.userAgent ? getUserAgentText(payload.userAgent) : &#x27;unknown&#x27;}&#x60;
     ]
-    const textHTML &#x3D; mailTexts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;&#x27;)
-    const linkHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;${payload.link}&quot; target&#x3D;&quot;_blank&quot;&gt;${payload.on}&lt;/a&gt;&#x60;
 
     this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
       to: payload.to,
       subject: payload.subject,
-      text: mailTexts.join(&#x27;\n&#x27;),
-      html: [textHTML, &#x60;&lt;br&gt;&#x60;, linkHTML].join(&#x27;\n&#x27;)
+      text: lines.join(&#x27;\n&#x27;),
+      html: [
+        lines.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;&#x27;),
+        &#x60;&lt;br&gt;&#x60;,
+        &#x60;&lt;a href&#x3D;&quot;${payload.link}&quot; target&#x3D;&quot;_blank&quot;&gt;${payload.on}&lt;/a&gt;&#x60;
+      ].join(&#x27;\n&#x27;)
     })
   }
 
@@ -1254,6 +1243,7 @@ export class VoteController {
           ip: visitor.ip,
           ip_location: ipLocation
         })
+
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
@@ -1313,9 +1303,10 @@ export class VoteController {
           ip: visitor.ip,
           ip_location: ipLocation
         })
+
+        // email to author and admin
         const comment &#x3D; await this.commentService.getDetailByNumberId(voteBody.comment_id)
         const targetTitle &#x3D; await this.getPostTitle(comment.post_id)
-        // email to author and admin
         const mailPayload &#x3D; {
           vote: voteTypesMap.get(voteBody.vote)!,
           on: &#x60;${targetTitle} #${comment.id}&#x60;,
@@ -1324,12 +1315,14 @@ export class VoteController {
           location: ipLocation,
           link: getPermalinkById(comment.post_id) + &#x60;#comment-${comment.id}&#x60;
         }
+
         // email to admin
         this.emailToTargetVoteMessage({
           to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
           subject: &#x27;You have a new comment vote&#x27;,
           ...mailPayload
         })
+
         // email to author
         if (comment.author.email) {
           this.emailToTargetVoteMessage({

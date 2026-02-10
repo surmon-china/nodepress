@@ -160,10 +160,6 @@
                                     <span class="modifier">Private</span>
                                 <a href="#redisStore" >redisStore</a>
                             </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#sendAlarmMail" >sendAlarmMail</a>
-                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -181,8 +177,8 @@
                                 <a href="#getOptions" >getOptions</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#retryStrategy" >retryStrategy</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#onModuleInit" >onModuleInit</a>
                             </li>
                         </ul>
                     </td>
@@ -219,12 +215,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>)</code>
+<code>constructor(eventEmitter: EventEmitter2)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/core/cache/redis.service.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/core/cache/redis.service.ts:30</a></div>
                             </td>
                         </tr>
 
@@ -242,10 +238,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>emailService</td>
+                                                        <td>eventEmitter</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/EmailService.html" target="_self" >EmailService</a></code>
+                                                                    <code>EventEmitter2</code>
                                                         </td>
                                                   
                                                     <td>
@@ -289,8 +285,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/core/cache/redis.service.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/core/cache/redis.service.ts:60</a></div>
                         </td>
                     </tr>
 
@@ -310,26 +306,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="retryStrategy"></a>
+                    <a name="onModuleInit"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>retryStrategy</b></span>
-                        <a href="#retryStrategy"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>onModuleInit</b></span>
+                        <a href="#onModuleInit"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>retryStrategy(retries: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>onModuleInit()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/core/cache/redis.service.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/core/cache/redis.service.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -337,40 +333,10 @@
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>retries</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>number | Error</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
-                            <div class="io-description">
-                                
-                            </div>
                 </td>
             </tr>
         </tbody>
@@ -401,7 +367,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/core/cache/redis.service.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/core/cache/redis.service.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -428,46 +394,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/core/cache/redis.service.ts:28</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="sendAlarmMail"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>sendAlarmMail</b></span>
-                        <a href="#sendAlarmMail"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>unknown</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>_throttle((error: string) &#x3D;&gt; {
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
-      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-      subject: &#x60;Redis Error!&#x60;,
-      text: error,
-      html: &#x60;&lt;pre&gt;&lt;code&gt;${error}&lt;/code&gt;&lt;/pre&gt;&#x60;
-    })
-  }, 1000 * 30)</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/core/cache/redis.service.ts:47</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/core/cache/redis.service.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -529,13 +456,14 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _throttle from &#x27;lodash/throttle&#x27;
-import { createClient, RedisClientOptions } from &#x27;@redis/client&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
-import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { createClient, RedisClientOptions } from &#x27;@redis/client&#x27;
+import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
+import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
+import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { createRedisStore, RedisStore } from &#x27;./redis.store&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;RedisService&#x27;, time: isDevEnv })
@@ -544,44 +472,35 @@ const logger &#x3D; createLogger({ scope: &#x27;RedisService&#x27;, time: isDevE
 export type RedisClientType &#x3D; ReturnType&lt;typeof createClient&gt;
 
 @Injectable()
-export class RedisService {
+export class RedisService implements OnModuleInit {
   private redisStore!: RedisStore
   private redisClient!: RedisClientType
 
-  constructor(private readonly emailService: EmailService) {
+  constructor(private readonly eventEmitter: EventEmitter2) {
+    // https://github.com/redis/node-redis
     this.redisClient &#x3D; createClient(this.getOptions())
     this.redisStore &#x3D; createRedisStore(this.redisClient, {
       defaultTTL: APP_CONFIG.APP_BIZ.DEFAULT_CACHE_TTL,
       namespace: APP_CONFIG.REDIS.namespace
     })
+
     // https://github.com/redis/node-redis#events
     this.redisClient.on(&#x27;connect&#x27;, () &#x3D;&gt; logger.log(&#x27;connecting...&#x27;))
     this.redisClient.on(&#x27;reconnecting&#x27;, () &#x3D;&gt; logger.log(&#x27;reconnecting...&#x27;))
-    this.redisClient.on(&#x27;ready&#x27;, () &#x3D;&gt; logger.success(&#x27;readied (connected).&#x27;))
+    this.redisClient.on(&#x27;ready&#x27;, () &#x3D;&gt; logger.success(&#x27;connected. (readied)&#x27;))
     this.redisClient.on(&#x27;end&#x27;, () &#x3D;&gt; logger.info(&#x27;client end!&#x27;))
-    this.redisClient.on(&#x27;error&#x27;, (error) &#x3D;&gt; logger.failure(&#x60;client error!&#x60;, error.message))
-    // connect
-    this.redisClient.connect()
+    this.redisClient.on(&#x27;error&#x27;, (error) &#x3D;&gt; {
+      logger.failure(&#x27;client error!&#x27;, String(error))
+      this.eventEmitter.emit(EventKeys.RedisError, error)
+    })
   }
 
-  private sendAlarmMail &#x3D; _throttle((error: string) &#x3D;&gt; {
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
-      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-      subject: &#x60;Redis Error!&#x60;,
-      text: error,
-      html: &#x60;&lt;pre&gt;&lt;code&gt;${error}&lt;/code&gt;&lt;/pre&gt;&#x60;
-    })
-  }, 1000 * 30)
-
-  // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#reconnect-strategy
-  private retryStrategy(retries: number): number | Error {
-    const errorMessage &#x3D; &#x60;retryStrategy! retries: ${retries}&#x60;
-    logger.error(errorMessage)
-    this.sendAlarmMail(errorMessage)
-    if (retries &gt; 6) {
-      return new Error(&#x27;Redis maximum retries!&#x27;)
+  async onModuleInit() {
+    try {
+      await this.redisClient.connect()
+    } catch (error) {
+      logger.failure(&#x27;Init connect failed!&#x27;, getMessageFromNormalError(error))
     }
-    return Math.min(retries * 1000, 3000)
   }
 
   // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
@@ -590,9 +509,17 @@ export class RedisService {
       socket: {
         host: APP_CONFIG.REDIS.host,
         port: APP_CONFIG.REDIS.port as number,
-        reconnectStrategy: this.retryStrategy.bind(this)
+        // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md#reconnect-strategy
+        reconnectStrategy(retries: number) {
+          if (retries &gt; 6) {
+            return new Error(&#x27;Redis maximum retries!&#x27;)
+          } else {
+            return Math.min(retries * 1000, 3000)
+          }
+        }
       }
     }
+
     if (APP_CONFIG.REDIS.username) {
       redisOptions.username &#x3D; APP_CONFIG.REDIS.username
     }

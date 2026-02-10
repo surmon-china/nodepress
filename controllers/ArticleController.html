@@ -161,12 +161,14 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#createArticle" >createArticle</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#delArticle" >delArticle</a>
                             </li>
                             <li>
@@ -217,6 +219,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#putArticle" >putArticle</a>
                             </li>
                         </ul>
@@ -245,6 +248,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>createArticle</b></span>
                         <a href="#createArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -323,6 +327,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>delArticle</b></span>
                         <a href="#delArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -345,8 +350,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="178"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:178</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="182"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:182</a></div>
                         </td>
                     </tr>
 
@@ -381,7 +386,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -422,8 +427,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="192"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:192</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="198"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:198</a></div>
                         </td>
                     </tr>
 
@@ -871,8 +876,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="185"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:185</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:191</a></div>
                         </td>
                     </tr>
 
@@ -927,6 +932,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>putArticle</b></span>
                         <a href="#putArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -949,8 +955,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="171"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:171</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="173"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:173</a></div>
                         </td>
                     </tr>
 
@@ -1022,18 +1028,18 @@ import _isInteger from &#x27;lodash/isInteger&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import { Types } from &#x27;mongoose&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
+import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
 import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { SortMode } from &#x27;@app/constants/biz.constant&#x27;
-import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
 import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { incrementGlobalTodayViewsCount } from &#x27;@app/modules/system/system.helper&#x27;
 import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStatusDTO } from &#x27;./article.dto&#x27;
 import { ARTICLE_HOTTEST_SORT_CONFIG } from &#x27;./article.constant&#x27;
 import { ArticleService } from &#x27;./article.service&#x27;
@@ -1042,10 +1048,10 @@ import { Article } from &#x27;./article.model&#x27;
 @Controller(&#x27;article&#x27;)
 export class ArticleController {
   constructor(
+    private readonly eventEmitter: EventEmitter2,
     private readonly tagService: TagService,
     private readonly categoryService: CategoryService,
-    private readonly articleService: ArticleService,
-    private readonly cacheService: CacheService
+    private readonly articleService: ArticleService
   ) {}
 
   @Get()
@@ -1160,8 +1166,8 @@ export class ArticleController {
       })
       // increment article views
       this.articleService.incrementStatistics(article.id, &#x27;views&#x27;)
-      // increment global today views
-      incrementGlobalTodayViewsCount(this.cacheService)
+      // dispatch event to global
+      this.eventEmitter.emit(EventKeys.ArticleViewed, article.id)
       return article
     }
 
@@ -1174,22 +1180,28 @@ export class ArticleController {
   @Post()
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse(&#x27;Create article succeeded&#x27;)
-  createArticle(@Body() article: Article): Promise&lt;Article&gt; {
-    return this.articleService.create(article)
+  async createArticle(@Body() article: Article): Promise&lt;Article&gt; {
+    const created &#x3D; this.articleService.create(article)
+    this.eventEmitter.emit(EventKeys.ArticleCreated, created)
+    return created
   }
 
   @Put(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse(&#x27;Update article succeeded&#x27;)
-  putArticle(@RequestContext() { params }: IRequestContext, @Body() article: Article): Promise&lt;Article&gt; {
-    return this.articleService.update(params.id, article)
+  async putArticle(@RequestContext() { params }: IRequestContext, @Body() article: Article): Promise&lt;Article&gt; {
+    const updated &#x3D; await this.articleService.update(params.id, article)
+    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated)
+    return updated
   }
 
   @Delete(&#x27;:id&#x27;)
   @UseGuards(AdminOnlyGuard)
   @SuccessResponse(&#x27;Delete article succeeded&#x27;)
-  delArticle(@RequestContext() { params }: IRequestContext) {
-    return this.articleService.delete(params.id)
+  async delArticle(@RequestContext() { params }: IRequestContext) {
+    const result &#x3D; await this.articleService.delete(params.id)
+    this.eventEmitter.emit(EventKeys.ArticleDeleted, result)
+    return result
   }
 
   @Patch()

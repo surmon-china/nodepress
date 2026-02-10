@@ -562,7 +562,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AkismetClient } from &#x27;akismet-api&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
+import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -570,7 +570,6 @@ import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;AkismetService&#x27;, time: isDevEnv })
 
-// keyof typeof AkismetClient
 export enum AkismetAction {
   CheckSpam &#x3D; &#x27;checkSpam&#x27;,
   SubmitSpam &#x3D; &#x27;submitSpam&#x27;,
@@ -591,16 +590,11 @@ export interface AkismetPayload {
 }
 
 @Injectable()
-export class AkismetService {
+export class AkismetService implements OnModuleInit {
   private client: AkismetClient
   private clientIsValid &#x3D; false
 
   constructor() {
-    this.initClient()
-    this.initVerify()
-  }
-
-  private initClient(): void {
     // https://github.com/chrisfosterelli/akismet-api
     this.client &#x3D; new AkismetClient({
       key: APP_CONFIG.AKISMET.key as string,
@@ -608,18 +602,19 @@ export class AkismetService {
     })
   }
 
-  private initVerify(): void {
-    this.client
-      .verifyKey()
-      .then((valid) &#x3D;&gt; (valid ? Promise.resolve(valid) : Promise.reject(&#x27;Invalid Akismet key&#x27;)))
-      .then(() &#x3D;&gt; {
+  async onModuleInit() {
+    try {
+      if (await this.client.verifyKey()) {
         this.clientIsValid &#x3D; true
         logger.success(&#x27;client initialized.&#x27;)
-      })
-      .catch((error) &#x3D;&gt; {
+      } else {
         this.clientIsValid &#x3D; false
-        logger.failure(&#x27;client initialization failed!&#x27;, &#x27;|&#x27;, getMessageFromNormalError(error))
-      })
+        logger.failure(&#x27;client initialization failed! (invalid Akismet key)&#x27;)
+      }
+    } catch (error) {
+      this.clientIsValid &#x3D; false
+      logger.failure(&#x60;client initialization failed! (${getMessageFromNormalError(error)})&#x60;)
+    }
   }
 
   private makeInterceptor(handleType: AkismetAction) {

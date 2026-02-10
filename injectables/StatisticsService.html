@@ -154,13 +154,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#dailyStatisticsTask" >dailyStatisticsTask</a>
-                            </li>
-                            <li>
                                     <span class="modifier">Public</span>
                                 <a href="#getStatistics" >getStatistics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendDailyStatisticsEmail" >sendDailyStatisticsEmail</a>
                             </li>
                         </ul>
                     </td>
@@ -180,12 +180,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>, feedbackService: <a href="../injectables/FeedbackService.html" target="_self">FeedbackService</a>, voteService: <a href="../injectables/VoteService.html" target="_self">VoteService</a>, tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
+<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, counterService: <a href="../injectables/CounterService.html" target="_self">CounterService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>, feedbackService: <a href="../injectables/FeedbackService.html" target="_self">FeedbackService</a>, voteService: <a href="../injectables/VoteService.html" target="_self">VoteService</a>, tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/modules/system/system.service.statistics.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/modules/system/system.service.statistics.ts:38</a></div>
                             </td>
                         </tr>
 
@@ -203,10 +203,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>cacheService</td>
+                                                        <td>emailService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/CacheService.html" target="_self" >CacheService</a></code>
+                                                                        <code><a href="../injectables/EmailService.html" target="_self" >EmailService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -215,10 +215,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>emailService</td>
+                                                        <td>counterService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/EmailService.html" target="_self" >EmailService</a></code>
+                                                                        <code><a href="../injectables/CounterService.html" target="_self" >CounterService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -304,76 +304,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="dailyStatisticsTask"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>dailyStatisticsTask</b></span>
-                        <a href="#dailyStatisticsTask"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>dailyStatisticsTask(todayViews: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="60"
-                                    class="link-to-prism">src/modules/system/system.service.statistics.ts:60</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>todayViews</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="getStatistics"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -392,8 +322,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="98"
-                                    class="link-to-prism">src/modules/system/system.service.statistics.ts:98</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/modules/system/system.service.statistics.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -439,15 +369,62 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendDailyStatisticsEmail"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>sendDailyStatisticsEmail</b></span>
+                        <a href="#sendDailyStatisticsEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendDailyStatisticsEmail()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Cron(&#x27;1 0 0 * * *&#x27;, {name: &#x27;DailyStatisticsJob&#x27;})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/modules/system/system.service.statistics.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import schedule from &#x27;node-schedule&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
-import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+import { Cron } from &#x27;@nestjs/schedule&#x27;
+import { CounterService } from &#x27;@app/core/helper/helper.service.counter&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { VoteTarget, VoteType } from &#x27;@app/modules/vote/vote.constant&#x27;
 import { VoteService } from &#x27;@app/modules/vote/vote.service&#x27;
@@ -455,7 +432,8 @@ import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { FeedbackService } from &#x27;@app/modules/feedback/feedback.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import { getGlobalTodayViewsCount, resetGlobalTodayViewsCount } from &#x27;./system.helper&#x27;
+import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
+import { linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
@@ -477,63 +455,58 @@ export type Statistics &#x3D; Record&lt;keyof typeof DEFAULT_STATISTICS, number 
 @Injectable()
 export class StatisticsService {
   constructor(
-    private readonly cacheService: CacheService,
     private readonly emailService: EmailService,
+    private readonly counterService: CounterService,
     private readonly articleService: ArticleService,
     private readonly commentService: CommentService,
     private readonly feedbackService: FeedbackService,
     private readonly voteService: VoteService,
     private readonly tagService: TagService
-  ) {
-    // daily data cleaning at 00:01
-    schedule.scheduleJob(&#x27;1 0 0 * * *&#x27;, async () &#x3D;&gt; {
-      try {
-        const todayViewsCount &#x3D; await getGlobalTodayViewsCount(this.cacheService)
-        await this.dailyStatisticsTask(todayViewsCount)
-      } finally {
-        resetGlobalTodayViewsCount(this.cacheService).catch((error) &#x3D;&gt; {
-          logger.warn(&#x27;reset TODAY_VIEWS failed!&#x27;, error)
-        })
-      }
-    })
-  }
+  ) {}
 
-  private async dailyStatisticsTask(todayViews: number) {
-    const now &#x3D; new Date()
-    const oneDayAgo &#x3D; new Date(now.getTime() - 24 * 60 * 60 * 1000)
-    const createdAt &#x3D; { $gte: oneDayAgo, $lt: now }
-    const [todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] &#x3D; await Promise.all([
-      this.commentService.countDocuments({ created_at: createdAt }),
-      this.voteService.countDocuments({
-        created_at: createdAt,
-        target_type: VoteTarget.Article,
-        vote_type: VoteType.Upvote
-      }),
-      this.voteService.countDocuments({
-        created_at: createdAt,
-        target_type: VoteTarget.Comment,
-        vote_type: VoteType.Upvote
-      }),
-      this.voteService.countDocuments({
-        created_at: createdAt,
-        target_type: VoteTarget.Comment,
-        vote_type: VoteType.Downvote
+  // Aggregate all stats and reset daily data at 00:01.
+  @Cron(&#x27;1 0 0 * * *&#x27;, { name: &#x27;DailyStatisticsJob&#x27; })
+  async sendDailyStatisticsEmail() {
+    try {
+      const now &#x3D; new Date()
+      const oneDayAgo &#x3D; new Date(now.getTime() - 24 * 60 * 60 * 1000)
+      const createdAt &#x3D; { $gte: oneDayAgo, $lt: now }
+      const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] &#x3D;
+        await Promise.all([
+          this.counterService.getGlobalCount(CacheKeys.TodayViewCount),
+          this.commentService.countDocuments({ created_at: createdAt }),
+          this.voteService.countDocuments({
+            created_at: createdAt,
+            target_type: VoteTarget.Article,
+            vote_type: VoteType.Upvote
+          }),
+          this.voteService.countDocuments({
+            created_at: createdAt,
+            target_type: VoteTarget.Comment,
+            vote_type: VoteType.Upvote
+          }),
+          this.voteService.countDocuments({
+            created_at: createdAt,
+            target_type: VoteTarget.Comment,
+            vote_type: VoteType.Downvote
+          })
+        ])
+
+      this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
+        to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
+        subject: &#x27;Daily Statistics&#x27;,
+        ...linesToEmailContent([
+          &#x60;Today views: ${todayViews}&#x60;,
+          &#x60;Today new comments: ${todayNewComments}&#x60;,
+          &#x60;Today new post votes: +${todayArticleUpVotes}&#x60;,
+          &#x60;Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}&#x60;
+        ])
       })
-    ])
-
-    const emailContents &#x3D; [
-      &#x60;Today views: ${todayViews}&#x60;,
-      &#x60;Today new comments: ${todayNewComments}&#x60;,
-      &#x60;Today new post votes: +${todayArticleUpVotes}&#x60;,
-      &#x60;Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}&#x60;
-    ]
-
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.NAME, {
-      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-      subject: &#x27;Daily Statistics&#x27;,
-      text: emailContents.join(&#x27;\n&#x27;),
-      html: emailContents.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;\n&#x27;)
-    })
+    } finally {
+      this.counterService.resetGlobalCount(CacheKeys.TodayViewCount).catch((error) &#x3D;&gt; {
+        logger.warn(&#x27;reset TODAY_VIEWS failed!&#x27;, error)
+      })
+    }
   }
 
   public getStatistics(publicOnly: boolean) {
@@ -555,7 +528,7 @@ export class StatisticsService {
         statistics.totalViews &#x3D; value?.totalViews ?? 0
         statistics.totalLikes &#x3D; value?.totalLikes ?? 0
       }),
-      getGlobalTodayViewsCount(this.cacheService).then((value) &#x3D;&gt; {
+      this.counterService.getGlobalCount(CacheKeys.TodayViewCount).then((value) &#x3D;&gt; {
         statistics.todayViews &#x3D; value
       })
     ])

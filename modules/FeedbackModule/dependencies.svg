@@ -22,45 +22,57 @@
 <text text-anchor="start" x="429.73" y="-15.4" font-family="Times-12" font-size="14.00"> &#160;Exports</text>
 <g id="clust1" class="cluster">
 <title>cluster_FeedbackModule</title>
-<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="155,-70 155,-268 341,-268 341,-70 155,-70"/>
-</g>
-<g id="clust4" class="cluster">
-<title>cluster_FeedbackModule_exports</title>
-<polygon fill="none" stroke="black" points="182,-208 182,-260 314,-260 314,-208 182,-208"/>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="66,-70 66,-268 430,-268 430,-70 66,-70"/>
 </g>
 <g id="clust6" class="cluster">
 <title>cluster_FeedbackModule_providers</title>
-<polygon fill="none" stroke="black" points="163,-78 163,-130 333,-130 333,-78 163,-78"/>
+<polygon fill="none" stroke="black" points="74,-78 74,-130 422,-130 422,-78 74,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_FeedbackModule_exports</title>
+<polygon fill="none" stroke="black" points="180,-208 180,-260 312,-260 312,-208 180,-208"/>
 </g>
 <!-- FeedbackService  -->
 <g id="node1" class="node">
 <title>FeedbackService </title>
-<polygon fill="#fb8072" stroke="black" points="305.62,-252 190.38,-252 190.38,-216 305.62,-216 305.62,-252"/>
-<text text-anchor="middle" x="248" y="-229.8" font-family="Times,serif" font-size="14.00">FeedbackService </text>
+<polygon fill="#fb8072" stroke="black" points="303.62,-252 188.38,-252 188.38,-216 303.62,-216 303.62,-252"/>
+<text text-anchor="middle" x="246" y="-229.8" font-family="Times,serif" font-size="14.00">FeedbackService </text>
 </g>
 <!-- FeedbackModule -->
 <g id="node2" class="node">
 <title>FeedbackModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="304.69,-187 301.69,-191 280.69,-191 277.69,-187 191.31,-187 191.31,-151 304.69,-151 304.69,-187"/>
-<text text-anchor="middle" x="248" y="-164.8" font-family="Times,serif" font-size="14.00">FeedbackModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="302.69,-187 299.69,-191 278.69,-191 275.69,-187 189.31,-187 189.31,-151 302.69,-151 302.69,-187"/>
+<text text-anchor="middle" x="246" y="-164.8" font-family="Times,serif" font-size="14.00">FeedbackModule</text>
 </g>
 <!-- FeedbackModule&#45;&gt;FeedbackService  -->
 <g id="edge1" class="edge">
 <title>FeedbackModule&#45;&gt;FeedbackService </title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M248,-187.11C248,-187.11 248,-205.99 248,-205.99"/>
-<polygon fill="black" stroke="black" points="244.5,-205.99 248,-215.99 251.5,-205.99 244.5,-205.99"/>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M246,-187.11C246,-187.11 246,-205.99 246,-205.99"/>
+<polygon fill="black" stroke="black" points="242.5,-205.99 246,-215.99 249.5,-205.99 242.5,-205.99"/>
+</g>
+<!-- FeedbackListener -->
+<g id="node3" class="node">
+<title>FeedbackListener</title>
+<ellipse fill="#fdb462" stroke="black" cx="334" cy="-104" rx="79.85" ry="18"/>
+<text text-anchor="middle" x="334" y="-99.8" font-family="Times,serif" font-size="14.00">FeedbackListener</text>
+</g>
+<!-- FeedbackListener&#45;&gt;FeedbackModule -->
+<g id="edge2" class="edge">
+<title>FeedbackListener&#45;&gt;FeedbackModule</title>
+<path fill="none" stroke="black" d="M278.46,-117.15C278.46,-117.15 278.46,-140.69 278.46,-140.69"/>
+<polygon fill="black" stroke="black" points="274.96,-140.69 278.46,-150.69 281.96,-140.69 274.96,-140.69"/>
 </g>
 <!-- FeedbackService -->
-<g id="node3" class="node">
+<g id="node4" class="node">
 <title>FeedbackService</title>
-<ellipse fill="#fdb462" stroke="black" cx="248" cy="-104" rx="76.98" ry="18"/>
-<text text-anchor="middle" x="248" y="-99.8" font-family="Times,serif" font-size="14.00">FeedbackService</text>
+<ellipse fill="#fdb462" stroke="black" cx="159" cy="-104" rx="76.98" ry="18"/>
+<text text-anchor="middle" x="159" y="-99.8" font-family="Times,serif" font-size="14.00">FeedbackService</text>
 </g>
 <!-- FeedbackService&#45;&gt;FeedbackModule -->
-<g id="edge2" class="edge">
+<g id="edge3" class="edge">
 <title>FeedbackService&#45;&gt;FeedbackModule</title>
-<path fill="none" stroke="black" d="M248,-122.11C248,-122.11 248,-140.99 248,-140.99"/>
-<polygon fill="black" stroke="black" points="244.5,-140.99 248,-150.99 251.5,-140.99 244.5,-140.99"/>
+<path fill="none" stroke="black" d="M212.7,-117.15C212.7,-117.15 212.7,-140.69 212.7,-140.69"/>
+<polygon fill="black" stroke="black" points="209.2,-140.69 212.7,-150.69 216.2,-140.69 209.2,-140.69"/>
 </g>
 </g>
 </svg>

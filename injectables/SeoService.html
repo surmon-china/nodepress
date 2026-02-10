@@ -477,7 +477,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>pingGoogle(action: <a href="../miscellaneous/enumerations.html#SEOAction" target="_self">SEOAction</a>, urls: string[])</code>
+                    <code>pingGoogle(action: <a href="../miscellaneous/enumerations.html#SeoAction" target="_self">SeoAction</a>, urls: string[])</code>
                 </td>
             </tr>
 
@@ -508,7 +508,7 @@
                                         <tr>
                                                 <td>action</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/enumerations.html#SEOAction" target="_self" >SEOAction</a></code>
+                                                            <code><a href="../miscellaneous/enumerations.html#SeoAction" target="_self" >SeoAction</a></code>
                                             </td>
 
                                             <td>
@@ -698,7 +698,7 @@ import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 const logger &#x3D; createLogger({ scope: &#x27;SeoService&#x27;, time: isDevEnv })
 
 export type ActionURL &#x3D; string | string[]
-export enum SEOAction {
+export enum SeoAction {
   Push &#x3D; &#x27;push&#x27;,
   Update &#x3D; &#x27;update&#x27;,
   Delete &#x3D; &#x27;delete&#x27;
@@ -712,11 +712,11 @@ export class SeoService {
   ) {}
 
   // Google: https://developers.google.com/search/apis/indexing-api
-  private pingGoogle(action: SEOAction, urls: string[]): void {
+  private pingGoogle(action: SeoAction, urls: string[]): void {
     const pingActionMap &#x3D; {
-      [SEOAction.Push]: &#x27;URL_UPDATED&#x27;,
-      [SEOAction.Update]: &#x27;URL_UPDATED&#x27;,
-      [SEOAction.Delete]: &#x27;URL_DELETED&#x27;
+      [SeoAction.Push]: &#x27;URL_UPDATED&#x27;,
+      [SeoAction.Update]: &#x27;URL_UPDATED&#x27;,
+      [SeoAction.Delete]: &#x27;URL_DELETED&#x27;
     }
     const [url] &#x3D; urls
     const type &#x3D; pingActionMap[action]
@@ -768,19 +768,19 @@ export class SeoService {
 
   public push(url: ActionURL) {
     const urls &#x3D; this.humanizedUrl(url)
-    this.pingGoogle(SEOAction.Push, urls)
+    this.pingGoogle(SeoAction.Push, urls)
     this.pingBing(urls)
   }
 
   public update(url: ActionURL) {
     const urls &#x3D; this.humanizedUrl(url)
-    this.pingGoogle(SEOAction.Update, urls)
+    this.pingGoogle(SeoAction.Update, urls)
     this.pingBing(urls)
   }
 
   public delete(url: ActionURL) {
     const urls &#x3D; this.humanizedUrl(url)
-    this.pingGoogle(SEOAction.Delete, urls)
+    this.pingGoogle(SeoAction.Delete, urls)
     this.pingBing(urls)
   }
 }

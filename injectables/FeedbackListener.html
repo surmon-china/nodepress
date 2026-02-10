@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >DBBackupService</li>
+  <li class="breadcrumb-item" >FeedbackListener</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/system/system.service.dbbackup.ts</code>
+            <code>src/modules/feedback/feedback.listener.ts</code>
         </p>
 
 
@@ -155,18 +155,8 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#backup" >backup</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#doBackup" >doBackup</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#mailToAdmin" >mailToAdmin</a>
+                                <a href="#handleFeedbackCreated" >handleFeedbackCreated</a>
                             </li>
                         </ul>
                     </td>
@@ -186,12 +176,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, s3Service: <a href="../injectables/S3Service.html" target="_self">S3Service</a>)</code>
+<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/modules/system/system.service.dbbackup.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/modules/feedback/feedback.listener.ts:16</a></div>
                             </td>
                         </tr>
 
@@ -220,18 +210,6 @@
                                                     </td>
                                                     
                                                 </tr>
-                                                <tr>
-                                                        <td>s3Service</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/S3Service.html" target="_self" >S3Service</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -250,20 +228,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="backup"></a>
+                    <a name="handleFeedbackCreated"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>backup</b></span>
-                        <a href="#backup"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>handleFeedbackCreated</b></span>
+                        <a href="#handleFeedbackCreated"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>backup()</code>
+                    <code>handleFeedbackCreated(feedback: <a href="../classes/Feedback.html" target="_self">Feedback</a>)</code>
                 </td>
             </tr>
 
@@ -271,93 +248,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Cron(&#x27;0 0 3 * * *&#x27;, {name: &#x27;DailyDatabaseBackupJob&#x27;})<br /></code>
+                    <code>@OnEvent(EventKeys.FeedbackCreated, {async: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:102</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="doBackup"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>doBackup</b></span>
-                        <a href="#doBackup"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>doBackup()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:31</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/S3FileObject.html" target="_self" >Promise&lt;S3FileObject&gt;</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="mailToAdmin"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>mailToAdmin</b></span>
-                        <a href="#mailToAdmin"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>mailToAdmin(subject: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, content: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isCode?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="20"
+                                    class="link-to-prism">src/modules/feedback/feedback.listener.ts:20</a></div>
                         </td>
                     </tr>
 
@@ -378,37 +276,13 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>subject</td>
+                                                <td>feedback</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            <code><a href="../classes/Feedback.html" target="_self" >Feedback</a></code>
                                             </td>
 
                                             <td>
                                                     No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>content</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>isCode</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
                                             </td>
 
 
@@ -417,7 +291,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -433,115 +307,34 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import fs from &#x27;fs&#x27;
-import path from &#x27;path&#x27;
-import shell from &#x27;shelljs&#x27;
-import dayjs from &#x27;dayjs&#x27;
-import { Cron } from &#x27;@nestjs/schedule&#x27;
-import { Injectable, InternalServerErrorException } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import type { S3FileObject } from &#x27;@app/core/helper/helper.service.s3&#x27;
-import { S3Service, S3ServerSideEncryption } from &#x27;@app/core/helper/helper.service.s3&#x27;
-import { APP_BIZ, MONGO_DB, DB_BACKUP } from &#x27;@app/app.config&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
-
-const logger &#x3D; createLogger({ scope: &#x27;DBBackupService&#x27;, time: isDevEnv })
-
-const BACKUP_DIR_PATH &#x3D; path.join(APP_BIZ.ROOT_PATH, &#x27;dbbackup&#x27;)
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { getLocationText, getUserAgentText, linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
+import { Feedback } from &#x27;./feedback.model&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 @Injectable()
-export class DBBackupService {
-  constructor(
-    private readonly emailService: EmailService,
-    private readonly s3Service: S3Service
-  ) {}
+export class FeedbackListener {
+  constructor(private readonly emailService: EmailService) {}
 
-  private async doBackup(): Promise&lt;S3FileObject&gt; {
-    // 1. dependency pre-check
-    const dependencies &#x3D; [&#x27;mongodump&#x27;, &#x27;zip&#x27;]
-    for (const dep of dependencies) {
-      if (!shell.which(dep)) throw new Error(&#x60;missing dependency: [${dep}]&#x60;)
-    }
+  @OnEvent(EventKeys.FeedbackCreated, { async: true })
+  async handleFeedbackCreated(feedback: Feedback) {
+    const subject &#x3D; &#x27;You have a new feedback&#x27;
 
-    const backupPath &#x3D; path.join(BACKUP_DIR_PATH, &#x27;backup&#x27;)
-    const backupPrevPath &#x3D; path.join(BACKUP_DIR_PATH, &#x27;backup.prev&#x27;)
-
-    // 2. cleanup physical paths
-    shell.rm(&#x27;-rf&#x27;, backupPrevPath)
-    shell.test(&#x27;-d&#x27;, backupPath) &amp;&amp; shell.mv(backupPath, backupPrevPath)
-    shell.mkdir(&#x27;-p&#x27;, backupPath)
-
-    // 3. database export
-    // https://dba.stackexchange.com/questions/215534/mongodump-unrecognized-field-snapshot
-    // https://www.mongodb.com/docs/database-tools/mongodump/#std-option-mongodump.--quiet
-    const dumpCmd &#x3D; &#x60;mongodump --quiet --forceTableScan --uri&#x3D;&quot;${MONGO_DB.uri}&quot; --out&#x3D;&quot;${backupPath}&quot;&#x60;
-    const dumpResult &#x3D; shell.exec(dumpCmd)
-    if (dumpResult.code !&#x3D;&#x3D; 0) throw new Error(&#x60;mongodump failed: ${dumpResult.stderr}&#x60;)
-    logger.log(&#x27;mongodump succeeded:&#x27;, &#x60;${shell.ls(&#x60;${backupPath}/*&#x60;).length} files&#x60;)
-
-    // 4. compress backup files
-    // tar -czf - backup | openssl des3 -salt -k &lt;password&gt; -out target.tar.gz
-    const backupFolderName &#x3D; path.basename(backupPath)
-    const parentFolderPath &#x3D; path.dirname(backupPath)
-    const zipPath &#x3D; path.join(BACKUP_DIR_PATH, &#x27;nodepress.zip&#x27;)
-    const zipCmd &#x3D; &#x60;zip -q -r -P ${DB_BACKUP.password} &quot;${zipPath}&quot; &quot;${backupFolderName}&quot;&#x60;
-    const zipResult &#x3D; shell.exec(zipCmd, { cwd: parentFolderPath })
-    if (zipResult.code !&#x3D;&#x3D; 0) throw new Error(&#x60;zip failed: ${zipResult.stderr}&#x60;)
-
-    const fileDate &#x3D; dayjs(new Date()).format(&#x27;YYYY-MM-DD-HH-mm&#x27;)
-    const fileName &#x3D; &#x60;nodepress-mongodb-backup_${fileDate}.zip&#x60;
-    logger.log(&#x60;file path: ${zipPath}&#x60;)
-    logger.log(&#x60;file key: ${fileName}&#x60;)
-
-    // 5. Upload to cloud storage
-    return this.s3Service
-      .uploadFile({
-        key: fileName,
-        file: fs.createReadStream(zipPath),
-        fileContentType: &#x27;application/zip&#x27;,
-        region: DB_BACKUP.s3Region,
-        bucket: DB_BACKUP.s3Bucket,
-        // MARK: To avoid the high cost of IA storage in R2, the standard storage class is used here.
-        // classType: S3StorageClass.STANDARD_IA,
-        encryption: S3ServerSideEncryption.AES256
-      })
-      .then((result) &#x3D;&gt; {
-        logger.success(&#x27;upload succeeded:&#x27;, result.key)
-        return result
-      })
-      .catch((error) &#x3D;&gt; {
-        const errorMessage &#x3D; String(error.message ?? error)
-        logger.failure(&#x27;upload failed!&#x27;, errorMessage)
-        throw errorMessage
-      })
-  }
-
-  private mailToAdmin(subject: string, content: string, isCode?: boolean) {
-    this.emailService.sendMailAs(APP_BIZ.NAME, {
+    this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
       to: APP_BIZ.ADMIN_EMAIL,
       subject,
-      text: &#x60;${subject}, detail: ${content}&#x60;,
-      html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${content}&lt;/pre&gt;&#x60; : content}&#x60;
+      ...linesToEmailContent([
+        &#x60;${subject} on &#x27;${feedback.tid}&#x27;.&#x60;,
+        &#x60;Emotion: ${feedback.emotion_emoji} ${feedback.emotion_text} (${feedback.emotion})&#x60;,
+        &#x60;Content: ${feedback.content}&#x60;,
+        &#x60;Author: ${feedback.user_name || &#x27;Anonymous user&#x27;}&#x60;,
+        &#x60;Location: ${feedback.ip_location ? getLocationText(feedback.ip_location) : &#x27;unknown&#x27;}&#x60;,
+        &#x60;UserAgent: ${feedback.user_agent ? getUserAgentText(feedback.user_agent) : &#x27;unknown&#x27;}&#x60;
+      ])
     })
-  }
-
-  // Auto-backup database and notify admin via email at 03:00.
-  @Cron(&#x27;0 0 3 * * *&#x27;, { name: &#x27;DailyDatabaseBackupJob&#x27; })
-  public async backup() {
-    try {
-      const result &#x3D; await this.doBackup()
-      const json &#x3D; {
-        ...result,
-        lastModified: result.lastModified?.toLocaleString(&#x27;zh&#x27;),
-        size: (result.size / 1024).toFixed(2) + &#x27;kb&#x27;
-      }
-      this.mailToAdmin(&#x27;Database backup succeeded&#x27;, JSON.stringify(json, null, 2), true)
-      return result
-    } catch (error: unknown) {
-      this.mailToAdmin(&#x27;Database backup failed!&#x27;, String(error))
-      throw new InternalServerErrorException(String(error))
-    }
   }
 }
 </code></pre>
@@ -587,7 +380,7 @@ export class DBBackupService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'DBBackupService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'FeedbackListener.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

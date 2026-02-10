@@ -291,7 +291,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
 import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
@@ -316,7 +316,7 @@ export interface ArchiveData {
 }
 
 @Injectable()
-export class ArchiveService {
+export class ArchiveService implements OnModuleInit {
   private archiveCache: CacheManualResult&lt;ArchiveData&gt;
 
   constructor(
@@ -327,9 +327,12 @@ export class ArchiveService {
   ) {
     this.archiveCache &#x3D; this.cacheService.manual({
       key: CacheKeys.Archive,
-      promise: this.getArchiveData.bind(this)
+      promise: () &#x3D;&gt; this.getArchiveData()
     })
-    this.updateCache().catch((error) &#x3D;&gt; {
+  }
+
+  onModuleInit() {
+    this.archiveCache.update().catch((error) &#x3D;&gt; {
       logger.warn(&#x27;Init getArchiveData failed!&#x27;, error)
     })
   }

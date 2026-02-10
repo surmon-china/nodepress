@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >OptionsService</li>
+  <li class="breadcrumb-item" >WebhookListener</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/options/options.service.ts</code>
+            <code>src/modules/webhook/webhook.listener.ts</code>
         </p>
 
 
@@ -144,21 +144,6 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#optionsCache" >optionsCache</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -169,31 +154,20 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#appendToBlocklist" >appendToBlocklist</a>
+                                    <span class="modifier"></span>
+                                <a href="#handleArticleCreated" >handleArticleCreated</a>
                             </li>
                             <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#ensureAppOptions" >ensureAppOptions</a>
+                                    <span class="modifier"></span>
+                                <a href="#handleArticleUpdated" >handleArticleUpdated</a>
                             </li>
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getOptionsCacheForGuest" >getOptionsCacheForGuest</a>
+                                    <span class="modifier"></span>
+                                <a href="#handleGeneralEvents" >handleGeneralEvents</a>
                             </li>
                             <li>
-                                <a href="#onModuleInit" >onModuleInit</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#putOptions" >putOptions</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#removeFromBlocklist" >removeFromBlocklist</a>
+                                    <span class="modifier"></span>
+                                <a href="#handleOptionsUpdated" >handleOptionsUpdated</a>
                             </li>
                         </ul>
                     </td>
@@ -213,12 +187,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(optionsModel: <a href="../classes/Option.html" target="_self">MongooseModel&lt;Option&gt;</a>, cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>)</code>
+<code>constructor(webhookService: <a href="../injectables/WebhookService.html" target="_self">WebhookService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/options/options.service.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/modules/webhook/webhook.listener.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -236,22 +210,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>optionsModel</td>
+                                                        <td>webhookService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../classes/Option.html" target="_self" >MongooseModel&lt;Option&gt;</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>cacheService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/CacheService.html" target="_self" >CacheService</a></code>
+                                                                        <code><a href="../injectables/WebhookService.html" target="_self" >WebhookService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -277,27 +239,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="appendToBlocklist"></a>
+                    <a name="handleArticleCreated"></a>
                     <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>appendToBlocklist</b></span>
-                        <a href="#appendToBlocklist"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                        <span ><b>handleArticleCreated</b></span>
+                        <a href="#handleArticleCreated"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>appendToBlocklist(payload: literal type)</code>
+                    <code>handleArticleCreated(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
                 </td>
             </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.ArticleCreated, {async: true})<br /></code>
+                </td>
+            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/modules/options/options.service.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="24"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -320,7 +288,7 @@
                                         <tr>
                                                 <td>payload</td>
                                             <td>
-                                                        <code>literal type</code>
+                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
                                             </td>
 
                                             <td>
@@ -333,7 +301,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Blocklist.html" target="_self" >Promise&lt;Blocklist&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -347,143 +315,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ensureAppOptions"></a>
+                    <a name="handleArticleUpdated"></a>
                     <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>ensureAppOptions</b></span>
-                        <a href="#ensureAppOptions"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                        <span ><b>handleArticleUpdated</b></span>
+                        <a href="#handleArticleUpdated"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>ensureAppOptions()</code>
+                    <code>handleArticleUpdated(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
                 </td>
             </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.ArticleUpdated, {async: true})<br /></code>
+                </td>
+            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/options/options.service.ts:44</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;MongooseDoc&lt;Option&gt;&gt;</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getOptionsCacheForGuest"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>getOptionsCacheForGuest</b></span>
-                        <a href="#getOptionsCacheForGuest"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getOptionsCacheForGuest()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/options/options.service.ts:50</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onModuleInit"></a>
-                    <span class="name">
-                        <span ><b>onModuleInit</b></span>
-                        <a href="#onModuleInit"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>onModuleInit()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/modules/options/options.service.ts:38</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="putOptions"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>putOptions</b></span>
-                        <a href="#putOptions"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putOptions(newOptions: <a href="../classes/Option.html" target="_self">Option</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/modules/options/options.service.ts:54</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -504,7 +362,159 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>newOptions</td>
+                                                <td>payload</td>
+                                            <td>
+                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleGeneralEvents"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>handleGeneralEvents</b></span>
+                        <a href="#handleGeneralEvents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleGeneralEvents(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.ArticleDeleted, {async: true})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>payload</td>
+                                            <td>
+                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleOptionsUpdated"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>handleOptionsUpdated</b></span>
+                        <a href="#handleOptionsUpdated"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleOptionsUpdated(payload: <a href="../classes/Option.html" target="_self">Option</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.OptionsUpdated, {async: true})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="19"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:19</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>payload</td>
                                             <td>
                                                             <code><a href="../classes/Option.html" target="_self" >Option</a></code>
                                             </td>
@@ -519,7 +529,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;Option&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -527,109 +537,6 @@
                             </div>
                 </td>
             </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="removeFromBlocklist"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>removeFromBlocklist</b></span>
-                        <a href="#removeFromBlocklist"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>removeFromBlocklist(payload: literal type)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="73"
-                                    class="link-to-prism">src/modules/options/options.service.ts:73</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                        <code>literal type</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Blocklist.html" target="_self" >Promise&lt;Blocklist&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>
-            <section data-compodoc="block-properties">
-    
-    <h3 id="inputs">
-        Properties
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="optionsCache"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>optionsCache</b></span>
-                        <a href="#optionsCache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../interfaces/CacheManualResult.html" target="_self" >CacheManualResult&lt;Omit&lt;Option, blocklist&gt;&gt;</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/options/options.service.ts:22</a></div>
-                        </td>
-                    </tr>
-
-
         </tbody>
     </table>
 </section>
@@ -638,78 +545,35 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _omit from &#x27;lodash/omit&#x27;
-import _uniq from &#x27;lodash/uniq&#x27;
-import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
-import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
-import { Option, Blocklist, DEFAULT_OPTIONS } from &#x27;./options.model&#x27;
-import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
-
-const logger &#x3D; createLogger({ scope: &#x27;OptionsService&#x27;, time: isDevEnv })
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { Option } from &#x27;@app/modules/options/options.model&#x27;
+import { Article } from &#x27;@app/modules/article/article.model&#x27;
+import { WebhookService } from &#x27;./webhook.service&#x27;
 
 @Injectable()
-export class OptionsService implements OnModuleInit {
-  private optionsCache: CacheManualResult&lt;Omit&lt;Option, &#x27;blocklist&#x27;&gt;&gt;
+export class WebhookListener {
+  constructor(private readonly webhookService: WebhookService) {}
 
-  constructor(
-    @InjectModel(Option) private readonly optionsModel: MongooseModel&lt;Option&gt;,
-    private readonly cacheService: CacheService
-  ) {
-    this.optionsCache &#x3D; this.cacheService.manual({
-      key: CacheKeys.Options,
-      promise: () &#x3D;&gt; {
-        return this.ensureAppOptions().then((option) &#x3D;&gt; {
-          return _omit(option.toObject&lt;Option&gt;(), [&#x27;blocklist&#x27;, &#x27;_id&#x27;])
-        })
-      }
-    })
+  @OnEvent(EventKeys.OptionsUpdated, { async: true })
+  handleOptionsUpdated(payload: Option) {
+    return this.webhookService.dispatch(EventKeys.OptionsUpdated, payload)
   }
 
-  onModuleInit() {
-    this.optionsCache.update().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;Init getAppOptions failed!&#x27;, error)
-    })
+  @OnEvent(EventKeys.ArticleCreated, { async: true })
+  handleArticleCreated(payload: Article) {
+    return this.webhookService.dispatch(EventKeys.ArticleCreated, payload.id)
   }
 
-  public async ensureAppOptions(): Promise&lt;MongooseDoc&lt;Option&gt;&gt; {
-    // MARK: To avoid blocking subsequent write operations, &#x60;.select(-1)&#x60; should not be used here.
-    const options &#x3D; await this.optionsModel.findOne().exec()
-    return options ?? (await this.optionsModel.create({ ...DEFAULT_OPTIONS }))
+  @OnEvent(EventKeys.ArticleUpdated, { async: true })
+  handleArticleUpdated(payload: Article) {
+    return this.webhookService.dispatch(EventKeys.ArticleUpdated, payload.id)
   }
 
-  public getOptionsCacheForGuest() {
-    return this.optionsCache.get()
-  }
-
-  public async putOptions(newOptions: Option): Promise&lt;Option&gt; {
-    // delete _id fields
-    Reflect.deleteProperty(newOptions, &#x27;_id&#x27;)
-    // create and update
-    await this.ensureAppOptions()
-    await this.optionsModel.updateOne({}, newOptions).exec()
-    // update cache when options updated
-    await this.optionsCache.update()
-    return await this.ensureAppOptions()
-  }
-
-  public async appendToBlocklist(payload: { ips: string[]; emails: string[] }): Promise&lt;Blocklist&gt; {
-    const options &#x3D; await this.ensureAppOptions()
-    options.blocklist.ips &#x3D; _uniq([...options.blocklist.ips, ...payload.ips])
-    options.blocklist.mails &#x3D; _uniq([...options.blocklist.mails, ...payload.emails])
-    await options.save()
-    return options.blocklist
-  }
-
-  public async removeFromBlocklist(payload: { ips: string[]; emails: string[] }): Promise&lt;Blocklist&gt; {
-    const options &#x3D; await this.ensureAppOptions()
-    options.blocklist.ips &#x3D; options.blocklist.ips.filter((ip) &#x3D;&gt; !payload.ips.includes(ip))
-    options.blocklist.mails &#x3D; options.blocklist.mails.filter((email) &#x3D;&gt; !payload.emails.includes(email))
-    await options.save()
-    return options.blocklist
+  @OnEvent(EventKeys.ArticleDeleted, { async: true })
+  handleGeneralEvents(payload: Article) {
+    return this.webhookService.dispatch(EventKeys.ArticleDeleted, payload.id)
   }
 }
 </code></pre>
@@ -755,7 +619,7 @@ export class OptionsService implements OnModuleInit {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'OptionsService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'WebhookListener.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

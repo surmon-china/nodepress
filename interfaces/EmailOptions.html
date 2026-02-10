@@ -331,7 +331,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import nodemailer from &#x27;nodemailer&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
+import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -347,11 +347,12 @@ export interface EmailOptions {
 }
 
 @Injectable()
-export class EmailService {
+export class EmailService implements OnModuleInit {
   private transporter: nodemailer.Transporter
   private clientIsValid: boolean
 
   constructor() {
+    // https://nodemailer.com/
     this.transporter &#x3D; nodemailer.createTransport({
       host: APP_CONFIG.EMAIL.host,
       port: APP_CONFIG.EMAIL.port,
@@ -361,25 +362,28 @@ export class EmailService {
         pass: APP_CONFIG.EMAIL.password
       }
     })
-    this.verifyClient()
   }
 
-  private verifyClient(): void {
-    return this.transporter.verify((error) &#x3D;&gt; {
-      if (error) {
-        this.clientIsValid &#x3D; false
-        setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(&#x60;client initialization failed! retry after 30 mins&#x60;, &#x27;|&#x27;, getMessageFromNormalError(error))
-      } else {
-        this.clientIsValid &#x3D; true
-        logger.success(&#x27;client initialized.&#x27;)
-      }
-    })
+  async onModuleInit() {
+    try {
+      // https://nodemailer.com/usage#verify-the-connection-optional
+      await this.transporter.verify()
+      this.clientIsValid &#x3D; true
+      logger.success(&#x27;client initialized.&#x27;)
+    } catch {
+      this.clientIsValid &#x3D; false
+      logger.failure(&#x27;client initialization failed! (canot connect to SMTP server)&#x27;)
+    }
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
       logger.warn(&#x27;send failed! (initialization failed)&#x27;)
+      return false
+    }
+
+    if (!mailOptions.to) {
+      logger.warn(&#x27;send failed! (no recipient)&#x27;)
       return false
     }
 
@@ -390,7 +394,7 @@ export class EmailService {
       },
       (error, info) &#x3D;&gt; {
         if (error) {
-          logger.failure(&#x60;send failed!&#x60;, getMessageFromNormalError(error))
+          logger.failure(&#x27;send failed!&#x27;, getMessageFromNormalError(error))
         } else {
           logger.success(&#x27;send succeeded.&#x27;, info.messageId, info.response)
         }

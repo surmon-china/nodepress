@@ -259,7 +259,6 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isNil from &#x27;lodash/isNil&#x27;
-import schedule from &#x27;node-schedule&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
@@ -282,11 +281,6 @@ export interface CacheIntervalOptions&lt;T&gt; extends CacheBaseOptions&lt;T&gt;
   retry: number
 }
 
-export interface CacheScheduleOptions&lt;T&gt; extends CacheBaseOptions&lt;T&gt; {
-  schedule: string | number | Date
-  retry: number
-}
-
 /**
  * @class CacheService
  * @classdesc Global cache service
@@ -297,7 +291,6 @@ export interface CacheScheduleOptions&lt;T&gt; extends CacheBaseOptions&lt;T&gt;
  * @example CacheService.once({ option })
  * @example CacheService.manual({ option }).get()
  * @example CacheService.interval({ option })()
- * @example CacheService.schedule({ option })()
  */
 @Injectable()
 export class CacheService {
@@ -371,24 +364,6 @@ export class CacheService {
     }
 
     execIntervalTask()
-    return () &#x3D;&gt; this.get(options.key)
-  }
-
-  /**
-   * @function schedule
-   * @description Using schedule to control cache updates, you can also control the retry time after a failed data fetch.
-   * @example CacheService.schedule({ ... }) -&gt; () &#x3D;&gt; promise()
-   */
-  public schedule&lt;T&gt;(options: CacheScheduleOptions&lt;T&gt;): () &#x3D;&gt; Promise&lt;T&gt; {
-    const execScheduleTask &#x3D; () &#x3D;&gt; {
-      this.execPromise(options).catch((error) &#x3D;&gt; {
-        logger.failure(&#x60;schedule task failed! retry after ${options.retry / 1000}s,&#x60;, &#x27;|&#x27;, error)
-        setTimeout(execScheduleTask, options.retry)
-      })
-    }
-
-    execScheduleTask()
-    schedule.scheduleJob(options.schedule, execScheduleTask)
     return () &#x3D;&gt; this.get(options.key)
   }
 }

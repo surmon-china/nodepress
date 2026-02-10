@@ -173,16 +173,16 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onModuleInit" >onModuleInit</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Public</span>
                                 <a href="#sendMail" >sendMail</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#sendMailAs" >sendMailAs</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#verifyClient" >verifyClient</a>
                             </li>
                         </ul>
                     </td>
@@ -224,6 +224,45 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="onModuleInit"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>onModuleInit</b></span>
+                        <a href="#onModuleInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onModuleInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/core/helper/helper.service.email.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="sendMail"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
@@ -242,8 +281,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/core/helper/helper.service.email.ts:54</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/core/helper/helper.service.email.ts:53</a></div>
                         </td>
                     </tr>
 
@@ -311,8 +350,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="75"
-                                    class="link-to-prism">src/core/helper/helper.service.email.ts:75</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="79"
+                                    class="link-to-prism">src/core/helper/helper.service.email.ts:79</a></div>
                         </td>
                     </tr>
 
@@ -366,45 +405,6 @@
                             <div class="io-description">
                                 
                             </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="verifyClient"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>verifyClient</b></span>
-                        <a href="#verifyClient"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>verifyClient()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/core/helper/helper.service.email.ts:41</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
                 </td>
             </tr>
         </tbody>
@@ -476,7 +476,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import nodemailer from &#x27;nodemailer&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
+import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -492,11 +492,12 @@ export interface EmailOptions {
 }
 
 @Injectable()
-export class EmailService {
+export class EmailService implements OnModuleInit {
   private transporter: nodemailer.Transporter
   private clientIsValid: boolean
 
   constructor() {
+    // https://nodemailer.com/
     this.transporter &#x3D; nodemailer.createTransport({
       host: APP_CONFIG.EMAIL.host,
       port: APP_CONFIG.EMAIL.port,
@@ -506,25 +507,28 @@ export class EmailService {
         pass: APP_CONFIG.EMAIL.password
       }
     })
-    this.verifyClient()
   }
 
-  private verifyClient(): void {
-    return this.transporter.verify((error) &#x3D;&gt; {
-      if (error) {
-        this.clientIsValid &#x3D; false
-        setTimeout(this.verifyClient.bind(this), 1000 * 60 * 30)
-        logger.error(&#x60;client initialization failed! retry after 30 mins&#x60;, &#x27;|&#x27;, getMessageFromNormalError(error))
-      } else {
-        this.clientIsValid &#x3D; true
-        logger.success(&#x27;client initialized.&#x27;)
-      }
-    })
+  async onModuleInit() {
+    try {
+      // https://nodemailer.com/usage#verify-the-connection-optional
+      await this.transporter.verify()
+      this.clientIsValid &#x3D; true
+      logger.success(&#x27;client initialized.&#x27;)
+    } catch {
+      this.clientIsValid &#x3D; false
+      logger.failure(&#x27;client initialization failed! (canot connect to SMTP server)&#x27;)
+    }
   }
 
   public sendMail(mailOptions: EmailOptions) {
     if (!this.clientIsValid) {
       logger.warn(&#x27;send failed! (initialization failed)&#x27;)
+      return false
+    }
+
+    if (!mailOptions.to) {
+      logger.warn(&#x27;send failed! (no recipient)&#x27;)
       return false
     }
 
@@ -535,7 +539,7 @@ export class EmailService {
       },
       (error, info) &#x3D;&gt; {
         if (error) {
-          logger.failure(&#x60;send failed!&#x60;, getMessageFromNormalError(error))
+          logger.failure(&#x27;send failed!&#x27;, getMessageFromNormalError(error))
         } else {
           logger.success(&#x27;send succeeded.&#x27;, info.messageId, info.response)
         }

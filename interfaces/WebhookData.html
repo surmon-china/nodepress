@@ -116,7 +116,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  CacheScheduleOptions</li>
+  WebhookData</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -140,17 +140,11 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/core/cache/cache.service.ts</code>
+            <code>src/modules/webhook/webhook.service.ts</code>
         </p>
 
 
 
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                            <code><a href="../interfaces/CacheBaseOptions.html" target="_self" >CacheBaseOptions</a></code>
-            </p>
 
         <section data-compodoc="block-index">
             <h3 id="index">Index</h3>
@@ -165,15 +159,21 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#retry" 
+                                        <a href="#data" 
 >
-                                            retry
+                                            data
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#schedule" 
+                                        <a href="#event" 
 >
-                                            schedule
+                                            event
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#timestamp" 
+>
+                                            timestamp
                                         </a>
                                 </li>
                             </ul>
@@ -191,9 +191,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="retry"></a>
-                                        <span class="name "><b>retry</b>
-                                            <a href="#retry">
+                                        <a name="data"></a>
+                                        <span class="name "><b>data</b>
+                                            <a href="#data">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -201,7 +201,73 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>retry:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                        <code>data:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="event"></a>
+                                        <span class="name "><b>event</b>
+                                            <a href="#event">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>event:         <code><a href="../miscellaneous/enumerations.html#EventKeys" target="_self" >EventKeys</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#EventKeys" target="_self" >EventKeys</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="timestamp"></a>
+                                        <span class="name "><b>timestamp</b>
+                                            <a href="#timestamp">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>timestamp:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -220,176 +286,60 @@
 
                         </tbody>
                     </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="schedule"></a>
-                                        <span class="name "><b>schedule</b>
-                                            <a href="#schedule">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>schedule:     <code>string | number | Date</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | number | Date</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
             </section>
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isNil from &#x27;lodash/isNil&#x27;
-import schedule from &#x27;node-schedule&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _omit from &#x27;lodash/omit&#x27;
+import _uniq from &#x27;lodash/uniq&#x27;
+import { lastValueFrom } from &#x27;rxjs&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { HttpService } from &#x27;@nestjs/axios&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { RedisService } from &#x27;./redis.service&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { APP_BIZ, WEBHOOK } from &#x27;@app/app.config&#x27;
 
-const logger &#x3D; createLogger({ scope: &#x27;CacheService&#x27;, time: isDevEnv })
+const logger &#x3D; createLogger({ scope: &#x27;WebhookService&#x27;, time: isDevEnv })
 
-export interface CacheBaseOptions&lt;T&gt; {
-  key: string
-  promise(): Promise&lt;T&gt;
+export interface WebhookData {
+  event: EventKeys
+  timestamp: number
+  data: any
 }
 
-export interface CacheManualResult&lt;T&gt; {
-  get(): Promise&lt;T&gt;
-  update(): Promise&lt;T&gt;
-}
-
-export interface CacheIntervalOptions&lt;T&gt; extends CacheBaseOptions&lt;T&gt; {
-  interval: number
-  retry: number
-}
-
-export interface CacheScheduleOptions&lt;T&gt; extends CacheBaseOptions&lt;T&gt; {
-  schedule: string | number | Date
-  retry: number
-}
-
-/**
- * @class CacheService
- * @classdesc Global cache service
- * @example CacheService.has(CacheKey).then()
- * @example CacheService.get(CacheKey).then()
- * @example CacheService.set(CacheKey).then()
- * @example CacheService.delete(CacheKey).then()
- * @example CacheService.once({ option })
- * @example CacheService.manual({ option }).get()
- * @example CacheService.interval({ option })()
- * @example CacheService.schedule({ option })()
- */
 @Injectable()
-export class CacheService {
-  constructor(private readonly redisService: RedisService) {}
+export class WebhookService {
+  constructor(private readonly httpService: HttpService) {}
 
-  public has(key: string) {
-    return this.redisService.store.has(key)
-  }
+  public dispatch(event: EventKeys, payload: any): void {
+    if (!WEBHOOK.url) return
 
-  public set(
-    key: string,
-    value: any,
-    /** seconds */
-    ttl?: number
-  ): Promise&lt;void&gt; {
-    return this.redisService.store.set(key, value, ttl)
-  }
-
-  public get&lt;T&gt;(key: string): Promise&lt;T&gt; {
-    return this.redisService.store.get&lt;T&gt;(key) as Promise&lt;T&gt;
-  }
-
-  public delete(key: string): Promise&lt;boolean&gt; {
-    return this.redisService.store.delete(key)
-  }
-
-  /** Execute the Promise and store the data into the cache. */
-  private async execPromise&lt;T&gt;(options: CacheBaseOptions&lt;T&gt;): Promise&lt;T&gt; {
-    const data &#x3D; await options.promise()
-    await this.set(options.key, data)
-    return data
-  }
-
-  /**
-   * @function once
-   * @description Store data into the cache only once, and always get data from the cache afterwards.
-   * @example CacheService.once({ ... }) -&gt; promise()
-   */
-  public async once&lt;T&gt;(options: CacheBaseOptions&lt;T&gt;): Promise&lt;T&gt; {
-    const data &#x3D; await this.get&lt;T&gt;(options.key)
-    return _isNil(data) ? await this.execPromise&lt;T&gt;(options) : data
-  }
-
-  /**
-   * @function manual
-   * @description Always need to &#x60;get&#x60; and &#x60;update&#x60; the cache manually, if the cache doesn&#x27;t exist it will do the &#x60;CacheService.once&#x60; logic itself.
-   * @example CacheService.manual({ ... }) -&gt; { get: promise(), update: promise() }
-   */
-  public manual&lt;T&gt;(options: CacheBaseOptions&lt;T&gt;): CacheManualResult&lt;T&gt; {
-    return {
-      get: () &#x3D;&gt; this.once&lt;T&gt;(options),
-      update: () &#x3D;&gt; this.execPromise&lt;T&gt;(options)
-    }
-  }
-
-  /**
-   * @function interval
-   * @description By controlling cache updates through time intervals, you can also control the retry time after a failed data fetch.
-   * @example CacheService.interval({ ... }) -&gt; () &#x3D;&gt; promise()
-   */
-  public interval&lt;T&gt;(options: CacheIntervalOptions&lt;T&gt;): () &#x3D;&gt; Promise&lt;T&gt; {
-    const execIntervalTask &#x3D; () &#x3D;&gt; {
-      this.execPromise(options)
-        .then(() &#x3D;&gt; {
-          setTimeout(execIntervalTask, options.interval)
-        })
-        .catch((error) &#x3D;&gt; {
-          setTimeout(execIntervalTask, options.retry)
-          logger.failure(&#x60;interval task failed! retry after ${options.retry / 1000}s,&#x60;, &#x27;|&#x27;, error)
-        })
+    const postData: WebhookData &#x3D; {
+      event,
+      timestamp: Date.now(),
+      data: payload
     }
 
-    execIntervalTask()
-    return () &#x3D;&gt; this.get(options.key)
-  }
+    logger.log(&#x60;Dispatching event: ${event}...&#x60;)
 
-  /**
-   * @function schedule
-   * @description Using schedule to control cache updates, you can also control the retry time after a failed data fetch.
-   * @example CacheService.schedule({ ... }) -&gt; () &#x3D;&gt; promise()
-   */
-  public schedule&lt;T&gt;(options: CacheScheduleOptions&lt;T&gt;): () &#x3D;&gt; Promise&lt;T&gt; {
-    const execScheduleTask &#x3D; () &#x3D;&gt; {
-      this.execPromise(options).catch((error) &#x3D;&gt; {
-        logger.failure(&#x60;schedule task failed! retry after ${options.retry / 1000}s,&#x60;, &#x27;|&#x27;, error)
-        setTimeout(execScheduleTask, options.retry)
+    lastValueFrom(
+      this.httpService.post(WEBHOOK.url, postData, {
+        timeout: 15000,
+        headers: {
+          &#x27;X-Webhook-Token&#x27;: WEBHOOK.token || &#x27;&#x27;,
+          &#x27;User-Agent&#x27;: &#x60;${APP_BIZ.NAME}-Webhook-Service&#x60;
+        }
       })
-    }
-
-    execScheduleTask()
-    schedule.scheduleJob(options.schedule, execScheduleTask)
-    return () &#x3D;&gt; this.get(options.key)
+    )
+      .then(() &#x3D;&gt; {
+        logger.success(&#x60;Event ${event} dispatched successfully.&#x60;)
+      })
+      .catch((error) &#x3D;&gt; {
+        logger.failure(&#x60;Event ${event} dispatch failed!&#x60;, getMessageFromAxiosError(error))
+      })
   }
 }
 </code></pre>
@@ -429,7 +379,7 @@ export class CacheService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'CacheScheduleOptions.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'WebhookData.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
