@@ -5,20 +5,21 @@
  */
 
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common'
+import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { Comment, CommentBase } from '@app/modules/comment/comment.model'
-import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { CommentStatus } from '@app/modules/comment/comment.constant'
+import { CommentDisqusExtraKeys } from '@app/constants/extra.constant'
 import { getDisqusCacheKey } from '@app/constants/cache.constant'
 import { CacheService } from '@app/core/cache/cache.service'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
-import { getExtraObject, getExtraValue } from '@app/transformers/extra.transformer'
+import { getExtrasMap, getExtraValue } from '@app/transformers/extra.transformer'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { DisqusPrivateService } from './disqus.service.private'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
-import * as DISQUS_CONST from './disqus.constant'
+import { DISQUS_OAUTH_CALLBACK_URL } from './disqus.helper'
 
 const logger = createLogger({ scope: 'DisqusPublicService', time: isDevEnv })
 
@@ -54,11 +55,11 @@ export class DisqusPublicService {
   }
 
   public getAuthorizeURL() {
-    return this.disqus.getAuthorizeURL('code', 'read,write', DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL)
+    return this.disqus.getAuthorizeURL('code', 'read,write', DISQUS_OAUTH_CALLBACK_URL)
   }
 
   public async getAccessToken(code: string) {
-    return this.disqus.getOAuthAccessToken(code, DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL).catch((error) => {
+    return this.disqus.getOAuthAccessToken(code, DISQUS_OAUTH_CALLBACK_URL).catch((error) => {
       logger.warn('getAccessToken failed!', error)
       return Promise.reject(error)
     })
@@ -119,7 +120,7 @@ export class DisqusPublicService {
   public async getDisqusPostIdByCommentId(commentId: number): Promise<string | null> {
     try {
       const comment = await this.commentService.getDetailByNumberId(commentId)
-      return getExtraValue(comment.extras, DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY) || null
+      return getExtraValue(comment.extras, CommentDisqusExtraKeys.PostId) || null
     } catch (error) {
       return null
     }
@@ -191,17 +192,17 @@ export class DisqusPublicService {
     newComment.author.name = disqusPost.author.name || newComment.author.name
     newComment.author.site = disqusPost.author.url || newComment.author.site
     newComment.extras.push(
-      { key: DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY, value: disqusPost.id },
-      { key: DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY, value: disqusPost.thread }
+      { key: CommentDisqusExtraKeys.PostId, value: disqusPost.id },
+      { key: CommentDisqusExtraKeys.ThreadId, value: disqusPost.thread }
     )
     if (disqusPost.author.isAnonymous || !accessToken) {
       // guest comment
-      newComment.extras.push({ key: DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY, value: 'true' })
+      newComment.extras.push({ key: CommentDisqusExtraKeys.Anonymous, value: 'true' })
     } else {
       // disqus user comment
       newComment.extras.push(
-        { key: DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY, value: disqusPost.author.id },
-        { key: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY, value: disqusPost.author.username }
+        { key: CommentDisqusExtraKeys.AuthorId, value: disqusPost.author.id },
+        { key: CommentDisqusExtraKeys.AuthorUsername, value: disqusPost.author.username }
       )
     }
 
@@ -224,9 +225,9 @@ export class DisqusPublicService {
     if (!comment) throw new NotFoundException(`Comment '${commentId}' not found`)
 
     // disqus extend info
-    const extrasObject = getExtraObject(comment.extras)
-    const commentDisqusPostId = extrasObject[DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY]
-    const commentDisqusAuthorId = extrasObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY]
+    const extrasMap = getExtrasMap(comment.extras)
+    const commentDisqusPostId = extrasMap.get(CommentDisqusExtraKeys.PostId)
+    const commentDisqusAuthorId = extrasMap.get(CommentDisqusExtraKeys.AuthorId)
     if (!commentDisqusAuthorId || !commentDisqusPostId) {
       throw new BadRequestException(`Comment '${commentId}' cannot be deleted (missing Disqus metadata)`)
     }

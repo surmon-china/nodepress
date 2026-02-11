@@ -7,10 +7,12 @@
 import type { QueryFilter, MongooseBaseQueryOptions } from 'mongoose'
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ForbiddenException, BadRequestException, NotFoundException } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
+import { EventKeys } from '@app/constants/events.constant'
 import { ArticleService } from '@app/modules/article/article.service'
 import { IPService } from '@app/core/helper/helper.service.ip'
 import { EmailService } from '@app/core/helper/helper.service.email'
@@ -32,6 +34,7 @@ export class CommentService {
   constructor(
     private readonly ipService: IPService,
     private readonly emailService: EmailService,
+    private readonly eventEmitter: EventEmitter2,
     private readonly akismetService: AkismetService,
     private readonly optionsService: OptionsService,
     private readonly articleService: ArticleService,
@@ -204,6 +207,7 @@ export class CommentService {
     // update aggregate & email notification
     this.updateCommentsCountWithArticles([succeededComment.post_id])
     this.emailToAdminAndTargetAuthor(succeededComment)
+    this.eventEmitter.emit(EventKeys.CommentCreated, succeededComment)
     return succeededComment
   }
 

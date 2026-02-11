@@ -8,20 +8,21 @@ import dayjs from 'dayjs'
 import { XMLParser } from 'fast-xml-parser'
 import { Injectable, BadRequestException } from '@nestjs/common'
 import { ArticleService } from '@app/modules/article/article.service'
+import { Article } from '@app/modules/article/article.model'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { CommentStatus } from '@app/modules/comment/comment.constant'
 import { Comment } from '@app/modules/comment/comment.model'
-import { Article } from '@app/modules/article/article.model'
+import { CommentDisqusExtraKeys } from '@app/constants/extra.constant'
 import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
-import { getExtraObject } from '@app/transformers/extra.transformer'
+import { ensureExtra } from '@app/transformers/extra.transformer'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { DISQUS } from '@app/app.config'
 import { Disqus } from '@app/utils/disqus'
 import { isDevEnv } from '@app/app.environment'
 import { createLogger } from '@app/utils/logger'
 import { GeneralDisqusParams } from './disqus.dto'
+import { getThreadIdentifierById } from './disqus.helper'
 import { getDisqusXML } from './disqus.xml'
-import * as DISQUS_CONST from './disqus.constant'
 
 const logger = createLogger({ scope: 'DisqusPrivateService', time: isDevEnv })
 
@@ -49,10 +50,10 @@ export class DisqusPrivateService {
       // https://disqus.com/api/docs/threads/create/
       const response = await this.disqus.request('threads/create', {
         forum: DISQUS.forum,
-        identifier: DISQUS_CONST.getThreadIdentifierById(postId),
+        identifier: getThreadIdentifierById(postId),
         title: article.title,
         message: article.summary,
-        slug: article.slug || DISQUS_CONST.getThreadIdentifierById(postId),
+        slug: article.slug || getThreadIdentifierById(postId),
         date: dayjs(article.created_at).unix(),
         url: getPermalinkById(postId),
         access_token: DISQUS.adminAccessToken
@@ -205,25 +206,19 @@ export class DisqusPrivateService {
       }
 
       const _extras = comment.extras || []
-      const extrasObject = getExtraObject(_extras)
+
       // post ID
-      if (!extrasObject[DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY]) {
-        _extras.push({ key: DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY, value: each.postId })
-      }
+      ensureExtra(_extras, CommentDisqusExtraKeys.PostId, each.postId)
       // thread ID
-      if (!extrasObject[DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY]) {
-        _extras.push({ key: DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY, value: each.threadId })
-      }
-      // guest(anonymous) | disqus user
+      ensureExtra(_extras, CommentDisqusExtraKeys.ThreadId, each.threadId)
       if (each.isAnonymous) {
-        if (!extrasObject[DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY]) {
-          _extras.push({ key: DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY, value: 'true' })
-        }
+        // Guest (anonymous)
+        ensureExtra(_extras, CommentDisqusExtraKeys.Anonymous, 'true')
       } else if (each.username) {
-        if (!extrasObject[DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY]) {
-          _extras.push({ key: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY, value: each.username })
-        }
+        // Disqus user
+        ensureExtra(_extras, CommentDisqusExtraKeys.AuthorUsername, each.username)
       }
+
       comment.extras = _extras
       return await comment.save()
     }

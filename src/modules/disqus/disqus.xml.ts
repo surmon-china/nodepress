@@ -10,7 +10,7 @@ import { Comment } from '@app/modules/comment/comment.model'
 import { CommentStatus } from '@app/modules/comment/comment.constant'
 import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
-import { getThreadIdentifierById } from './disqus.constant'
+import { getThreadIdentifierById } from './disqus.helper'
 import { ThreadStatus } from './disqus.dto'
 import { APP_BIZ } from '@app/app.config'
 
