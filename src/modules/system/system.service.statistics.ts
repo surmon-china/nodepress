@@ -84,6 +84,8 @@ export class StatisticsService {
           `Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}`
         ])
       })
+    } catch (error) {
+      logger.failure('DailyStatisticsJob failed!', error)
     } finally {
       this.counterService.resetGlobalCount(CacheKeys.TodayViewCount).catch((error) => {
         logger.warn('reset TODAY_VIEWS failed!', error)

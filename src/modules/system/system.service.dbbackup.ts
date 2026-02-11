@@ -28,6 +28,39 @@ export class DBBackupService {
     private readonly s3Service: S3Service
   ) {}
 
+  // Auto-backup database and notify admin via email at 03:00.
+  @Cron('0 0 3 * * *', { name: 'DailyDatabaseBackupJob' })
+  dailyDatabseBackup() {
+    this.backup().catch((error) => {
+      logger.failure('DailyDatabaseBackupJob failed!', error)
+    })
+  }
+
+  public async backup() {
+    try {
+      const result = await this.doBackup()
+      const json = {
+        ...result,
+        lastModified: result.lastModified?.toLocaleString('zh'),
+        size: (result.size / 1024).toFixed(2) + 'kb'
+      }
+      this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true)
+      return result
+    } catch (error: unknown) {
+      this.mailToAdmin('Database backup failed!', String(error))
+      throw new InternalServerErrorException(String(error))
+    }
+  }
+
+  private mailToAdmin(subject: string, content: string, isCode?: boolean) {
+    this.emailService.sendMailAs(APP_BIZ.NAME, {
+      to: APP_BIZ.ADMIN_EMAIL,
+      subject,
+      text: `${subject}, detail: ${content}`,
+      html: `${subject} <br> ${isCode ? `<pre>${content}</pre>` : content}`
+    })
+  }
+
   private async doBackup(): Promise<S3FileObject> {
     // 1. dependency pre-check
     const dependencies = ['mongodump', 'zip']
@@ -86,32 +119,5 @@ export class DBBackupService {
         logger.failure('upload failed!', errorMessage)
         throw errorMessage
       })
-  }
-
-  private mailToAdmin(subject: string, content: string, isCode?: boolean) {
-    this.emailService.sendMailAs(APP_BIZ.NAME, {
-      to: APP_BIZ.ADMIN_EMAIL,
-      subject,
-      text: `${subject}, detail: ${content}`,
-      html: `${subject} <br> ${isCode ? `<pre>${content}</pre>` : content}`
-    })
-  }
-
-  // Auto-backup database and notify admin via email at 03:00.
-  @Cron('0 0 3 * * *', { name: 'DailyDatabaseBackupJob' })
-  public async backup() {
-    try {
-      const result = await this.doBackup()
-      const json = {
-        ...result,
-        lastModified: result.lastModified?.toLocaleString('zh'),
-        size: (result.size / 1024).toFixed(2) + 'kb'
-      }
-      this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true)
-      return result
-    } catch (error: unknown) {
-      this.mailToAdmin('Database backup failed!', String(error))
-      throw new InternalServerErrorException(String(error))
-    }
   }
 }
