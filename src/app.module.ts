@@ -36,6 +36,7 @@ import { AdminModule } from '@app/modules/admin/admin.module'
 import { DisqusModule } from '@app/modules/disqus/disqus.module'
 import { SystemModule } from '@app/modules/system/system.module'
 import { WebhookModule } from '@app/modules/webhook/webhook.module'
+import { AiModule } from '@app/modules/ai/ai.module'
 
 @Module({
   imports: [
@@ -76,7 +77,8 @@ import { WebhookModule } from '@app/modules/webhook/webhook.module'
     ArchiveModule,
     VoteModule,
     SystemModule,
-    WebhookModule
+    WebhookModule,
+    AiModule
   ],
   controllers: [AppController],
   providers: [

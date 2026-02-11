@@ -81,7 +81,11 @@ export class CommentBase {
   @IsString()
   @IsOptional()
   @prop({ type: String })
-  agent: string
+  agent?: string
+}
+
+export interface CommentBaseWithExtras extends CommentBase {
+  extras?: KeyValueModel[]
 }
 
 @plugin(mongoosePaginate)

@@ -7,9 +7,9 @@
 import { Injectable, NotFoundException, ForbiddenException, BadRequestException } from '@nestjs/common'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { CommentService } from '@app/modules/comment/comment.service'
-import { Comment, CommentBase } from '@app/modules/comment/comment.model'
+import { Comment, CommentBaseWithExtras } from '@app/modules/comment/comment.model'
 import { CommentStatus } from '@app/modules/comment/comment.constant'
-import { CommentDisqusExtraKeys } from '@app/constants/extra.constant'
+import { CommentDisqusExtraKeys } from '@app/constants/extras.constant'
 import { getDisqusCacheKey } from '@app/constants/cache.constant'
 import { CacheService } from '@app/core/cache/cache.service'
 import { DISQUS } from '@app/app.config'
@@ -161,14 +161,16 @@ export class DisqusPublicService {
     )
   }
 
-  public async createUniversalComment(comment: CommentBase, visitor: QueryVisitor, accessToken?: string) {
+  public async createUniversalComment(comment: CommentBaseWithExtras, visitor: QueryVisitor, accessToken?: string) {
     const newComment = this.commentService.normalizeNewComment(comment, visitor)
-    // 1. commentable
-    await this.commentService.verifyTargetCommentable(newComment.post_id)
-    // 2. make sure disqus thread
+    await Promise.all([
+      // 1. commentable
+      this.commentService.verifyTargetCommentable(newComment.post_id),
+      // 2. nodepress blocklist
+      this.commentService.verifyCommentValidity(newComment)
+    ])
+    // 3. make sure disqus thread
     const thread = await this.ensureThreadDetailCache(newComment.post_id)
-    // 3. nodepress blocklist
-    await this.commentService.verifyCommentValidity(newComment)
     // 4. disqus parent comment post ID
     let parentId: string | null = null
     if (newComment.pid) {

@@ -22,12 +22,11 @@ export enum ArticleAiReviewExtraKeys {
   Link = 'ai-review-link'
 }
 
-// Comment AI Generate
-export enum CommentAiGenerateExtraKeys {
+// Comment AI Generation
+export enum CommentAiGenerationExtraKeys {
   Flag = 'ai-generated',
   Model = 'ai-model',
-  Provider = 'ai-provider',
-  Timestamp = 'ai-timestamp'
+  Provider = 'ai-provider'
 }
 
 // Comment Disqus (Third-party)
