@@ -130,10 +130,19 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
+                            <a href="#AiModelIds" title="src/modules/ai/ai.config.ts" ><b>AiModelIds</b>&nbsp;&nbsp;&nbsp;(src/.../ai.config.ts)</a>
+                        </li>
+                        <li>
                             <a href="#AkismetAction" title="src/core/helper/helper.service.akismet.ts" ><b>AkismetAction</b>&nbsp;&nbsp;&nbsp;(src/.../helper.service.akismet.ts)</a>
                         </li>
                         <li>
                             <a href="#AnnouncementStatus" title="src/modules/announcement/announcement.constant.ts" ><b>AnnouncementStatus</b>&nbsp;&nbsp;&nbsp;(src/.../announcement.constant.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ArticleAiReviewExtraKeys" title="src/constants/extras.constant.ts" ><b>ArticleAiReviewExtraKeys</b>&nbsp;&nbsp;&nbsp;(src/.../extras.constant.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ArticleAiSummaryExtraKeys" title="src/constants/extras.constant.ts" ><b>ArticleAiSummaryExtraKeys</b>&nbsp;&nbsp;&nbsp;(src/.../extras.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#ArticleLanguage" title="src/modules/article/article.constant.ts" ><b>ArticleLanguage</b>&nbsp;&nbsp;&nbsp;(src/.../article.constant.ts)</a>
@@ -149,6 +158,12 @@
                         </li>
                         <li>
                             <a href="#CacheKeys" title="src/constants/cache.constant.ts" ><b>CacheKeys</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CommentAiGenerationExtraKeys" title="src/constants/extras.constant.ts" ><b>CommentAiGenerationExtraKeys</b>&nbsp;&nbsp;&nbsp;(src/.../extras.constant.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CommentDisqusExtraKeys" title="src/constants/extras.constant.ts" ><b>CommentDisqusExtraKeys</b>&nbsp;&nbsp;&nbsp;(src/.../extras.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#CommentStatus" title="src/modules/comment/comment.constant.ts" ><b>CommentStatus</b>&nbsp;&nbsp;&nbsp;(src/.../comment.constant.ts)</a>
@@ -190,6 +205,49 @@
     </table>
 </section>
 
+    <h3>src/modules/ai/ai.config.ts</h3>
+    <section data-compodoc="block-enums">
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="AiModelIds"></a>
+                        <span class="name "><b>AiModelIds</b><a href="#AiModelIds"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;GPT5Mini
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>openai/gpt-5-mini</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Gemini25Flash
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>google-ai-studio/gemini-2.5-flash</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;DeepSeekChat
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>deepseek/deepseek-chat</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
     <h3>src/core/helper/helper.service.akismet.ts</h3>
     <section data-compodoc="block-enums">
         <table class="table table-sm table-bordered">
@@ -256,6 +314,219 @@
                         <tr>
                             <td class="col-md-4">
                                 <i>Value : </i><code>1</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <h3>src/constants/extras.constant.ts</h3>
+    <section data-compodoc="block-enums">
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ArticleAiReviewExtraKeys"></a>
+                        <span class="name "><b>ArticleAiReviewExtraKeys</b><a href="#ArticleAiReviewExtraKeys"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Content
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-review-content</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Model
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-review-model</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Provider
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-review-provider</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Timestamp
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-review-timestamp</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Link
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-review-link</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ArticleAiSummaryExtraKeys"></a>
+                        <span class="name "><b>ArticleAiSummaryExtraKeys</b><a href="#ArticleAiSummaryExtraKeys"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Content
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-summary-content</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Model
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-summary-model</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Provider
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-summary-provider</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Timestamp
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-summary-timestamp</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="CommentAiGenerationExtraKeys"></a>
+                        <span class="name "><b>CommentAiGenerationExtraKeys</b><a href="#CommentAiGenerationExtraKeys"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Flag
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-generated</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Model
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-model</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Provider
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>ai-provider</code>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="CommentDisqusExtraKeys"></a>
+                        <span class="name "><b>CommentDisqusExtraKeys</b><a href="#CommentDisqusExtraKeys"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;PostId
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>disqus-post-id</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;ThreadId
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>disqus-thread-id</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;AuthorId
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>disqus-author-id</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;AuthorUsername
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>disqus-author-username</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;Anonymous
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>disqus-anonymous</code>
                             </td>
                         </tr>
             </tbody>
@@ -576,6 +847,26 @@
                         <tr>
                             <td class="col-md-4">
                                 <i>Value : </i><code>feedback.created</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;CommentCreated
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>comment.created</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                &nbsp;CommentCreateFailed
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <i>Value : </i><code>comment.create_failed</code>
                             </td>
                         </tr>
                         <tr>

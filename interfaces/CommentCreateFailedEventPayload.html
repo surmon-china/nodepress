@@ -116,7 +116,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  XMLItemData</li>
+  CommentCreateFailedEventPayload</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -140,7 +140,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/disqus/disqus.xml.ts</code>
+            <code>src/modules/comment/comment.listener.ts</code>
         </p>
 
 
@@ -159,15 +159,21 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#article" 
+                                        <a href="#comment" 
 >
-                                            article
+                                            comment
                                         </a>
                                 </li>
                                 <li>
-                                        <a href="#comments" 
+                                        <a href="#error" 
 >
-                                            comments
+                                            error
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#visitor" 
+>
+                                            visitor
                                         </a>
                                 </li>
                             </ul>
@@ -185,9 +191,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="article"></a>
-                                        <span class="name "><b>article</b>
-                                            <a href="#article">
+                                        <a name="comment"></a>
+                                        <span class="name "><b>comment</b>
+                                            <a href="#comment">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -195,7 +201,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>article:         <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                        <code>comment:         <code><a href="../classes/CommentBase.html" target="_self" >CommentBase</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -203,7 +209,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                            <i>Type : </i>        <code><a href="../classes/CommentBase.html" target="_self" >CommentBase</a></code>
 
                                         </td>
                                     </tr>
@@ -218,9 +224,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="comments"></a>
-                                        <span class="name "><b>comments</b>
-                                            <a href="#comments">
+                                        <a name="error"></a>
+                                        <span class="name "><b>error</b>
+                                            <a href="#error">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -228,7 +234,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>comments:         <code><a href="../classes/Comment.html" target="_self" >Array&lt;Comment&gt;</a></code>
+                                        <code>error:         <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -236,7 +242,40 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/Comment.html" target="_self" >Array&lt;Comment&gt;</a></code>
+                                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="visitor"></a>
+                                        <span class="name "><b>visitor</b>
+                                            <a href="#visitor">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>visitor:         <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
 
                                         </td>
                                     </tr>
@@ -252,76 +291,55 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import dayjs from &#x27;dayjs&#x27;
-import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
-import { CommentStatus } from &#x27;@app/modules/comment/comment.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
+import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
+import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
 import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
-import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { getThreadIdentifierById } from &#x27;./disqus.helper&#x27;
-import { ThreadStatus } from &#x27;./disqus.dto&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { CommentBase } from &#x27;@app/modules/comment/comment.model&#x27;
+import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
+import { getLocationText, getUserAgentText, linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
-// DOC: https://help.disqus.com/en/articles/1717222-custom-xml-import-format
-
-const getCommentItemXML &#x3D; (comment: Comment) &#x3D;&gt; {
-  return &#x60;
-    &lt;wp:comment&gt;
-      &lt;wp:comment_id&gt;${comment.id}&lt;/wp:comment_id&gt;
-      &lt;wp:comment_parent&gt;${comment.pid || &#x27;&#x27;}&lt;/wp:comment_parent&gt;
-      &lt;wp:comment_author&gt;${comment.author.name || &#x27;&#x27;}&lt;/wp:comment_author&gt;
-      &lt;wp:comment_author_email&gt;${comment.author.email || &#x27;&#x27;}&lt;/wp:comment_author_email&gt;
-      &lt;wp:comment_author_url&gt;${comment.author.site || &#x27;&#x27;}&lt;/wp:comment_author_url&gt;
-      &lt;wp:comment_author_IP&gt;${comment.ip || &#x27;&#x27;}&lt;/wp:comment_author_IP&gt;
-      &lt;wp:comment_date_gmt&gt;${dayjs(comment.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:comment_date_gmt&gt;
-      &lt;wp:comment_content&gt;&lt;![CDATA[${comment.content || &#x27;&#x27;}]]&gt;&lt;/wp:comment_content&gt;
-      &lt;wp:comment_approved&gt;${comment.status &#x3D;&#x3D;&#x3D; CommentStatus.Published ? 1 : 0}&lt;/wp:comment_approved&gt;
-    &lt;/wp:comment&gt;
-  &#x60;
+interface CommentCreateFailedEventPayload {
+  visitor: QueryVisitor
+  comment: CommentBase
+  error: any
 }
 
-export interface XMLItemData {
-  article: Article
-  comments: Array&lt;Comment&gt;
-}
+@Injectable()
+export class CommentListener {
+  constructor(
+    private readonly emailService: EmailService,
+    private readonly ipService: IPService
+  ) {}
 
-export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comment&gt;) &#x3D;&gt; {
-  return &#x60;&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
-    &lt;rss version&#x3D;&quot;2.0&quot;
-      xmlns:content&#x3D;&quot;http://purl.org/rss/1.0/modules/content/&quot;
-      xmlns:dsq&#x3D;&quot;http://www.disqus.com/&quot;
-      xmlns:dc&#x3D;&quot;http://purl.org/dc/elements/1.1/&quot;
-      xmlns:wp&#x3D;&quot;http://wordpress.org/export/1.0/&quot;
-    &gt;
-      &lt;channel&gt;
-        &lt;item&gt;
-          &lt;title&gt;Guestbook&lt;/title&gt;
-          &lt;link&gt;${getPermalinkById(GUESTBOOK_POST_ID)}&lt;/link&gt;
-          &lt;content:encoded&gt;&lt;![CDATA[${APP_BIZ.FE_NAME}]]&gt;&lt;/content:encoded&gt;
-          &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(GUESTBOOK_POST_ID)}&lt;/dsq:thread_identifier&gt;
-          &lt;wp:post_date_gmt&gt;2017-01-01 00:00:00&lt;/wp:post_date_gmt&gt;
-          &lt;wp:comment_status&gt;open&lt;/wp:comment_status&gt;
-          ${guestbook.map(getCommentItemXML).join(&#x27;\n&#x27;)}
-        &lt;/item&gt;
-        ${data
-          .map(
-            (item) &#x3D;&gt; &#x60;
-            &lt;item&gt;
-              &lt;title&gt;${item.article.title}&lt;/title&gt;
-              &lt;link&gt;${getPermalinkById(item.article.id)}&lt;/link&gt;
-              &lt;content:encoded&gt;&lt;![CDATA[${item.article.summary || &#x27;&#x27;}]]&gt;&lt;/content:encoded&gt;
-              &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(item.article.id)}&lt;/dsq:thread_identifier&gt;
-              &lt;wp:post_date_gmt&gt;${dayjs(item.article.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:post_date_gmt&gt;
-              &lt;wp:comment_status&gt;${
-                item.article.disabled_comments ? ThreadStatus.Closed : ThreadStatus.Open
-              }&lt;/wp:comment_status&gt;
-              ${item.comments.map(getCommentItemXML).join(&#x27;\n&#x27;)}
-            &lt;/item&gt;
-          &#x60;
-          )
-          .join(&#x27;\n&#x27;)}
-      &lt;/channel&gt;
-    &lt;/rss&gt;&#x60;
+  @OnEvent(EventKeys.CommentCreateFailed, { async: true })
+  async handleCommentCreateFailed({ comment, visitor, error }: CommentCreateFailedEventPayload) {
+    const subject &#x3D; &#x27;User comment creation failed&#x27;
+    const userAgent &#x3D; visitor.ua ?? comment.agent
+    const location &#x3D; visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
+    const targetPage &#x3D; comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID ? &#x27;Guestbook&#x27; : &#x60;Article ${comment.post_id}&#x60;
+
+    this.emailService.sendMailAs(APP_BIZ.NAME, {
+      to: APP_BIZ.ADMIN_EMAIL,
+      subject,
+      ...linesToEmailContent([
+        &#x60;${subject}!&#x60;,
+        &#x60;CommentPid: ${comment.pid}&#x60;,
+        &#x60;CommentPostId: ${targetPage}&#x60;,
+        &#x60;CommentContent: ${comment.content || &#x27;-&#x27;}&#x60;,
+        &#x60;CommentAuthor: ${comment.author.name || &#x27;-&#x27;} · ${comment.author.email || &#x27;-&#x27;} · ${comment.author.site || &#x27;-&#x27;}&#x60;,
+        &#x60;ErrorDetail: ${getMessageFromNormalError(error)}&#x60;,
+        &#x60;AuthorAgent: ${userAgent ? getUserAgentText(userAgent) : &#x27;unknown&#x27;}&#x60;,
+        &#x60;Referer: ${visitor.referer || &#x27;unknown&#x27;}&#x60;,
+        &#x60;IP: ${visitor.ip || &#x27;unknown&#x27;}&#x60;,
+        &#x60;Location: ${location ? getLocationText(location) : &#x27;unknown&#x27;}&#x60;
+      ])
+    })
+  }
 }
 </code></pre>
     </div>
@@ -360,7 +378,7 @@ export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comme
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'XMLItemData.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'CommentCreateFailedEventPayload.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

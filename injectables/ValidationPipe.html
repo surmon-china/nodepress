@@ -261,9 +261,9 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { plainToInstance } from &#x27;class-transformer&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { validate } from &#x27;class-validator&#x27;
+import { plainToInstance } from &#x27;class-transformer&#x27;
 import type { ValidationError } from &#x27;class-validator&#x27;
-import { validate } from &#x27;class-validator&#x27;
 import type { PipeTransform, ArgumentMetadata } from &#x27;@nestjs/common&#x27;
 import { Injectable, BadRequestException } from &#x27;@nestjs/common&#x27;
 
@@ -304,7 +304,7 @@ export class ValidationPipe implements PipeTransform&lt;any&gt; {
       return value
     }
 
-    const object &#x3D; plainToInstance(metatype, value)
+    const object &#x3D; plainToInstance(metatype, value ?? {})
     const errors &#x3D; await validate(object)
     if (errors.length &gt; 0) {
       throw new BadRequestException(&#x60;Validation failed: ${collectMessages(errors).join(&#x27;; &#x27;)}&#x60;)

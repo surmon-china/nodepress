@@ -93,7 +93,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content injectable">
+               <div class="content class">
                    <div class="content-data">
 
 
@@ -107,9 +107,13 @@
 
 
 
+
+
+
+
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >WebhookService</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >AiGenerateResult</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,8 +137,9 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/webhook/webhook.service.ts</code>
+            <code>src/modules/ai/ai.interface.ts</code>
         </p>
+
 
 
 
@@ -144,18 +149,22 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-
                 <tr>
                     <td class="col-md-4">
-                        <h6><b>Methods</b></h6>
+                        <h6><b>Properties</b></h6>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#dispatch" >dispatch</a>
+                                <a href="#content" >content</a>
+                            </li>
+                            <li>
+                                <a href="#model" >model</a>
+                            </li>
+                            <li>
+                                <a href="#provider" >provider</a>
                             </li>
                         </ul>
                     </td>
@@ -165,208 +174,115 @@
 
 
 
+
         </tbody>
     </table>
 </section>
 
-            <section data-compodoc="block-constructor">
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(httpService: HttpService)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/webhook/webhook.service.ts:26</a></div>
-                            </td>
-                        </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>httpService</td>
-                                                  
-                                                        <td>
-                                                                    <code>HttpService</code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
-
-            <section data-compodoc="block-methods">
+            <section data-compodoc="block-properties">
     
-    <h3 id="methods">
-        Methods
+    <h3 id="inputs">
+        Properties
     </h3>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="dispatch"></a>
+                    <a name="content"></a>
                     <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>dispatch</b></span>
-                        <a href="#dispatch"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>content</b></span>
+                        <a href="#content"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>dispatch(event: <a href="../miscellaneous/enumerations.html#EventKeys" target="_self">EventKeys</a>, payload: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                </td>
-            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
-
+                    </td>
+                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/webhook/webhook.service.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/modules/ai/ai.interface.ts:8</a></div>
                         </td>
                     </tr>
 
 
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
             <tr>
                 <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>event</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/enumerations.html#EventKeys" target="_self" >EventKeys</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
+                    <a name="model"></a>
+                    <span class="name">
+                        <span ><b>model</b></span>
+                        <a href="#model"><span class="icon ion-ios-link"></span></a>
+                    </span>
                 </td>
             </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/modules/ai/ai.interface.ts:10</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="provider"></a>
+                    <span class="name">
+                        <span ><b>provider</b></span>
+                        <a href="#provider"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/modules/ai/ai.interface.ts:9</a></div>
+                        </td>
+                    </tr>
+
+
         </tbody>
     </table>
 </section>
+
+
+
+
+
+
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _omit from &#x27;lodash/omit&#x27;
-import _uniq from &#x27;lodash/uniq&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
-import { HttpService } from &#x27;@nestjs/axios&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transformer&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
-import { APP_BIZ, WEBHOOK } from &#x27;@app/app.config&#x27;
-
-const logger &#x3D; createLogger({ scope: &#x27;WebhookService&#x27;, time: isDevEnv })
-
-export interface WebhookPayload {
-  event: EventKeys
-  timestamp: number
-  data: any
-}
-
-@Injectable()
-export class WebhookService {
-  constructor(private readonly httpService: HttpService) {}
-
-  public dispatch(event: EventKeys, payload: any): void {
-    if (!WEBHOOK.endpoint) return
-
-    const postData: WebhookPayload &#x3D; {
-      event,
-      timestamp: Date.now(),
-      data: payload
-    }
-
-    logger.log(&#x60;Dispatching event: ${event}...&#x60;)
-
-    this.httpService.axiosRef
-      .post(WEBHOOK.endpoint, postData, {
-        timeout: 15000,
-        headers: {
-          &#x27;X-Webhook-Token&#x27;: WEBHOOK.token || &#x27;&#x27;,
-          &#x27;User-Agent&#x27;: &#x60;${APP_BIZ.NAME}-Webhook-Service&#x60;
-        }
-      })
-      .then((result) &#x3D;&gt; {
-        logger.success(&#x60;Event ${event} dispatched successfully.&#x60;, result.data)
-      })
-      .catch((error) &#x3D;&gt; {
-        logger.failure(&#x60;Event ${event} dispatch failed!&#x60;, getMessageFromAxiosError(error))
-      })
-  }
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export class AiGenerateResult {
+  content: string
+  provider: string
+  model: string
 }
 </code></pre>
     </div>
-
 </div>
-
-
-
-
 
 
 
@@ -401,8 +317,8 @@ export class WebhookService {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'WebhookService.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'AiGenerateResult.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

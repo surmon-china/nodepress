@@ -116,7 +116,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  WebhookData</li>
+  WebhookPayload</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -293,7 +293,6 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _omit from &#x27;lodash/omit&#x27;
 import _uniq from &#x27;lodash/uniq&#x27;
-import { lastValueFrom } from &#x27;rxjs&#x27;
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { HttpService } from &#x27;@nestjs/axios&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
@@ -304,7 +303,7 @@ import { APP_BIZ, WEBHOOK } from &#x27;@app/app.config&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;WebhookService&#x27;, time: isDevEnv })
 
-export interface WebhookData {
+export interface WebhookPayload {
   event: EventKeys
   timestamp: number
   data: any
@@ -315,9 +314,9 @@ export class WebhookService {
   constructor(private readonly httpService: HttpService) {}
 
   public dispatch(event: EventKeys, payload: any): void {
-    if (!WEBHOOK.url) return
+    if (!WEBHOOK.endpoint) return
 
-    const postData: WebhookData &#x3D; {
+    const postData: WebhookPayload &#x3D; {
       event,
       timestamp: Date.now(),
       data: payload
@@ -325,17 +324,16 @@ export class WebhookService {
 
     logger.log(&#x60;Dispatching event: ${event}...&#x60;)
 
-    lastValueFrom(
-      this.httpService.post(WEBHOOK.url, postData, {
+    this.httpService.axiosRef
+      .post(WEBHOOK.endpoint, postData, {
         timeout: 15000,
         headers: {
           &#x27;X-Webhook-Token&#x27;: WEBHOOK.token || &#x27;&#x27;,
           &#x27;User-Agent&#x27;: &#x60;${APP_BIZ.NAME}-Webhook-Service&#x60;
         }
       })
-    )
-      .then(() &#x3D;&gt; {
-        logger.success(&#x60;Event ${event} dispatched successfully.&#x60;)
+      .then((result) &#x3D;&gt; {
+        logger.success(&#x60;Event ${event} dispatched successfully.&#x60;, result.data)
       })
       .catch((error) &#x3D;&gt; {
         logger.failure(&#x60;Event ${event} dispatch failed!&#x60;, getMessageFromAxiosError(error))
@@ -379,7 +377,7 @@ export class WebhookService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'WebhookData.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'WebhookPayload.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >WebhookListener</li>
+  <li class="breadcrumb-item" >CommentListener</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/webhook/webhook.listener.ts</code>
+            <code>src/modules/comment/comment.listener.ts</code>
         </p>
 
 
@@ -155,19 +155,8 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
-                                <a href="#handleArticleCreated" >handleArticleCreated</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                <a href="#handleArticleDeleted" >handleArticleDeleted</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                <a href="#handleArticleUpdated" >handleArticleUpdated</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                <a href="#handleOptionsUpdated" >handleOptionsUpdated</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleCommentCreateFailed" >handleCommentCreateFailed</a>
                             </li>
                         </ul>
                     </td>
@@ -187,12 +176,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(webhookService: <a href="../injectables/WebhookService.html" target="_self">WebhookService</a>)</code>
+<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, ipService: <a href="../injectables/IPService.html" target="_self">IPService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/modules/webhook/webhook.listener.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/comment/comment.listener.ts:26</a></div>
                             </td>
                         </tr>
 
@@ -210,10 +199,22 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>webhookService</td>
+                                                        <td>emailService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/WebhookService.html" target="_self" >WebhookService</a></code>
+                                                                        <code><a href="../injectables/EmailService.html" target="_self" >EmailService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>ipService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/IPService.html" target="_self" >IPService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -239,18 +240,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleArticleCreated"></a>
+                    <a name="handleCommentCreateFailed"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                        <span ><b>handleArticleCreated</b></span>
-                        <a href="#handleArticleCreated"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleCommentCreateFailed</b></span>
+                        <a href="#handleCommentCreateFailed"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleCreated(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>handleCommentCreateFailed(: <a href="../interfaces/CommentCreateFailedEventPayload.html" target="_self">CommentCreateFailedEventPayload</a>)</code>
                 </td>
             </tr>
 
@@ -258,14 +260,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticleCreated, {async: true})<br /></code>
+                    <code>@OnEvent(EventKeys.CommentCreateFailed, {async: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:24</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/modules/comment/comment.listener.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -286,237 +288,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>payload</td>
                                             <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="handleArticleDeleted"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                        <span ><b>handleArticleDeleted</b></span>
-                        <a href="#handleArticleDeleted"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleDeleted(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@OnEvent(EventKeys.ArticleDeleted, {async: true})<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:34</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="handleArticleUpdated"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                        <span ><b>handleArticleUpdated</b></span>
-                        <a href="#handleArticleUpdated"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleUpdated(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@OnEvent(EventKeys.ArticleUpdated, {async: true})<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:29</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="handleOptionsUpdated"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                        <span ><b>handleOptionsUpdated</b></span>
-                        <a href="#handleOptionsUpdated"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleOptionsUpdated(payload: <a href="../classes/Option.html" target="_self">Option</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@OnEvent(EventKeys.OptionsUpdated, {async: true})<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="19"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:19</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                            <code><a href="../classes/Option.html" target="_self" >Option</a></code>
+                                                            <code><a href="../interfaces/CommentCreateFailedEventPayload.html" target="_self" >CommentCreateFailedEventPayload</a></code>
                                             </td>
 
                                             <td>
@@ -547,33 +320,52 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
+import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
+import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
+import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { Option } from &#x27;@app/modules/options/options.model&#x27;
-import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import { WebhookService } from &#x27;./webhook.service&#x27;
+import { CommentBase } from &#x27;@app/modules/comment/comment.model&#x27;
+import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
+import { getLocationText, getUserAgentText, linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
+
+interface CommentCreateFailedEventPayload {
+  visitor: QueryVisitor
+  comment: CommentBase
+  error: any
+}
 
 @Injectable()
-export class WebhookListener {
-  constructor(private readonly webhookService: WebhookService) {}
+export class CommentListener {
+  constructor(
+    private readonly emailService: EmailService,
+    private readonly ipService: IPService
+  ) {}
 
-  @OnEvent(EventKeys.OptionsUpdated, { async: true })
-  handleOptionsUpdated(payload: Option) {
-    return this.webhookService.dispatch(EventKeys.OptionsUpdated, payload)
-  }
+  @OnEvent(EventKeys.CommentCreateFailed, { async: true })
+  async handleCommentCreateFailed({ comment, visitor, error }: CommentCreateFailedEventPayload) {
+    const subject &#x3D; &#x27;User comment creation failed&#x27;
+    const userAgent &#x3D; visitor.ua ?? comment.agent
+    const location &#x3D; visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
+    const targetPage &#x3D; comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID ? &#x27;Guestbook&#x27; : &#x60;Article ${comment.post_id}&#x60;
 
-  @OnEvent(EventKeys.ArticleCreated, { async: true })
-  handleArticleCreated(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleCreated, payload)
-  }
-
-  @OnEvent(EventKeys.ArticleUpdated, { async: true })
-  handleArticleUpdated(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleUpdated, payload)
-  }
-
-  @OnEvent(EventKeys.ArticleDeleted, { async: true })
-  handleArticleDeleted(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleDeleted, payload)
+    this.emailService.sendMailAs(APP_BIZ.NAME, {
+      to: APP_BIZ.ADMIN_EMAIL,
+      subject,
+      ...linesToEmailContent([
+        &#x60;${subject}!&#x60;,
+        &#x60;CommentPid: ${comment.pid}&#x60;,
+        &#x60;CommentPostId: ${targetPage}&#x60;,
+        &#x60;CommentContent: ${comment.content || &#x27;-&#x27;}&#x60;,
+        &#x60;CommentAuthor: ${comment.author.name || &#x27;-&#x27;} · ${comment.author.email || &#x27;-&#x27;} · ${comment.author.site || &#x27;-&#x27;}&#x60;,
+        &#x60;ErrorDetail: ${getMessageFromNormalError(error)}&#x60;,
+        &#x60;AuthorAgent: ${userAgent ? getUserAgentText(userAgent) : &#x27;unknown&#x27;}&#x60;,
+        &#x60;Referer: ${visitor.referer || &#x27;unknown&#x27;}&#x60;,
+        &#x60;IP: ${visitor.ip || &#x27;unknown&#x27;}&#x60;,
+        &#x60;Location: ${location ? getLocationText(location) : &#x27;unknown&#x27;}&#x60;
+      ])
+    })
   }
 }
 </code></pre>
@@ -619,7 +411,7 @@ export class WebhookListener {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'WebhookListener.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'CommentListener.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

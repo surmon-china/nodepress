@@ -260,8 +260,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="96"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:96</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:101</a></div>
                         </td>
                     </tr>
 
@@ -349,8 +349,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="138"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:138</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="146"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:146</a></div>
                         </td>
                     </tr>
 
@@ -426,8 +426,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="110"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:110</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:118</a></div>
                         </td>
                     </tr>
 
@@ -504,8 +504,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="117"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:117</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:125</a></div>
                         </td>
                     </tr>
 
@@ -582,8 +582,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="30"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:30</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="35"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:35</a></div>
                         </td>
                     </tr>
 
@@ -671,8 +671,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="86"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:86</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:91</a></div>
                         </td>
                     </tr>
 
@@ -760,8 +760,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="103"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:103</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="111"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:111</a></div>
                         </td>
                     </tr>
 
@@ -849,8 +849,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="124"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:124</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="132"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:132</a></div>
                         </td>
                     </tr>
 
@@ -938,8 +938,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="131"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:131</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:139</a></div>
                         </td>
                     </tr>
 
@@ -999,9 +999,11 @@ import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
+import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
 import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { SortMode, SortOrder } from &#x27;@app/constants/biz.constant&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
@@ -1012,7 +1014,10 @@ import { Comment, CommentBase } from &#x27;./comment.model&#x27;
 
 @Controller(&#x27;comment&#x27;)
 export class CommentController {
-  constructor(private readonly commentService: CommentService) {}
+  constructor(
+    private readonly eventEmitter: EventEmitter2,
+    private readonly commentService: CommentService
+  ) {}
 
   @Get()
   @UseGuards(AdminOptionalGuard)
@@ -1084,7 +1089,10 @@ export class CommentController {
   @Throttle({ default: { ttl: seconds(30), limit: 6 } })
   @SuccessResponse(&#x27;Create comment succeeded&#x27;)
   createComment(@Body() comment: CommentBase, @RequestContext() { visitor }: IRequestContext): Promise&lt;Comment&gt; {
-    return this.commentService.createFormClient(comment, visitor)
+    return this.commentService.createFormClient(comment, visitor).catch((error) &#x3D;&gt; {
+      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { comment, visitor, error })
+      return Promise.reject(error)
+    })
   }
 
   @Patch()

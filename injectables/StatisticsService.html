@@ -322,8 +322,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/modules/system/system.service.statistics.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="96"
+                                    class="link-to-prism">src/modules/system/system.service.statistics.ts:96</a></div>
                         </td>
                     </tr>
 
@@ -502,6 +502,8 @@ export class StatisticsService {
           &#x60;Today new comment votes: +${todayCommentUpVotes}, -${todayCommentDownVotes}&#x60;
         ])
       })
+    } catch (error) {
+      logger.failure(&#x27;DailyStatisticsJob failed!&#x27;, error)
     } finally {
       this.counterService.resetGlobalCount(CacheKeys.TodayViewCount).catch((error) &#x3D;&gt; {
         logger.warn(&#x27;reset TODAY_VIEWS failed!&#x27;, error)

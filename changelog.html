@@ -100,6 +100,31 @@
 
 <h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3>6.3.0 (2026-02-12)</h3>
+<h4>Configuration Update</h4>
+<ul>
+<li>Added <code>CLOUDFLARE_AI_GATEWAY</code> for Cloudflare AI integration.</li>
+<li>Updated <code>AKISMET</code> configuration for enhanced spam protection.</li>
+</ul>
+<h4>Global / Architecture</h4>
+<ul>
+<li><strong>Critical Bug Fix</strong>: Resolved an issue where empty request bodies caused the <code>ValidationPipe</code> to crash with <code>Cannot read properties of undefined (reading &#39;constructor&#39;)</code>.</li>
+<li><strong>Logger Optimization</strong>: Enhanced global logging options to support system-level logs: <code>[&#39;fatal&#39;, &#39;error&#39;, &#39;warn&#39;]</code>.</li>
+<li><strong>Model Efficiency</strong>: Replaced <code>getExtraObject</code> with <code>getExtrasMap</code> across all models to optimize <code>extras</code> field processing performance.</li>
+<li><strong>Compiler Options</strong>: Optimized <code>tsconfig.json</code> configurations for better build performance and type safety.</li>
+</ul>
+<h4>AI Module</h4>
+<ul>
+<li><strong>New Feature</strong>: Introduced a comprehensive <code>AIModule</code> to power intelligent content operations.</li>
+<li><strong>Capabilities</strong>:</li>
+<li><code>generate-article-summary</code>: Generate concise summaries for articles.</li>
+<li><code>generate-article-review</code>: Generate high quality review for articles.</li>
+<li><code>generate-comment-reply</code>: Automatically generate repliy user comments.</li>
+</ul>
+<h4>Comment Module</h4>
+<ul>
+<li><strong>Spam Management</strong>: Updated the anti-spam logic to trigger an administrative email notification even when a comment is identified and blocked as spam.</li>
+</ul>
 <h3>6.2.0 (2026-02-10)</h3>
 <h4>System Architecture</h4>
 <ul>

@@ -93,7 +93,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content injectable">
+               <div class="content controller">
                    <div class="content-data">
 
 
@@ -104,12 +104,9 @@
 
 
 
-
-
-
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >WebhookListener</li>
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >AiController</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,8 +130,15 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/webhook/webhook.listener.ts</code>
+            <code>src/modules/ai/ai.controller.ts</code>
         </p>
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>ai</code>
+            </p>
+
 
 
 
@@ -155,19 +159,31 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
-                                <a href="#handleArticleCreated" >handleArticleCreated</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#generateArticleReview" >generateArticleReview</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                <a href="#handleArticleDeleted" >handleArticleDeleted</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#generateArticleSummary" >generateArticleSummary</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                <a href="#handleArticleUpdated" >handleArticleUpdated</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#generateCommentReply" >generateCommentReply</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                <a href="#handleOptionsUpdated" >handleOptionsUpdated</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#getAiConfig" >getAiConfig</a>
                             </li>
                         </ul>
                     </td>
@@ -181,55 +197,6 @@
     </table>
 </section>
 
-            <section data-compodoc="block-constructor">
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(webhookService: <a href="../injectables/WebhookService.html" target="_self">WebhookService</a>)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/modules/webhook/webhook.listener.ts:15</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>webhookService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/WebhookService.html" target="_self" >WebhookService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
-
             <section data-compodoc="block-methods">
     
     <h3 id="methods">
@@ -239,18 +206,21 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleArticleCreated"></a>
+                    <a name="generateArticleReview"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                        <span ><b>handleArticleCreated</b></span>
-                        <a href="#handleArticleCreated"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>generateArticleReview</b></span>
+                        <a href="#generateArticleReview"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleCreated(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>generateArticleReview(payload: <a href="../classes/GenerateAiArticleContentDTO.html" target="_self">GenerateAiArticleContentDTO</a>)</code>
                 </td>
             </tr>
 
@@ -258,14 +228,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticleCreated, {async: true})<br /></code>
+                    <code>@Post(&#x27;generate-article-review&#x27;)<br />@Throttle({default: undefined})<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Generate article review succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:24</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -288,7 +258,7 @@
                                         <tr>
                                                 <td>payload</td>
                                             <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                                            <code><a href="../classes/GenerateAiArticleContentDTO.html" target="_self" >GenerateAiArticleContentDTO</a></code>
                                             </td>
 
                                             <td>
@@ -315,18 +285,21 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleArticleDeleted"></a>
+                    <a name="generateArticleSummary"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                        <span ><b>handleArticleDeleted</b></span>
-                        <a href="#handleArticleDeleted"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>generateArticleSummary</b></span>
+                        <a href="#generateArticleSummary"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleDeleted(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>generateArticleSummary(payload: <a href="../classes/GenerateAiArticleContentDTO.html" target="_self">GenerateAiArticleContentDTO</a>)</code>
                 </td>
             </tr>
 
@@ -334,14 +307,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticleDeleted, {async: true})<br /></code>
+                    <code>@Post(&#x27;generate-article-summary&#x27;)<br />@Throttle({default: undefined})<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Generate article summary succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:34</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -364,7 +337,7 @@
                                         <tr>
                                                 <td>payload</td>
                                             <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                                            <code><a href="../classes/GenerateAiArticleContentDTO.html" target="_self" >GenerateAiArticleContentDTO</a></code>
                                             </td>
 
                                             <td>
@@ -391,18 +364,22 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleArticleUpdated"></a>
+                    <a name="generateCommentReply"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                        <span ><b>handleArticleUpdated</b></span>
-                        <a href="#handleArticleUpdated"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>generateCommentReply</b></span>
+                        <a href="#generateCommentReply"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleUpdated(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>generateCommentReply(payload: <a href="../classes/GenerateAiCommentReplyDTO.html" target="_self">GenerateAiCommentReplyDTO</a>)</code>
                 </td>
             </tr>
 
@@ -410,14 +387,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticleUpdated, {async: true})<br /></code>
+                    <code>@Post(&#x27;generate-comment-reply&#x27;)<br />@Throttle({default: undefined})<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Generate comment reply succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -440,7 +417,7 @@
                                         <tr>
                                                 <td>payload</td>
                                             <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                                            <code><a href="../classes/GenerateAiCommentReplyDTO.html" target="_self" >GenerateAiCommentReplyDTO</a></code>
                                             </td>
 
                                             <td>
@@ -453,7 +430,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -467,18 +444,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleOptionsUpdated"></a>
+                    <a name="getAiConfig"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                        <span ><b>handleOptionsUpdated</b></span>
-                        <a href="#handleOptionsUpdated"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>getAiConfig</b></span>
+                        <a href="#getAiConfig"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleOptionsUpdated(payload: <a href="../classes/Option.html" target="_self">Option</a>)</code>
+                    <code>getAiConfig()</code>
                 </td>
             </tr>
 
@@ -486,14 +465,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.OptionsUpdated, {async: true})<br /></code>
+                    <code>@Get(&#x27;config&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Get AI config succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="19"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:19</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="32"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:32</a></div>
                         </td>
                     </tr>
 
@@ -501,85 +480,92 @@
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                            <code><a href="../classes/Option.html" target="_self" >Option</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>    <code>{ models: any; prompts: any; extra_keys: { article_summary: any; article_review: any; comment_generation: any; }; }</code>
 
                         </div>
-                            <div class="io-description">
-                                
-                            </div>
                 </td>
             </tr>
         </tbody>
     </table>
-</section>
-
-    </div>
+</section>    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
-import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { Option } from &#x27;@app/modules/options/options.model&#x27;
-import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import { WebhookService } from &#x27;./webhook.service&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
+ * @file AI controller
+ * @module module/ai/controller
+ * @author Surmon &lt;https://github.com/surmon-china&gt;
+ */
 
-@Injectable()
-export class WebhookListener {
-  constructor(private readonly webhookService: WebhookService) {}
+import { Throttle, minutes } from &#x27;@nestjs/throttler&#x27;
+import { Controller, Get, Post, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
+import { GenerateAiArticleContentDTO, GenerateAiCommentReplyDTO } from &#x27;./ai.dto&#x27;
+import { AiModelsList, DEFAULT_AI_PROMPT_TEMPLATES } from &#x27;./ai.config&#x27;
+import { AiService } from &#x27;./ai.service&#x27;
 
-  @OnEvent(EventKeys.OptionsUpdated, { async: true })
-  handleOptionsUpdated(payload: Option) {
-    return this.webhookService.dispatch(EventKeys.OptionsUpdated, payload)
+import {
+  ArticleAiSummaryExtraKeys,
+  ArticleAiReviewExtraKeys,
+  CommentAiGenerationExtraKeys
+} from &#x27;@app/constants/extras.constant&#x27;
+
+@Controller(&#x27;ai&#x27;)
+export class AiController {
+  constructor(
+    private readonly aiService: AiService,
+    private readonly commentService: CommentService
+  ) {}
+
+  @Get(&#x27;config&#x27;)
+  @UseGuards(AdminOnlyGuard)
+  @SuccessResponse(&#x27;Get AI config succeeded&#x27;)
+  getAiConfig() {
+    return {
+      models: AiModelsList,
+      prompts: DEFAULT_AI_PROMPT_TEMPLATES,
+      extra_keys: {
+        article_summary: ArticleAiSummaryExtraKeys,
+        article_review: ArticleAiReviewExtraKeys,
+        comment_generation: CommentAiGenerationExtraKeys
+      }
+    }
   }
 
-  @OnEvent(EventKeys.ArticleCreated, { async: true })
-  handleArticleCreated(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleCreated, payload)
+  @Post(&#x27;generate-article-summary&#x27;)
+  @Throttle({ default: { ttl: minutes(10), limit: 50 } })
+  @UseGuards(AdminOnlyGuard)
+  @SuccessResponse(&#x27;Generate article summary succeeded&#x27;)
+  generateArticleSummary(@Body() payload: GenerateAiArticleContentDTO) {
+    return this.aiService.generateArticleSummary(payload)
   }
 
-  @OnEvent(EventKeys.ArticleUpdated, { async: true })
-  handleArticleUpdated(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleUpdated, payload)
+  @Post(&#x27;generate-article-review&#x27;)
+  @Throttle({ default: { ttl: minutes(10), limit: 50 } })
+  @UseGuards(AdminOnlyGuard)
+  @SuccessResponse(&#x27;Generate article review succeeded&#x27;)
+  generateArticleReview(@Body() payload: GenerateAiArticleContentDTO) {
+    return this.aiService.generateArticleReview(payload)
   }
 
-  @OnEvent(EventKeys.ArticleDeleted, { async: true })
-  handleArticleDeleted(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleDeleted, payload)
+  @Post(&#x27;generate-comment-reply&#x27;)
+  @Throttle({ default: { ttl: minutes(10), limit: 50 } })
+  @UseGuards(AdminOnlyGuard)
+  @SuccessResponse(&#x27;Generate comment reply succeeded&#x27;)
+  async generateCommentReply(@Body() payload: GenerateAiCommentReplyDTO) {
+    const comment &#x3D; await this.commentService.getDetailByNumberId(payload.comment_id)
+    return this.aiService.generateCommentReply(comment, payload)
   }
 }
 </code></pre>
     </div>
-
 </div>
+
+
+
 
 
 
@@ -618,8 +604,8 @@ export class WebhookListener {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'WebhookListener.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'AiController.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -24,13 +24,13 @@
 <title>cluster_AdminModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="87,-70 87,-268 409,-268 409,-70 87,-70"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_AdminModule_exports</title>
-<polygon fill="none" stroke="black" points="189,-208 189,-260 305,-260 305,-208 189,-208"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_AdminModule_providers</title>
 <polygon fill="none" stroke="black" points="95,-78 95,-130 401,-130 401,-78 95,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_AdminModule_exports</title>
+<polygon fill="none" stroke="black" points="189,-208 189,-260 305,-260 305,-208 189,-208"/>
 </g>
 <!-- AdminService  -->
 <g id="node1" class="node">

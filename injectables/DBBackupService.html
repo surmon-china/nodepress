@@ -154,10 +154,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#backup" >backup</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#dailyDatabseBackup" >dailyDatabseBackup</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
@@ -252,7 +255,6 @@
                 <td class="col-md-4">
                     <a name="backup"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
                         <span ><b>backup</b></span>
@@ -267,6 +269,45 @@
                 </td>
             </tr>
 
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dailyDatabseBackup"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>dailyDatabseBackup</b></span>
+                        <a href="#dailyDatabseBackup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>dailyDatabseBackup()</code>
+                </td>
+            </tr>
+
             <tr>
                 <td class="col-md-4">
                     <b>Decorators : </b>
@@ -277,8 +318,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:102</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -287,7 +328,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
                 </td>
@@ -317,8 +358,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -356,8 +397,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/modules/system/system.service.dbbackup.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -457,6 +498,39 @@ export class DBBackupService {
     private readonly s3Service: S3Service
   ) {}
 
+  // Auto-backup database and notify admin via email at 03:00.
+  @Cron(&#x27;0 0 3 * * *&#x27;, { name: &#x27;DailyDatabaseBackupJob&#x27; })
+  dailyDatabseBackup() {
+    this.backup().catch((error) &#x3D;&gt; {
+      logger.failure(&#x27;DailyDatabaseBackupJob failed!&#x27;, error)
+    })
+  }
+
+  public async backup() {
+    try {
+      const result &#x3D; await this.doBackup()
+      const json &#x3D; {
+        ...result,
+        lastModified: result.lastModified?.toLocaleString(&#x27;zh&#x27;),
+        size: (result.size / 1024).toFixed(2) + &#x27;kb&#x27;
+      }
+      this.mailToAdmin(&#x27;Database backup succeeded&#x27;, JSON.stringify(json, null, 2), true)
+      return result
+    } catch (error: unknown) {
+      this.mailToAdmin(&#x27;Database backup failed!&#x27;, String(error))
+      throw new InternalServerErrorException(String(error))
+    }
+  }
+
+  private mailToAdmin(subject: string, content: string, isCode?: boolean) {
+    this.emailService.sendMailAs(APP_BIZ.NAME, {
+      to: APP_BIZ.ADMIN_EMAIL,
+      subject,
+      text: &#x60;${subject}, detail: ${content}&#x60;,
+      html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${content}&lt;/pre&gt;&#x60; : content}&#x60;
+    })
+  }
+
   private async doBackup(): Promise&lt;S3FileObject&gt; {
     // 1. dependency pre-check
     const dependencies &#x3D; [&#x27;mongodump&#x27;, &#x27;zip&#x27;]
@@ -515,33 +589,6 @@ export class DBBackupService {
         logger.failure(&#x27;upload failed!&#x27;, errorMessage)
         throw errorMessage
       })
-  }
-
-  private mailToAdmin(subject: string, content: string, isCode?: boolean) {
-    this.emailService.sendMailAs(APP_BIZ.NAME, {
-      to: APP_BIZ.ADMIN_EMAIL,
-      subject,
-      text: &#x60;${subject}, detail: ${content}&#x60;,
-      html: &#x60;${subject} &lt;br&gt; ${isCode ? &#x60;&lt;pre&gt;${content}&lt;/pre&gt;&#x60; : content}&#x60;
-    })
-  }
-
-  // Auto-backup database and notify admin via email at 03:00.
-  @Cron(&#x27;0 0 3 * * *&#x27;, { name: &#x27;DailyDatabaseBackupJob&#x27; })
-  public async backup() {
-    try {
-      const result &#x3D; await this.doBackup()
-      const json &#x3D; {
-        ...result,
-        lastModified: result.lastModified?.toLocaleString(&#x27;zh&#x27;),
-        size: (result.size / 1024).toFixed(2) + &#x27;kb&#x27;
-      }
-      this.mailToAdmin(&#x27;Database backup succeeded&#x27;, JSON.stringify(json, null, 2), true)
-      return result
-    } catch (error: unknown) {
-      this.mailToAdmin(&#x27;Database backup failed!&#x27;, String(error))
-      throw new InternalServerErrorException(String(error))
-    }
   }
 }
 </code></pre>

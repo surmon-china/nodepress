@@ -116,7 +116,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  XMLItemData</li>
+  CommentBaseWithExtras</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -140,11 +140,17 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/disqus/disqus.xml.ts</code>
+            <code>src/modules/comment/comment.model.ts</code>
         </p>
 
 
 
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                            <code><a href="../classes/CommentBase.html" target="_self" >CommentBase</a></code>
+            </p>
 
         <section data-compodoc="block-index">
             <h3 id="index">Index</h3>
@@ -159,15 +165,10 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                        <a href="#article" 
+                                            <span class="modifier">Optional</span>
+                                        <a href="#extras" 
 >
-                                            article
-                                        </a>
-                                </li>
-                                <li>
-                                        <a href="#comments" 
->
-                                            comments
+                                            extras
                                         </a>
                                 </li>
                             </ul>
@@ -185,9 +186,9 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="article"></a>
-                                        <span class="name "><b>article</b>
-                                            <a href="#article">
+                                        <a name="extras"></a>
+                                        <span class="name "><b>extras</b>
+                                            <a href="#extras">
                                                 <span class="icon ion-ios-link"></span>
                                             </a>
                                         </span>
@@ -195,7 +196,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>article:         <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                        <code>extras:         <code><a href="../classes/KeyValueModel.html" target="_self" >KeyValueModel[]</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -203,44 +204,16 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                            <i>Type : </i>        <code><a href="../classes/KeyValueModel.html" target="_self" >KeyValueModel[]</a></code>
 
                                         </td>
                                     </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="comments"></a>
-                                        <span class="name "><b>comments</b>
-                                            <a href="#comments">
-                                                <span class="icon ion-ios-link"></span>
-                                            </a>
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>comments:         <code><a href="../classes/Comment.html" target="_self" >Array&lt;Comment&gt;</a></code>
-</code>
-                                    </td>
-                                </tr>
-
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/Comment.html" target="_self" >Array&lt;Comment&gt;</a></code>
-
+                                            <i>Optional</i>
                                         </td>
                                     </tr>
-
 
 
 
@@ -252,77 +225,147 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import dayjs from &#x27;dayjs&#x27;
-import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
-import { CommentStatus } from &#x27;@app/modules/comment/comment.constant&#x27;
-import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
-import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { getThreadIdentifierById } from &#x27;./disqus.helper&#x27;
-import { ThreadStatus } from &#x27;./disqus.dto&#x27;
-import { APP_BIZ } from &#x27;@app/app.config&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
+import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
+import { Type } from &#x27;class-transformer&#x27;
+import { IsString, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsArray, IsObject, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsDefined, IsOptional, IsNotEmpty, ValidateNested, MinLength, MaxLength } from &#x27;class-validator&#x27;
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
+import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
+import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { ROOT_COMMENT_PID } from &#x27;@app/constants/biz.constant&#x27;
+import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
+import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { CommentStatus, COMMENT_STATUSES } from &#x27;./comment.constant&#x27;
 
-// DOC: https://help.disqus.com/en/articles/1717222-custom-xml-import-format
+@modelOptions({
+  schemaOptions: {
+    versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
+})
+export class Author {
+  @MaxLength(20)
+  @IsString()
+  @IsNotEmpty()
+  @prop({ required: true, validate: /\S+/ })
+  name: string
 
-const getCommentItemXML &#x3D; (comment: Comment) &#x3D;&gt; {
-  return &#x60;
-    &lt;wp:comment&gt;
-      &lt;wp:comment_id&gt;${comment.id}&lt;/wp:comment_id&gt;
-      &lt;wp:comment_parent&gt;${comment.pid || &#x27;&#x27;}&lt;/wp:comment_parent&gt;
-      &lt;wp:comment_author&gt;${comment.author.name || &#x27;&#x27;}&lt;/wp:comment_author&gt;
-      &lt;wp:comment_author_email&gt;${comment.author.email || &#x27;&#x27;}&lt;/wp:comment_author_email&gt;
-      &lt;wp:comment_author_url&gt;${comment.author.site || &#x27;&#x27;}&lt;/wp:comment_author_url&gt;
-      &lt;wp:comment_author_IP&gt;${comment.ip || &#x27;&#x27;}&lt;/wp:comment_author_IP&gt;
-      &lt;wp:comment_date_gmt&gt;${dayjs(comment.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:comment_date_gmt&gt;
-      &lt;wp:comment_content&gt;&lt;![CDATA[${comment.content || &#x27;&#x27;}]]&gt;&lt;/wp:comment_content&gt;
-      &lt;wp:comment_approved&gt;${comment.status &#x3D;&#x3D;&#x3D; CommentStatus.Published ? 1 : 0}&lt;/wp:comment_approved&gt;
-    &lt;/wp:comment&gt;
-  &#x60;
+  // MARK: can&#x27;t get Disqus user&#x27;s email
+  @IsEmail()
+  @IsString()
+  @IsOptional()
+  @prop({ type: String, default: null })
+  email?: string | null
+
+  @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsOptional()
+  @prop({ type: String, default: null })
+  site?: string | null
+
+  public get email_hash() {
+    const email &#x3D; this.email?.trim().toLowerCase()
+    return email ? decodeMD5(email) : null
+  }
 }
 
-export interface XMLItemData {
-  article: Article
-  comments: Array&lt;Comment&gt;
+export class CommentBase {
+  @IsInt()
+  @IsNotEmpty({ message: &#x27;post ID?&#x27; })
+  @prop({ required: true, index: true })
+  post_id: number
+
+  // parent comment ID
+  @IsInt()
+  @prop({ default: ROOT_COMMENT_PID, index: true })
+  pid: number
+
+  @MinLength(3) // sync with Disqus
+  @MaxLength(3000)
+  @IsString()
+  @IsNotEmpty({ message: &#x27;comment content?&#x27; })
+  @prop({ required: true, validate: /\S+/ })
+  content: string
+
+  @Type(() &#x3D;&gt; Author)
+  @ValidateNested()
+  @IsObject()
+  @IsNotEmpty()
+  @IsDefined({ message: &#x27;comment author?&#x27; })
+  @prop({ _id: false, required: true })
+  author: Author
+
+  // user agent
+  @IsString()
+  @IsOptional()
+  @prop({ type: String })
+  agent?: string
 }
 
-export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comment&gt;) &#x3D;&gt; {
-  return &#x60;&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
-    &lt;rss version&#x3D;&quot;2.0&quot;
-      xmlns:content&#x3D;&quot;http://purl.org/rss/1.0/modules/content/&quot;
-      xmlns:dsq&#x3D;&quot;http://www.disqus.com/&quot;
-      xmlns:dc&#x3D;&quot;http://purl.org/dc/elements/1.1/&quot;
-      xmlns:wp&#x3D;&quot;http://wordpress.org/export/1.0/&quot;
-    &gt;
-      &lt;channel&gt;
-        &lt;item&gt;
-          &lt;title&gt;Guestbook&lt;/title&gt;
-          &lt;link&gt;${getPermalinkById(GUESTBOOK_POST_ID)}&lt;/link&gt;
-          &lt;content:encoded&gt;&lt;![CDATA[${APP_BIZ.FE_NAME}]]&gt;&lt;/content:encoded&gt;
-          &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(GUESTBOOK_POST_ID)}&lt;/dsq:thread_identifier&gt;
-          &lt;wp:post_date_gmt&gt;2017-01-01 00:00:00&lt;/wp:post_date_gmt&gt;
-          &lt;wp:comment_status&gt;open&lt;/wp:comment_status&gt;
-          ${guestbook.map(getCommentItemXML).join(&#x27;\n&#x27;)}
-        &lt;/item&gt;
-        ${data
-          .map(
-            (item) &#x3D;&gt; &#x60;
-            &lt;item&gt;
-              &lt;title&gt;${item.article.title}&lt;/title&gt;
-              &lt;link&gt;${getPermalinkById(item.article.id)}&lt;/link&gt;
-              &lt;content:encoded&gt;&lt;![CDATA[${item.article.summary || &#x27;&#x27;}]]&gt;&lt;/content:encoded&gt;
-              &lt;dsq:thread_identifier&gt;${getThreadIdentifierById(item.article.id)}&lt;/dsq:thread_identifier&gt;
-              &lt;wp:post_date_gmt&gt;${dayjs(item.article.created_at).format(&#x27;YYYY-MM-DD HH:mm:ss&#x27;)}&lt;/wp:post_date_gmt&gt;
-              &lt;wp:comment_status&gt;${
-                item.article.disabled_comments ? ThreadStatus.Closed : ThreadStatus.Open
-              }&lt;/wp:comment_status&gt;
-              ${item.comments.map(getCommentItemXML).join(&#x27;\n&#x27;)}
-            &lt;/item&gt;
-          &#x60;
-          )
-          .join(&#x27;\n&#x27;)}
-      &lt;/channel&gt;
-    &lt;/rss&gt;&#x60;
+export interface CommentBaseWithExtras extends CommentBase {
+  extras?: KeyValueModel[]
 }
+
+@plugin(mongoosePaginate)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@modelOptions({
+  // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
+  options: { allowMixed: Severity.ALLOW },
+  schemaOptions: {
+    id: false,
+    versionKey: false,
+    timestamps: {
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
+})
+export class Comment extends CommentBase {
+  @prop({ unique: true })
+  id?: number
+
+  @IsIn(COMMENT_STATUSES)
+  @IsInt()
+  @prop({ enum: CommentStatus, default: CommentStatus.Published, index: true })
+  status: CommentStatus
+
+  // likes
+  @IsInt()
+  @prop({ default: 0, index: true })
+  likes: number
+
+  @IsInt()
+  @prop({ default: 0, index: true })
+  dislikes: number
+
+  // IP address
+  @IsIP()
+  @IsOptional()
+  @prop({ type: String, default: null })
+  ip: string | null
+
+  // IP location
+  @prop({ type: Object, default: null })
+  ip_location: Partial&lt;IPLocation&gt; | null
+
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested()
+  @ArrayUnique()
+  @IsArray()
+  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  extras: KeyValueModel[]
+
+  @prop({ default: Date.now, immutable: true })
+  created_at?: Date
+
+  @prop({ default: Date.now })
+  updated_at?: Date
+}
+
+export const CommentProvider &#x3D; getProviderByTypegooseClass(Comment)
 </code></pre>
     </div>
 </div>
@@ -360,7 +403,7 @@ export const getDisqusXML &#x3D; (data: XMLItemData[], guestbook: Array&lt;Comme
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'XMLItemData.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'CommentBaseWithExtras.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 
