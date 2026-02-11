@@ -21,7 +21,9 @@ import logger from '@app/utils/logger'
 async function bootstrap() {
   // https://fastify.dev/docs/latest/Reference/Server/#trustproxy
   const adapter = new FastifyAdapter({ logger: false, trustProxy: true })
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, { logger: false })
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, adapter, {
+    logger: ['fatal', 'error', 'warn']
+  })
 
   // Register fastify plugins
   await app.register(fastifyCookie)
