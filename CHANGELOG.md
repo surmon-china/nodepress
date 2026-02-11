@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+### 6.3.0 (2026-02-12)
+
+#### Configuration Update
+
+- Added `CLOUDFLARE_AI_GATEWAY` for Cloudflare AI integration.
+- Updated `AKISMET` configuration for enhanced spam protection.
+
+#### Global / Architecture
+
+- **Critical Bug Fix**: Resolved an issue where empty request bodies caused the `ValidationPipe` to crash with `Cannot read properties of undefined (reading 'constructor')`.
+- **Logger Optimization**: Enhanced global logging options to support system-level logs: `['fatal', 'error', 'warn']`.
+- **Model Efficiency**: Replaced `getExtraObject` with `getExtrasMap` across all models to optimize `extras` field processing performance.
+- **Compiler Options**: Optimized `tsconfig.json` configurations for better build performance and type safety.
+
+#### AI Module
+
+- **New Feature**: Introduced a comprehensive `AIModule` to power intelligent content operations.
+- **Capabilities**:
+- `generate-article-summary`: Generate concise summaries for articles.
+- `generate-article-review`: Generate high quality review for articles.
+- `generate-comment-reply`: Automatically generate repliy user comments.
+
+#### Comment Module
+
+- **Spam Management**: Updated the anti-spam logic to trigger an administrative email notification even when a comment is identified and blocked as spam.
+
 ### 6.2.0 (2026-02-10)
 
 #### System Architecture
