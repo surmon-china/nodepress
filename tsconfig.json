@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2023",
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "node10",
     "incremental": true,
     "declaration": false,
     "noImplicitAny": false,
