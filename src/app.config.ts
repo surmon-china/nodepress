@@ -170,7 +170,7 @@ export const WEBHOOK = {
 }
 
 /** Cloudflare AI Gateway Configuration {@link https://developers.cloudflare.com/ai-gateway/usage/chat-completion/} */
-export const CF_AI_GATEWAY = {
+export const CLOUDFLARE_AI_GATEWAY = {
   /** The unique identifier for your Cloudflare account */
   accountId: arg<string>('cf_aig_account_id'),
   /** The specific AI Gateway name created in the Cloudflare dashboard */

@@ -17,7 +17,7 @@ import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import { getExtraValue } from '@app/transformers/extra.transformer'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
-import { CF_AI_GATEWAY } from '@app/app.config'
+import { CLOUDFLARE_AI_GATEWAY } from '@app/app.config'
 import { AiModelIds, AiModelsMap, DEFAULT_AI_PROMPT_TEMPLATES } from './ai.config'
 import { GenerateAiArticleContentDTO, GenerateAiCommentReplyDTO } from './ai.dto'
 import { AiGenerateResult } from './ai.interface'
@@ -38,7 +38,7 @@ export class AiService {
     temperature: number
   }): Promise<AiGenerateResult> {
     // https://developers.cloudflare.com/ai-gateway/usage/chat-completion/
-    const { accountId, gatewayId, token } = CF_AI_GATEWAY
+    const { accountId, gatewayId, token } = CLOUDFLARE_AI_GATEWAY
     const url = `https://gateway.ai.cloudflare.com/v1/${accountId}/${gatewayId}/compat/chat/completions`
     const requestParams = {
       stream: false,
