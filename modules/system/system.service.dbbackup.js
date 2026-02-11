@@ -33,6 +33,35 @@ let DBBackupService = class DBBackupService {
         this.emailService = emailService;
         this.s3Service = s3Service;
     }
+    dailyDatabseBackup() {
+        this.backup().catch((error) => {
+            logger.failure('DailyDatabaseBackupJob failed!', error);
+        });
+    }
+    async backup() {
+        try {
+            const result = await this.doBackup();
+            const json = {
+                ...result,
+                lastModified: result.lastModified?.toLocaleString('zh'),
+                size: (result.size / 1024).toFixed(2) + 'kb'
+            };
+            this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true);
+            return result;
+        }
+        catch (error) {
+            this.mailToAdmin('Database backup failed!', String(error));
+            throw new common_1.InternalServerErrorException(String(error));
+        }
+    }
+    mailToAdmin(subject, content, isCode) {
+        this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
+            to: app_config_1.APP_BIZ.ADMIN_EMAIL,
+            subject,
+            text: `${subject}, detail: ${content}`,
+            html: `${subject} <br> ${isCode ? `<pre>${content}</pre>` : content}`
+        });
+    }
     async doBackup() {
         const dependencies = ['mongodump', 'zip'];
         for (const dep of dependencies) {
@@ -79,38 +108,14 @@ let DBBackupService = class DBBackupService {
             throw errorMessage;
         });
     }
-    mailToAdmin(subject, content, isCode) {
-        this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
-            to: app_config_1.APP_BIZ.ADMIN_EMAIL,
-            subject,
-            text: `${subject}, detail: ${content}`,
-            html: `${subject} <br> ${isCode ? `<pre>${content}</pre>` : content}`
-        });
-    }
-    async backup() {
-        try {
-            const result = await this.doBackup();
-            const json = {
-                ...result,
-                lastModified: result.lastModified?.toLocaleString('zh'),
-                size: (result.size / 1024).toFixed(2) + 'kb'
-            };
-            this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true);
-            return result;
-        }
-        catch (error) {
-            this.mailToAdmin('Database backup failed!', String(error));
-            throw new common_1.InternalServerErrorException(String(error));
-        }
-    }
 };
 exports.DBBackupService = DBBackupService;
 __decorate([
     (0, schedule_1.Cron)('0 0 3 * * *', { name: 'DailyDatabaseBackupJob' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], DBBackupService.prototype, "backup", null);
+    __metadata("design:returntype", void 0)
+], DBBackupService.prototype, "dailyDatabseBackup", null);
 exports.DBBackupService = DBBackupService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [helper_service_email_1.EmailService,

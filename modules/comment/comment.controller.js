@@ -20,9 +20,11 @@ const trim_1 = __importDefault(require("lodash/trim"));
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
+const events_constant_1 = require("../../constants/events.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
@@ -30,8 +32,10 @@ const comment_dto_1 = require("./comment.dto");
 const comment_service_1 = require("./comment.service");
 const comment_model_1 = require("./comment.model");
 let CommentController = class CommentController {
+    eventEmitter;
     commentService;
-    constructor(commentService) {
+    constructor(eventEmitter, commentService) {
+        this.eventEmitter = eventEmitter;
         this.commentService = commentService;
     }
     async getComments(query, { isUnauthenticated }) {
@@ -78,7 +82,10 @@ let CommentController = class CommentController {
         return this.commentService.getCalendar(isUnauthenticated, query.timezone);
     }
     createComment(comment, { visitor }) {
-        return this.commentService.createFormClient(comment, visitor);
+        return this.commentService.createFormClient(comment, visitor).catch((error) => {
+            this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreateFailed, { comment, visitor, error });
+            return Promise.reject(error);
+        });
     }
     patchComments({ visitor }, body) {
         return this.commentService.batchPatchStatus(body, visitor.referer);
@@ -188,6 +195,7 @@ __decorate([
 ], CommentController.prototype, "delComment", null);
 exports.CommentController = CommentController = __decorate([
     (0, common_1.Controller)('comment'),
-    __metadata("design:paramtypes", [comment_service_1.CommentService])
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
+        comment_service_1.CommentService])
 ], CommentController);
 //# sourceMappingURL=comment.controller.js.map

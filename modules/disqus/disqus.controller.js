@@ -16,20 +16,24 @@ exports.DisqusController = void 0;
 const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const admin_only_guard_1 = require("../../guards/admin-only.guard");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const uploaded_file_decorator_1 = require("../../decorators/uploaded-file.decorator");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const comment_model_1 = require("../comment/comment.model");
+const events_constant_1 = require("../../constants/events.constant");
 const app_config_1 = require("../../app.config");
 const disqus_service_public_1 = require("./disqus.service.public");
 const disqus_service_private_1 = require("./disqus.service.private");
 const disqus_token_1 = require("./disqus.token");
 const disqus_dto_1 = require("./disqus.dto");
 let DisqusController = class DisqusController {
+    eventEmitter;
     disqusPublicService;
     disqusPrivateService;
-    constructor(disqusPublicService, disqusPrivateService) {
+    constructor(eventEmitter, disqusPublicService, disqusPrivateService) {
+        this.eventEmitter = eventEmitter;
         this.disqusPublicService = disqusPublicService;
         this.disqusPrivateService = disqusPrivateService;
     }
@@ -73,7 +77,10 @@ let DisqusController = class DisqusController {
         return this.disqusPublicService.ensureThreadDetailCache(Number(query.post_id));
     }
     createComment({ visitor }, token, comment) {
-        return this.disqusPublicService.createUniversalComment(comment, visitor, token?.access_token);
+        return this.disqusPublicService.createUniversalComment(comment, visitor, token?.access_token).catch((error) => {
+            this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreateFailed, { comment, visitor, error });
+            return Promise.reject(error);
+        });
     }
     deleteComment(payload, token) {
         if (!token)
@@ -224,7 +231,8 @@ __decorate([
 ], DisqusController.prototype, "importXML", null);
 exports.DisqusController = DisqusController = __decorate([
     (0, common_1.Controller)('disqus'),
-    __metadata("design:paramtypes", [disqus_service_public_1.DisqusPublicService,
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
+        disqus_service_public_1.DisqusPublicService,
         disqus_service_private_1.DisqusPrivateService])
 ], DisqusController);
 //# sourceMappingURL=disqus.controller.js.map

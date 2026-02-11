@@ -66,8 +66,8 @@ class CommentBase {
     post_id;
     pid;
     content;
-    agent;
     author;
+    agent;
 }
 exports.CommentBase = CommentBase;
 __decorate([
@@ -90,11 +90,6 @@ __decorate([
     __metadata("design:type", String)
 ], CommentBase.prototype, "content", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, typegoose_1.prop)({ type: String, default: null }),
-    __metadata("design:type", Object)
-], CommentBase.prototype, "agent", void 0);
-__decorate([
     (0, class_transformer_1.Type)(() => Author),
     (0, class_validator_2.ValidateNested)(),
     (0, class_validator_1.IsObject)(),
@@ -103,6 +98,12 @@ __decorate([
     (0, typegoose_1.prop)({ _id: false, required: true }),
     __metadata("design:type", Author)
 ], CommentBase.prototype, "author", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: String }),
+    __metadata("design:type", String)
+], CommentBase.prototype, "agent", void 0);
 let Comment = class Comment extends CommentBase {
     id;
     status;

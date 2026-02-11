@@ -48,8 +48,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentService = void 0;
 const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const biz_constant_1 = require("../../constants/biz.constant");
+const events_constant_1 = require("../../constants/events.constant");
 const article_service_1 = require("../article/article.service");
 const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
@@ -65,13 +67,15 @@ const logger = (0, logger_1.createLogger)({ scope: 'CommentService', time: app_e
 let CommentService = class CommentService {
     ipService;
     emailService;
+    eventEmitter;
     akismetService;
     optionsService;
     articleService;
     commentModel;
-    constructor(ipService, emailService, akismetService, optionsService, articleService, commentModel) {
+    constructor(ipService, emailService, eventEmitter, akismetService, optionsService, articleService, commentModel) {
         this.ipService = ipService;
         this.emailService = emailService;
+        this.eventEmitter = eventEmitter;
         this.akismetService = akismetService;
         this.optionsService = optionsService;
         this.articleService = articleService;
@@ -198,7 +202,7 @@ let CommentService = class CommentService {
             ip: visitor.ip,
             ip_location: {},
             agent: visitor.ua || comment.agent,
-            extras: []
+            extras: comment.extras ?? []
         };
     }
     async create(comment) {
@@ -209,6 +213,7 @@ let CommentService = class CommentService {
         });
         this.updateCommentsCountWithArticles([succeededComment.post_id]);
         this.emailToAdminAndTargetAuthor(succeededComment);
+        this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreated, succeededComment);
         return succeededComment;
     }
     async createFormClient(comment, visitor) {
@@ -315,9 +320,10 @@ let CommentService = class CommentService {
 exports.CommentService = CommentService;
 exports.CommentService = CommentService = __decorate([
     (0, common_1.Injectable)(),
-    __param(5, (0, model_transformer_1.InjectModel)(comment_model_1.Comment)),
+    __param(6, (0, model_transformer_1.InjectModel)(comment_model_1.Comment)),
     __metadata("design:paramtypes", [helper_service_ip_1.IPService,
         helper_service_email_1.EmailService,
+        event_emitter_1.EventEmitter2,
         helper_service_akismet_1.AkismetService,
         options_service_1.OptionsService,
         article_service_1.ArticleService, Object])

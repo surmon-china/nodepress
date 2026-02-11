@@ -120,6 +120,9 @@ let StatisticsService = class StatisticsService {
                 ])
             });
         }
+        catch (error) {
+            logger.failure('DailyStatisticsJob failed!', error);
+        }
         finally {
             this.counterService.resetGlobalCount(cache_constant_1.CacheKeys.TodayViewCount).catch((error) => {
                 logger.warn('reset TODAY_VIEWS failed!', error);

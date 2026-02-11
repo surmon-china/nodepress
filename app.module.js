@@ -31,6 +31,7 @@ const admin_module_1 = require("./modules/admin/admin.module");
 const disqus_module_1 = require("./modules/disqus/disqus.module");
 const system_module_1 = require("./modules/system/system.module");
 const webhook_module_1 = require("./modules/webhook/webhook.module");
+const ai_module_1 = require("./modules/ai/ai.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(noop_middleware_1.NoopMiddleware).forRoutes('*');
@@ -71,7 +72,8 @@ exports.AppModule = AppModule = __decorate([
             archive_module_1.ArchiveModule,
             vote_module_1.VoteModule,
             system_module_1.SystemModule,
-            webhook_module_1.WebhookModule
+            webhook_module_1.WebhookModule,
+            ai_module_1.AiModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [

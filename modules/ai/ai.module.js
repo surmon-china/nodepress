@@ -6,23 +6,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentModule = void 0;
+exports.AiModule = void 0;
 const common_1 = require("@nestjs/common");
+const axios_1 = require("@nestjs/axios");
 const options_module_1 = require("../options/options.module");
 const article_module_1 = require("../article/article.module");
-const comment_controller_1 = require("./comment.controller");
-const comment_model_1 = require("./comment.model");
-const comment_service_1 = require("./comment.service");
-const comment_listener_1 = require("./comment.listener");
-let CommentModule = class CommentModule {
+const comment_module_1 = require("../comment/comment.module");
+const disqus_module_1 = require("../disqus/disqus.module");
+const ai_controller_1 = require("./ai.controller");
+const ai_listener_1 = require("./ai.listener");
+const ai_service_1 = require("./ai.service");
+let AiModule = class AiModule {
 };
-exports.CommentModule = CommentModule;
-exports.CommentModule = CommentModule = __decorate([
+exports.AiModule = AiModule;
+exports.AiModule = AiModule = __decorate([
     (0, common_1.Module)({
-        imports: [options_module_1.OptionsModule, article_module_1.ArticleModule],
-        controllers: [comment_controller_1.CommentController],
-        providers: [comment_model_1.CommentProvider, comment_service_1.CommentService, comment_listener_1.CommentListener],
-        exports: [comment_service_1.CommentService]
+        imports: [axios_1.HttpModule, options_module_1.OptionsModule, article_module_1.ArticleModule, comment_module_1.CommentModule, disqus_module_1.DisqusModule],
+        controllers: [ai_controller_1.AiController],
+        providers: [ai_service_1.AiService, ai_listener_1.AiListener],
+        exports: [ai_service_1.AiService]
     })
-], CommentModule);
-//# sourceMappingURL=comment.module.js.map
+], AiModule);
+//# sourceMappingURL=ai.module.js.map

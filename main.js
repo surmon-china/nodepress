@@ -18,7 +18,9 @@ const app_config_1 = require("./app.config");
 const logger_1 = __importDefault(require("./utils/logger"));
 async function bootstrap() {
     const adapter = new platform_fastify_1.FastifyAdapter({ logger: false, trustProxy: true });
-    const app = await core_1.NestFactory.create(app_module_1.AppModule, adapter, { logger: false });
+    const app = await core_1.NestFactory.create(app_module_1.AppModule, adapter, {
+        logger: ['fatal', 'error', 'warn']
+    });
     await app.register(cookie_1.default);
     await app.register(multipart_1.default, { limits: { fileSize: 1024 * 1024 * 20 }, throwFileSizeLimit: true });
     const authService = app.get(auth_service_1.AuthService);

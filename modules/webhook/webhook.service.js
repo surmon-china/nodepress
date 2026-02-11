@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WebhookService = void 0;
-const rxjs_1 = require("rxjs");
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const error_transformer_1 = require("../../transformers/error.transformer");
@@ -24,7 +23,7 @@ let WebhookService = class WebhookService {
         this.httpService = httpService;
     }
     dispatch(event, payload) {
-        if (!app_config_1.WEBHOOK.url)
+        if (!app_config_1.WEBHOOK.endpoint)
             return;
         const postData = {
             event,
@@ -32,15 +31,16 @@ let WebhookService = class WebhookService {
             data: payload
         };
         logger.log(`Dispatching event: ${event}...`);
-        (0, rxjs_1.lastValueFrom)(this.httpService.post(app_config_1.WEBHOOK.url, postData, {
+        this.httpService.axiosRef
+            .post(app_config_1.WEBHOOK.endpoint, postData, {
             timeout: 15000,
             headers: {
                 'X-Webhook-Token': app_config_1.WEBHOOK.token || '',
                 'User-Agent': `${app_config_1.APP_BIZ.NAME}-Webhook-Service`
             }
-        }))
-            .then(() => {
-            logger.success(`Event ${event} dispatched successfully.`);
+        })
+            .then((result) => {
+            logger.success(`Event ${event} dispatched successfully.`, result.data);
         })
             .catch((error) => {
             logger.failure(`Event ${event} dispatch failed!`, (0, error_transformer_1.getMessageFromAxiosError)(error));

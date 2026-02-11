@@ -1,43 +1,10 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
@@ -46,6 +13,7 @@ exports.DisqusPublicService = void 0;
 const common_1 = require("@nestjs/common");
 const comment_service_1 = require("../comment/comment.service");
 const comment_constant_1 = require("../comment/comment.constant");
+const extras_constant_1 = require("../../constants/extras.constant");
 const cache_constant_1 = require("../../constants/cache.constant");
 const cache_service_1 = require("../../core/cache/cache.service");
 const app_config_1 = require("../../app.config");
@@ -55,7 +23,7 @@ const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const disqus_service_private_1 = require("./disqus.service.private");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
-const DISQUS_CONST = __importStar(require("./disqus.constant"));
+const disqus_helper_1 = require("./disqus.helper");
 const logger = (0, logger_1.createLogger)({ scope: 'DisqusPublicService', time: app_environment_1.isDevEnv });
 let DisqusPublicService = class DisqusPublicService {
     cacheService;
@@ -84,10 +52,10 @@ let DisqusPublicService = class DisqusPublicService {
         return this.cacheService.delete(this.getUserInfoCacheKey(uid));
     }
     getAuthorizeURL() {
-        return this.disqus.getAuthorizeURL('code', 'read,write', DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL);
+        return this.disqus.getAuthorizeURL('code', 'read,write', disqus_helper_1.DISQUS_OAUTH_CALLBACK_URL);
     }
     async getAccessToken(code) {
-        return this.disqus.getOAuthAccessToken(code, DISQUS_CONST.DISQUS_OAUTH_CALLBACK_URL).catch((error) => {
+        return this.disqus.getOAuthAccessToken(code, disqus_helper_1.DISQUS_OAUTH_CALLBACK_URL).catch((error) => {
             logger.warn('getAccessToken failed!', error);
             return Promise.reject(error);
         });
@@ -138,7 +106,7 @@ let DisqusPublicService = class DisqusPublicService {
     async getDisqusPostIdByCommentId(commentId) {
         try {
             const comment = await this.commentService.getDetailByNumberId(commentId);
-            return (0, extra_transformer_1.getExtraValue)(comment.extras, DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY) || null;
+            return (0, extra_transformer_1.getExtraValue)(comment.extras, extras_constant_1.CommentDisqusExtraKeys.PostId) || null;
         }
         catch (error) {
             return null;
@@ -169,9 +137,11 @@ let DisqusPublicService = class DisqusPublicService {
     }
     async createUniversalComment(comment, visitor, accessToken) {
         const newComment = this.commentService.normalizeNewComment(comment, visitor);
-        await this.commentService.verifyTargetCommentable(newComment.post_id);
+        await Promise.all([
+            this.commentService.verifyTargetCommentable(newComment.post_id),
+            this.commentService.verifyCommentValidity(newComment)
+        ]);
         const thread = await this.ensureThreadDetailCache(newComment.post_id);
-        await this.commentService.verifyCommentValidity(newComment);
         let parentId = null;
         if (newComment.pid) {
             parentId = await this.getDisqusPostIdByCommentId(newComment.pid);
@@ -190,12 +160,12 @@ let DisqusPublicService = class DisqusPublicService {
         }
         newComment.author.name = disqusPost.author.name || newComment.author.name;
         newComment.author.site = disqusPost.author.url || newComment.author.site;
-        newComment.extras.push({ key: DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY, value: disqusPost.id }, { key: DISQUS_CONST.COMMENT_THREAD_ID_EXTRA_KEY, value: disqusPost.thread });
+        newComment.extras.push({ key: extras_constant_1.CommentDisqusExtraKeys.PostId, value: disqusPost.id }, { key: extras_constant_1.CommentDisqusExtraKeys.ThreadId, value: disqusPost.thread });
         if (disqusPost.author.isAnonymous || !accessToken) {
-            newComment.extras.push({ key: DISQUS_CONST.COMMENT_ANONYMOUS_EXTRA_KEY, value: 'true' });
+            newComment.extras.push({ key: extras_constant_1.CommentDisqusExtraKeys.Anonymous, value: 'true' });
         }
         else {
-            newComment.extras.push({ key: DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY, value: disqusPost.author.id }, { key: DISQUS_CONST.COMMENT_AUTHOR_USERNAME_EXTRA_KEY, value: disqusPost.author.username });
+            newComment.extras.push({ key: extras_constant_1.CommentDisqusExtraKeys.AuthorId, value: disqusPost.author.id }, { key: extras_constant_1.CommentDisqusExtraKeys.AuthorUsername, value: disqusPost.author.username });
         }
         return await this.commentService.create(newComment);
     }
@@ -212,9 +182,9 @@ let DisqusPublicService = class DisqusPublicService {
         const comment = await this.commentService.getDetailByNumberId(commentId);
         if (!comment)
             throw new common_1.NotFoundException(`Comment '${commentId}' not found`);
-        const extrasObject = (0, extra_transformer_1.getExtraObject)(comment.extras);
-        const commentDisqusPostId = extrasObject[DISQUS_CONST.COMMENT_POST_ID_EXTRA_KEY];
-        const commentDisqusAuthorId = extrasObject[DISQUS_CONST.COMMENT_AUTHOR_ID_EXTRA_KEY];
+        const extrasMap = (0, extra_transformer_1.getExtrasMap)(comment.extras);
+        const commentDisqusPostId = extrasMap.get(extras_constant_1.CommentDisqusExtraKeys.PostId);
+        const commentDisqusAuthorId = extrasMap.get(extras_constant_1.CommentDisqusExtraKeys.AuthorId);
         if (!commentDisqusAuthorId || !commentDisqusPostId) {
             throw new common_1.BadRequestException(`Comment '${commentId}' cannot be deleted (missing Disqus metadata)`);
         }

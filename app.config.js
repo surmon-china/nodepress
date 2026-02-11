@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WEBHOOK = exports.GOOGLE = exports.BING_INDEXED = exports.DB_BACKUP = exports.S3_STORAGE = exports.DISQUS = exports.AKISMET = exports.EMAIL = exports.REDIS = exports.MONGO_DB = exports.APP_BIZ = exports.PROJECT = void 0;
+exports.CLOUDFLARE_AI_GATEWAY = exports.WEBHOOK = exports.GOOGLE = exports.BING_INDEXED = exports.DB_BACKUP = exports.S3_STORAGE = exports.DISQUS = exports.AKISMET = exports.EMAIL = exports.REDIS = exports.MONGO_DB = exports.APP_BIZ = exports.PROJECT = void 0;
 const path_1 = __importDefault(require("path"));
 const args_1 = require("./utils/args");
 const argvs = process.argv.slice(2);
@@ -58,7 +58,7 @@ exports.EMAIL = {
     from: `"${exports.APP_BIZ.FE_NAME}" <${arg('email_from') || arg('email_account')}>`
 };
 exports.AKISMET = {
-    key: arg('akismet_key'),
+    apiKey: arg('akismet_api_key'),
     blog: arg('akismet_blog')
 };
 exports.DISQUS = {
@@ -89,7 +89,12 @@ exports.GOOGLE = {
     jwtServiceAccountCredentials: args.google_jwt_cred_json ? JSON.parse(args.google_jwt_cred_json) : null
 };
 exports.WEBHOOK = {
-    url: arg('webhook_url'),
+    endpoint: arg('webhook_endpoint'),
     token: arg('webhook_token')
+};
+exports.CLOUDFLARE_AI_GATEWAY = {
+    accountId: arg('cf_aig_account_id'),
+    gatewayId: arg('cf_aig_id'),
+    token: arg('cf_aig_token')
 };
 //# sourceMappingURL=app.config.js.map

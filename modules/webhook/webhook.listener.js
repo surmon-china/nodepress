@@ -25,13 +25,13 @@ let WebhookListener = class WebhookListener {
         return this.webhookService.dispatch(events_constant_1.EventKeys.OptionsUpdated, payload);
     }
     handleArticleCreated(payload) {
-        return this.webhookService.dispatch(events_constant_1.EventKeys.ArticleCreated, payload.id);
+        return this.webhookService.dispatch(events_constant_1.EventKeys.ArticleCreated, payload);
     }
     handleArticleUpdated(payload) {
-        return this.webhookService.dispatch(events_constant_1.EventKeys.ArticleUpdated, payload.id);
+        return this.webhookService.dispatch(events_constant_1.EventKeys.ArticleUpdated, payload);
     }
-    handleGeneralEvents(payload) {
-        return this.webhookService.dispatch(events_constant_1.EventKeys.ArticleDeleted, payload.id);
+    handleArticleDeleted(payload) {
+        return this.webhookService.dispatch(events_constant_1.EventKeys.ArticleDeleted, payload);
     }
 };
 exports.WebhookListener = WebhookListener;
@@ -58,7 +58,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_model_1.Article]),
     __metadata("design:returntype", void 0)
-], WebhookListener.prototype, "handleGeneralEvents", null);
+], WebhookListener.prototype, "handleArticleDeleted", null);
 exports.WebhookListener = WebhookListener = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [webhook_service_1.WebhookService])

@@ -7,8 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ValidationPipe = void 0;
-const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
+const class_transformer_1 = require("class-transformer");
 const common_1 = require("@nestjs/common");
 const UNVERIFIABLE_TYPES = [String, Boolean, Number, Array, Object];
 const collectMessages = (errors) => {
@@ -31,7 +31,7 @@ let ValidationPipe = class ValidationPipe {
         if (!metatype || UNVERIFIABLE_TYPES.includes(metatype)) {
             return value;
         }
-        const object = (0, class_transformer_1.plainToInstance)(metatype, value);
+        const object = (0, class_transformer_1.plainToInstance)(metatype, value ?? {});
         const errors = await (0, class_validator_1.validate)(object);
         if (errors.length > 0) {
             throw new common_1.BadRequestException(`Validation failed: ${collectMessages(errors).join('; ')}`);

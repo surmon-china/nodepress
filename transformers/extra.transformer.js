@@ -1,12 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getExtraValue = exports.getExtraObject = void 0;
-const getExtraObject = (extras) => {
-    return extras.length ? extras.reduce((pv, cv) => ({ ...pv, [cv.key]: cv.value }), {}) : {};
+exports.ensureExtra = exports.getExtraValue = exports.getExtrasMap = void 0;
+const getExtrasMap = (kvs) => {
+    return new Map((kvs ?? []).map((item) => [item.key, item.value]));
 };
-exports.getExtraObject = getExtraObject;
+exports.getExtrasMap = getExtrasMap;
 const getExtraValue = (extras, key) => {
-    return extras.length ? (0, exports.getExtraObject)(extras)[key] : undefined;
+    return extras?.find((extra) => extra.key === key)?.value;
 };
 exports.getExtraValue = getExtraValue;
+const ensureExtra = (extras, key, value) => {
+    if (extras.some((extra) => extra.key === key)) {
+        return false;
+    }
+    else {
+        extras.push({ key, value });
+        return true;
+    }
+};
+exports.ensureExtra = ensureExtra;
 //# sourceMappingURL=extra.transformer.js.map

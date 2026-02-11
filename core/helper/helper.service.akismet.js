@@ -61,7 +61,7 @@ let AkismetService = class AkismetService {
     clientIsValid = false;
     constructor() {
         this.client = new akismet_api_1.AkismetClient({
-            key: APP_CONFIG.AKISMET.key,
+            key: APP_CONFIG.AKISMET.apiKey,
             blog: APP_CONFIG.AKISMET.blog
         });
     }

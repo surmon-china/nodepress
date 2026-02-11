@@ -9,6 +9,8 @@ var EventKeys;
     EventKeys["AdminLoggedOut"] = "admin.logged_out";
     EventKeys["OptionsUpdated"] = "options.updated";
     EventKeys["FeedbackCreated"] = "feedback.created";
+    EventKeys["CommentCreated"] = "comment.created";
+    EventKeys["CommentCreateFailed"] = "comment.create_failed";
     EventKeys["ArticleCreated"] = "article.created";
     EventKeys["ArticleUpdated"] = "article.updated";
     EventKeys["ArticleDeleted"] = "article.deleted";

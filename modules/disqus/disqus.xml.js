@@ -8,7 +8,7 @@ const dayjs_1 = __importDefault(require("dayjs"));
 const comment_constant_1 = require("../comment/comment.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
-const disqus_constant_1 = require("./disqus.constant");
+const disqus_helper_1 = require("./disqus.helper");
 const disqus_dto_1 = require("./disqus.dto");
 const app_config_1 = require("../../app.config");
 const getCommentItemXML = (comment) => {
@@ -39,7 +39,7 @@ const getDisqusXML = (data, guestbook) => {
           <title>Guestbook</title>
           <link>${(0, urlmap_transformer_1.getPermalinkById)(biz_constant_1.GUESTBOOK_POST_ID)}</link>
           <content:encoded><![CDATA[${app_config_1.APP_BIZ.FE_NAME}]]></content:encoded>
-          <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierById)(biz_constant_1.GUESTBOOK_POST_ID)}</dsq:thread_identifier>
+          <dsq:thread_identifier>${(0, disqus_helper_1.getThreadIdentifierById)(biz_constant_1.GUESTBOOK_POST_ID)}</dsq:thread_identifier>
           <wp:post_date_gmt>2017-01-01 00:00:00</wp:post_date_gmt>
           <wp:comment_status>open</wp:comment_status>
           ${guestbook.map(getCommentItemXML).join('\n')}
@@ -50,7 +50,7 @@ const getDisqusXML = (data, guestbook) => {
               <title>${item.article.title}</title>
               <link>${(0, urlmap_transformer_1.getPermalinkById)(item.article.id)}</link>
               <content:encoded><![CDATA[${item.article.summary || ''}]]></content:encoded>
-              <dsq:thread_identifier>${(0, disqus_constant_1.getThreadIdentifierById)(item.article.id)}</dsq:thread_identifier>
+              <dsq:thread_identifier>${(0, disqus_helper_1.getThreadIdentifierById)(item.article.id)}</dsq:thread_identifier>
               <wp:post_date_gmt>${(0, dayjs_1.default)(item.article.created_at).format('YYYY-MM-DD HH:mm:ss')}</wp:post_date_gmt>
               <wp:comment_status>${item.article.disabled_comments ? disqus_dto_1.ThreadStatus.Closed : disqus_dto_1.ThreadStatus.Open}</wp:comment_status>
               ${item.comments.map(getCommentItemXML).join('\n')}
