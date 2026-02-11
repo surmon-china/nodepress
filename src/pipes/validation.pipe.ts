@@ -4,9 +4,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { validate } from 'class-validator'
 import { plainToInstance } from 'class-transformer'
 import type { ValidationError } from 'class-validator'
-import { validate } from 'class-validator'
 import type { PipeTransform, ArgumentMetadata } from '@nestjs/common'
 import { Injectable, BadRequestException } from '@nestjs/common'
 
@@ -47,7 +47,7 @@ export class ValidationPipe implements PipeTransform<any> {
       return value
     }
 
-    const object = plainToInstance(metatype, value)
+    const object = plainToInstance(metatype, value ?? {})
     const errors = await validate(object)
     if (errors.length > 0) {
       throw new BadRequestException(`Validation failed: ${collectMessages(errors).join('; ')}`)
