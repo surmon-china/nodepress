@@ -6,7 +6,6 @@
 
 import _omit from 'lodash/omit'
 import _uniq from 'lodash/uniq'
-import { lastValueFrom } from 'rxjs'
 import { Injectable } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { EventKeys } from '@app/constants/events.constant'
@@ -17,7 +16,7 @@ import { APP_BIZ, WEBHOOK } from '@app/app.config'
 
 const logger = createLogger({ scope: 'WebhookService', time: isDevEnv })
 
-export interface WebhookData {
+export interface WebhookPayload {
   event: EventKeys
   timestamp: number
   data: any
@@ -28,9 +27,9 @@ export class WebhookService {
   constructor(private readonly httpService: HttpService) {}
 
   public dispatch(event: EventKeys, payload: any): void {
-    if (!WEBHOOK.url) return
+    if (!WEBHOOK.endpoint) return
 
-    const postData: WebhookData = {
+    const postData: WebhookPayload = {
       event,
       timestamp: Date.now(),
       data: payload
@@ -38,17 +37,16 @@ export class WebhookService {
 
     logger.log(`Dispatching event: ${event}...`)
 
-    lastValueFrom(
-      this.httpService.post(WEBHOOK.url, postData, {
+    this.httpService.axiosRef
+      .post(WEBHOOK.endpoint, postData, {
         timeout: 15000,
         headers: {
           'X-Webhook-Token': WEBHOOK.token || '',
           'User-Agent': `${APP_BIZ.NAME}-Webhook-Service`
         }
       })
-    )
-      .then(() => {
-        logger.success(`Event ${event} dispatched successfully.`)
+      .then((result) => {
+        logger.success(`Event ${event} dispatched successfully.`, result.data)
       })
       .catch((error) => {
         logger.failure(`Event ${event} dispatch failed!`, getMessageFromAxiosError(error))

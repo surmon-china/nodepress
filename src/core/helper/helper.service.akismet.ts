@@ -40,8 +40,8 @@ export class AkismetService implements OnModuleInit {
   constructor() {
     // https://github.com/chrisfosterelli/akismet-api
     this.client = new AkismetClient({
-      key: APP_CONFIG.AKISMET.key as string,
-      blog: APP_CONFIG.AKISMET.blog as string
+      key: APP_CONFIG.AKISMET.apiKey,
+      blog: APP_CONFIG.AKISMET.blog
     })
   }
 

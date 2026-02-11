@@ -102,8 +102,8 @@ export const EMAIL = {
 // Akismet Configuration
 export const AKISMET = {
   /** Akismet API key {@link https://akismet.com/developers/getting-started/#verify-key} */
-  key: arg<string>('akismet_key'),
-  /** Akismet blog URL for spam protection (e.g., `https://surmon.me`) */
+  apiKey: arg<string>('akismet_api_key'),
+  /** Akismet blog URL for spam protection (e.g., `https://surmon.me`) {@link https://akismet.com/developers/detailed-docs/key-verification/} */
   blog: arg<string>('akismet_blog')
 }
 
@@ -161,10 +161,20 @@ export const GOOGLE = {
   jwtServiceAccountCredentials: args.google_jwt_cred_json ? JSON.parse(args.google_jwt_cred_json as string) : null
 }
 
-// Webhook Configuration
+/** Webhook Configuration {@link https://github.com/surmon-china/surmon.me.ai} */
 export const WEBHOOK = {
   /** The target URL where the webhook notifications will be sent */
-  url: arg<string>('webhook_url'),
+  endpoint: arg<string>('webhook_endpoint'),
   /** Secret token for authenticating and verifying webhook requests */
   token: arg<string>('webhook_token')
+}
+
+/** Cloudflare AI Gateway Configuration {@link https://developers.cloudflare.com/ai-gateway/usage/chat-completion/} */
+export const CF_AI_GATEWAY = {
+  /** The unique identifier for your Cloudflare account */
+  accountId: arg<string>('cf_aig_account_id'),
+  /** The specific AI Gateway name created in the Cloudflare dashboard */
+  gatewayId: arg<string>('cf_aig_id'),
+  /** API token for gateway authentication (optional if using universal endpoint) */
+  token: arg<string>('cf_aig_token')
 }
