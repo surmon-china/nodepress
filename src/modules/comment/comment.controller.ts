@@ -9,9 +9,11 @@ import _isUndefined from 'lodash/isUndefined'
 import type { QueryFilter } from 'mongoose'
 import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from '@nestjs/common'
 import { Throttle, seconds } from '@nestjs/throttler'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
+import { EventKeys } from '@app/constants/events.constant'
 import { SortMode, SortOrder } from '@app/constants/biz.constant'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
@@ -22,7 +24,10 @@ import { Comment, CommentBase } from './comment.model'
 
 @Controller('comment')
 export class CommentController {
-  constructor(private readonly commentService: CommentService) {}
+  constructor(
+    private readonly eventEmitter: EventEmitter2,
+    private readonly commentService: CommentService
+  ) {}
 
   @Get()
   @UseGuards(AdminOptionalGuard)
@@ -94,7 +99,10 @@ export class CommentController {
   @Throttle({ default: { ttl: seconds(30), limit: 6 } })
   @SuccessResponse('Create comment succeeded')
   createComment(@Body() comment: CommentBase, @RequestContext() { visitor }: IRequestContext): Promise<Comment> {
-    return this.commentService.createFormClient(comment, visitor)
+    return this.commentService.createFormClient(comment, visitor).catch((error) => {
+      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { comment, visitor, error })
+      return Promise.reject(error)
+    })
   }
 
   @Patch()

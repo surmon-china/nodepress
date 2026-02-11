@@ -10,11 +10,12 @@ import { ArticleModule } from '@app/modules/article/article.module'
 import { CommentController } from './comment.controller'
 import { CommentProvider } from './comment.model'
 import { CommentService } from './comment.service'
+import { CommentListener } from './comment.listener'
 
 @Module({
   imports: [OptionsModule, ArticleModule],
   controllers: [CommentController],
-  providers: [CommentProvider, CommentService],
+  providers: [CommentProvider, CommentService, CommentListener],
   exports: [CommentService]
 })
 export class CommentModule {}

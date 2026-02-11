@@ -69,11 +69,6 @@ export class CommentBase {
   @prop({ required: true, validate: /\S+/ })
   content: string
 
-  // user agent
-  @IsString()
-  @prop({ type: String, default: null })
-  agent?: string | null
-
   @Type(() => Author)
   @ValidateNested()
   @IsObject()
@@ -81,6 +76,12 @@ export class CommentBase {
   @IsDefined({ message: 'comment author?' })
   @prop({ _id: false, required: true })
   author: Author
+
+  // user agent
+  @IsString()
+  @IsOptional()
+  @prop({ type: String })
+  agent: string
 }
 
 @plugin(mongoosePaginate)

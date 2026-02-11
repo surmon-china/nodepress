@@ -8,11 +8,13 @@ import type { FastifyReply } from 'fastify'
 import { Controller, UseGuards, UnauthorizedException, BadRequestException } from '@nestjs/common'
 import { Get, Post, Delete, Query, Body, Header, Response } from '@nestjs/common'
 import { Throttle, seconds } from '@nestjs/throttler'
+import { EventEmitter2 } from '@nestjs/event-emitter'
 import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { UploadedFile, IUploadedFile } from '@app/decorators/uploaded-file.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { CommentBase } from '@app/modules/comment/comment.model'
+import { EventKeys } from '@app/constants/events.constant'
 import { DISQUS } from '@app/app.config'
 import { AccessToken } from '@app/utils/disqus'
 import { DisqusPublicService } from './disqus.service.public'
@@ -23,6 +25,7 @@ import { CallbackCodeDTO, ThreadPostIdDTO, CommentIdDTO, GeneralDisqusParams } f
 @Controller('disqus')
 export class DisqusController {
   constructor(
+    private readonly eventEmitter: EventEmitter2,
     private readonly disqusPublicService: DisqusPublicService,
     private readonly disqusPrivateService: DisqusPrivateService
   ) {}
@@ -99,7 +102,10 @@ export class DisqusController {
     @DisqusToken() token: AccessToken | null,
     @Body() comment: CommentBase
   ) {
-    return this.disqusPublicService.createUniversalComment(comment, visitor, token?.access_token)
+    return this.disqusPublicService.createUniversalComment(comment, visitor, token?.access_token).catch((error) => {
+      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { comment, visitor, error })
+      return Promise.reject(error)
+    })
   }
 
   @Delete('comment')
