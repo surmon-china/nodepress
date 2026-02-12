@@ -72,6 +72,11 @@ export interface RequestParams {
   [key: string]: any
 }
 
+export interface RequestOptions {
+  asPublic?: boolean
+  [key: string]: any
+}
+
 export interface DisqusConfig {
   apiKey: string
   apiSecret: string
@@ -85,16 +90,17 @@ export class Disqus {
   }
 
   // Disqus API v3.0 https://disqus.com/api/docs/
-  public request<T = any>(resource: string, params: RequestParams = {}, usePublic = false) {
+  public request<T = any>(resource: string, params: RequestParams = {}, options: RequestOptions = {}) {
     const api = getApiURL(resource)
     const queryParams = { ...params }
     // https://github.com/fooleap/disqus-php-api/blob/master/api/init.php#L342
-    if (usePublic) {
+    if (options.asPublic) {
       queryParams.api_key = DISQUS_PUBKEY
     } else {
       queryParams.api_key = this.config.apiKey
       queryParams.api_secret = this.config.apiSecret
     }
+
     const requester = resourcesRequiringPost.includes(resource)
       ? axios.post<{ code: number; response: T }>(api, null, { params: queryParams })
       : axios.get<{ code: number; response: T }>(api, { params: queryParams })

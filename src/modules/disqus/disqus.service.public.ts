@@ -103,7 +103,7 @@ export class DisqusPublicService {
 
   public async voteThread(params: any) {
     // https://disqus.com/api/docs/threads/vote/
-    return this.disqus.request('threads/vote', params, true).catch((error) => {
+    return this.disqus.request('threads/vote', params, { asPublic: true }).catch((error) => {
       logger.warn('voteThread failed!', error)
       return Promise.reject(error)
     })
@@ -139,11 +139,12 @@ export class DisqusPublicService {
       parent: parentId,
       thread: threadId
     }
+
     if (accessToken) {
-      // publish by Disqus user
+      // Authenticated Disqus User
       body.access_token = accessToken
     } else {
-      // publish by guest user
+      // Guest User (Acting as Moderator)
       body.author_email = comment.author.email
       body.author_name = comment.author.name
       body.author_url = comment.author.site
@@ -151,8 +152,11 @@ export class DisqusPublicService {
 
     return (
       this.disqus
-        // guest comment must use Disqus Public API key (when no accessToken)
-        .request('posts/create', body, !accessToken)
+        // https://groups.google.com/g/disqus-dev/c/9HBAftO0jr0
+        // NOTE: Extensive research and testing confirm that the Disqus API does not support creating anonymous comments with state='approved'.
+        // Consequently, we utilize a community Public Key for guest posts.
+        // These comments will automatically enter a "Pending" status and cannot be replied to directly.
+        .request('posts/create', body, { asPublic: !accessToken })
         .then((response) => response.response)
         .catch((error) => {
           logger.warn('createDisqusComment failed!', error)
@@ -176,7 +180,7 @@ export class DisqusPublicService {
     if (newComment.pid) {
       parentId = await this.getDisqusPostIdByCommentId(newComment.pid)
     }
-    // 5. create disqus post(comment)
+    // 5. create disqus post (comment)
     const disqusPost = await this.createDisqusComment({
       comment: newComment,
       threadId: thread.id,
@@ -186,9 +190,7 @@ export class DisqusPublicService {
     // 6. approve guest post
     // https://groups.google.com/g/disqus-dev/c/DcAZqSE0QSc/m/i-Az_1hKcvIJ
     if (disqusPost.author.isAnonymous && !disqusPost.isApproved) {
-      try {
-        await this.disqusPrivateService.approvePost({ post: disqusPost.id, newUserPremodBypass: 1 })
-      } catch (error) {}
+      await this.disqusPrivateService.approvePost({ post: disqusPost.id, newUserPremodBypass: 1 }).catch(() => {})
     }
     // 7. create nodepress comment
     newComment.author.name = disqusPost.author.name || newComment.author.name
