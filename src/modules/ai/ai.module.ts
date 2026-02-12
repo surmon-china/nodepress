@@ -9,13 +9,12 @@ import { HttpModule } from '@nestjs/axios'
 import { OptionsModule } from '@app/modules/options/options.module'
 import { ArticleModule } from '@app/modules/article/article.module'
 import { CommentModule } from '@app/modules/comment/comment.module'
-import { DisqusModule } from '@app/modules/disqus/disqus.module'
 import { AiController } from './ai.controller'
 import { AiListener } from './ai.listener'
 import { AiService } from './ai.service'
 
 @Module({
-  imports: [HttpModule, OptionsModule, ArticleModule, CommentModule, DisqusModule],
+  imports: [HttpModule, OptionsModule, ArticleModule, CommentModule],
   controllers: [AiController],
   providers: [AiService, AiListener],
   exports: [AiService]

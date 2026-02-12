@@ -10,8 +10,8 @@ import { EventKeys } from '@app/constants/events.constant'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { ROOT_COMMENT_PID } from '@app/constants/biz.constant'
 import { CommentAiGenerationExtraKeys, CommentDisqusExtraKeys } from '@app/constants/extras.constant'
-import { DisqusPublicService } from '@app/modules/disqus/disqus.service.public'
 import { Comment, CommentBaseWithExtras } from '@app/modules/comment/comment.model'
+import { CommentService } from '@app/modules/comment/comment.service'
 import { CommentStatus } from '@app/modules/comment/comment.constant'
 import { getExtraValue } from '@app/transformers/extra.transformer'
 import { APP_BIZ, DISQUS } from '@app/app.config'
@@ -21,7 +21,7 @@ import { AiService, logger } from './ai.service'
 export class AiListener {
   constructor(
     private readonly aiService: AiService,
-    private readonly disqusPublicService: DisqusPublicService
+    private readonly commentService: CommentService
   ) {}
 
   @OnEvent(EventKeys.CommentCreated, { async: true })
@@ -66,9 +66,10 @@ export class AiListener {
         referer: undefined
       }
 
-      // Create the comment through the universal service (DB + Third-party sync)
-      const newComment = await this.disqusPublicService.createUniversalComment(aiComment, aiVisitor)
-      logger.success('AI auto-reply comment succeeded.', newComment.id)
+      // Create the comment to DB
+      const todoComment = this.commentService.normalizeNewComment(aiComment, aiVisitor)
+      const createdComment = await this.commentService.create(todoComment)
+      logger.success('AI auto-reply comment succeeded.', createdComment.id)
     } catch (error) {
       logger.error('AI auto-reply comment failed!', error)
     }

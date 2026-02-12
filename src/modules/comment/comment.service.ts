@@ -21,7 +21,7 @@ import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { OptionsService } from '@app/modules/options/options.service'
 import { getPermalinkById } from '@app/transformers/urlmap.transformer'
 import { CommentStatus, COMMENT_GUEST_QUERY_FILTER } from './comment.constant'
-import { Comment, CommentBaseWithExtras } from './comment.model'
+import { Comment, CommentBase, CommentBaseWithExtras } from './comment.model'
 import { CommentsStatusDTO } from './comment.dto'
 import { isDevEnv, isProdEnv } from '@app/app.environment'
 import { createLogger } from '@app/utils/logger'
@@ -212,10 +212,7 @@ export class CommentService {
   }
 
   // Create comment from client
-  public async createFormClient(
-    comment: CommentBaseWithExtras,
-    visitor: QueryVisitor
-  ): Promise<MongooseDoc<Comment>> {
+  public async createFormClient(comment: CommentBase, visitor: QueryVisitor): Promise<MongooseDoc<Comment>> {
     if (!comment.author.email) {
       throw new BadRequestException('Author email should not be empty')
     }
