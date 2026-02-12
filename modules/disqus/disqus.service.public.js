@@ -92,7 +92,7 @@ let DisqusPublicService = class DisqusPublicService {
         return result;
     }
     async voteThread(params) {
-        return this.disqus.request('threads/vote', params, true).catch((error) => {
+        return this.disqus.request('threads/vote', params, { asPublic: true }).catch((error) => {
             logger.warn('voteThread failed!', error);
             return Promise.reject(error);
         });
@@ -128,7 +128,7 @@ let DisqusPublicService = class DisqusPublicService {
             body.author_url = comment.author.site;
         }
         return (this.disqus
-            .request('posts/create', body, !accessToken)
+            .request('posts/create', body, { asPublic: !accessToken })
             .then((response) => response.response)
             .catch((error) => {
             logger.warn('createDisqusComment failed!', error);
@@ -153,10 +153,7 @@ let DisqusPublicService = class DisqusPublicService {
             accessToken
         });
         if (disqusPost.author.isAnonymous && !disqusPost.isApproved) {
-            try {
-                await this.disqusPrivateService.approvePost({ post: disqusPost.id, newUserPremodBypass: 1 });
-            }
-            catch (error) { }
+            await this.disqusPrivateService.approvePost({ post: disqusPost.id, newUserPremodBypass: 1 }).catch(() => { });
         }
         newComment.author.name = disqusPost.author.name || newComment.author.name;
         newComment.author.site = disqusPost.author.url || newComment.author.site;

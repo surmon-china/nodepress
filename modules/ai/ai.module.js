@@ -12,7 +12,6 @@ const axios_1 = require("@nestjs/axios");
 const options_module_1 = require("../options/options.module");
 const article_module_1 = require("../article/article.module");
 const comment_module_1 = require("../comment/comment.module");
-const disqus_module_1 = require("../disqus/disqus.module");
 const ai_controller_1 = require("./ai.controller");
 const ai_listener_1 = require("./ai.listener");
 const ai_service_1 = require("./ai.service");
@@ -21,7 +20,7 @@ let AiModule = class AiModule {
 exports.AiModule = AiModule;
 exports.AiModule = AiModule = __decorate([
     (0, common_1.Module)({
-        imports: [axios_1.HttpModule, options_module_1.OptionsModule, article_module_1.ArticleModule, comment_module_1.CommentModule, disqus_module_1.DisqusModule],
+        imports: [axios_1.HttpModule, options_module_1.OptionsModule, article_module_1.ArticleModule, comment_module_1.CommentModule],
         controllers: [ai_controller_1.AiController],
         providers: [ai_service_1.AiService, ai_listener_1.AiListener],
         exports: [ai_service_1.AiService]

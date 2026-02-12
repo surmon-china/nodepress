@@ -52,10 +52,10 @@ class Disqus {
     constructor(config) {
         this.config = config;
     }
-    request(resource, params = {}, usePublic = false) {
+    request(resource, params = {}, options = {}) {
         const api = getApiURL(resource);
         const queryParams = { ...params };
-        if (usePublic) {
+        if (options.asPublic) {
             queryParams.api_key = exports.DISQUS_PUBKEY;
         }
         else {

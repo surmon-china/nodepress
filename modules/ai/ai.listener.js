@@ -15,18 +15,18 @@ const event_emitter_1 = require("@nestjs/event-emitter");
 const events_constant_1 = require("../../constants/events.constant");
 const biz_constant_1 = require("../../constants/biz.constant");
 const extras_constant_1 = require("../../constants/extras.constant");
-const disqus_service_public_1 = require("../disqus/disqus.service.public");
 const comment_model_1 = require("../comment/comment.model");
+const comment_service_1 = require("../comment/comment.service");
 const comment_constant_1 = require("../comment/comment.constant");
 const extra_transformer_1 = require("../../transformers/extra.transformer");
 const app_config_1 = require("../../app.config");
 const ai_service_1 = require("./ai.service");
 let AiListener = class AiListener {
     aiService;
-    disqusPublicService;
-    constructor(aiService, disqusPublicService) {
+    commentService;
+    constructor(aiService, commentService) {
         this.aiService = aiService;
-        this.disqusPublicService = disqusPublicService;
+        this.commentService = commentService;
     }
     async handleCommentCreated(comment) {
         if (comment.pid !== biz_constant_1.ROOT_COMMENT_PID)
@@ -62,8 +62,9 @@ let AiListener = class AiListener {
                 origin: undefined,
                 referer: undefined
             };
-            const newComment = await this.disqusPublicService.createUniversalComment(aiComment, aiVisitor);
-            ai_service_1.logger.success('AI auto-reply comment succeeded.', newComment.id);
+            const todoComment = this.commentService.normalizeNewComment(aiComment, aiVisitor);
+            const createdComment = await this.commentService.create(todoComment);
+            ai_service_1.logger.success('AI auto-reply comment succeeded.', createdComment.id);
         }
         catch (error) {
             ai_service_1.logger.error('AI auto-reply comment failed!', error);
@@ -80,6 +81,6 @@ __decorate([
 exports.AiListener = AiListener = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [ai_service_1.AiService,
-        disqus_service_public_1.DisqusPublicService])
+        comment_service_1.CommentService])
 ], AiListener);
 //# sourceMappingURL=ai.listener.js.map
