@@ -429,8 +429,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="164"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.public.ts:164</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="168"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.public.ts:168</a></div>
                         </td>
                     </tr>
 
@@ -523,8 +523,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="214"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.public.ts:214</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="216"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.public.ts:216</a></div>
                         </td>
                     </tr>
 
@@ -593,8 +593,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="224"
-                                    class="link-to-prism">src/modules/disqus/disqus.service.public.ts:224</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="226"
+                                    class="link-to-prism">src/modules/disqus/disqus.service.public.ts:226</a></div>
                         </td>
                     </tr>
 
@@ -1687,7 +1687,7 @@ export class DisqusPublicService {
 
   public async voteThread(params: any) {
     // https://disqus.com/api/docs/threads/vote/
-    return this.disqus.request(&#x27;threads/vote&#x27;, params, true).catch((error) &#x3D;&gt; {
+    return this.disqus.request(&#x27;threads/vote&#x27;, params, { asPublic: true }).catch((error) &#x3D;&gt; {
       logger.warn(&#x27;voteThread failed!&#x27;, error)
       return Promise.reject(error)
     })
@@ -1723,11 +1723,12 @@ export class DisqusPublicService {
       parent: parentId,
       thread: threadId
     }
+
     if (accessToken) {
-      // publish by Disqus user
+      // Authenticated Disqus User
       body.access_token &#x3D; accessToken
     } else {
-      // publish by guest user
+      // Guest User (Acting as Moderator)
       body.author_email &#x3D; comment.author.email
       body.author_name &#x3D; comment.author.name
       body.author_url &#x3D; comment.author.site
@@ -1735,8 +1736,11 @@ export class DisqusPublicService {
 
     return (
       this.disqus
-        // guest comment must use Disqus Public API key (when no accessToken)
-        .request(&#x27;posts/create&#x27;, body, !accessToken)
+        // https://groups.google.com/g/disqus-dev/c/9HBAftO0jr0
+        // NOTE: Extensive research and testing confirm that the Disqus API does not support creating anonymous comments with state&#x3D;&#x27;approved&#x27;.
+        // Consequently, we utilize a community Public Key for guest posts.
+        // These comments will automatically enter a &quot;Pending&quot; status and cannot be replied to directly.
+        .request(&#x27;posts/create&#x27;, body, { asPublic: !accessToken })
         .then((response) &#x3D;&gt; response.response)
         .catch((error) &#x3D;&gt; {
           logger.warn(&#x27;createDisqusComment failed!&#x27;, error)
@@ -1760,7 +1764,7 @@ export class DisqusPublicService {
     if (newComment.pid) {
       parentId &#x3D; await this.getDisqusPostIdByCommentId(newComment.pid)
     }
-    // 5. create disqus post(comment)
+    // 5. create disqus post (comment)
     const disqusPost &#x3D; await this.createDisqusComment({
       comment: newComment,
       threadId: thread.id,
@@ -1770,9 +1774,7 @@ export class DisqusPublicService {
     // 6. approve guest post
     // https://groups.google.com/g/disqus-dev/c/DcAZqSE0QSc/m/i-Az_1hKcvIJ
     if (disqusPost.author.isAnonymous &amp;&amp; !disqusPost.isApproved) {
-      try {
-        await this.disqusPrivateService.approvePost({ post: disqusPost.id, newUserPremodBypass: 1 })
-      } catch (error) {}
+      await this.disqusPrivateService.approvePost({ post: disqusPost.id, newUserPremodBypass: 1 }).catch(() &#x3D;&gt; {})
     }
     // 7. create nodepress comment
     newComment.author.name &#x3D; disqusPost.author.name || newComment.author.name

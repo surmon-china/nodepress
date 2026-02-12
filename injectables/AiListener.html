@@ -176,7 +176,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(aiService: <a href="../injectables/AiService.html" target="_self">AiService</a>, disqusPublicService: <a href="../injectables/DisqusPublicService.html" target="_self">DisqusPublicService</a>)</code>
+<code>constructor(aiService: <a href="../injectables/AiService.html" target="_self">AiService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -211,10 +211,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>disqusPublicService</td>
+                                                        <td>commentService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/DisqusPublicService.html" target="_self" >DisqusPublicService</a></code>
+                                                                        <code><a href="../injectables/CommentService.html" target="_self" >CommentService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -325,8 +325,8 @@ import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { ROOT_COMMENT_PID } from &#x27;@app/constants/biz.constant&#x27;
 import { CommentAiGenerationExtraKeys, CommentDisqusExtraKeys } from &#x27;@app/constants/extras.constant&#x27;
-import { DisqusPublicService } from &#x27;@app/modules/disqus/disqus.service.public&#x27;
 import { Comment, CommentBaseWithExtras } from &#x27;@app/modules/comment/comment.model&#x27;
+import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { CommentStatus } from &#x27;@app/modules/comment/comment.constant&#x27;
 import { getExtraValue } from &#x27;@app/transformers/extra.transformer&#x27;
 import { APP_BIZ, DISQUS } from &#x27;@app/app.config&#x27;
@@ -336,7 +336,7 @@ import { AiService, logger } from &#x27;./ai.service&#x27;
 export class AiListener {
   constructor(
     private readonly aiService: AiService,
-    private readonly disqusPublicService: DisqusPublicService
+    private readonly commentService: CommentService
   ) {}
 
   @OnEvent(EventKeys.CommentCreated, { async: true })
@@ -381,9 +381,10 @@ export class AiListener {
         referer: undefined
       }
 
-      // Create the comment through the universal service (DB + Third-party sync)
-      const newComment &#x3D; await this.disqusPublicService.createUniversalComment(aiComment, aiVisitor)
-      logger.success(&#x27;AI auto-reply comment succeeded.&#x27;, newComment.id)
+      // Create the comment to DB
+      const todoComment &#x3D; this.commentService.normalizeNewComment(aiComment, aiVisitor)
+      const createdComment &#x3D; await this.commentService.create(todoComment)
+      logger.success(&#x27;AI auto-reply comment succeeded.&#x27;, createdComment.id)
     } catch (error) {
       logger.error(&#x27;AI auto-reply comment failed!&#x27;, error)
     }

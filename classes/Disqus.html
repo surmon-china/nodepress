@@ -212,7 +212,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/utils/disqus.ts:82</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/utils/disqus.ts:87</a></div>
                             </td>
                         </tr>
 
@@ -275,7 +275,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/utils/disqus.ts:82</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/utils/disqus.ts:87</a></div>
                         </td>
                     </tr>
 
@@ -311,8 +311,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="114"
-                                    class="link-to-prism">src/utils/disqus.ts:114</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/utils/disqus.ts:120</a></div>
                         </td>
                     </tr>
 
@@ -412,8 +412,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="123"
-                                    class="link-to-prism">src/utils/disqus.ts:123</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">src/utils/disqus.ts:129</a></div>
                         </td>
                     </tr>
 
@@ -493,8 +493,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="141"
-                                    class="link-to-prism">src/utils/disqus.ts:141</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">src/utils/disqus.ts:147</a></div>
                         </td>
                     </tr>
 
@@ -563,15 +563,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>request(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, params: <a href="../interfaces/RequestParams.html" target="_self">RequestParams</a>, usePublic: unknown)</code>
+                    <code>request(resource: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, params: <a href="../interfaces/RequestParams.html" target="_self">RequestParams</a>, options: <a href="../interfaces/RequestOptions.html" target="_self">RequestOptions</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="88"
-                                    class="link-to-prism">src/utils/disqus.ts:88</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">src/utils/disqus.ts:93</a></div>
                         </td>
                     </tr>
 
@@ -630,9 +630,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>usePublic</td>
+                                                <td>options</td>
                                             <td>
-                                                        <code>unknown</code>
+                                                            <code><a href="../interfaces/RequestOptions.html" target="_self" >RequestOptions</a></code>
                                             </td>
 
                                             <td>
@@ -640,7 +640,7 @@
                                             </td>
 
                                             <td>
-                                                    <code>false</code>
+                                                    <code>{}</code>
                                             </td>
 
                                         </tr>
@@ -736,6 +736,11 @@ export interface RequestParams {
   [key: string]: any
 }
 
+export interface RequestOptions {
+  asPublic?: boolean
+  [key: string]: any
+}
+
 export interface DisqusConfig {
   apiKey: string
   apiSecret: string
@@ -749,16 +754,17 @@ export class Disqus {
   }
 
   // Disqus API v3.0 https://disqus.com/api/docs/
-  public request&lt;T &#x3D; any&gt;(resource: string, params: RequestParams &#x3D; {}, usePublic &#x3D; false) {
+  public request&lt;T &#x3D; any&gt;(resource: string, params: RequestParams &#x3D; {}, options: RequestOptions &#x3D; {}) {
     const api &#x3D; getApiURL(resource)
     const queryParams &#x3D; { ...params }
     // https://github.com/fooleap/disqus-php-api/blob/master/api/init.php#L342
-    if (usePublic) {
+    if (options.asPublic) {
       queryParams.api_key &#x3D; DISQUS_PUBKEY
     } else {
       queryParams.api_key &#x3D; this.config.apiKey
       queryParams.api_secret &#x3D; this.config.apiSecret
     }
+
     const requester &#x3D; resourcesRequiringPost.includes(resource)
       ? axios.post&lt;{ code: number; response: T }&gt;(api, null, { params: queryParams })
       : axios.get&lt;{ code: number; response: T }&gt;(api, { params: queryParams })
