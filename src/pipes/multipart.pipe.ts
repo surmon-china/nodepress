@@ -4,7 +4,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import _isUndefined from 'lodash/isUndefined'
 import type { PipeTransform } from '@nestjs/common'
 import type { IFile } from '@nestjs/common/pipes/file/interfaces'
 import type { FileTypeValidatorOptions } from '@nestjs/common/pipes/file'

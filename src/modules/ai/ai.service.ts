@@ -4,8 +4,6 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import _omit from 'lodash/omit'
-import _uniq from 'lodash/uniq'
 import { Injectable } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { OptionsService } from '@app/modules/options/options.service'
