@@ -5,7 +5,7 @@
  */
 
 import _isString from 'lodash/isString'
-import { FastifyReply } from 'fastify'
+import type { FastifyReply } from 'fastify'
 import type { ArgumentsHost } from '@nestjs/common'
 import { ExceptionFilter, Catch, HttpStatus, HttpException } from '@nestjs/common'
 import { ResponseStatus, HttpErrorResponse } from '@app/interfaces/response.interface'
