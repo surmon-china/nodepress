@@ -61,7 +61,7 @@ export class Vote {
   user: Ref<User> | null
 
   public get author_type(): VoteAuthorType {
-    if (this.user) VoteAuthorType.User
+    if (this.user) return VoteAuthorType.User
     if (this.author_name) return VoteAuthorType.Guest
     return VoteAuthorType.Anonymous
   }
