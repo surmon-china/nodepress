@@ -41,6 +41,3 @@ export const emotionsMap = new Map(
     }
   ].map((item) => [item.value, item])
 )
-
-export const FEEDBACK_EMOTIONS = Array.from(emotionsMap.values())
-export const FEEDBACK_EMOTION_VALUES = FEEDBACK_EMOTIONS.map((e) => e.value)

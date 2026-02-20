@@ -4,10 +4,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Module, Global } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
-import { APP_BIZ } from '@app/app.config'
+import { Module, Global } from '@nestjs/common'
 import { AuthService } from './auth.service'
+import { APP_AUTH } from '@app/app.config'
 
 @Global()
 @Module({
@@ -15,8 +15,16 @@ import { AuthService } from './auth.service'
     // https://docs.nestjs.com/security/authentication#jwt-token
     JwtModule.register({
       global: true,
-      secret: APP_BIZ.AUTH_JWT.secret,
-      signOptions: { expiresIn: APP_BIZ.AUTH_JWT.expiresIn }
+      secret: APP_AUTH.jwtSecret,
+      signOptions: {
+        algorithm: 'HS256',
+        issuer: APP_AUTH.jwtIssuer,
+        audience: APP_AUTH.jwtAudience
+      },
+      verifyOptions: {
+        issuer: APP_AUTH.jwtIssuer,
+        audience: APP_AUTH.jwtAudience
+      }
     })
   ],
   providers: [AuthService],

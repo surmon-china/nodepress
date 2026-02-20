@@ -6,10 +6,11 @@
 
 import type { QueryFilter } from 'mongoose'
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
-import type { PaginateOptions } from '@app/utils/paginate'
+import { PaginateOptions } from '@app/utils/paginate'
 import { Announcement } from './announcement.model'
+import { CreateAnnouncementDto, UpdateAnnouncementDto } from './announcement.dto'
 
 @Injectable()
 export class AnnouncementService {
@@ -19,25 +20,25 @@ export class AnnouncementService {
     return this.announcementModel.paginateRaw(filter, options)
   }
 
-  public create(announcement: Announcement): Promise<MongooseDoc<Announcement>> {
-    return this.announcementModel.create(announcement)
+  public create(input: CreateAnnouncementDto): Promise<MongooseDoc<Announcement>> {
+    return this.announcementModel.create(input)
   }
 
-  public async update(announcementId: MongooseId, announcement: Announcement): Promise<MongooseDoc<Announcement>> {
+  public async update(announcementId: number, input: UpdateAnnouncementDto): Promise<MongooseDoc<Announcement>> {
     const updated = await this.announcementModel
-      .findByIdAndUpdate(announcementId, announcement, { new: true })
+      .findOneAndUpdate({ id: announcementId }, { $set: input }, { returnDocument: 'after' })
       .exec()
     if (!updated) throw new NotFoundException(`Announcement '${announcementId}' not found`)
     return updated
   }
 
-  public async delete(announcementId: MongooseId): Promise<MongooseDoc<Announcement>> {
-    const deleted = await this.announcementModel.findByIdAndDelete(announcementId).exec()
+  public async delete(announcementId: number): Promise<MongooseDoc<Announcement>> {
+    const deleted = await this.announcementModel.findOneAndDelete({ id: announcementId }).exec()
     if (!deleted) throw new NotFoundException(`Announcement '${announcementId}' not found`)
     return deleted
   }
 
-  public batchDelete(announcementIds: MongooseId[]) {
-    return this.announcementModel.deleteMany({ _id: { $in: announcementIds } }).exec()
+  public batchDelete(announcementIds: number[]) {
+    return this.announcementModel.deleteMany({ id: { $in: announcementIds } }).exec()
   }
 }

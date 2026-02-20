@@ -4,25 +4,26 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import _trim from 'lodash/trim'
-import _isInteger from 'lodash/isInteger'
 import _isUndefined from 'lodash/isUndefined'
-import { Types } from 'mongoose'
 import type { QueryFilter } from 'mongoose'
 import { EventEmitter2 } from '@nestjs/event-emitter'
-import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from '@nestjs/common'
+import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from '@nestjs/common'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { EventKeys } from '@app/constants/events.constant'
-import { SortMode } from '@app/constants/biz.constant'
-import { TagService } from '@app/modules/tag/tag.service'
+import { CacheKeys } from '@app/constants/cache.constant'
+import { SortMode } from '@app/constants/sort.constant'
+import { CounterService } from '@app/core/helper/helper.service.counter'
 import { CategoryService } from '@app/modules/category/category.service'
+import { TagService } from '@app/modules/tag/tag.service'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { ArticlePaginateQueryDTO, ArticleCalendarQueryDTO, ArticleIdsDTO, ArticlesStatusDTO } from './article.dto'
+import { ArticlePaginateQueryDto, ArticleContextQueryDto, ArticleCalendarQueryDto } from './article.dto'
+import { CreateArticleDto, UpdateArticleDto, ArticleIdsDto, ArticleIdsStatusDto } from './article.dto'
 import { ARTICLE_HOTTEST_SORT_CONFIG } from './article.constant'
+import { ArticleContextService } from './article.service.context'
+import { ArticleStatsService } from './article.service.stats'
 import { ArticleService } from './article.service'
 import { Article } from './article.model'
 
@@ -30,15 +31,17 @@ import { Article } from './article.model'
 export class ArticleController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
+    private readonly counterService: CounterService,
     private readonly tagService: TagService,
     private readonly categoryService: CategoryService,
-    private readonly articleService: ArticleService
+    private readonly articleService: ArticleService,
+    private readonly articleContextService: ArticleContextService,
+    private readonly articleStatsService: ArticleStatsService
   ) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: 'Get articles succeeded', usePaginate: true })
-  async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDTO): Promise<PaginateResult<Article>> {
+  async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDto): Promise<PaginateResult<Article>> {
     const { page, per_page, sort, ...filters } = query
     const queryFilter: QueryFilter<Article> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page }
@@ -68,8 +71,7 @@ export class ArticleController {
 
     // search
     if (filters.keyword) {
-      const trimmed = _trim(filters.keyword)
-      const keywordRegExp = new RegExp(trimmed, 'i')
+      const keywordRegExp = new RegExp(filters.keyword, 'i')
       queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { summary: keywordRegExp }]
     }
 
@@ -84,11 +86,11 @@ export class ArticleController {
 
     // tag | category
     if (filters.tag_slug) {
-      const tag = await this.tagService.getDetailBySlug(filters.tag_slug)
+      const tag = await this.tagService.getDetail(filters.tag_slug)
       queryFilter.tags = tag._id
     }
     if (filters.category_slug) {
-      const category = await this.categoryService.getDetailBySlug(filters.category_slug)
+      const category = await this.categoryService.getDetail(filters.category_slug)
       queryFilter.categories = category._id
     }
 
@@ -97,32 +99,50 @@ export class ArticleController {
   }
 
   @Get('all')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Get all articles succeeded')
   getAllArticles() {
     return this.articleService.getAll()
   }
 
   @Get('calendar')
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get articles calendar succeeded')
   getArticlesCalendar(
-    @Query() query: ArticleCalendarQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
+    @Query() { timezone }: ArticleCalendarQueryDto,
+    @RequestContext() { identity }: IRequestContext
   ) {
-    return this.articleService.getCalendar(isUnauthenticated, query.timezone)
+    return this.articleStatsService.getCalendar(!identity.isAdmin, timezone)
+  }
+
+  @Get(':id')
+  @SuccessResponse('Get article detail succeeded')
+  async getArticle(@Param('id', ParseIntPipe) id: number, @RequestContext() { identity }: IRequestContext) {
+    const article = await this.articleService.getDetail(id, {
+      publicOnly: !identity.isAdmin,
+      populate: !identity.isAdmin,
+      lean: true
+    })
+    if (!identity.isAdmin) {
+      // increment article views
+      this.articleStatsService.incrementStatistics(article.id, 'views')
+      // increment global views
+      this.counterService.incrementGlobalCount(CacheKeys.TodayViewCount)
+    }
+    return article
   }
 
   @Get(':id/context')
   @SuccessResponse('Get context articles succeeded')
-  async getArticleContext(@RequestContext() { params }: IRequestContext) {
-    const articleId = Number(params.id)
+  async getArticleContext(
+    @Param('id', ParseIntPipe) articleId: number,
+    @Query() { related_count }: ArticleContextQueryDto
+  ) {
     const [prevArticles, nextArticles, relatedArticles] = await Promise.all([
-      this.articleService.getNearArticles(articleId, 'early', 1),
-      this.articleService.getNearArticles(articleId, 'later', 1),
+      this.articleContextService.getNearArticles(articleId, 'early', 1),
+      this.articleContextService.getNearArticles(articleId, 'later', 1),
       this.articleService
-        .getDetailByNumberIdOrSlug({ numberId: articleId, publicOnly: true, lean: true })
-        .then((article) => this.articleService.getRelatedArticles(article, 20))
+        .getDetail(articleId, { publicOnly: true, lean: true })
+        .then((article) => this.articleContextService.getRelatedArticles(article, related_count ?? 10))
     ])
     return {
       prev_article: prevArticles?.[0] || null,
@@ -131,71 +151,44 @@ export class ArticleController {
     }
   }
 
-  @Get(':id')
-  @UseGuards(AdminOptionalGuard)
-  @SuccessResponse('Get article detail succeeded')
-  async getArticle(@RequestContext() { params, isUnauthenticated }: IRequestContext): Promise<Article> {
-    // Guest user > number ID | slug
-    if (isUnauthenticated) {
-      const isNumberTypeId = _isInteger(Number(params.id))
-      const article = await this.articleService.getDetailByNumberIdOrSlug({
-        numberId: isNumberTypeId ? Number(params.id) : undefined,
-        slug: isNumberTypeId ? undefined : String(params.id),
-        publicOnly: true,
-        populate: true,
-        lean: true
-      })
-      // increment article views
-      this.articleService.incrementStatistics(article.id, 'views')
-      // dispatch event to global
-      this.eventEmitter.emit(EventKeys.ArticleViewed, article.id)
-      return article
-    }
-
-    // Admin user > Object ID | number ID
-    return Types.ObjectId.isValid(params.id)
-      ? this.articleService.getDetailByObjectId(params.id)
-      : this.articleService.getDetailByNumberIdOrSlug({ numberId: Number(params.id), lean: true })
-  }
-
   @Post()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Create article succeeded')
-  async createArticle(@Body() article: Article): Promise<Article> {
-    const created = this.articleService.create(article)
+  async createArticle(@Body() dto: CreateArticleDto): Promise<Article> {
+    const created = await this.articleService.create(dto)
     this.eventEmitter.emit(EventKeys.ArticleCreated, created)
     return created
   }
 
-  @Put(':id')
-  @UseGuards(AdminOnlyGuard)
+  @Patch(':id')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update article succeeded')
-  async putArticle(@RequestContext() { params }: IRequestContext, @Body() article: Article): Promise<Article> {
-    const updated = await this.articleService.update(params.id, article)
+  async updateArticle(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateArticleDto): Promise<Article> {
+    const updated = await this.articleService.update(id, dto)
     this.eventEmitter.emit(EventKeys.ArticleUpdated, updated)
     return updated
   }
 
   @Delete(':id')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete article succeeded')
-  async delArticle(@RequestContext() { params }: IRequestContext) {
-    const result = await this.articleService.delete(params.id)
+  async deleteArticle(@Param('id', ParseIntPipe) id: number) {
+    const result = await this.articleService.delete(id)
     this.eventEmitter.emit(EventKeys.ArticleDeleted, result)
     return result
   }
 
   @Patch()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update articles succeeded')
-  patchArticles(@Body() body: ArticlesStatusDTO) {
-    return this.articleService.batchPatchStatus(body.article_ids, body.status)
+  updateArticlesStatus(@Body() dto: ArticleIdsStatusDto) {
+    return this.articleService.batchUpdateStatus(dto.article_ids, dto.status)
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete articles succeeded')
-  delArticles(@Body() body: ArticleIdsDTO) {
-    return this.articleService.batchDelete(body.article_ids)
+  deleteArticles(@Body() { article_ids }: ArticleIdsDto) {
+    return this.articleService.batchDelete(article_ids)
   }
 }

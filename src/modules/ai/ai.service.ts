@@ -11,7 +11,7 @@ import { HttpService } from '@nestjs/axios'
 import { OptionsService } from '@app/modules/options/options.service'
 import { ArticleService } from '@app/modules/article/article.service'
 import { Comment } from '@app/modules/comment/comment.model'
-import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
+import { CommentTargetType } from '@app/modules/comment/comment.constant'
 import { ArticleAiSummaryExtraKeys } from '@app/constants/extras.constant'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import { getExtraValue } from '@app/transformers/extra.transformer'
@@ -19,7 +19,7 @@ import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import { CLOUDFLARE_AI_GATEWAY } from '@app/app.config'
 import { AiModelIds, AiModelsMap, DEFAULT_AI_PROMPT_TEMPLATES } from './ai.config'
-import { GenerateAiArticleContentDTO, GenerateAiCommentReplyDTO } from './ai.dto'
+import { GenerateAiArticleContentDto, GenerateAiCommentReplyDto } from './ai.dto'
 import { AiGenerateResult } from './ai.interface'
 
 export const logger = createLogger({ scope: 'AIService', time: isDevEnv })
@@ -75,8 +75,8 @@ export class AiService {
     return template.replace(/{{(\w+)}}/g, (_, key) => data[key] || '')
   }
 
-  public async generateArticleSummary({ model, prompt, article_id }: GenerateAiArticleContentDTO) {
-    const article = await this.articleService.getDetailByNumberIdOrSlug({ numberId: article_id, lean: true })
+  public async generateArticleSummary({ model, prompt, article_id }: GenerateAiArticleContentDto) {
+    const article = await this.articleService.getDetail(article_id, { lean: true })
     const promptTemplate = prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.articleSummary
     const finalPrompt = this.renderTemplate(promptTemplate, { article: article.content })
     return await this.requestAiGateway({
@@ -86,8 +86,8 @@ export class AiService {
     })
   }
 
-  public async generateArticleReview({ model, prompt, article_id }: GenerateAiArticleContentDTO) {
-    const article = await this.articleService.getDetailByNumberIdOrSlug({ numberId: article_id, lean: true })
+  public async generateArticleReview({ model, prompt, article_id }: GenerateAiArticleContentDto) {
+    const article = await this.articleService.getDetail(article_id, { lean: true })
     const promptTemplate = prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.articleReview
     const finalPrompt = this.renderTemplate(promptTemplate, { article: article.content })
     return await this.requestAiGateway({
@@ -97,24 +97,20 @@ export class AiService {
     })
   }
 
-  public async generateCommentReply(comment: Comment, payload?: GenerateAiCommentReplyDTO) {
+  public async generateCommentReply(comment: Omit<Comment, 'user'>, payload?: GenerateAiCommentReplyDto) {
     let contextInfo = 'nil'
 
-    if (comment.post_id === GUESTBOOK_POST_ID) {
-      const options = await this.optionsService.ensureAppOptions()
+    if (comment.target_type === CommentTargetType.Page) {
+      const options = await this.optionsService.ensureOptions()
       contextInfo = [
-        `This message is from the blog's general guestbook.`,
+        `This message is from the blog's general page.`,
         `The following is the blogger's "Statement & FAQ". You may extract relevant information from it IF the user's comment requires specific answers. Otherwise, feel free to ignore this section and respond naturally:`,
         `"""`,
         options.statement,
         `"""`
       ].join('\n')
-    } else {
-      const article = await this.articleService.getDetailByNumberIdOrSlug({
-        numberId: comment.post_id,
-        lean: true
-      })
-
+    } else if (comment.target_type === CommentTargetType.Article) {
+      const article = await this.articleService.getDetail(comment.target_id, { lean: true })
       contextInfo = [
         `Article Title: ${article.title}`,
         `Article Summary: ${getExtraValue(article.extras, ArticleAiSummaryExtraKeys.Content) || article.content.substring(0, 800)}`

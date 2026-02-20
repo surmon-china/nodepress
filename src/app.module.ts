@@ -6,15 +6,18 @@
 
 import type { FastifyRequest } from 'fastify'
 import type { MiddlewareConsumer } from '@nestjs/common'
-import { Module, NestModule } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
+import { Module, NestModule } from '@nestjs/common'
 import { ScheduleModule } from '@nestjs/schedule'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { ThrottlerGuard, ThrottlerModule, minutes } from '@nestjs/throttler'
-import { AppController } from '@app/app.controller'
 
 // Framework
+import { IdentityGuard } from '@app/guards/identity.guard'
 import { NoopMiddleware } from '@app/middlewares/noop.middleware'
+
+// Root module
+import { AppController } from '@app/app.controller'
 
 // Global modules
 import { DatabaseModule } from '@app/core/database/database.module'
@@ -33,7 +36,7 @@ import { FeedbackModule } from '@app/modules/feedback/feedback.module'
 import { VoteModule } from '@app/modules/vote/vote.module'
 import { OptionsModule } from '@app/modules/options/options.module'
 import { AdminModule } from '@app/modules/admin/admin.module'
-import { DisqusModule } from '@app/modules/disqus/disqus.module'
+import { UserModule } from '@app/modules/user/user.module'
 import { SystemModule } from '@app/modules/system/system.module'
 import { WebhookModule } from '@app/modules/webhook/webhook.module'
 import { AiModule } from '@app/modules/ai/ai.module'
@@ -73,9 +76,9 @@ import { AiModule } from '@app/modules/ai/ai.module'
     CategoryModule,
     ArticleModule,
     CommentModule,
-    DisqusModule,
     ArchiveModule,
     VoteModule,
+    UserModule,
     SystemModule,
     WebhookModule,
     AiModule
@@ -85,6 +88,10 @@ import { AiModule } from '@app/modules/ai/ai.module'
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard
+    },
+    {
+      provide: APP_GUARD,
+      useClass: IdentityGuard
     }
   ]
 })

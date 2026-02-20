@@ -4,31 +4,35 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IntersectionType } from '@nestjs/mapped-types'
 import { Transform } from 'class-transformer'
-import { IsInt, IsIn, IsNotEmpty, IsOptional, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { unknownToNumber } from '@app/transformers/value.transformer'
+import { IsEnum, IsInt, IsOptional, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import { IntersectionType, PartialType, PickType } from '@nestjs/mapped-types'
 import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
-import { PaginateOptionDTO } from '@app/models/paginate.model'
-import { KeywordQueryDTO } from '@app/models/query.model'
-import { AnnouncementStatus, ANNOUNCEMENT_STATUSES } from './announcement.constant'
+import { unknownToNumber } from '@app/transformers/value.transformer'
+import { PaginateOptionDto } from '@app/dtos/paginate.dto'
+import { KeywordQueryDto } from '@app/dtos/querys.dto'
+import { AnnouncementStatus } from './announcement.constant'
+import { Announcement } from './announcement.model'
 
-export class AnnouncementPaginateQueryDTO extends IntersectionType(PaginateOptionDTO, KeywordQueryDTO) {
+export class CreateAnnouncementDto extends PickType(Announcement, ['content', 'status'] as const) {}
+
+export class UpdateAnnouncementDto extends PartialType(CreateAnnouncementDto) {}
+
+export class AnnouncementPaginateQueryDto extends IntersectionType(PaginateOptionDto, KeywordQueryDto) {
   @WithGuestPermission({
     only: [AnnouncementStatus.Published],
     default: AnnouncementStatus.Published
   })
-  @IsIn(ANNOUNCEMENT_STATUSES)
-  @IsInt()
-  @IsNotEmpty()
+  @IsEnum(AnnouncementStatus)
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
   status?: AnnouncementStatus
 }
 
-export class AnnouncementsDTO {
+export class AnnouncementIdsDto {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsArray()
-  announcement_ids: string[]
+  @IsInt({ each: true })
+  announcement_ids: number[]
 }

@@ -36,14 +36,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message: _isString(errorInfo) ? errorInfo : errorInfo.message,
         error: _isString(errorInfo) ? null : errorInfo.error,
         timestamp
-      } as HttpErrorResponse)
+      } satisfies HttpErrorResponse)
     } else {
       response.code(HttpStatus.INTERNAL_SERVER_ERROR).send({
         status: ResponseStatus.Error,
         message: exception instanceof Error ? exception.message : String(exception),
         error: 'Internal Server Error',
         timestamp
-      } as HttpErrorResponse)
+      } satisfies HttpErrorResponse)
     }
   }
 }

@@ -19,7 +19,6 @@ export interface IPLocation {
   region: string
   region_code: string
   city: string
-  zip: string
   [key: string]: any
 }
 
@@ -30,7 +29,7 @@ export class IPService {
   // query by https://ip-api.com/docs/api:json
   private queryLocationByIpApi(ip: IP): Promise<IPLocation> {
     return this.httpService.axiosRef
-      .get<any>(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,region,regionName,city,zip`)
+      .get<any>(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,region,regionName,city`)
       .then((response) => {
         return response.data?.status !== 'success'
           ? Promise.reject(response.data.message)
@@ -39,9 +38,8 @@ export class IPService {
               country_code: response.data.countryCode,
               region: response.data.regionName,
               region_code: response.data.region,
-              city: response.data.city,
-              zip: response.data.zip
-            })
+              city: response.data.city
+            } satisfies IPLocation)
       })
       .catch((error) => {
         const message = getMessageFromAxiosError(error)
@@ -62,9 +60,8 @@ export class IPService {
               country_code: response.data.country_code,
               region: response.data.region,
               region_code: response.data.region_code,
-              city: response.data.city,
-              zip: response.data.postal
-            })
+              city: response.data.city
+            } satisfies IPLocation)
       })
       .catch((error) => {
         const message = getMessageFromAxiosError(error)

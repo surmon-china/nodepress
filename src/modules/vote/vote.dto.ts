@@ -4,70 +4,24 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Transform, Type } from 'class-transformer'
-import { IsInt, IsObject, IsArray, IsDefined, IsOptional, IsNotEmpty } from 'class-validator'
-import { IsIn, ValidateNested, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { PaginateOptionDTO } from '@app/models/paginate.model'
-import { Author } from '@app/modules/comment/comment.model'
+import { Transform } from 'class-transformer'
+import { IsInt, IsArray, IsIn, IsEnum, IsDefined, IsOptional, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import { PaginateOptionDto } from '@app/dtos/paginate.dto'
+import { OptionalAuthorDto } from '@app/dtos/author.dto'
 import { unknownToNumber } from '@app/transformers/value.transformer'
-import { VoteType, VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from './vote.constant'
+import { VoteTargetType, VoteType, VoteAuthorType } from './vote.constant'
 
-export class VotePaginateQueryDTO extends PaginateOptionDTO {
-  @IsIn(VOTE_TARGETS)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) => unknownToNumber(value))
-  target_type?: number
-
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) => unknownToNumber(value))
-  target_id?: number
-
-  @IsIn(VOTE_TYPES)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) => unknownToNumber(value))
-  vote_type?: number
-
-  @IsIn(VOTE_AUTHOR_TYPES)
-  @IsInt()
-  @IsNotEmpty()
-  @IsOptional()
-  @Transform(({ value }) => unknownToNumber(value))
-  author_type?: number
-}
-
-export class VotesDTO {
-  @IsArray()
-  @ArrayNotEmpty()
-  @ArrayUnique()
-  vote_ids: string[]
-}
-
-export class VoteAuthorDTO {
-  @Type(() => Author)
-  @ValidateNested()
-  @IsObject()
-  @IsOptional()
-  author?: Author
-}
-
-export class CommentVoteDTO extends VoteAuthorDTO {
+export class CommentVoteDto extends OptionalAuthorDto {
   @IsInt()
   @IsDefined()
   comment_id: number
 
-  @IsIn(VOTE_TYPES)
-  @IsInt()
+  @IsEnum(VoteType)
   @IsDefined()
-  vote: number
+  vote: VoteType
 }
 
-export class ArticleVoteDTO extends VoteAuthorDTO {
+export class ArticleVoteDto extends OptionalAuthorDto {
   @IsInt()
   @IsDefined()
   article_id: number
@@ -75,5 +29,33 @@ export class ArticleVoteDTO extends VoteAuthorDTO {
   @IsIn([VoteType.Upvote])
   @IsInt()
   @IsDefined()
-  vote: number
+  vote: VoteType.Upvote
+}
+
+export class VotePaginateQueryDto extends PaginateOptionDto {
+  @IsEnum(VoteTargetType)
+  @IsOptional()
+  target_type?: VoteTargetType
+
+  @IsInt()
+  @IsOptional()
+  @Transform(({ value }) => unknownToNumber(value))
+  target_id?: number
+
+  @IsEnum(VoteType)
+  @IsOptional()
+  @Transform(({ value }) => unknownToNumber(value))
+  vote_type?: VoteType
+
+  @IsEnum(VoteAuthorType)
+  @IsOptional()
+  author_type?: VoteAuthorType
+}
+
+export class VoteIdsDto {
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsArray()
+  @IsInt({ each: true })
+  vote_ids: number[]
 }

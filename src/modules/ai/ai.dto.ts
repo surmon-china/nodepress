@@ -4,16 +4,16 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IsString, IsNumber, IsEnum, IsNotEmpty, IsOptional, Min } from 'class-validator'
+import { IsString, IsNumber, IsEnum, IsDefined, IsOptional, Min } from 'class-validator'
 import { AiModelIds } from './ai.config'
 
-export class GenerateAiContentDTO {
+export class GenerateAiContentDto {
   @IsString()
   @IsOptional()
   prompt?: string
 
-  @IsOptional()
   @IsEnum(AiModelIds)
+  @IsOptional()
   model?: AiModelIds
 
   @Min(0)
@@ -22,14 +22,14 @@ export class GenerateAiContentDTO {
   temperature?: number
 }
 
-export class GenerateAiArticleContentDTO extends GenerateAiContentDTO {
+export class GenerateAiArticleContentDto extends GenerateAiContentDto {
   @IsNumber()
-  @IsNotEmpty()
+  @IsDefined()
   article_id: number
 }
 
-export class GenerateAiCommentReplyDTO extends GenerateAiContentDTO {
+export class GenerateAiCommentReplyDto extends GenerateAiContentDto {
   @IsNumber()
-  @IsNotEmpty()
+  @IsDefined()
   comment_id: number
 }

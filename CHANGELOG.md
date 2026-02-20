@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file.
 
+### 7.0.0 (2026-02-20)
+
+#### Global Architecture & Model Refactoring
+
+- **ID System Migration**: Completely transitioned from MongoDB **ObjectId** to **Number ID** across all API layers and identifiers.
+- **Identity Logic**: Replaced legacy `Admin` | `Guest` logic with a unified and scalable **Identity** model.
+- **Schema Standardization**:
+- Enforced strict responsibility separation: **DTOs** for input validation vs. **Models** for schema definition (indexes, defaults).
+- Standardized `null` as the database default value to eliminate `undefined` inconsistencies.
+- Added explicit storage type definitions for all Model fields.
+- Ensured all fields with default values are marked as `IsOptional`.
+- Implemented automatic string trimming via `@Transform(({ value }) => value?.trim())`.
+
+- **Type Safety**: Enhanced developer experience by providing comprehensive return types for all controller actions.
+
+#### New & Deprecated Modules
+
+- **User Module**: Introduced a dedicated **User** module to handle core user entities.
+- **Disqus Module**: Formally deprecated and removed the **Disqus** integration module.
+
+#### Article Module
+
+- **Service Decoupling**: Refactored `ArticleService` into multiple sub-services based on specific responsibilities (e.g., Stats, Context).
+- **Algorithm Optimization**: Deeply optimized the `getRelatedArticles` recommendation algorithm using a weighted similarity and Top-K sampling strategy.
+- **Logic Refactoring**: Overhauled internal service logic for better maintainability and performance.
+
+#### Comment Module
+
+- **Schema Flattening**: Simplified the `author` structure by flattening fields:
+- `author.name` > `author_name`
+- `author.email` > `author_email`
+- `author.website` > `author_website`
+- Removed the legacy `author` object.
+
+- **Field Migration**:
+- `pid` > `parent_id` (migrated `0` to `null` for better relational representation).
+- `post_id` > `target_id`.
+- Added `target_type` (`'article' | 'page'`) to support polymorphic commenting.
+- `agent` > `user_agent`.
+
+- **Functionality Updates**:
+- Added a `user` field for registered user associations.
+- Removed legacy IP repair functionality.
+- Removed the `agent` field from the creation payload.
+
+#### Category & Tag Modules
+
+- **Performance Optimization**: Significantly enhanced `aggregateArticleCount` performance through optimized aggregation pipelines.
+- **Interface Cleanup**: Removed redundant and over-engineered API endpoints.
+- **Hierarchy Refactoring**: Renamed `pid` to `parent_id` and migrated its type from `ObjectId` to `Number`.
+
+#### Admin & Options Modules
+
+- **Singleton Pattern**: Enforced a strict **singleton** constraint for both modules (requires `singleton: true` in the database).
+- **Security Update**: Mandatory password setup is now required upon the first administrative profile update.
+- **Field Update**: Renamed `option.blocklist.mails` to `option.blocklist.emails` for semantic clarity.
+
+#### Vote & Feedback Modules
+
+- **Vote Schema**: Flattened author fields to `author_name` and `author_email`; removed legacy `author_type` and `author` object.
+- **Feedback Schema**: Flattened user fields to `author_name` and `author_email`; removed the legacy `tid` field.
+
+#### Archive Module
+
+- **Route Update**: Refactored the manual refresh logic from `PATCH /archive` to `POST /archive/refresh`.
+
 ### 6.3.0 (2026-02-12)
 
 #### Configuration Update

@@ -5,18 +5,15 @@
  */
 
 import { Injectable, OnModuleInit } from '@nestjs/common'
-import { InjectModel } from '@app/transformers/model.transformer'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
+import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { CacheKeys } from '@app/constants/cache.constant'
-import { SortOrder } from '@app/constants/biz.constant'
+import { SortOrder } from '@app/constants/sort.constant'
+import { ARTICLE_PUBLIC_FILTER } from '@app/modules/article/article.constant'
+import { Article } from '@app/modules/article/article.model'
 import { Category } from '@app/modules/category/category.model'
 import { Tag } from '@app/modules/tag/tag.model'
-import { Article } from '@app/modules/article/article.model'
-import {
-  ARTICLE_LIST_QUERY_GUEST_FILTER,
-  ARTICLE_LIST_QUERY_PROJECTION
-} from '@app/modules/article/article.constant'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 
@@ -50,41 +47,29 @@ export class ArchiveService implements OnModuleInit {
     })
   }
 
-  private getAllTags(): Promise<Tag[]> {
-    return this.tagModel.find().sort({ _id: SortOrder.Desc }).lean().exec()
+  public getCache(): Promise<ArchiveData> {
+    return this.archiveCache.get()
   }
 
-  private getAllCategories(): Promise<Category[]> {
-    return this.categoryModel.find().sort({ _id: SortOrder.Desc }).lean().exec()
-  }
-
-  private getAllArticles(): Promise<Article[]> {
-    return this.articleModel
-      .find(ARTICLE_LIST_QUERY_GUEST_FILTER, ARTICLE_LIST_QUERY_PROJECTION)
-      .sort({ _id: SortOrder.Desc })
-      .lean()
-      .exec()
+  public updateCache(): Promise<ArchiveData> {
+    return this.archiveCache.update()
   }
 
   private async getArchiveData(): Promise<ArchiveData> {
     try {
       const [tags, categories, articles] = await Promise.all([
-        this.getAllTags(),
-        this.getAllCategories(),
-        this.getAllArticles()
+        this.tagModel.find().sort({ created_at: SortOrder.Desc }).lean().exec(),
+        this.categoryModel.find().sort({ created_at: SortOrder.Desc }).lean().exec(),
+        this.articleModel.find(ARTICLE_PUBLIC_FILTER).sort({ created_at: SortOrder.Desc }).lean().exec()
       ])
       return { tags, categories, articles }
     } catch (error) {
       logger.warn('getArchiveData failed!', error)
-      return {} as any as ArchiveData
+      return {
+        tags: [],
+        categories: [],
+        articles: []
+      }
     }
-  }
-
-  public getCache() {
-    return this.archiveCache.get()
-  }
-
-  public updateCache() {
-    return this.archiveCache.update()
   }
 }

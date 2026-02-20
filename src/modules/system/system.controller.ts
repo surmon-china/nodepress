@@ -4,10 +4,9 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Get, Post, Patch, Body } from '@nestjs/common'
-import { Controller, UseGuards, BadRequestException } from '@nestjs/common'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
+import { Get, Post, Body } from '@nestjs/common'
+import { Controller, BadRequestException } from '@nestjs/common'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { UploadedFile, IUploadedFile } from '@app/decorators/uploaded-file.decorator'
@@ -27,21 +26,20 @@ export class SystemController {
   ) {}
 
   @Get('statistics')
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get statistics succeeded')
-  getSystemStatistics(@RequestContext() { isUnauthenticated }: IRequestContext): Promise<Statistics> {
-    return this.statisticsService.getStatistics(isUnauthenticated)
+  getSystemStatistics(@RequestContext() { identity }: IRequestContext): Promise<Statistics> {
+    return this.statisticsService.getStatistics(!identity.isAdmin)
   }
 
-  @Patch('database-backup')
-  @UseGuards(AdminOnlyGuard)
+  @Post('database-backup')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update database backup succeeded')
   updateDatabaseBackup() {
     return this.dbBackupService.backup()
   }
 
   @Get('static/list')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Get file list succeeded')
   async getStaticFileList(@RequestContext() { query }: IRequestContext) {
     const minLimit = 200
@@ -67,7 +65,7 @@ export class SystemController {
   }
 
   @Post('static/upload')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Upload file to cloud storage succeeded')
   async uploadStaticFile(@UploadedFile() file: IUploadedFile) {
     if (!file.fields.key) {
@@ -90,33 +88,33 @@ export class SystemController {
 
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunReports
   @Post('google-analytics/batch-run-reports')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Google analytics batchRunReports succeeded')
   googleAnalyticsBatchRunReports(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.batchRunReports({
-      property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+      property: `properties/${APP_CONFIG.GOOGLE_API.analyticsV4PropertyId}`,
       requestBody
     })
   }
 
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/batchRunPivotReports
   @Post('google-analytics/batch-run-pivot-reports')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Google analytics batchRunPivotReports succeeded')
   googleAnalyticsBatchRunPivotReports(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.batchRunPivotReports({
-      property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+      property: `properties/${APP_CONFIG.GOOGLE_API.analyticsV4PropertyId}`,
       requestBody
     })
   }
 
   // https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties/runRealtimeReport
   @Post('google-analytics/run-realtime-report')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Google analytics runRealtimeReport succeeded')
   googleAnalyticsRunRealtimeReport(@Body() requestBody) {
     return this.googleService.getAnalyticsDataClient().properties.runRealtimeReport({
-      property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+      property: `properties/${APP_CONFIG.GOOGLE_API.analyticsV4PropertyId}`,
       requestBody
     })
   }

@@ -9,13 +9,14 @@ export enum CacheKeys {
   Archive = 'archive',
   AllTags = 'all-tags',
   AllCategories = 'all-categories',
-  TodayViewCount = 'today-view-count'
+  TodayViewCount = 'today-view-count',
+  AdminProfile = 'admin-profile'
 }
 
-export const getDisqusCacheKey = (key: string) => {
-  return `disqus:${key}`
+export const getUserAuthStateCacheKey = (key: string) => {
+  return `auth:user-oauth-state:${key}`
 }
 
 export const getInvalidatedTokenCacheKey = (key: string) => {
-  return `auth:invalidated:${key}`
+  return `auth:invalidated-token:${key}`
 }

@@ -4,90 +4,90 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import _trim from 'lodash/trim'
 import _isUndefined from 'lodash/isUndefined'
 import type { QueryFilter } from 'mongoose'
-import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
+import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { Throttle, seconds } from '@nestjs/throttler'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
+import { UserService } from '@app/modules/user/user.service'
 import { EventKeys } from '@app/constants/events.constant'
-import { numberToBoolean } from '@app/transformers/value.transformer'
-import { FeedbackPaginateQueryDTO, FeedbacksDTO } from './feedback.dto'
-import { Feedback, FeedbackBase } from './feedback.model'
+import { CreateFeedbackDto, UpdateFeedbackDto, FeedbackPaginateQueryDto, FeedbackIdsDto } from './feedback.dto'
+import { Feedback, FeedbackWithUser } from './feedback.model'
 import { FeedbackService } from './feedback.service'
 
 @Controller('feedback')
 export class FeedbackController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
+    private readonly userService: UserService,
     private readonly feedbackService: FeedbackService
   ) {}
 
+  @Post()
+  @Throttle({ default: { ttl: seconds(30), limit: 5 } })
+  @SuccessResponse('Create feedback succeeded')
+  async createFeedback(@Body() dto: CreateFeedbackDto, @RequestContext() { visitor, identity }: IRequestContext) {
+    const user = identity.isUser ? await this.userService.findOne(identity.payload!.uid!) : void 0
+    const created = await this.feedbackService.create(dto, visitor, user)
+    this.eventEmitter.emit(EventKeys.FeedbackCreated, created.toObject())
+    return created
+  }
+
   @Get()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse({ message: 'Get feedbacks succeeded', usePaginate: true })
-  getFeedbacks(@Query() query: FeedbackPaginateQueryDTO): Promise<PaginateResult<Feedback>> {
+  getFeedbacks(@Query() query: FeedbackPaginateQueryDto): Promise<PaginateResult<FeedbackWithUser>> {
     const { sort, page, per_page, ...filters } = query
     const queryFilter: QueryFilter<Feedback> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page, dateSort: sort }
-    // target ID
-    if (!_isUndefined(filters.tid)) {
-      queryFilter.tid = filters.tid
-    }
+
     // emotion
     if (!_isUndefined(filters.emotion)) {
       queryFilter.emotion = filters.emotion
     }
     // marked
     if (!_isUndefined(filters.marked)) {
-      queryFilter.marked = numberToBoolean(filters.marked) as boolean
+      queryFilter.marked = filters.marked
     }
     // search
     if (filters.keyword) {
-      const trimmed = _trim(filters.keyword)
-      const keywordRegExp = new RegExp(trimmed, 'i')
+      const keywordRegExp = new RegExp(filters.keyword, 'i')
       queryFilter.$or = [
         { content: keywordRegExp },
-        { user_name: keywordRegExp },
-        { user_email: keywordRegExp },
+        { author_name: keywordRegExp },
+        { author_email: keywordRegExp },
         { remark: keywordRegExp }
       ]
     }
 
-    return this.feedbackService.paginate(queryFilter, paginateOptions)
-  }
-
-  @Post()
-  @Throttle({ default: { ttl: seconds(30), limit: 5 } })
-  @SuccessResponse('Create feedback succeeded')
-  async createFeedback(@Body() feedback: FeedbackBase, @RequestContext() { visitor }: IRequestContext) {
-    const created = await this.feedbackService.create(feedback, visitor)
-    this.eventEmitter.emit(EventKeys.FeedbackCreated, created)
-    return created
+    return this.feedbackService.paginate<FeedbackWithUser>(queryFilter, {
+      ...paginateOptions,
+      populate: 'user'
+    })
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete feedbacks succeeded')
-  deleteFeedbacks(@Body() body: FeedbacksDTO) {
-    return this.feedbackService.batchDelete(body.feedback_ids)
+  deleteFeedbacks(@Body() { feedback_ids }: FeedbackIdsDto) {
+    return this.feedbackService.batchDelete(feedback_ids)
   }
 
-  @Put(':id')
-  @UseGuards(AdminOnlyGuard)
+  @Patch(':id')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update feedback succeeded')
-  putFeedback(@RequestContext() { params }: IRequestContext, @Body() feedback: Feedback): Promise<Feedback> {
-    return this.feedbackService.update(params.id, feedback)
+  updateFeedback(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateFeedbackDto): Promise<Feedback> {
+    return this.feedbackService.update(id, dto)
   }
 
   @Delete(':id')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete feedback succeeded')
-  deleteFeedback(@RequestContext() { params }: IRequestContext) {
-    return this.feedbackService.delete(params.id)
+  deleteFeedback(@Param('id', ParseIntPipe) id: number): Promise<Feedback> {
+    return this.feedbackService.delete(id)
   }
 }

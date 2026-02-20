@@ -11,12 +11,13 @@ import { TagModule } from '@app/modules/tag/tag.module'
 import { ArticleController } from './article.controller'
 import { ArticleProvider } from './article.model'
 import { ArticleService } from './article.service'
-import { ArticleListener } from './article.listener'
+import { ArticleContextService } from './article.service.context'
+import { ArticleStatsService } from './article.service.stats'
 
 @Module({
   imports: [ArchiveModule, CategoryModule, TagModule],
   controllers: [ArticleController],
-  providers: [ArticleProvider, ArticleService, ArticleListener],
-  exports: [ArticleService]
+  providers: [ArticleProvider, ArticleService, ArticleContextService, ArticleStatsService],
+  exports: [ArticleService, ArticleContextService, ArticleStatsService]
 })
 export class ArticleModule {}

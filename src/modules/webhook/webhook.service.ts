@@ -4,14 +4,12 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import _omit from 'lodash/omit'
-import _uniq from 'lodash/uniq'
 import { Injectable } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
 import { EventKeys } from '@app/constants/events.constant'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
-import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
+import { createLogger } from '@app/utils/logger'
 import { APP_BIZ, WEBHOOK } from '@app/app.config'
 
 const logger = createLogger({ scope: 'WebhookService', time: isDevEnv })

@@ -16,20 +16,22 @@ import { APP_BIZ } from '@app/app.config'
 export class FeedbackListener {
   constructor(private readonly emailService: EmailService) {}
 
-  @OnEvent(EventKeys.FeedbackCreated, { async: true })
-  async handleFeedbackCreated(feedback: Feedback) {
+  @OnEvent(EventKeys.FeedbackCreated)
+  handleFeedbackCreated(feedback: Feedback) {
     const subject = 'You have a new feedback'
 
     this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
       to: APP_BIZ.ADMIN_EMAIL,
       subject,
       ...linesToEmailContent([
-        `${subject} on '${feedback.tid}'.`,
+        `${subject}.`,
         `Emotion: ${feedback.emotion_emoji} ${feedback.emotion_text} (${feedback.emotion})`,
         `Content: ${feedback.content}`,
-        `Author: ${feedback.user_name || 'Anonymous user'}`,
+        ``,
+        `Author: ${feedback.author_name || 'Anonymous user'}`,
+        `Origin: ${feedback.origin || 'unknown'}`,
         `Location: ${feedback.ip_location ? getLocationText(feedback.ip_location) : 'unknown'}`,
-        `UserAgent: ${feedback.user_agent ? getUserAgentText(feedback.user_agent) : 'unknown'}`
+        `Agent: ${feedback.user_agent ? getUserAgentText(feedback.user_agent) : 'unknown'}`
       ])
     })
   }

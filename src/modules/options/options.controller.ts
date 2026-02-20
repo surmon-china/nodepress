@@ -5,13 +5,13 @@
  */
 
 import { EventEmitter2 } from '@nestjs/event-emitter'
-import { Controller, Get, Put, Body, UseGuards } from '@nestjs/common'
+import { Controller, Get, Patch, Body } from '@nestjs/common'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { EventKeys } from '@app/constants/events.constant'
 import { OptionsService } from './options.service'
+import { UpdateOptionsDto } from './options.dto'
 import { Option } from './options.model'
 
 @Controller('options')
@@ -22,17 +22,16 @@ export class OptionsController {
   ) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get app options succeeded')
-  getOptions(@RequestContext() { isAuthenticated }: IRequestContext) {
-    return isAuthenticated ? this.optionsService.ensureAppOptions() : this.optionsService.getOptionsCacheForGuest()
+  getOptions(@RequestContext() { identity }: IRequestContext) {
+    return identity.isAdmin ? this.optionsService.ensureOptions() : this.optionsService.getPublicOptionsCache()
   }
 
-  @Put()
-  @UseGuards(AdminOnlyGuard)
+  @Patch()
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update app options succeeded')
-  async putOptions(@Body() options: Option): Promise<Option> {
-    const updated = await this.optionsService.putOptions(options)
+  async updateOptions(@Body() dto: UpdateOptionsDto): Promise<Option> {
+    const updated = await this.optionsService.updateOptions(dto)
     this.eventEmitter.emit(EventKeys.OptionsUpdated, updated)
     return updated
   }

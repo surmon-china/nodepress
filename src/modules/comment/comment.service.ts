@@ -4,28 +4,26 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import type { QueryFilter, MongooseBaseQueryOptions } from 'mongoose'
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import { ForbiddenException, BadRequestException, NotFoundException } from '@nestjs/common'
+import type { QueryFilter } from 'mongoose'
 import { EventEmitter2 } from '@nestjs/event-emitter'
-import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
+import { Injectable, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common'
+import { MongooseModel, WithId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { GUESTBOOK_POST_ID } from '@app/constants/biz.constant'
+import { InjectModel } from '@app/transformers/model.transformer'
 import { EventKeys } from '@app/constants/events.constant'
-import { ArticleService } from '@app/modules/article/article.service'
-import { IPService } from '@app/core/helper/helper.service.ip'
-import { EmailService } from '@app/core/helper/helper.service.email'
-import { AkismetService, AkismetAction } from '@app/core/helper/helper.service.akismet'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
-import { OptionsService } from '@app/modules/options/options.service'
-import { getPermalinkById } from '@app/transformers/urlmap.transformer'
-import { CommentStatus, COMMENT_GUEST_QUERY_FILTER } from './comment.constant'
-import { Comment, CommentBase, CommentBaseWithExtras } from './comment.model'
-import { CommentsStatusDTO } from './comment.dto'
+import { IPService } from '@app/core/helper/helper.service.ip'
+import { KeyValueModel } from '@app/models/key-value.model'
+import { ArticleService } from '@app/modules/article/article.service'
+import { User, UserPublic, USER_PUBLIC_POPULATE_SELECT } from '@app/modules/user/user.model'
+import { CommentStatus, CommentTargetType } from './comment.constant'
+import { Comment, CommentDoc, CommentDocWith, NormalizedComment } from './comment.model'
+import { CreateCommentDto, UpdateCommentDto } from './comment.dto'
+import { CommentBlocklistService } from './comment.service.blocklist'
+import { CommentAkismetService } from './comment.service.akismet'
+import { CommentEffectService } from './comment.service.effect'
 import { isDevEnv, isProdEnv } from '@app/app.environment'
 import { createLogger } from '@app/utils/logger'
-import * as APP_CONFIG from '@app/app.config'
 
 const logger = createLogger({ scope: 'CommentService', time: isDevEnv })
 
@@ -33,309 +31,138 @@ const logger = createLogger({ scope: 'CommentService', time: isDevEnv })
 export class CommentService {
   constructor(
     private readonly ipService: IPService,
-    private readonly emailService: EmailService,
     private readonly eventEmitter: EventEmitter2,
-    private readonly akismetService: AkismetService,
-    private readonly optionsService: OptionsService,
     private readonly articleService: ArticleService,
+    private readonly akismetService: CommentAkismetService,
+    private readonly blocklistService: CommentBlocklistService,
+    private readonly effectService: CommentEffectService,
     @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>
   ) {}
 
-  private async emailToAdminAndTargetAuthor(comment: Comment) {
-    const onWhere =
-      comment.post_id === GUESTBOOK_POST_ID
-        ? 'guestbook'
-        : await this.articleService
-            .getDetailByNumberIdOrSlug({ numberId: comment.post_id, lean: true })
-            .then((article) => `"${article.title}"`)
-
-    const authorName = comment.author.name
-    const getMailContent = (subject = '') => {
-      const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`]
-      const textHTML = texts.map((text) => `<p>${text}</p>`).join('')
-      const replyText = `Reply to ${authorName} #${comment.id}`
-      const commentLink = getPermalinkById(comment.post_id) + `#comment-${comment.id}`
-      const linkHTML = `<a href="${commentLink}" target="_blank">${replyText}</a>`
-      return {
-        text: texts.join('\n'),
-        html: [textHTML, `<br>`, linkHTML].join('\n')
-      }
+  // normalize input data
+  public normalize(
+    input: CreateCommentDto,
+    context: {
+      visitor: QueryVisitor
+      extras?: KeyValueModel[]
+      user?: WithId<User>
     }
-
-    // Email to admin
-    const subject = `You have a new comment`
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-      subject,
-      ...getMailContent(subject)
-    })
-
-    // Email to parent comment author
-    if (comment.pid) {
-      this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
-        if (parentComment?.author.email) {
-          const subject = `Your comment #${parentComment.id} has a new reply`
-          this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-            to: parentComment.author.email,
-            subject,
-            ...getMailContent(subject)
-          })
-        }
-      })
-    }
-  }
-
-  private submitCommentAkismet(action: AkismetAction, comment: Comment, referer?: string): Promise<void> {
-    return this.akismetService[action]({
-      user_ip: comment.ip!,
-      user_agent: comment.agent!,
-      referrer: referer || '',
-      permalink: getPermalinkById(comment.post_id),
-      comment_type: comment.pid ? 'reply' : 'comment',
-      comment_author: comment.author.name,
-      comment_author_email: comment.author.email,
-      comment_author_url: comment.author.site,
-      comment_content: comment.content
-    })
-  }
-
-  private async updateCommentsCountWithArticles(postIds: number[]) {
-    // Filter invalid post_id & guestbook
-    postIds = postIds.map(Number).filter(Boolean)
-    if (!postIds.length) {
-      return false
-    }
-
-    try {
-      const counts = await this.commentModel.aggregate<{ _id: number; num_tutorial: number }>([
-        { $match: { ...COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIds } } },
-        { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } }
-      ])
-      if (!counts || !counts.length) {
-        await this.articleService.updateStatsComments(postIds[0], 0)
-      } else {
-        await Promise.all(
-          counts.map((count) => {
-            return this.articleService.updateStatsComments(count._id, count.num_tutorial)
-          })
-        )
-      }
-    } catch (error) {
-      logger.warn('updateCommentCountWithArticle failed!', error)
-    }
-  }
-
-  // Comment status effects
-  private updateBlocklistAkismetWithComment(comments: Comment[], status: CommentStatus, referer?: string) {
-    const isSPAM = status === CommentStatus.Spam
-    const action = isSPAM ? AkismetAction.SubmitSpam : AkismetAction.SubmitHam
-    // SPAM > append to blocklist & submitSpam
-    // HAM > remove from blocklist & submitHAM
-    // Akismet
-    comments.forEach((comment) => this.submitCommentAkismet(action, comment, referer))
-    // block list
-    const ips: string[] = comments.map((comment) => comment.ip!).filter(Boolean)
-    const emails: string[] = comments.map((comment) => comment.author.email!).filter(Boolean)
-    const blocklistAction = isSPAM
-      ? this.optionsService.appendToBlocklist({ ips, emails })
-      : this.optionsService.removeFromBlocklist({ ips, emails })
-    blocklistAction
-      .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeeded.'))
-      .catch((error) => logger.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error))
-  }
-
-  // Validate comment by NodePress IP/email/keywords
-  public async verifyCommentValidity(comment: Comment): Promise<void> {
-    const { blocklist } = await this.optionsService.ensureAppOptions()
-    const { keywords, mails, ips } = blocklist
-    const blockByIP = ips.includes(comment.ip!)
-    const blockByEmail = mails.includes(comment.author.email!)
-    const blockByKeyword = keywords.length && new RegExp(`${keywords.join('|')}`, 'ig').test(comment.content)
-    if (blockByIP || blockByEmail || blockByKeyword) {
-      const reason = blockByIP ? 'Blocked IP' : blockByEmail ? 'Blocked Email' : 'Blocked Keywords'
-      throw new ForbiddenException(`Comment blocked. Reason: ${reason}`)
-    }
-  }
-
-  // Validate comment target commentable
-  public async verifyTargetCommentable(targetPostId: number): Promise<void> {
-    if (targetPostId !== GUESTBOOK_POST_ID) {
-      if (!(await this.articleService.isCommentableArticle(targetPostId))) {
-        throw new BadRequestException(`Comment is not allowed on article ${targetPostId}`)
-      }
-    }
-  }
-
-  public getAll(): Promise<Array<Comment>> {
-    return this.commentModel.find().lean().exec()
-  }
-
-  // Get comment list
-  public paginate(
-    filter: QueryFilter<Comment>,
-    options: PaginateOptions
-  ): Promise<PaginateResult<MongooseDoc<Comment>>> {
-    // MARK: can't use 'lean' with virtual 'email_hash'
-    // MARK: can't use select('-email') with virtual 'email_hash'
-    // MARK: keep 'paginate', the 'paginateRaw' method is not available here.
-    // https://github.com/Automattic/mongoose/issues/3130#issuecomment-395750197
-    return this.commentModel.paginate(filter, options)
-  }
-
-  public normalizeNewComment(comment: CommentBaseWithExtras, visitor: QueryVisitor): Comment {
+  ): NormalizedComment {
+    const { visitor, extras, user } = context
     return {
-      ...comment,
-      pid: Number(comment.pid),
-      post_id: Number(comment.post_id),
+      ...input,
+      parent_id: input.parent_id ?? null,
       status: CommentStatus.Published,
+      user: user?._id ?? null,
+      author_name: user?.name ?? input.author_name,
+      author_email: user?.email ?? input.author_email ?? null,
+      author_website: user?.website ?? input.author_website ?? null,
       likes: 0,
       dislikes: 0,
       ip: visitor.ip,
-      ip_location: {},
-      agent: visitor.ua || comment.agent,
-      extras: comment.extras ?? []
+      ip_location: null,
+      user_agent: visitor.agent,
+      extras: extras ?? []
     }
   }
 
-  // Create comment
-  public async create(comment: Comment): Promise<MongooseDoc<Comment>> {
-    const ip_location = isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null
-    const succeededComment = await this.commentModel.create({
-      ...comment,
-      ip_location
-    })
-    // update aggregate & email notification
-    this.updateCommentsCountWithArticles([succeededComment.post_id])
-    this.emailToAdminAndTargetAuthor(succeededComment)
-    this.eventEmitter.emit(EventKeys.CommentCreated, succeededComment)
-    return succeededComment
+  // create comment & trigger effects
+  public async create(input: NormalizedComment): Promise<CommentDocWith<UserPublic>> {
+    const ip_location = isProdEnv && input.ip ? await this.ipService.queryLocation(input.ip) : null
+    const created = await this.commentModel.create({ ...input, ip_location })
+    // populate user data for response
+    const populated = await created.populate<{ user: UserPublic | null }>('user', USER_PUBLIC_POPULATE_SELECT)
+    // effect: sync target (article / page) effects
+    this.effectService.syncTargetEffects([populated])
+    // event: dispatch created event (for emails, notifications, etc.)
+    this.eventEmitter.emit(EventKeys.CommentCreated, populated.toObject())
+    return populated
   }
 
-  // Create comment from client
-  public async createFormClient(comment: CommentBase, visitor: QueryVisitor): Promise<MongooseDoc<Comment>> {
-    if (!comment.author.email) {
-      throw new BadRequestException('Author email should not be empty')
+  // validate & create comment
+  public async validateAndCreate(input: NormalizedComment, referer?: string) {
+    // 1. target validation (article only)
+    if (input.target_type === CommentTargetType.Article) {
+      if (!(await this.articleService.isCommentableArticle(input.target_id))) {
+        throw new BadRequestException(`Comment is disabled for article: ${input.target_id}`)
+      }
     }
-    // 1. Standardize comment data to ensure that some fields cannot be overwritten by users
-    const newComment = this.normalizeNewComment(comment, visitor)
-    // 2. check commentable
-    await this.verifyTargetCommentable(newComment.post_id)
-    // 3. block list | akismet
-    await Promise.all([
-      this.verifyCommentValidity(newComment),
-      this.submitCommentAkismet(AkismetAction.CheckSpam, newComment, visitor.referer)
+    // 2. local blocklist & remote Akismet SPAM
+    const [isSpam] = await Promise.all([
+      this.akismetService.checkSpam(this.akismetService.transformCommentToAkismet(input, referer)),
+      this.blocklistService.validate(input)
     ])
-    // 4. create data in DB
-    return this.create(newComment)
+    if (isSpam) {
+      throw new ForbiddenException('Comment blocked by Akismet SPAM.')
+    }
+    // 3. create in databse
+    return this.create(input)
   }
 
-  // Get comment detail by ObjectId
-  public async getDetailByObjectId(commentId: MongooseId): Promise<MongooseDoc<Comment>> {
-    const comment = await this.commentModel.findById(commentId).exec()
+  public async getDetail(commentId: number): Promise<CommentDoc>
+  public async getDetail(commentId: number, populate: 'withUser'): Promise<CommentDocWith<User>>
+  public async getDetail(commentId: number, populate: 'withUserPublic'): Promise<CommentDocWith<UserPublic>>
+  public async getDetail(commentId: number, populate?: 'withUser' | 'withUserPublic') {
+    const query = this.commentModel.findOne({ id: commentId })
+    if (populate === 'withUser') {
+      query.populate<{ user: User | null }>('user')
+    } else if (populate === 'withUserPublic') {
+      query.populate<{ user: UserPublic | null }>('user', USER_PUBLIC_POPULATE_SELECT)
+    }
+    const comment = await query.exec()
     if (!comment) throw new NotFoundException(`Comment '${commentId}' not found`)
-    return comment
+    return comment as any
   }
 
-  // Get comment detail by number ID
-  public async getDetailByNumberId(commentId: number): Promise<MongooseDoc<Comment>> {
-    const comment = await this.commentModel.findOne({ id: commentId }).exec()
-    if (!comment) throw new NotFoundException(`Comment '${commentId}' not found`)
-    return comment
+  public paginate<T = Comment>(filter: QueryFilter<Comment>, options: PaginateOptions): Promise<PaginateResult<T>> {
+    return this.commentModel.paginateRaw<T>(filter, { ...options, lean: { virtuals: true } })
   }
 
-  // Update comment
-  public async update(
-    commentId: MongooseId,
-    newComment: Partial<Comment>,
-    referer?: string
-  ): Promise<MongooseDoc<Comment>> {
-    const updated = await this.commentModel.findByIdAndUpdate(commentId, newComment, { new: true }).exec()
+  public async update(commentId: number, input: UpdateCommentDto): Promise<CommentDoc> {
+    const updated = await this.commentModel
+      .findOneAndUpdate({ id: commentId }, { $set: input }, { returnDocument: 'after' })
+      .exec()
     if (!updated) throw new NotFoundException(`Comment '${commentId}' not found`)
-
-    this.updateCommentsCountWithArticles([updated.post_id])
-    this.updateBlocklistAkismetWithComment([updated], updated.status, referer)
+    this.effectService.syncTargetEffects([updated])
+    this.blocklistService.syncByStatus([updated], updated.status)
     return updated
   }
 
-  // Delete comment
-  public async delete(commentId: MongooseId) {
-    const deleted = await this.commentModel.findByIdAndDelete(commentId, null).exec()
+  public async delete(commentId: number): Promise<CommentDoc> {
+    const deleted = await this.commentModel.findOneAndDelete({ id: commentId }).exec()
     if (!deleted) throw new NotFoundException(`Comment '${commentId}' not found`)
-
-    this.updateCommentsCountWithArticles([deleted.post_id])
+    this.effectService.syncTargetEffects([deleted])
     return deleted
   }
 
-  public async batchPatchStatus(action: CommentsStatusDTO, referer?: string) {
-    const { comment_ids, post_ids, status } = action
-    const actionResult = await this.commentModel
-      .updateMany({ _id: { $in: comment_ids } }, { $set: { status } })
+  public async batchUpdateStatus(commentIds: number[], status: CommentStatus) {
+    const comments = await this.commentModel
+      .find({ id: { $in: commentIds } })
+      .lean()
       .exec()
-    // update ref article.stats.comments
-    this.updateCommentsCountWithArticles(post_ids)
-    try {
-      const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } })
-      this.updateBlocklistAkismetWithComment(todoComments, status, referer)
-    } catch (error) {
-      logger.warn(`batchPatchStatus to ${status} failed!`, error)
-    }
-    return actionResult
-  }
-
-  public async batchDelete(commentIds: MongooseId[], postIds: number[]) {
-    const result = await this.commentModel.deleteMany({ _id: { $in: commentIds } }).exec()
-    this.updateCommentsCountWithArticles(postIds)
+    const result = await this.commentModel.updateMany({ id: { $in: commentIds } }, { $set: { status } }).exec()
+    this.blocklistService.syncByStatus(comments, status)
+    this.effectService.syncTargetEffects(comments)
     return result
   }
 
-  public async countDocuments(
-    queryFilter: QueryFilter<Comment>,
-    queryOptions?: MongooseBaseQueryOptions<Comment>
-  ): Promise<number> {
-    return await this.commentModel.countDocuments(queryFilter, queryOptions).exec()
+  public async batchDelete(commentIds: number[]) {
+    const targets = await this.commentModel
+      .find({ id: { $in: commentIds } })
+      .lean()
+      .exec()
+    const result = await this.commentModel.deleteMany({ id: { $in: commentIds } }).exec()
+    this.effectService.syncTargetEffects(targets)
+    return result
   }
 
-  public async getTotalCount(publicOnly: boolean): Promise<number> {
-    return await this.countDocuments(publicOnly ? COMMENT_GUEST_QUERY_FILTER : {})
-  }
+  public async incrementVote(commentId: number, field: 'likes' | 'dislikes'): Promise<number> {
+    const updated = await this.commentModel
+      .findOneAndUpdate({ id: commentId }, { $inc: { [field]: 1 } }, { returnDocument: 'after', timestamps: false })
+      .lean()
+      .exec()
+    if (!updated) throw new NotFoundException(`Comment '${commentId}' not found`)
 
-  public async getCalendar(publicOnly: boolean, timezone = 'GMT') {
-    try {
-      const calendar = await this.commentModel.aggregate<{ _id: string; count: number }>([
-        { $match: publicOnly ? COMMENT_GUEST_QUERY_FILTER : {} },
-        { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
-        { $group: { _id: '$day', count: { $sum: 1 } } },
-        { $sort: { _id: 1 } }
-      ])
-      return calendar.map(({ _id, ...rest }) => ({ ...rest, date: _id }))
-    } catch (error: unknown) {
-      throw new BadRequestException(`Invalid timezone identifier: '${timezone}'`, String(error))
-    }
-  }
-
-  public async reviseIPLocation(commentId: MongooseId) {
-    const comment = await this.getDetailByObjectId(commentId)
-    if (!comment.ip) {
-      throw new BadRequestException(`Comment '${commentId}' hasn't IP address`)
-    }
-
-    const location = await this.ipService.queryLocation(comment.ip)
-    if (!location) {
-      throw new InternalServerErrorException(`Failed to resolve location for IP: ${comment.ip}`)
-    }
-
-    comment.ip_location = { ...location }
-    return await comment.save()
-  }
-
-  // Vote comment
-  public async vote(commentId: number, isLike: boolean) {
-    const comment = await this.getDetailByNumberId(commentId)
-    isLike ? comment.likes++ : comment.dislikes++
-    await comment.save({ timestamps: false })
-    return {
-      likes: comment.likes,
-      dislikes: comment.dislikes
-    }
+    return updated[field]
   }
 }

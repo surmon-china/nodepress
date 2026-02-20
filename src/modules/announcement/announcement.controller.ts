@@ -4,15 +4,14 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import _trim from 'lodash/trim'
+import _isUndefined from 'lodash/isUndefined'
 import type { QueryFilter } from 'mongoose'
-import { Controller, Get, Put, Post, Delete, Body, UseGuards, Query } from '@nestjs/common'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
-import { PermissionPipe } from '@app/pipes/permission.pipe'
+import { Controller, Get, Patch, Post, Delete, Body, Query, Param, ParseIntPipe } from '@nestjs/common'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
-import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
-import { AnnouncementsDTO, AnnouncementPaginateQueryDTO } from './announcement.dto'
+import { PermissionPipe } from '@app/pipes/permission.pipe'
+import { AnnouncementPaginateQueryDto, AnnouncementIdsDto } from './announcement.dto'
+import { CreateAnnouncementDto, UpdateAnnouncementDto } from './announcement.dto'
 import { AnnouncementService } from './announcement.service'
 import { Announcement } from './announcement.model'
 
@@ -21,23 +20,20 @@ export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: 'Get announcements succeeded', usePaginate: true })
-  getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDTO) {
+  getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDto) {
     const { sort, page, per_page, ...filters } = query
     const queryFilter: QueryFilter<Announcement> = {}
 
     // search
     if (filters.keyword) {
-      queryFilter.content = new RegExp(_trim(filters.keyword), 'i')
+      queryFilter.content = new RegExp(filters.keyword, 'i')
     }
-
     // status
-    if (filters.status != null) {
+    if (!_isUndefined(filters.status)) {
       queryFilter.status = filters.status
     }
 
-    // paginate
     return this.announcementService.paginate(queryFilter, {
       page,
       perPage: per_page,
@@ -46,30 +42,30 @@ export class AnnouncementController {
   }
 
   @Post()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Create announcement succeeded')
-  createAnnouncement(@Body() announcement: Announcement) {
-    return this.announcementService.create(announcement)
+  createAnnouncement(@Body() dto: CreateAnnouncementDto): Promise<Announcement> {
+    return this.announcementService.create(dto)
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete announcements succeeded')
-  delAnnouncements(@Body() body: AnnouncementsDTO) {
-    return this.announcementService.batchDelete(body.announcement_ids)
+  deleteAnnouncements(@Body() { announcement_ids }: AnnouncementIdsDto) {
+    return this.announcementService.batchDelete(announcement_ids)
   }
 
-  @Put(':id')
-  @UseGuards(AdminOnlyGuard)
+  @Patch(':id')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update announcement succeeded')
-  putAnnouncement(@RequestContext() { params }: IRequestContext, @Body() announcement: Announcement) {
-    return this.announcementService.update(params.id, announcement)
+  updateAnnouncement(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateAnnouncementDto) {
+    return this.announcementService.update(id, dto)
   }
 
   @Delete(':id')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete announcement succeeded')
-  delAnnouncement(@RequestContext() { params }: IRequestContext) {
-    return this.announcementService.delete(params.id)
+  deleteAnnouncement(@Param('id', ParseIntPipe) id: number) {
+    return this.announcementService.delete(id)
   }
 }

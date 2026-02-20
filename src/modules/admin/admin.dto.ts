@@ -4,16 +4,39 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IsString, IsDefined, IsNotEmpty } from 'class-validator'
-import { Admin } from './admin.model'
+import { Transform } from 'class-transformer'
+import { IsString, IsBase64, IsOptional, IsNotEmpty } from 'class-validator'
 
-export class AuthLoginDTO {
-  @IsString({ message: 'password must be string type' })
-  @IsNotEmpty({ message: 'password?' })
-  @IsDefined()
+export class AuthLoginDto {
+  @IsBase64()
+  @IsString()
+  @IsNotEmpty()
   password: string
 }
 
-export class AdminUpdateDTO extends Admin {
+export class UpdateProfileDto {
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value?.trim())
+  name: string
+
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  slogan: string
+
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  avatar: string
+
+  @IsBase64()
+  @IsString()
+  @IsOptional()
+  password?: string
+
+  @IsBase64()
+  @IsString()
+  @IsOptional()
   new_password?: string
 }

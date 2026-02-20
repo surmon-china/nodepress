@@ -1,12 +1,9 @@
 import 'fastify'
+import { Identity } from '../constants/identity.constant'
 
 declare module 'fastify' {
   interface FastifyRequest {
-    locals: {
-      token: string | undefined
-      isAuthenticated: boolean
-      isUnauthenticated: boolean
-      validatedQueryParams?: Record<string, any>
-    }
+    validatedQueryParams?: Record<string, any>
+    identity: Identity
   }
 }

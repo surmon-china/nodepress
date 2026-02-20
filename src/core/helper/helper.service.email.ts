@@ -61,19 +61,13 @@ export class EmailService implements OnModuleInit {
       return false
     }
 
-    this.transporter.sendMail(
-      {
-        ...mailOptions,
-        from: APP_CONFIG.EMAIL.from
-      },
-      (error, info) => {
-        if (error) {
-          logger.failure('send failed!', getMessageFromNormalError(error))
-        } else {
-          logger.success('send succeeded.', info.messageId, info.response)
-        }
+    this.transporter.sendMail({ ...mailOptions, from: APP_CONFIG.EMAIL.from }, (error, info) => {
+      if (error) {
+        logger.failure('send failed!', getMessageFromNormalError(error))
+      } else {
+        logger.success('send succeeded.', info.messageId, info.response)
       }
-    )
+    })
   }
 
   public sendMailAs(prefix: string, mailOptions: EmailOptions) {

@@ -4,42 +4,45 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import type { QueryFilter, MongooseBaseQueryOptions } from 'mongoose'
+import type { QueryFilter } from 'mongoose'
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
-import { Vote } from './vote.model'
+import { EventKeys } from '@app/constants/events.constant'
+import { User } from '@app/modules/user/user.model'
+import { Vote, VoteDocWithUser, NormalizedVote } from './vote.model'
 
 @Injectable()
 export class VoteService {
-  constructor(@InjectModel(Vote) private readonly voteModel: MongooseModel<Vote>) {}
+  constructor(
+    private readonly eventEmitter: EventEmitter2,
+    @InjectModel(Vote) private readonly voteModel: MongooseModel<Vote>
+  ) {}
 
-  public paginate(filter: QueryFilter<Vote>, options: PaginateOptions): Promise<PaginateResult<Vote>> {
-    return this.voteModel.paginateRaw(filter, options)
+  public countDocuments(filter: QueryFilter<Vote>): Promise<number> {
+    return this.voteModel.countDocuments(filter).lean().exec()
   }
 
-  public create(vote: Vote): Promise<MongooseDoc<Vote>> {
-    return this.voteModel.create(vote)
+  public paginate<T = Vote>(filter: QueryFilter<Vote>, options: PaginateOptions): Promise<PaginateResult<T>> {
+    return this.voteModel.paginateRaw<T>(filter, { ...options, lean: { virtuals: true } })
   }
 
-  public async update(voteId: MongooseId, newVote: Partial<Vote>): Promise<MongooseDoc<Vote>> {
-    const updated = await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec()
-    if (!updated) throw new NotFoundException(`Vote '${voteId}' not found`)
-    return updated
+  public async create(vote: NormalizedVote): Promise<VoteDocWithUser> {
+    const created = await this.voteModel.create(vote)
+    const populated = await created.populate<{ user: User | null }>('user')
+    this.eventEmitter.emit(EventKeys.VoteCreated, populated.toObject())
+    return populated
   }
 
-  public async delete(voteId: MongooseId) {
-    const deleted = await this.voteModel.findByIdAndDelete(voteId, null).exec()
+  public async delete(voteId: number): Promise<Vote> {
+    const deleted = await this.voteModel.findOneAndDelete({ id: voteId }).exec()
     if (!deleted) throw new NotFoundException(`Vote '${voteId}' not found`)
     return deleted
   }
 
-  public batchDelete(voteIds: MongooseId[]) {
-    return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec()
-  }
-
-  public countDocuments(filter: QueryFilter<Vote>, options?: MongooseBaseQueryOptions<Vote>): Promise<number> {
-    return this.voteModel.countDocuments(filter, options).exec()
+  public batchDelete(voteIds: number[]) {
+    return this.voteModel.deleteMany({ id: { $in: voteIds } }).exec()
   }
 }

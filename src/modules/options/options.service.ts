@@ -5,31 +5,32 @@
  */
 
 import _omit from 'lodash/omit'
-import _uniq from 'lodash/uniq'
 import { Injectable, OnModuleInit } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
+import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
-import { Option, Blocklist, DEFAULT_OPTIONS } from './options.model'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
+import { Option, OptionPublic, Blocklist, DEFAULT_OPTIONS, OPTIONS_SINGLETON_QUERY } from './options.model'
+import { UpdateOptionsDto } from './options.dto'
 
 const logger = createLogger({ scope: 'OptionsService', time: isDevEnv })
 
 @Injectable()
 export class OptionsService implements OnModuleInit {
-  private optionsCache: CacheManualResult<Omit<Option, 'blocklist'>>
+  private optionsCache: CacheManualResult<OptionPublic>
 
   constructor(
-    @InjectModel(Option) private readonly optionsModel: MongooseModel<Option>,
+    @InjectModel(Option)
+    private readonly optionsModel: MongooseModel<Option>,
     private readonly cacheService: CacheService
   ) {
     this.optionsCache = this.cacheService.manual({
       key: CacheKeys.Options,
       promise: () => {
-        return this.ensureAppOptions().then((option) => {
-          return _omit(option.toObject<Option>(), ['blocklist', '_id'])
+        return this.ensureOptions().then((option) => {
+          return _omit(option, ['blocklist', '_id']) as OptionPublic
         })
       }
     })
@@ -41,40 +42,53 @@ export class OptionsService implements OnModuleInit {
     })
   }
 
-  public async ensureAppOptions(): Promise<MongooseDoc<Option>> {
-    // MARK: To avoid blocking subsequent write operations, `.select(-1)` should not be used here.
-    const options = await this.optionsModel.findOne().exec()
-    return options ?? (await this.optionsModel.create({ ...DEFAULT_OPTIONS }))
-  }
-
-  public getOptionsCacheForGuest() {
+  public getPublicOptionsCache(): Promise<OptionPublic> {
     return this.optionsCache.get()
   }
 
-  public async putOptions(newOptions: Option): Promise<Option> {
-    // delete _id fields
-    Reflect.deleteProperty(newOptions, '_id')
-    // create and update
-    await this.ensureAppOptions()
-    await this.optionsModel.updateOne({}, newOptions).exec()
+  public ensureOptions(): Promise<Option> {
+    return this.optionsModel
+      .findOneAndUpdate(
+        OPTIONS_SINGLETON_QUERY,
+        { $setOnInsert: { ...DEFAULT_OPTIONS, ...OPTIONS_SINGLETON_QUERY } },
+        { upsert: true, setDefaultsOnInsert: true, returnDocument: 'after' }
+      )
+      .lean()
+      .exec()
+  }
+
+  public async updateOptions(input: UpdateOptionsDto): Promise<Option> {
+    // ensure and update
+    await this.ensureOptions()
+    const updated = await this.optionsModel
+      .findOneAndUpdate(OPTIONS_SINGLETON_QUERY, { $set: input }, { returnDocument: 'after' })
+      .exec()
     // update cache when options updated
     await this.optionsCache.update()
-    return await this.ensureAppOptions()
+    return updated!
   }
 
-  public async appendToBlocklist(payload: { ips: string[]; emails: string[] }): Promise<Blocklist> {
-    const options = await this.ensureAppOptions()
-    options.blocklist.ips = _uniq([...options.blocklist.ips, ...payload.ips])
-    options.blocklist.mails = _uniq([...options.blocklist.mails, ...payload.emails])
-    await options.save()
-    return options.blocklist
+  public async appendToBlocklist({ ips, emails }: Pick<Blocklist, 'ips' | 'emails'>): Promise<Blocklist> {
+    await this.ensureOptions()
+    const updated = await this.optionsModel
+      .findOneAndUpdate(
+        OPTIONS_SINGLETON_QUERY,
+        { $addToSet: { 'blocklist.ips': { $each: ips }, 'blocklist.emails': { $each: emails } } },
+        { returnDocument: 'after' }
+      )
+      .exec()
+    return updated!.blocklist
   }
 
-  public async removeFromBlocklist(payload: { ips: string[]; emails: string[] }): Promise<Blocklist> {
-    const options = await this.ensureAppOptions()
-    options.blocklist.ips = options.blocklist.ips.filter((ip) => !payload.ips.includes(ip))
-    options.blocklist.mails = options.blocklist.mails.filter((email) => !payload.emails.includes(email))
-    await options.save()
-    return options.blocklist
+  public async removeFromBlocklist({ ips, emails }: Pick<Blocklist, 'ips' | 'emails'>): Promise<Blocklist> {
+    await this.ensureOptions()
+    const updated = await this.optionsModel
+      .findOneAndUpdate(
+        OPTIONS_SINGLETON_QUERY,
+        { $pull: { 'blocklist.ips': { $in: ips }, 'blocklist.emails': { $in: emails } } },
+        { returnDocument: 'after' }
+      )
+      .exec()
+    return updated!.blocklist
   }
 }

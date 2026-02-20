@@ -4,38 +4,71 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import _trim from 'lodash/trim'
 import _isUndefined from 'lodash/isUndefined'
 import type { QueryFilter } from 'mongoose'
-import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from '@nestjs/common'
+import { Get, Post, Patch, Delete, Query, Body, Param, Controller, ParseIntPipe } from '@nestjs/common'
+import { BadRequestException } from '@nestjs/common'
 import { Throttle, seconds } from '@nestjs/throttler'
 import { EventEmitter2 } from '@nestjs/event-emitter'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
+import { UserService } from '@app/modules/user/user.service'
+import { User, UserPublic, USER_PUBLIC_POPULATE_SELECT } from '@app/modules/user/user.model'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
+import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
 import { EventKeys } from '@app/constants/events.constant'
-import { SortMode, SortOrder } from '@app/constants/biz.constant'
-import { SuccessResponse } from '@app/decorators/success-response.decorator'
-import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { SortMode, SortOrder } from '@app/constants/sort.constant'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
-import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStatusDTO } from './comment.dto'
+import { CommentPaginateQueryDto, CommentCalendarQueryDto } from './comment.dto'
+import { CreateCommentDto, UpdateCommentDto, CommentIdsDto, CommentIdsStatusDto } from './comment.dto'
+import { CommentAuthorType } from './comment.constant'
+import { Comment, CommentWith } from './comment.model'
+import { CommentStatsService } from './comment.service.stats'
 import { CommentService } from './comment.service'
-import { Comment, CommentBase } from './comment.model'
 
 @Controller('comment')
 export class CommentController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
-    private readonly commentService: CommentService
+    private readonly commentStatsService: CommentStatsService,
+    private readonly commentService: CommentService,
+    private readonly userService: UserService
   ) {}
 
+  @Post()
+  @Throttle({ default: { ttl: seconds(30), limit: 6 } })
+  @SuccessResponse('Create comment succeeded')
+  async createComment(
+    @RequestContext() { visitor, identity }: IRequestContext,
+    @Body() input: CreateCommentDto
+  ): Promise<CommentWith<UserPublic>> {
+    try {
+      // User flow: trusted user, no strict email validation required
+      if (identity.isUser) {
+        const user = await this.userService.findOne(identity.payload!.uid!)
+        const userComment = this.commentService.normalize(input, { visitor, user })
+        return this.commentService.validateAndCreate(userComment, visitor.referer ?? void 0)
+      }
+
+      // Guest flow: enforce author info validation
+      const guestComment = this.commentService.normalize(input, { visitor })
+      if (!guestComment.author_name || !guestComment.author_email) {
+        throw new BadRequestException('Author name and email are required')
+      }
+
+      return this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0)
+    } catch (error) {
+      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { input, visitor, error })
+      throw error
+    }
+  }
+
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: 'Get comments succeeded', usePaginate: true })
   async getComments(
-    @Query(PermissionPipe) query: CommentPaginateQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
-  ): Promise<PaginateResult<Comment>> {
+    @Query(PermissionPipe) query: CommentPaginateQueryDto,
+    @RequestContext() { identity }: IRequestContext
+  ): Promise<PaginateResult<CommentWith<User> | CommentWith<UserPublic>>> {
     const { sort, page, per_page, ...filters } = query
     const queryFilter: QueryFilter<Comment> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page }
@@ -53,16 +86,27 @@ export class CommentController {
     if (!_isUndefined(filters.status)) {
       queryFilter.status = filters.status
     }
-
-    // post ID
-    if (!_isUndefined(filters.post_id)) {
-      queryFilter.post_id = filters.post_id
+    // target
+    if (!_isUndefined(filters.target_type)) {
+      queryFilter.target_type = filters.target_type
     }
-
+    if (!_isUndefined(filters.target_id)) {
+      queryFilter.target_id = filters.target_id
+    }
+    // author type
+    if (!_isUndefined(filters.author_type)) {
+      switch (filters.author_type) {
+        case CommentAuthorType.User:
+          queryFilter.user = { $ne: null }
+          break
+        case CommentAuthorType.Guest:
+          queryFilter.user = null
+          break
+      }
+    }
     // search
     if (filters.keyword) {
-      const trimmed = _trim(filters.keyword)
-      const keywordRegExp = new RegExp(trimmed, 'i')
+      const keywordRegExp = new RegExp(filters.keyword, 'i')
       queryFilter.$or = [
         { content: keywordRegExp },
         { 'author.name': keywordRegExp },
@@ -70,80 +114,71 @@ export class CommentController {
       ]
     }
 
-    const result = await this.commentService.paginate(queryFilter, paginateOptions)
     // for admin: original structure data
-    if (!isUnauthenticated) return result
+    if (identity.isAdmin) {
+      return await this.commentService.paginate<CommentWith<User>>(queryFilter, {
+        ...paginateOptions,
+        populate: 'user'
+      })
+    }
+
     // for guest: desensitizing personal information
+    const result = await this.commentService.paginate<CommentWith<UserPublic>>(queryFilter, {
+      ...paginateOptions,
+      populate: { path: 'user', select: USER_PUBLIC_POPULATE_SELECT }
+    })
+
     return {
       ...result,
       documents: result.documents.map((document) => {
-        const comment = document.toObject()
-        Reflect.deleteProperty(comment, 'ip')
-        Reflect.deleteProperty(comment.author, 'email')
-        return comment
+        Reflect.deleteProperty(document, 'ip')
+        Reflect.deleteProperty(document, 'author_email')
+        return document
       })
     }
   }
 
   @Get('calendar')
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get comments calendar succeeded')
   getCommentsCalendar(
-    @Query() query: CommentCalendarQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
-  ) {
-    return this.commentService.getCalendar(isUnauthenticated, query.timezone)
-  }
-
-  @Post()
-  @Throttle({ default: { ttl: seconds(30), limit: 6 } })
-  @SuccessResponse('Create comment succeeded')
-  createComment(@Body() comment: CommentBase, @RequestContext() { visitor }: IRequestContext): Promise<Comment> {
-    return this.commentService.createFormClient(comment, visitor).catch((error) => {
-      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { comment, visitor, error })
-      return Promise.reject(error)
-    })
+    @Query() query: CommentCalendarQueryDto,
+    @RequestContext() { identity }: IRequestContext
+  ): Promise<Array<{ date: string; count: number }>> {
+    return this.commentStatsService.getCalendar(!identity.isAdmin, query.timezone)
   }
 
   @Patch()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update comments succeeded')
-  patchComments(@RequestContext() { visitor }: IRequestContext, @Body() body: CommentsStatusDTO) {
-    return this.commentService.batchPatchStatus(body, visitor.referer)
+  updateCommentsStatus(@Body() dto: CommentIdsStatusDto) {
+    return this.commentService.batchUpdateStatus(dto.comment_ids, dto.status)
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete comments succeeded')
-  delComments(@Body() body: CommentsDTO) {
-    return this.commentService.batchDelete(body.comment_ids, body.post_ids)
+  deleteComments(@Body() { comment_ids }: CommentIdsDto) {
+    return this.commentService.batchDelete(comment_ids)
   }
 
   @Get(':id')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Get comment detail succeeded')
-  getComment(@RequestContext() { params }: IRequestContext): Promise<Comment> {
-    return this.commentService.getDetailByObjectId(params.id)
+  getComment(@Param('id', ParseIntPipe) id: number): Promise<Comment> {
+    return this.commentService.getDetail(id)
   }
 
-  @Put(':id')
-  @UseGuards(AdminOnlyGuard)
+  @Patch(':id')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update comment succeeded')
-  putComment(@RequestContext() { params, visitor }: IRequestContext, @Body() comment: Comment): Promise<Comment> {
-    return this.commentService.update(params.id, comment, visitor.referer)
-  }
-
-  @Put(':id/ip_location')
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse('Update comment IP location succeeded')
-  putCommentIPLocation(@RequestContext() { params }: IRequestContext) {
-    return this.commentService.reviseIPLocation(params.id)
+  updateComment(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCommentDto): Promise<Comment> {
+    return this.commentService.update(id, dto)
   }
 
   @Delete(':id')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete comment succeeded')
-  delComment(@RequestContext() { params }: IRequestContext) {
-    return this.commentService.delete(params.id)
+  async deleteComment(@Param('id', ParseIntPipe) id: number) {
+    return this.commentService.delete(id)
   }
 }

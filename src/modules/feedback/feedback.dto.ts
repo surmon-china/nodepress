@@ -4,40 +4,57 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IntersectionType } from '@nestjs/mapped-types'
 import { Transform } from 'class-transformer'
-import { IsNotEmpty, IsArray, IsIn, IsInt, IsOptional, Min, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { KeywordQueryDTO, BooleanNumberValue } from '@app/models/query.model'
-import { PaginateOptionDTO } from '@app/models/paginate.model'
-import { unknownToNumber } from '@app/transformers/value.transformer'
-import { FEEDBACK_EMOTION_VALUES } from './feedback.constant'
+import { IsString, IsBoolean, IsEnum, IsInt, IsArray, IsDefined } from 'class-validator'
+import { IsOptional, IsNotEmpty, MinLength, MaxLength, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import { PartialType, IntersectionType } from '@nestjs/mapped-types'
+import { unknownToNumber, unknownToBoolean } from '@app/transformers/value.transformer'
+import { KeywordQueryDto } from '@app/dtos/querys.dto'
+import { OptionalAuthorDto } from '@app/dtos/author.dto'
+import { PaginateOptionDto } from '@app/dtos/paginate.dto'
+import { FeedbackEmotion } from './feedback.constant'
 
-export class FeedbackPaginateQueryDTO extends IntersectionType(PaginateOptionDTO, KeywordQueryDTO) {
-  @Min(0)
-  @IsInt()
+export class CreateFeedbackDto extends OptionalAuthorDto {
+  @IsEnum(FeedbackEmotion)
+  @IsDefined()
+  emotion: FeedbackEmotion
+
+  @MinLength(3)
+  @MaxLength(3000)
+  @IsString()
   @IsNotEmpty()
+  @Transform(({ value }) => value?.trim())
+  content: string
+}
+
+export class UpdateFeedbackDto extends PartialType(CreateFeedbackDto) {
+  @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => unknownToNumber(value))
-  tid?: number
+  marked?: boolean
 
-  @IsIn(FEEDBACK_EMOTION_VALUES)
-  @IsInt()
-  @IsNotEmpty()
+  @MaxLength(1000)
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  remark?: string
+}
+
+export class FeedbackPaginateQueryDto extends IntersectionType(PaginateOptionDto, KeywordQueryDto) {
+  @IsEnum(FeedbackEmotion)
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
   emotion?: number
 
-  @IsIn([BooleanNumberValue.False, BooleanNumberValue.True])
-  @IsInt()
-  @IsNotEmpty()
+  @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => unknownToNumber(value))
-  marked?: BooleanNumberValue.True | BooleanNumberValue.False
+  @Transform(({ value }) => unknownToBoolean(value))
+  marked?: boolean
 }
 
-export class FeedbacksDTO {
-  @IsArray()
+export class FeedbackIdsDto {
   @ArrayNotEmpty()
   @ArrayUnique()
-  feedback_ids: string[]
+  @IsArray()
+  @IsInt({ each: true })
+  feedback_ids: number[]
 }

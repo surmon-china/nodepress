@@ -4,8 +4,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { UseGuards, Controller, Get, Patch } from '@nestjs/common'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
+import { Controller, Get, Post } from '@nestjs/common'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { ArchiveService, ArchiveData } from './archive.service'
 
@@ -19,8 +19,8 @@ export class ArchiveController {
     return this.archiveService.getCache()
   }
 
-  @Patch()
-  @UseGuards(AdminOnlyGuard)
+  @Post('refresh')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update archive cache succeeded')
   updateArchive(): Promise<any> {
     return this.archiveService.updateCache()

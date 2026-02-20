@@ -4,16 +4,17 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Types } from 'mongoose'
 import type { QueryFilter } from 'mongoose'
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { MongooseModel, MongooseDoc, WithId } from '@app/interfaces/mongoose.interface'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseId } from '@app/interfaces/mongoose.interface'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
-import { ROOT_FEEDBACK_TID } from '@app/constants/biz.constant'
-import { IPService } from '@app/core/helper/helper.service.ip'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
-import { Feedback, FeedbackBase } from './feedback.model'
+import { IPService } from '@app/core/helper/helper.service.ip'
+import { isProdEnv } from '@app/app.environment'
+import { User } from '@app/modules/user/user.model'
+import { CreateFeedbackDto, UpdateFeedbackDto } from './feedback.dto'
+import { Feedback } from './feedback.model'
 
 @Injectable()
 export class FeedbackService {
@@ -22,41 +23,50 @@ export class FeedbackService {
     @InjectModel(Feedback) private readonly feedbackModel: MongooseModel<Feedback>
   ) {}
 
-  public paginate(filter: QueryFilter<Feedback>, options: PaginateOptions): Promise<PaginateResult<Feedback>> {
-    // MARK: can't use 'lean' with virtual 'emotion_text' | 'emotion_emoji'
-    // MARK: keep 'paginate', the 'paginateRaw' method is not available here.
-    return this.feedbackModel.paginate(filter, options)
+  public paginate<T = Feedback>(
+    filter: QueryFilter<Feedback>,
+    options: PaginateOptions
+  ): Promise<PaginateResult<T>> {
+    return this.feedbackModel.paginateRaw<T>(filter, { ...options, lean: { virtuals: true } })
   }
 
-  public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise<MongooseDoc<Feedback>> {
-    return this.feedbackModel.create({
-      ...feedback,
+  public async create(
+    input: CreateFeedbackDto,
+    visitor: QueryVisitor,
+    user?: WithId<User>
+  ): Promise<MongooseDoc<Feedback>> {
+    return await this.feedbackModel.create({
+      ...input,
+      user: user?._id ?? null,
+      author_name: user?.name ?? input.author_name ?? null,
+      author_email: user?.email ?? input.author_email ?? null,
+      user_agent: visitor.agent,
       origin: visitor.origin,
-      user_agent: visitor.ua,
       ip: visitor.ip,
-      ip_location: visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
+      ip_location: isProdEnv && visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
     })
   }
 
-  public async update(feedbackId: MongooseId, newFeedback: Partial<Feedback>): Promise<MongooseDoc<Feedback>> {
-    const updated = await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec()
+  public async update(feedbackId: number, input: UpdateFeedbackDto): Promise<MongooseDoc<Feedback>> {
+    const updated = await this.feedbackModel
+      .findOneAndUpdate({ id: feedbackId }, { $set: input }, { returnDocument: 'after' })
+      .exec()
     if (!updated) throw new NotFoundException(`Feedback '${feedbackId}' not found`)
     return updated
   }
 
-  public async delete(feedbackId: MongooseId) {
-    const deleted = await this.feedbackModel.findByIdAndDelete(feedbackId, null).exec()
+  public async delete(feedbackId: number) {
+    const deleted = await this.feedbackModel.findOneAndDelete({ id: feedbackId }).exec()
     if (!deleted) throw new NotFoundException(`Feedback '${feedbackId}' not found`)
     return deleted
   }
 
-  public batchDelete(feedbackIds: MongooseId[]) {
-    return this.feedbackModel.deleteMany({ _id: { $in: feedbackIds } }).exec()
+  public batchDelete(feedbackIds: number[]) {
+    return this.feedbackModel.deleteMany({ id: { $in: feedbackIds } }).exec()
   }
 
-  public async getRootFeedbackAverageEmotion(): Promise<number | null> {
-    const [result] = await this.feedbackModel.aggregate<{ _id: Types.ObjectId; avgEmotion: number }>([
-      { $match: { tid: ROOT_FEEDBACK_TID } },
+  public async getAverageEmotion(): Promise<number | null> {
+    const [result] = await this.feedbackModel.aggregate<{ _id: null; avgEmotion: number }>([
       { $group: { _id: null, avgEmotion: { $avg: '$emotion' } } }
     ])
     return result ? Math.round(result.avgEmotion * 1000) / 1000 : null

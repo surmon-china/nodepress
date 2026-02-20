@@ -8,10 +8,10 @@ import { Injectable } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 import { CounterService } from '@app/core/helper/helper.service.counter'
 import { EmailService } from '@app/core/helper/helper.service.email'
-import { VoteTarget, VoteType } from '@app/modules/vote/vote.constant'
 import { VoteService } from '@app/modules/vote/vote.service'
-import { ArticleService } from '@app/modules/article/article.service'
-import { CommentService } from '@app/modules/comment/comment.service'
+import { VoteTargetType, VoteType } from '@app/modules/vote/vote.constant'
+import { ArticleStatsService } from '@app/modules/article/article.service.stats'
+import { CommentStatsService } from '@app/modules/comment/comment.service.stats'
 import { FeedbackService } from '@app/modules/feedback/feedback.service'
 import { TagService } from '@app/modules/tag/tag.service'
 import { CacheKeys } from '@app/constants/cache.constant'
@@ -39,8 +39,8 @@ export class StatisticsService {
   constructor(
     private readonly emailService: EmailService,
     private readonly counterService: CounterService,
-    private readonly articleService: ArticleService,
-    private readonly commentService: CommentService,
+    private readonly commentStatsService: CommentStatsService,
+    private readonly articleStatsService: ArticleStatsService,
     private readonly feedbackService: FeedbackService,
     private readonly voteService: VoteService,
     private readonly tagService: TagService
@@ -56,20 +56,20 @@ export class StatisticsService {
       const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] =
         await Promise.all([
           this.counterService.getGlobalCount(CacheKeys.TodayViewCount),
-          this.commentService.countDocuments({ created_at: createdAt }),
+          this.commentStatsService.countDocuments({ created_at: createdAt }),
           this.voteService.countDocuments({
             created_at: createdAt,
-            target_type: VoteTarget.Article,
+            target_type: VoteTargetType.Article,
             vote_type: VoteType.Upvote
           }),
           this.voteService.countDocuments({
             created_at: createdAt,
-            target_type: VoteTarget.Comment,
+            target_type: VoteTargetType.Comment,
             vote_type: VoteType.Upvote
           }),
           this.voteService.countDocuments({
             created_at: createdAt,
-            target_type: VoteTarget.Comment,
+            target_type: VoteTargetType.Comment,
             vote_type: VoteType.Downvote
           })
         ])
@@ -99,21 +99,21 @@ export class StatisticsService {
       this.tagService.getTotalCount().then((value) => {
         statistics.tags = value
       }),
-      this.articleService.getTotalCount(publicOnly).then((value) => {
+      this.articleStatsService.getTotalCount(publicOnly).then((value) => {
         statistics.articles = value
       }),
-      this.commentService.getTotalCount(publicOnly).then((value) => {
+      this.commentStatsService.getTotalCount(publicOnly).then((value) => {
         statistics.comments = value
       }),
-      this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
-        statistics.averageEmotion = value ?? 0
-      }),
-      this.articleService.getTotalStatistics().then((value) => {
-        statistics.totalViews = value?.totalViews ?? 0
-        statistics.totalLikes = value?.totalLikes ?? 0
+      this.articleStatsService.getTotalStatistics().then((value) => {
+        statistics.totalViews = value.totalViews
+        statistics.totalLikes = value.totalLikes
       }),
       this.counterService.getGlobalCount(CacheKeys.TodayViewCount).then((value) => {
         statistics.todayViews = value
+      }),
+      this.feedbackService.getAverageEmotion().then((value) => {
+        statistics.averageEmotion = value ?? 0
       })
     ])
 

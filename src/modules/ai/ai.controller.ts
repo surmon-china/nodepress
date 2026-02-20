@@ -5,12 +5,13 @@
  */
 
 import { Throttle, minutes } from '@nestjs/throttler'
-import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
+import { Controller, Get, Post, Body } from '@nestjs/common'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { CommentService } from '@app/modules/comment/comment.service'
-import { GenerateAiArticleContentDTO, GenerateAiCommentReplyDTO } from './ai.dto'
+import { GenerateAiArticleContentDto, GenerateAiCommentReplyDto } from './ai.dto'
 import { AiModelsList, DEFAULT_AI_PROMPT_TEMPLATES } from './ai.config'
+import { AiGenerateResult } from './ai.interface'
 import { AiService } from './ai.service'
 
 import {
@@ -27,7 +28,7 @@ export class AiController {
   ) {}
 
   @Get('config')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Get AI config succeeded')
   getAiConfig() {
     return {
@@ -42,27 +43,27 @@ export class AiController {
   }
 
   @Post('generate-article-summary')
+  @OnlyIdentity(IdentityRole.Admin)
   @Throttle({ default: { ttl: minutes(10), limit: 50 } })
-  @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Generate article summary succeeded')
-  generateArticleSummary(@Body() payload: GenerateAiArticleContentDTO) {
-    return this.aiService.generateArticleSummary(payload)
+  generateArticleSummary(@Body() dto: GenerateAiArticleContentDto): Promise<AiGenerateResult> {
+    return this.aiService.generateArticleSummary(dto)
   }
 
   @Post('generate-article-review')
+  @OnlyIdentity(IdentityRole.Admin)
   @Throttle({ default: { ttl: minutes(10), limit: 50 } })
-  @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Generate article review succeeded')
-  generateArticleReview(@Body() payload: GenerateAiArticleContentDTO) {
-    return this.aiService.generateArticleReview(payload)
+  generateArticleReview(@Body() dto: GenerateAiArticleContentDto): Promise<AiGenerateResult> {
+    return this.aiService.generateArticleReview(dto)
   }
 
   @Post('generate-comment-reply')
+  @OnlyIdentity(IdentityRole.Admin)
   @Throttle({ default: { ttl: minutes(10), limit: 50 } })
-  @UseGuards(AdminOnlyGuard)
   @SuccessResponse('Generate comment reply succeeded')
-  async generateCommentReply(@Body() payload: GenerateAiCommentReplyDTO) {
-    const comment = await this.commentService.getDetailByNumberId(payload.comment_id)
-    return this.aiService.generateCommentReply(comment, payload)
+  async generateCommentReply(@Body() dto: GenerateAiCommentReplyDto): Promise<AiGenerateResult> {
+    const comment = await this.commentService.getDetail(dto.comment_id)
+    return this.aiService.generateCommentReply(comment, dto)
   }
 }

@@ -1,6 +1,6 @@
 /**
- * @file Database providers > mongoose connection
- * @module core/database/providers
+ * @file Database provider > mongoose connection
+ * @module core/database/provider
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -49,7 +49,7 @@ export const databaseProvider = {
 
     mongoose.connection.on('disconnected', () => {
       logger.error(`disconnected! Attempting to reconnect after ${DATABASE_RECONNECT_INTERVAL / 1000}s`)
-      eventEmitter.emit(EventKeys.DatabaseError, 'MongoDB disconnected from server.')
+      eventEmitter.emit(EventKeys.DatabaseError, 'MongoDB disconnected from server!')
       reconnectionTask = setTimeout(connect, DATABASE_RECONNECT_INTERVAL)
     })
 

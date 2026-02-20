@@ -4,19 +4,28 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import type { MergeType } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, index, plugin, Ref, modelOptions } from '@typegoose/typegoose'
-import { Type } from 'class-transformer'
-import { IsString, IsBoolean, IsArray, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from 'class-validator'
-import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength, ValidateNested } from 'class-validator'
+import { Type, Transform } from 'class-transformer'
+import { IsString, IsBoolean, IsEnum, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
+import { IsNotEmpty, IsOptional, Matches, MaxLength, ValidateNested } from 'class-validator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
+import { MongooseDoc } from '@app/interfaces/mongoose.interface'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { KeyValueModel } from '@app/models/key-value.model'
 import { Category } from '@app/modules/category/category.model'
 import { Tag } from '@app/modules/tag/tag.model'
 import { ArticleStatus, ArticleOrigin, ArticleLanguage } from './article.constant'
-import { ARTICLE_STATUSES, ARTICLE_ORIGINS, ARTICLE_LANGUAGES } from './article.constant'
+
+export type ArticleDoc = MongooseDoc<Article>
+export type ArticlePopulated = MergeType<Article, { tags: Tag[]; categories: Category[] }>
+export type ArticleDocPopulated = MergeType<ArticleDoc, { tags: Tag[]; categories: Category[] }>
+
+export const ARTICLE_RELATION_FIELDS = ['tags', 'categories']
+export const ARTICLE_WITH_CONTENT_PROJECTION = '+content'
+export const ARTICLE_WITHOUT_CONTENT_PROJECTION = { content: 0 }
 
 const ARTICLE_DEFAULT_STATS: ArticleStats = Object.freeze({
   likes: 0,
@@ -25,20 +34,13 @@ const ARTICLE_DEFAULT_STATS: ArticleStats = Object.freeze({
 })
 
 export class ArticleStats {
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   likes: number
 
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   views: number
 
-  // MARK: keep comments field manual
-  // 1. `.sort()` can't by other model schema
-  // https://stackoverflow.com/questions/66174791/how-to-access-a-different-schema-in-a-virtual-method
-  // 2. `virtual` can't support publicOnly params and can't access other schema
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   comments: number
 }
 
@@ -70,97 +72,97 @@ export class Article {
   @prop({ unique: true })
   id: number
 
-  @Matches(/^[a-zA-Z0-9-_]+$/)
   @MaxLength(50)
+  @Matches(/^[a-zA-Z0-9-_]+$/)
   @IsString()
   @IsOptional()
-  @prop({ default: null, trim: true, validate: /^[a-zA-Z0-9-_]+$/, index: true })
-  slug: string
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: null, unique: true, index: true, trim: true, validate: /^[a-zA-Z0-9-_]+$/ })
+  slug: string | null
 
   @IsString()
-  @IsNotEmpty({ message: 'title?' })
-  @prop({ required: true, validate: /\S+/, text: true })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, validate: /\S+/, text: true })
   title: string
 
   @IsString()
-  @IsNotEmpty({ message: 'content?' })
-  @prop({ required: true, validate: /\S+/, text: true })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, validate: /\S+/, select: false, text: true })
   content: string
 
   @IsString()
-  @prop({ default: '', text: true })
+  @IsOptional()
+  @prop({ type: String, default: '', text: true })
   summary: string
 
+  @IsString({ each: true })
   @ArrayUnique()
   @IsArray()
-  @IsDefined()
-  @prop({ default: [], type: () => [String] })
+  @IsOptional()
+  @prop({ type: () => [String], default: [] })
   keywords: string[]
 
   @IsString()
   @IsOptional()
-  @prop({ type: String, default: null })
+  @prop({ type: String, default: null, trim: true })
   thumbnail: string | null
 
-  @IsIn(ARTICLE_STATUSES)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: ArticleStatus, default: ArticleStatus.Published, index: true })
+  @IsEnum(ArticleStatus)
+  @IsOptional()
+  @prop({ type: Number, enum: ArticleStatus, default: ArticleStatus.Published, index: true })
   status: ArticleStatus
 
-  // origin state
-  @IsIn(ARTICLE_ORIGINS)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: ArticleOrigin, default: ArticleOrigin.Original, index: true })
+  @IsEnum(ArticleOrigin)
+  @IsOptional()
+  @prop({ type: Number, enum: ArticleOrigin, default: ArticleOrigin.Original, index: true })
   origin: ArticleOrigin
 
   // language
   // MARK: can't use 'language' field
   // https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/
   // https://docs.mongodb.com/manual/reference/text-search-languages/#std-label-text-search-languages
-  @IsIn(ARTICLE_LANGUAGES)
-  @IsString()
-  @IsDefined()
-  @prop({ default: ArticleLanguage.Chinese, index: true })
+  @IsEnum(ArticleLanguage)
+  @IsOptional()
+  @prop({ type: String, enum: ArticleLanguage, default: ArticleLanguage.Chinese, index: true })
   lang: ArticleLanguage
 
-  // featured
   @IsBoolean()
-  @prop({ default: false, index: true })
+  @IsOptional()
+  @prop({ type: Boolean, default: false, index: true })
   featured: boolean
 
-  // disabled comments
   @IsBoolean()
-  @prop({ default: false })
+  @IsOptional()
+  @prop({ type: Boolean, default: false })
   disabled_comments: boolean
 
-  @prop({ _id: false, default: { ...ARTICLE_DEFAULT_STATS } })
+  @prop({ type: () => ArticleStats, _id: false, default: { ...ARTICLE_DEFAULT_STATS } })
   stats: ArticleStats
 
-  @Type(() => KeyValueModel)
-  @ValidateNested()
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
-  extras: KeyValueModel[]
-
-  // tag
-  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
-  @prop({ ref: () => Tag, index: true })
+  @IsOptional()
+  @prop({ ref: () => Tag, default: [], index: true })
   tags: Ref<Tag>[]
 
-  // category
   @ArrayUnique()
   @ArrayNotEmpty()
   @IsArray()
   @prop({ ref: () => Category, required: true, index: true })
   categories: Ref<Category>[]
 
-  @prop({ default: Date.now, index: true, immutable: true })
+  @Type(() => KeyValueModel)
+  @ValidateNested({ each: true })
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ type: () => [KeyValueModel], _id: false, default: [] })
+  extras: KeyValueModel[]
+
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 

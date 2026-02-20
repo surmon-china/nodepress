@@ -11,10 +11,12 @@ export enum EventKeys {
   AdminLoggedOut = 'admin.logged_out',
   OptionsUpdated = 'options.updated',
   FeedbackCreated = 'feedback.created',
+  VoteCreated = 'vote.created',
+  UserCreated = 'user.created',
+  UserDeleted = 'user.deleted',
   CommentCreated = 'comment.created',
   CommentCreateFailed = 'comment.create_failed',
   ArticleCreated = 'article.created',
   ArticleUpdated = 'article.updated',
-  ArticleDeleted = 'article.deleted',
-  ArticleViewed = 'article.viewed'
+  ArticleDeleted = 'article.deleted'
 }

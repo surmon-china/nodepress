@@ -5,17 +5,18 @@
  */
 
 import { Module } from '@nestjs/common'
+import { UserModule } from '@app/modules/user/user.module'
 import { ArticleModule } from '@app/modules/article/article.module'
 import { CommentModule } from '@app/modules/comment/comment.module'
-import { DisqusModule } from '@app/modules/disqus/disqus.module'
 import { VoteProvider } from './vote.model'
 import { VoteService } from './vote.service'
+import { VoteListener } from './vote.listener'
 import { VoteController } from './vote.controller'
 
 @Module({
-  imports: [ArticleModule, CommentModule, DisqusModule],
-  providers: [VoteProvider, VoteService],
+  imports: [UserModule, ArticleModule, CommentModule],
   controllers: [VoteController],
+  providers: [VoteProvider, VoteService, VoteListener],
   exports: [VoteService]
 })
 export class VoteModule {}

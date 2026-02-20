@@ -26,7 +26,7 @@ export class AdminListener {
   ) {}
 
   @OnEvent(EventKeys.AdminLoggedIn, { async: true })
-  async handleAdminLogin({ ip, ua, referer }: QueryVisitor) {
+  async handleAdminLogin({ ip, agent, referer }: QueryVisitor) {
     const subject = 'App has a new login activity'
     const location = ip ? await this.ipService.queryLocation(ip) : null
 
@@ -39,7 +39,7 @@ export class AdminListener {
         `Referer: ${referer || 'unknown'}`,
         `IP: ${ip || 'unknown'}`,
         `Location: ${location ? getLocationText(location) : 'unknown'}`,
-        `UserAgent: ${ua ? getUserAgentText(ua) : 'unknown'}`
+        `UserAgent: ${agent ? getUserAgentText(agent) : 'unknown'}`
       ])
     })
   }

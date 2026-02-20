@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { SortOrder } from '@app/constants/biz.constant'
+import { SortOrder } from '@app/constants/sort.constant'
 
 // publish status
 export enum ArticleStatus {
@@ -21,35 +21,18 @@ export enum ArticleOrigin {
   Hybrid = 2 // 混合
 }
 
-// language: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+// language https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 export enum ArticleLanguage {
   English = 'en', // English
   Chinese = 'zh', // 简体中文
   Multiple = 'mul' // 多语言混合
 }
 
-export const ARTICLE_STATUSES = [
-  ArticleStatus.Draft,
-  ArticleStatus.Published,
-  ArticleStatus.Private,
-  ArticleStatus.Trash
-] as const
-
-export const ARTICLE_LANGUAGES = [
-  ArticleLanguage.English,
-  ArticleLanguage.Chinese,
-  ArticleLanguage.Multiple
-] as const
-
-export const ARTICLE_ORIGINS = [ArticleOrigin.Original, ArticleOrigin.Reprint, ArticleOrigin.Hybrid] as const
-
-export const ARTICLE_FULL_QUERY_REF_POPULATE = ['categories', 'tags']
-export const ARTICLE_LIST_QUERY_PROJECTION = { content: false }
-export const ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
+export const ARTICLE_PUBLIC_FILTER = Object.freeze({
   status: ArticleStatus.Published
-})
+} as const)
 
 export const ARTICLE_HOTTEST_SORT_CONFIG = Object.freeze({
   'stats.comments': SortOrder.Desc,
   'stats.likes': SortOrder.Desc
-})
+} as const)

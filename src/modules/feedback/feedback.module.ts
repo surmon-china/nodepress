@@ -5,12 +5,14 @@
  */
 
 import { Module } from '@nestjs/common'
+import { UserModule } from '@app/modules/user/user.module'
 import { FeedbackProvider } from './feedback.model'
 import { FeedbackService } from './feedback.service'
 import { FeedbackController } from './feedback.controller'
 import { FeedbackListener } from './feedback.listener'
 
 @Module({
+  imports: [UserModule],
   controllers: [FeedbackController],
   providers: [FeedbackProvider, FeedbackService, FeedbackListener],
   exports: [FeedbackService]

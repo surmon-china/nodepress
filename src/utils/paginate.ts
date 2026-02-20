@@ -5,7 +5,7 @@
  */
 
 import _merge from 'lodash/merge'
-import type { Model, Schema, QueryFilter, QueryOptions, HydratedDocument } from 'mongoose'
+import type { Model, Schema, QueryFilter, QueryOptions, LeanOptions, HydratedDocument } from 'mongoose'
 
 export interface PaginateResult<T> {
   documents: Array<T>
@@ -23,6 +23,7 @@ export interface PaginateOptions {
   /** original options */
   projection?: string | object | null
   /** mongoose queryOptions */
+  lean?: LeanOptions
   sort?: QueryOptions['sort']
   populate?: QueryOptions['populate']
   /** original options for `model.find` */
@@ -41,7 +42,7 @@ function doPaginate<TRawDocType>(
   paginateOptions: PaginateOptions = {},
   forceLean = false
 ) {
-  const { page, perPage, dateSort, projection, $queryOptions, ...restOptions } = _merge(
+  const { page, perPage, dateSort, projection, lean, $queryOptions, ...restOptions } = _merge(
     { ...DEFAULT_OPTIONS },
     { ...paginateOptions }
   )
@@ -49,11 +50,11 @@ function doPaginate<TRawDocType>(
   const findQueryOptions: QueryOptions<TRawDocType> = {
     ...restOptions,
     ...$queryOptions,
-    lean: forceLean
+    lean: forceLean ? (lean ?? true) : false
   }
 
   // query
-  const countQuery = this.countDocuments(queryFilter).exec()
+  const countQuery = this.countDocuments(queryFilter).lean().exec()
   const listQuery = this.find(queryFilter, projection, {
     skip: (page - 1) * perPage,
     limit: perPage,
@@ -71,8 +72,14 @@ function doPaginate<TRawDocType>(
 }
 
 export type PaginateStatics<TRawDocType, THydratedDocType = HydratedDocument<TRawDocType>> = {
-  paginate(filter?: QueryFilter<TRawDocType>, options?: PaginateOptions): Promise<PaginateResult<THydratedDocType>>
-  paginateRaw(filter?: QueryFilter<TRawDocType>, options?: PaginateOptions): Promise<PaginateResult<TRawDocType>>
+  paginate<T = THydratedDocType>(
+    filter?: QueryFilter<TRawDocType>,
+    options?: PaginateOptions
+  ): Promise<PaginateResult<T>>
+  paginateRaw<T = TRawDocType>(
+    filter?: QueryFilter<TRawDocType>,
+    options?: PaginateOptions
+  ): Promise<PaginateResult<T>>
 }
 
 export function mongoosePaginate(schema: Schema) {

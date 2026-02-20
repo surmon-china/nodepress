@@ -5,16 +5,18 @@
  */
 
 import { prop } from '@typegoose/typegoose'
+import { Transform } from 'class-transformer'
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator'
 
 export class KeyValueModel {
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true, trim: true, validate: /\S+/ })
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   key: string
 
   @IsString()
   @IsOptional()
-  @prop({ required: false })
+  @prop({ type: String, required: false })
   value: string
 }

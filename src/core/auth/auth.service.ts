@@ -1,16 +1,15 @@
 /**
- * @file Auth jwt service
+ * @file Global auth jwt service
  * @module core/auth/service
  * @author Surmon <https://github.com/surmon-china>
  * @link https://docs.nestjs.com/security/authentication#enable-authentication-globally
  */
 
-import _isEqual from 'lodash/isEqual'
-import { JwtService } from '@nestjs/jwt'
 import { Injectable } from '@nestjs/common'
-import { getInvalidatedTokenCacheKey } from '@app/constants/cache.constant'
+import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt'
 import { CacheService } from '@app/core/cache/cache.service'
-import { APP_BIZ } from '@app/app.config'
+import { AuthPayload } from '@app/constants/auth.constant'
+import { getInvalidatedTokenCacheKey } from '@app/constants/cache.constant'
 
 @Injectable()
 export class AuthService {
@@ -19,38 +18,41 @@ export class AuthService {
     private cacheService: CacheService
   ) {}
 
-  public async invalidateToken(token: string): Promise<void> {
-    const payload = this.jwtService.decode<{ exp?: number }>(token)
-    const now = Math.floor(Date.now() / 1000)
-    // Token is already expired, no need to invalidate
-    if (!payload?.exp || payload.exp <= now) {
-      return
-    }
-    const ttl = payload.exp - now
-    const key = getInvalidatedTokenCacheKey(token)
-    await this.cacheService.set(key, '1', ttl)
-  }
-
-  public async isTokenInvalidated(token: string): Promise<boolean> {
+  public async isInvalidatedToken(token: string): Promise<boolean> {
     const key = getInvalidatedTokenCacheKey(token)
     return await this.cacheService.has(key)
   }
 
-  public signToken() {
-    return this.jwtService.sign({ data: APP_BIZ.AUTH_JWT.data })
+  public decodeToken<T extends object = any>(token: string): T | null {
+    return this.jwtService.decode<T>(token)
   }
 
-  public async verifyToken(token: string): Promise<boolean> {
-    if (await this.isTokenInvalidated(token)) {
-      return false
-    }
+  public signToken<T extends AuthPayload = AuthPayload>(payload: T, options?: JwtSignOptions): string {
+    return this.jwtService.sign<T>(payload, options)
+  }
 
-    try {
-      const payload = await this.jwtService.verifyAsync(token, { secret: APP_BIZ.AUTH_JWT.secret })
-      return _isEqual(payload.data, APP_BIZ.AUTH_JWT.data)
-    } catch {
-      return false
+  public async verifyToken<T extends AuthPayload = AuthPayload>(
+    token: string,
+    options?: JwtVerifyOptions
+  ): Promise<T | null> {
+    if (await this.isInvalidatedToken(token)) {
+      return null
+    } else {
+      return await this.jwtService.verifyAsync<T>(token, options)
     }
+  }
+
+  public async invalidateToken(token: string): Promise<void> {
+    const payload = this.jwtService.decode<{ exp?: number }>(token)
+    if (!payload?.exp) return
+
+    // Token is already expired, no need to invalidate
+    const now = Math.floor(Date.now() / 1000)
+    if (payload.exp <= now) return
+
+    const ttl = payload.exp - now
+    const key = getInvalidatedTokenCacheKey(token)
+    await this.cacheService.set(key, '1', ttl)
   }
 
   public extractTokenFromAuthorization(authorization?: string): string | undefined {

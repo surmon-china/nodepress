@@ -4,62 +4,64 @@
  */
 
 import bcrypt from 'bcryptjs'
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common'
+import { Injectable, BadRequestException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { AuthService } from '@app/core/auth/auth.service'
+import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
+import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
+import { CacheKeys } from '@app/constants/cache.constant'
 import { decodeBase64 } from '@app/transformers/codec.transformer'
-import { Admin, DEFAULT_ADMIN_PROFILE } from './admin.model'
-import { TokenResult } from './admin.interface'
-import { AdminUpdateDTO } from './admin.dto'
-import { APP_BIZ } from '@app/app.config'
+import { Admin, AdminProfile, DEFAULT_ADMIN_PROFILE, ADMIN_SINGLETON_QUERY } from './admin.model'
+import { UpdateProfileDto } from './admin.dto'
+import { APP_AUTH } from '@app/app.config'
 
 @Injectable()
 export class AdminService {
+  private profileCache: CacheManualResult<AdminProfile>
+
   constructor(
-    private readonly authService: AuthService,
+    private readonly cacheService: CacheService,
     @InjectModel(Admin) private readonly adminModel: MongooseModel<Admin>
-  ) {}
-
-  /**
-   * Validate the provided plain password against the stored password.
-   * - If a hashed password exists in the database, verify with bcrypt.
-   * - If no password exists (e.g., initial state), fall back to comparing with the default password.
-   */
-  private async validatePassword(plainPassword: string): Promise<boolean> {
-    const existedProfile = await this.adminModel.findOne().select('+password').exec()
-    if (existedProfile?.password) {
-      // Password exists in database → validate using bcrypt
-      return await bcrypt.compare(plainPassword, existedProfile.password)
-    } else {
-      // No password in database → compare directly with default password (no hashing)
-      return plainPassword === APP_BIZ.PASSWORD.defaultPassword
-    }
+  ) {
+    this.profileCache = this.cacheService.manual({
+      key: CacheKeys.AdminProfile,
+      promise: () => this.getProfile()
+    })
   }
 
-  public createToken(): TokenResult {
-    return {
-      access_token: this.authService.signToken(),
-      expires_in: APP_BIZ.AUTH_JWT.expiresIn
-    }
+  onModuleInit() {
+    this.profileCache.update()
   }
 
-  public async login(base64Password: string): Promise<TokenResult> {
-    if (await this.validatePassword(decodeBase64(base64Password))) {
-      return this.createToken()
-    } else {
-      throw new UnauthorizedException('Password incorrect')
-    }
+  public getProfileCache(): Promise<AdminProfile> {
+    return this.profileCache.get()
   }
 
-  public async getProfile(): Promise<Admin> {
-    const adminProfile = await this.adminModel.findOne().select('-_id').lean().exec()
+  public async getProfile(): Promise<AdminProfile> {
+    const adminProfile = await this.adminModel.findOne(ADMIN_SINGLETON_QUERY).select('-_id').lean().exec()
     return adminProfile ?? DEFAULT_ADMIN_PROFILE
   }
 
-  public async updateProfile(adminProfile: AdminUpdateDTO): Promise<Admin> {
-    const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = adminProfile
-    const newProfile: Admin = { ...profile }
+  public getDocument(): Promise<MongooseDoc<Admin> | null> {
+    return this.adminModel.findOne(ADMIN_SINGLETON_QUERY).select('+password').exec()
+  }
+
+  public async validatePassword(plainPassword: string, hashedPassword?: string): Promise<boolean> {
+    return hashedPassword
+      ? // Hashed password exists in database → validate using bcrypt
+        await bcrypt.compare(plainPassword, hashedPassword)
+      : // No password in database → compare directly with default password (no hashing)
+        plainPassword === APP_AUTH.adminDefaultPassword
+  }
+
+  public async updateProfile(input: UpdateProfileDto): Promise<AdminProfile> {
+    const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = input
+    const newProfile: Partial<Admin> = { ...profile }
+
+    // Enforce password change during the initial profile update.
+    const existedAdmin = await this.getDocument()
+    if (!existedAdmin && !inputNewPassword) {
+      throw new BadRequestException('First initialization must set password')
+    }
 
     // Verify password
     if (inputOldPassword || inputNewPassword) {
@@ -69,22 +71,23 @@ export class AdminService {
       if (inputOldPassword === inputNewPassword) {
         throw new BadRequestException('Old password and new password cannot be the same')
       }
-      if (!(await this.validatePassword(decodeBase64(inputOldPassword)))) {
+      if (!(await this.validatePassword(decodeBase64(inputOldPassword), existedAdmin?.password))) {
         throw new BadRequestException('Old password incorrect')
       }
+
       // Set new password
       const plainNewPassword = decodeBase64(inputNewPassword)
-      newProfile.password = await bcrypt.hash(plainNewPassword, APP_BIZ.PASSWORD.bcryptSaltRounds)
+      newProfile.password = await bcrypt.hash(plainNewPassword, APP_AUTH.adminBcryptSaltRounds)
     }
 
-    // save
-    const existedProfile = await this.adminModel.findOne().select('+password').exec()
-    if (existedProfile) {
-      await Object.assign(existedProfile, newProfile).save()
+    // Save or create
+    if (existedAdmin) {
+      await existedAdmin.set(newProfile).save()
     } else {
       await this.adminModel.create(newProfile)
     }
 
-    return this.getProfile()
+    // Update cache and return
+    return await this.profileCache.update()
   }
 }

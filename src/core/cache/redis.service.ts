@@ -12,10 +12,10 @@
 import { createClient, RedisClientOptions } from '@redis/client'
 import { Injectable, OnModuleInit } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
-import { getMessageFromNormalError } from '@app/transformers/error.transformer'
-import { createLogger } from '@app/utils/logger'
-import { createRedisStore, RedisStore } from './redis.store'
 import { EventKeys } from '@app/constants/events.constant'
+import { getMessageFromNormalError } from '@app/transformers/error.transformer'
+import { createRedisStore, RedisStore } from './redis.store'
+import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
 
@@ -58,7 +58,9 @@ export class RedisService implements OnModuleInit {
 
   // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
   private getOptions(): RedisClientOptions {
-    const redisOptions: RedisClientOptions = {
+    return {
+      username: APP_CONFIG.REDIS.username ?? void 0,
+      password: APP_CONFIG.REDIS.password ?? void 0,
       socket: {
         host: APP_CONFIG.REDIS.host,
         port: APP_CONFIG.REDIS.port as number,
@@ -72,15 +74,6 @@ export class RedisService implements OnModuleInit {
         }
       }
     }
-
-    if (APP_CONFIG.REDIS.username) {
-      redisOptions.username = APP_CONFIG.REDIS.username
-    }
-    if (APP_CONFIG.REDIS.password) {
-      redisOptions.password = APP_CONFIG.REDIS.password
-    }
-
-    return redisOptions
   }
 
   public get client(): RedisClientType {

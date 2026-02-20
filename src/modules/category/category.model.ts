@@ -4,11 +4,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Types } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions } from '@typegoose/typegoose'
-import { Type } from 'class-transformer'
-import { IsString, MaxLength, Matches, IsNotEmpty, IsArray, ArrayUnique, ValidateNested } from 'class-validator'
+import { Transform, Type } from 'class-transformer'
+import { IsString, IsNotEmpty, IsArray, Min, IsInt, IsOptional } from 'class-validator'
+import { MaxLength, Matches, ArrayUnique, ValidateNested } from 'class-validator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -30,36 +30,44 @@ export class Category {
   @prop({ unique: true })
   id: number
 
-  @prop({ ref: Category, default: null })
-  pid: Types.ObjectId
+  @Min(0)
+  @IsInt()
+  @IsOptional()
+  @prop({ type: Number, default: null, index: true })
+  parent_id: number | null
 
-  @IsString()
   @IsNotEmpty()
-  @prop({ required: true, validate: /\S+/ })
+  @IsString()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   name: string
 
-  @Matches(/^[a-zA-Z0-9-_]+$/)
   @MaxLength(30)
+  @Matches(/^[a-zA-Z0-9-_]+$/)
+  @IsNotEmpty()
   @IsString()
-  @IsNotEmpty({ message: 'slug?' })
-  @prop({ required: true, validate: /^[a-zA-Z0-9-_]+$/, unique: true })
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, required: true, unique: true, trim: true, validate: /^[a-zA-Z0-9-_]+$/ })
   slug: string
 
   @IsString()
-  @prop({ default: '' })
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: '', trim: true })
   description: string
 
   @Type(() => KeyValueModel)
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
+  @IsOptional()
+  @prop({ type: () => [KeyValueModel], _id: false, default: [] })
   extras: KeyValueModel[]
 
-  @prop({ default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 
   // for article aggregate

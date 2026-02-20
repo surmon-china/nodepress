@@ -5,12 +5,15 @@
  */
 
 import { prop, modelOptions } from '@typegoose/typegoose'
-import { IsString, IsDefined, IsOptional } from 'class-validator'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 
-export const DEFAULT_ADMIN_PROFILE = Object.freeze<Admin>({
-  name: '',
-  slogan: '',
+export type AdminProfile = Omit<Admin, 'singleton' | 'password'>
+
+export const ADMIN_SINGLETON_QUERY = Object.freeze({ singleton: true } as const)
+
+export const DEFAULT_ADMIN_PROFILE = Object.freeze<AdminProfile>({
+  name: 'Admin',
+  slogan: 'This is admin slogan',
   avatar: ''
 })
 
@@ -20,24 +23,20 @@ export const DEFAULT_ADMIN_PROFILE = Object.freeze<Admin>({
   }
 })
 export class Admin {
-  @IsString({ message: "What's your name?" })
-  @IsDefined()
-  @prop({ required: true })
+  @prop({ type: Boolean, default: true, unique: true, select: false })
+  singleton?: boolean
+
+  @prop({ type: String, required: true, validate: /\S+/, select: false })
+  password: string
+
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   name: string
 
-  @IsString()
-  @IsDefined()
-  @prop({ required: true })
+  @prop({ type: String, default: '', trim: true })
   slogan: string
 
-  @IsString()
-  @IsOptional()
-  @prop({ default: '' })
+  @prop({ type: String, default: '', trim: true })
   avatar: string
-
-  @IsString()
-  @prop({ select: false })
-  password?: string
 }
 
 export const AdminProvider = getProviderByTypegooseClass(Admin)

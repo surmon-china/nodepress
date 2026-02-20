@@ -4,143 +4,154 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import type { MergeType } from 'mongoose'
+import MongooseLeanVirtuals from 'mongoose-lean-virtuals'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, plugin, modelOptions, Severity } from '@typegoose/typegoose'
-import { Type } from 'class-transformer'
-import { IsString, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsArray, IsObject, ArrayUnique } from 'class-validator'
-import { IsDefined, IsOptional, IsNotEmpty, ValidateNested, MinLength, MaxLength } from 'class-validator'
+import { prop, plugin, index, modelOptions, Severity, Ref } from '@typegoose/typegoose'
+import { Transform, Type } from 'class-transformer'
+import { ArrayUnique, ValidateNested } from 'class-validator'
+import { IsNotEmpty, IsOptional, IsDefined, MinLength, MaxLength, Min } from 'class-validator'
+import { IsString, IsArray, IsUrl, IsEmail, IsInt, IsEnum, IsIP } from 'class-validator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
-import { mongoosePaginate } from '@app/utils/paginate'
-import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
-import { ROOT_COMMENT_PID } from '@app/constants/biz.constant'
-import { IPLocation } from '@app/core/helper/helper.service.ip'
-import { decodeMD5 } from '@app/transformers/codec.transformer'
+import { User, UserPublic } from '@app/modules/user/user.model'
 import { KeyValueModel } from '@app/models/key-value.model'
-import { CommentStatus, COMMENT_STATUSES } from './comment.constant'
+import { MongooseDoc } from '@app/interfaces/mongoose.interface'
+import { IPLocation } from '@app/core/helper/helper.service.ip'
+import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
+import { hashMD5 } from '@app/transformers/codec.transformer'
+import { mongoosePaginate } from '@app/utils/paginate'
+import { CommentStatus, CommentTargetType, CommentAuthorType } from './comment.constant'
 
-@modelOptions({
-  schemaOptions: {
-    versionKey: false,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  }
-})
-export class Author {
-  @MaxLength(20)
-  @IsString()
-  @IsNotEmpty()
-  @prop({ required: true, validate: /\S+/ })
-  name: string
+export type CommentDoc = MongooseDoc<Comment>
+export type CommentWith<U extends User | UserPublic> = MergeType<Comment, { user: U | null }>
+export type CommentDocWith<U extends User | UserPublic> = MergeType<CommentDoc, { user: U | null }>
 
-  // MARK: can't get Disqus user's email
-  @IsEmail()
-  @IsString()
-  @IsOptional()
-  @prop({ type: String, default: null })
-  email?: string | null
-
-  @IsUrl({ require_protocol: true })
-  @IsString()
-  @IsOptional()
-  @prop({ type: String, default: null })
-  site?: string | null
-
-  public get email_hash() {
-    const email = this.email?.trim().toLowerCase()
-    return email ? decodeMD5(email) : null
-  }
-}
-
-export class CommentBase {
-  @IsInt()
-  @IsNotEmpty({ message: 'post ID?' })
-  @prop({ required: true, index: true })
-  post_id: number
-
-  // parent comment ID
-  @IsInt()
-  @prop({ default: ROOT_COMMENT_PID, index: true })
-  pid: number
-
-  @MinLength(3) // sync with Disqus
-  @MaxLength(3000)
-  @IsString()
-  @IsNotEmpty({ message: 'comment content?' })
-  @prop({ required: true, validate: /\S+/ })
-  content: string
-
-  @Type(() => Author)
-  @ValidateNested()
-  @IsObject()
-  @IsNotEmpty()
-  @IsDefined({ message: 'comment author?' })
-  @prop({ _id: false, required: true })
-  author: Author
-
-  // user agent
-  @IsString()
-  @IsOptional()
-  @prop({ type: String })
-  agent?: string
-}
-
-export interface CommentBaseWithExtras extends CommentBase {
-  extras?: KeyValueModel[]
-}
+export type NormalizedComment = Omit<
+  Comment,
+  'id' | 'created_at' | 'updated_at' | 'author_type' | 'author_email_hash'
+>
 
 @plugin(mongoosePaginate)
+@plugin(MongooseLeanVirtuals)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@index({ user: 1, created_at: -1 })
+@index({ target_type: 1, target_id: 1, status: 1, created_at: -1 })
 @modelOptions({
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
     id: false,
     versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: {
       createdAt: 'created_at',
       updatedAt: 'updated_at'
     }
   }
 })
-export class Comment extends CommentBase {
+export class Comment {
   @prop({ unique: true })
-  id?: number
+  id: number
 
-  @IsIn(COMMENT_STATUSES)
-  @IsInt()
-  @prop({ enum: CommentStatus, default: CommentStatus.Published, index: true })
+  @IsEnum(CommentStatus)
+  @IsOptional()
+  @prop({ type: Number, enum: CommentStatus, default: CommentStatus.Published, index: true })
   status: CommentStatus
 
-  // likes
+  @IsEnum(CommentTargetType)
+  @IsDefined()
+  @prop({ type: String, enum: CommentTargetType, required: true, index: true })
+  target_type: CommentTargetType
+
   @IsInt()
-  @prop({ default: 0, index: true })
+  @IsDefined()
+  @prop({ type: Number, required: true, index: true })
+  target_id: number
+
+  @Min(0)
+  @IsInt()
+  @IsOptional()
+  @prop({ type: Number, default: null, index: true })
+  parent_id: number | null
+
+  @MinLength(3)
+  @MaxLength(3000)
+  @IsNotEmpty()
+  @IsString()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 3000 })
+  content: string
+
+  @prop({ ref: () => User, default: null, index: true })
+  user: Ref<User> | null
+
+  @MaxLength(100)
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 100 })
+  author_name: string
+
+  @IsEmail()
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: null, trim: true })
+  author_email: string | null
+
+  @MaxLength(500)
+  @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: null, trim: true, maxlength: 500 })
+  author_website: string | null
+
+  public get author_email_hash() {
+    const email = this.author_email?.trim().toLowerCase()
+    return email ? hashMD5(email) : null
+  }
+
+  public get author_type(): CommentAuthorType {
+    return this.user ? CommentAuthorType.User : CommentAuthorType.Guest
+  }
+
+  @IsInt()
+  @IsOptional()
+  @prop({ type: Number, default: 0, min: 0 })
   likes: number
 
   @IsInt()
-  @prop({ default: 0, index: true })
+  @IsOptional()
+  @prop({ type: Number, default: 0, min: 0 })
   dislikes: number
 
-  // IP address
   @IsIP()
   @IsOptional()
   @prop({ type: String, default: null })
   ip: string | null
 
-  // IP location
   @prop({ type: Object, default: null })
   ip_location: Partial<IPLocation> | null
 
+  @IsString()
+  @IsOptional()
+  @prop({ type: String, default: null })
+  user_agent: string | null
+
   @Type(() => KeyValueModel)
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () => [KeyValueModel] })
+  @IsOptional()
+  @prop({ type: () => [KeyValueModel], _id: false, default: [] })
   extras: KeyValueModel[]
 
-  @prop({ default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 

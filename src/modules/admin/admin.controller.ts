@@ -4,54 +4,61 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, Put, Post, Body, UseGuards } from '@nestjs/common'
+import { Controller, Get, Patch, Post, Body, UnauthorizedException } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { decodeBase64 } from '@app/transformers/codec.transformer'
 import { EventKeys } from '@app/constants/events.constant'
-import { AuthService } from '@app/core/auth/auth.service'
+import { AdminProfile } from './admin.model'
+import { AuthLoginDto, UpdateProfileDto } from './admin.dto'
+import { AdminAuthTokenService, TokenResult } from './admin.service.token'
 import { AdminService } from './admin.service'
-import { TokenResult } from './admin.interface'
-import { AuthLoginDTO, AdminUpdateDTO } from './admin.dto'
-import { Admin } from './admin.model'
 
 @Controller('admin')
 export class AdminController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
     private readonly adminService: AdminService,
-    private readonly authService: AuthService
+    private readonly authTokenService: AdminAuthTokenService
   ) {}
 
   @Post('login')
   @SuccessResponse('Login succeeded')
-  async login(@RequestContext() { visitor }: IRequestContext, @Body() body: AuthLoginDTO): Promise<TokenResult> {
-    const token = await this.adminService.login(body.password)
+  async login(@RequestContext() { visitor }: IRequestContext, @Body() dto: AuthLoginDto): Promise<TokenResult> {
+    const inputPassword = decodeBase64(dto.password)
+    const existedAdminDoc = await this.adminService.getDocument()
+    const isValidPassword = await this.adminService.validatePassword(inputPassword, existedAdminDoc?.password)
+    if (!isValidPassword) {
+      throw new UnauthorizedException('Password incorrect')
+    }
+
+    const token = this.authTokenService.createToken()
     this.eventEmitter.emit(EventKeys.AdminLoggedIn, visitor)
     return token
   }
 
   @Post('logout')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Logout succeeded')
-  async logout(@RequestContext() { token }: IRequestContext): Promise<string> {
-    await this.authService.invalidateToken(token!)
-    this.eventEmitter.emit(EventKeys.AdminLoggedOut, token)
+  async logout(@RequestContext() { identity }: IRequestContext): Promise<string> {
+    await this.authTokenService.invalidateToken(identity.token!)
+    this.eventEmitter.emit(EventKeys.AdminLoggedOut, identity.token)
     return 'ok'
   }
 
   // Refresh token
   @Post('refresh-token')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Refresh token succeeded')
   refreshToken(): TokenResult {
-    return this.adminService.createToken()
+    return this.authTokenService.createToken()
   }
 
   // Check token
-  @Get('check-token')
-  @UseGuards(AdminOnlyGuard)
+  @Post('check-token')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Token is valid')
   checkToken(): string {
     return 'ok'
@@ -59,14 +66,14 @@ export class AdminController {
 
   @Get('profile')
   @SuccessResponse('Get admin profile succeeded')
-  getAdminProfile(): Promise<Admin> {
-    return this.adminService.getProfile()
+  getAdminProfile(): Promise<AdminProfile> {
+    return this.adminService.getProfileCache()
   }
 
-  @Put('profile')
-  @UseGuards(AdminOnlyGuard)
+  @Patch('profile')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update admin profile succeeded')
-  putAdminProfile(@Body() adminProfile: AdminUpdateDTO): Promise<Admin> {
-    return this.adminService.updateProfile(adminProfile)
+  updateAdminProfile(@Body() dto: UpdateProfileDto): Promise<AdminProfile> {
+    return this.adminService.updateProfile(dto)
   }
 }

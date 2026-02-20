@@ -4,14 +4,14 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, UseGuards, Get, Put, Post, Delete, Query, Body } from '@nestjs/common'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
-import { PermissionPipe } from '@app/pipes/permission.pipe'
+import type { QueryFilter } from 'mongoose'
+import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from '@nestjs/common'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
-import { PaginateResult } from '@app/utils/paginate'
-import { CategoriesDTO, CategoryPaginateQueryDTO } from './category.dto'
+import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
+import { CategoryIdsDto, CategoryPaginateQueryDto } from './category.dto'
+import { CreateCategoryDto, UpdateCategoryDto } from './category.dto'
 import { CategoryService } from './category.service'
 import { Category } from './category.model'
 
@@ -20,59 +20,64 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: 'Get categories succeeded', usePaginate: true })
   getCategories(
-    @Query(PermissionPipe) query: CategoryPaginateQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
+    @Query() query: CategoryPaginateQueryDto,
+    @RequestContext() { identity }: IRequestContext
   ): Promise<PaginateResult<Category>> {
-    return this.categoryService.paginate(
-      {},
-      { page: query.page, perPage: query.per_page, dateSort: query.sort },
-      isUnauthenticated
-    )
+    const { sort, page, per_page, ...filters } = query
+    const queryFilter: QueryFilter<Category> = {}
+    const paginateOptions: PaginateOptions = { page, perPage: per_page, dateSort: sort }
+
+    // search
+    if (filters.keyword) {
+      const keywordRegExp = new RegExp(filters.keyword, 'i')
+      queryFilter.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
+    }
+
+    // paginate
+    return this.categoryService.paginate(queryFilter, paginateOptions, !identity.isAdmin)
   }
 
   @Get('all')
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get all categories succeeded')
-  getAllCategories(@RequestContext() { isAuthenticated }: IRequestContext): Promise<Array<Category>> {
-    return isAuthenticated
+  getAllCategories(@RequestContext() { identity }: IRequestContext): Promise<Array<Category>> {
+    return identity.isAdmin
       ? this.categoryService.getAllCategories({ aggregatePublicOnly: false })
-      : this.categoryService.getAllCategoriesCache()
-  }
-
-  @Post()
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse('Create category succeeded')
-  createCategory(@Body() category: Category): Promise<Category> {
-    return this.categoryService.create(category)
-  }
-
-  @Delete()
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse('Delete categories succeeded')
-  delCategories(@Body() body: CategoriesDTO) {
-    return this.categoryService.batchDelete(body.category_ids)
+      : this.categoryService.getAllPublicCategoriesCache()
   }
 
   @Get(':id')
-  @SuccessResponse('Get categories tree succeeded')
-  getCategory(@RequestContext() { params }: IRequestContext): Promise<Category[]> {
-    return this.categoryService.getGenealogyById(params.id)
+  @SuccessResponse('Get category succeeded')
+  getCategory(@Param('id', ParseIntPipe) id: number): Promise<Category> {
+    return this.categoryService.getDetail(id)
   }
 
-  @Put(':id')
-  @UseGuards(AdminOnlyGuard)
+  @Post()
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse('Create category succeeded')
+  createCategory(@Body() dto: CreateCategoryDto): Promise<Category> {
+    return this.categoryService.create(dto)
+  }
+
+  @Delete()
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse('Delete categories succeeded')
+  deleteCategories(@Body() { category_ids }: CategoryIdsDto) {
+    return this.categoryService.batchDelete(category_ids)
+  }
+
+  @Patch(':id')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update category succeeded')
-  putCategory(@RequestContext() { params }: IRequestContext, @Body() category: Category): Promise<Category> {
-    return this.categoryService.update(params.id, category)
+  updateCategory(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCategoryDto): Promise<Category> {
+    return this.categoryService.update(id, dto)
   }
 
   @Delete(':id')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete category succeeded')
-  delCategory(@RequestContext() { params }: IRequestContext) {
-    return this.categoryService.delete(params.id)
+  deleteCategory(@Param('id', ParseIntPipe) id: number) {
+    return this.categoryService.delete(id)
   }
 }

@@ -4,16 +4,13 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import _trim from 'lodash/trim'
 import type { QueryFilter } from 'mongoose'
-import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from '@nestjs/common'
-import { AdminOnlyGuard } from '@app/guards/admin-only.guard'
-import { AdminOptionalGuard } from '@app/guards/admin-optional.guard'
-import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { SuccessResponse } from '@app/decorators/success-response.decorator'
+import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from '@nestjs/common'
+import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
-import { TagsDTO, TagPaginateQueryDTO } from './tag.dto'
+import { CreateTagDto, UpdateTagDto, TagPaginateQueryDto, TagIdsDto } from './tag.dto'
 import { TagService } from './tag.service'
 import { Tag } from './tag.model'
 
@@ -22,11 +19,10 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: 'Get tags succeeded', usePaginate: true })
   getTags(
-    @Query(PermissionPipe) query: TagPaginateQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
+    @Query() query: TagPaginateQueryDto,
+    @RequestContext() { identity }: IRequestContext
   ): Promise<PaginateResult<Tag>> {
     const { sort, page, per_page, ...filters } = query
     const queryFilter: QueryFilter<Tag> = {}
@@ -34,49 +30,53 @@ export class TagController {
 
     // search
     if (filters.keyword) {
-      const trimmed = _trim(filters.keyword)
-      const keywordRegExp = new RegExp(trimmed, 'i')
+      const keywordRegExp = new RegExp(filters.keyword, 'i')
       queryFilter.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
     }
 
     // paginate
-    return this.tagService.paginate(queryFilter, paginateOptions, isUnauthenticated)
+    return this.tagService.paginate(queryFilter, paginateOptions, !identity.isAdmin)
   }
 
   @Get('all')
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse('Get all tags succeeded')
-  getAllTags(@RequestContext() { isAuthenticated }: IRequestContext): Promise<Tag[]> {
-    return isAuthenticated
+  getAllTags(@RequestContext() { identity }: IRequestContext): Promise<Tag[]> {
+    return identity.isAdmin
       ? this.tagService.getAllTags({ aggregatePublicOnly: false })
-      : this.tagService.getAllTagsCache()
+      : this.tagService.getAllPublicTagsCache()
+  }
+
+  @Get(':id')
+  @SuccessResponse('Get tag succeeded')
+  getTag(@Param('id', ParseIntPipe) id: number): Promise<Tag> {
+    return this.tagService.getDetail(id)
   }
 
   @Post()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Create tag succeeded')
-  createTag(@Body() tag: Tag): Promise<Tag> {
-    return this.tagService.create(tag)
+  createTag(@Body() dto: CreateTagDto): Promise<Tag> {
+    return this.tagService.create(dto)
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete tags succeeded')
-  delTags(@Body() body: TagsDTO) {
-    return this.tagService.batchDelete(body.tag_ids)
+  deleteTags(@Body() { tag_ids }: TagIdsDto) {
+    return this.tagService.batchDelete(tag_ids)
   }
 
-  @Put(':id')
-  @UseGuards(AdminOnlyGuard)
+  @Patch(':id')
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update Tag succeeded')
-  putTag(@RequestContext() { params }: IRequestContext, @Body() tag: Tag): Promise<Tag> {
-    return this.tagService.update(params.id, tag)
+  updateTag(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateTagDto): Promise<Tag> {
+    return this.tagService.update(id, dto)
   }
 
   @Delete(':id')
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete tag succeeded')
-  delTag(@RequestContext() { params }: IRequestContext) {
-    return this.tagService.delete(params.id)
+  deleteTag(@Param('id', ParseIntPipe) id: number) {
+    return this.tagService.delete(id)
   }
 }

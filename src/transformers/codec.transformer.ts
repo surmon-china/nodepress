@@ -13,6 +13,6 @@ export function decodeBase64(value: string): string {
 }
 
 // md5
-export function decodeMD5(value: string): string {
+export function hashMD5(value: string): string {
   return createHash('md5').update(value).digest('hex')
 }

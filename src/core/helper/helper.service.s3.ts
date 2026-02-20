@@ -112,7 +112,4 @@ export class S3Service {
       }))
     }))
   }
-
-  // TODO
-  public async deleteFile() {}
 }

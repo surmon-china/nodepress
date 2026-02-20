@@ -4,16 +4,26 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import type { MergeType } from 'mongoose'
+import MongooseLeanVirtuals from 'mongoose-lean-virtuals'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, plugin, modelOptions, Severity } from '@typegoose/typegoose'
-import { IsString, IsIP, IsIn, IsInt, IsOptional, IsNotEmpty } from 'class-validator'
+import { prop, plugin, modelOptions, Ref, Severity } from '@typegoose/typegoose'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
+import { MongooseDoc } from '@app/interfaces/mongoose.interface'
 import { mongoosePaginate } from '@app/utils/paginate'
+import { User } from '@app/modules/user/user.model'
 import { IPLocation } from '@app/core/helper/helper.service.ip'
-import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from './vote.constant'
+import { VoteTargetType, VoteType, VoteAuthorType } from './vote.constant'
+
+export type VoteDoc = MongooseDoc<Vote>
+export type VoteWithUser = MergeType<Vote, { user: User | null }>
+export type VoteDocWithUser = MergeType<VoteDoc, { user: User | null }>
+
+export type NormalizedVote = Omit<Vote, 'id' | 'created_at' | 'updated_at' | 'author_type'>
 
 @plugin(mongoosePaginate)
+@plugin(MongooseLeanVirtuals)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
@@ -30,53 +40,45 @@ import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from './vote.constant'
 })
 export class Vote {
   @prop({ unique: true })
-  id?: number
+  id: number
 
-  @IsIn(VOTE_TARGETS)
-  @IsInt()
-  @IsNotEmpty()
-  @prop({ required: true, index: true })
-  target_type: number
+  @prop({ type: String, enum: VoteTargetType, required: true, index: true })
+  target_type: VoteTargetType
 
-  @IsInt()
-  @IsNotEmpty()
-  @prop({ required: true, index: true })
+  @prop({ type: Number, required: true, index: true })
   target_id: number
 
-  @IsIn(VOTE_TYPES)
-  @IsInt()
-  @IsNotEmpty()
-  @prop({ required: true, index: true })
-  vote_type: number
+  @prop({ type: Number, enum: VoteType, required: true, index: true })
+  vote_type: VoteType
 
-  @IsIn(VOTE_AUTHOR_TYPES)
-  @IsInt()
-  @IsNotEmpty()
-  @prop({ required: true, index: true })
-  author_type: number
+  @prop({ type: String, default: null })
+  author_name: string | null
 
-  @prop({ type: Object, default: null })
-  author: Record<string, any> | null
+  @prop({ type: String, default: null })
+  author_email: string | null
 
-  // IP address
-  @IsIP()
-  @IsOptional()
+  @prop({ ref: () => User, default: null, index: true })
+  user: Ref<User> | null
+
+  public get author_type(): VoteAuthorType {
+    if (this.user) VoteAuthorType.User
+    if (this.author_name) return VoteAuthorType.Guest
+    return VoteAuthorType.Anonymous
+  }
+
   @prop({ type: String, default: null })
   ip: string | null
 
-  // IP location
   @prop({ type: Object, default: null })
   ip_location: Partial<IPLocation> | null
 
-  // user agent
-  @IsString()
   @prop({ type: String, default: null })
-  user_agent?: string | null
+  user_agent: string | null
 
-  @prop({ default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 
