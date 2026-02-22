@@ -21,6 +21,12 @@ export enum CommentAuthorType {
   User = 'user'
 }
 
+export enum CommentAuthorStatus {
+  Guest = 'guest',
+  Active = 'active',
+  Ghost = 'ghost'
+}
+
 export const COMMENT_PUBLIC_FILTER = Object.freeze({
   status: CommentStatus.Published
 })

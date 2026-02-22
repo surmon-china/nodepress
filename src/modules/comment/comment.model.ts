@@ -20,7 +20,7 @@ import { IPLocation } from '@app/core/helper/helper.service.ip'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { hashMD5 } from '@app/transformers/codec.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
-import { CommentStatus, CommentTargetType, CommentAuthorType } from './comment.constant'
+import { CommentStatus, CommentTargetType, CommentAuthorType, CommentAuthorStatus } from './comment.constant'
 
 export type CommentDoc = MongooseDoc<Comment>
 export type CommentWith<U extends User | UserPublic> = MergeType<Comment, { user: U | null }>
@@ -28,7 +28,7 @@ export type CommentDocWith<U extends User | UserPublic> = MergeType<CommentDoc, 
 
 export type NormalizedComment = Omit<
   Comment,
-  'id' | 'created_at' | 'updated_at' | 'author_type' | 'author_email_hash'
+  'id' | 'created_at' | 'updated_at' | 'author_status' | 'author_email_hash'
 >
 
 @plugin(mongoosePaginate)
@@ -100,6 +100,11 @@ export class Comment {
   @prop({ type: String, default: null, trim: true })
   author_email: string | null
 
+  public get author_email_hash() {
+    const email = this.author_email?.trim().toLowerCase()
+    return email ? hashMD5(email) : null
+  }
+
   @MaxLength(500)
   @IsUrl({ require_protocol: true })
   @IsString()
@@ -108,13 +113,22 @@ export class Comment {
   @prop({ type: String, default: null, trim: true, maxlength: 500 })
   author_website: string | null
 
-  public get author_email_hash() {
-    const email = this.author_email?.trim().toLowerCase()
-    return email ? hashMD5(email) : null
-  }
+  @IsEnum(CommentAuthorType)
+  @IsDefined()
+  @prop({ type: String, enum: CommentAuthorType, required: true, index: true })
+  author_type: CommentAuthorType
 
-  public get author_type(): CommentAuthorType {
-    return this.user ? CommentAuthorType.User : CommentAuthorType.Guest
+  // The user who posted this comment has either been deleted or does not exist.
+  public get author_status(): CommentAuthorStatus {
+    // Compatible with unmigrated data
+    if (this.author_type === undefined) return CommentAuthorStatus.Guest
+    if (this.author_type === CommentAuthorType.Guest) {
+      return CommentAuthorStatus.Guest
+    } else if (this.author_type === CommentAuthorType.User && !this.user) {
+      return CommentAuthorStatus.Ghost
+    } else {
+      return CommentAuthorStatus.Active
+    }
   }
 
   @IsInt()

@@ -21,7 +21,6 @@ import { SortMode, SortOrder } from '@app/constants/sort.constant'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { CommentPaginateQueryDto, CommentCalendarQueryDto } from './comment.dto'
 import { CreateCommentDto, UpdateCommentDto, CommentIdsDto, CommentIdsStatusDto } from './comment.dto'
-import { CommentAuthorType } from './comment.constant'
 import { Comment, CommentWith } from './comment.model'
 import { CommentStatsService } from './comment.service.stats'
 import { CommentService } from './comment.service'
@@ -95,14 +94,7 @@ export class CommentController {
     }
     // author type
     if (!_isUndefined(filters.author_type)) {
-      switch (filters.author_type) {
-        case CommentAuthorType.User:
-          queryFilter.user = { $ne: null }
-          break
-        case CommentAuthorType.Guest:
-          queryFilter.user = null
-          break
-      }
+      queryFilter.author_type = filters.author_type
     }
     // search
     if (filters.keyword) {

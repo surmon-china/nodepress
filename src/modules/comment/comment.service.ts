@@ -16,7 +16,7 @@ import { IPService } from '@app/core/helper/helper.service.ip'
 import { KeyValueModel } from '@app/models/key-value.model'
 import { ArticleService } from '@app/modules/article/article.service'
 import { User, UserPublic, USER_PUBLIC_POPULATE_SELECT } from '@app/modules/user/user.model'
-import { CommentStatus, CommentTargetType } from './comment.constant'
+import { CommentStatus, CommentTargetType, CommentAuthorType } from './comment.constant'
 import { Comment, CommentDoc, CommentDocWith, NormalizedComment } from './comment.model'
 import { CreateCommentDto, UpdateCommentDto } from './comment.dto'
 import { CommentBlocklistService } from './comment.service.blocklist'
@@ -54,6 +54,7 @@ export class CommentService {
       parent_id: input.parent_id ?? null,
       status: CommentStatus.Published,
       user: user?._id ?? null,
+      author_type: user?._id ? CommentAuthorType.User : CommentAuthorType.Guest,
       author_name: user?.name ?? input.author_name,
       author_email: user?.email ?? input.author_email ?? null,
       author_website: user?.website ?? input.author_website ?? null,
