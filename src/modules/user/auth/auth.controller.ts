@@ -11,7 +11,7 @@ import { RequestContext, IRequestContext } from '@app/decorators/request-context
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { UserIdentityProvider } from '../user.constant'
-import { UserMeService } from '../me/me.service'
+import { UserAccountService } from '../me/me.service.account'
 import { UserAuthStateService, AuthIntent } from './auth.service.state'
 import { UserAuthTokenService } from './auth.service.token'
 import { GithubAuthService } from './auth.service.github'
@@ -25,7 +25,7 @@ const GOOGLE_CALLBACK_PATH = '/user/auth/google/callback'
 @Controller('user/auth')
 export class UserAuthController {
   constructor(
-    private readonly userMeService: UserMeService,
+    private readonly userAccountService: UserAccountService,
     private readonly authTokenService: UserAuthTokenService,
     private readonly authStateService: UserAuthStateService,
     private readonly googleAuthService: GoogleAuthService,
@@ -61,7 +61,7 @@ export class UserAuthController {
     // OAuth login
     if (statePayload.intent === AuthIntent.Login) {
       // 4. Upsert local user record based on GitHub profile information
-      const user = await this.userMeService.upsertUser({
+      const user = await this.userAccountService.upsertUser({
         provider: UserIdentityProvider.GitHub,
         uid: String(userInfo.id),
         name: userInfo.name,
@@ -80,7 +80,7 @@ export class UserAuthController {
     }
     // OAuth link
     if (statePayload.intent === AuthIntent.Link) {
-      await this.userMeService.addIdentity(statePayload.uid, {
+      await this.userAccountService.addIdentity(statePayload.uid, {
         provider: UserIdentityProvider.GitHub,
         uid: String(userInfo.id)
       })
@@ -112,7 +112,7 @@ export class UserAuthController {
     const userInfo = await this.googleAuthService.getUserInfoByCode(GOOGLE_CALLBACK_PATH, code)
     // OAuth login
     if (statePayload.intent === AuthIntent.Login) {
-      const user = await this.userMeService.upsertUser({
+      const user = await this.userAccountService.upsertUser({
         provider: UserIdentityProvider.Google,
         uid: userInfo.sub,
         name: userInfo.name,
@@ -126,7 +126,7 @@ export class UserAuthController {
     }
     // OAuth link
     if (statePayload.intent === AuthIntent.Link) {
-      await this.userMeService.addIdentity(statePayload.uid, {
+      await this.userAccountService.addIdentity(statePayload.uid, {
         provider: UserIdentityProvider.Google,
         uid: userInfo.sub
       })

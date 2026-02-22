@@ -22,16 +22,24 @@ import { GoogleAuthService } from './auth/auth.service.google'
 
 // user manage
 import { UserMeController } from './me/me.controller'
-import { UserMeService } from './me/me.service'
+import { UserAccountService } from './me/me.service.account'
+import { UserActivityService } from './me/me.service.activity'
+
+// user data
+import { CommentProvider } from '@app/modules/comment/comment.model'
+import { VoteProvider } from '@app/modules/vote/vote.model'
 
 @Module({
   imports: [HttpModule],
   controllers: [UserController, UserMeController, UserAuthController],
   providers: [
+    CommentProvider,
+    VoteProvider,
     UserProvider,
     UserService,
     UserListener,
-    UserMeService,
+    UserAccountService,
+    UserActivityService,
     UserAuthTokenService,
     UserAuthStateService,
     GithubAuthService,

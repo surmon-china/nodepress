@@ -5,7 +5,7 @@
  */
 
 import { PickType } from '@nestjs/mapped-types'
-import { IsBoolean, IsDefined } from 'class-validator'
+import { IsInt, IsBoolean, IsDefined } from 'class-validator'
 import { User, UserIdentity } from '../user.model'
 
 export class UpdateProfileDto extends PickType(User, ['name', 'email', 'website', 'avatar'] as const) {}
@@ -16,4 +16,10 @@ export class DestroyAccountDto {
   @IsBoolean()
   @IsDefined()
   delete_comments: boolean
+}
+
+export class DeleteCommentDto {
+  @IsInt()
+  @IsDefined()
+  comment_id: number
 }

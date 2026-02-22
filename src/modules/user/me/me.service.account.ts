@@ -1,6 +1,6 @@
 /**
- * @file User me service
- * @module module/user/me/service
+ * @file User account service
+ * @module module/user/me/service.account
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -15,10 +15,10 @@ import { UserService } from '../user.service'
 import { UpsertUserInput } from './me.interface'
 import { UpdateProfileDto } from './me.dto'
 
-const logger = createLogger({ scope: 'UserMeService', time: isDevEnv })
+const logger = createLogger({ scope: 'UserAccountService', time: isDevEnv })
 
 @Injectable()
-export class UserMeService {
+export class UserAccountService {
   constructor(
     private readonly userService: UserService,
     @InjectModel(User) private readonly userModel: MongooseModel<User>

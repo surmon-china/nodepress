@@ -11,10 +11,14 @@ import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decora
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { linesToEmailContent } from '@app/transformers/email.transformer'
+import { Comment } from '@app/modules/comment/comment.model'
+import { Vote } from '@app/modules/vote/vote.model'
 import { APP_BIZ } from '@app/app.config'
 import { UserService } from '../user.service'
-import { UserMeService } from './me.service'
+import { UserAccountService } from './me.service.account'
+import { UserActivityService } from './me.service.activity'
 import { UpdateProfileDto, RemoveIdentityDto, DestroyAccountDto } from './me.dto'
+import { DeleteCommentDto } from './me.dto'
 
 @Controller('user/me')
 @OnlyIdentity(IdentityRole.User)
@@ -22,7 +26,8 @@ export class UserMeController {
   constructor(
     private readonly emailService: EmailService,
     private readonly userService: UserService,
-    private readonly meService: UserMeService
+    private readonly userAccountService: UserAccountService,
+    private readonly userActivityService: UserActivityService
   ) {}
 
   @Get('profile')
@@ -34,34 +39,13 @@ export class UserMeController {
   @Patch('profile')
   @SuccessResponse('Update profile succeeded')
   updateProfile(@RequestContext() { identity }: IRequestContext, @Body() dto: UpdateProfileDto) {
-    return this.meService.updateUser(identity.payload!.uid!, dto)
+    return this.userAccountService.updateUser(identity.payload!.uid!, dto)
   }
 
   @Post('unlink')
   @SuccessResponse('Unlink identity succeeded')
   unlinkIdentity(@RequestContext() { identity }: IRequestContext, @Body() { provider }: RemoveIdentityDto) {
-    return this.meService.removeIdentity(identity.payload!.uid!, provider)
-  }
-
-  @Get('comment')
-  @SuccessResponse('Get comments succeeded')
-  async getUsersAllComments(@RequestContext() { identity }: IRequestContext): Promise<Comment[]> {
-    return []
-    // const user = await this.userService.findOne(identity.payload!.uid!)
-    // return await this.commentService.getAllByUser(user._id)
-    // return this.commentModel.find({ user: user._id }).sort({ created_at: -1 }).lean().exec()
-  }
-
-  @Delete('comment')
-  @SuccessResponse('Delete comments succeeded')
-  async deleteUsersComments(@RequestContext() { identity }: IRequestContext) {
-    return 'TODO'
-    //   const user = await this.userService.findOne(identity.payload!.uid!)
-    //   const comment = await this.commentService.getDetail(id, 'withUser')
-    //   if (!comment.user || comment.user.id !== user.id) {
-    //     throw new ForbiddenException(`You do not have permission to delete comment '${id}'`)
-    //   }
-    //   return await this.commentService.batchUpdateStatus([comment.id], CommentStatus.Trash)
+    return this.userAccountService.removeIdentity(identity.payload!.uid!, provider)
   }
 
   @Post('destroy')
@@ -88,5 +72,29 @@ export class UserMeController {
         `Action Required: Please manually verify and perform the deletion in the database.`
       ])
     })
+  }
+
+  @Get('vote')
+  @SuccessResponse('Get votes succeeded')
+  async getUsersAllVotes(@RequestContext() { identity }: IRequestContext): Promise<Vote[]> {
+    const user = await this.userService.findOne(identity.payload!.uid!)
+    return await this.userActivityService.getAllVotes(user._id)
+  }
+
+  @Get('comment')
+  @SuccessResponse('Get comments succeeded')
+  async getUsersAllComments(@RequestContext() { identity }: IRequestContext): Promise<Comment[]> {
+    const user = await this.userService.findOne(identity.payload!.uid!)
+    return await this.userActivityService.getAllPublicComments(user._id)
+  }
+
+  @Delete('comment')
+  @SuccessResponse('Delete comment succeeded')
+  async deleteUsersComments(
+    @RequestContext() { identity }: IRequestContext,
+    @Body() { comment_id }: DeleteCommentDto
+  ) {
+    const user = await this.userService.findOne(identity.payload!.uid!)
+    return await this.userActivityService.deleteComment(user._id, comment_id)
   }
 }
