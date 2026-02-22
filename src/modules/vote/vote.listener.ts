@@ -39,9 +39,9 @@ export class VoteListener {
           to: APP_BIZ.ADMIN_EMAIL,
           subject: `New vote on "${targetTitle}"`,
           ...linesToEmailContent([
-            `You have a new ${vote.target_type} vote`,
+            `You have a new ${vote.target_type} vote.`,
             `Target: ${targetTitle}`,
-            `Target URL: ${targetLink}`,
+            `URL: ${targetLink}`,
             `Vote: ${voteText}`,
             vote.user
               ? `User: ${vote.user.name} (ID: ${vote.user.id})`
