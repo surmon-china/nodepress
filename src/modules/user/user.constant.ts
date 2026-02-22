@@ -12,5 +12,5 @@ export enum UserIdentityProvider {
 export enum UserType {
   Moderator = 1,
   Standard = 2,
-  Vip = 3
+  Patron = 3
 }
