@@ -128,9 +128,14 @@ export class CommentController {
       populate: { path: 'user', select: USER_PUBLIC_POPULATE_SELECT }
     })
 
+    const publicParentSet = await this.commentService.getPublicCommentIdSet(
+      result.documents.map((comment) => comment.parent_id).filter((id) => id != null)
+    )
+
     return {
       ...result,
       documents: result.documents.map((document) => {
+        document.orphaned = document.parent_id != null && !publicParentSet.has(document.parent_id)
         Reflect.deleteProperty(document, 'ip')
         Reflect.deleteProperty(document, 'author_email')
         return document

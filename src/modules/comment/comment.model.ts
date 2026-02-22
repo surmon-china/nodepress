@@ -153,6 +153,9 @@ export class Comment {
 
   @prop({ type: Date, default: Date.now })
   updated_at?: Date
+
+  // The parent comment of this comment does not exist or is not publicly posted.
+  orphaned?: boolean
 }
 
 export const CommentProvider = getProviderByTypegooseClass(Comment)

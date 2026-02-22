@@ -118,6 +118,16 @@ export class CommentService {
     return this.commentModel.paginateRaw<T>(filter, { ...options, lean: { virtuals: true } })
   }
 
+  public async getPublicCommentIdSet(commentIds: number[]): Promise<Set<number>> {
+    if (!commentIds.length) return new Set()
+    const found = await this.commentModel
+      .find({ id: { $in: commentIds }, status: CommentStatus.Published })
+      .select('id')
+      .lean()
+      .exec()
+    return new Set(found.map(({ id }) => id))
+  }
+
   public async update(commentId: number, input: UpdateCommentDto): Promise<CommentDoc> {
     const updated = await this.commentModel
       .findOneAndUpdate({ id: commentId }, { $set: input }, { returnDocument: 'after' })
