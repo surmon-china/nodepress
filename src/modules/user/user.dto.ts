@@ -18,7 +18,7 @@ export class CreateUserDto extends PickType(User, [
   'name',
   'email',
   'website',
-  'avatar',
+  'avatar_url',
   'identities',
   'extras'
 ] as const) {}

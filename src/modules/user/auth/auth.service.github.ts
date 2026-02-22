@@ -9,6 +9,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv, isProdEnv } from '@app/app.environment'
 import { APP_BIZ, GITHUB_OAUTH } from '@app/app.config'
+import { UserIdentityProvider } from '../user.constant'
+import { UserIdentity } from '../user.model'
 
 const logger = createLogger({ scope: 'GithubAuthService', time: isDevEnv })
 
@@ -72,5 +74,17 @@ export class GithubAuthService {
         logger.error('Failed to fetch GitHub user info:', error)
         throw new UnauthorizedException('Failed to retrieve GitHub profile. Please re-authenticate.')
       })
+  }
+
+  public transformUserInfoToIdentity(userInfo: GitHubUserInfo): UserIdentity {
+    return {
+      provider: UserIdentityProvider.GitHub,
+      uid: String(userInfo.id),
+      email: userInfo.email,
+      username: userInfo.login,
+      display_name: userInfo.name,
+      avatar_url: userInfo.avatar_url,
+      profile_url: userInfo.blog
+    }
   }
 }

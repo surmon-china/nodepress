@@ -6,11 +6,9 @@
 
 import type { FastifyReply } from 'fastify'
 import { Controller, Get, Post, Query, Response, HttpStatus } from '@nestjs/common'
-import { UserGitHubExtraKeys, UserGoogleExtraKeys } from '@app/constants/extras.constant'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
-import { UserIdentityProvider } from '../user.constant'
 import { UserAccountService } from '../me/me.service.account'
 import { UserAuthStateService, AuthIntent } from './auth.service.state'
 import { UserAuthTokenService } from './auth.service.token'
@@ -58,21 +56,11 @@ export class UserAuthController {
     const accessToken = await this.githubAuthService.getAccessTokenByCode(code)
     // 3. Fetch GitHub user profile using the obtained access token
     const userInfo = await this.githubAuthService.getUserInfoByToken(accessToken)
+    const userIdentity = this.githubAuthService.transformUserInfoToIdentity(userInfo)
     // OAuth login
     if (statePayload.intent === AuthIntent.Login) {
       // 4. Upsert local user record based on GitHub profile information
-      const user = await this.userAccountService.upsertUser({
-        provider: UserIdentityProvider.GitHub,
-        uid: String(userInfo.id),
-        name: userInfo.name,
-        email: userInfo.email,
-        website: userInfo.blog,
-        avatar: userInfo.avatar_url,
-        extras: [
-          { key: UserGitHubExtraKeys.Login, value: userInfo.login },
-          { key: UserGitHubExtraKeys.Bio, value: userInfo.bio ?? '' }
-        ]
-      })
+      const user = await this.userAccountService.upsertUser(userIdentity)
       // 5. Generate internal JWT for the authenticated user
       const userToken = this.authTokenService.createToken(user)
       // 6. Securely transmit token to the opener window and close the popup
@@ -80,10 +68,7 @@ export class UserAuthController {
     }
     // OAuth link
     if (statePayload.intent === AuthIntent.Link) {
-      await this.userAccountService.addIdentity(statePayload.uid, {
-        provider: UserIdentityProvider.GitHub,
-        uid: String(userInfo.id)
-      })
+      await this.userAccountService.addIdentity(statePayload.uid, userIdentity)
       sendWindowPostMessage(response, { type: AuthIntent.Link })
     }
   }
@@ -110,29 +95,16 @@ export class UserAuthController {
   async googleOAuthCallback(@Query() { code, state }: OAuthCallbackDto, @Response() response: FastifyReply) {
     const statePayload = await this.authStateService.verifyCallbackState(state)
     const userInfo = await this.googleAuthService.getUserInfoByCode(GOOGLE_CALLBACK_PATH, code)
+    const userIdentity = this.googleAuthService.transformUserInfoToIdentity(userInfo)
     // OAuth login
     if (statePayload.intent === AuthIntent.Login) {
-      const user = await this.userAccountService.upsertUser({
-        provider: UserIdentityProvider.Google,
-        uid: userInfo.sub,
-        name: userInfo.name,
-        email: userInfo.email,
-        avatar: userInfo.picture,
-        website: null,
-        extras: [
-          { key: UserGoogleExtraKeys.Email, value: userInfo.email },
-          { key: UserGoogleExtraKeys.GivenName, value: userInfo.given_name }
-        ]
-      })
+      const user = await this.userAccountService.upsertUser(userIdentity)
       const userToken = this.authTokenService.createToken(user)
       sendWindowPostMessage(response, { type: AuthIntent.Login, token: userToken })
     }
     // OAuth link
     if (statePayload.intent === AuthIntent.Link) {
-      await this.userAccountService.addIdentity(statePayload.uid, {
-        provider: UserIdentityProvider.Google,
-        uid: userInfo.sub
-      })
+      await this.userAccountService.addIdentity(statePayload.uid, userIdentity)
       sendWindowPostMessage(response, { type: AuthIntent.Link })
     }
   }

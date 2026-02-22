@@ -37,15 +37,3 @@ export enum CommentDisqusExtraKeys {
   AuthorUsername = 'disqus-author-username',
   Anonymous = 'disqus-anonymous'
 }
-
-// User GitHub extras
-export enum UserGitHubExtraKeys {
-  Login = 'github-login',
-  Bio = 'github-bio'
-}
-
-// User Google extras
-export enum UserGoogleExtraKeys {
-  GivenName = 'google-given-name',
-  Email = 'google-email'
-}

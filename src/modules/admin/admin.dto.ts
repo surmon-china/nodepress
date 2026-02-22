@@ -28,7 +28,7 @@ export class UpdateProfileDto {
   @IsString()
   @IsOptional()
   @Transform(({ value }) => value?.trim())
-  avatar: string
+  avatar_url: string
 
   @IsBase64()
   @IsString()

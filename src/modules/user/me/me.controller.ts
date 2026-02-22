@@ -39,7 +39,7 @@ export class UserMeController {
   @Patch('profile')
   @SuccessResponse('Update profile succeeded')
   updateProfile(@RequestContext() { identity }: IRequestContext, @Body() dto: UpdateProfileDto) {
-    return this.userAccountService.updateUser(identity.payload!.uid!, dto)
+    return this.userAccountService.updateUserProfile(identity.payload!.uid!, dto)
   }
 
   @Post('unlink')

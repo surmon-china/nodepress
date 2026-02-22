@@ -14,7 +14,7 @@ export const ADMIN_SINGLETON_QUERY = Object.freeze({ singleton: true } as const)
 export const DEFAULT_ADMIN_PROFILE = Object.freeze<AdminProfile>({
   name: 'Admin',
   slogan: 'This is admin slogan',
-  avatar: ''
+  avatar_url: ''
 })
 
 @modelOptions({
@@ -36,7 +36,7 @@ export class Admin {
   slogan: string
 
   @prop({ type: String, default: '', trim: true })
-  avatar: string
+  avatar_url: string
 }
 
 export const AdminProvider = getProviderByTypegooseClass(Admin)

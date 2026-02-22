@@ -9,6 +9,8 @@ import { Injectable } from '@nestjs/common'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv, isProdEnv } from '@app/app.environment'
 import { APP_BIZ, GOOGLE_OAUTH } from '@app/app.config'
+import { UserIdentityProvider } from '../user.constant'
+import { UserIdentity } from '../user.model'
 
 const logger = createLogger({ scope: 'GoogleAuthService', time: isDevEnv })
 
@@ -52,5 +54,17 @@ export class GoogleAuthService {
       url: 'https://www.googleapis.com/oauth2/v3/userinfo'
     })
     return response.data
+  }
+
+  public transformUserInfoToIdentity(userInfo: GoogleUserInfo): UserIdentity {
+    return {
+      provider: UserIdentityProvider.Google,
+      uid: userInfo.sub,
+      email: userInfo.email,
+      username: null,
+      display_name: userInfo.name,
+      avatar_url: userInfo.picture,
+      profile_url: null
+    }
   }
 }

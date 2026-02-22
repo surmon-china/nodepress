@@ -23,7 +23,7 @@ db.options.updateMany(
 )
 
 // 2. Update Admin: enforce singleton
-db.admins.updateMany({}, { $set: { singleton: true } })
+db.admins.updateMany({}, { $rename: { avatar: 'avatar_url' }, $set: { singleton: true } })
 ```
 
 #### Votes

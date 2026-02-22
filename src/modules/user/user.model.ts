@@ -15,7 +15,7 @@ import { mongoosePaginate } from '@app/utils/paginate'
 import { KeyValueModel } from '@app/models/key-value.model'
 import { UserType, UserIdentityProvider } from './user.constant'
 
-export const USER_PUBLIC_POPULATE_SELECT = ['id', 'type', 'name', 'website', 'avatar'] as const
+export const USER_PUBLIC_POPULATE_SELECT = ['id', 'type', 'name', 'website', 'avatar_url'] as const
 export type UserPublic = Required<Pick<User, (typeof USER_PUBLIC_POPULATE_SELECT)[number]>>
 
 export class UserIdentity {
@@ -28,6 +28,39 @@ export class UserIdentity {
   @IsString()
   @prop({ type: String, required: true })
   uid: string
+
+  @IsEmail()
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: null, trim: true })
+  email: string | null
+
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: null, trim: true })
+  username: string | null
+
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: null, trim: true })
+  display_name: string | null
+
+  @IsUrl()
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: null, trim: true })
+  avatar_url: string | null
+
+  @IsUrl()
+  @IsString()
+  @IsOptional()
+  @Transform(({ value }) => value?.trim())
+  @prop({ type: String, default: null, trim: true })
+  profile_url: string | null
 
   @prop({ type: Date, default: Date.now })
   linked_at?: Date
@@ -85,7 +118,7 @@ export class User {
   @IsOptional()
   @Transform(({ value }) => value?.trim())
   @prop({ type: String, default: null, trim: true, maxlength: 500 })
-  avatar: string | null
+  avatar_url: string | null
 
   @Type(() => UserIdentity)
   @ValidateNested({ each: true })
