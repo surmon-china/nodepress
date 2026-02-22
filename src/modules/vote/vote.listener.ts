@@ -9,6 +9,7 @@ import { EventKeys } from '@app/constants/events.constant'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
+import { getCommentNotificationEmail } from '@app/modules/comment/comment.helper'
 import { getArticleUrl, getPermalink } from '@app/transformers/urlmap.transformer'
 import { getLocationText, getUserAgentText, linesToEmailContent } from '@app/transformers/email.transformer'
 import { createLogger } from '@app/utils/logger'
@@ -71,23 +72,24 @@ export class VoteListener {
         sendMailToAdmin(targetTitle, targetLink)
 
         //  If the voter is NOT the comment author, also send an email to the comment author.
-        const voteAuthorName = vote.user?.name ?? vote.author_name
         const voteAuthorEmail = vote.user?.email ?? vote.author_email
-        const commentAuthorEmail = comment.user?.email ?? comment.author_email
-        if (commentAuthorEmail && commentAuthorEmail !== voteAuthorEmail) {
-          const subject = `Your comment #${comment.id} has a new vote`
-          this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
-            to: commentAuthorEmail,
-            subject,
-            ...linesToEmailContent([
-              `Hello ${voteAuthorName}, ${subject}.`,
-              `Vote: ${voteText}`,
-              `Target: ${targetTitle}`,
-              `From: ${vote.user ? vote.user.name : vote.author_name || 'Anonymous'}`,
-              `View on: ${targetLink}`
-            ])
-          })
-        }
+        const commentAuthorEmail = getCommentNotificationEmail(comment)
+
+        if (!commentAuthorEmail) return
+        if (commentAuthorEmail === voteAuthorEmail) return
+
+        const subject = `Your comment #${comment.id} has a new vote`
+        this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
+          to: commentAuthorEmail,
+          subject,
+          ...linesToEmailContent([
+            `Hello ${comment.author_name}, ${subject}.`,
+            `Vote: ${voteText}`,
+            `Target: ${targetTitle}`,
+            `From: ${vote.user ? vote.user.name : vote.author_name || 'Anonymous'}`,
+            `View on: ${targetLink}`
+          ])
+        })
       }
     } catch (error) {
       logger.error('Error handling vote created event', error)

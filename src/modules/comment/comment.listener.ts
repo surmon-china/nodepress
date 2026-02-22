@@ -13,6 +13,7 @@ import { EventKeys } from '@app/constants/events.constant'
 import { UserPublic } from '@app/modules/user/user.model'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
+import { getCommentNotificationEmail } from '@app/modules/comment/comment.helper'
 import { CommentTargetType } from '@app/modules/comment/comment.constant'
 import { CreateCommentDto } from '@app/modules/comment/comment.dto'
 import { CommentWith } from '@app/modules/comment/comment.model'
@@ -65,22 +66,23 @@ export class CommentListener {
     if (comment.parent_id) {
       try {
         const parentComment = await this.commentService.getDetail(comment.parent_id, 'withUser')
-        const parentCommentEmail = parentComment.user?.email ?? parentComment.author_email ?? null
-        if (parentCommentEmail && parentCommentEmail !== comment.author_email) {
-          const subject = `Your comment #${parentComment.id} has a new reply`
-          this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
-            to: parentCommentEmail,
-            subject,
-            ...linesToEmailContent([
-              `Hello, ${parentComment.author_name}.`,
-              `Your comment has a new reply from ${comment.author_name}:`,
-              ``,
-              `${comment.content}`,
-              ``,
-              `View on ${targetTitle}: ${targetLink}`
-            ])
-          })
-        }
+        const parentCommentEmail = getCommentNotificationEmail(parentComment)
+        if (!parentCommentEmail) return
+        if (parentCommentEmail === comment.author_email) return
+
+        const subject = `Your comment #${parentComment.id} has a new reply`
+        this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
+          to: parentCommentEmail,
+          subject,
+          ...linesToEmailContent([
+            `Hello, ${parentComment.author_name || 'there'}.`,
+            `Your comment has a new reply from ${comment.author_name}:`,
+            ``,
+            `${comment.content}`,
+            ``,
+            `View on ${targetTitle}: ${targetLink}`
+          ])
+        })
       } catch (error) {
         logger.warn('Failed to send email to parent comment author:', error)
       }
