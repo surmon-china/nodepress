@@ -119,7 +119,10 @@ export class UserAuthController {
         email: userInfo.email,
         avatar: userInfo.picture,
         website: null,
-        extras: [{ key: UserGoogleExtraKeys.GivenName, value: userInfo.given_name }]
+        extras: [
+          { key: UserGoogleExtraKeys.Email, value: userInfo.email },
+          { key: UserGoogleExtraKeys.GivenName, value: userInfo.given_name }
+        ]
       })
       const userToken = this.authTokenService.createToken(user)
       sendWindowPostMessage(response, { type: AuthIntent.Login, token: userToken })

@@ -46,5 +46,6 @@ export enum UserGitHubExtraKeys {
 
 // User Google extras
 export enum UserGoogleExtraKeys {
-  GivenName = 'google-given-name'
+  GivenName = 'google-given-name',
+  Email = 'google-email'
 }
