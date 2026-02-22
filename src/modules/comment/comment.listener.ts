@@ -67,6 +67,7 @@ export class CommentListener {
       try {
         const parentComment = await this.commentService.getDetail(comment.parent_id, 'withUser')
         const parentCommentEmail = getCommentNotificationEmail(parentComment)
+
         if (!parentCommentEmail) return
         if (parentCommentEmail === comment.author_email) return
 
