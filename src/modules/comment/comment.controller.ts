@@ -109,8 +109,8 @@ export class CommentController {
       const keywordRegExp = new RegExp(filters.keyword, 'i')
       queryFilter.$or = [
         { content: keywordRegExp },
-        { 'author.name': keywordRegExp },
-        { 'author.email': keywordRegExp }
+        { author_name: keywordRegExp },
+        { author_email: keywordRegExp }
       ]
     }
 
