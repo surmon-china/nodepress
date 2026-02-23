@@ -25,7 +25,7 @@ export class CreateUserDto extends PickType(User, [
 
 export class UpdateUserDto extends IntersectionType(
   PartialType(CreateUserDto),
-  PickType(User, ['disabled'] as const)
+  PartialType(PickType(User, ['disabled'] as const))
 ) {}
 
 export class UserPaginateQueryDto extends IntersectionType(PaginateOptionDto, KeywordQueryDto) {

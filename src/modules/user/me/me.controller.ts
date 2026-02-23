@@ -39,7 +39,13 @@ export class UserMeController {
   @Patch('profile')
   @SuccessResponse('Update profile succeeded')
   updateProfile(@RequestContext() { identity }: IRequestContext, @Body() dto: UpdateProfileDto) {
-    return this.userAccountService.updateUserProfile(identity.payload!.uid!, dto)
+    // Explicitly mapping fields here since we are calling an admin-level superset service.
+    return this.userService.update(identity.payload!.uid!, {
+      name: dto.name,
+      email: dto.email,
+      website: dto.website,
+      avatar_url: dto.avatar_url
+    })
   }
 
   @Post('unlink')

@@ -12,7 +12,6 @@ import { isDevEnv } from '@app/app.environment'
 import { UserType, UserIdentityProvider } from '../user.constant'
 import { User, UserIdentity } from '../user.model'
 import { UserService } from '../user.service'
-import { UpdateProfileDto } from './me.dto'
 
 const logger = createLogger({ scope: 'UserAccountService', time: isDevEnv })
 
@@ -25,16 +24,6 @@ export class UserAccountService {
 
   private findOneByIdentity(provider: UserIdentityProvider, uid: string) {
     return this.userModel.findOne({ 'identities.provider': provider, 'identities.uid': uid }).exec()
-  }
-
-  public async updateUserProfile(userId: number, input: UpdateProfileDto): Promise<MongooseDoc<User>> {
-    const user = await this.userService.findOne(userId)
-    return await Object.assign(user, {
-      name: input.name,
-      email: input.email,
-      website: input.website,
-      avatar: input.avatar_url
-    }).save()
   }
 
   public async upsertUser(input: UserIdentity): Promise<MongooseDoc<User>> {
