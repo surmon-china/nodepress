@@ -9,7 +9,8 @@ import { IsInt, IsArray, IsIn, IsEnum, IsDefined, IsOptional, ArrayNotEmpty, Arr
 import { PaginateOptionDto } from '@app/dtos/paginate.dto'
 import { OptionalAuthorDto } from '@app/dtos/author.dto'
 import { unknownToNumber } from '@app/transformers/value.transformer'
-import { VoteTargetType, VoteType, VoteAuthorType } from './vote.constant'
+import { GeneralAuthorType } from '@app/constants/author.constant'
+import { VoteTargetType, VoteType } from './vote.constant'
 
 export class CommentVoteDto extends OptionalAuthorDto {
   @IsInt()
@@ -47,9 +48,9 @@ export class VotePaginateQueryDto extends PaginateOptionDto {
   @Transform(({ value }) => unknownToNumber(value))
   vote_type?: VoteType
 
-  @IsEnum(VoteAuthorType)
+  @IsEnum(GeneralAuthorType)
   @IsOptional()
-  author_type?: VoteAuthorType
+  author_type?: GeneralAuthorType
 }
 
 export class VoteIdsDto {

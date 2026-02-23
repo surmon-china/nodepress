@@ -5,7 +5,7 @@
  */
 
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, index, plugin, modelOptions, Severity } from '@typegoose/typegoose'
+import { prop, index, plugin, modelOptions } from '@typegoose/typegoose'
 import { Type, Transform } from 'class-transformer'
 import { IsOptional, IsDefined, IsNotEmpty, ValidateNested, ArrayUnique } from 'class-validator'
 import { IsString, IsBoolean, IsEnum, IsUrl, IsEmail, IsArray, MaxLength } from 'class-validator'
@@ -70,7 +70,6 @@ export class UserIdentity {
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
 @index({ 'identities.provider': 1, 'identities.uid': 1 }, { unique: true, sparse: true })
 @modelOptions({
-  options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
     id: false,
     versionKey: false,

@@ -13,9 +13,3 @@ export enum VoteTargetType {
   Article = 'article',
   Comment = 'comment'
 }
-
-export enum VoteAuthorType {
-  Anonymous = 'anonymous',
-  Guest = 'guest',
-  User = 'user'
-}

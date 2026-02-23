@@ -12,12 +12,13 @@ import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decora
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
-import { IPService } from '@app/core/helper/helper.service.ip'
-import { UserService } from '@app/modules/user/user.service'
+import { resolveGeneralAuthor } from '@app/constants/author.constant'
 import { ArticleStatsService } from '@app/modules/article/article.service.stats'
 import { CommentService } from '@app/modules/comment/comment.service'
+import { UserService } from '@app/modules/user/user.service'
+import { IPService } from '@app/core/helper/helper.service.ip'
 import { CommentVoteDto, ArticleVoteDto, VotePaginateQueryDto, VoteIdsDto } from './vote.dto'
-import { VoteTargetType, VoteAuthorType, VoteType } from './vote.constant'
+import { VoteTargetType, VoteType } from './vote.constant'
 import { Vote, VoteWithUser } from './vote.model'
 import { VoteService } from './vote.service'
 
@@ -38,7 +39,7 @@ export class VoteController {
     @Body() dto: ArticleVoteDto,
     @RequestContext() { visitor, identity }: IRequestContext
   ): Promise<number> {
-    const likes = await this.articleStatsService.incrementStatistics(dto.article_id, 'likes')
+    const result = await this.articleStatsService.incrementStatistics(dto.article_id, 'likes')
 
     const [user, ipLocation] = await Promise.all([
       identity.isUser ? this.userService.findOne(identity.payload!.uid!) : null,
@@ -49,15 +50,13 @@ export class VoteController {
       target_type: VoteTargetType.Article,
       target_id: dto.article_id,
       vote_type: dto.vote,
-      user: user?._id ?? null,
-      author_name: user?.name ?? dto.author_name ?? null,
-      author_email: user?.email ?? dto.author_email ?? null,
+      ...resolveGeneralAuthor(dto, user),
       user_agent: visitor.agent,
       ip: visitor.ip,
       ip_location: ipLocation
     })
 
-    return likes
+    return result
   }
 
   @Post('/comment')
@@ -81,9 +80,7 @@ export class VoteController {
       target_type: VoteTargetType.Comment,
       target_id: dto.comment_id,
       vote_type: dto.vote,
-      user: user?._id ?? null,
-      author_name: user?.name ?? dto.author_name ?? null,
-      author_email: user?.email ?? dto.author_email ?? null,
+      ...resolveGeneralAuthor(dto, user),
       user_agent: visitor.agent,
       ip: visitor.ip,
       ip_location: ipLocation
@@ -114,19 +111,7 @@ export class VoteController {
     }
     // author type
     if (!_isUndefined(filters.author_type)) {
-      switch (filters.author_type) {
-        case VoteAuthorType.User:
-          queryFilter.user = { $ne: null }
-          break
-        case VoteAuthorType.Guest:
-          queryFilter.user = null
-          queryFilter.author_name = { $ne: null }
-          break
-        case VoteAuthorType.Anonymous:
-          queryFilter.user = null
-          queryFilter.author_name = null
-          break
-      }
+      queryFilter.author_type = filters.author_type
     }
 
     return this.voteService.paginate<VoteWithUser>(queryFilter, {

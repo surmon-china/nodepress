@@ -11,8 +11,8 @@ import { InjectModel } from '@app/transformers/model.transformer'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { IPService } from '@app/core/helper/helper.service.ip'
-import { isProdEnv } from '@app/app.environment'
 import { User } from '@app/modules/user/user.model'
+import { resolveGeneralAuthor } from '@app/constants/author.constant'
 import { CreateFeedbackDto, UpdateFeedbackDto } from './feedback.dto'
 import { Feedback } from './feedback.model'
 
@@ -37,13 +37,11 @@ export class FeedbackService {
   ): Promise<MongooseDoc<Feedback>> {
     return await this.feedbackModel.create({
       ...input,
-      user: user?._id ?? null,
-      author_name: user?.name ?? input.author_name ?? null,
-      author_email: user?.email ?? input.author_email ?? null,
+      ...resolveGeneralAuthor(input, user),
       user_agent: visitor.agent,
       origin: visitor.origin,
       ip: visitor.ip,
-      ip_location: isProdEnv && visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
+      ip_location: visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
     })
   }
 

@@ -22,8 +22,8 @@ import { CreateCommentDto, UpdateCommentDto } from './comment.dto'
 import { CommentBlocklistService } from './comment.service.blocklist'
 import { CommentAkismetService } from './comment.service.akismet'
 import { CommentEffectService } from './comment.service.effect'
-import { isDevEnv, isProdEnv } from '@app/app.environment'
 import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
 
 const logger = createLogger({ scope: 'CommentService', time: isDevEnv })
 
@@ -69,7 +69,7 @@ export class CommentService {
 
   // create comment & trigger effects
   public async create(input: NormalizedComment): Promise<CommentDocWith<UserPublic>> {
-    const ip_location = isProdEnv && input.ip ? await this.ipService.queryLocation(input.ip) : null
+    const ip_location = input.ip ? await this.ipService.queryLocation(input.ip) : null
     const created = await this.commentModel.create({ ...input, ip_location })
     // populate user data for response
     const populated = await created.populate<{ user: UserPublic | null }>('user', USER_PUBLIC_POPULATE_SELECT)

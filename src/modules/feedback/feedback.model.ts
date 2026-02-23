@@ -13,6 +13,7 @@ import { getProviderByTypegooseClass } from '@app/transformers/model.transformer
 import { mongoosePaginate } from '@app/utils/paginate'
 import { IPLocation } from '@app/core/helper/helper.service.ip'
 import { User } from '@app/modules/user/user.model'
+import { GeneralAuthorType } from '@app/constants/author.constant'
 import { FeedbackEmotion, emotionsMap } from './feedback.constant'
 
 export type FeedbackWithUser = MergeType<Feedback, { user: User | null }>
@@ -50,6 +51,9 @@ export class Feedback {
 
   @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 3000 })
   content: string
+
+  @prop({ type: String, enum: GeneralAuthorType, required: true, index: true })
+  author_type: GeneralAuthorType
 
   @prop({ type: String, default: null })
   author_name: string | null

@@ -12,6 +12,7 @@ import { unknownToNumber, unknownToBoolean } from '@app/transformers/value.trans
 import { KeywordQueryDto } from '@app/dtos/querys.dto'
 import { OptionalAuthorDto } from '@app/dtos/author.dto'
 import { PaginateOptionDto } from '@app/dtos/paginate.dto'
+import { GeneralAuthorType } from '@app/constants/author.constant'
 import { FeedbackEmotion } from './feedback.constant'
 
 export class CreateFeedbackDto extends OptionalAuthorDto {
@@ -49,6 +50,10 @@ export class FeedbackPaginateQueryDto extends IntersectionType(PaginateOptionDto
   @IsOptional()
   @Transform(({ value }) => unknownToBoolean(value))
   marked?: boolean
+
+  @IsEnum(GeneralAuthorType)
+  @IsOptional()
+  author_type?: GeneralAuthorType
 }
 
 export class FeedbackIdsDto {

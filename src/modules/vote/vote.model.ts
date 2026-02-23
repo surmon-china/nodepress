@@ -14,13 +14,14 @@ import { MongooseDoc } from '@app/interfaces/mongoose.interface'
 import { mongoosePaginate } from '@app/utils/paginate'
 import { User } from '@app/modules/user/user.model'
 import { IPLocation } from '@app/core/helper/helper.service.ip'
-import { VoteTargetType, VoteType, VoteAuthorType } from './vote.constant'
+import { GeneralAuthorType } from '@app/constants/author.constant'
+import { VoteTargetType, VoteType } from './vote.constant'
 
 export type VoteDoc = MongooseDoc<Vote>
 export type VoteWithUser = MergeType<Vote, { user: User | null }>
 export type VoteDocWithUser = MergeType<VoteDoc, { user: User | null }>
 
-export type NormalizedVote = Omit<Vote, 'id' | 'created_at' | 'updated_at' | 'author_type'>
+export type NormalizedVote = Omit<Vote, 'id' | 'created_at' | 'updated_at'>
 
 @plugin(mongoosePaginate)
 @plugin(MongooseLeanVirtuals)
@@ -30,8 +31,6 @@ export type NormalizedVote = Omit<Vote, 'id' | 'created_at' | 'updated_at' | 'au
   schemaOptions: {
     id: false,
     versionKey: false,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
     timestamps: {
       createdAt: 'created_at',
       updatedAt: 'updated_at'
@@ -51,6 +50,9 @@ export class Vote {
   @prop({ type: Number, enum: VoteType, required: true, index: true })
   vote_type: VoteType
 
+  @prop({ type: String, enum: GeneralAuthorType, required: true, index: true })
+  author_type: GeneralAuthorType
+
   @prop({ type: String, default: null })
   author_name: string | null
 
@@ -59,12 +61,6 @@ export class Vote {
 
   @prop({ ref: () => User, default: null, index: true })
   user: Ref<User> | null
-
-  public get author_type(): VoteAuthorType {
-    if (this.user) return VoteAuthorType.User
-    if (this.author_name) return VoteAuthorType.Guest
-    return VoteAuthorType.Anonymous
-  }
 
   @prop({ type: String, default: null })
   ip: string | null

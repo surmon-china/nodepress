@@ -53,6 +53,10 @@ export class FeedbackController {
     if (!_isUndefined(filters.marked)) {
       queryFilter.marked = filters.marked
     }
+    // author type
+    if (!_isUndefined(filters.author_type)) {
+      queryFilter.author_type = filters.author_type
+    }
     // search
     if (filters.keyword) {
       const keywordRegExp = new RegExp(filters.keyword, 'i')
