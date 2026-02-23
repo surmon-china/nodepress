@@ -1,7 +1,7 @@
 /**
  * @file Identity admission decorator
  * @module decorator/only-identity
- * @author Surmon
+ * @author Surmon <https://github.com/surmon-china>
  */
 
 import { SetMetadata } from '@nestjs/common'

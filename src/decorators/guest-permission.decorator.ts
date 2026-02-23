@@ -1,7 +1,7 @@
 /**
  * @file Guest request field-level permission decorator
  * @module decorator/guest-permission
- * @author Surmon
+ * @author Surmon <https://github.com/surmon-china>
  */
 
 import { SetMetadata } from '@nestjs/common'
