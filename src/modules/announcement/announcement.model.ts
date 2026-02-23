@@ -4,10 +4,10 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Transform } from 'class-transformer'
 import { IsString, IsOptional, IsNotEmpty, IsEnum } from 'class-validator'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions } from '@typegoose/typegoose'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -31,7 +31,7 @@ export class Announcement {
 
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   content: string
 

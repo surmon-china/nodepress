@@ -4,8 +4,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Transform } from 'class-transformer'
 import { IsString, IsBase64, IsOptional, IsNotEmpty } from 'class-validator'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 
 export class AuthLoginDto {
   @IsBase64()
@@ -17,17 +17,17 @@ export class AuthLoginDto {
 export class UpdateProfileDto {
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   name: string
 
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   slogan: string
 
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   avatar_url: string
 
   @IsBase64()

@@ -7,9 +7,10 @@
 import type { MergeType } from 'mongoose'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, index, plugin, Ref, modelOptions } from '@typegoose/typegoose'
-import { Type, Transform } from 'class-transformer'
+import { Type } from 'class-transformer'
 import { IsString, IsBoolean, IsEnum, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { IsNotEmpty, IsOptional, Matches, MaxLength, ValidateNested } from 'class-validator'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { MongooseDoc } from '@app/interfaces/mongoose.interface'
@@ -76,7 +77,7 @@ export class Article {
   @Matches(/^[a-zA-Z0-9-_]+$/)
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, unique: true, index: true, trim: true, validate: /^[a-zA-Z0-9-_]+$/ })
   slug: string | null
 

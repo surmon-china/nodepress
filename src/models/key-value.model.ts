@@ -5,13 +5,13 @@
  */
 
 import { prop } from '@typegoose/typegoose'
-import { Transform } from 'class-transformer'
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 
 export class KeyValueModel {
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   key: string
 

@@ -6,9 +6,10 @@
 
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, index, plugin, modelOptions } from '@typegoose/typegoose'
-import { Type, Transform } from 'class-transformer'
+import { Type } from 'class-transformer'
 import { IsOptional, IsDefined, IsNotEmpty, ValidateNested, ArrayUnique } from 'class-validator'
 import { IsString, IsBoolean, IsEnum, IsUrl, IsEmail, IsArray, MaxLength } from 'class-validator'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -32,33 +33,33 @@ export class UserIdentity {
   @IsEmail()
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true })
   email: string | null
 
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true })
   username: string | null
 
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true })
   display_name: string | null
 
   @IsUrl()
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true })
   avatar_url: string | null
 
   @IsUrl()
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true })
   profile_url: string | null
 
@@ -91,7 +92,7 @@ export class User {
   @MaxLength(100)
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 100 })
   name: string
 
@@ -99,7 +100,7 @@ export class User {
   @IsEmail()
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true })
   email: string | null
 
@@ -107,7 +108,7 @@ export class User {
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true, maxlength: 500 })
   website: string | null
 
@@ -115,7 +116,7 @@ export class User {
   @IsUrl()
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true, maxlength: 500 })
   avatar_url: string | null
 

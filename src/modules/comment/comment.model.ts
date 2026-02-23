@@ -8,10 +8,11 @@ import type { MergeType } from 'mongoose'
 import MongooseLeanVirtuals from 'mongoose-lean-virtuals'
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, index, modelOptions, Severity, Ref } from '@typegoose/typegoose'
-import { Transform, Type } from 'class-transformer'
+import { Type } from 'class-transformer'
 import { ArrayUnique, ValidateNested } from 'class-validator'
 import { IsNotEmpty, IsOptional, IsDefined, MinLength, MaxLength, Min } from 'class-validator'
 import { IsString, IsArray, IsUrl, IsEmail, IsInt, IsEnum, IsIP } from 'class-validator'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { User, UserPublic } from '@app/modules/user/user.model'
 import { KeyValueModel } from '@app/models/key-value.model'
@@ -79,7 +80,7 @@ export class Comment {
   @MaxLength(3000)
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 3000 })
   content: string
 
@@ -89,14 +90,14 @@ export class Comment {
   @MaxLength(100)
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 100 })
   author_name: string
 
   @IsEmail()
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true })
   author_email: string | null
 
@@ -109,7 +110,7 @@ export class Comment {
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: null, trim: true, maxlength: 500 })
   author_website: string | null
 

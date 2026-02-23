@@ -4,19 +4,19 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Transform } from 'class-transformer'
 import { IsString, IsEmail, MaxLength, IsOptional } from 'class-validator'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 
 export class OptionalAuthorDto {
   @MaxLength(100)
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   author_name?: string
 
   @IsEmail()
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   author_email?: string
 }

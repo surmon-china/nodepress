@@ -8,6 +8,7 @@ import { Transform } from 'class-transformer'
 import { IsString, IsBoolean, IsEnum, IsInt, IsArray, IsDefined } from 'class-validator'
 import { IsOptional, IsNotEmpty, MinLength, MaxLength, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { PartialType, IntersectionType } from '@nestjs/mapped-types'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 import { unknownToNumber, unknownToBoolean } from '@app/transformers/value.transformer'
 import { KeywordQueryDto } from '@app/dtos/querys.dto'
 import { OptionalAuthorDto } from '@app/dtos/author.dto'
@@ -24,7 +25,7 @@ export class CreateFeedbackDto extends OptionalAuthorDto {
   @MaxLength(3000)
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   content: string
 }
 
@@ -36,7 +37,7 @@ export class UpdateFeedbackDto extends PartialType(CreateFeedbackDto) {
   @MaxLength(1000)
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   remark?: string
 }
 

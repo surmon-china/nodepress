@@ -6,9 +6,10 @@
 
 import { AutoIncrementID } from '@typegoose/auto-increment'
 import { prop, plugin, modelOptions } from '@typegoose/typegoose'
-import { Transform, Type } from 'class-transformer'
+import { Type } from 'class-transformer'
 import { IsString, IsNotEmpty, IsArray, IsOptional } from 'class-validator'
 import { MaxLength, Matches, ArrayUnique, ValidateNested } from 'class-validator'
+import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -32,7 +33,7 @@ export class Tag {
 
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   name: string
 
@@ -40,13 +41,13 @@ export class Tag {
   @Matches(/^[a-zA-Z0-9-_]+$/)
   @IsNotEmpty()
   @IsString()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, required: true, unique: true, trim: true, validate: /^[a-zA-Z0-9-_]+$/ })
   slug: string
 
   @IsString()
   @IsOptional()
-  @Transform(({ value }) => value?.trim())
+  @NormalizeString({ trim: true })
   @prop({ type: String, default: '', trim: true })
   description: string
 
