@@ -104,6 +104,6 @@ export class AccountController {
     @Body() { comment_ids }: DeleteCommentsDto
   ) {
     const user = await this.userService.findOne(identity.payload!.uid!)
-    return await this.accountActivityService.deleteComments(user._id, comment_ids)
+    return await this.accountActivityService.updateCommentsStatusToTrash(user._id, comment_ids)
   }
 }

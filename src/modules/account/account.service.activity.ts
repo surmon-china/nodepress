@@ -35,7 +35,7 @@ export class AccountActivityService {
       .exec()
   }
 
-  public async deleteComments(userObjectId: MongooseId, commentIds: number[]) {
+  public async updateCommentsStatusToTrash(userObjectId: MongooseId, commentIds: number[]) {
     const result = await this.commentModel.updateMany(
       {
         id: { $in: commentIds },
