@@ -1,11 +1,11 @@
 /**
- * @file User Me controller
- * @module module/user/me/controller
+ * @file User account controller
+ * @module module/account/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Throttle, hours } from '@nestjs/throttler'
-import { Controller, Get, Post, Patch, Delete, Body } from '@nestjs/common'
+import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
@@ -14,20 +14,20 @@ import { linesToEmailContent } from '@app/transformers/email.transformer'
 import { Comment } from '@app/modules/comment/comment.model'
 import { Vote } from '@app/modules/vote/vote.model'
 import { APP_BIZ } from '@app/app.config'
-import { UserService } from '../user.service'
-import { UserAccountService } from './me.service.account'
-import { UserActivityService } from './me.service.activity'
-import { UpdateProfileDto, RemoveIdentityDto, DestroyAccountDto } from './me.dto'
-import { DeleteCommentDto } from './me.dto'
+import { UserService } from '@app/modules/user/user.service'
+import { UserIdentityProvider } from '@app/modules/user/user.constant'
+import { AccountIdentityService } from './account.service.identity'
+import { AccountActivityService } from './account.service.activity'
+import { UpdateProfileDto, DeleteCommentsDto, DeletionRequestDto } from './account.dto'
 
-@Controller('user/me')
+@Controller('account')
 @OnlyIdentity(IdentityRole.User)
-export class UserMeController {
+export class AccountController {
   constructor(
     private readonly emailService: EmailService,
     private readonly userService: UserService,
-    private readonly userAccountService: UserAccountService,
-    private readonly userActivityService: UserActivityService
+    private readonly accountIdentityService: AccountIdentityService,
+    private readonly accountActivityService: AccountActivityService
   ) {}
 
   @Get('profile')
@@ -48,17 +48,20 @@ export class UserMeController {
     })
   }
 
-  @Post('unlink')
+  @Delete('identities/:provider')
   @SuccessResponse('Unlink identity succeeded')
-  unlinkIdentity(@RequestContext() { identity }: IRequestContext, @Body() { provider }: RemoveIdentityDto) {
-    return this.userAccountService.removeIdentity(identity.payload!.uid!, provider)
+  unlinkIdentity(
+    @RequestContext() { identity }: IRequestContext,
+    @Param('provider') provider: UserIdentityProvider
+  ) {
+    return this.accountIdentityService.removeIdentity(identity.payload!.uid!, provider)
   }
 
-  @Post('destroy')
+  @Post('deletion-request')
   @Throttle({ default: { ttl: hours(1), limit: 5 } })
   async requestDestroyAccount(
     @RequestContext() { identity }: IRequestContext,
-    @Body() { delete_comments }: DestroyAccountDto
+    @Body() { delete_comments }: DeletionRequestDto
   ) {
     const user = await this.userService.findOne(identity.payload!.uid!)
     this.emailService.sendMailAs(APP_BIZ.NAME, {
@@ -80,27 +83,27 @@ export class UserMeController {
     })
   }
 
-  @Get('vote')
+  @Get('votes')
   @SuccessResponse('Get votes succeeded')
   async getUsersAllVotes(@RequestContext() { identity }: IRequestContext): Promise<Vote[]> {
     const user = await this.userService.findOne(identity.payload!.uid!)
-    return await this.userActivityService.getAllVotes(user._id)
+    return await this.accountActivityService.getAllVotes(user._id)
   }
 
-  @Get('comment')
+  @Get('comments')
   @SuccessResponse('Get comments succeeded')
   async getUsersAllComments(@RequestContext() { identity }: IRequestContext): Promise<Comment[]> {
     const user = await this.userService.findOne(identity.payload!.uid!)
-    return await this.userActivityService.getAllPublicComments(user._id)
+    return await this.accountActivityService.getAllPublicComments(user._id)
   }
 
-  @Delete('comment')
+  @Delete('comments')
   @SuccessResponse('Delete comment succeeded')
   async deleteUsersComments(
     @RequestContext() { identity }: IRequestContext,
-    @Body() { comment_id }: DeleteCommentDto
+    @Body() { comment_ids }: DeleteCommentsDto
   ) {
     const user = await this.userService.findOne(identity.payload!.uid!)
-    return await this.userActivityService.deleteComment(user._id, comment_id)
+    return await this.accountActivityService.deleteComments(user._id, comment_ids)
   }
 }

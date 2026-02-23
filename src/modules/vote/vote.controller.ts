@@ -22,7 +22,7 @@ import { VoteTargetType, VoteType } from './vote.constant'
 import { Vote, VoteWithUser } from './vote.model'
 import { VoteService } from './vote.service'
 
-@Controller('vote')
+@Controller('votes')
 export class VoteController {
   constructor(
     private readonly ipService: IPService,

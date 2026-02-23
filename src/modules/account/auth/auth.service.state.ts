@@ -1,6 +1,6 @@
 /**
  * @file Auth state service
- * @module module/user/auth/service.state
+ * @module module/account/auth/service.state
  * @author Surmon <https://github.com/surmon-china>
  */
 

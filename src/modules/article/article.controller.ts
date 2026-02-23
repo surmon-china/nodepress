@@ -27,7 +27,7 @@ import { ArticleStatsService } from './article.service.stats'
 import { ArticleService } from './article.service'
 import { Article } from './article.model'
 
-@Controller('article')
+@Controller('articles')
 export class ArticleController {
   constructor(
     private readonly eventEmitter: EventEmitter2,

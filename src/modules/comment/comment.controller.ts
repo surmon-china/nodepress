@@ -25,7 +25,7 @@ import { Comment, CommentWith } from './comment.model'
 import { CommentStatsService } from './comment.service.stats'
 import { CommentService } from './comment.service'
 
-@Controller('comment')
+@Controller('comments')
 export class CommentController {
   constructor(
     private readonly eventEmitter: EventEmitter2,

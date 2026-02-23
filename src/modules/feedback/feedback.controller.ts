@@ -39,7 +39,7 @@ export class FeedbackController {
 
   @Get()
   @OnlyIdentity(IdentityRole.Admin)
-  @SuccessResponse({ message: 'Get feedbacks succeeded', usePaginate: true })
+  @SuccessResponse({ message: 'Get feedback entries succeeded', usePaginate: true })
   getFeedbacks(@Query() query: FeedbackPaginateQueryDto): Promise<PaginateResult<FeedbackWithUser>> {
     const { sort, page, per_page, ...filters } = query
     const queryFilter: QueryFilter<Feedback> = {}
@@ -76,7 +76,7 @@ export class FeedbackController {
 
   @Delete()
   @OnlyIdentity(IdentityRole.Admin)
-  @SuccessResponse('Delete feedbacks succeeded')
+  @SuccessResponse('Delete feedback entries succeeded')
   deleteFeedbacks(@Body() { feedback_ids }: FeedbackIdsDto) {
     return this.feedbackService.batchDelete(feedback_ids)
   }

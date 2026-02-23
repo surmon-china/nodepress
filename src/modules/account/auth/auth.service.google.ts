@@ -1,6 +1,6 @@
 /**
  * @file Google OAuth service
- * @module module/user/auth/service.google
+ * @module module/account/auth/service.google
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -9,8 +9,8 @@ import { Injectable } from '@nestjs/common'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv, isProdEnv } from '@app/app.environment'
 import { APP_BIZ, GOOGLE_OAUTH } from '@app/app.config'
-import { UserIdentityProvider } from '../user.constant'
-import { UserIdentity } from '../user.model'
+import { UserIdentityProvider } from '@app/modules/user/user.constant'
+import { UserIdentity } from '@app/modules/user/user.model'
 
 const logger = createLogger({ scope: 'GoogleAuthService', time: isDevEnv })
 

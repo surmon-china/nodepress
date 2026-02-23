@@ -24,6 +24,19 @@ export class AdminController {
     private readonly authTokenService: AdminAuthTokenService
   ) {}
 
+  @Get('profile')
+  @SuccessResponse('Get admin profile succeeded')
+  getAdminProfile(): Promise<AdminProfile> {
+    return this.adminService.getProfileCache()
+  }
+
+  @Patch('profile')
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse('Update admin profile succeeded')
+  updateAdminProfile(@Body() dto: UpdateProfileDto): Promise<AdminProfile> {
+    return this.adminService.updateProfile(dto)
+  }
+
   @Post('login')
   @SuccessResponse('Login succeeded')
   async login(@RequestContext() { visitor }: IRequestContext, @Body() dto: AuthLoginDto): Promise<TokenResult> {
@@ -48,7 +61,6 @@ export class AdminController {
     return 'ok'
   }
 
-  // Refresh token
   @Post('refresh-token')
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Refresh token succeeded')
@@ -56,24 +68,10 @@ export class AdminController {
     return this.authTokenService.createToken()
   }
 
-  // Check token
   @Post('check-token')
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Token is valid')
   checkToken(): string {
     return 'ok'
-  }
-
-  @Get('profile')
-  @SuccessResponse('Get admin profile succeeded')
-  getAdminProfile(): Promise<AdminProfile> {
-    return this.adminService.getProfileCache()
-  }
-
-  @Patch('profile')
-  @OnlyIdentity(IdentityRole.Admin)
-  @SuccessResponse('Update admin profile succeeded')
-  updateAdminProfile(@Body() dto: UpdateProfileDto): Promise<AdminProfile> {
-    return this.adminService.updateProfile(dto)
   }
 }

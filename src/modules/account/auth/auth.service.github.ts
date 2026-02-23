@@ -1,6 +1,6 @@
 /**
  * @file GitHub OAuth service
- * @module module/user/auth/service.github
+ * @module module/account/auth/service.github
  * @author Surmon <https://github.com/surmon-china>
  */
 
@@ -9,8 +9,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv, isProdEnv } from '@app/app.environment'
 import { APP_BIZ, GITHUB_OAUTH } from '@app/app.config'
-import { UserIdentityProvider } from '../user.constant'
-import { UserIdentity } from '../user.model'
+import { UserIdentityProvider } from '@app/modules/user/user.constant'
+import { UserIdentity } from '@app/modules/user/user.model'
 
 const logger = createLogger({ scope: 'GithubAuthService', time: isDevEnv })
 

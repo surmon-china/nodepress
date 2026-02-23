@@ -1,15 +1,16 @@
 /**
  * @file Auth controller
- * @module module/user/auth/controller
+ * @module module/account/auth/controller
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import type { FastifyReply } from 'fastify'
-import { Controller, Get, Post, Query, Response, HttpStatus } from '@nestjs/common'
+import { Throttle, minutes } from '@nestjs/throttler'
+import { Controller, Get, Post, Query, Response } from '@nestjs/common'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
-import { UserAccountService } from '../me/me.service.account'
+import { AccountIdentityService } from '../account.service.identity'
 import { UserAuthStateService, AuthIntent } from './auth.service.state'
 import { UserAuthTokenService } from './auth.service.token'
 import { GithubAuthService } from './auth.service.github'
@@ -17,13 +18,13 @@ import { GoogleAuthService } from './auth.service.google'
 import { OAuthCallbackDto } from './auth.dto'
 import { sendWindowPostMessage } from './auth.helper'
 
-const GITHUB_CALLBACK_PATH = '/user/auth/github/callback'
-const GOOGLE_CALLBACK_PATH = '/user/auth/google/callback'
+const GITHUB_CALLBACK_PATH = '/account/auth/github/callback'
+const GOOGLE_CALLBACK_PATH = '/account/auth/google/callback'
 
-@Controller('user/auth')
-export class UserAuthController {
+@Controller('account/auth')
+export class AccountAuthController {
   constructor(
-    private readonly userAccountService: UserAccountService,
+    private readonly accountIdentityService: AccountIdentityService,
     private readonly authTokenService: UserAuthTokenService,
     private readonly authStateService: UserAuthStateService,
     private readonly googleAuthService: GoogleAuthService,
@@ -34,18 +35,22 @@ export class UserAuthController {
 
   @Get('github/link')
   @OnlyIdentity(IdentityRole.User)
-  async githubLink(@RequestContext() { identity }: IRequestContext, @Response() response: FastifyReply) {
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
+  @SuccessResponse('Get GitHub link URL succeeded')
+  async githubLink(@RequestContext() { identity }: IRequestContext) {
     const payload = { intent: AuthIntent.Link, uid: identity.payload!.uid! }
     const state = await this.authStateService.generateCallbackState(payload)
     const authorizeUrl = await this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
-    response.redirect(authorizeUrl, HttpStatus.FOUND)
+    return { url: authorizeUrl }
   }
 
   @Get('github/login')
-  async githubLogin(@Response() response: FastifyReply) {
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
+  @SuccessResponse('Get GitHub login URL succeeded')
+  async githubLogin() {
     const state = await this.authStateService.generateCallbackState({ intent: AuthIntent.Login })
     const authorizeUrl = await this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
-    response.redirect(authorizeUrl, HttpStatus.FOUND)
+    return { url: authorizeUrl }
   }
 
   @Get('github/callback')
@@ -60,7 +65,7 @@ export class UserAuthController {
     // OAuth login
     if (statePayload.intent === AuthIntent.Login) {
       // 4. Upsert local user record based on GitHub profile information
-      const user = await this.userAccountService.upsertUser(userIdentity)
+      const user = await this.accountIdentityService.upsertUser(userIdentity)
       // 5. Generate internal JWT for the authenticated user
       const userToken = this.authTokenService.createToken(user)
       // 6. Securely transmit token to the opener window and close the popup
@@ -68,7 +73,7 @@ export class UserAuthController {
     }
     // OAuth link
     if (statePayload.intent === AuthIntent.Link) {
-      await this.userAccountService.addIdentity(statePayload.uid, userIdentity)
+      await this.accountIdentityService.addIdentity(statePayload.uid, userIdentity)
       sendWindowPostMessage(response, { type: AuthIntent.Link })
     }
   }
@@ -77,18 +82,22 @@ export class UserAuthController {
 
   @Get('google/link')
   @OnlyIdentity(IdentityRole.User)
-  async googleLink(@RequestContext() { identity }: IRequestContext, @Response() response: FastifyReply) {
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
+  @SuccessResponse('Get Google link URL succeeded')
+  async googleLink(@RequestContext() { identity }: IRequestContext) {
     const payload = { intent: AuthIntent.Link, uid: identity.payload!.uid! }
     const state = await this.authStateService.generateCallbackState(payload)
     const authorizeUrl = await this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
-    response.redirect(authorizeUrl, HttpStatus.FOUND)
+    return { url: authorizeUrl }
   }
 
   @Get('google/login')
-  async googleLogin(@Response() response: FastifyReply) {
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
+  @SuccessResponse('Get Google login URL succeeded')
+  async googleLogin() {
     const state = await this.authStateService.generateCallbackState({ intent: AuthIntent.Login })
     const authorizeUrl = await this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
-    response.redirect(authorizeUrl, HttpStatus.FOUND)
+    return { url: authorizeUrl }
   }
 
   @Get('google/callback')
@@ -98,13 +107,13 @@ export class UserAuthController {
     const userIdentity = this.googleAuthService.transformUserInfoToIdentity(userInfo)
     // OAuth login
     if (statePayload.intent === AuthIntent.Login) {
-      const user = await this.userAccountService.upsertUser(userIdentity)
+      const user = await this.accountIdentityService.upsertUser(userIdentity)
       const userToken = this.authTokenService.createToken(user)
       sendWindowPostMessage(response, { type: AuthIntent.Login, token: userToken })
     }
     // OAuth link
     if (statePayload.intent === AuthIntent.Link) {
-      await this.userAccountService.addIdentity(statePayload.uid, userIdentity)
+      await this.accountIdentityService.addIdentity(statePayload.uid, userIdentity)
       sendWindowPostMessage(response, { type: AuthIntent.Link })
     }
   }

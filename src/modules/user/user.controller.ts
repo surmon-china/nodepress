@@ -14,7 +14,7 @@ import { CreateUserDto, UpdateUserDto, UserPaginateQueryDto } from './user.dto'
 import { UserService } from './user.service'
 import { User } from './user.model'
 
-@Controller('user')
+@Controller('users')
 @OnlyIdentity(IdentityRole.Admin)
 export class UserController {
   constructor(private readonly userService: UserService) {}

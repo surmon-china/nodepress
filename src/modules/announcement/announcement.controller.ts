@@ -15,7 +15,7 @@ import { CreateAnnouncementDto, UpdateAnnouncementDto } from './announcement.dto
 import { AnnouncementService } from './announcement.service'
 import { Announcement } from './announcement.model'
 
-@Controller('announcement')
+@Controller('announcements')
 export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) {}
 

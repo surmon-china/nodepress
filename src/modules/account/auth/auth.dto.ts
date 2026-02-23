@@ -1,6 +1,6 @@
 /**
  * @file Auth DTO
- * @module module/user/auth/dto
+ * @module module/account/auth/dto
  * @author Surmon <https://github.com/surmon-china>
  */
 

@@ -1,34 +1,26 @@
 /**
- * @file User account service
- * @module module/user/me/service.account
+ * @file User account identity service
+ * @module module/account/service.identity
  * @author Surmon <https://github.com/surmon-china>
  */
 
 import { Injectable, BadRequestException, ConflictException } from '@nestjs/common'
-import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
-import { InjectModel } from '@app/transformers/model.transformer'
+import { WithId } from '@app/interfaces/mongoose.interface'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
-import { UserType, UserIdentityProvider } from '../user.constant'
-import { User, UserIdentity } from '../user.model'
-import { UserService } from '../user.service'
+import { UserType, UserIdentityProvider } from '@app/modules/user/user.constant'
+import { User, UserIdentity } from '@app/modules/user/user.model'
+import { UserService } from '@app/modules/user/user.service'
 
-const logger = createLogger({ scope: 'UserAccountService', time: isDevEnv })
+const logger = createLogger({ scope: 'AccountIdentityService', time: isDevEnv })
 
 @Injectable()
-export class UserAccountService {
-  constructor(
-    private readonly userService: UserService,
-    @InjectModel(User) private readonly userModel: MongooseModel<User>
-  ) {}
+export class AccountIdentityService {
+  constructor(private readonly userService: UserService) {}
 
-  private findOneByIdentity(provider: UserIdentityProvider, uid: string) {
-    return this.userModel.findOne({ 'identities.provider': provider, 'identities.uid': uid }).exec()
-  }
-
-  public async upsertUser(input: UserIdentity): Promise<MongooseDoc<User>> {
+  public async upsertUser(input: UserIdentity): Promise<WithId<User>> {
     // 1. Attempt to find the user by their unique provider-specific identifier (UID)
-    const user = await this.findOneByIdentity(input.provider, input.uid)
+    const user = await this.userService.findOneByIdentity(input.provider, input.uid)
     // 2. If the user exists, return it directly.
     // NOTE: We don't overwrite local user profile (name, email, etc.) with OAuth data to respect the user's modifications made within our system.
     if (user) return user
@@ -59,7 +51,7 @@ export class UserAccountService {
   /** Link a new social identity to an existing user. */
   public async addIdentity(userId: number, identity: UserIdentity) {
     // 1. Safety check: Ensure this third-party account (Provider + UID) is not already linked to any other user in the system.
-    const existingUser = await this.findOneByIdentity(identity.provider, identity.uid)
+    const existingUser = await this.userService.findOneByIdentity(identity.provider, identity.uid)
     if (existingUser) {
       if (existingUser.id !== userId) {
         throw new ConflictException('This social account has already been linked to another user.')
@@ -67,11 +59,9 @@ export class UserAccountService {
         return
       }
     }
+
     // 2. Ensure the provider doesn't already exist in the target account to prevent duplicate providers (e.g., linking two different GitHub accounts).
-    const result = await this.userModel.updateOne(
-      { id: userId, 'identities.provider': { $ne: identity.provider } },
-      { $push: { identities: { ...identity, linked_at: new Date() } } }
-    )
+    const result = await this.userService.pushIdentity(userId, identity)
     if (result.matchedCount === 0) {
       throw new BadRequestException(`Your account is already linked to a ${identity.provider} identity.`)
     }
@@ -86,7 +76,7 @@ export class UserAccountService {
     if (targetUser.identities.length <= 1) {
       throw new BadRequestException('At least one authentication method is required.')
     }
-    // Atomically remove the identity matching the specified provider using $pull.
-    return await targetUser.updateOne({ $pull: { identities: { provider } } }).exec()
+
+    return await this.userService.pullIdentity(userId, provider)
   }
 }

@@ -14,7 +14,7 @@ import { CreateTagDto, UpdateTagDto, TagPaginateQueryDto, TagIdsDto } from './ta
 import { TagService } from './tag.service'
 import { Tag } from './tag.model'
 
-@Controller('tag')
+@Controller('tags')
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 

@@ -36,10 +36,11 @@ import { FeedbackModule } from '@app/modules/feedback/feedback.module'
 import { VoteModule } from '@app/modules/vote/vote.module'
 import { OptionsModule } from '@app/modules/options/options.module'
 import { AdminModule } from '@app/modules/admin/admin.module'
-import { UserModule } from '@app/modules/user/user.module'
 import { SystemModule } from '@app/modules/system/system.module'
 import { WebhookModule } from '@app/modules/webhook/webhook.module'
 import { AiModule } from '@app/modules/ai/ai.module'
+import { UserModule } from '@app/modules/user/user.module'
+import { AccountModule } from '@app/modules/account/account.module'
 
 @Module({
   imports: [
@@ -58,8 +59,9 @@ import { AiModule } from '@app/modules/ai/ai.module'
           // Skip throttle for SSR applications on the same host.
           return (
             request.hostname === 'localhost' ||
-            request.ip.startsWith('::ffff:127.0.0.1') ||
-            ['127.0.0.1', '::1'].includes(request.ip ?? '')
+            request.ip.startsWith('::ffff:127.') || // IPv4-mapped IPv6
+            request.ip.startsWith('127.') || // IPv4 localhost
+            request.ip === '::1' // IPv6 localhost
           )
         }
       }
@@ -78,10 +80,11 @@ import { AiModule } from '@app/modules/ai/ai.module'
     CommentModule,
     ArchiveModule,
     VoteModule,
-    UserModule,
     SystemModule,
     WebhookModule,
-    AiModule
+    AiModule,
+    UserModule,
+    AccountModule
   ],
   controllers: [AppController],
   providers: [
