@@ -5,7 +5,7 @@
  */
 
 import { Throttle, hours } from '@nestjs/throttler'
-import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common'
+import { Controller, Get, Post, Patch, Delete, Body, Param, ParseIntPipe } from '@nestjs/common'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
@@ -18,7 +18,7 @@ import { UserService } from '@app/modules/user/user.service'
 import { UserIdentityProvider } from '@app/modules/user/user.constant'
 import { AccountIdentityService } from './account.service.identity'
 import { AccountActivityService } from './account.service.activity'
-import { UpdateProfileDto, DeleteCommentsDto, DeletionRequestDto } from './account.dto'
+import { UpdateProfileDto, DeletionRequestDto } from './account.dto'
 
 @Controller('account')
 @OnlyIdentity(IdentityRole.User)
@@ -97,13 +97,10 @@ export class AccountController {
     return await this.accountActivityService.getAllPublicComments(user._id)
   }
 
-  @Delete('comments')
+  @Delete('comments/:id')
   @SuccessResponse('Delete comment succeeded')
-  async deleteUsersComments(
-    @RequestContext() { identity }: IRequestContext,
-    @Body() { comment_ids }: DeleteCommentsDto
-  ) {
+  async deleteUsersComment(@Param('id', ParseIntPipe) id: number, @RequestContext() { identity }: IRequestContext) {
     const user = await this.userService.findOne(identity.payload!.uid!)
-    return await this.accountActivityService.updateCommentsStatusToTrash(user._id, comment_ids)
+    return await this.accountActivityService.deleteComment(user._id, id)
   }
 }

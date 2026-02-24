@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { MongooseModel, MongooseId } from '@app/interfaces/mongoose.interface'
 import { SortOrder } from '@app/constants/sort.constant'
 import { InjectModel } from '@app/transformers/model.transformer'
@@ -35,19 +35,15 @@ export class AccountActivityService {
       .exec()
   }
 
-  public async updateCommentsStatusToTrash(userObjectId: MongooseId, commentIds: number[]) {
-    const result = await this.commentModel.updateMany(
-      {
-        id: { $in: commentIds },
-        user: userObjectId,
-        status: { $ne: CommentStatus.Trash }
-      },
-      { $set: { status: CommentStatus.Trash } }
-    )
+  public async deleteComment(userObjectId: MongooseId, commentId: number) {
+    const result = await this.commentModel
+      .updateOne({ id: commentId, user: userObjectId }, { $set: { status: CommentStatus.Trash } })
+      .exec()
 
-    return {
-      requested: commentIds.length,
-      affected: result.modifiedCount
+    if (result.matchedCount === 0) {
+      throw new NotFoundException(`Comment '${commentId}' not found or not yours`)
     }
+
+    return result
   }
 }
