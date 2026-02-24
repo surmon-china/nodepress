@@ -19,7 +19,7 @@ import { UserAuthTokenService } from './auth.service.token'
 import { GithubAuthService } from './auth.service.github'
 import { GoogleAuthService } from './auth.service.google'
 import { OAuthCallbackDto } from './auth.dto'
-import { sendWindowPostMessage } from './auth.helper'
+import { sendWindowPostMessage, OAUTH_CALLBACK_SCRIPT } from './auth.helper'
 
 const GITHUB_CALLBACK_PATH = '/account/auth/github/callback'
 const GOOGLE_CALLBACK_PATH = '/account/auth/google/callback'
@@ -33,6 +33,16 @@ export class AccountAuthController {
     private readonly googleAuthService: GoogleAuthService,
     private readonly githubAuthService: GithubAuthService
   ) {}
+
+  // To maintain a secure `content-security-policy`, inline JavaScript is not used here.
+  // So we decouple the execution logic into this dedicated static script endpoint.
+  // This allows us to strictly adhere to 'script-src: self' by loading the logic from a
+  // trusted source, while using a non-executable <script type="application/json">
+  // block in the main HTML to safely pass dynamic payloads without triggering CSP violations.
+  @Get('oauth-callback.js')
+  closeWindowScript(@Response() response: FastifyReply) {
+    response.type('application/javascript').send(OAUTH_CALLBACK_SCRIPT)
+  }
 
   // ==================== GitHub OAuth ====================
 

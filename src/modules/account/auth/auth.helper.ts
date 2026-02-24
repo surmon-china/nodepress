@@ -18,18 +18,41 @@ export type PostMessagePayload =
     }
 
 export const sendWindowPostMessage = (response: FastifyReply, payload: PostMessagePayload) => {
+  // Set COOP to 'unsafe-none' to allow cross-origin communication (postMessage)
+  // between the API popup and the main blog frontend.
+  response.header('Cross-Origin-Opener-Policy', 'unsafe-none')
   response.header('content-type', 'text/html')
   response.send(`
     <!DOCTYPE html>
     <html>
-      <script>
-        const payload = ${JSON.stringify(payload)}
-        window.opener?.postMessage({
-          source: '${MESSAGE_SOURCE}',
-          ...payload
-        }, '${isDevEnv ? '*' : APP_BIZ.FE_URL}')
-        window.close()
-      </script>
+      <head><title>Authorizing...</title></head>
+      <body>
+        <script id="payload" type="application/json">${JSON.stringify(payload)}</script>
+        <script src="/account/auth/oauth-callback.js"></script>
+      </body>
     </html>
   `)
 }
+
+export const OAUTH_CALLBACK_SCRIPT = `
+  (function () {
+    const dataElement = document.getElementById('payload')
+    if (!dataElement) return
+
+    try {
+      const payload = JSON.parse(dataElement.textContent)
+
+      if (!payload) {
+        throw new Error('Missing payload')
+      }
+
+      window.opener?.postMessage({
+        source: '${MESSAGE_SOURCE}',
+        ...payload
+      }, '${isDevEnv ? '*' : APP_BIZ.FE_URL}')
+
+      window.close()
+    } catch (error) {
+      console.error('OAuth Callback Error:', error)
+    }
+  })()`
