@@ -67,11 +67,11 @@ export class AccountAuthController {
       const userInfo = await this.githubAuthService.getUserInfoByToken(accessToken)
       const userIdentity = this.githubAuthService.transformUserInfoToIdentity(userInfo)
       // 4. Resolve the OAuth intent (e.g., Login or Link) and execute the corresponding account flow.
-      const result = await this.resolveOAuthIntent(statePayload, userIdentity)
+      const message = await this.resolveOAuthIntent(statePayload, userIdentity)
       // 5. Securely transmit payload to the opener window and close the popup.
       sendWindowPostMessage(response, {
         status: ResponseStatus.Success,
-        ...result
+        ...message
       })
     } catch (error) {
       // 6. Gracefully handle any OAuth-related error by sending a structured error response to the opener window.
@@ -110,10 +110,10 @@ export class AccountAuthController {
       const statePayload = await this.authStateService.verifyCallbackState(state)
       const userInfo = await this.googleAuthService.getUserInfoByCode(GOOGLE_CALLBACK_PATH, code)
       const userIdentity = this.googleAuthService.transformUserInfoToIdentity(userInfo)
-      const result = await this.resolveOAuthIntent(statePayload, userIdentity)
+      const message = await this.resolveOAuthIntent(statePayload, userIdentity)
       sendWindowPostMessage(response, {
         status: ResponseStatus.Success,
-        ...result
+        ...message
       })
     } catch (error) {
       sendWindowPostMessage(response, {
