@@ -1,14 +1,21 @@
 import type { FastifyReply } from 'fastify'
+import { ResponseStatus } from '@app/interfaces/response.interface'
 import { isDevEnv } from '@app/app.environment'
 import { APP_BIZ } from '@app/app.config'
 import { AuthIntent } from './auth.service.state'
 
-const MESSAGE_SOURCE = 'nodepress'
+const MESSAGE_SOURCE = 'nodepress-oauth'
 
-export interface PostMessagePayload {
-  type: AuthIntent
-  token?: string
-}
+export type PostMessagePayload =
+  | {
+      status: ResponseStatus.Success
+      type: AuthIntent
+      token?: string
+    }
+  | {
+      status: ResponseStatus.Error
+      error: string
+    }
 
 export const sendWindowPostMessage = (response: FastifyReply, payload: PostMessagePayload) => {
   response.header('content-type', 'text/html')
