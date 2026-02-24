@@ -178,6 +178,7 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#disabled_comments" >disabled_comments</a>
                             </li>
                             <li>
@@ -186,9 +187,11 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#extras" >extras</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#featured" >featured</a>
@@ -202,10 +205,10 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#keywords" >keywords</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
@@ -215,10 +218,10 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#origin" >origin</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
@@ -234,15 +237,18 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#status" >status</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#summary" >summary</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#tags" >tags</a>
                             </li>
@@ -308,13 +314,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ArrayUnique()<br />@ArrayNotEmpty()<br />@IsArray()<br />@prop({ref: () &#x3D;&gt; Category, required: true, index: true})<br />
+                            @ArrayUnique()<br />@ArrayNotEmpty()<br />@IsArray()<br />@prop({ref: () &#x3D;&gt; Category, required: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="158" class="link-to-prism">src/modules/article/article.model.ts:158</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="160" class="link-to-prism">src/modules/article/article.model.ts:160</a></div>
                         </td>
                     </tr>
 
@@ -346,13 +352,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty({message: &#x27;content?&#x27;})<br />@prop({required: true, validate: /\S+/, text: true})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true, validate: /\S+/, select: false, text: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/article/article.model.ts:88</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/modules/article/article.model.ts:99</a></div>
                         </td>
                     </tr>
 
@@ -383,13 +389,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined, index: true, immutable: true})<br />
+                            @prop({type: Date, default: undefined, immutable: true, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="161" class="link-to-prism">src/modules/article/article.model.ts:161</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="171" class="link-to-prism">src/modules/article/article.model.ts:171</a></div>
                         </td>
                     </tr>
 
@@ -402,6 +408,7 @@
                 <td class="col-md-4">
                     <a name="disabled_comments"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>disabled_comments</b></span>
@@ -420,13 +427,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsBoolean()<br />@prop({default: false})<br />
+                            @IsBoolean()<br />@IsOptional()<br />@prop({type: Boolean, default: false})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">src/modules/article/article.model.ts:136</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/modules/article/article.model.ts:145</a></div>
                         </td>
                     </tr>
 
@@ -439,6 +446,7 @@
                 <td class="col-md-4">
                     <a name="extras"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -460,13 +468,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @Type(undefined)<br />@ValidateNested()<br />@ArrayUnique()<br />@IsArray()<br />@prop({_id: false, default: undefined, type: () &#x3D;&gt; })<br />
+                            @Type(undefined)<br />@ValidateNested({each: true})<br />@ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; , _id: false, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">src/modules/article/article.model.ts:146</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="168" class="link-to-prism">src/modules/article/article.model.ts:168</a></div>
                         </td>
                     </tr>
 
@@ -479,6 +487,7 @@
                 <td class="col-md-4">
                     <a name="featured"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>featured</b></span>
@@ -497,13 +506,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsBoolean()<br />@prop({default: false, index: true})<br />
+                            @IsBoolean()<br />@IsOptional()<br />@prop({type: Boolean, default: false, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">src/modules/article/article.model.ts:131</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="140" class="link-to-prism">src/modules/article/article.model.ts:140</a></div>
                         </td>
                     </tr>
 
@@ -539,7 +548,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/modules/article/article.model.ts:71</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/modules/article/article.model.ts:81</a></div>
                         </td>
                     </tr>
 
@@ -552,6 +561,7 @@
                 <td class="col-md-4">
                     <a name="keywords"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -572,13 +582,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ArrayUnique()<br />@IsArray()<br />@IsDefined()<br />@prop({default: undefined, type: () &#x3D;&gt; })<br />
+                            @IsString({each: true})<br />@ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; , default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/modules/article/article.model.ts:98</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/modules/article/article.model.ts:111</a></div>
                         </td>
                     </tr>
 
@@ -591,7 +601,6 @@
                 <td class="col-md-4">
                     <a name="lang"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -611,13 +620,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(ARTICLE_LANGUAGES)<br />@IsString()<br />@IsDefined()<br />@prop({default: undefined, index: true})<br />
+                            @IsEnum(ArticleLanguage)<br />@IsOptional()<br />@prop({type: String, enum: ArticleLanguage, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">src/modules/article/article.model.ts:126</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">src/modules/article/article.model.ts:135</a></div>
                         </td>
                     </tr>
 
@@ -630,7 +639,6 @@
                 <td class="col-md-4">
                     <a name="origin"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -650,13 +658,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(ARTICLE_ORIGINS)<br />@IsInt()<br />@IsDefined()<br />@prop({enum: ArticleOrigin, default: undefined, index: true})<br />
+                            @IsEnum(ArticleOrigin)<br />@IsOptional()<br />@prop({type: Number, enum: ArticleOrigin, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">src/modules/article/article.model.ts:116</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">src/modules/article/article.model.ts:126</a></div>
                         </td>
                     </tr>
 
@@ -674,6 +682,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>slug</b></span>
                         <a href="#slug"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -681,7 +690,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                        <i>Type : </i>    <code>string | null</code>
 
                     </td>
                 </tr>
@@ -690,13 +699,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @Matches(/^[a-zA-Z0-9-_]+$/)<br />@MaxLength(50)<br />@IsString()<br />@IsOptional()<br />@prop({default: undefined, trim: true, validate: /^[a-zA-Z0-9-_]+$/, index: true})<br />
+                            @MaxLength(50)<br />@Matches(/^[a-zA-Z0-9-_]+$/)<br />@IsString()<br />@IsOptional()<br />@NormalizeString({trim: true})<br />@prop({type: String, default: undefined, unique: true, index: true, trim: true, validate: /^[a-zA-Z0-9-_]+$/})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/modules/article/article.model.ts:78</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/modules/article/article.model.ts:89</a></div>
                         </td>
                     </tr>
 
@@ -726,13 +735,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({_id: false, default: undefined})<br />
+                            @prop({type: () &#x3D;&gt; ArticleStats, _id: false, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">src/modules/article/article.model.ts:139</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/modules/article/article.model.ts:148</a></div>
                         </td>
                     </tr>
 
@@ -745,7 +754,6 @@
                 <td class="col-md-4">
                     <a name="status"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -765,13 +773,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(ARTICLE_STATUSES)<br />@IsInt()<br />@IsDefined()<br />@prop({enum: ArticleStatus, default: undefined, index: true})<br />
+                            @IsEnum(ArticleStatus)<br />@IsOptional()<br />@prop({type: Number, enum: ArticleStatus, default: undefined, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/modules/article/article.model.ts:109</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">src/modules/article/article.model.ts:121</a></div>
                         </td>
                     </tr>
 
@@ -784,6 +792,7 @@
                 <td class="col-md-4">
                     <a name="summary"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>summary</b></span>
@@ -802,13 +811,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@prop({default: &#x27;&#x27;, text: true})<br />
+                            @IsString()<br />@IsOptional()<br />@prop({type: String, default: &#x27;&#x27;, text: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/modules/article/article.model.ts:92</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/modules/article/article.model.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -821,6 +830,9 @@
                 <td class="col-md-4">
                     <a name="tags"></a>
                     <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>tags</b></span>
                         <a href="#tags"><span class="icon ion-ios-link"></span></a>
@@ -838,13 +850,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({ref: () &#x3D;&gt; Tag, index: true})<br />
+                            @ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({ref: () &#x3D;&gt; Tag, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="151" class="link-to-prism">src/modules/article/article.model.ts:151</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="154" class="link-to-prism">src/modules/article/article.model.ts:154</a></div>
                         </td>
                     </tr>
 
@@ -876,13 +888,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
+                            @IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined, trim: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/modules/article/article.model.ts:103</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">src/modules/article/article.model.ts:116</a></div>
                         </td>
                     </tr>
 
@@ -914,13 +926,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty({message: &#x27;title?&#x27;})<br />@prop({required: true, validate: /\S+/, text: true})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true, validate: /\S+/, text: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/article/article.model.ts:83</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/modules/article/article.model.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -951,13 +963,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined})<br />
+                            @prop({type: Date, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="164" class="link-to-prism">src/modules/article/article.model.ts:164</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="174" class="link-to-prism">src/modules/article/article.model.ts:174</a></div>
                         </td>
                     </tr>
 
@@ -976,19 +988,29 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { MergeType } from &#x27;mongoose&#x27;
+import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, index, plugin, Ref, modelOptions } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
-import { IsString, IsBoolean, IsArray, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
-import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength, ValidateNested } from &#x27;class-validator&#x27;
+import { IsString, IsBoolean, IsEnum, IsArray, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, Matches, MaxLength, ValidateNested } from &#x27;class-validator&#x27;
+import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { Category } from &#x27;@app/modules/category/category.model&#x27;
 import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
 import { ArticleStatus, ArticleOrigin, ArticleLanguage } from &#x27;./article.constant&#x27;
-import { ARTICLE_STATUSES, ARTICLE_ORIGINS, ARTICLE_LANGUAGES } from &#x27;./article.constant&#x27;
+
+export type ArticleDoc &#x3D; MongooseDoc&lt;Article&gt;
+export type ArticlePopulated &#x3D; MergeType&lt;Article, { tags: Tag[]; categories: Category[] }&gt;
+export type ArticleDocPopulated &#x3D; MergeType&lt;ArticleDoc, { tags: Tag[]; categories: Category[] }&gt;
+
+export const ARTICLE_RELATION_FIELDS &#x3D; [&#x27;tags&#x27;, &#x27;categories&#x27;]
+export const ARTICLE_WITH_CONTENT_PROJECTION &#x3D; &#x27;+content&#x27;
+export const ARTICLE_WITHOUT_CONTENT_PROJECTION &#x3D; { content: 0 }
 
 const ARTICLE_DEFAULT_STATS: ArticleStats &#x3D; Object.freeze({
   likes: 0,
@@ -997,20 +1019,13 @@ const ARTICLE_DEFAULT_STATS: ArticleStats &#x3D; Object.freeze({
 })
 
 export class ArticleStats {
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   likes: number
 
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   views: number
 
-  // MARK: keep comments field manual
-  // 1. &#x60;.sort()&#x60; can&#x27;t by other model schema
-  // https://stackoverflow.com/questions/66174791/how-to-access-a-different-schema-in-a-virtual-method
-  // 2. &#x60;virtual&#x60; can&#x27;t support publicOnly params and can&#x27;t access other schema
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   comments: number
 }
 
@@ -1027,6 +1042,13 @@ export class ArticleStats {
     }
   }
 })
+// index article list page
+@index({ status: 1, created_at: -1 })
+// tag article list page
+@index({ tags: 1, status: 1, created_at: -1 })
+// category article list page
+@index({ categories: 1, status: 1, created_at: -1 })
+// search list
 @index(
   { title: &#x27;text&#x27;, content: &#x27;text&#x27;, summary: &#x27;text&#x27; },
   {
@@ -1042,97 +1064,97 @@ export class Article {
   @prop({ unique: true })
   id: number
 
-  @Matches(/^[a-zA-Z0-9-_]+$/)
   @MaxLength(50)
+  @Matches(/^[a-zA-Z0-9-_]+$/)
   @IsString()
   @IsOptional()
-  @prop({ default: null, trim: true, validate: /^[a-zA-Z0-9-_]+$/, index: true })
-  slug: string
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, unique: true, index: true, trim: true, validate: /^[a-zA-Z0-9-_]+$/ })
+  slug: string | null
 
   @IsString()
-  @IsNotEmpty({ message: &#x27;title?&#x27; })
-  @prop({ required: true, validate: /\S+/, text: true })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, validate: /\S+/, text: true })
   title: string
 
   @IsString()
-  @IsNotEmpty({ message: &#x27;content?&#x27; })
-  @prop({ required: true, validate: /\S+/, text: true })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, validate: /\S+/, select: false, text: true })
   content: string
 
   @IsString()
-  @prop({ default: &#x27;&#x27;, text: true })
+  @IsOptional()
+  @prop({ type: String, default: &#x27;&#x27;, text: true })
   summary: string
 
+  @IsString({ each: true })
   @ArrayUnique()
   @IsArray()
-  @IsDefined()
-  @prop({ default: [], type: () &#x3D;&gt; [String] })
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [String], default: [] })
   keywords: string[]
 
   @IsString()
   @IsOptional()
-  @prop({ type: String, default: null })
+  @prop({ type: String, default: null, trim: true })
   thumbnail: string | null
 
-  @IsIn(ARTICLE_STATUSES)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: ArticleStatus, default: ArticleStatus.Published, index: true })
+  @IsEnum(ArticleStatus)
+  @IsOptional()
+  @prop({ type: Number, enum: ArticleStatus, default: ArticleStatus.Published, index: true })
   status: ArticleStatus
 
-  // origin state
-  @IsIn(ARTICLE_ORIGINS)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: ArticleOrigin, default: ArticleOrigin.Original, index: true })
+  @IsEnum(ArticleOrigin)
+  @IsOptional()
+  @prop({ type: Number, enum: ArticleOrigin, default: ArticleOrigin.Original })
   origin: ArticleOrigin
 
   // language
   // MARK: can&#x27;t use &#x27;language&#x27; field
   // https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/
   // https://docs.mongodb.com/manual/reference/text-search-languages/#std-label-text-search-languages
-  @IsIn(ARTICLE_LANGUAGES)
-  @IsString()
-  @IsDefined()
-  @prop({ default: ArticleLanguage.Chinese, index: true })
+  @IsEnum(ArticleLanguage)
+  @IsOptional()
+  @prop({ type: String, enum: ArticleLanguage, default: ArticleLanguage.Chinese })
   lang: ArticleLanguage
 
-  // featured
   @IsBoolean()
-  @prop({ default: false, index: true })
+  @IsOptional()
+  @prop({ type: Boolean, default: false, index: true })
   featured: boolean
 
-  // disabled comments
   @IsBoolean()
-  @prop({ default: false })
+  @IsOptional()
+  @prop({ type: Boolean, default: false })
   disabled_comments: boolean
 
-  @prop({ _id: false, default: { ...ARTICLE_DEFAULT_STATS } })
+  @prop({ type: () &#x3D;&gt; ArticleStats, _id: false, default: { ...ARTICLE_DEFAULT_STATS } })
   stats: ArticleStats
 
-  @Type(() &#x3D;&gt; KeyValueModel)
-  @ValidateNested()
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  extras: KeyValueModel[]
-
-  // tag
-  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
-  @prop({ ref: () &#x3D;&gt; Tag, index: true })
+  @IsOptional()
+  @prop({ ref: () &#x3D;&gt; Tag, default: [] })
   tags: Ref&lt;Tag&gt;[]
 
-  // category
   @ArrayUnique()
   @ArrayNotEmpty()
   @IsArray()
-  @prop({ ref: () &#x3D;&gt; Category, required: true, index: true })
+  @prop({ ref: () &#x3D;&gt; Category, required: true })
   categories: Ref&lt;Category&gt;[]
 
-  @prop({ default: Date.now, index: true, immutable: true })
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested({ each: true })
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [KeyValueModel], _id: false, default: [] })
+  extras: KeyValueModel[]
+
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 

@@ -161,12 +161,11 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#batchPatchStatus" >batchPatchStatus</a>
+                                <a href="#batchUpdateStatus" >batchUpdateStatus</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#countDocuments" >countDocuments</a>
+                                <a href="#claimCommentsUser" >claimCommentsUser</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -176,45 +175,41 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#createFormClient" >createFormClient</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#delete" >delete</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#emailToAdminAndTargetAuthor" >emailToAdminAndTargetAuthor</a>
-                            </li>
-                            <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getAll" >getAll</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#getDetail" >getDetail</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getCalendar" >getCalendar</a>
+                                <a href="#getDetail" >getDetail</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getDetailByNumberId" >getDetailByNumberId</a>
+                                <a href="#getDetail" >getDetail</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getDetailByObjectId" >getDetailByObjectId</a>
+                                <a href="#getDetail" >getDetail</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getTotalCount" >getTotalCount</a>
+                                <a href="#getPublicCommentIdSet" >getPublicCommentIdSet</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#normalizeNewComment" >normalizeNewComment</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#incrementVote" >incrementVote</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#normalize" >normalize</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -223,40 +218,12 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#reviseIPLocation" >reviseIPLocation</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#submitCommentAkismet" >submitCommentAkismet</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#update" >update</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#updateBlocklistAkismetWithComment" >updateBlocklistAkismetWithComment</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#updateCommentsCountWithArticles" >updateCommentsCountWithArticles</a>
-                            </li>
-                            <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#verifyCommentValidity" >verifyCommentValidity</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#verifyTargetCommentable" >verifyTargetCommentable</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#vote" >vote</a>
+                                <a href="#validateAndCreate" >validateAndCreate</a>
                             </li>
                         </ul>
                     </td>
@@ -276,12 +243,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(ipService: <a href="../injectables/IPService.html" target="_self">IPService</a>, emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, eventEmitter: EventEmitter2, akismetService: <a href="../injectables/AkismetService.html" target="_self">AkismetService</a>, optionsService: <a href="../injectables/OptionsService.html" target="_self">OptionsService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentModel: <a href="../classes/Comment.html" target="_self">MongooseModel&lt;Comment&gt;</a>)</code>
+<code>constructor(ipService: <a href="../injectables/IPService.html" target="_self">IPService</a>, eventEmitter: EventEmitter2, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, akismetService: <a href="../injectables/CommentAkismetService.html" target="_self">CommentAkismetService</a>, blocklistService: <a href="../injectables/CommentBlocklistService.html" target="_self">CommentBlocklistService</a>, effectService: <a href="../injectables/CommentEffectService.html" target="_self">CommentEffectService</a>, commentModel: <a href="../classes/Comment.html" target="_self">MongooseModel&lt;Comment&gt;</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/modules/comment/comment.service.ts:33</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/comment/comment.service.ts:31</a></div>
                             </td>
                         </tr>
 
@@ -311,18 +278,6 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>emailService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/EmailService.html" target="_self" >EmailService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
                                                         <td>eventEmitter</td>
                                                   
                                                         <td>
@@ -335,34 +290,46 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>akismetService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/AkismetService.html" target="_self" >AkismetService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>optionsService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/OptionsService.html" target="_self" >OptionsService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
                                                         <td>articleService</td>
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/ArticleService.html" target="_self" >ArticleService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>akismetService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommentAkismetService.html" target="_self" >CommentAkismetService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>blocklistService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommentBlocklistService.html" target="_self" >CommentBlocklistService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>effectService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/CommentEffectService.html" target="_self" >CommentEffectService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -412,15 +379,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(commentIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId[]</a>, postIds: number[])</code>
+                    <code>batchDelete(commentIds: number[])</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="285"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:285</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="160"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:160</a></div>
                         </td>
                     </tr>
 
@@ -442,18 +409,6 @@
                                     <tbody>
                                         <tr>
                                                 <td>commentIds</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>postIds</td>
                                             <td>
                                                         <code>number[]</code>
                                             </td>
@@ -482,27 +437,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="batchPatchStatus"></a>
+                    <a name="batchUpdateStatus"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>batchPatchStatus</b></span>
-                        <a href="#batchPatchStatus"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>batchUpdateStatus</b></span>
+                        <a href="#batchUpdateStatus"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchPatchStatus(action: <a href="../classes/CommentsStatusDTO.html" target="_self">CommentsStatusDTO</a>, referer?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>batchUpdateStatus(commentIds: number[], status: <a href="../miscellaneous/enumerations.html#CommentStatus" target="_self">CommentStatus</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="269"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:269</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:149</a></div>
                         </td>
                     </tr>
 
@@ -523,9 +478,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>action</td>
+                                                <td>commentIds</td>
                                             <td>
-                                                            <code><a href="../classes/CommentsStatusDTO.html" target="_self" >CommentsStatusDTO</a></code>
+                                                        <code>number[]</code>
                                             </td>
 
                                             <td>
@@ -535,13 +490,13 @@
 
                                         </tr>
                                         <tr>
-                                                <td>referer</td>
+                                                <td>status</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            <code><a href="../miscellaneous/enumerations.html#CommentStatus" target="_self" >CommentStatus</a></code>
                                             </td>
 
                                             <td>
-                                                    Yes
+                                                    No
                                             </td>
 
 
@@ -564,27 +519,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="countDocuments"></a>
+                    <a name="claimCommentsUser"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>countDocuments</b></span>
-                        <a href="#countDocuments"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>claimCommentsUser</b></span>
+                        <a href="#claimCommentsUser"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>countDocuments(queryFilter: <a href="../classes/Comment.html" target="_self">QueryFilter&lt;Comment&gt;</a>, queryOptions?: MongooseBaseQueryOptions<Comment>)</code>
+                    <code>claimCommentsUser(commentIds: number[], userObjectId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="291"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:291</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="170"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:170</a></div>
                         </td>
                     </tr>
 
@@ -605,9 +559,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>queryFilter</td>
+                                                <td>commentIds</td>
                                             <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >QueryFilter&lt;Comment&gt;</a></code>
+                                                        <code>number[]</code>
                                             </td>
 
                                             <td>
@@ -617,301 +571,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>queryOptions</td>
-                                            <td>
-                                                        <code>MongooseBaseQueryOptions&lt;Comment&gt;</code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="create"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>create</b></span>
-                        <a href="#create"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(comment: <a href="../classes/Comment.html" target="_self">Comment</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="201"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:201</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>comment</td>
-                                            <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >Comment</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;MongooseDoc&lt;Comment&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="createFormClient"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>createFormClient</b></span>
-                        <a href="#createFormClient"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createFormClient(comment: <a href="../classes/CommentBase.html" target="_self">CommentBase</a>, visitor: <a href="../interfaces/QueryVisitor.html" target="_self">QueryVisitor</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="215"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:215</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>comment</td>
-                                            <td>
-                                                            <code><a href="../classes/CommentBase.html" target="_self" >CommentBase</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>visitor</td>
-                                            <td>
-                                                            <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;MongooseDoc&lt;Comment&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="delete"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>delete</b></span>
-                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(commentId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="261"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:261</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>commentId</td>
+                                                <td>userObjectId</td>
                                             <td>
                                                             <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="emailToAdminAndTargetAuthor"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>emailToAdminAndTargetAuthor</b></span>
-                        <a href="#emailToAdminAndTargetAuthor"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>emailToAdminAndTargetAuthor(comment: <a href="../classes/Comment.html" target="_self">Comment</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:44</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>comment</td>
-                                            <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >Comment</a></code>
                                             </td>
 
                                             <td>
@@ -938,66 +600,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getAll"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>getAll</b></span>
-                        <a href="#getAll"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAll()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="169"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:169</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;Array&lt;Comment&gt;&gt;</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getCalendar"></a>
+                    <a name="create"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>getCalendar</b></span>
-                        <a href="#getCalendar"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>create</b></span>
+                        <a href="#create"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCalendar(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, timezone: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>create(input: <a href="../miscellaneous/typealiases.html#NormalizedComment" target="_self">NormalizedComment</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="302"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:302</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -1014,44 +637,26 @@
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
-                                                <td>Default value</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>publicOnly</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#NormalizedComment" target="_self" >NormalizedComment</a></code>
                                             </td>
 
                                             <td>
                                                     No
                                             </td>
 
-                                            <td>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                                <td>timezone</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                                    <code>&#x27;GMT&#x27;</code>
-                                            </td>
 
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>    <code>Promise&lt;CommentDocWith&lt;UserPublic&gt;&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -1065,27 +670,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getDetailByNumberId"></a>
+                    <a name="delete"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>getDetailByNumberId</b></span>
-                        <a href="#getDetailByNumberId"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>delete</b></span>
+                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetailByNumberId(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>delete(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="240"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:240</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="142"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:142</a></div>
                         </td>
                     </tr>
 
@@ -1121,7 +726,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;MongooseDoc&lt;Comment&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;CommentDoc&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -1135,27 +740,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getDetailByObjectId"></a>
+                    <a name="getDetail"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>getDetailByObjectId</b></span>
-                        <a href="#getDetailByObjectId"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getDetail</b></span>
+                        <a href="#getDetail"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetailByObjectId(commentId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
+                    <code>getDetail(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="233"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:233</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:103</a></div>
                         </td>
                     </tr>
 
@@ -1178,7 +783,7 @@
                                         <tr>
                                                 <td>commentId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -1191,7 +796,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;MongooseDoc&lt;Comment&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;CommentDoc&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -1205,27 +810,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getTotalCount"></a>
+                    <a name="getDetail"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>getTotalCount</b></span>
-                        <a href="#getTotalCount"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getDetail</b></span>
+                        <a href="#getDetail"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getTotalCount(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>getDetail(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, populate: unknown)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="298"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:298</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="104"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -1246,9 +851,337 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>publicOnly</td>
+                                                <td>commentId</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>populate</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;CommentDocWith&lt;User&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDetail"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getDetail</b></span>
+                        <a href="#getDetail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDetail(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, populate: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>commentId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>populate</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;CommentDocWith&lt;UserPublic&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDetail"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getDetail</b></span>
+                        <a href="#getDetail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDetail(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, populate?: <a href="../classes/User.html" target="_self">&quot;withUser&quot; | &quot;withUserPublic&quot;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="106"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:106</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>commentId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>populate</td>
+                                            <td>
+                                                            <code><a href="../classes/User.html" target="_self" >&quot;withUser&quot; | &quot;withUserPublic&quot;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPublicCommentIdSet"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getPublicCommentIdSet</b></span>
+                        <a href="#getPublicCommentIdSet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPublicCommentIdSet(commentIds: number[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="122"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:122</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>commentIds</td>
+                                            <td>
+                                                        <code>number[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;Set&lt;number&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="incrementVote"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>incrementVote</b></span>
+                        <a href="#incrementVote"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>incrementVote(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, field: "likes" | "dislikes")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:179</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>commentId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>field</td>
+                                            <td>
+                                                        <code>&quot;likes&quot; | &quot;dislikes&quot;</code>
                                             </td>
 
                                             <td>
@@ -1275,26 +1208,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="normalizeNewComment"></a>
+                    <a name="normalize"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>normalizeNewComment</b></span>
-                        <a href="#normalizeNewComment"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>normalize</b></span>
+                        <a href="#normalize"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>normalizeNewComment(comment: <a href="../interfaces/CommentBaseWithExtras.html" target="_self">CommentBaseWithExtras</a>, visitor: <a href="../interfaces/QueryVisitor.html" target="_self">QueryVisitor</a>)</code>
+                    <code>normalize(input: <a href="../classes/CreateCommentDto.html" target="_self">CreateCommentDto</a>, context: literal type)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="185"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:185</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:43</a></div>
                         </td>
                     </tr>
 
@@ -1315,9 +1248,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>comment</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="../interfaces/CommentBaseWithExtras.html" target="_self" >CommentBaseWithExtras</a></code>
+                                                            <code><a href="../classes/CreateCommentDto.html" target="_self" >CreateCommentDto</a></code>
                                             </td>
 
                                             <td>
@@ -1327,9 +1260,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>visitor</td>
+                                                <td>context</td>
                                             <td>
-                                                            <code><a href="../interfaces/QueryVisitor.html" target="_self" >QueryVisitor</a></code>
+                                                        <code>literal type</code>
                                             </td>
 
                                             <td>
@@ -1342,7 +1275,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Comment</a></code>
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#NormalizedComment" target="_self" >NormalizedComment</a></code>
 
                         </div>
                             <div class="io-description">
@@ -1374,11 +1307,19 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="174"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:174</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:118</a></div>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
 
             <tr>
                 <td class="col-md-4">
@@ -1423,170 +1364,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;MongooseDoc&lt;Comment&gt;&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="reviseIPLocation"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>reviseIPLocation</b></span>
-                        <a href="#reviseIPLocation"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>reviseIPLocation(commentId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="316"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:316</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>commentId</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="submitCommentAkismet"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>submitCommentAkismet</b></span>
-                        <a href="#submitCommentAkismet"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>submitCommentAkismet(action: <a href="../miscellaneous/enumerations.html#AkismetAction" target="_self">AkismetAction</a>, comment: <a href="../classes/Comment.html" target="_self">Comment</a>, referer?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="88"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:88</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>action</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/enumerations.html#AkismetAction" target="_self" >AkismetAction</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>comment</td>
-                                            <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >Comment</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>referer</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;T&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -1612,412 +1390,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(commentId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>, newComment: <a href="../classes/Comment.html" target="_self">Partial&lt;Comment&gt;</a>, referer?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>update(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, input: <a href="../classes/UpdateCommentDto.html" target="_self">UpdateCommentDto</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="247"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:247</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>commentId</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>newComment</td>
-                                            <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >Partial&lt;Comment&gt;</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>referer</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;MongooseDoc&lt;Comment&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="updateBlocklistAkismetWithComment"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>updateBlocklistAkismetWithComment</b></span>
-                        <a href="#updateBlocklistAkismetWithComment"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateBlocklistAkismetWithComment(comments: <a href="../classes/Comment.html" target="_self">Comment[]</a>, status: <a href="../miscellaneous/enumerations.html#CommentStatus" target="_self">CommentStatus</a>, referer?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="129"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:129</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>comments</td>
-                                            <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >Comment[]</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>status</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/enumerations.html#CommentStatus" target="_self" >CommentStatus</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>referer</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="updateCommentsCountWithArticles"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>updateCommentsCountWithArticles</b></span>
-                        <a href="#updateCommentsCountWithArticles"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateCommentsCountWithArticles(postIds: number[])</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:102</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>postIds</td>
-                                            <td>
-                                                        <code>number[]</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="verifyCommentValidity"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>verifyCommentValidity</b></span>
-                        <a href="#verifyCommentValidity"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>verifyCommentValidity(comment: <a href="../classes/Comment.html" target="_self">Comment</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="148"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:148</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>comment</td>
-                                            <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >Comment</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="verifyTargetCommentable"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>verifyTargetCommentable</b></span>
-                        <a href="#verifyTargetCommentable"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>verifyTargetCommentable(targetPostId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="161"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:161</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>targetPostId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="vote"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>vote</b></span>
-                        <a href="#vote"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>vote(commentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, isLike: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="332"
-                                    class="link-to-prism">src/modules/comment/comment.service.ts:332</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="132"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:132</a></div>
                         </td>
                     </tr>
 
@@ -2050,13 +1431,95 @@
 
                                         </tr>
                                         <tr>
-                                                <td>isLike</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            <code><a href="../classes/UpdateCommentDto.html" target="_self" >UpdateCommentDto</a></code>
                                             </td>
 
                                             <td>
                                                     No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;CommentDoc&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validateAndCreate"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>validateAndCreate</b></span>
+                        <a href="#validateAndCreate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>validateAndCreate(input: <a href="../miscellaneous/typealiases.html#NormalizedComment" target="_self">NormalizedComment</a>, referer?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/modules/comment/comment.service.ts:84</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#NormalizedComment" target="_self" >NormalizedComment</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>referer</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
                                             </td>
 
 
@@ -2081,28 +1544,26 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
-import { Injectable, InternalServerErrorException } from &#x27;@nestjs/common&#x27;
-import { ForbiddenException, BadRequestException, NotFoundException } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter } from &#x27;mongoose&#x27;
 import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
-import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { Injectable, BadRequestException, NotFoundException, ForbiddenException } from &#x27;@nestjs/common&#x27;
+import { MongooseModel, MongooseId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
+import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
-import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
-import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import { AkismetService, AkismetAction } from &#x27;@app/core/helper/helper.service.akismet&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { OptionsService } from &#x27;@app/modules/options/options.service&#x27;
-import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { CommentStatus, COMMENT_GUEST_QUERY_FILTER } from &#x27;./comment.constant&#x27;
-import { Comment, CommentBase, CommentBaseWithExtras } from &#x27;./comment.model&#x27;
-import { CommentsStatusDTO } from &#x27;./comment.dto&#x27;
-import { isDevEnv, isProdEnv } from &#x27;@app/app.environment&#x27;
+import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
+import { User, UserPublic, USER_PUBLIC_POPULATE_SELECT } from &#x27;@app/modules/user/user.model&#x27;
+import { CommentStatus, CommentTargetType, CommentAuthorType } from &#x27;./comment.constant&#x27;
+import { Comment, CommentDoc, CommentDocWith, NormalizedComment } from &#x27;./comment.model&#x27;
+import { CreateCommentDto, UpdateCommentDto } from &#x27;./comment.dto&#x27;
+import { CommentBlocklistService } from &#x27;./comment.service.blocklist&#x27;
+import { CommentAkismetService } from &#x27;./comment.service.akismet&#x27;
+import { CommentEffectService } from &#x27;./comment.service.effect&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
-import * as APP_CONFIG from &#x27;@app/app.config&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;CommentService&#x27;, time: isDevEnv })
 
@@ -2110,310 +1571,159 @@ const logger &#x3D; createLogger({ scope: &#x27;CommentService&#x27;, time: isDe
 export class CommentService {
   constructor(
     private readonly ipService: IPService,
-    private readonly emailService: EmailService,
     private readonly eventEmitter: EventEmitter2,
-    private readonly akismetService: AkismetService,
-    private readonly optionsService: OptionsService,
     private readonly articleService: ArticleService,
+    private readonly akismetService: CommentAkismetService,
+    private readonly blocklistService: CommentBlocklistService,
+    private readonly effectService: CommentEffectService,
     @InjectModel(Comment) private readonly commentModel: MongooseModel&lt;Comment&gt;
   ) {}
 
-  private async emailToAdminAndTargetAuthor(comment: Comment) {
-    const onWhere &#x3D;
-      comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID
-        ? &#x27;guestbook&#x27;
-        : await this.articleService
-            .getDetailByNumberIdOrSlug({ numberId: comment.post_id, lean: true })
-            .then((article) &#x3D;&gt; &#x60;&quot;${article.title}&quot;&#x60;)
-
-    const authorName &#x3D; comment.author.name
-    const getMailContent &#x3D; (subject &#x3D; &#x27;&#x27;) &#x3D;&gt; {
-      const texts &#x3D; [&#x60;${subject} on ${onWhere}.&#x60;, &#x60;${authorName}: ${comment.content}&#x60;]
-      const textHTML &#x3D; texts.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;&#x27;)
-      const replyText &#x3D; &#x60;Reply to ${authorName} #${comment.id}&#x60;
-      const commentLink &#x3D; getPermalinkById(comment.post_id) + &#x60;#comment-${comment.id}&#x60;
-      const linkHTML &#x3D; &#x60;&lt;a href&#x3D;&quot;${commentLink}&quot; target&#x3D;&quot;_blank&quot;&gt;${replyText}&lt;/a&gt;&#x60;
-      return {
-        text: texts.join(&#x27;\n&#x27;),
-        html: [textHTML, &#x60;&lt;br&gt;&#x60;, linkHTML].join(&#x27;\n&#x27;)
-      }
+  // normalize input data
+  public normalize(
+    input: CreateCommentDto,
+    context: {
+      visitor: QueryVisitor
+      extras?: KeyValueModel[]
+      user?: WithId&lt;User&gt;
     }
-
-    // Email to admin
-    const subject &#x3D; &#x60;You have a new comment&#x60;
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-      to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-      subject,
-      ...getMailContent(subject)
-    })
-
-    // Email to parent comment author
-    if (comment.pid) {
-      this.commentModel.findOne({ id: comment.pid }).then((parentComment) &#x3D;&gt; {
-        if (parentComment?.author.email) {
-          const subject &#x3D; &#x60;Your comment #${parentComment.id} has a new reply&#x60;
-          this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-            to: parentComment.author.email,
-            subject,
-            ...getMailContent(subject)
-          })
-        }
-      })
-    }
-  }
-
-  private submitCommentAkismet(action: AkismetAction, comment: Comment, referer?: string): Promise&lt;void&gt; {
-    return this.akismetService[action]({
-      user_ip: comment.ip!,
-      user_agent: comment.agent!,
-      referrer: referer || &#x27;&#x27;,
-      permalink: getPermalinkById(comment.post_id),
-      comment_type: comment.pid ? &#x27;reply&#x27; : &#x27;comment&#x27;,
-      comment_author: comment.author.name,
-      comment_author_email: comment.author.email,
-      comment_author_url: comment.author.site,
-      comment_content: comment.content
-    })
-  }
-
-  private async updateCommentsCountWithArticles(postIds: number[]) {
-    // Filter invalid post_id &amp; guestbook
-    postIds &#x3D; postIds.map(Number).filter(Boolean)
-    if (!postIds.length) {
-      return false
-    }
-
-    try {
-      const counts &#x3D; await this.commentModel.aggregate&lt;{ _id: number; num_tutorial: number }&gt;([
-        { $match: { ...COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIds } } },
-        { $group: { _id: &#x27;$post_id&#x27;, num_tutorial: { $sum: 1 } } }
-      ])
-      if (!counts || !counts.length) {
-        await this.articleService.updateStatsComments(postIds[0], 0)
-      } else {
-        await Promise.all(
-          counts.map((count) &#x3D;&gt; {
-            return this.articleService.updateStatsComments(count._id, count.num_tutorial)
-          })
-        )
-      }
-    } catch (error) {
-      logger.warn(&#x27;updateCommentCountWithArticle failed!&#x27;, error)
-    }
-  }
-
-  // Comment status effects
-  private updateBlocklistAkismetWithComment(comments: Comment[], status: CommentStatus, referer?: string) {
-    const isSPAM &#x3D; status &#x3D;&#x3D;&#x3D; CommentStatus.Spam
-    const action &#x3D; isSPAM ? AkismetAction.SubmitSpam : AkismetAction.SubmitHam
-    // SPAM &gt; append to blocklist &amp; submitSpam
-    // HAM &gt; remove from blocklist &amp; submitHAM
-    // Akismet
-    comments.forEach((comment) &#x3D;&gt; this.submitCommentAkismet(action, comment, referer))
-    // block list
-    const ips: string[] &#x3D; comments.map((comment) &#x3D;&gt; comment.ip!).filter(Boolean)
-    const emails: string[] &#x3D; comments.map((comment) &#x3D;&gt; comment.author.email!).filter(Boolean)
-    const blocklistAction &#x3D; isSPAM
-      ? this.optionsService.appendToBlocklist({ ips, emails })
-      : this.optionsService.removeFromBlocklist({ ips, emails })
-    blocklistAction
-      .then(() &#x3D;&gt; logger.info(&#x27;updateBlocklistAkismetWithComment.blocklistAction succeeded.&#x27;))
-      .catch((error) &#x3D;&gt; logger.warn(&#x27;updateBlocklistAkismetWithComment.blocklistAction failed!&#x27;, error))
-  }
-
-  // Validate comment by NodePress IP/email/keywords
-  public async verifyCommentValidity(comment: Comment): Promise&lt;void&gt; {
-    const { blocklist } &#x3D; await this.optionsService.ensureAppOptions()
-    const { keywords, mails, ips } &#x3D; blocklist
-    const blockByIP &#x3D; ips.includes(comment.ip!)
-    const blockByEmail &#x3D; mails.includes(comment.author.email!)
-    const blockByKeyword &#x3D; keywords.length &amp;&amp; new RegExp(&#x60;${keywords.join(&#x27;|&#x27;)}&#x60;, &#x27;ig&#x27;).test(comment.content)
-    if (blockByIP || blockByEmail || blockByKeyword) {
-      const reason &#x3D; blockByIP ? &#x27;Blocked IP&#x27; : blockByEmail ? &#x27;Blocked Email&#x27; : &#x27;Blocked Keywords&#x27;
-      throw new ForbiddenException(&#x60;Comment blocked. Reason: ${reason}&#x60;)
-    }
-  }
-
-  // Validate comment target commentable
-  public async verifyTargetCommentable(targetPostId: number): Promise&lt;void&gt; {
-    if (targetPostId !&#x3D;&#x3D; GUESTBOOK_POST_ID) {
-      if (!(await this.articleService.isCommentableArticle(targetPostId))) {
-        throw new BadRequestException(&#x60;Comment is not allowed on article ${targetPostId}&#x60;)
-      }
-    }
-  }
-
-  public getAll(): Promise&lt;Array&lt;Comment&gt;&gt; {
-    return this.commentModel.find().lean().exec()
-  }
-
-  // Get comment list
-  public paginate(
-    filter: QueryFilter&lt;Comment&gt;,
-    options: PaginateOptions
-  ): Promise&lt;PaginateResult&lt;MongooseDoc&lt;Comment&gt;&gt;&gt; {
-    // MARK: can&#x27;t use &#x27;lean&#x27; with virtual &#x27;email_hash&#x27;
-    // MARK: can&#x27;t use select(&#x27;-email&#x27;) with virtual &#x27;email_hash&#x27;
-    // MARK: keep &#x27;paginate&#x27;, the &#x27;paginateRaw&#x27; method is not available here.
-    // https://github.com/Automattic/mongoose/issues/3130#issuecomment-395750197
-    return this.commentModel.paginate(filter, options)
-  }
-
-  public normalizeNewComment(comment: CommentBaseWithExtras, visitor: QueryVisitor): Comment {
+  ): NormalizedComment {
+    const { visitor, extras, user } &#x3D; context
     return {
-      ...comment,
-      pid: Number(comment.pid),
-      post_id: Number(comment.post_id),
+      ...input,
+      parent_id: input.parent_id ?? null,
       status: CommentStatus.Published,
+      user: user?._id ?? null,
+      author_type: user?._id ? CommentAuthorType.User : CommentAuthorType.Guest,
+      author_name: user?.name ?? input.author_name,
+      author_email: user?.email ?? input.author_email ?? null,
+      author_website: user?.website ?? input.author_website ?? null,
       likes: 0,
       dislikes: 0,
       ip: visitor.ip,
-      ip_location: {},
-      agent: visitor.ua || comment.agent,
-      extras: comment.extras ?? []
+      ip_location: null,
+      user_agent: visitor.agent,
+      extras: extras ?? []
     }
   }
 
-  // Create comment
-  public async create(comment: Comment): Promise&lt;MongooseDoc&lt;Comment&gt;&gt; {
-    const ip_location &#x3D; isProdEnv &amp;&amp; comment.ip ? await this.ipService.queryLocation(comment.ip) : null
-    const succeededComment &#x3D; await this.commentModel.create({
-      ...comment,
-      ip_location
-    })
-    // update aggregate &amp; email notification
-    this.updateCommentsCountWithArticles([succeededComment.post_id])
-    this.emailToAdminAndTargetAuthor(succeededComment)
-    this.eventEmitter.emit(EventKeys.CommentCreated, succeededComment)
-    return succeededComment
+  // create comment &amp; trigger effects
+  public async create(input: NormalizedComment): Promise&lt;CommentDocWith&lt;UserPublic&gt;&gt; {
+    const ip_location &#x3D; input.ip ? await this.ipService.queryLocation(input.ip) : null
+    const created &#x3D; await this.commentModel.create({ ...input, ip_location })
+    // populate user data for response
+    const populated &#x3D; await created.populate&lt;{ user: UserPublic | null }&gt;(&#x27;user&#x27;, USER_PUBLIC_POPULATE_SELECT)
+    // effect: sync target (article / page) effects
+    this.effectService.syncTargetEffects([populated])
+    // event: dispatch created event (for emails, notifications, etc.)
+    this.eventEmitter.emit(EventKeys.CommentCreated, populated.toObject())
+    return populated
   }
 
-  // Create comment from client
-  public async createFormClient(comment: CommentBase, visitor: QueryVisitor): Promise&lt;MongooseDoc&lt;Comment&gt;&gt; {
-    if (!comment.author.email) {
-      throw new BadRequestException(&#x27;Author email should not be empty&#x27;)
+  // validate &amp; create comment
+  public async validateAndCreate(input: NormalizedComment, referer?: string) {
+    // 1. target validation (article only)
+    if (input.target_type &#x3D;&#x3D;&#x3D; CommentTargetType.Article) {
+      if (!(await this.articleService.isCommentableArticle(input.target_id))) {
+        throw new BadRequestException(&#x60;Comment is disabled for article: ${input.target_id}&#x60;)
+      }
     }
-    // 1. Standardize comment data to ensure that some fields cannot be overwritten by users
-    const newComment &#x3D; this.normalizeNewComment(comment, visitor)
-    // 2. check commentable
-    await this.verifyTargetCommentable(newComment.post_id)
-    // 3. block list | akismet
-    await Promise.all([
-      this.verifyCommentValidity(newComment),
-      this.submitCommentAkismet(AkismetAction.CheckSpam, newComment, visitor.referer)
+    // 2. local blocklist &amp; remote Akismet SPAM
+    const [isSpam] &#x3D; await Promise.all([
+      this.akismetService.checkSpam(this.akismetService.transformCommentToAkismet(input, referer)),
+      this.blocklistService.validate(input)
     ])
-    // 4. create data in DB
-    return this.create(newComment)
+    if (isSpam) {
+      throw new ForbiddenException(&#x27;Comment blocked by Akismet SPAM.&#x27;)
+    }
+    // 3. create in databse
+    return this.create(input)
   }
 
-  // Get comment detail by ObjectId
-  public async getDetailByObjectId(commentId: MongooseId): Promise&lt;MongooseDoc&lt;Comment&gt;&gt; {
-    const comment &#x3D; await this.commentModel.findById(commentId).exec()
+  public async getDetail(commentId: number): Promise&lt;CommentDoc&gt;
+  public async getDetail(commentId: number, populate: &#x27;withUser&#x27;): Promise&lt;CommentDocWith&lt;User&gt;&gt;
+  public async getDetail(commentId: number, populate: &#x27;withUserPublic&#x27;): Promise&lt;CommentDocWith&lt;UserPublic&gt;&gt;
+  public async getDetail(commentId: number, populate?: &#x27;withUser&#x27; | &#x27;withUserPublic&#x27;) {
+    const query &#x3D; this.commentModel.findOne({ id: commentId })
+    if (populate &#x3D;&#x3D;&#x3D; &#x27;withUser&#x27;) {
+      query.populate&lt;{ user: User | null }&gt;(&#x27;user&#x27;)
+    } else if (populate &#x3D;&#x3D;&#x3D; &#x27;withUserPublic&#x27;) {
+      query.populate&lt;{ user: UserPublic | null }&gt;(&#x27;user&#x27;, USER_PUBLIC_POPULATE_SELECT)
+    }
+    const comment &#x3D; await query.exec()
     if (!comment) throw new NotFoundException(&#x60;Comment &#x27;${commentId}&#x27; not found&#x60;)
-    return comment
+    return comment as any
   }
 
-  // Get comment detail by number ID
-  public async getDetailByNumberId(commentId: number): Promise&lt;MongooseDoc&lt;Comment&gt;&gt; {
-    const comment &#x3D; await this.commentModel.findOne({ id: commentId }).exec()
-    if (!comment) throw new NotFoundException(&#x60;Comment &#x27;${commentId}&#x27; not found&#x60;)
-    return comment
+  public paginate&lt;T &#x3D; Comment&gt;(filter: QueryFilter&lt;Comment&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;T&gt;&gt; {
+    return this.commentModel.paginateRaw&lt;T&gt;(filter, { ...options, lean: { virtuals: true } })
   }
 
-  // Update comment
-  public async update(
-    commentId: MongooseId,
-    newComment: Partial&lt;Comment&gt;,
-    referer?: string
-  ): Promise&lt;MongooseDoc&lt;Comment&gt;&gt; {
-    const updated &#x3D; await this.commentModel.findByIdAndUpdate(commentId, newComment, { new: true }).exec()
+  public async getPublicCommentIdSet(commentIds: number[]): Promise&lt;Set&lt;number&gt;&gt; {
+    if (!commentIds.length) return new Set()
+    const found &#x3D; await this.commentModel
+      .find({ id: { $in: commentIds }, status: CommentStatus.Published })
+      .select(&#x27;id&#x27;)
+      .lean()
+      .exec()
+    return new Set(found.map(({ id }) &#x3D;&gt; id))
+  }
+
+  public async update(commentId: number, input: UpdateCommentDto): Promise&lt;CommentDoc&gt; {
+    const updated &#x3D; await this.commentModel
+      .findOneAndUpdate({ id: commentId }, { $set: input }, { returnDocument: &#x27;after&#x27; })
+      .exec()
     if (!updated) throw new NotFoundException(&#x60;Comment &#x27;${commentId}&#x27; not found&#x60;)
-
-    this.updateCommentsCountWithArticles([updated.post_id])
-    this.updateBlocklistAkismetWithComment([updated], updated.status, referer)
+    this.effectService.syncTargetEffects([updated])
+    this.blocklistService.syncByStatus([updated], updated.status)
     return updated
   }
 
-  // Delete comment
-  public async delete(commentId: MongooseId) {
-    const deleted &#x3D; await this.commentModel.findByIdAndDelete(commentId, null).exec()
+  public async delete(commentId: number): Promise&lt;CommentDoc&gt; {
+    const deleted &#x3D; await this.commentModel.findOneAndDelete({ id: commentId }).exec()
     if (!deleted) throw new NotFoundException(&#x60;Comment &#x27;${commentId}&#x27; not found&#x60;)
-
-    this.updateCommentsCountWithArticles([deleted.post_id])
+    this.effectService.syncTargetEffects([deleted])
     return deleted
   }
 
-  public async batchPatchStatus(action: CommentsStatusDTO, referer?: string) {
-    const { comment_ids, post_ids, status } &#x3D; action
-    const actionResult &#x3D; await this.commentModel
-      .updateMany({ _id: { $in: comment_ids } }, { $set: { status } })
+  public async batchUpdateStatus(commentIds: number[], status: CommentStatus) {
+    const comments &#x3D; await this.commentModel
+      .find({ id: { $in: commentIds } })
+      .lean()
       .exec()
-    // update ref article.stats.comments
-    this.updateCommentsCountWithArticles(post_ids)
-    try {
-      const todoComments &#x3D; await this.commentModel.find({ _id: { $in: comment_ids } })
-      this.updateBlocklistAkismetWithComment(todoComments, status, referer)
-    } catch (error) {
-      logger.warn(&#x60;batchPatchStatus to ${status} failed!&#x60;, error)
-    }
-    return actionResult
-  }
-
-  public async batchDelete(commentIds: MongooseId[], postIds: number[]) {
-    const result &#x3D; await this.commentModel.deleteMany({ _id: { $in: commentIds } }).exec()
-    this.updateCommentsCountWithArticles(postIds)
+    const result &#x3D; await this.commentModel.updateMany({ id: { $in: commentIds } }, { $set: { status } }).exec()
+    this.blocklistService.syncByStatus(comments, status)
+    this.effectService.syncTargetEffects(comments)
     return result
   }
 
-  public async countDocuments(
-    queryFilter: QueryFilter&lt;Comment&gt;,
-    queryOptions?: MongooseBaseQueryOptions&lt;Comment&gt;
-  ): Promise&lt;number&gt; {
-    return await this.commentModel.countDocuments(queryFilter, queryOptions).exec()
+  public async batchDelete(commentIds: number[]) {
+    const targets &#x3D; await this.commentModel
+      .find({ id: { $in: commentIds } })
+      .lean()
+      .exec()
+    const result &#x3D; await this.commentModel.deleteMany({ id: { $in: commentIds } }).exec()
+    this.effectService.syncTargetEffects(targets)
+    return result
   }
 
-  public async getTotalCount(publicOnly: boolean): Promise&lt;number&gt; {
-    return await this.countDocuments(publicOnly ? COMMENT_GUEST_QUERY_FILTER : {})
+  public claimCommentsUser(commentIds: number[], userObjectId: MongooseId) {
+    return this.commentModel
+      .updateMany(
+        { id: { $in: commentIds }, author_type: CommentAuthorType.Guest },
+        { $set: { user: userObjectId, author_type: CommentAuthorType.User } }
+      )
+      .exec()
   }
 
-  public async getCalendar(publicOnly: boolean, timezone &#x3D; &#x27;GMT&#x27;) {
-    try {
-      const calendar &#x3D; await this.commentModel.aggregate&lt;{ _id: string; count: number }&gt;([
-        { $match: publicOnly ? COMMENT_GUEST_QUERY_FILTER : {} },
-        { $project: { day: { $dateToString: { date: &#x27;$created_at&#x27;, format: &#x27;%Y-%m-%d&#x27;, timezone } } } },
-        { $group: { _id: &#x27;$day&#x27;, count: { $sum: 1 } } },
-        { $sort: { _id: 1 } }
-      ])
-      return calendar.map(({ _id, ...rest }) &#x3D;&gt; ({ ...rest, date: _id }))
-    } catch (error: unknown) {
-      throw new BadRequestException(&#x60;Invalid timezone identifier: &#x27;${timezone}&#x27;&#x60;, String(error))
-    }
-  }
+  public async incrementVote(commentId: number, field: &#x27;likes&#x27; | &#x27;dislikes&#x27;): Promise&lt;number&gt; {
+    const updated &#x3D; await this.commentModel
+      .findOneAndUpdate({ id: commentId }, { $inc: { [field]: 1 } }, { returnDocument: &#x27;after&#x27;, timestamps: false })
+      .lean()
+      .exec()
+    if (!updated) throw new NotFoundException(&#x60;Comment &#x27;${commentId}&#x27; not found&#x60;)
 
-  public async reviseIPLocation(commentId: MongooseId) {
-    const comment &#x3D; await this.getDetailByObjectId(commentId)
-    if (!comment.ip) {
-      throw new BadRequestException(&#x60;Comment &#x27;${commentId}&#x27; hasn&#x27;t IP address&#x60;)
-    }
-
-    const location &#x3D; await this.ipService.queryLocation(comment.ip)
-    if (!location) {
-      throw new InternalServerErrorException(&#x60;Failed to resolve location for IP: ${comment.ip}&#x60;)
-    }
-
-    comment.ip_location &#x3D; { ...location }
-    return await comment.save()
-  }
-
-  // Vote comment
-  public async vote(commentId: number, isLike: boolean) {
-    const comment &#x3D; await this.getDetailByNumberId(commentId)
-    isLike ? comment.likes++ : comment.dislikes++
-    await comment.save({ timestamps: false })
-    return {
-      likes: comment.likes,
-      dislikes: comment.dislikes
-    }
+    return updated[field]
   }
 }
 </code></pre>

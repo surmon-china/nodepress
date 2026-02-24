@@ -214,13 +214,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty()<br />@prop({required: true, trim: true, validate: /\S+/})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true, trim: true, validate: /\S+/})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/options/options.model.ts:42</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/modules/options/options.model.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -253,13 +253,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsUrl({require_protocol: true})<br />@IsString()<br />@IsNotEmpty()<br />@prop({required: true, trim: true})<br />
+                            @IsUrl({require_protocol: true})<br />@IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true, trim: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/options/options.model.ts:48</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/modules/options/options.model.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -285,9 +285,13 @@ import { IsString, IsObject, IsUrl, IsEmail, IsArray, IsOptional, IsNotEmpty } f
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
+export type OptionPublic &#x3D; Omit&lt;Option, &#x27;blocklist&#x27;&gt;
+
+export const OPTIONS_SINGLETON_QUERY &#x3D; Object.freeze({ singleton: true } as const)
+
 const DEFAULT_OPTIONS_BLOCKLIST: Blocklist &#x3D; Object.freeze({
   ips: [],
-  mails: [],
+  emails: [],
   keywords: []
 })
 
@@ -299,12 +303,7 @@ export const DEFAULT_OPTIONS: Option &#x3D; Object.freeze&lt;Option&gt;({
   statement: &#x27;&#x27;,
   site_url: &#x27;https://github.com/surmon-china/nodepress&#x27;,
   site_email: &#x27;admin@example.com&#x27;,
-  friend_links: [
-    {
-      name: APP_BIZ.FE_NAME,
-      url: APP_BIZ.FE_URL
-    }
-  ],
+  friend_links: [{ name: APP_BIZ.FE_NAME, url: APP_BIZ.FE_URL }],
   blocklist: DEFAULT_OPTIONS_BLOCKLIST,
   app_config: &#x27;&#x27;
 })
@@ -312,17 +311,16 @@ export const DEFAULT_OPTIONS: Option &#x3D; Object.freeze&lt;Option&gt;({
 export class FriendLink {
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true, trim: true, validate: /\S+/ })
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   name: string
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true, trim: true })
+  @prop({ type: String, required: true, trim: true })
   url: string
 }
 
-// user block list
 export class Blocklist {
   @ArrayUnique()
   @IsArray()
@@ -330,12 +328,14 @@ export class Blocklist {
   @prop({ type: () &#x3D;&gt; [String], default: [] })
   ips: string[]
 
+  @IsEmail(undefined, { each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()
   @prop({ type: () &#x3D;&gt; [String], default: [] })
-  mails: string[]
+  emails: string[]
 
+  @IsString({ each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()
@@ -353,57 +353,61 @@ export class Blocklist {
   }
 })
 export class Option {
+  @prop({ type: Boolean, default: true, unique: true, select: false })
+  singleton?: boolean
+
   @IsString()
-  @IsNotEmpty({ message: &#x27;title?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   title: string
 
   @IsString()
-  @IsNotEmpty({ message: &#x27;sub title?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   sub_title: string
 
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true })
+  @prop({ type: String, required: true, trim: true })
   description: string
 
+  @IsString({ each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()
-  @prop({ default: [], type: () &#x3D;&gt; [String] })
+  @prop({ type: () &#x3D;&gt; [String], default: [] })
   keywords: string[]
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true })
+  @prop({ type: String, required: true })
   site_url: string
 
   @IsEmail()
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true })
+  @prop({ type: String, required: true })
   site_email: string
 
   @IsString()
   @IsOptional()
-  @prop({ default: &#x27;&#x27; })
+  @prop({ type: String, default: &#x27;&#x27; })
   statement: string
 
   @Type(() &#x3D;&gt; FriendLink)
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [FriendLink] })
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [FriendLink], _id: false, default: [] })
   friend_links: FriendLink[]
 
-  // site user block list
   @Type(() &#x3D;&gt; Blocklist)
   @ValidateNested()
   @IsObject()
   @IsOptional()
-  @prop({ _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } })
+  @prop({ type: () &#x3D;&gt; Blocklist, _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } })
   blocklist: Blocklist
 
   // app config (for broader client configuration usage)
@@ -412,7 +416,7 @@ export class Option {
   @prop({ type: String, default: null })
   app_config: string | null
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 

@@ -1,0 +1,784 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NodePress documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >UserIdentity</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/modules/user/user.model.ts</code>
+        </p>
+
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#avatar_url" >avatar_url</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#display_name" >display_name</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#email" >email</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#linked_at" >linked_at</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#profile_url" >profile_url</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#provider" >provider</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#uid" >uid</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#username" >username</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="avatar_url"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>avatar_url</b></span>
+                        <a href="#avatar_url"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsUrl()<br />@IsString()<br />@IsOptional()<br />@NormalizeString({trim: true})<br />@prop({type: String, default: undefined, trim: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/modules/user/user.model.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="display_name"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>display_name</b></span>
+                        <a href="#display_name"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsString()<br />@IsOptional()<br />@NormalizeString({trim: true})<br />@prop({type: String, default: undefined, trim: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/modules/user/user.model.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="email"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>email</b></span>
+                        <a href="#email"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsEmail()<br />@IsString()<br />@IsOptional()<br />@NormalizeString({trim: true})<br />@prop({type: String, default: undefined, trim: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/modules/user/user.model.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="linked_at"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>linked_at</b></span>
+                        <a href="#linked_at"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @prop({type: Date, default: undefined})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/modules/user/user.model.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profile_url"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>profile_url</b></span>
+                        <a href="#profile_url"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsUrl()<br />@IsString()<br />@IsOptional()<br />@NormalizeString({trim: true})<br />@prop({type: String, default: undefined, trim: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/modules/user/user.model.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="provider"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>provider</b></span>
+                        <a href="#provider"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#UserIdentityProvider" target="_self" >UserIdentityProvider</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsEnum(UserIdentityProvider)<br />@IsDefined()<br />@prop({type: String, enum: UserIdentityProvider, required: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/user/user.model.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="uid"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>uid</b></span>
+                        <a href="#uid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsNotEmpty()<br />@IsString()<br />@prop({type: String, required: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/user/user.model.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="username"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>username</b></span>
+                        <a href="#username"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsString()<br />@IsOptional()<br />@NormalizeString({trim: true})<br />@prop({type: String, default: undefined, trim: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/modules/user/user.model.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
+import { prop, index, plugin, modelOptions } from &#x27;@typegoose/typegoose&#x27;
+import { Type } from &#x27;class-transformer&#x27;
+import { IsOptional, IsDefined, IsNotEmpty, ValidateNested, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsString, IsBoolean, IsEnum, IsUrl, IsEmail, IsArray, MaxLength } from &#x27;class-validator&#x27;
+import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
+import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
+import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
+import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
+import { UserType, UserIdentityProvider } from &#x27;./user.constant&#x27;
+
+export const USER_PUBLIC_POPULATE_SELECT &#x3D; [&#x27;id&#x27;, &#x27;type&#x27;, &#x27;name&#x27;, &#x27;website&#x27;, &#x27;avatar_url&#x27;] as const
+export type UserPublic &#x3D; Required&lt;Pick&lt;User, (typeof USER_PUBLIC_POPULATE_SELECT)[number]&gt;&gt;
+
+export class UserIdentity {
+  @IsEnum(UserIdentityProvider)
+  @IsDefined()
+  @prop({ type: String, enum: UserIdentityProvider, required: true })
+  provider: UserIdentityProvider
+
+  @IsNotEmpty()
+  @IsString()
+  @prop({ type: String, required: true })
+  uid: string
+
+  @IsEmail()
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true })
+  email: string | null
+
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true })
+  username: string | null
+
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true })
+  display_name: string | null
+
+  @IsUrl()
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true })
+  avatar_url: string | null
+
+  @IsUrl()
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true })
+  profile_url: string | null
+
+  @prop({ type: Date, default: Date.now })
+  linked_at?: Date
+}
+
+@plugin(mongoosePaginate)
+@plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@index({ &#x27;identities.provider&#x27;: 1, &#x27;identities.uid&#x27;: 1 }, { unique: true, sparse: true })
+@modelOptions({
+  schemaOptions: {
+    id: false,
+    versionKey: false,
+    timestamps: {
+      createdAt: &#x27;created_at&#x27;,
+      updatedAt: &#x27;updated_at&#x27;
+    }
+  }
+})
+export class User {
+  @prop({ unique: true })
+  id: number
+
+  @IsEnum(UserType)
+  @IsOptional()
+  @prop({ type: Number, enum: UserType, default: UserType.Standard, index: true })
+  type: UserType
+
+  @MaxLength(100)
+  @IsString()
+  @IsNotEmpty()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 100 })
+  name: string
+
+  // Email may be &#x60;null&#x60; if the user has enabled privacy settings on the provider.
+  @IsEmail()
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true })
+  email: string | null
+
+  @MaxLength(500)
+  @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true, maxlength: 500 })
+  website: string | null
+
+  @MaxLength(500)
+  @IsUrl()
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true, maxlength: 500 })
+  avatar_url: string | null
+
+  @Type(() &#x3D;&gt; UserIdentity)
+  @ValidateNested({ each: true })
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [UserIdentity], _id: false, default: [] })
+  identities: UserIdentity[]
+
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested({ each: true })
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [KeyValueModel], _id: false, default: [] })
+  extras: KeyValueModel[]
+
+  @IsBoolean()
+  @IsOptional()
+  @prop({ type: Boolean, default: false, index: true })
+  disabled: boolean
+
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
+  created_at?: Date
+
+  @prop({ type: Date, default: Date.now })
+  updated_at?: Date
+}
+
+export const UserProvider &#x3D; getProviderByTypegooseClass(User)
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'UserIdentity.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

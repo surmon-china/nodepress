@@ -1,0 +1,866 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NodePress documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content controller">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Controllers</li>
+  <li class="breadcrumb-item" >UserController</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/modules/user/user.controller.ts</code>
+        </p>
+            <p class="comment">
+                <h3>Prefix</h3>
+            </p>
+            <p class="comment">
+                <code>users</code>
+            </p>
+
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#createUser" >createUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#deleteUser" >deleteUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#deleteUserIdentity" >deleteUserIdentity</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#getUser" >getUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#getUsers" >getUsers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#updateUser" >updateUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createUser"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>createUser</b></span>
+                        <a href="#createUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createUser(dto: <a href="../classes/CreateUserDto.html" target="_self">CreateUserDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post()<br />@SuccessResponse(&#x27;Create user succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateUserDto.html" target="_self" >CreateUserDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >Promise&lt;User&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteUser"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>deleteUser</b></span>
+                        <a href="#deleteUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteUser(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Delete(&#x27;:id&#x27;)<br />@SuccessResponse(&#x27;Delete user succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteUserIdentity"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>deleteUserIdentity</b></span>
+                        <a href="#deleteUserIdentity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteUserIdentity(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, provider: <a href="../miscellaneous/enumerations.html#UserIdentityProvider" target="_self">UserIdentityProvider</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Delete(&#x27;:id/identities/:provider&#x27;)<br />@SuccessResponse(&#x27;Delete user identity succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="77"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:77</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>provider</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/enumerations.html#UserIdentityProvider" target="_self" >UserIdentityProvider</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUser"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>getUser</b></span>
+                        <a href="#getUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUser(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;:id&#x27;)<br />@SuccessResponse(&#x27;Get user succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:59</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >Promise&lt;User&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUsers"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>getUsers</b></span>
+                        <a href="#getUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUsers(query: <a href="../classes/UserPaginateQueryDto.html" target="_self">UserPaginateQueryDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get()<br />@SuccessResponse({message: &#x27;Get users succeeded&#x27;, usePaginate: true})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>query</td>
+                                            <td>
+                                                            <code><a href="../classes/UserPaginateQueryDto.html" target="_self" >UserPaginateQueryDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;User&gt;&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateUser"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>updateUser</b></span>
+                        <a href="#updateUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateUser(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, dto: <a href="../classes/UpdateUserDto.html" target="_self">UpdateUserDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Patch(&#x27;:id&#x27;)<br />@SuccessResponse(&#x27;Update user succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/UpdateUserDto.html" target="_self" >UpdateUserDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >Promise&lt;User&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
+ * @file User controller
+ * @module module/user/controller
+ * @author Surmon &lt;https://github.com/surmon-china&gt;
+ */
+
+import _isUndefined from &#x27;lodash/isUndefined&#x27;
+import type { QueryFilter } from &#x27;mongoose&#x27;
+import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from &#x27;@nestjs/common&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
+import { CreateUserDto, UpdateUserDto, UserPaginateQueryDto } from &#x27;./user.dto&#x27;
+import { UserIdentityProvider } from &#x27;./user.constant&#x27;
+import { UserService } from &#x27;./user.service&#x27;
+import { User } from &#x27;./user.model&#x27;
+
+@Controller(&#x27;users&#x27;)
+@OnlyIdentity(IdentityRole.Admin)
+export class UserController {
+  constructor(private readonly userService: UserService) {}
+
+  @Get()
+  @SuccessResponse({ message: &#x27;Get users succeeded&#x27;, usePaginate: true })
+  getUsers(@Query() query: UserPaginateQueryDto): Promise&lt;PaginateResult&lt;User&gt;&gt; {
+    const { sort, page, per_page, ...filters } &#x3D; query
+    const queryFilter: QueryFilter&lt;User&gt; &#x3D; {}
+    const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page }
+
+    // sort
+    if (!_isUndefined(sort)) {
+      paginateOptions.dateSort &#x3D; sort
+    }
+    // type
+    if (!_isUndefined(filters.type)) {
+      queryFilter.type &#x3D; filters.type
+    }
+    // disabled
+    if (!_isUndefined(filters.disabled)) {
+      queryFilter.disabled &#x3D; filters.disabled
+    }
+    // search
+    if (filters.keyword) {
+      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
+      queryFilter.$or &#x3D; [{ name: keywordRegExp }, { email: keywordRegExp }, { website: keywordRegExp }]
+    }
+
+    return this.userService.paginate(queryFilter, paginateOptions)
+  }
+
+  @Post()
+  @SuccessResponse(&#x27;Create user succeeded&#x27;)
+  createUser(@Body() dto: CreateUserDto): Promise&lt;User&gt; {
+    return this.userService.create(dto)
+  }
+
+  @Get(&#x27;:id&#x27;)
+  @SuccessResponse(&#x27;Get user succeeded&#x27;)
+  getUser(@Param(&#x27;id&#x27;, ParseIntPipe) id: number): Promise&lt;User&gt; {
+    return this.userService.findOne(id)
+  }
+
+  @Patch(&#x27;:id&#x27;)
+  @SuccessResponse(&#x27;Update user succeeded&#x27;)
+  updateUser(@Param(&#x27;id&#x27;, ParseIntPipe) id: number, @Body() dto: UpdateUserDto): Promise&lt;User&gt; {
+    return this.userService.update(id, dto)
+  }
+
+  @Delete(&#x27;:id&#x27;)
+  @SuccessResponse(&#x27;Delete user succeeded&#x27;)
+  deleteUser(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
+    return this.userService.delete(id)
+  }
+
+  @Delete(&#x27;:id/identities/:provider&#x27;)
+  @SuccessResponse(&#x27;Delete user identity succeeded&#x27;)
+  deleteUserIdentity(@Param(&#x27;id&#x27;, ParseIntPipe) userId: number, @Param(&#x27;provider&#x27;) provider: UserIdentityProvider) {
+    return this.userService.pullIdentity(userId, provider)
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
+            var COMPODOC_CURRENT_PAGE_URL = 'UserController.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

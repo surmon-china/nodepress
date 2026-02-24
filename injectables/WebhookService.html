@@ -180,7 +180,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/webhook/webhook.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/modules/webhook/webhook.service.ts:24</a></div>
                             </td>
                         </tr>
 
@@ -245,8 +245,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/webhook/webhook.service.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="27"
+                                    class="link-to-prism">src/modules/webhook/webhook.service.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -310,14 +310,12 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _omit from &#x27;lodash/omit&#x27;
-import _uniq from &#x27;lodash/uniq&#x27;
-import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { HttpService } from &#x27;@nestjs/axios&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transformer&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { APP_BIZ, WEBHOOK } from &#x27;@app/app.config&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;WebhookService&#x27;, time: isDevEnv })

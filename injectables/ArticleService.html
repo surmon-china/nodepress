@@ -161,7 +161,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#batchPatchStatus" >batchPatchStatus</a>
+                                <a href="#batchUpdateStatus" >batchUpdateStatus</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -180,55 +180,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getCalendar" >getCalendar</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getDetailByNumberIdOrSlug" >getDetailByNumberIdOrSlug</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getDetailByNumberIdOrSlug" >getDetailByNumberIdOrSlug</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getDetailByNumberIdOrSlug" >getDetailByNumberIdOrSlug</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getDetailByObjectId" >getDetailByObjectId</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getList" >getList</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getNearArticles" >getNearArticles</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getRelatedArticles" >getRelatedArticles</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getTotalCount" >getTotalCount</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getTotalStatistics" >getTotalStatistics</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#incrementStatistics" >incrementStatistics</a>
+                                <a href="#getDetail" >getDetail</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -243,11 +195,6 @@
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#update" >update</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#updateStatsComments" >updateStatsComments</a>
                             </li>
                         </ul>
                     </td>
@@ -272,7 +219,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/article/article.service.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/modules/article/article.service.ts:24</a></div>
                             </td>
                         </tr>
 
@@ -379,15 +326,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(articleIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId[]</a>)</code>
+                    <code>batchDelete(articleIds: number[])</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="217"
-                                    class="link-to-prism">src/modules/article/article.service.ts:217</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="143"
+                                    class="link-to-prism">src/modules/article/article.service.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -410,7 +357,7 @@
                                         <tr>
                                                 <td>articleIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
+                                                        <code>number[]</code>
                                             </td>
 
                                             <td>
@@ -437,27 +384,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="batchPatchStatus"></a>
+                    <a name="batchUpdateStatus"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>batchPatchStatus</b></span>
-                        <a href="#batchPatchStatus"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>batchUpdateStatus</b></span>
+                        <a href="#batchUpdateStatus"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchPatchStatus(articleIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId[]</a>, status: <a href="../miscellaneous/enumerations.html#ArticleStatus" target="_self">ArticleStatus</a>)</code>
+                    <code>batchUpdateStatus(articleIds: number[], status: <a href="../miscellaneous/enumerations.html#ArticleStatus" target="_self">ArticleStatus</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="207"
-                                    class="link-to-prism">src/modules/article/article.service.ts:207</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="133"
+                                    class="link-to-prism">src/modules/article/article.service.ts:133</a></div>
                         </td>
                     </tr>
 
@@ -480,7 +427,7 @@
                                         <tr>
                                                 <td>articleIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
+                                                        <code>number[]</code>
                                             </td>
 
                                             <td>
@@ -531,15 +478,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(newArticle: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>create(input: <a href="../classes/CreateArticleDto.html" target="_self">CreateArticleDto</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="160"
-                                    class="link-to-prism">src/modules/article/article.service.ts:160</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">src/modules/article/article.service.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -560,9 +507,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>newArticle</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                                            <code><a href="../classes/CreateArticleDto.html" target="_self" >CreateArticleDto</a></code>
                                             </td>
 
                                             <td>
@@ -575,7 +522,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;MongooseDoc&lt;Article&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;ArticleDoc&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -601,15 +548,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(articleId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
+                    <code>delete(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="196"
-                                    class="link-to-prism">src/modules/article/article.service.ts:196</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="122"
+                                    class="link-to-prism">src/modules/article/article.service.ts:122</a></div>
                         </td>
                     </tr>
 
@@ -632,7 +579,7 @@
                                         <tr>
                                                 <td>articleId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -677,8 +624,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/modules/article/article.service.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/modules/article/article.service.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -687,7 +634,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Array&lt;Article&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article[]&gt;</a></code>
 
                         </div>
                 </td>
@@ -698,30 +645,39 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getCalendar"></a>
+                    <a name="getDetail"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>getCalendar</b></span>
-                        <a href="#getCalendar"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getDetail</b></span>
+                        <a href="#getDetail"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCalendar(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, timezone: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>getDetail(idOrSlug: number | string, options: literal type)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="235"
-                                    class="link-to-prism">src/modules/article/article.service.ts:235</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="50"
+                                    class="link-to-prism">src/modules/article/article.service.ts:50</a></div>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>TLean</li>
+                                    <li>TPopulate</li>
+                            </ul>
+                        </td>
+                    </tr>
 
             <tr>
                 <td class="col-md-4">
@@ -740,9 +696,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>publicOnly</td>
+                                                <td>idOrSlug</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                        <code>number | string</code>
                                             </td>
 
                                             <td>
@@ -754,80 +710,7 @@
 
                                         </tr>
                                         <tr>
-                                                <td>timezone</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-                                            <td>
-                                                    <code>&#x27;GMT&#x27;</code>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getDetailByNumberIdOrSlug"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getDetailByNumberIdOrSlug</b></span>
-                        <a href="#getDetailByNumberIdOrSlug"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetailByNumberIdOrSlug(params: literal type)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="117"
-                                    class="link-to-prism">src/modules/article/article.service.ts:117</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>params</td>
+                                                <td>options</td>
                                             <td>
                                                         <code>literal type</code>
                                             </td>
@@ -836,658 +719,16 @@
                                                     No
                                             </td>
 
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
 
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getDetailByNumberIdOrSlug"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getDetailByNumberIdOrSlug</b></span>
-                        <a href="#getDetailByNumberIdOrSlug"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetailByNumberIdOrSlug(params: literal type)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="125"
-                                    class="link-to-prism">src/modules/article/article.service.ts:125</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>params</td>
-                                            <td>
-                                                        <code>literal type</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;MongooseDoc&lt;Article&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getDetailByNumberIdOrSlug"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getDetailByNumberIdOrSlug</b></span>
-                        <a href="#getDetailByNumberIdOrSlug"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetailByNumberIdOrSlug(: literal type)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="133"
-                                    class="link-to-prism">src/modules/article/article.service.ts:133</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                        <code>literal type</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article | MongooseDoc&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getDetailByObjectId"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getDetailByObjectId</b></span>
-                        <a href="#getDetailByObjectId"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetailByObjectId(articleId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="110"
-                                    class="link-to-prism">src/modules/article/article.service.ts:110</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>articleId</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getList"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>getList</b></span>
-                        <a href="#getList"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getList(articleIds: number[])</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/modules/article/article.service.ts:102</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>articleIds</td>
-                                            <td>
-                                                        <code>number[]</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article[]&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getNearArticles"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getNearArticles</b></span>
-                        <a href="#getNearArticles"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getNearArticles(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, type: "later" | "early", count: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="37"
-                                    class="link-to-prism">src/modules/article/article.service.ts:37</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>articleId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>type</td>
-                                            <td>
-                                                        <code>&quot;later&quot; | &quot;early&quot;</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>count</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article[]&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getRelatedArticles"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>getRelatedArticles</b></span>
-                        <a href="#getRelatedArticles"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getRelatedArticles(article: <a href="../classes/Article.html" target="_self">Article</a>, count: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">src/modules/article/article.service.ts:56</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>article</td>
-                                            <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>count</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;Article[]&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getTotalCount"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getTotalCount</b></span>
-                        <a href="#getTotalCount"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getTotalCount(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="231"
-                                    class="link-to-prism">src/modules/article/article.service.ts:231</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>publicOnly</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getTotalStatistics"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getTotalStatistics</b></span>
-                        <a href="#getTotalStatistics"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getTotalStatistics()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="259"
-                                    class="link-to-prism">src/modules/article/article.service.ts:259</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="incrementStatistics"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>incrementStatistics</b></span>
-                        <a href="#incrementStatistics"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>incrementStatistics(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, field: unknown)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="249"
-                                    class="link-to-prism">src/modules/article/article.service.ts:249</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>articleId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>field</td>
-                                            <td>
-                                                        <code>unknown</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>    <code>Promise&lt;unknown&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -1520,8 +761,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="285"
-                                    class="link-to-prism">src/modules/article/article.service.ts:285</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="158"
+                                    class="link-to-prism">src/modules/article/article.service.ts:158</a></div>
                         </td>
                     </tr>
 
@@ -1589,8 +830,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="84"
-                                    class="link-to-prism">src/modules/article/article.service.ts:84</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/modules/article/article.service.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -1664,97 +905,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(articleId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>, newArticle: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>update(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, input: <a href="../classes/UpdateArticleDto.html" target="_self">UpdateArticleDto</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="174"
-                                    class="link-to-prism">src/modules/article/article.service.ts:174</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>articleId</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>newArticle</td>
-                                            <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;MongooseDoc&lt;Article&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="updateStatsComments"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>updateStatsComments</b></span>
-                        <a href="#updateStatsComments"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateStatsComments(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, commentCount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="291"
-                                    class="link-to-prism">src/modules/article/article.service.ts:291</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">src/modules/article/article.service.ts:97</a></div>
                         </td>
                     </tr>
 
@@ -1787,9 +946,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>commentCount</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                            <code><a href="../classes/UpdateArticleDto.html" target="_self" >UpdateArticleDto</a></code>
                                             </td>
 
                                             <td>
@@ -1802,7 +961,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="../classes/Article.html" target="_self" >Promise&lt;ArticleDoc&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -1818,24 +977,21 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types } from &#x27;mongoose&#x27;
-import type { QueryFilter, SortOrder } from &#x27;mongoose&#x27;
-import { Injectable, NotFoundException, BadRequestException, ConflictException } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter } from &#x27;mongoose&#x27;
+import { Injectable, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
+import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
+import { SortOrder } from &#x27;@app/constants/sort.constant&#x27;
 import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { getArticleUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { Article, ArticleStats } from &#x27;./article.model&#x27;
-import {
-  ArticleStatus,
-  ARTICLE_LIST_QUERY_GUEST_FILTER,
-  ARTICLE_LIST_QUERY_PROJECTION,
-  ARTICLE_FULL_QUERY_REF_POPULATE
-} from &#x27;./article.constant&#x27;
+import { ArticleStatus, ARTICLE_PUBLIC_FILTER } from &#x27;./article.constant&#x27;
+import { Article, ArticlePopulated, ArticleDoc, ArticleDocPopulated } from &#x27;./article.model&#x27;
+import { ARTICLE_RELATION_FIELDS, ARTICLE_WITH_CONTENT_PROJECTION } from &#x27;./article.model&#x27;
+import { CreateArticleDto, UpdateArticleDto } from &#x27;./article.dto&#x27;
 
 @Injectable()
 export class ArticleService {
@@ -1847,265 +1003,134 @@ export class ArticleService {
     @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;
   ) {}
 
-  // Get near articles
-  public async getNearArticles(articleId: number, type: &#x27;later&#x27; | &#x27;early&#x27;, count: number): Promise&lt;Article[]&gt; {
-    const typeFieldMap &#x3D; {
-      early: { field: &#x27;$lt&#x27;, sort: -1 as SortOrder },
-      later: { field: &#x27;$gt&#x27;, sort: 1 as SortOrder }
-    }
-    const targetType &#x3D; typeFieldMap[type]
-    return this.articleModel
-      .find(
-        { ...ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [targetType.field]: articleId } },
-        ARTICLE_LIST_QUERY_PROJECTION
-      )
-      .populate(ARTICLE_FULL_QUERY_REF_POPULATE)
-      .sort({ id: targetType.sort })
-      .limit(count)
-      .lean()
-      .exec()
-  }
-
-  // Get related articles
-  public getRelatedArticles(article: Article, count: number): Promise&lt;Article[]&gt; {
-    const queryFilter: QueryFilter&lt;Article&gt; &#x3D; {
-      ...ARTICLE_LIST_QUERY_GUEST_FILTER,
-      tags: { $in: article.tags },
-      categories: { $in: article.categories },
-      // Exclude the current article in the query
-      id: { $ne: article.id }
-    }
-
-    return this.articleModel.aggregate&lt;Article&gt;([
-      { $match: queryFilter },
-      // Randomly select articles at the database level
-      { $sample: { size: count } },
-      // Select the required fields (-content)
-      { $project: ARTICLE_LIST_QUERY_PROJECTION },
-      // Populate reference fields
-      ...ARTICLE_FULL_QUERY_REF_POPULATE.map((field) &#x3D;&gt; ({
-        $lookup: {
-          from: field, //  Name of the collection to join (e.g., categories)
-          localField: field, // Field from the input documents (e.g., categories)
-          foreignField: &#x27;_id&#x27;, // Field from the documents of the &quot;from&quot; collection
-          as: field // Output array field (e.g., categories)
-        }
-      }))
-    ])
-  }
-
-  // Get paginate articles
   public paginate(filter: QueryFilter&lt;Article&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Article&gt;&gt; {
     return this.articleModel.paginateRaw(filter, {
       ...options,
-      projection: ARTICLE_LIST_QUERY_PROJECTION,
-      populate: ARTICLE_FULL_QUERY_REF_POPULATE
+      populate: ARTICLE_RELATION_FIELDS
     })
   }
 
   // Get all articles
   // MARK: Providing this capability only for admin. (Consumes a lot of computing resources.)
-  public getAll(): Promise&lt;Array&lt;Article&gt;&gt; {
+  public getAll(): Promise&lt;Article[]&gt; {
     return this.articleModel.find({}, null, {
-      sort: { _id: -1 },
-      populate: ARTICLE_FULL_QUERY_REF_POPULATE
+      sort: { _id: SortOrder.Desc },
+      populate: ARTICLE_RELATION_FIELDS
     })
-  }
-
-  // Get articles by ids
-  public getList(articleIds: number[]): Promise&lt;Article[]&gt; {
-    return this.articleModel
-      .find({ id: { $in: articleIds } })
-      .lean()
-      .exec()
-  }
-
-  // Get article by ObjectId
-  public async getDetailByObjectId(articleId: MongooseId): Promise&lt;Article&gt; {
-    const article &#x3D; await this.articleModel.findById(articleId).lean().exec()
-    if (!article) throw new NotFoundException(&#x60;Article &#x27;${articleId}&#x27; not found&#x60;)
-    return article
   }
 
   // Get article by number id or slug
-  public async getDetailByNumberIdOrSlug(params: {
-    numberId?: number
-    slug?: string
-    publicOnly?: boolean
-    populate?: boolean
-    lean: true
-  }): Promise&lt;Article&gt;
+  public async getDetail&lt;TLean extends boolean &#x3D; false, TPopulate extends boolean &#x3D; false&gt;(
+    idOrSlug: number | string,
+    options: {
+      lean?: TLean
+      populate?: TPopulate
+      publicOnly?: boolean
+    } &#x3D; {}
+  ): Promise&lt;
+    TLean extends true
+      ? TPopulate extends true
+        ? ArticlePopulated
+        : Article
+      : TPopulate extends true
+        ? ArticleDocPopulated
+        : ArticleDoc
+  &gt; {
+    const { publicOnly &#x3D; false, populate &#x3D; false, lean &#x3D; false } &#x3D; options
 
-  public async getDetailByNumberIdOrSlug(params: {
-    numberId?: number
-    slug?: string
-    publicOnly?: boolean
-    populate?: boolean
-    lean?: false | undefined
-  }): Promise&lt;MongooseDoc&lt;Article&gt;&gt;
-
-  public async getDetailByNumberIdOrSlug({
-    numberId,
-    slug,
-    publicOnly &#x3D; false,
-    populate &#x3D; false,
-    lean &#x3D; false
-  }: {
-    numberId?: number
-    slug?: string
-    publicOnly?: boolean
-    populate?: boolean
-    lean?: boolean
-  }): Promise&lt;Article | MongooseDoc&lt;Article&gt;&gt; {
     const queryFilter: QueryFilter&lt;Article&gt; &#x3D; {}
-    if (slug) queryFilter.slug &#x3D; slug
-    if (numberId) queryFilter.id &#x3D; numberId
+    if (typeof idOrSlug &#x3D;&#x3D;&#x3D; &#x27;number&#x27;) queryFilter.id &#x3D; idOrSlug
+    if (typeof idOrSlug &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) queryFilter.slug &#x3D; idOrSlug
 
     const articleQuery &#x3D; this.articleModel
-      .findOne(publicOnly ? { ...queryFilter, ...ARTICLE_LIST_QUERY_GUEST_FILTER } : queryFilter)
-      .populate(populate ? ARTICLE_FULL_QUERY_REF_POPULATE : [])
+      .findOne(publicOnly ? { ...queryFilter, ...ARTICLE_PUBLIC_FILTER } : queryFilter)
+      .populate(populate ? ARTICLE_RELATION_FIELDS : [])
+      .select(ARTICLE_WITH_CONTENT_PROJECTION)
 
     const article &#x3D; lean ? await articleQuery.lean&lt;Article&gt;().exec() : await articleQuery.exec()
-    if (!article) throw new NotFoundException(&#x60;Article &#x27;${numberId ?? slug}&#x27; not found&#x60;)
+    if (!article) throw new NotFoundException(&#x60;Article &#x27;${idOrSlug}&#x27; not found&#x60;)
 
-    return article
+    return article as any
   }
 
-  public async create(newArticle: Article): Promise&lt;MongooseDoc&lt;Article&gt;&gt; {
-    if (newArticle.slug) {
-      const existedArticle &#x3D; await this.articleModel.findOne({ slug: newArticle.slug }).lean().exec()
-      if (existedArticle) throw new ConflictException(&#x60;Article slug &#x27;${newArticle.slug}&#x27; already exists&#x60;)
+  public async create(input: CreateArticleDto): Promise&lt;ArticleDoc&gt; {
+    if (input.slug) {
+      const existed &#x3D; await this.articleModel.findOne({ slug: input.slug }).lean().exec()
+      if (existed) throw new ConflictException(&#x60;Article slug &#x27;${input.slug}&#x27; already exists&#x60;)
     }
 
-    const article &#x3D; await this.articleModel.create(newArticle)
-    this.seoService.push(getArticleUrl(article.id))
-    this.tagService.updateAllTagsCache()
-    this.categoryService.updateAllCategoriesCache()
+    const created &#x3D; await this.articleModel.create(input)
+    this.seoService.push(getArticleUrl(created.id))
+    this.tagService.updateAllPublicTagsCache()
+    this.categoryService.updateAllPublicCategoriesCache()
     this.archiveService.updateCache()
-    return article
+    return created
   }
 
-  public async update(articleId: MongooseId, newArticle: Article): Promise&lt;MongooseDoc&lt;Article&gt;&gt; {
-    if (newArticle.slug) {
-      const existedArticle &#x3D; await this.articleModel.findOne({ slug: newArticle.slug }).lean().exec()
-      if (existedArticle &amp;&amp; !existedArticle._id.equals(articleId)) {
-        throw new ConflictException(&#x60;Article slug &#x27;${newArticle.slug}&#x27; already exists&#x60;)
+  public async update(articleId: number, input: UpdateArticleDto): Promise&lt;ArticleDoc&gt; {
+    if (input.slug) {
+      const existed &#x3D; await this.articleModel.findOne({ slug: input.slug }).lean().exec()
+      if (existed &amp;&amp; existed.id !&#x3D;&#x3D; articleId) {
+        throw new ConflictException(&#x60;Article slug &#x27;${input.slug}&#x27; already exists&#x60;)
       }
     }
 
-    Reflect.deleteProperty(newArticle, &#x27;stats&#x27;)
-    Reflect.deleteProperty(newArticle, &#x27;created_at&#x27;)
-    Reflect.deleteProperty(newArticle, &#x27;updated_at&#x27;)
+    Reflect.deleteProperty(input, &#x27;id&#x27;)
+    Reflect.deleteProperty(input, &#x27;stats&#x27;)
+    Reflect.deleteProperty(input, &#x27;created_at&#x27;)
+    Reflect.deleteProperty(input, &#x27;updated_at&#x27;)
 
-    const article &#x3D; await this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).exec()
-    if (!article) throw new NotFoundException(&#x60;Article &#x27;${articleId}&#x27; not found&#x60;)
-
-    this.seoService.update(getArticleUrl(article.id))
-    this.tagService.updateAllTagsCache()
-    this.categoryService.updateAllCategoriesCache()
-    this.archiveService.updateCache()
-    return article
-  }
-
-  public async delete(articleId: MongooseId) {
-    const article &#x3D; await this.articleModel.findByIdAndDelete(articleId, null).exec()
-    if (!article) throw new NotFoundException(&#x60;Article &#x27;${articleId}&#x27; not found&#x60;)
-
-    this.seoService.delete(getArticleUrl(article.id))
-    this.tagService.updateAllTagsCache()
-    this.categoryService.updateAllCategoriesCache()
-    this.archiveService.updateCache()
-    return article
-  }
-
-  public async batchPatchStatus(articleIds: MongooseId[], status: ArticleStatus) {
-    const actionResult &#x3D; await this.articleModel
-      .updateMany({ _id: { $in: articleIds } }, { $set: { status } })
+    const updated &#x3D; await this.articleModel
+      .findOneAndUpdate({ id: articleId }, { $set: input }, { returnDocument: &#x27;after&#x27; })
       .exec()
-    this.tagService.updateAllTagsCache()
-    this.categoryService.updateAllCategoriesCache()
+    if (!updated) throw new NotFoundException(&#x60;Article &#x27;${articleId}&#x27; not found&#x60;)
+
+    this.seoService.update(getArticleUrl(updated.id))
+    this.tagService.updateAllPublicTagsCache()
+    this.categoryService.updateAllPublicCategoriesCache()
+    this.archiveService.updateCache()
+    return updated
+  }
+
+  public async delete(articleId: number) {
+    const deleted &#x3D; await this.articleModel.findOneAndDelete({ id: articleId }).exec()
+    if (!deleted) throw new NotFoundException(&#x60;Article &#x27;${articleId}&#x27; not found&#x60;)
+
+    this.seoService.delete(getArticleUrl(deleted.id))
+    this.tagService.updateAllPublicTagsCache()
+    this.categoryService.updateAllPublicCategoriesCache()
+    this.archiveService.updateCache()
+    return deleted
+  }
+
+  public async batchUpdateStatus(articleIds: number[], status: ArticleStatus) {
+    const actionResult &#x3D; await this.articleModel
+      .updateMany({ id: { $in: articleIds } }, { $set: { status } })
+      .exec()
+    this.tagService.updateAllPublicTagsCache()
+    this.categoryService.updateAllPublicCategoriesCache()
     this.archiveService.updateCache()
     return actionResult
   }
 
-  public async batchDelete(articleIds: MongooseId[]) {
+  public async batchDelete(articleIds: number[]) {
     const articles &#x3D; await this.articleModel
-      .find({ _id: { $in: articleIds } })
+      .find({ id: { $in: articleIds } })
       .lean()
       .exec()
 
-    const actionResult &#x3D; await this.articleModel.deleteMany({ _id: { $in: articleIds } }).exec()
+    const actionResult &#x3D; await this.articleModel.deleteMany({ id: { $in: articleIds } }).exec()
     this.seoService.delete(articles.map((article) &#x3D;&gt; getArticleUrl(article.id)))
-    this.tagService.updateAllTagsCache()
-    this.categoryService.updateAllCategoriesCache()
+    this.tagService.updateAllPublicTagsCache()
+    this.categoryService.updateAllPublicCategoriesCache()
     this.archiveService.updateCache()
     return actionResult
-  }
-
-  public async getTotalCount(publicOnly: boolean): Promise&lt;number&gt; {
-    return await this.articleModel.countDocuments(publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {}).exec()
-  }
-
-  public async getCalendar(publicOnly: boolean, timezone &#x3D; &#x27;GMT&#x27;) {
-    try {
-      const calendar &#x3D; await this.articleModel.aggregate&lt;{ _id: string; count: number }&gt;([
-        { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-        { $project: { day: { $dateToString: { date: &#x27;$created_at&#x27;, format: &#x27;%Y-%m-%d&#x27;, timezone } } } },
-        { $group: { _id: &#x27;$day&#x27;, count: { $sum: 1 } } },
-        { $sort: { _id: 1 } }
-      ])
-      return calendar.map(({ _id, ...rest }) &#x3D;&gt; ({ ...rest, date: _id }))
-    } catch (error) {
-      throw new BadRequestException(&#x60;Invalid timezone identifier: &#x27;${timezone}&#x27;&#x60;)
-    }
-  }
-
-  public async incrementStatistics(articleId: number, field: keyof ArticleStats) {
-    const article &#x3D; await this.getDetailByNumberIdOrSlug({
-      numberId: articleId,
-      publicOnly: true
-    })
-    article.stats[field]++
-    article.save({ timestamps: false })
-    return article.stats[field]
-  }
-
-  public async getTotalStatistics() {
-    const [result] &#x3D; await this.articleModel.aggregate&lt;{
-      _id: Types.ObjectId
-      totalViews: number
-      totalLikes: number
-    }&gt;([
-      {
-        $group: {
-          _id: null,
-          totalViews: { $sum: &#x27;$stats.views&#x27; },
-          totalLikes: { $sum: &#x27;$stats.likes&#x27; }
-        }
-      }
-    ])
-
-    if (!result) {
-      return null
-    }
-
-    return {
-      totalViews: result.totalViews,
-      totalLikes: result.totalLikes
-    }
   }
 
   // Article commentable state
   public async isCommentableArticle(articleId: number): Promise&lt;boolean&gt; {
     const article &#x3D; await this.articleModel.findOne({ id: articleId }).lean().exec()
     return Boolean(article &amp;&amp; !article.disabled_comments)
-  }
-
-  // Update article comments count
-  public async updateStatsComments(articleId: number, commentCount: number) {
-    const findParams &#x3D; { id: articleId }
-    const patchParams &#x3D; { $set: { &#x27;stats.comments&#x27;: commentCount } }
-    return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec()
   }
 }
 </code></pre>

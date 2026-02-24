@@ -257,7 +257,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update archive cache succeeded&#x27;)<br /></code>
+                    <code>@Post(&#x27;refresh&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update archive cache succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -290,8 +290,8 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import { UseGuards, Controller, Get, Patch } from &#x27;@nestjs/common&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
+import { Controller, Get, Post } from &#x27;@nestjs/common&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { ArchiveService, ArchiveData } from &#x27;./archive.service&#x27;
 
@@ -305,8 +305,8 @@ export class ArchiveController {
     return this.archiveService.getCache()
   }
 
-  @Patch()
-  @UseGuards(AdminOnlyGuard)
+  @Post(&#x27;refresh&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update archive cache succeeded&#x27;)
   updateArchive(): Promise&lt;any&gt; {
     return this.archiveService.updateCache()

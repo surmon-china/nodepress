@@ -140,7 +140,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/admin/admin.interface.ts</code>
+            <code>src/modules/admin/admin.service.token.ts</code>
         </p>
 
 
@@ -252,9 +252,35 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface TokenResult {
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+import { AuthService } from &#x27;@app/core/auth/auth.service&#x27;
+import { AuthRole } from &#x27;@app/constants/auth.constant&#x27;
+import { APP_AUTH } from &#x27;@app/app.config&#x27;
+
+export interface TokenResult {
   access_token: string
   expires_in: number
+}
+
+@Injectable()
+export class AdminAuthTokenService {
+  constructor(private readonly authService: AuthService) {}
+
+  /** Sign a admin auth token */
+  public createToken(): TokenResult {
+    return {
+      expires_in: APP_AUTH.jwtExpiresInForAdmin,
+      access_token: this.authService.signToken(
+        { role: AuthRole.Admin },
+        { expiresIn: APP_AUTH.jwtExpiresInForAdmin }
+      )
+    }
+  }
+
+  /** Invalidate admin auth token */
+  public invalidateToken(token: string) {
+    return this.authService.invalidateToken(token)
+  }
 }
 </code></pre>
     </div>

@@ -136,7 +136,7 @@
                 <h3>Prefix</h3>
             </p>
             <p class="comment">
-                <code>vote</code>
+                <code>votes</code>
             </p>
 
 
@@ -164,33 +164,10 @@
                                 <a href="#deleteVotes" >deleteVotes</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#emailToTargetVoteMessage" >emailToTargetVoteMessage</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#getAuthorString" >getAuthorString</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getPostTitle" >getPostTitle</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getVoteAuthor" >getVoteAuthor</a>
-                            </li>
-                            <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#getVotes" >getVotes</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#queryIPLocation" >queryIPLocation</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -198,10 +175,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#voteComment" >voteComment</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#voteDisqusThread" >voteDisqusThread</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -244,7 +217,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteVotes(body: <a href="../classes/VotesDTO.html" target="_self">VotesDTO</a>)</code>
+                    <code>deleteVotes(: <a href="../classes/VoteIdsDto.html" target="_self">VoteIdsDto</a>)</code>
                 </td>
             </tr>
 
@@ -252,14 +225,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete votes succeeded&#x27;)<br /></code>
+                    <code>@Delete()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete votes succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="180"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:180</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="126"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:126</a></div>
                         </td>
                     </tr>
 
@@ -280,9 +253,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>body</td>
                                             <td>
-                                                            <code><a href="../classes/VotesDTO.html" target="_self" >VotesDTO</a></code>
+                                                            <code><a href="../classes/VoteIdsDto.html" target="_self" >VoteIdsDto</a></code>
                                             </td>
 
                                             <td>
@@ -296,284 +268,6 @@
                             </div>
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="emailToTargetVoteMessage"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>emailToTargetVoteMessage</b></span>
-                        <a href="#emailToTargetVoteMessage"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>emailToTargetVoteMessage(payload: literal type)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="108"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:108</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                        <code>literal type</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getAuthorString"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>getAuthorString</b></span>
-                        <a href="#getAuthorString"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAuthorString(voteAuthor: literal type)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="89"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:89</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>voteAuthor</td>
-                                            <td>
-                                                        <code>literal type</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getPostTitle"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getPostTitle</b></span>
-                        <a href="#getPostTitle"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPostTitle(postId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:47</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>postId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getVoteAuthor"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getVoteAuthor</b></span>
-                        <a href="#getVoteAuthor"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getVoteAuthor(payload: literal type)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="55"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:55</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                        <code>literal type</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -600,7 +294,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getVotes(query: <a href="../classes/VotePaginateQueryDTO.html" target="_self">VotePaginateQueryDTO</a>)</code>
+                    <code>getVotes(query: <a href="../classes/VotePaginateQueryDto.html" target="_self">VotePaginateQueryDto</a>)</code>
                 </td>
             </tr>
 
@@ -608,14 +302,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse({message: &#x27;Get votes succeeded&#x27;, usePaginate: true})<br /></code>
+                    <code>@Get()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse({message: &#x27;Get votes succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="153"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:153</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -638,7 +332,7 @@
                                         <tr>
                                                 <td>query</td>
                                             <td>
-                                                            <code><a href="../classes/VotePaginateQueryDTO.html" target="_self" >VotePaginateQueryDTO</a></code>
+                                                            <code><a href="../classes/VotePaginateQueryDto.html" target="_self" >VotePaginateQueryDto</a></code>
                                             </td>
 
                                             <td>
@@ -651,77 +345,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Vote&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="queryIPLocation"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>queryIPLocation</b></span>
-                        <a href="#queryIPLocation"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>queryIPLocation(ip: string | null)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="43"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:43</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>ip</td>
-                                            <td>
-                                                        <code>string | null</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;VoteWithUser&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -749,7 +373,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>voteComment(voteBody: <a href="../classes/CommentVoteDTO.html" target="_self">CommentVoteDTO</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>voteComment(dto: <a href="../classes/CommentVoteDto.html" target="_self">CommentVoteDto</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -763,8 +387,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="233"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:233</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -785,21 +409,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>voteBody</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/CommentVoteDTO.html" target="_self" >CommentVoteDTO</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>token</td>
-                                            <td>
-                                                            <code><a href="../interfaces/AccessToken.html" target="_self" >AccessToken | null</a></code>
+                                                            <code><a href="../classes/CommentVoteDto.html" target="_self" >CommentVoteDto</a></code>
                                             </td>
 
                                             <td>
@@ -823,100 +435,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="voteDisqusThread"></a>
-                    <span class="name">
-                            <span class="modifier">Async</span>
-                        <span ><b>voteDisqusThread</b></span>
-                        <a href="#voteDisqusThread"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>voteDisqusThread(postId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, vote: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, token?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="139"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:139</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>postId</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>vote</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>token</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -944,7 +463,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>votePost(voteBody: <a href="../classes/ArticleVoteDTO.html" target="_self">ArticleVoteDTO</a>, token: <a href="../interfaces/AccessToken.html" target="_self">AccessToken | null</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>votePost(dto: <a href="../classes/ArticleVoteDto.html" target="_self">ArticleVoteDto</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -958,8 +477,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="187"
-                                    class="link-to-prism">src/modules/vote/vote.controller.ts:187</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/modules/vote/vote.controller.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -980,21 +499,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>voteBody</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/ArticleVoteDTO.html" target="_self" >ArticleVoteDTO</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>token</td>
-                                            <td>
-                                                            <code><a href="../interfaces/AccessToken.html" target="_self" >AccessToken | null</a></code>
+                                                            <code><a href="../classes/ArticleVoteDto.html" target="_self" >ArticleVoteDto</a></code>
                                             </td>
 
                                             <td>
@@ -1018,7 +525,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -1040,154 +547,97 @@
 
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
-import { Controller, Get, Post, Delete, Body, Query, UseGuards } from &#x27;@nestjs/common&#x27;
+import { Controller, Get, Post, Delete, Body, Query } from &#x27;@nestjs/common&#x27;
 import { Throttle, minutes, seconds } from &#x27;@nestjs/throttler&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { IPService, IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
-import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { resolveGeneralAuthor } from &#x27;@app/constants/author.constant&#x27;
+import { ArticleStatsService } from &#x27;@app/modules/article/article.service.stats&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
-import { Author } from &#x27;@app/modules/comment/comment.model&#x27;
-import { DisqusPublicService } from &#x27;@app/modules/disqus/disqus.service.public&#x27;
-import { DisqusToken } from &#x27;@app/modules/disqus/disqus.token&#x27;
-import { AccessToken } from &#x27;@app/utils/disqus&#x27;
-import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
-import { getPermalinkById } from &#x27;@app/transformers/urlmap.transformer&#x27;
-import { getLocationText, getUserAgentText } from &#x27;@app/transformers/email.transformer&#x27;
-import { CommentVoteDTO, ArticleVoteDTO, VotePaginateQueryDTO, VotesDTO } from &#x27;./vote.dto&#x27;
-import { VoteTarget, VoteAuthorType, voteTypesMap } from &#x27;./vote.constant&#x27;
+import { UserService } from &#x27;@app/modules/user/user.service&#x27;
+import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
+import { CommentVoteDto, ArticleVoteDto, VotePaginateQueryDto, VoteIdsDto } from &#x27;./vote.dto&#x27;
+import { VoteTargetType, VoteType } from &#x27;./vote.constant&#x27;
+import { Vote, VoteWithUser } from &#x27;./vote.model&#x27;
 import { VoteService } from &#x27;./vote.service&#x27;
-import { Vote } from &#x27;./vote.model&#x27;
-import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
-@Controller(&#x27;vote&#x27;)
+@Controller(&#x27;votes&#x27;)
 export class VoteController {
   constructor(
     private readonly ipService: IPService,
-    private readonly emailService: EmailService,
-    private readonly disqusPublicService: DisqusPublicService,
+    private readonly voteService: VoteService,
+    private readonly userService: UserService,
     private readonly commentService: CommentService,
-    private readonly articleService: ArticleService,
-    private readonly voteService: VoteService
+    private readonly articleStatsService: ArticleStatsService
   ) {}
 
-  private async queryIPLocation(ip: string | null) {
-    return ip ? await this.ipService.queryLocation(ip) : null
-  }
+  @Post(&#x27;/article&#x27;)
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
+  @SuccessResponse(&#x27;Vote article succeeded&#x27;)
+  async votePost(
+    @Body() dto: ArticleVoteDto,
+    @RequestContext() { visitor, identity }: IRequestContext
+  ): Promise&lt;number&gt; {
+    const result &#x3D; await this.articleStatsService.incrementStatistics(dto.article_id, &#x27;likes&#x27;)
 
-  private async getPostTitle(postId: number) {
-    return postId &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID
-      ? &#x27;guestbook&#x27;
-      : await this.articleService
-          .getDetailByNumberIdOrSlug({ numberId: postId, lean: true })
-          .then((article) &#x3D;&gt; article.title)
-  }
+    const [user, ipLocation] &#x3D; await Promise.all([
+      identity.isUser ? this.userService.findOne(identity.payload!.uid!) : null,
+      visitor.ip ? this.ipService.queryLocation(visitor.ip) : null
+    ])
 
-  private async getVoteAuthor(payload: { guestAuthor?: Author; disqusToken?: string }) {
-    const { guestAuthor, disqusToken } &#x3D; payload ?? {}
-    // Disqus user
-    if (disqusToken) {
-      try {
-        const disqusUserInfo &#x3D; await this.disqusPublicService.getUserInfo(disqusToken)
-        return {
-          type: VoteAuthorType.Disqus,
-          data: {
-            id: disqusUserInfo.id,
-            name: disqusUserInfo.name,
-            username: disqusUserInfo.username,
-            url: disqusUserInfo.url,
-            profileUrl: disqusUserInfo.profileUrl
-          }
-        }
-      } catch (error) {}
-    }
-
-    // local guest user
-    if (guestAuthor) {
-      return {
-        type: VoteAuthorType.Guest,
-        data: guestAuthor
-      }
-    }
-
-    // anonymous user
-    return {
-      type: VoteAuthorType.Anonymous,
-      data: null
-    }
-  }
-
-  private getAuthorString(voteAuthor: { type: VoteAuthorType; data: any }) {
-    // Disqus user
-    if (voteAuthor.type &#x3D;&#x3D;&#x3D; VoteAuthorType.Disqus) {
-      const disqusUser &#x3D; voteAuthor.data
-      const isAdmin &#x3D; disqusUser.username &#x3D;&#x3D;&#x3D; APP_CONFIG.DISQUS.adminUsername
-      const userType &#x3D; &#x60;Disqus ${isAdmin ? &#x27;moderator&#x27; : &#x27;user&#x27;}&#x60;
-      return [&#x60;${disqusUser.name} (${userType})&#x60;, disqusUser.profileUrl].filter(Boolean).join(&#x27; · &#x27;)
-    }
-
-    // local guest user
-    if (voteAuthor.type &#x3D;&#x3D;&#x3D; VoteAuthorType.Guest) {
-      const guestUser &#x3D; voteAuthor.data
-      return [&#x60;${guestUser.name} (Guest user)&#x60;, guestUser.site].filter(Boolean).join(&#x27; · &#x27;)
-    }
-
-    // anonymous user
-    return &#x27;Anonymous user&#x27;
-  }
-
-  private emailToTargetVoteMessage(payload: {
-    subject: string
-    to: string
-    on: string
-    link: string
-    vote: string
-    author: string
-    userAgent?: string
-    location?: IPLocation | null
-  }) {
-    const lines &#x3D; [
-      &#x60;${payload.subject} on &quot;${payload.on}&quot;.&#x60;,
-      &#x60;Vote: ${payload.vote}&#x60;,
-      &#x60;Author: ${payload.author}&#x60;,
-      &#x60;Location: ${payload.location ? getLocationText(payload.location) : &#x27;unknown&#x27;}&#x60;,
-      &#x60;UserAgent: ${payload.userAgent ? getUserAgentText(payload.userAgent) : &#x27;unknown&#x27;}&#x60;
-    ]
-
-    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-      to: payload.to,
-      subject: payload.subject,
-      text: lines.join(&#x27;\n&#x27;),
-      html: [
-        lines.map((text) &#x3D;&gt; &#x60;&lt;p&gt;${text}&lt;/p&gt;&#x60;).join(&#x27;&#x27;),
-        &#x60;&lt;br&gt;&#x60;,
-        &#x60;&lt;a href&#x3D;&quot;${payload.link}&quot; target&#x3D;&quot;_blank&quot;&gt;${payload.on}&lt;/a&gt;&#x60;
-      ].join(&#x27;\n&#x27;)
+    await this.voteService.create({
+      target_type: VoteTargetType.Article,
+      target_id: dto.article_id,
+      vote_type: dto.vote,
+      ...resolveGeneralAuthor(dto, user),
+      user_agent: visitor.agent,
+      ip: visitor.ip,
+      ip_location: ipLocation
     })
+
+    return result
   }
 
-  // Disqus logged-in user or guest user
-  async voteDisqusThread(postId: number, vote: number, token?: string) {
-    const thread &#x3D; await this.disqusPublicService.ensureThreadDetailCache(postId)
-    const result &#x3D; await this.disqusPublicService.voteThread({
-      access_token: token || null,
-      thread: thread.id,
-      vote
+  @Post(&#x27;/comment&#x27;)
+  @Throttle({ default: { ttl: seconds(30), limit: 10 } })
+  @SuccessResponse(&#x27;Vote comment succeeded&#x27;)
+  async voteComment(
+    @Body() dto: CommentVoteDto,
+    @RequestContext() { visitor, identity }: IRequestContext
+  ): Promise&lt;number&gt; {
+    const result &#x3D; await this.commentService.incrementVote(
+      dto.comment_id,
+      dto.vote &#x3D;&#x3D;&#x3D; VoteType.Upvote ? &#x27;likes&#x27; : &#x27;dislikes&#x27;
+    )
+
+    const [user, ipLocation] &#x3D; await Promise.all([
+      identity.isUser ? this.userService.findOne(identity.payload!.uid!) : null,
+      visitor.ip ? this.ipService.queryLocation(visitor.ip) : null
+    ])
+
+    await this.voteService.create({
+      target_type: VoteTargetType.Comment,
+      target_id: dto.comment_id,
+      vote_type: dto.vote,
+      ...resolveGeneralAuthor(dto, user),
+      user_agent: visitor.agent,
+      ip: visitor.ip,
+      ip_location: ipLocation
     })
-    // console.info(&#x60;Disqus like thread ${postId}&#x60;, result)
+
     return result
   }
 
   @Get()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse({ message: &#x27;Get votes succeeded&#x27;, usePaginate: true })
-  getVotes(@Query() query: VotePaginateQueryDTO): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
+  getVotes(@Query() query: VotePaginateQueryDto): Promise&lt;PaginateResult&lt;VoteWithUser&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
     const queryFilter: QueryFilter&lt;Vote&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
+
     // target type
     if (!_isUndefined(filters.target_type)) {
       queryFilter.target_type &#x3D; filters.target_type
@@ -1205,136 +655,17 @@ export class VoteController {
       queryFilter.author_type &#x3D; filters.author_type
     }
 
-    return this.voteService.paginate(queryFilter, paginateOptions)
+    return this.voteService.paginate&lt;VoteWithUser&gt;(queryFilter, {
+      ...paginateOptions,
+      populate: &#x27;user&#x27;
+    })
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete votes succeeded&#x27;)
-  deleteVotes(@Body() body: VotesDTO) {
-    return this.voteService.batchDelete(body.vote_ids)
-  }
-
-  @Post(&#x27;/article&#x27;)
-  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
-  @SuccessResponse(&#x27;Vote article succeeded&#x27;)
-  async votePost(
-    @Body() voteBody: ArticleVoteDTO,
-    @DisqusToken() token: AccessToken | null,
-    @RequestContext() { visitor }: IRequestContext
-  ) {
-    // NodePress
-    const likes &#x3D; await this.articleService.incrementStatistics(voteBody.article_id, &#x27;likes&#x27;)
-    // Disqus
-    this.voteDisqusThread(voteBody.article_id, voteBody.vote, token?.access_token).catch(() &#x3D;&gt; {})
-    // author
-    this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(
-      async (voteAuthor) &#x3D;&gt; {
-        // IP location
-        const ipLocation &#x3D; await this.queryIPLocation(visitor.ip)
-        // database
-        await this.voteService.create({
-          target_type: VoteTarget.Article,
-          target_id: voteBody.article_id,
-          vote_type: voteBody.vote,
-          author_type: voteAuthor.type,
-          author: voteAuthor.data,
-          user_agent: visitor.ua,
-          ip: visitor.ip,
-          ip_location: ipLocation
-        })
-
-        // email to admin
-        this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-          subject: &#x27;You have a new post vote&#x27;,
-          on: await this.getPostTitle(voteBody.article_id),
-          vote: voteTypesMap.get(voteBody.vote)!,
-          author: this.getAuthorString(voteAuthor),
-          userAgent: visitor.ua,
-          location: ipLocation,
-          link: getPermalinkById(voteBody.article_id)
-        })
-      }
-    )
-
-    return likes
-  }
-
-  @Post(&#x27;/comment&#x27;)
-  @Throttle({ default: { ttl: seconds(30), limit: 10 } })
-  @SuccessResponse(&#x27;Vote comment succeeded&#x27;)
-  async voteComment(
-    @Body() voteBody: CommentVoteDTO,
-    @DisqusToken() token: AccessToken | null,
-    @RequestContext() { visitor }: IRequestContext
-  ) {
-    // NodePress
-    const result &#x3D; await this.commentService.vote(voteBody.comment_id, voteBody.vote &gt; 0)
-
-    // Disqus only logged-in user
-    if (token) {
-      try {
-        const postId &#x3D; await this.disqusPublicService.getDisqusPostIdByCommentId(voteBody.comment_id)
-        if (postId) {
-          await this.disqusPublicService.votePost({
-            access_token: token.access_token,
-            post: postId,
-            vote: voteBody.vote
-          })
-          // console.info(&#x60;Disqus like post ${voteBody.comment_id}&#x60;, result)
-        }
-      } catch (error) {}
-    }
-
-    // effects
-    this.getVoteAuthor({ guestAuthor: voteBody.author, disqusToken: token?.access_token }).then(
-      async (voteAuthor) &#x3D;&gt; {
-        // location
-        const ipLocation &#x3D; await this.queryIPLocation(visitor.ip)
-        // database
-        await this.voteService.create({
-          target_type: VoteTarget.Comment,
-          target_id: voteBody.comment_id,
-          vote_type: voteBody.vote,
-          author_type: voteAuthor.type,
-          author: voteAuthor.data,
-          user_agent: visitor.ua,
-          ip: visitor.ip,
-          ip_location: ipLocation
-        })
-
-        // email to author and admin
-        const comment &#x3D; await this.commentService.getDetailByNumberId(voteBody.comment_id)
-        const targetTitle &#x3D; await this.getPostTitle(comment.post_id)
-        const mailPayload &#x3D; {
-          vote: voteTypesMap.get(voteBody.vote)!,
-          on: &#x60;${targetTitle} #${comment.id}&#x60;,
-          author: this.getAuthorString(voteAuthor),
-          userAgent: visitor.ua,
-          location: ipLocation,
-          link: getPermalinkById(comment.post_id) + &#x60;#comment-${comment.id}&#x60;
-        }
-
-        // email to admin
-        this.emailToTargetVoteMessage({
-          to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-          subject: &#x27;You have a new comment vote&#x27;,
-          ...mailPayload
-        })
-
-        // email to author
-        if (comment.author.email) {
-          this.emailToTargetVoteMessage({
-            to: comment.author.email,
-            subject: &#x60;Your comment #${comment.id} has a new vote&#x60;,
-            ...mailPayload
-          })
-        }
-      }
-    )
-
-    return result
+  deleteVotes(@Body() { vote_ids }: VoteIdsDto) {
+    return this.voteService.batchDelete(vote_ids)
   }
 }
 </code></pre>

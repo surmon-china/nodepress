@@ -100,6 +100,91 @@
 
 <h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3>7.0.0 (2026-02-20)</h3>
+<h4>Global Architecture &amp; Model Refactoring</h4>
+<ul>
+<li><p><strong>ID System Migration</strong>: Completely transitioned from MongoDB <strong>ObjectId</strong> to <strong>Number ID</strong> across all API layers and identifiers.</p>
+</li>
+<li><p><strong>Identity Logic</strong>: Replaced legacy <code>Admin</code> | <code>Guest</code> logic with a unified and scalable <strong>Identity</strong> model.</p>
+</li>
+<li><p><strong>Schema Standardization</strong>:</p>
+</li>
+<li><p>Enforced strict responsibility separation: <strong>DTOs</strong> for input validation vs. <strong>Models</strong> for schema definition (indexes, defaults).</p>
+</li>
+<li><p>Standardized <code>null</code> as the database default value to eliminate <code>undefined</code> inconsistencies.</p>
+</li>
+<li><p>Added explicit storage type definitions for all Model fields.</p>
+</li>
+<li><p>Ensured all fields with default values are marked as <code>IsOptional</code>.</p>
+</li>
+<li><p>Implemented automatic string trimming via <code>@Transform(({ value }) =&gt; value?.trim())</code>.</p>
+</li>
+<li><p><strong>Type Safety</strong>: Enhanced developer experience by providing comprehensive return types for all controller actions.</p>
+</li>
+</ul>
+<h4>New &amp; Deprecated Modules</h4>
+<ul>
+<li><strong>User Module</strong>: Introduced a dedicated <strong>User</strong> module to handle core user entities.</li>
+<li><strong>Disqus Module</strong>: Formally deprecated and removed the <strong>Disqus</strong> integration module.</li>
+</ul>
+<h4>Article Module</h4>
+<ul>
+<li><strong>Service Decoupling</strong>: Refactored <code>ArticleService</code> into multiple sub-services based on specific responsibilities (e.g., Stats, Context).</li>
+<li><strong>Algorithm Optimization</strong>: Deeply optimized the <code>getRelatedArticles</code> recommendation algorithm using a weighted similarity and Top-K sampling strategy.</li>
+<li><strong>Logic Refactoring</strong>: Overhauled internal service logic for better maintainability and performance.</li>
+</ul>
+<h4>Comment Module</h4>
+<ul>
+<li><p><strong>Schema Flattening</strong>: Simplified the <code>author</code> structure by flattening fields:</p>
+</li>
+<li><p><code>author.name</code> &gt; <code>author_name</code></p>
+</li>
+<li><p><code>author.email</code> &gt; <code>author_email</code></p>
+</li>
+<li><p><code>author.website</code> &gt; <code>author_website</code></p>
+</li>
+<li><p>Removed the legacy <code>author</code> object.</p>
+</li>
+<li><p><strong>Field Migration</strong>:</p>
+</li>
+<li><p><code>pid</code> &gt; <code>parent_id</code> (migrated <code>0</code> to <code>null</code> for better relational representation).</p>
+</li>
+<li><p><code>post_id</code> &gt; <code>target_id</code>.</p>
+</li>
+<li><p>Added <code>target_type</code> (<code>&#39;article&#39; | &#39;page&#39;</code>) to support polymorphic commenting.</p>
+</li>
+<li><p><code>agent</code> &gt; <code>user_agent</code>.</p>
+</li>
+<li><p><strong>Functionality Updates</strong>:</p>
+</li>
+<li><p>Added a <code>user</code> field for registered user associations.</p>
+</li>
+<li><p>Removed legacy IP repair functionality.</p>
+</li>
+<li><p>Removed the <code>agent</code> field from the creation payload.</p>
+</li>
+</ul>
+<h4>Category &amp; Tag Modules</h4>
+<ul>
+<li><strong>Performance Optimization</strong>: Significantly enhanced <code>aggregateArticleCount</code> performance through optimized aggregation pipelines.</li>
+<li><strong>Interface Cleanup</strong>: Removed redundant and over-engineered API endpoints.</li>
+<li><strong>Hierarchy Refactoring</strong>: Renamed <code>pid</code> to <code>parent_id</code> and migrated its type from <code>ObjectId</code> to <code>Number</code>.</li>
+</ul>
+<h4>Admin &amp; Options Modules</h4>
+<ul>
+<li><strong>Singleton Pattern</strong>: Enforced a strict <strong>singleton</strong> constraint for both modules (requires <code>singleton: true</code> in the database).</li>
+<li><strong>Security Update</strong>: Mandatory password setup is now required upon the first administrative profile update.</li>
+<li><strong>Field Update</strong>: Renamed <code>option.blocklist.mails</code> to <code>option.blocklist.emails</code> for semantic clarity.</li>
+</ul>
+<h4>Vote &amp; Feedback Modules</h4>
+<ul>
+<li><strong>Vote Schema</strong>: Flattened author fields to <code>author_name</code> and <code>author_email</code>; removed legacy <code>author_type</code> and <code>author</code> object.</li>
+<li><strong>Feedback Schema</strong>: Flattened user fields to <code>author_name</code> and <code>author_email</code>; removed the legacy <code>tid</code> field.</li>
+</ul>
+<h4>Archive Module</h4>
+<ul>
+<li><strong>Route Update</strong>: Refactored the manual refresh logic from <code>PATCH /archive</code> to <code>POST /archive/refresh</code>.</li>
+</ul>
 <h3>6.3.0 (2026-02-12)</h3>
 <h4>Configuration Update</h4>
 <ul>

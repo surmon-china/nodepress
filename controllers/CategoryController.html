@@ -136,7 +136,7 @@
                 <h3>Prefix</h3>
             </p>
             <p class="comment">
-                <code>category</code>
+                <code>categories</code>
             </p>
 
 
@@ -167,22 +167,20 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#delCategories" >delCategories</a>
+                                <a href="#deleteCategories" >deleteCategories</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#delCategory" >delCategory</a>
+                                <a href="#deleteCategory" >deleteCategory</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#getAllCategories" >getAllCategories</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#getCategories" >getCategories</a>
@@ -196,7 +194,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#putCategory" >putCategory</a>
+                                <a href="#updateCategory" >updateCategory</a>
                             </li>
                         </ul>
                     </td>
@@ -232,7 +230,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createCategory(category: <a href="../classes/Category.html" target="_self">Category</a>)</code>
+                    <code>createCategory(dto: <a href="../classes/CreateCategoryDto.html" target="_self">CreateCategoryDto</a>)</code>
                 </td>
             </tr>
 
@@ -240,14 +238,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Create category succeeded&#x27;)<br /></code>
+                    <code>@Post()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Create category succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="48"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:48</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:59</a></div>
                         </td>
                     </tr>
 
@@ -268,9 +266,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>category</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/Category.html" target="_self" >Category</a></code>
+                                                            <code><a href="../classes/CreateCategoryDto.html" target="_self" >CreateCategoryDto</a></code>
                                             </td>
 
                                             <td>
@@ -297,20 +295,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="delCategories"></a>
+                    <a name="deleteCategories"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>delCategories</b></span>
-                        <a href="#delCategories"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>deleteCategories</b></span>
+                        <a href="#deleteCategories"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delCategories(body: <a href="../classes/CategoriesDTO.html" target="_self">CategoriesDTO</a>)</code>
+                    <code>deleteCategories(: <a href="../classes/CategoryIdsDto.html" target="_self">CategoryIdsDto</a>)</code>
                 </td>
             </tr>
 
@@ -318,14 +316,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete categories succeeded&#x27;)<br /></code>
+                    <code>@Delete()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete categories succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="55"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:55</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -346,9 +344,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>body</td>
                                             <td>
-                                                            <code><a href="../classes/CategoriesDTO.html" target="_self" >CategoriesDTO</a></code>
+                                                            <code><a href="../classes/CategoryIdsDto.html" target="_self" >CategoryIdsDto</a></code>
                                             </td>
 
                                             <td>
@@ -375,20 +372,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="delCategory"></a>
+                    <a name="deleteCategory"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>delCategory</b></span>
-                        <a href="#delCategory"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>deleteCategory</b></span>
+                        <a href="#deleteCategory"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delCategory(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>deleteCategory(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -396,14 +393,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete category succeeded&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete category succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="75"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:75</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -424,8 +421,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -456,7 +454,6 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getAllCategories</b></span>
                         <a href="#getAllCategories"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -473,14 +470,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;all&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get all categories succeeded&#x27;)<br /></code>
+                    <code>@Get(&#x27;all&#x27;)<br />@SuccessResponse(&#x27;Get all categories succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="39"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:39</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -533,7 +530,6 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getCategories</b></span>
                         <a href="#getCategories"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -542,7 +538,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCategories(query: <a href="../classes/CategoryPaginateQueryDTO.html" target="_self">CategoryPaginateQueryDTO</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>getCategories(query: <a href="../classes/CategoryPaginateQueryDto.html" target="_self">CategoryPaginateQueryDto</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -550,14 +546,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get categories succeeded&#x27;, usePaginate: true})<br /></code>
+                    <code>@Get()<br />@SuccessResponse({message: &#x27;Get categories succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="25"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:25</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="24"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -580,7 +576,7 @@
                                         <tr>
                                                 <td>query</td>
                                             <td>
-                                                            <code><a href="../classes/CategoryPaginateQueryDTO.html" target="_self" >CategoryPaginateQueryDTO</a></code>
+                                                            <code><a href="../classes/CategoryPaginateQueryDto.html" target="_self" >CategoryPaginateQueryDto</a></code>
                                             </td>
 
                                             <td>
@@ -630,7 +626,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCategory(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>getCategory(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -638,14 +634,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;:id&#x27;)<br />@SuccessResponse(&#x27;Get categories tree succeeded&#x27;)<br /></code>
+                    <code>@Get(&#x27;:id&#x27;)<br />@SuccessResponse(&#x27;Get category succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="61"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:61</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:52</a></div>
                         </td>
                     </tr>
 
@@ -666,8 +662,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -680,7 +677,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;Category[]&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;Category&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -694,20 +691,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putCategory"></a>
+                    <a name="updateCategory"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>putCategory</b></span>
-                        <a href="#putCategory"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateCategory</b></span>
+                        <a href="#updateCategory"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putCategory(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, category: <a href="../classes/Category.html" target="_self">Category</a>)</code>
+                    <code>updateCategory(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, dto: <a href="../classes/UpdateCategoryDto.html" target="_self">UpdateCategoryDto</a>)</code>
                 </td>
             </tr>
 
@@ -715,14 +712,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update category succeeded&#x27;)<br /></code>
+                    <code>@Patch(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update category succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="73"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -743,8 +740,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -754,9 +752,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>category</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/Category.html" target="_self" >Category</a></code>
+                                                            <code><a href="../classes/UpdateCategoryDto.html" target="_self" >UpdateCategoryDto</a></code>
                                             </td>
 
                                             <td>
@@ -789,76 +787,81 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import { Controller, UseGuards, Get, Put, Post, Delete, Query, Body } from &#x27;@nestjs/common&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
-import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
+import type { QueryFilter } from &#x27;mongoose&#x27;
+import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from &#x27;@nestjs/common&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
-import { PaginateResult } from &#x27;@app/utils/paginate&#x27;
-import { CategoriesDTO, CategoryPaginateQueryDTO } from &#x27;./category.dto&#x27;
+import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
+import { CategoryIdsDto, CategoryPaginateQueryDto } from &#x27;./category.dto&#x27;
+import { CreateCategoryDto, UpdateCategoryDto } from &#x27;./category.dto&#x27;
 import { CategoryService } from &#x27;./category.service&#x27;
 import { Category } from &#x27;./category.model&#x27;
 
-@Controller(&#x27;category&#x27;)
+@Controller(&#x27;categories&#x27;)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: &#x27;Get categories succeeded&#x27;, usePaginate: true })
   getCategories(
-    @Query(PermissionPipe) query: CategoryPaginateQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
+    @Query() query: CategoryPaginateQueryDto,
+    @RequestContext() { identity }: IRequestContext
   ): Promise&lt;PaginateResult&lt;Category&gt;&gt; {
-    return this.categoryService.paginate(
-      {},
-      { page: query.page, perPage: query.per_page, dateSort: query.sort },
-      isUnauthenticated
-    )
+    const { sort, page, per_page, ...filters } &#x3D; query
+    const queryFilter: QueryFilter&lt;Category&gt; &#x3D; {}
+    const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
+
+    // search
+    if (filters.keyword) {
+      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
+      queryFilter.$or &#x3D; [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
+    }
+
+    // paginate
+    return this.categoryService.paginate(queryFilter, paginateOptions, !identity.isAdmin)
   }
 
   @Get(&#x27;all&#x27;)
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse(&#x27;Get all categories succeeded&#x27;)
-  getAllCategories(@RequestContext() { isAuthenticated }: IRequestContext): Promise&lt;Array&lt;Category&gt;&gt; {
-    return isAuthenticated
+  getAllCategories(@RequestContext() { identity }: IRequestContext): Promise&lt;Array&lt;Category&gt;&gt; {
+    return identity.isAdmin
       ? this.categoryService.getAllCategories({ aggregatePublicOnly: false })
-      : this.categoryService.getAllCategoriesCache()
-  }
-
-  @Post()
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse(&#x27;Create category succeeded&#x27;)
-  createCategory(@Body() category: Category): Promise&lt;Category&gt; {
-    return this.categoryService.create(category)
-  }
-
-  @Delete()
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse(&#x27;Delete categories succeeded&#x27;)
-  delCategories(@Body() body: CategoriesDTO) {
-    return this.categoryService.batchDelete(body.category_ids)
+      : this.categoryService.getAllPublicCategoriesCache()
   }
 
   @Get(&#x27;:id&#x27;)
-  @SuccessResponse(&#x27;Get categories tree succeeded&#x27;)
-  getCategory(@RequestContext() { params }: IRequestContext): Promise&lt;Category[]&gt; {
-    return this.categoryService.getGenealogyById(params.id)
+  @SuccessResponse(&#x27;Get category succeeded&#x27;)
+  getCategory(@Param(&#x27;id&#x27;, ParseIntPipe) id: number): Promise&lt;Category&gt; {
+    return this.categoryService.getDetail(id)
   }
 
-  @Put(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @Post()
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse(&#x27;Create category succeeded&#x27;)
+  createCategory(@Body() dto: CreateCategoryDto): Promise&lt;Category&gt; {
+    return this.categoryService.create(dto)
+  }
+
+  @Delete()
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse(&#x27;Delete categories succeeded&#x27;)
+  deleteCategories(@Body() { category_ids }: CategoryIdsDto) {
+    return this.categoryService.batchDelete(category_ids)
+  }
+
+  @Patch(&#x27;:id&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update category succeeded&#x27;)
-  putCategory(@RequestContext() { params }: IRequestContext, @Body() category: Category): Promise&lt;Category&gt; {
-    return this.categoryService.update(params.id, category)
+  updateCategory(@Param(&#x27;id&#x27;, ParseIntPipe) id: number, @Body() dto: UpdateCategoryDto): Promise&lt;Category&gt; {
+    return this.categoryService.update(id, dto)
   }
 
   @Delete(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete category succeeded&#x27;)
-  delCategory(@RequestContext() { params }: IRequestContext) {
-    return this.categoryService.delete(params.id)
+  deleteCategory(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
+    return this.categoryService.delete(id)
   }
 }
 </code></pre>

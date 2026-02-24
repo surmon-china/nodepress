@@ -159,16 +159,13 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#comments" >comments</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#likes" >likes</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#views" >views</a>
                             </li>
@@ -198,7 +195,6 @@
                     <a name="comments"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>comments</b></span>
                         <a href="#comments"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -215,13 +211,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@prop({default: 0})<br />
+                            @prop({type: Number, default: 0, min: 0})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/article/article.model.ts:42</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/article/article.model.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -234,7 +230,6 @@
                 <td class="col-md-4">
                     <a name="likes"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>likes</b></span>
                         <a href="#likes"><span class="icon ion-ios-link"></span></a>
@@ -252,13 +247,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@prop({default: 0})<br />
+                            @prop({type: Number, default: 0, min: 0})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/article/article.model.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/modules/article/article.model.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -271,7 +266,6 @@
                 <td class="col-md-4">
                     <a name="views"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>views</b></span>
                         <a href="#views"><span class="icon ion-ios-link"></span></a>
@@ -289,13 +283,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@prop({default: 0})<br />
+                            @prop({type: Number, default: 0, min: 0})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/modules/article/article.model.ts:34</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/article/article.model.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -314,19 +308,29 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { MergeType } from &#x27;mongoose&#x27;
+import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
 import { prop, index, plugin, Ref, modelOptions } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
-import { IsString, IsBoolean, IsArray, IsIn, IsInt, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
-import { IsNotEmpty, IsOptional, IsDefined, Matches, MaxLength, ValidateNested } from &#x27;class-validator&#x27;
+import { IsString, IsBoolean, IsEnum, IsArray, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, Matches, MaxLength, ValidateNested } from &#x27;class-validator&#x27;
+import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
 import { Category } from &#x27;@app/modules/category/category.model&#x27;
 import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
 import { ArticleStatus, ArticleOrigin, ArticleLanguage } from &#x27;./article.constant&#x27;
-import { ARTICLE_STATUSES, ARTICLE_ORIGINS, ARTICLE_LANGUAGES } from &#x27;./article.constant&#x27;
+
+export type ArticleDoc &#x3D; MongooseDoc&lt;Article&gt;
+export type ArticlePopulated &#x3D; MergeType&lt;Article, { tags: Tag[]; categories: Category[] }&gt;
+export type ArticleDocPopulated &#x3D; MergeType&lt;ArticleDoc, { tags: Tag[]; categories: Category[] }&gt;
+
+export const ARTICLE_RELATION_FIELDS &#x3D; [&#x27;tags&#x27;, &#x27;categories&#x27;]
+export const ARTICLE_WITH_CONTENT_PROJECTION &#x3D; &#x27;+content&#x27;
+export const ARTICLE_WITHOUT_CONTENT_PROJECTION &#x3D; { content: 0 }
 
 const ARTICLE_DEFAULT_STATS: ArticleStats &#x3D; Object.freeze({
   likes: 0,
@@ -335,20 +339,13 @@ const ARTICLE_DEFAULT_STATS: ArticleStats &#x3D; Object.freeze({
 })
 
 export class ArticleStats {
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   likes: number
 
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   views: number
 
-  // MARK: keep comments field manual
-  // 1. &#x60;.sort()&#x60; can&#x27;t by other model schema
-  // https://stackoverflow.com/questions/66174791/how-to-access-a-different-schema-in-a-virtual-method
-  // 2. &#x60;virtual&#x60; can&#x27;t support publicOnly params and can&#x27;t access other schema
-  @IsInt()
-  @prop({ default: 0 })
+  @prop({ type: Number, default: 0, min: 0 })
   comments: number
 }
 
@@ -365,6 +362,13 @@ export class ArticleStats {
     }
   }
 })
+// index article list page
+@index({ status: 1, created_at: -1 })
+// tag article list page
+@index({ tags: 1, status: 1, created_at: -1 })
+// category article list page
+@index({ categories: 1, status: 1, created_at: -1 })
+// search list
 @index(
   { title: &#x27;text&#x27;, content: &#x27;text&#x27;, summary: &#x27;text&#x27; },
   {
@@ -380,97 +384,97 @@ export class Article {
   @prop({ unique: true })
   id: number
 
-  @Matches(/^[a-zA-Z0-9-_]+$/)
   @MaxLength(50)
+  @Matches(/^[a-zA-Z0-9-_]+$/)
   @IsString()
   @IsOptional()
-  @prop({ default: null, trim: true, validate: /^[a-zA-Z0-9-_]+$/, index: true })
-  slug: string
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, unique: true, index: true, trim: true, validate: /^[a-zA-Z0-9-_]+$/ })
+  slug: string | null
 
   @IsString()
-  @IsNotEmpty({ message: &#x27;title?&#x27; })
-  @prop({ required: true, validate: /\S+/, text: true })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, validate: /\S+/, text: true })
   title: string
 
   @IsString()
-  @IsNotEmpty({ message: &#x27;content?&#x27; })
-  @prop({ required: true, validate: /\S+/, text: true })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, validate: /\S+/, select: false, text: true })
   content: string
 
   @IsString()
-  @prop({ default: &#x27;&#x27;, text: true })
+  @IsOptional()
+  @prop({ type: String, default: &#x27;&#x27;, text: true })
   summary: string
 
+  @IsString({ each: true })
   @ArrayUnique()
   @IsArray()
-  @IsDefined()
-  @prop({ default: [], type: () &#x3D;&gt; [String] })
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [String], default: [] })
   keywords: string[]
 
   @IsString()
   @IsOptional()
-  @prop({ type: String, default: null })
+  @prop({ type: String, default: null, trim: true })
   thumbnail: string | null
 
-  @IsIn(ARTICLE_STATUSES)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: ArticleStatus, default: ArticleStatus.Published, index: true })
+  @IsEnum(ArticleStatus)
+  @IsOptional()
+  @prop({ type: Number, enum: ArticleStatus, default: ArticleStatus.Published, index: true })
   status: ArticleStatus
 
-  // origin state
-  @IsIn(ARTICLE_ORIGINS)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: ArticleOrigin, default: ArticleOrigin.Original, index: true })
+  @IsEnum(ArticleOrigin)
+  @IsOptional()
+  @prop({ type: Number, enum: ArticleOrigin, default: ArticleOrigin.Original })
   origin: ArticleOrigin
 
   // language
   // MARK: can&#x27;t use &#x27;language&#x27; field
   // https://docs.mongodb.com/manual/tutorial/specify-language-for-text-index/
   // https://docs.mongodb.com/manual/reference/text-search-languages/#std-label-text-search-languages
-  @IsIn(ARTICLE_LANGUAGES)
-  @IsString()
-  @IsDefined()
-  @prop({ default: ArticleLanguage.Chinese, index: true })
+  @IsEnum(ArticleLanguage)
+  @IsOptional()
+  @prop({ type: String, enum: ArticleLanguage, default: ArticleLanguage.Chinese })
   lang: ArticleLanguage
 
-  // featured
   @IsBoolean()
-  @prop({ default: false, index: true })
+  @IsOptional()
+  @prop({ type: Boolean, default: false, index: true })
   featured: boolean
 
-  // disabled comments
   @IsBoolean()
-  @prop({ default: false })
+  @IsOptional()
+  @prop({ type: Boolean, default: false })
   disabled_comments: boolean
 
-  @prop({ _id: false, default: { ...ARTICLE_DEFAULT_STATS } })
+  @prop({ type: () &#x3D;&gt; ArticleStats, _id: false, default: { ...ARTICLE_DEFAULT_STATS } })
   stats: ArticleStats
 
-  @Type(() &#x3D;&gt; KeyValueModel)
-  @ValidateNested()
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
-  extras: KeyValueModel[]
-
-  // tag
-  // https://typegoose.github.io/typegoose/docs/api/virtuals#virtual-populate
-  @prop({ ref: () &#x3D;&gt; Tag, index: true })
+  @IsOptional()
+  @prop({ ref: () &#x3D;&gt; Tag, default: [] })
   tags: Ref&lt;Tag&gt;[]
 
-  // category
   @ArrayUnique()
   @ArrayNotEmpty()
   @IsArray()
-  @prop({ ref: () &#x3D;&gt; Category, required: true, index: true })
+  @prop({ ref: () &#x3D;&gt; Category, required: true })
   categories: Ref&lt;Category&gt;[]
 
-  @prop({ default: Date.now, index: true, immutable: true })
+  @Type(() &#x3D;&gt; KeyValueModel)
+  @ValidateNested({ each: true })
+  @ArrayUnique()
+  @IsArray()
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [KeyValueModel], _id: false, default: [] })
+  extras: KeyValueModel[]
+
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 

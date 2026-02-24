@@ -175,12 +175,11 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#ensureAppOptions" >ensureAppOptions</a>
+                                <a href="#ensureOptions" >ensureOptions</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getOptionsCacheForGuest" >getOptionsCacheForGuest</a>
+                                <a href="#getPublicOptionsCache" >getPublicOptionsCache</a>
                             </li>
                             <li>
                                 <a href="#onModuleInit" >onModuleInit</a>
@@ -188,12 +187,12 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#putOptions" >putOptions</a>
+                                <a href="#removeFromBlocklist" >removeFromBlocklist</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#removeFromBlocklist" >removeFromBlocklist</a>
+                                <a href="#updateOptions" >updateOptions</a>
                             </li>
                         </ul>
                     </td>
@@ -289,15 +288,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>appendToBlocklist(payload: literal type)</code>
+                    <code>appendToBlocklist(: <a href="../classes/Blocklist.html" target="_self">Pick&lt;Blocklist | &quot;ips&quot; | &quot;emails&quot;&gt;</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/modules/options/options.service.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/options/options.service.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -318,9 +317,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>payload</td>
                                             <td>
-                                                        <code>literal type</code>
+                                                            <code><a href="../classes/Blocklist.html" target="_self" >Pick&lt;Blocklist | &quot;ips&quot; | &quot;emails&quot;&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -347,27 +345,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ensureAppOptions"></a>
+                    <a name="ensureOptions"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>ensureAppOptions</b></span>
-                        <a href="#ensureAppOptions"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>ensureOptions</b></span>
+                        <a href="#ensureOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>ensureAppOptions()</code>
+                    <code>ensureOptions()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/options/options.service.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="49"
+                                    class="link-to-prism">src/modules/options/options.service.ts:49</a></div>
                         </td>
                     </tr>
 
@@ -376,7 +373,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;MongooseDoc&lt;Option&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;Option&gt;</a></code>
 
                         </div>
                 </td>
@@ -387,26 +384,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getOptionsCacheForGuest"></a>
+                    <a name="getPublicOptionsCache"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getOptionsCacheForGuest</b></span>
-                        <a href="#getOptionsCacheForGuest"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getPublicOptionsCache</b></span>
+                        <a href="#getPublicOptionsCache"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getOptionsCacheForGuest()</code>
+                    <code>getPublicOptionsCache()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/options/options.service.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/options/options.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -415,7 +412,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;OptionPublic&gt;</a></code>
 
                         </div>
                 </td>
@@ -442,8 +439,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/modules/options/options.service.ts:38</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/options/options.service.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -455,76 +452,6 @@
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="putOptions"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>putOptions</b></span>
-                        <a href="#putOptions"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putOptions(newOptions: <a href="../classes/Option.html" target="_self">Option</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/modules/options/options.service.ts:54</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>newOptions</td>
-                                            <td>
-                                                            <code><a href="../classes/Option.html" target="_self" >Option</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;Option&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
                 </td>
             </tr>
         </tbody>
@@ -545,15 +472,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>removeFromBlocklist(payload: literal type)</code>
+                    <code>removeFromBlocklist(: <a href="../classes/Blocklist.html" target="_self">Pick&lt;Blocklist | &quot;ips&quot; | &quot;emails&quot;&gt;</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="73"
-                                    class="link-to-prism">src/modules/options/options.service.ts:73</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">src/modules/options/options.service.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -574,9 +501,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>payload</td>
                                             <td>
-                                                        <code>literal type</code>
+                                                            <code><a href="../classes/Blocklist.html" target="_self" >Pick&lt;Blocklist | &quot;ips&quot; | &quot;emails&quot;&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -590,6 +516,76 @@
                             </div>
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="../classes/Blocklist.html" target="_self" >Promise&lt;Blocklist&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateOptions"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>updateOptions</b></span>
+                        <a href="#updateOptions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateOptions(input: <a href="../classes/UpdateOptionsDto.html" target="_self">UpdateOptionsDto</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/modules/options/options.service.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../classes/UpdateOptionsDto.html" target="_self" >UpdateOptionsDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Option.html" target="_self" >Promise&lt;Option&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -619,7 +615,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../interfaces/CacheManualResult.html" target="_self" >CacheManualResult&lt;Omit&lt;Option, blocklist&gt;&gt;</a></code>
+                        <i>Type : </i>        <code><a href="../interfaces/CacheManualResult.html" target="_self" >CacheManualResult&lt;OptionPublic&gt;</a></code>
 
                     </td>
                 </tr>
@@ -639,31 +635,32 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _omit from &#x27;lodash/omit&#x27;
-import _uniq from &#x27;lodash/uniq&#x27;
 import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
-import { Option, Blocklist, DEFAULT_OPTIONS } from &#x27;./options.model&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { Option, OptionPublic, Blocklist, DEFAULT_OPTIONS, OPTIONS_SINGLETON_QUERY } from &#x27;./options.model&#x27;
+import { UpdateOptionsDto } from &#x27;./options.dto&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;OptionsService&#x27;, time: isDevEnv })
 
 @Injectable()
 export class OptionsService implements OnModuleInit {
-  private optionsCache: CacheManualResult&lt;Omit&lt;Option, &#x27;blocklist&#x27;&gt;&gt;
+  private optionsCache: CacheManualResult&lt;OptionPublic&gt;
 
   constructor(
-    @InjectModel(Option) private readonly optionsModel: MongooseModel&lt;Option&gt;,
+    @InjectModel(Option)
+    private readonly optionsModel: MongooseModel&lt;Option&gt;,
     private readonly cacheService: CacheService
   ) {
     this.optionsCache &#x3D; this.cacheService.manual({
       key: CacheKeys.Options,
       promise: () &#x3D;&gt; {
-        return this.ensureAppOptions().then((option) &#x3D;&gt; {
-          return _omit(option.toObject&lt;Option&gt;(), [&#x27;blocklist&#x27;, &#x27;_id&#x27;])
+        return this.ensureOptions().then((option) &#x3D;&gt; {
+          return _omit(option, [&#x27;blocklist&#x27;, &#x27;_id&#x27;]) as OptionPublic
         })
       }
     })
@@ -675,41 +672,54 @@ export class OptionsService implements OnModuleInit {
     })
   }
 
-  public async ensureAppOptions(): Promise&lt;MongooseDoc&lt;Option&gt;&gt; {
-    // MARK: To avoid blocking subsequent write operations, &#x60;.select(-1)&#x60; should not be used here.
-    const options &#x3D; await this.optionsModel.findOne().exec()
-    return options ?? (await this.optionsModel.create({ ...DEFAULT_OPTIONS }))
-  }
-
-  public getOptionsCacheForGuest() {
+  public getPublicOptionsCache(): Promise&lt;OptionPublic&gt; {
     return this.optionsCache.get()
   }
 
-  public async putOptions(newOptions: Option): Promise&lt;Option&gt; {
-    // delete _id fields
-    Reflect.deleteProperty(newOptions, &#x27;_id&#x27;)
-    // create and update
-    await this.ensureAppOptions()
-    await this.optionsModel.updateOne({}, newOptions).exec()
+  public ensureOptions(): Promise&lt;Option&gt; {
+    return this.optionsModel
+      .findOneAndUpdate(
+        OPTIONS_SINGLETON_QUERY,
+        { $setOnInsert: { ...DEFAULT_OPTIONS, ...OPTIONS_SINGLETON_QUERY } },
+        { upsert: true, setDefaultsOnInsert: true, returnDocument: &#x27;after&#x27; }
+      )
+      .lean()
+      .exec()
+  }
+
+  public async updateOptions(input: UpdateOptionsDto): Promise&lt;Option&gt; {
+    // ensure and update
+    await this.ensureOptions()
+    const updated &#x3D; await this.optionsModel
+      .findOneAndUpdate(OPTIONS_SINGLETON_QUERY, { $set: input }, { returnDocument: &#x27;after&#x27; })
+      .exec()
     // update cache when options updated
     await this.optionsCache.update()
-    return await this.ensureAppOptions()
+    return updated!
   }
 
-  public async appendToBlocklist(payload: { ips: string[]; emails: string[] }): Promise&lt;Blocklist&gt; {
-    const options &#x3D; await this.ensureAppOptions()
-    options.blocklist.ips &#x3D; _uniq([...options.blocklist.ips, ...payload.ips])
-    options.blocklist.mails &#x3D; _uniq([...options.blocklist.mails, ...payload.emails])
-    await options.save()
-    return options.blocklist
+  public async appendToBlocklist({ ips, emails }: Pick&lt;Blocklist, &#x27;ips&#x27; | &#x27;emails&#x27;&gt;): Promise&lt;Blocklist&gt; {
+    await this.ensureOptions()
+    const updated &#x3D; await this.optionsModel
+      .findOneAndUpdate(
+        OPTIONS_SINGLETON_QUERY,
+        { $addToSet: { &#x27;blocklist.ips&#x27;: { $each: ips }, &#x27;blocklist.emails&#x27;: { $each: emails } } },
+        { returnDocument: &#x27;after&#x27; }
+      )
+      .exec()
+    return updated!.blocklist
   }
 
-  public async removeFromBlocklist(payload: { ips: string[]; emails: string[] }): Promise&lt;Blocklist&gt; {
-    const options &#x3D; await this.ensureAppOptions()
-    options.blocklist.ips &#x3D; options.blocklist.ips.filter((ip) &#x3D;&gt; !payload.ips.includes(ip))
-    options.blocklist.mails &#x3D; options.blocklist.mails.filter((email) &#x3D;&gt; !payload.emails.includes(email))
-    await options.save()
-    return options.blocklist
+  public async removeFromBlocklist({ ips, emails }: Pick&lt;Blocklist, &#x27;ips&#x27; | &#x27;emails&#x27;&gt;): Promise&lt;Blocklist&gt; {
+    await this.ensureOptions()
+    const updated &#x3D; await this.optionsModel
+      .findOneAndUpdate(
+        OPTIONS_SINGLETON_QUERY,
+        { $pull: { &#x27;blocklist.ips&#x27;: { $in: ips }, &#x27;blocklist.emails&#x27;: { $in: emails } } },
+        { returnDocument: &#x27;after&#x27; }
+      )
+      .exec()
+    return updated!.blocklist
   }
 }
 </code></pre>

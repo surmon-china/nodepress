@@ -185,13 +185,13 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#putAdminProfile" >putAdminProfile</a>
+                                <a href="#refreshToken" >refreshToken</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#refreshToken" >refreshToken</a>
+                                <a href="#updateAdminProfile" >updateAdminProfile</a>
                             </li>
                         </ul>
                     </td>
@@ -235,14 +235,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;check-token&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Token is valid&#x27;)<br /></code>
+                    <code>@Post(&#x27;check-token&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Token is valid&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:56</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="74"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:74</a></div>
                         </td>
                     </tr>
 
@@ -288,8 +288,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="62"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:62</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -298,7 +298,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;Admin&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;AdminProfile&gt;</a></code>
 
                         </div>
                 </td>
@@ -322,7 +322,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>login(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, body: <a href="../classes/AuthLoginDTO.html" target="_self">AuthLoginDTO</a>)</code>
+                    <code>login(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, dto: <a href="../classes/AuthLoginDto.html" target="_self">AuthLoginDto</a>)</code>
                 </td>
             </tr>
 
@@ -336,8 +336,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -369,9 +369,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>body</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/AuthLoginDTO.html" target="_self" >AuthLoginDTO</a></code>
+                                                            <code><a href="../classes/AuthLoginDto.html" target="_self" >AuthLoginDto</a></code>
                                             </td>
 
                                             <td>
@@ -420,14 +420,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;logout&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Logout succeeded&#x27;)<br /></code>
+                    <code>@Post(&#x27;logout&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Logout succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:38</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -476,84 +476,6 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putAdminProfile"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>putAdminProfile</b></span>
-                        <a href="#putAdminProfile"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putAdminProfile(adminProfile: <a href="../classes/AdminUpdateDTO.html" target="_self">AdminUpdateDTO</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Put(&#x27;profile&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update admin profile succeeded&#x27;)<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="69"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:69</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>adminProfile</td>
-                                            <td>
-                                                            <code><a href="../classes/AdminUpdateDTO.html" target="_self" >AdminUpdateDTO</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;Admin&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="refreshToken"></a>
                     <span class="name">
                             <span class="modifier"></span>
@@ -575,14 +497,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;refresh-token&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Refresh token succeeded&#x27;)<br /></code>
+                    <code>@Post(&#x27;refresh-token&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Refresh token succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="48"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:48</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="67"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -598,6 +520,84 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateAdminProfile"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>updateAdminProfile</b></span>
+                        <a href="#updateAdminProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateAdminProfile(dto: <a href="../classes/UpdateProfileDto.html" target="_self">UpdateProfileDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Patch(&#x27;profile&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update admin profile succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/UpdateProfileDto.html" target="_self" >UpdateProfileDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;AdminProfile&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>    </div>
 
 
@@ -608,70 +608,75 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import { Controller, Get, Put, Post, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { Controller, Get, Patch, Post, Body, UnauthorizedException } from &#x27;@nestjs/common&#x27;
 import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { decodeBase64 } from &#x27;@app/transformers/codec.transformer&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { AuthService } from &#x27;@app/core/auth/auth.service&#x27;
+import { AdminProfile } from &#x27;./admin.model&#x27;
+import { AuthLoginDto, UpdateProfileDto } from &#x27;./admin.dto&#x27;
+import { AdminAuthTokenService, TokenResult } from &#x27;./admin.service.token&#x27;
 import { AdminService } from &#x27;./admin.service&#x27;
-import { TokenResult } from &#x27;./admin.interface&#x27;
-import { AuthLoginDTO, AdminUpdateDTO } from &#x27;./admin.dto&#x27;
-import { Admin } from &#x27;./admin.model&#x27;
 
 @Controller(&#x27;admin&#x27;)
 export class AdminController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
     private readonly adminService: AdminService,
-    private readonly authService: AuthService
+    private readonly authTokenService: AdminAuthTokenService
   ) {}
+
+  @Get(&#x27;profile&#x27;)
+  @SuccessResponse(&#x27;Get admin profile succeeded&#x27;)
+  getAdminProfile(): Promise&lt;AdminProfile&gt; {
+    return this.adminService.getProfileCache()
+  }
+
+  @Patch(&#x27;profile&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse(&#x27;Update admin profile succeeded&#x27;)
+  updateAdminProfile(@Body() dto: UpdateProfileDto): Promise&lt;AdminProfile&gt; {
+    return this.adminService.updateProfile(dto)
+  }
 
   @Post(&#x27;login&#x27;)
   @SuccessResponse(&#x27;Login succeeded&#x27;)
-  async login(@RequestContext() { visitor }: IRequestContext, @Body() body: AuthLoginDTO): Promise&lt;TokenResult&gt; {
-    const token &#x3D; await this.adminService.login(body.password)
+  async login(@RequestContext() { visitor }: IRequestContext, @Body() dto: AuthLoginDto): Promise&lt;TokenResult&gt; {
+    const inputPassword &#x3D; decodeBase64(dto.password)
+    const existedAdminDoc &#x3D; await this.adminService.getDocument()
+    const isValidPassword &#x3D; await this.adminService.validatePassword(inputPassword, existedAdminDoc?.password)
+    if (!isValidPassword) {
+      throw new UnauthorizedException(&#x27;Password incorrect&#x27;)
+    }
+
+    const token &#x3D; this.authTokenService.createToken()
     this.eventEmitter.emit(EventKeys.AdminLoggedIn, visitor)
     return token
   }
 
   @Post(&#x27;logout&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Logout succeeded&#x27;)
-  async logout(@RequestContext() { token }: IRequestContext): Promise&lt;string&gt; {
-    await this.authService.invalidateToken(token!)
-    this.eventEmitter.emit(EventKeys.AdminLoggedOut, token)
+  async logout(@RequestContext() { identity }: IRequestContext): Promise&lt;string&gt; {
+    await this.authTokenService.invalidateToken(identity.token!)
+    this.eventEmitter.emit(EventKeys.AdminLoggedOut, identity.token)
     return &#x27;ok&#x27;
   }
 
-  // Refresh token
   @Post(&#x27;refresh-token&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Refresh token succeeded&#x27;)
   refreshToken(): TokenResult {
-    return this.adminService.createToken()
+    return this.authTokenService.createToken()
   }
 
-  // Check token
-  @Get(&#x27;check-token&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @Post(&#x27;check-token&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Token is valid&#x27;)
   checkToken(): string {
     return &#x27;ok&#x27;
-  }
-
-  @Get(&#x27;profile&#x27;)
-  @SuccessResponse(&#x27;Get admin profile succeeded&#x27;)
-  getAdminProfile(): Promise&lt;Admin&gt; {
-    return this.adminService.getProfile()
-  }
-
-  @Put(&#x27;profile&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse(&#x27;Update admin profile succeeded&#x27;)
-  putAdminProfile(@Body() adminProfile: AdminUpdateDTO): Promise&lt;Admin&gt; {
-    return this.adminService.updateProfile(adminProfile)
   }
 }
 </code></pre>

@@ -186,7 +186,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#putFeedback" >putFeedback</a>
+                                <a href="#updateFeedback" >updateFeedback</a>
                             </li>
                         </ul>
                     </td>
@@ -223,7 +223,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createFeedback(feedback: <a href="../classes/FeedbackBase.html" target="_self">FeedbackBase</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>createFeedback(dto: <a href="../classes/CreateFeedbackDto.html" target="_self">CreateFeedbackDto</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -237,8 +237,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="67"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:67</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -259,9 +259,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>feedback</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/FeedbackBase.html" target="_self" >FeedbackBase</a></code>
+                                                            <code><a href="../classes/CreateFeedbackDto.html" target="_self" >CreateFeedbackDto</a></code>
                                             </td>
 
                                             <td>
@@ -312,7 +312,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteFeedback(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>deleteFeedback(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -320,14 +320,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete feedback succeeded&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete feedback succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="90"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:90</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -348,8 +348,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -362,7 +363,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Feedback.html" target="_self" >Promise&lt;Feedback&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -389,7 +390,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteFeedbacks(body: <a href="../classes/FeedbacksDTO.html" target="_self">FeedbacksDTO</a>)</code>
+                    <code>deleteFeedbacks(: <a href="../classes/FeedbackIdsDto.html" target="_self">FeedbackIdsDto</a>)</code>
                 </td>
             </tr>
 
@@ -397,14 +398,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete feedbacks succeeded&#x27;)<br /></code>
+                    <code>@Delete()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete feedback entries succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="76"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:76</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -425,9 +426,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>body</td>
                                             <td>
-                                                            <code><a href="../classes/FeedbacksDTO.html" target="_self" >FeedbacksDTO</a></code>
+                                                            <code><a href="../classes/FeedbackIdsDto.html" target="_self" >FeedbackIdsDto</a></code>
                                             </td>
 
                                             <td>
@@ -467,7 +467,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getFeedbacks(query: <a href="../classes/FeedbackPaginateQueryDTO.html" target="_self">FeedbackPaginateQueryDTO</a>)</code>
+                    <code>getFeedbacks(query: <a href="../classes/FeedbackPaginateQueryDto.html" target="_self">FeedbackPaginateQueryDto</a>)</code>
                 </td>
             </tr>
 
@@ -475,14 +475,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse({message: &#x27;Get feedbacks succeeded&#x27;, usePaginate: true})<br /></code>
+                    <code>@Get()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse({message: &#x27;Get feedback entries succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="33"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:33</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:43</a></div>
                         </td>
                     </tr>
 
@@ -505,7 +505,7 @@
                                         <tr>
                                                 <td>query</td>
                                             <td>
-                                                            <code><a href="../classes/FeedbackPaginateQueryDTO.html" target="_self" >FeedbackPaginateQueryDTO</a></code>
+                                                            <code><a href="../classes/FeedbackPaginateQueryDto.html" target="_self" >FeedbackPaginateQueryDto</a></code>
                                             </td>
 
                                             <td>
@@ -518,7 +518,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Feedback&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;FeedbackWithUser&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -532,20 +532,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putFeedback"></a>
+                    <a name="updateFeedback"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>putFeedback</b></span>
-                        <a href="#putFeedback"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateFeedback</b></span>
+                        <a href="#updateFeedback"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putFeedback(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, feedback: <a href="../classes/Feedback.html" target="_self">Feedback</a>)</code>
+                    <code>updateFeedback(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, dto: <a href="../classes/UpdateFeedbackDto.html" target="_self">UpdateFeedbackDto</a>)</code>
                 </td>
             </tr>
 
@@ -553,14 +553,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update feedback succeeded&#x27;)<br /></code>
+                    <code>@Patch(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update feedback succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="83"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:83</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="87"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:87</a></div>
                         </td>
                     </tr>
 
@@ -581,8 +581,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -592,9 +593,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>feedback</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/Feedback.html" target="_self" >Feedback</a></code>
+                                                            <code><a href="../classes/UpdateFeedbackDto.html" target="_self" >UpdateFeedbackDto</a></code>
                                             </td>
 
                                             <td>
@@ -627,91 +628,95 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import _trim from &#x27;lodash/trim&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
-import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from &#x27;@nestjs/common&#x27;
 import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { UserService } from &#x27;@app/modules/user/user.service&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { numberToBoolean } from &#x27;@app/transformers/value.transformer&#x27;
-import { FeedbackPaginateQueryDTO, FeedbacksDTO } from &#x27;./feedback.dto&#x27;
-import { Feedback, FeedbackBase } from &#x27;./feedback.model&#x27;
+import { CreateFeedbackDto, UpdateFeedbackDto, FeedbackPaginateQueryDto, FeedbackIdsDto } from &#x27;./feedback.dto&#x27;
+import { Feedback, FeedbackWithUser } from &#x27;./feedback.model&#x27;
 import { FeedbackService } from &#x27;./feedback.service&#x27;
 
 @Controller(&#x27;feedback&#x27;)
 export class FeedbackController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
+    private readonly userService: UserService,
     private readonly feedbackService: FeedbackService
   ) {}
 
+  @Post()
+  @Throttle({ default: { ttl: seconds(30), limit: 5 } })
+  @SuccessResponse(&#x27;Create feedback succeeded&#x27;)
+  async createFeedback(@Body() dto: CreateFeedbackDto, @RequestContext() { visitor, identity }: IRequestContext) {
+    const user &#x3D; identity.isUser ? await this.userService.findOne(identity.payload!.uid!) : void 0
+    const created &#x3D; await this.feedbackService.create(dto, visitor, user)
+    this.eventEmitter.emit(EventKeys.FeedbackCreated, created.toObject())
+    return created
+  }
+
   @Get()
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse({ message: &#x27;Get feedbacks succeeded&#x27;, usePaginate: true })
-  getFeedbacks(@Query() query: FeedbackPaginateQueryDTO): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse({ message: &#x27;Get feedback entries succeeded&#x27;, usePaginate: true })
+  getFeedbacks(@Query() query: FeedbackPaginateQueryDto): Promise&lt;PaginateResult&lt;FeedbackWithUser&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
     const queryFilter: QueryFilter&lt;Feedback&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page, dateSort: sort }
-    // target ID
-    if (!_isUndefined(filters.tid)) {
-      queryFilter.tid &#x3D; filters.tid
-    }
+
     // emotion
     if (!_isUndefined(filters.emotion)) {
       queryFilter.emotion &#x3D; filters.emotion
     }
     // marked
     if (!_isUndefined(filters.marked)) {
-      queryFilter.marked &#x3D; numberToBoolean(filters.marked) as boolean
+      queryFilter.marked &#x3D; filters.marked
+    }
+    // author type
+    if (!_isUndefined(filters.author_type)) {
+      queryFilter.author_type &#x3D; filters.author_type
     }
     // search
     if (filters.keyword) {
-      const trimmed &#x3D; _trim(filters.keyword)
-      const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
+      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
       queryFilter.$or &#x3D; [
         { content: keywordRegExp },
-        { user_name: keywordRegExp },
-        { user_email: keywordRegExp },
+        { author_name: keywordRegExp },
+        { author_email: keywordRegExp },
         { remark: keywordRegExp }
       ]
     }
 
-    return this.feedbackService.paginate(queryFilter, paginateOptions)
-  }
-
-  @Post()
-  @Throttle({ default: { ttl: seconds(30), limit: 5 } })
-  @SuccessResponse(&#x27;Create feedback succeeded&#x27;)
-  async createFeedback(@Body() feedback: FeedbackBase, @RequestContext() { visitor }: IRequestContext) {
-    const created &#x3D; await this.feedbackService.create(feedback, visitor)
-    this.eventEmitter.emit(EventKeys.FeedbackCreated, created)
-    return created
+    return this.feedbackService.paginate&lt;FeedbackWithUser&gt;(queryFilter, {
+      ...paginateOptions,
+      populate: &#x27;user&#x27;
+    })
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse(&#x27;Delete feedbacks succeeded&#x27;)
-  deleteFeedbacks(@Body() body: FeedbacksDTO) {
-    return this.feedbackService.batchDelete(body.feedback_ids)
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse(&#x27;Delete feedback entries succeeded&#x27;)
+  deleteFeedbacks(@Body() { feedback_ids }: FeedbackIdsDto) {
+    return this.feedbackService.batchDelete(feedback_ids)
   }
 
-  @Put(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @Patch(&#x27;:id&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update feedback succeeded&#x27;)
-  putFeedback(@RequestContext() { params }: IRequestContext, @Body() feedback: Feedback): Promise&lt;Feedback&gt; {
-    return this.feedbackService.update(params.id, feedback)
+  updateFeedback(@Param(&#x27;id&#x27;, ParseIntPipe) id: number, @Body() dto: UpdateFeedbackDto): Promise&lt;Feedback&gt; {
+    return this.feedbackService.update(id, dto)
   }
 
   @Delete(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete feedback succeeded&#x27;)
-  deleteFeedback(@RequestContext() { params }: IRequestContext) {
-    return this.feedbackService.delete(params.id)
+  deleteFeedback(@Param(&#x27;id&#x27;, ParseIntPipe) id: number): Promise&lt;Feedback&gt; {
+    return this.feedbackService.delete(id)
   }
 }
 </code></pre>

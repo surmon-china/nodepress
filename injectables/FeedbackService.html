@@ -170,7 +170,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getRootFeedbackAverageEmotion" >getRootFeedbackAverageEmotion</a>
+                                <a href="#getAverageEmotion" >getAverageEmotion</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -204,7 +204,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/feedback/feedback.service.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/modules/feedback/feedback.service.ts:20</a></div>
                             </td>
                         </tr>
 
@@ -274,15 +274,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(feedbackIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId[]</a>)</code>
+                    <code>batchDelete(feedbackIds: number[])</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="53"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:53</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -305,7 +305,7 @@
                                         <tr>
                                                 <td>feedbackIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
+                                                        <code>number[]</code>
                                             </td>
 
                                             <td>
@@ -344,15 +344,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(feedback: <a href="../classes/FeedbackBase.html" target="_self">FeedbackBase</a>, visitor: <a href="../interfaces/QueryVisitor.html" target="_self">QueryVisitor</a>)</code>
+                    <code>create(input: <a href="../classes/CreateFeedbackDto.html" target="_self">CreateFeedbackDto</a>, visitor: <a href="../interfaces/QueryVisitor.html" target="_self">QueryVisitor</a>, user?: <a href="../classes/User.html" target="_self">WithId&lt;User&gt;</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -373,9 +373,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>feedback</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="../classes/FeedbackBase.html" target="_self" >FeedbackBase</a></code>
+                                                            <code><a href="../classes/CreateFeedbackDto.html" target="_self" >CreateFeedbackDto</a></code>
                                             </td>
 
                                             <td>
@@ -392,6 +392,18 @@
 
                                             <td>
                                                     No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>user</td>
+                                            <td>
+                                                            <code><a href="../classes/User.html" target="_self" >WithId&lt;User&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
                                             </td>
 
 
@@ -426,15 +438,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(feedbackId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
+                    <code>delete(feedbackId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:47</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -457,7 +469,7 @@
                                         <tr>
                                                 <td>feedbackId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -484,27 +496,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getRootFeedbackAverageEmotion"></a>
+                    <a name="getAverageEmotion"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>getRootFeedbackAverageEmotion</b></span>
-                        <a href="#getRootFeedbackAverageEmotion"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getAverageEmotion</b></span>
+                        <a href="#getAverageEmotion"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getRootFeedbackAverageEmotion()</code>
+                    <code>getAverageEmotion()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -542,11 +554,19 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="25"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:25</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:26</a></div>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
 
             <tr>
                 <td class="col-md-4">
@@ -591,7 +611,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Feedback&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;T&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -617,15 +637,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(feedbackId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>, newFeedback: <a href="../classes/Feedback.html" target="_self">Partial&lt;Feedback&gt;</a>)</code>
+                    <code>update(feedbackId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, input: <a href="../classes/UpdateFeedbackDto.html" target="_self">UpdateFeedbackDto</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:41</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/feedback/feedback.service.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -648,7 +668,7 @@
                                         <tr>
                                                 <td>feedbackId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -658,9 +678,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>newFeedback</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="../classes/Feedback.html" target="_self" >Partial&lt;Feedback&gt;</a></code>
+                                                            <code><a href="../classes/UpdateFeedbackDto.html" target="_self" >UpdateFeedbackDto</a></code>
                                             </td>
 
                                             <td>
@@ -689,16 +709,17 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Types } from &#x27;mongoose&#x27;
-import type { QueryFilter } from &#x27;mongoose&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
+import { MongooseModel, MongooseDoc, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
-import { ROOT_FEEDBACK_TID } from &#x27;@app/constants/biz.constant&#x27;
-import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { Feedback, FeedbackBase } from &#x27;./feedback.model&#x27;
+import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
+import { User } from &#x27;@app/modules/user/user.model&#x27;
+import { resolveGeneralAuthor } from &#x27;@app/constants/author.constant&#x27;
+import { CreateFeedbackDto, UpdateFeedbackDto } from &#x27;./feedback.dto&#x27;
+import { Feedback } from &#x27;./feedback.model&#x27;
 
 @Injectable()
 export class FeedbackService {
@@ -707,41 +728,48 @@ export class FeedbackService {
     @InjectModel(Feedback) private readonly feedbackModel: MongooseModel&lt;Feedback&gt;
   ) {}
 
-  public paginate(filter: QueryFilter&lt;Feedback&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Feedback&gt;&gt; {
-    // MARK: can&#x27;t use &#x27;lean&#x27; with virtual &#x27;emotion_text&#x27; | &#x27;emotion_emoji&#x27;
-    // MARK: keep &#x27;paginate&#x27;, the &#x27;paginateRaw&#x27; method is not available here.
-    return this.feedbackModel.paginate(filter, options)
+  public paginate&lt;T &#x3D; Feedback&gt;(
+    filter: QueryFilter&lt;Feedback&gt;,
+    options: PaginateOptions
+  ): Promise&lt;PaginateResult&lt;T&gt;&gt; {
+    return this.feedbackModel.paginateRaw&lt;T&gt;(filter, { ...options, lean: { virtuals: true } })
   }
 
-  public async create(feedback: FeedbackBase, visitor: QueryVisitor): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    return this.feedbackModel.create({
-      ...feedback,
+  public async create(
+    input: CreateFeedbackDto,
+    visitor: QueryVisitor,
+    user?: WithId&lt;User&gt;
+  ): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
+    return await this.feedbackModel.create({
+      ...input,
+      ...resolveGeneralAuthor(input, user),
+      user_agent: visitor.agent,
       origin: visitor.origin,
-      user_agent: visitor.ua,
       ip: visitor.ip,
       ip_location: visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
     })
   }
 
-  public async update(feedbackId: MongooseId, newFeedback: Partial&lt;Feedback&gt;): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
-    const updated &#x3D; await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec()
+  public async update(feedbackId: number, input: UpdateFeedbackDto): Promise&lt;MongooseDoc&lt;Feedback&gt;&gt; {
+    const updated &#x3D; await this.feedbackModel
+      .findOneAndUpdate({ id: feedbackId }, { $set: input }, { returnDocument: &#x27;after&#x27; })
+      .exec()
     if (!updated) throw new NotFoundException(&#x60;Feedback &#x27;${feedbackId}&#x27; not found&#x60;)
     return updated
   }
 
-  public async delete(feedbackId: MongooseId) {
-    const deleted &#x3D; await this.feedbackModel.findByIdAndDelete(feedbackId, null).exec()
+  public async delete(feedbackId: number) {
+    const deleted &#x3D; await this.feedbackModel.findOneAndDelete({ id: feedbackId }).exec()
     if (!deleted) throw new NotFoundException(&#x60;Feedback &#x27;${feedbackId}&#x27; not found&#x60;)
     return deleted
   }
 
-  public batchDelete(feedbackIds: MongooseId[]) {
-    return this.feedbackModel.deleteMany({ _id: { $in: feedbackIds } }).exec()
+  public batchDelete(feedbackIds: number[]) {
+    return this.feedbackModel.deleteMany({ id: { $in: feedbackIds } }).exec()
   }
 
-  public async getRootFeedbackAverageEmotion(): Promise&lt;number | null&gt; {
-    const [result] &#x3D; await this.feedbackModel.aggregate&lt;{ _id: Types.ObjectId; avgEmotion: number }&gt;([
-      { $match: { tid: ROOT_FEEDBACK_TID } },
+  public async getAverageEmotion(): Promise&lt;number | null&gt; {
+    const [result] &#x3D; await this.feedbackModel.aggregate&lt;{ _id: null; avgEmotion: number }&gt;([
       { $group: { _id: null, avgEmotion: { $avg: &#x27;$emotion&#x27; } } }
     ])
     return result ? Math.round(result.avgEmotion * 1000) / 1000 : null

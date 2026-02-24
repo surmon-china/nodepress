@@ -136,7 +136,7 @@
                 <h3>Prefix</h3>
             </p>
             <p class="comment">
-                <code>tag</code>
+                <code>tags</code>
             </p>
 
 
@@ -167,22 +167,25 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#delTag" >delTag</a>
+                                <a href="#deleteTag" >deleteTag</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#delTags" >delTags</a>
+                                <a href="#deleteTags" >deleteTags</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#getAllTags" >getAllTags</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#getTag" >getTag</a>
+                            </li>
+                            <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#getTags" >getTags</a>
@@ -191,7 +194,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#putTag" >putTag</a>
+                                <a href="#updateTag" >updateTag</a>
                             </li>
                         </ul>
                     </td>
@@ -227,7 +230,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createTag(tag: <a href="../classes/Tag.html" target="_self">Tag</a>)</code>
+                    <code>createTag(dto: <a href="../classes/CreateTagDto.html" target="_self">CreateTagDto</a>)</code>
                 </td>
             </tr>
 
@@ -235,7 +238,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Create tag succeeded&#x27;)<br /></code>
+                    <code>@Post()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Create tag succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -263,9 +266,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>tag</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/Tag.html" target="_self" >Tag</a></code>
+                                                            <code><a href="../classes/CreateTagDto.html" target="_self" >CreateTagDto</a></code>
                                             </td>
 
                                             <td>
@@ -292,20 +295,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="delTag"></a>
+                    <a name="deleteTag"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>delTag</b></span>
-                        <a href="#delTag"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>deleteTag</b></span>
+                        <a href="#deleteTag"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delTag(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>deleteTag(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -313,7 +316,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete tag succeeded&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete tag succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -341,8 +344,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -369,20 +373,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="delTags"></a>
+                    <a name="deleteTags"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>delTags</b></span>
-                        <a href="#delTags"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>deleteTags</b></span>
+                        <a href="#deleteTags"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delTags(body: <a href="../classes/TagsDTO.html" target="_self">TagsDTO</a>)</code>
+                    <code>deleteTags(: <a href="../classes/TagIdsDto.html" target="_self">TagIdsDto</a>)</code>
                 </td>
             </tr>
 
@@ -390,7 +394,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete tags succeeded&#x27;)<br /></code>
+                    <code>@Delete()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete tags succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -418,9 +422,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>body</td>
                                             <td>
-                                                            <code><a href="../classes/TagsDTO.html" target="_self" >TagsDTO</a></code>
+                                                            <code><a href="../classes/TagIdsDto.html" target="_self" >TagIdsDto</a></code>
                                             </td>
 
                                             <td>
@@ -451,7 +454,6 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getAllTags</b></span>
                         <a href="#getAllTags"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -468,14 +470,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;all&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get all tags succeeded&#x27;)<br /></code>
+                    <code>@Get(&#x27;all&#x27;)<br />@SuccessResponse(&#x27;Get all tags succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="43"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:43</a></div>
                         </td>
                     </tr>
 
@@ -524,9 +526,85 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getTags"></a>
+                    <a name="getTag"></a>
                     <span class="name">
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>getTag</b></span>
+                        <a href="#getTag"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTag(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Get(&#x27;:id&#x27;)<br />@SuccessResponse(&#x27;Get tag succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;Tag&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTags"></a>
+                    <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>getTags</b></span>
@@ -537,7 +615,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getTags(query: <a href="../classes/TagPaginateQueryDTO.html" target="_self">TagPaginateQueryDTO</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>getTags(query: <a href="../classes/TagPaginateQueryDto.html" target="_self">TagPaginateQueryDto</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -545,14 +623,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get tags succeeded&#x27;, usePaginate: true})<br /></code>
+                    <code>@Get()<br />@SuccessResponse({message: &#x27;Get tags succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="27"
-                                    class="link-to-prism">src/modules/tag/tag.controller.ts:27</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="23"
+                                    class="link-to-prism">src/modules/tag/tag.controller.ts:23</a></div>
                         </td>
                     </tr>
 
@@ -575,7 +653,7 @@
                                         <tr>
                                                 <td>query</td>
                                             <td>
-                                                            <code><a href="../classes/TagPaginateQueryDTO.html" target="_self" >TagPaginateQueryDTO</a></code>
+                                                            <code><a href="../classes/TagPaginateQueryDto.html" target="_self" >TagPaginateQueryDto</a></code>
                                             </td>
 
                                             <td>
@@ -613,20 +691,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putTag"></a>
+                    <a name="updateTag"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>putTag</b></span>
-                        <a href="#putTag"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateTag</b></span>
+                        <a href="#updateTag"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putTag(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, tag: <a href="../classes/Tag.html" target="_self">Tag</a>)</code>
+                    <code>updateTag(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, dto: <a href="../classes/UpdateTagDto.html" target="_self">UpdateTagDto</a>)</code>
                 </td>
             </tr>
 
@@ -634,7 +712,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update Tag succeeded&#x27;)<br /></code>
+                    <code>@Patch(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update Tag succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -662,8 +740,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -673,9 +752,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>tag</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/Tag.html" target="_self" >Tag</a></code>
+                                                            <code><a href="../classes/UpdateTagDto.html" target="_self" >UpdateTagDto</a></code>
                                             </td>
 
                                             <td>
@@ -708,29 +787,25 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import _trim from &#x27;lodash/trim&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
-import { Controller, Get, Put, Post, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
-import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
+import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from &#x27;@nestjs/common&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
-import { TagsDTO, TagPaginateQueryDTO } from &#x27;./tag.dto&#x27;
+import { CreateTagDto, UpdateTagDto, TagPaginateQueryDto, TagIdsDto } from &#x27;./tag.dto&#x27;
 import { TagService } from &#x27;./tag.service&#x27;
 import { Tag } from &#x27;./tag.model&#x27;
 
-@Controller(&#x27;tag&#x27;)
+@Controller(&#x27;tags&#x27;)
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: &#x27;Get tags succeeded&#x27;, usePaginate: true })
   getTags(
-    @Query(PermissionPipe) query: TagPaginateQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
+    @Query() query: TagPaginateQueryDto,
+    @RequestContext() { identity }: IRequestContext
   ): Promise&lt;PaginateResult&lt;Tag&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
     const queryFilter: QueryFilter&lt;Tag&gt; &#x3D; {}
@@ -738,50 +813,54 @@ export class TagController {
 
     // search
     if (filters.keyword) {
-      const trimmed &#x3D; _trim(filters.keyword)
-      const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
+      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
       queryFilter.$or &#x3D; [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
     }
 
     // paginate
-    return this.tagService.paginate(queryFilter, paginateOptions, isUnauthenticated)
+    return this.tagService.paginate(queryFilter, paginateOptions, !identity.isAdmin)
   }
 
   @Get(&#x27;all&#x27;)
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse(&#x27;Get all tags succeeded&#x27;)
-  getAllTags(@RequestContext() { isAuthenticated }: IRequestContext): Promise&lt;Tag[]&gt; {
-    return isAuthenticated
+  getAllTags(@RequestContext() { identity }: IRequestContext): Promise&lt;Tag[]&gt; {
+    return identity.isAdmin
       ? this.tagService.getAllTags({ aggregatePublicOnly: false })
-      : this.tagService.getAllTagsCache()
+      : this.tagService.getAllPublicTagsCache()
+  }
+
+  @Get(&#x27;:id&#x27;)
+  @SuccessResponse(&#x27;Get tag succeeded&#x27;)
+  getTag(@Param(&#x27;id&#x27;, ParseIntPipe) id: number): Promise&lt;Tag&gt; {
+    return this.tagService.getDetail(id)
   }
 
   @Post()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Create tag succeeded&#x27;)
-  createTag(@Body() tag: Tag): Promise&lt;Tag&gt; {
-    return this.tagService.create(tag)
+  createTag(@Body() dto: CreateTagDto): Promise&lt;Tag&gt; {
+    return this.tagService.create(dto)
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete tags succeeded&#x27;)
-  delTags(@Body() body: TagsDTO) {
-    return this.tagService.batchDelete(body.tag_ids)
+  deleteTags(@Body() { tag_ids }: TagIdsDto) {
+    return this.tagService.batchDelete(tag_ids)
   }
 
-  @Put(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @Patch(&#x27;:id&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update Tag succeeded&#x27;)
-  putTag(@RequestContext() { params }: IRequestContext, @Body() tag: Tag): Promise&lt;Tag&gt; {
-    return this.tagService.update(params.id, tag)
+  updateTag(@Param(&#x27;id&#x27;, ParseIntPipe) id: number, @Body() dto: UpdateTagDto): Promise&lt;Tag&gt; {
+    return this.tagService.update(id, dto)
   }
 
   @Delete(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete tag succeeded&#x27;)
-  delTag(@RequestContext() { params }: IRequestContext) {
-    return this.tagService.delete(params.id)
+  deleteTag(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
+    return this.tagService.delete(id)
   }
 }
 </code></pre>

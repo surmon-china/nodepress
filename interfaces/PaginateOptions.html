@@ -174,6 +174,13 @@
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
+                                        <a href="#lean" 
+>
+                                            lean
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
                                         <a href="#page" 
 >
                                             page
@@ -298,6 +305,50 @@
 
 
 
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="lean"></a>
+                                        <span class="name "><b>lean</b>
+                                            <a href="#lean">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>lean:         <code><a href="../classes/Option.html" target="_self" >LeanOptions</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../classes/Option.html" target="_self" >LeanOptions</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>mongoose queryOptions</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -500,12 +551,6 @@
 
 
 
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>mongoose queryOptions</p>
-</div>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -514,7 +559,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _merge from &#x27;lodash/merge&#x27;
-import type { Model, Schema, QueryFilter, QueryOptions, HydratedDocument } from &#x27;mongoose&#x27;
+import type { Model, Schema, QueryFilter, QueryOptions, LeanOptions, HydratedDocument } from &#x27;mongoose&#x27;
 
 export interface PaginateResult&lt;T&gt; {
   documents: Array&lt;T&gt;
@@ -532,6 +577,7 @@ export interface PaginateOptions {
   /** original options */
   projection?: string | object | null
   /** mongoose queryOptions */
+  lean?: LeanOptions
   sort?: QueryOptions[&#x27;sort&#x27;]
   populate?: QueryOptions[&#x27;populate&#x27;]
   /** original options for &#x60;model.find&#x60; */
@@ -550,7 +596,7 @@ function doPaginate&lt;TRawDocType&gt;(
   paginateOptions: PaginateOptions &#x3D; {},
   forceLean &#x3D; false
 ) {
-  const { page, perPage, dateSort, projection, $queryOptions, ...restOptions } &#x3D; _merge(
+  const { page, perPage, dateSort, projection, lean, $queryOptions, ...restOptions } &#x3D; _merge(
     { ...DEFAULT_OPTIONS },
     { ...paginateOptions }
   )
@@ -558,15 +604,15 @@ function doPaginate&lt;TRawDocType&gt;(
   const findQueryOptions: QueryOptions&lt;TRawDocType&gt; &#x3D; {
     ...restOptions,
     ...$queryOptions,
-    lean: forceLean
+    lean: forceLean ? (lean ?? true) : false
   }
 
   // query
-  const countQuery &#x3D; this.countDocuments(queryFilter).exec()
+  const countQuery &#x3D; this.countDocuments(queryFilter).lean().exec()
   const listQuery &#x3D; this.find(queryFilter, projection, {
     skip: (page - 1) * perPage,
     limit: perPage,
-    sort: dateSort ? { _id: dateSort } : findQueryOptions.sort,
+    sort: dateSort ? { created_at: dateSort } : findQueryOptions.sort,
     ...findQueryOptions
   }).exec()
 
@@ -580,8 +626,14 @@ function doPaginate&lt;TRawDocType&gt;(
 }
 
 export type PaginateStatics&lt;TRawDocType, THydratedDocType &#x3D; HydratedDocument&lt;TRawDocType&gt;&gt; &#x3D; {
-  paginate(filter?: QueryFilter&lt;TRawDocType&gt;, options?: PaginateOptions): Promise&lt;PaginateResult&lt;THydratedDocType&gt;&gt;
-  paginateRaw(filter?: QueryFilter&lt;TRawDocType&gt;, options?: PaginateOptions): Promise&lt;PaginateResult&lt;TRawDocType&gt;&gt;
+  paginate&lt;T &#x3D; THydratedDocType&gt;(
+    filter?: QueryFilter&lt;TRawDocType&gt;,
+    options?: PaginateOptions
+  ): Promise&lt;PaginateResult&lt;T&gt;&gt;
+  paginateRaw&lt;T &#x3D; TRawDocType&gt;(
+    filter?: QueryFilter&lt;TRawDocType&gt;,
+    options?: PaginateOptions
+  ): Promise&lt;PaginateResult&lt;T&gt;&gt;
 }
 
 export function mongoosePaginate(schema: Schema) {

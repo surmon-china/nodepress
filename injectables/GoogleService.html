@@ -388,8 +388,8 @@ export class GoogleService {
     try {
       // auth client
       this.authJWT &#x3D; new google.auth.JWT({
-        email: APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.client_email,
-        key: APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.private_key,
+        email: APP_CONFIG.GOOGLE_API.jwtServiceAccountCredentials?.client_email,
+        key: APP_CONFIG.GOOGLE_API.jwtServiceAccountCredentials?.private_key,
         scopes: [
           &#x27;https://www.googleapis.com/auth/indexing&#x27;, // ping service
           &#x27;https://www.googleapis.com/auth/analytics.readonly&#x27; // GA service

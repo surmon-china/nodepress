@@ -159,12 +159,13 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
-                                <a href="#author" >author</a>
+                                <a href="#author_email" >author_email</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
+                                <a href="#author_name" >author_name</a>
+                            </li>
+                            <li>
                                     <span class="modifier"></span>
                                 <a href="#author_type" >author_type</a>
                             </li>
@@ -175,12 +176,9 @@
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Optional</span>
                                 <a href="#id" >id</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#ip" >ip</a>
                             </li>
@@ -190,14 +188,9 @@
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#target_id" >target_id</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#target_type" >target_type</a>
                             </li>
@@ -208,14 +201,13 @@
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier">Optional</span>
-                                <a href="#user_agent" >user_agent</a>
+                                <a href="#user" >user</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
+                                <a href="#user_agent" >user_agent</a>
+                            </li>
+                            <li>
                                     <span class="modifier"></span>
                                 <a href="#vote_type" >vote_type</a>
                             </li>
@@ -242,17 +234,17 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="author"></a>
+                    <a name="author_email"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                        <span ><b>author</b></span>
-                        <a href="#author"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>author_email</b></span>
+                        <a href="#author_email"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>Record&lt;string | any&gt; | null</code>
+                        <i>Type : </i>    <code>string | null</code>
 
                     </td>
                 </tr>
@@ -261,7 +253,43 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({type: Object, default: undefined})<br />
+                            @prop({type: String, default: undefined})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/vote/vote.model.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="author_name"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>author_name</b></span>
+                        <a href="#author_name"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -281,9 +309,6 @@
                     <a name="author_type"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>author_type</b></span>
                         <a href="#author_type"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -291,7 +316,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#GeneralAuthorType" target="_self" >GeneralAuthorType</a></code>
 
                     </td>
                 </tr>
@@ -300,7 +325,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(VOTE_AUTHOR_TYPES)<br />@IsInt()<br />@IsNotEmpty()<br />@prop({required: true, index: true})<br />
+                            @prop({type: String, enum: GeneralAuthorType, required: true, index: true})<br />
                         </code>
                     </td>
                 </tr>
@@ -337,7 +362,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined, immutable: true})<br />
+                            @prop({type: Date, default: undefined, immutable: true, index: true})<br />
                         </code>
                     </td>
                 </tr>
@@ -357,7 +382,6 @@
                     <a name="id"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier">Optional</span>
                         <span ><b>id</b></span>
                         <a href="#id"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -380,7 +404,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/modules/vote/vote.model.ts:33</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/modules/vote/vote.model.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -393,8 +417,6 @@
                 <td class="col-md-4">
                     <a name="ip"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>ip</b></span>
                         <a href="#ip"><span class="icon ion-ios-link"></span></a>
@@ -412,13 +434,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIP()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
+                            @prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/vote/vote.model.ts:65</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/vote/vote.model.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -454,7 +476,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/modules/vote/vote.model.ts:69</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/modules/vote/vote.model.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -467,8 +489,6 @@
                 <td class="col-md-4">
                     <a name="target_id"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>target_id</b></span>
                         <a href="#target_id"><span class="icon ion-ios-link"></span></a>
@@ -486,13 +506,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@IsNotEmpty()<br />@prop({required: true, index: true})<br />
+                            @prop({type: Number, required: true, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/modules/vote/vote.model.ts:44</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/modules/vote/vote.model.ts:50</a></div>
                         </td>
                     </tr>
 
@@ -506,9 +526,6 @@
                     <a name="target_type"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>target_type</b></span>
                         <a href="#target_type"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -516,7 +533,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#VoteTargetType" target="_self" >VoteTargetType</a></code>
 
                     </td>
                 </tr>
@@ -525,13 +542,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(VOTE_TARGETS)<br />@IsInt()<br />@IsNotEmpty()<br />@prop({required: true, index: true})<br />
+                            @prop({type: String, enum: VoteTargetType, required: true, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/modules/vote/vote.model.ts:39</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/modules/vote/vote.model.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -562,7 +579,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined})<br />
+                            @prop({type: Date, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -579,11 +596,45 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="user"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>user</b></span>
+                        <a href="#user"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/User.html" target="_self" >Ref&lt;User&gt; | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @prop({ref: () &#x3D;&gt; User, default: undefined, index: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/vote/vote.model.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="user_agent"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Optional</span>
                         <span ><b>user_agent</b></span>
                         <a href="#user_agent"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -600,7 +651,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@prop({type: String, default: undefined})<br />
+                            @prop({type: String, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
@@ -620,9 +671,6 @@
                     <a name="vote_type"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>vote_type</b></span>
                         <a href="#vote_type"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -630,7 +678,7 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#VoteType" target="_self" >VoteType</a></code>
 
                     </td>
                 </tr>
@@ -639,13 +687,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(VOTE_TYPES)<br />@IsInt()<br />@IsNotEmpty()<br />@prop({required: true, index: true})<br />
+                            @prop({type: Number, enum: VoteType, required: true, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/modules/vote/vote.model.ts:50</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/modules/vote/vote.model.ts:53</a></div>
                         </td>
                     </tr>
 
@@ -664,24 +712,35 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
-import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
-import { IsString, IsIP, IsIn, IsInt, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { MergeType } from &#x27;mongoose&#x27;
+import MongooseLeanVirtuals from &#x27;mongoose-lean-virtuals&#x27;
+import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
+import { prop, index, plugin, modelOptions, Ref, Severity } from &#x27;@typegoose/typegoose&#x27;
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
+import { User } from &#x27;@app/modules/user/user.model&#x27;
 import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
-import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.constant&#x27;
+import { GeneralAuthorType } from &#x27;@app/constants/author.constant&#x27;
+import { VoteTargetType, VoteType } from &#x27;./vote.constant&#x27;
+
+export type VoteDoc &#x3D; MongooseDoc&lt;Vote&gt;
+export type VoteWithUser &#x3D; MergeType&lt;Vote, { user: User | null }&gt;
+export type VoteDocWithUser &#x3D; MergeType&lt;VoteDoc, { user: User | null }&gt;
+
+export type NormalizedVote &#x3D; Omit&lt;Vote, &#x27;id&#x27; | &#x27;created_at&#x27; | &#x27;updated_at&#x27;&gt;
 
 @plugin(mongoosePaginate)
+@plugin(MongooseLeanVirtuals)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@index({ target_type: 1, target_id: 1, created_at: -1 })
+@index({ target_type: 1, target_id: 1, user: 1 })
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
     id: false,
     versionKey: false,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
     timestamps: {
       createdAt: &#x27;created_at&#x27;,
       updatedAt: &#x27;updated_at&#x27;
@@ -690,53 +749,42 @@ import { VOTE_TYPES, VOTE_TARGETS, VOTE_AUTHOR_TYPES } from &#x27;./vote.constan
 })
 export class Vote {
   @prop({ unique: true })
-  id?: number
+  id: number
 
-  @IsIn(VOTE_TARGETS)
-  @IsInt()
-  @IsNotEmpty()
-  @prop({ required: true, index: true })
-  target_type: number
+  @prop({ type: String, enum: VoteTargetType, required: true, index: true })
+  target_type: VoteTargetType
 
-  @IsInt()
-  @IsNotEmpty()
-  @prop({ required: true, index: true })
+  @prop({ type: Number, required: true, index: true })
   target_id: number
 
-  @IsIn(VOTE_TYPES)
-  @IsInt()
-  @IsNotEmpty()
-  @prop({ required: true, index: true })
-  vote_type: number
+  @prop({ type: Number, enum: VoteType, required: true, index: true })
+  vote_type: VoteType
 
-  @IsIn(VOTE_AUTHOR_TYPES)
-  @IsInt()
-  @IsNotEmpty()
-  @prop({ required: true, index: true })
-  author_type: number
+  @prop({ type: String, enum: GeneralAuthorType, required: true, index: true })
+  author_type: GeneralAuthorType
 
-  @prop({ type: Object, default: null })
-  author: Record&lt;string, any&gt; | null
+  @prop({ type: String, default: null })
+  author_name: string | null
 
-  // IP address
-  @IsIP()
-  @IsOptional()
+  @prop({ type: String, default: null })
+  author_email: string | null
+
+  @prop({ ref: () &#x3D;&gt; User, default: null, index: true })
+  user: Ref&lt;User&gt; | null
+
   @prop({ type: String, default: null })
   ip: string | null
 
-  // IP location
   @prop({ type: Object, default: null })
   ip_location: Partial&lt;IPLocation&gt; | null
 
-  // user agent
-  @IsString()
   @prop({ type: String, default: null })
-  user_agent?: string | null
+  user_agent: string | null
 
-  @prop({ default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 

@@ -159,10 +159,51 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#author_email" >author_email</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#author_name" >author_name</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#author_type" >author_type</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#author_website" >author_website</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#content" >content</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#created_at" >created_at</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#dislikes" >dislikes</a>
@@ -173,11 +214,11 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#extras" >extras</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Optional</span>
                                 <a href="#id" >id</a>
                             </li>
                             <li>
@@ -193,7 +234,19 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#likes" >likes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#orphaned" >orphaned</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#parent_id" >parent_id</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -203,8 +256,30 @@
                             </li>
                             <li>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#target_id" >target_id</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#target_type" >target_type</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#updated_at" >updated_at</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#user" >user</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#user_agent" >user_agent</a>
                             </li>
                         </ul>
                     </td>
@@ -215,6 +290,23 @@
 
 
 
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#author_email_hash" >author_email_hash</a>
+                                </li>
+                                <li>
+                                    <a href="#author_status" >author_status</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
         </tbody>
     </table>
 </section>
@@ -225,6 +317,206 @@
     <h3 id="inputs">
         Properties
     </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="author_email"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>author_email</b></span>
+                        <a href="#author_email"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsEmail()<br />@IsString()<br />@IsOptional()<br />@NormalizeString({trim: true})<br />@prop({type: String, default: undefined, trim: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/modules/comment/comment.model.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="author_name"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>author_name</b></span>
+                        <a href="#author_name"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @MaxLength(100)<br />@IsString()<br />@IsNotEmpty()<br />@NormalizeString({trim: true})<br />@prop({type: String, required: true, trim: true, validate: /\S+/, maxlength: 100})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/modules/comment/comment.model.ts:95</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="author_type"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>author_type</b></span>
+                        <a href="#author_type"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#CommentAuthorType" target="_self" >CommentAuthorType</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsEnum(CommentAuthorType)<br />@IsDefined()<br />@prop({type: String, enum: CommentAuthorType, required: true, index: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/modules/comment/comment.model.ts:120</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="author_website"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>author_website</b></span>
+                        <a href="#author_website"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @MaxLength(500)<br />@IsUrl({require_protocol: true})<br />@IsString()<br />@IsOptional()<br />@NormalizeString({trim: true})<br />@prop({type: String, default: undefined, trim: true, maxlength: 500})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/modules/comment/comment.model.ts:115</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="content"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>content</b></span>
+                        <a href="#content"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @MinLength(3)<br />@MaxLength(3000)<br />@IsNotEmpty()<br />@IsString()<br />@NormalizeString({trim: true})<br />@prop({type: String, required: true, trim: true, validate: /\S+/, maxlength: 3000})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/modules/comment/comment.model.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -249,13 +541,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined, immutable: true})<br />
+                            @prop({type: Date, default: undefined, immutable: true, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="141" class="link-to-prism">src/modules/comment/comment.model.ts:141</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="167" class="link-to-prism">src/modules/comment/comment.model.ts:167</a></div>
                         </td>
                     </tr>
 
@@ -268,6 +560,7 @@
                 <td class="col-md-4">
                     <a name="dislikes"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>dislikes</b></span>
@@ -286,13 +579,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@prop({default: 0, index: true})<br />
+                            @IsInt()<br />@IsOptional()<br />@prop({type: Number, default: 0, min: 0})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">src/modules/comment/comment.model.ts:121</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/comment/comment.model.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -305,6 +598,7 @@
                 <td class="col-md-4">
                     <a name="extras"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -326,13 +620,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @Type(undefined)<br />@ValidateNested()<br />@ArrayUnique()<br />@IsArray()<br />@prop({_id: false, default: undefined, type: () &#x3D;&gt; })<br />
+                            @Type(undefined)<br />@ValidateNested({each: true})<br />@ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; , _id: false, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/modules/comment/comment.model.ts:138</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="164" class="link-to-prism">src/modules/comment/comment.model.ts:164</a></div>
                         </td>
                     </tr>
 
@@ -346,7 +640,6 @@
                     <a name="id"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier">Optional</span>
                         <span ><b>id</b></span>
                         <a href="#id"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -369,7 +662,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/modules/comment/comment.model.ts:107</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/modules/comment/comment.model.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -407,7 +700,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="127" class="link-to-prism">src/modules/comment/comment.model.ts:127</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/modules/comment/comment.model.ts:148</a></div>
                         </td>
                     </tr>
 
@@ -443,7 +736,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">src/modules/comment/comment.model.ts:131</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="151" class="link-to-prism">src/modules/comment/comment.model.ts:151</a></div>
                         </td>
                     </tr>
 
@@ -456,6 +749,7 @@
                 <td class="col-md-4">
                     <a name="likes"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>likes</b></span>
@@ -474,13 +768,79 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsInt()<br />@prop({default: 0, index: true})<br />
+                            @IsInt()<br />@IsOptional()<br />@prop({type: Number, default: 0, min: 0})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/modules/comment/comment.model.ts:117</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/modules/comment/comment.model.ts:138</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="orphaned"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>orphaned</b></span>
+                        <a href="#orphaned"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="173" class="link-to-prism">src/modules/comment/comment.model.ts:173</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parent_id"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>parent_id</b></span>
+                        <a href="#parent_id"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @Min(0)<br />@IsInt()<br />@IsOptional()<br />@prop({type: Number, default: undefined})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/modules/comment/comment.model.ts:77</a></div>
                         </td>
                     </tr>
 
@@ -512,13 +872,89 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(COMMENT_STATUSES)<br />@IsInt()<br />@prop({enum: CommentStatus, default: undefined, index: true})<br />
+                            @IsEnum(CommentStatus)<br />@IsOptional()<br />@prop({type: Number, enum: CommentStatus, default: undefined, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/modules/comment/comment.model.ts:112</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/modules/comment/comment.model.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="target_id"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>target_id</b></span>
+                        <a href="#target_id"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsInt()<br />@IsDefined()<br />@prop({type: Number, required: true, index: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/modules/comment/comment.model.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="target_type"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>target_type</b></span>
+                        <a href="#target_type"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#CommentTargetType" target="_self" >CommentTargetType</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsEnum(CommentTargetType)<br />@IsDefined()<br />@prop({type: String, enum: CommentTargetType, required: true, index: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/modules/comment/comment.model.ts:66</a></div>
                         </td>
                     </tr>
 
@@ -549,13 +985,87 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined})<br />
+                            @prop({type: Date, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="144" class="link-to-prism">src/modules/comment/comment.model.ts:144</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="170" class="link-to-prism">src/modules/comment/comment.model.ts:170</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="user"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>user</b></span>
+                        <a href="#user"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/User.html" target="_self" >Ref&lt;User&gt; | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @prop({ref: () &#x3D;&gt; User, default: undefined, index: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/comment/comment.model.ts:88</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="user_agent"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>user_agent</b></span>
+                        <a href="#user_agent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsString()<br />@IsOptional()<br />@prop({type: String, default: undefined})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="156" class="link-to-prism">src/modules/comment/comment.model.ts:156</a></div>
                         </td>
                     </tr>
 
@@ -570,148 +1080,226 @@
 
 
 
+            <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="author_email_hash"></a>
+                        <span class="name"><b>author_email_hash</b><a href="#author_email_hash"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>author_email_hash()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/modules/comment/comment.model.ts:104</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="author_status"></a>
+                        <span class="name"><b>author_status</b><a href="#author_status"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>author_status()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="123" class="link-to-prism">src/modules/comment/comment.model.ts:123</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
-import { prop, plugin, modelOptions, Severity } from &#x27;@typegoose/typegoose&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { MergeType } from &#x27;mongoose&#x27;
+import MongooseLeanVirtuals from &#x27;mongoose-lean-virtuals&#x27;
+import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
+import { prop, plugin, index, modelOptions, Severity, Ref } from &#x27;@typegoose/typegoose&#x27;
 import { Type } from &#x27;class-transformer&#x27;
-import { IsString, IsIn, IsIP, IsUrl, IsEmail, IsInt, IsArray, IsObject, ArrayUnique } from &#x27;class-validator&#x27;
-import { IsDefined, IsOptional, IsNotEmpty, ValidateNested, MinLength, MaxLength } from &#x27;class-validator&#x27;
+import { ArrayUnique, ValidateNested } from &#x27;class-validator&#x27;
+import { IsNotEmpty, IsOptional, IsDefined, MinLength, MaxLength, Min } from &#x27;class-validator&#x27;
+import { IsString, IsArray, IsUrl, IsEmail, IsInt, IsEnum, IsIP } from &#x27;class-validator&#x27;
+import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
-import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
-import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
-import { ROOT_COMMENT_PID } from &#x27;@app/constants/biz.constant&#x27;
-import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
-import { decodeMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
+import { User, UserPublic } from &#x27;@app/modules/user/user.model&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
-import { CommentStatus, COMMENT_STATUSES } from &#x27;./comment.constant&#x27;
+import { MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { IPLocation } from &#x27;@app/core/helper/helper.service.ip&#x27;
+import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
+import { hashMD5 } from &#x27;@app/transformers/codec.transformer&#x27;
+import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
+import { CommentStatus, CommentTargetType, CommentAuthorType, CommentAuthorStatus } from &#x27;./comment.constant&#x27;
 
-@modelOptions({
-  schemaOptions: {
-    versionKey: false,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  }
-})
-export class Author {
-  @MaxLength(20)
-  @IsString()
-  @IsNotEmpty()
-  @prop({ required: true, validate: /\S+/ })
-  name: string
+export type CommentDoc &#x3D; MongooseDoc&lt;Comment&gt;
+export type CommentWith&lt;U extends User | UserPublic&gt; &#x3D; MergeType&lt;Comment, { user: U | null }&gt;
+export type CommentDocWith&lt;U extends User | UserPublic&gt; &#x3D; MergeType&lt;CommentDoc, { user: U | null }&gt;
 
-  // MARK: can&#x27;t get Disqus user&#x27;s email
-  @IsEmail()
-  @IsString()
-  @IsOptional()
-  @prop({ type: String, default: null })
-  email?: string | null
-
-  @IsUrl({ require_protocol: true })
-  @IsString()
-  @IsOptional()
-  @prop({ type: String, default: null })
-  site?: string | null
-
-  public get email_hash() {
-    const email &#x3D; this.email?.trim().toLowerCase()
-    return email ? decodeMD5(email) : null
-  }
-}
-
-export class CommentBase {
-  @IsInt()
-  @IsNotEmpty({ message: &#x27;post ID?&#x27; })
-  @prop({ required: true, index: true })
-  post_id: number
-
-  // parent comment ID
-  @IsInt()
-  @prop({ default: ROOT_COMMENT_PID, index: true })
-  pid: number
-
-  @MinLength(3) // sync with Disqus
-  @MaxLength(3000)
-  @IsString()
-  @IsNotEmpty({ message: &#x27;comment content?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
-  content: string
-
-  @Type(() &#x3D;&gt; Author)
-  @ValidateNested()
-  @IsObject()
-  @IsNotEmpty()
-  @IsDefined({ message: &#x27;comment author?&#x27; })
-  @prop({ _id: false, required: true })
-  author: Author
-
-  // user agent
-  @IsString()
-  @IsOptional()
-  @prop({ type: String })
-  agent?: string
-}
-
-export interface CommentBaseWithExtras extends CommentBase {
-  extras?: KeyValueModel[]
-}
+export type NormalizedComment &#x3D; Omit&lt;
+  Comment,
+  &#x27;id&#x27; | &#x27;created_at&#x27; | &#x27;updated_at&#x27; | &#x27;author_status&#x27; | &#x27;author_email_hash&#x27;
+&gt;
 
 @plugin(mongoosePaginate)
+@plugin(MongooseLeanVirtuals)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@index({ user: 1, created_at: -1 })
+@index({ target_type: 1, target_id: 1, status: 1, created_at: -1 })
 @modelOptions({
   // https://typegoose.github.io/typegoose/docs/api/decorators/model-options/#allowmixed
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
     id: false,
     versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: {
       createdAt: &#x27;created_at&#x27;,
       updatedAt: &#x27;updated_at&#x27;
     }
   }
 })
-export class Comment extends CommentBase {
+export class Comment {
   @prop({ unique: true })
-  id?: number
+  id: number
 
-  @IsIn(COMMENT_STATUSES)
-  @IsInt()
-  @prop({ enum: CommentStatus, default: CommentStatus.Published, index: true })
+  @IsEnum(CommentStatus)
+  @IsOptional()
+  @prop({ type: Number, enum: CommentStatus, default: CommentStatus.Published, index: true })
   status: CommentStatus
 
-  // likes
+  @IsEnum(CommentTargetType)
+  @IsDefined()
+  @prop({ type: String, enum: CommentTargetType, required: true, index: true })
+  target_type: CommentTargetType
+
   @IsInt()
-  @prop({ default: 0, index: true })
+  @IsDefined()
+  @prop({ type: Number, required: true, index: true })
+  target_id: number
+
+  @Min(0)
+  @IsInt()
+  @IsOptional()
+  @prop({ type: Number, default: null })
+  parent_id: number | null
+
+  @MinLength(3)
+  @MaxLength(3000)
+  @IsNotEmpty()
+  @IsString()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 3000 })
+  content: string
+
+  @prop({ ref: () &#x3D;&gt; User, default: null, index: true })
+  user: Ref&lt;User&gt; | null
+
+  @MaxLength(100)
+  @IsString()
+  @IsNotEmpty()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 100 })
+  author_name: string
+
+  @IsEmail()
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true })
+  author_email: string | null
+
+  public get author_email_hash() {
+    const email &#x3D; this.author_email?.trim().toLowerCase()
+    return email ? hashMD5(email) : null
+  }
+
+  @MaxLength(500)
+  @IsUrl({ require_protocol: true })
+  @IsString()
+  @IsOptional()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, default: null, trim: true, maxlength: 500 })
+  author_website: string | null
+
+  @IsEnum(CommentAuthorType)
+  @IsDefined()
+  @prop({ type: String, enum: CommentAuthorType, required: true, index: true })
+  author_type: CommentAuthorType
+
+  // The user who posted this comment has either been deleted or does not exist.
+  public get author_status(): CommentAuthorStatus {
+    // Compatible with unmigrated data
+    if (this.author_type &#x3D;&#x3D;&#x3D; undefined) return CommentAuthorStatus.Guest
+    if (this.author_type &#x3D;&#x3D;&#x3D; CommentAuthorType.Guest) {
+      return CommentAuthorStatus.Guest
+    } else if (this.author_type &#x3D;&#x3D;&#x3D; CommentAuthorType.User &amp;&amp; !this.user) {
+      return CommentAuthorStatus.Ghost
+    } else {
+      return CommentAuthorStatus.Active
+    }
+  }
+
+  @IsInt()
+  @IsOptional()
+  @prop({ type: Number, default: 0, min: 0 })
   likes: number
 
   @IsInt()
-  @prop({ default: 0, index: true })
+  @IsOptional()
+  @prop({ type: Number, default: 0, min: 0 })
   dislikes: number
 
-  // IP address
   @IsIP()
   @IsOptional()
   @prop({ type: String, default: null })
   ip: string | null
 
-  // IP location
   @prop({ type: Object, default: null })
   ip_location: Partial&lt;IPLocation&gt; | null
 
+  @IsString()
+  @IsOptional()
+  @prop({ type: String, default: null })
+  user_agent: string | null
+
   @Type(() &#x3D;&gt; KeyValueModel)
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [KeyValueModel] })
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [KeyValueModel], _id: false, default: [] })
   extras: KeyValueModel[]
 
-  @prop({ default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
+
+  // The parent comment of this comment does not exist or is not publicly posted.
+  orphaned?: boolean
 }
 
 export const CommentProvider &#x3D; getProviderByTypegooseClass(Comment)

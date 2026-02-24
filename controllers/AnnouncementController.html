@@ -136,7 +136,7 @@
                 <h3>Prefix</h3>
             </p>
             <p class="comment">
-                <code>announcement</code>
+                <code>announcements</code>
             </p>
 
 
@@ -167,16 +167,15 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#delAnnouncement" >delAnnouncement</a>
+                                <a href="#deleteAnnouncement" >deleteAnnouncement</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#delAnnouncements" >delAnnouncements</a>
+                                <a href="#deleteAnnouncements" >deleteAnnouncements</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#getAnnouncements" >getAnnouncements</a>
@@ -185,7 +184,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#putAnnouncement" >putAnnouncement</a>
+                                <a href="#updateAnnouncement" >updateAnnouncement</a>
                             </li>
                         </ul>
                     </td>
@@ -221,7 +220,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createAnnouncement(announcement: <a href="../classes/Announcement.html" target="_self">Announcement</a>)</code>
+                    <code>createAnnouncement(dto: <a href="../classes/CreateAnnouncementDto.html" target="_self">CreateAnnouncementDto</a>)</code>
                 </td>
             </tr>
 
@@ -229,14 +228,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Create announcement succeeded&#x27;)<br /></code>
+                    <code>@Post()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Create announcement succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="51"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:51</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -257,9 +256,87 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>announcement</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/Announcement.html" target="_self" >Announcement</a></code>
+                                                            <code><a href="../classes/CreateAnnouncementDto.html" target="_self" >CreateAnnouncementDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Announcement.html" target="_self" >Promise&lt;Announcement&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAnnouncement"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>deleteAnnouncement</b></span>
+                        <a href="#deleteAnnouncement"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAnnouncement(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Delete(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete announcement succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -286,20 +363,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="delAnnouncement"></a>
+                    <a name="deleteAnnouncements"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>delAnnouncement</b></span>
-                        <a href="#delAnnouncement"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>deleteAnnouncements</b></span>
+                        <a href="#deleteAnnouncements"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delAnnouncement(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>deleteAnnouncements(: <a href="../classes/AnnouncementIdsDto.html" target="_self">AnnouncementIdsDto</a>)</code>
                 </td>
             </tr>
 
@@ -307,14 +384,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete announcement succeeded&#x27;)<br /></code>
+                    <code>@Delete()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete announcements succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="72"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:72</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:54</a></div>
                         </td>
                     </tr>
 
@@ -336,85 +413,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="delAnnouncements"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>delAnnouncements</b></span>
-                        <a href="#delAnnouncements"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delAnnouncements(body: <a href="../classes/AnnouncementsDTO.html" target="_self">AnnouncementsDTO</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete announcements succeeded&#x27;)<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="58"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:58</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>body</td>
-                                            <td>
-                                                            <code><a href="../classes/AnnouncementsDTO.html" target="_self" >AnnouncementsDTO</a></code>
+                                                            <code><a href="../classes/AnnouncementIdsDto.html" target="_self" >AnnouncementIdsDto</a></code>
                                             </td>
 
                                             <td>
@@ -445,7 +444,6 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getAnnouncements</b></span>
                         <a href="#getAnnouncements"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -454,7 +452,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAnnouncements(query: <a href="../classes/AnnouncementPaginateQueryDTO.html" target="_self">AnnouncementPaginateQueryDTO</a>)</code>
+                    <code>getAnnouncements(query: <a href="../classes/AnnouncementPaginateQueryDto.html" target="_self">AnnouncementPaginateQueryDto</a>)</code>
                 </td>
             </tr>
 
@@ -462,14 +460,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get announcements succeeded&#x27;, usePaginate: true})<br /></code>
+                    <code>@Get()<br />@SuccessResponse({message: &#x27;Get announcements succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:26</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="24"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -492,7 +490,7 @@
                                         <tr>
                                                 <td>query</td>
                                             <td>
-                                                            <code><a href="../classes/AnnouncementPaginateQueryDTO.html" target="_self" >AnnouncementPaginateQueryDTO</a></code>
+                                                            <code><a href="../classes/AnnouncementPaginateQueryDto.html" target="_self" >AnnouncementPaginateQueryDto</a></code>
                                             </td>
 
                                             <td>
@@ -519,20 +517,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putAnnouncement"></a>
+                    <a name="updateAnnouncement"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>putAnnouncement</b></span>
-                        <a href="#putAnnouncement"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateAnnouncement</b></span>
+                        <a href="#updateAnnouncement"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putAnnouncement(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, announcement: <a href="../classes/Announcement.html" target="_self">Announcement</a>)</code>
+                    <code>updateAnnouncement(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, dto: <a href="../classes/UpdateAnnouncementDto.html" target="_self">UpdateAnnouncementDto</a>)</code>
                 </td>
             </tr>
 
@@ -540,14 +538,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update announcement succeeded&#x27;)<br /></code>
+                    <code>@Patch(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update announcement succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="61"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:61</a></div>
                         </td>
                     </tr>
 
@@ -568,8 +566,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -579,9 +578,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>announcement</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/Announcement.html" target="_self" >Announcement</a></code>
+                                                            <code><a href="../classes/UpdateAnnouncementDto.html" target="_self" >UpdateAnnouncementDto</a></code>
                                             </td>
 
                                             <td>
@@ -614,40 +613,36 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import _trim from &#x27;lodash/trim&#x27;
+import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
-import { Controller, Get, Put, Post, Delete, Body, UseGuards, Query } from &#x27;@nestjs/common&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
-import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
+import { Controller, Get, Patch, Post, Delete, Body, Query, Param, ParseIntPipe } from &#x27;@nestjs/common&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
-import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { AnnouncementsDTO, AnnouncementPaginateQueryDTO } from &#x27;./announcement.dto&#x27;
+import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
+import { AnnouncementPaginateQueryDto, AnnouncementIdsDto } from &#x27;./announcement.dto&#x27;
+import { CreateAnnouncementDto, UpdateAnnouncementDto } from &#x27;./announcement.dto&#x27;
 import { AnnouncementService } from &#x27;./announcement.service&#x27;
 import { Announcement } from &#x27;./announcement.model&#x27;
 
-@Controller(&#x27;announcement&#x27;)
+@Controller(&#x27;announcements&#x27;)
 export class AnnouncementController {
   constructor(private readonly announcementService: AnnouncementService) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: &#x27;Get announcements succeeded&#x27;, usePaginate: true })
-  getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDTO) {
+  getAnnouncements(@Query(PermissionPipe) query: AnnouncementPaginateQueryDto) {
     const { sort, page, per_page, ...filters } &#x3D; query
     const queryFilter: QueryFilter&lt;Announcement&gt; &#x3D; {}
 
     // search
     if (filters.keyword) {
-      queryFilter.content &#x3D; new RegExp(_trim(filters.keyword), &#x27;i&#x27;)
+      queryFilter.content &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
     }
-
     // status
-    if (filters.status !&#x3D; null) {
+    if (!_isUndefined(filters.status)) {
       queryFilter.status &#x3D; filters.status
     }
 
-    // paginate
     return this.announcementService.paginate(queryFilter, {
       page,
       perPage: per_page,
@@ -656,31 +651,31 @@ export class AnnouncementController {
   }
 
   @Post()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Create announcement succeeded&#x27;)
-  createAnnouncement(@Body() announcement: Announcement) {
-    return this.announcementService.create(announcement)
+  createAnnouncement(@Body() dto: CreateAnnouncementDto): Promise&lt;Announcement&gt; {
+    return this.announcementService.create(dto)
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete announcements succeeded&#x27;)
-  delAnnouncements(@Body() body: AnnouncementsDTO) {
-    return this.announcementService.batchDelete(body.announcement_ids)
+  deleteAnnouncements(@Body() { announcement_ids }: AnnouncementIdsDto) {
+    return this.announcementService.batchDelete(announcement_ids)
   }
 
-  @Put(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @Patch(&#x27;:id&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update announcement succeeded&#x27;)
-  putAnnouncement(@RequestContext() { params }: IRequestContext, @Body() announcement: Announcement) {
-    return this.announcementService.update(params.id, announcement)
+  updateAnnouncement(@Param(&#x27;id&#x27;, ParseIntPipe) id: number, @Body() dto: UpdateAnnouncementDto) {
+    return this.announcementService.update(id, dto)
   }
 
   @Delete(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete announcement succeeded&#x27;)
-  delAnnouncement(@RequestContext() { params }: IRequestContext) {
-    return this.announcementService.delete(params.id)
+  deleteAnnouncement(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
+    return this.announcementService.delete(id)
   }
 }
 </code></pre>

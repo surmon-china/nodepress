@@ -423,7 +423,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/core/cache/redis.service.ts:86</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/core/cache/redis.service.ts:79</a></div>
                                 </td>
                             </tr>
 
@@ -445,7 +445,7 @@
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/core/cache/redis.service.ts:90</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/core/cache/redis.service.ts:83</a></div>
                                 </td>
                             </tr>
 
@@ -459,10 +459,10 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { createClient, RedisClientOptions } from &#x27;@redis/client&#x27;
 import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
 import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
-import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { createRedisStore, RedisStore } from &#x27;./redis.store&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
+import { createRedisStore, RedisStore } from &#x27;./redis.store&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import * as APP_CONFIG from &#x27;@app/app.config&#x27;
 
@@ -505,7 +505,9 @@ export class RedisService implements OnModuleInit {
 
   // https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
   private getOptions(): RedisClientOptions {
-    const redisOptions: RedisClientOptions &#x3D; {
+    return {
+      username: APP_CONFIG.REDIS.username ?? void 0,
+      password: APP_CONFIG.REDIS.password ?? void 0,
       socket: {
         host: APP_CONFIG.REDIS.host,
         port: APP_CONFIG.REDIS.port as number,
@@ -519,15 +521,6 @@ export class RedisService implements OnModuleInit {
         }
       }
     }
-
-    if (APP_CONFIG.REDIS.username) {
-      redisOptions.username &#x3D; APP_CONFIG.REDIS.username
-    }
-    if (APP_CONFIG.REDIS.password) {
-      redisOptions.password &#x3D; APP_CONFIG.REDIS.password
-    }
-
-    return redisOptions
   }
 
   public get client(): RedisClientType {

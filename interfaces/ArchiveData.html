@@ -292,18 +292,15 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
-import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
+import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
-import { SortOrder } from &#x27;@app/constants/biz.constant&#x27;
+import { SortOrder } from &#x27;@app/constants/sort.constant&#x27;
+import { ARTICLE_PUBLIC_FILTER } from &#x27;@app/modules/article/article.constant&#x27;
+import { Article } from &#x27;@app/modules/article/article.model&#x27;
 import { Category } from &#x27;@app/modules/category/category.model&#x27;
 import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
-import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import {
-  ARTICLE_LIST_QUERY_GUEST_FILTER,
-  ARTICLE_LIST_QUERY_PROJECTION
-} from &#x27;@app/modules/article/article.constant&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 
@@ -337,42 +334,30 @@ export class ArchiveService implements OnModuleInit {
     })
   }
 
-  private getAllTags(): Promise&lt;Tag[]&gt; {
-    return this.tagModel.find().sort({ _id: SortOrder.Desc }).lean().exec()
+  public getCache(): Promise&lt;ArchiveData&gt; {
+    return this.archiveCache.get()
   }
 
-  private getAllCategories(): Promise&lt;Category[]&gt; {
-    return this.categoryModel.find().sort({ _id: SortOrder.Desc }).lean().exec()
-  }
-
-  private getAllArticles(): Promise&lt;Article[]&gt; {
-    return this.articleModel
-      .find(ARTICLE_LIST_QUERY_GUEST_FILTER, ARTICLE_LIST_QUERY_PROJECTION)
-      .sort({ _id: SortOrder.Desc })
-      .lean()
-      .exec()
+  public updateCache(): Promise&lt;ArchiveData&gt; {
+    return this.archiveCache.update()
   }
 
   private async getArchiveData(): Promise&lt;ArchiveData&gt; {
     try {
       const [tags, categories, articles] &#x3D; await Promise.all([
-        this.getAllTags(),
-        this.getAllCategories(),
-        this.getAllArticles()
+        this.tagModel.find().sort({ created_at: SortOrder.Desc }).lean().exec(),
+        this.categoryModel.find().sort({ created_at: SortOrder.Desc }).lean().exec(),
+        this.articleModel.find(ARTICLE_PUBLIC_FILTER).sort({ created_at: SortOrder.Desc }).lean().exec()
       ])
       return { tags, categories, articles }
     } catch (error) {
       logger.warn(&#x27;getArchiveData failed!&#x27;, error)
-      return {} as any as ArchiveData
+      return {
+        tags: [],
+        categories: [],
+        articles: []
+      }
     }
-  }
-
-  public getCache() {
-    return this.archiveCache.get()
-  }
-
-  public updateCache() {
-    return this.archiveCache.update()
   }
 }
 </code></pre>

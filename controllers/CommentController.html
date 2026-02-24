@@ -136,7 +136,7 @@
                 <h3>Prefix</h3>
             </p>
             <p class="comment">
-                <code>comment</code>
+                <code>comments</code>
             </p>
 
 
@@ -161,19 +161,29 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#claimComments" >claimComments</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#createComment" >createComment</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#delComment" >delComment</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteComment" >deleteComment</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#delComments" >delComments</a>
+                                <a href="#deleteComments" >deleteComments</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -184,12 +194,10 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
                                 <a href="#getComments" >getComments</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#getCommentsCalendar" >getCommentsCalendar</a>
@@ -198,19 +206,13 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#patchComments" >patchComments</a>
+                                <a href="#updateComment" >updateComment</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#putComment" >putComment</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#putCommentIPLocation" >putCommentIPLocation</a>
+                                <a href="#updateCommentsStatus" >updateCommentsStatus</a>
                             </li>
                         </ul>
                     </td>
@@ -233,11 +235,92 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="claimComments"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>claimComments</b></span>
+                        <a href="#claimComments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>claimComments(dto: <a href="../classes/ClaimCommentsDto.html" target="_self">ClaimCommentsDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Patch(&#x27;claim&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Claim comments succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:151</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dto</td>
+                                            <td>
+                                                            <code><a href="../classes/ClaimCommentsDto.html" target="_self" >ClaimCommentsDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="createComment"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>createComment</b></span>
                         <a href="#createComment"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -246,7 +329,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createComment(comment: <a href="../classes/CommentBase.html" target="_self">CommentBase</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>createComment(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, input: <a href="../classes/CreateCommentDto.html" target="_self">CreateCommentDto</a>)</code>
                 </td>
             </tr>
 
@@ -260,97 +343,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="101"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:101</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>comment</td>
-                                            <td>
-                                                            <code><a href="../classes/CommentBase.html" target="_self" >CommentBase</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Comment.html" target="_self" >Promise&lt;Comment&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="delComment"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>delComment</b></span>
-                        <a href="#delComment"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delComment(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Delete(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete comment succeeded&#x27;)<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="146"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:146</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -381,11 +375,23 @@
 
 
                                         </tr>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../classes/CreateCommentDto.html" target="_self" >CreateCommentDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>    <code>Promise&lt;CommentWith&lt;UserPublic&gt;&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -399,20 +405,21 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="delComments"></a>
+                    <a name="deleteComment"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>delComments</b></span>
-                        <a href="#delComments"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>deleteComment</b></span>
+                        <a href="#deleteComment"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delComments(body: <a href="../classes/CommentsDTO.html" target="_self">CommentsDTO</a>)</code>
+                    <code>deleteComment(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -420,14 +427,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Delete()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Delete comments succeeded&#x27;)<br /></code>
+                    <code>@Delete(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete comment succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="118"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:118</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:187</a></div>
                         </td>
                     </tr>
 
@@ -448,9 +455,86 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>body</td>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../classes/CommentsDTO.html" target="_self" >CommentsDTO</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteComments"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>deleteComments</b></span>
+                        <a href="#deleteComments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteComments(: <a href="../classes/CommentIdsDto.html" target="_self">CommentIdsDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Delete()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Delete comments succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="166"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:166</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../classes/CommentIdsDto.html" target="_self" >CommentIdsDto</a></code>
                                             </td>
 
                                             <td>
@@ -490,7 +574,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getComment(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>getComment(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -498,14 +582,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Get comment detail succeeded&#x27;)<br /></code>
+                    <code>@Get(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Get comment detail succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="125"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:125</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="173"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:173</a></div>
                         </td>
                     </tr>
 
@@ -526,8 +610,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -558,7 +643,6 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                             <span class="modifier">Async</span>
                         <span ><b>getComments</b></span>
                         <a href="#getComments"><span class="icon ion-ios-link"></span></a>
@@ -568,7 +652,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getComments(query: <a href="../classes/CommentPaginateQueryDTO.html" target="_self">CommentPaginateQueryDTO</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>getComments(query: <a href="../classes/CommentPaginateQueryDto.html" target="_self">CommentPaginateQueryDto</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -576,14 +660,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse({message: &#x27;Get comments succeeded&#x27;, usePaginate: true})<br /></code>
+                    <code>@Get()<br />@SuccessResponse({message: &#x27;Get comments succeeded&#x27;, usePaginate: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="35"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:35</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -606,7 +690,7 @@
                                         <tr>
                                                 <td>query</td>
                                             <td>
-                                                            <code><a href="../classes/CommentPaginateQueryDTO.html" target="_self" >CommentPaginateQueryDTO</a></code>
+                                                            <code><a href="../classes/CommentPaginateQueryDto.html" target="_self" >CommentPaginateQueryDto</a></code>
                                             </td>
 
                                             <td>
@@ -630,7 +714,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Comment&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;CommentWith | CommentWith&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -648,7 +732,6 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getCommentsCalendar</b></span>
                         <a href="#getCommentsCalendar"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -657,7 +740,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCommentsCalendar(query: <a href="../classes/CommentCalendarQueryDTO.html" target="_self">CommentCalendarQueryDTO</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>getCommentsCalendar(query: <a href="../classes/CommentCalendarQueryDto.html" target="_self">CommentCalendarQueryDto</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -665,14 +748,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;calendar&#x27;)<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get comments calendar succeeded&#x27;)<br /></code>
+                    <code>@Get(&#x27;calendar&#x27;)<br />@SuccessResponse(&#x27;Get comments calendar succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="141"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:141</a></div>
                         </td>
                     </tr>
 
@@ -695,7 +778,7 @@
                                         <tr>
                                                 <td>query</td>
                                             <td>
-                                                            <code><a href="../classes/CommentCalendarQueryDTO.html" target="_self" >CommentCalendarQueryDTO</a></code>
+                                                            <code><a href="../classes/CommentCalendarQueryDto.html" target="_self" >CommentCalendarQueryDto</a></code>
                                             </td>
 
                                             <td>
@@ -719,7 +802,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>    <code>Promise&lt;Array&lt;literal type&gt;&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -733,20 +816,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="patchComments"></a>
+                    <a name="updateComment"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>patchComments</b></span>
-                        <a href="#patchComments"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateComment</b></span>
+                        <a href="#updateComment"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>patchComments(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, body: <a href="../classes/CommentsStatusDTO.html" target="_self">CommentsStatusDTO</a>)</code>
+                    <code>updateComment(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, dto: <a href="../classes/UpdateCommentDto.html" target="_self">UpdateCommentDto</a>)</code>
                 </td>
             </tr>
 
@@ -754,14 +837,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Patch()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update comments succeeded&#x27;)<br /></code>
+                    <code>@Patch(&#x27;:id&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update comment succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="111"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:111</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="180"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:180</a></div>
                         </td>
                     </tr>
 
@@ -782,8 +865,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>id</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -793,98 +877,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>body</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/CommentsStatusDTO.html" target="_self" >CommentsStatusDTO</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="putComment"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>putComment</b></span>
-                        <a href="#putComment"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putComment(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, comment: <a href="../classes/Comment.html" target="_self">Comment</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Put(&#x27;:id&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update comment succeeded&#x27;)<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="132"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:132</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>comment</td>
-                                            <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >Comment</a></code>
+                                                            <code><a href="../classes/UpdateCommentDto.html" target="_self" >UpdateCommentDto</a></code>
                                             </td>
 
                                             <td>
@@ -911,20 +906,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putCommentIPLocation"></a>
+                    <a name="updateCommentsStatus"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>putCommentIPLocation</b></span>
-                        <a href="#putCommentIPLocation"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateCommentsStatus</b></span>
+                        <a href="#updateCommentsStatus"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putCommentIPLocation(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>updateCommentsStatus(dto: <a href="../classes/CommentIdsStatusDto.html" target="_self">CommentIdsStatusDto</a>)</code>
                 </td>
             </tr>
 
@@ -932,14 +927,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put(&#x27;:id/ip_location&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update comment IP location succeeded&#x27;)<br /></code>
+                    <code>@Patch(&#x27;status&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update comments status succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="139"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:139</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:159</a></div>
                         </td>
                     </tr>
 
@@ -960,8 +955,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                                            <code><a href="../classes/CommentIdsStatusDto.html" target="_self" >CommentIdsStatusDto</a></code>
                                             </td>
 
                                             <td>
@@ -994,38 +990,71 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import _trim from &#x27;lodash/trim&#x27;
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
-import { Controller, Get, Put, Post, Patch, Delete, Query, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { Get, Post, Patch, Delete, Query, Body, Param, Controller, ParseIntPipe } from &#x27;@nestjs/common&#x27;
+import { BadRequestException } from &#x27;@nestjs/common&#x27;
 import { Throttle, seconds } from &#x27;@nestjs/throttler&#x27;
 import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
+import { UserService } from &#x27;@app/modules/user/user.service&#x27;
+import { User, UserPublic, USER_PUBLIC_POPULATE_SELECT } from &#x27;@app/modules/user/user.model&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
+import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { SortMode, SortOrder } from &#x27;@app/constants/biz.constant&#x27;
-import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
-import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
+import { SortMode, SortOrder } from &#x27;@app/constants/sort.constant&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
-import { CommentPaginateQueryDTO, CommentCalendarQueryDTO, CommentsDTO, CommentsStatusDTO } from &#x27;./comment.dto&#x27;
+import { CommentPaginateQueryDto, CommentCalendarQueryDto } from &#x27;./comment.dto&#x27;
+import { CreateCommentDto, UpdateCommentDto, CommentIdsDto } from &#x27;./comment.dto&#x27;
+import { CommentIdsStatusDto, ClaimCommentsDto } from &#x27;./comment.dto&#x27;
+import { Comment, CommentWith } from &#x27;./comment.model&#x27;
+import { CommentStatsService } from &#x27;./comment.service.stats&#x27;
 import { CommentService } from &#x27;./comment.service&#x27;
-import { Comment, CommentBase } from &#x27;./comment.model&#x27;
 
-@Controller(&#x27;comment&#x27;)
+@Controller(&#x27;comments&#x27;)
 export class CommentController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
-    private readonly commentService: CommentService
+    private readonly commentStatsService: CommentStatsService,
+    private readonly commentService: CommentService,
+    private readonly userService: UserService
   ) {}
 
+  @Post()
+  @Throttle({ default: { ttl: seconds(30), limit: 6 } })
+  @SuccessResponse(&#x27;Create comment succeeded&#x27;)
+  async createComment(
+    @RequestContext() { visitor, identity }: IRequestContext,
+    @Body() input: CreateCommentDto
+  ): Promise&lt;CommentWith&lt;UserPublic&gt;&gt; {
+    try {
+      // User flow: trusted user, no strict email validation required
+      if (identity.isUser) {
+        const user &#x3D; await this.userService.findOne(identity.payload!.uid!)
+        const userComment &#x3D; this.commentService.normalize(input, { visitor, user })
+        return this.commentService.validateAndCreate(userComment, visitor.referer ?? void 0)
+      }
+
+      // Guest flow: enforce author info validation
+      const guestComment &#x3D; this.commentService.normalize(input, { visitor })
+      if (!guestComment.author_name || !guestComment.author_email) {
+        throw new BadRequestException(&#x27;Author name and email are required&#x27;)
+      }
+
+      return this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0)
+    } catch (error) {
+      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { input, visitor, error })
+      throw error
+    }
+  }
+
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse({ message: &#x27;Get comments succeeded&#x27;, usePaginate: true })
   async getComments(
-    @Query(PermissionPipe) query: CommentPaginateQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
-  ): Promise&lt;PaginateResult&lt;Comment&gt;&gt; {
+    @Query(PermissionPipe) query: CommentPaginateQueryDto,
+    @RequestContext() { identity }: IRequestContext
+  ): Promise&lt;PaginateResult&lt;CommentWith&lt;User&gt; | CommentWith&lt;UserPublic&gt;&gt;&gt; {
     const { sort, page, per_page, ...filters } &#x3D; query
     const queryFilter: QueryFilter&lt;Comment&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page }
@@ -1043,98 +1072,106 @@ export class CommentController {
     if (!_isUndefined(filters.status)) {
       queryFilter.status &#x3D; filters.status
     }
-
-    // post ID
-    if (!_isUndefined(filters.post_id)) {
-      queryFilter.post_id &#x3D; filters.post_id
+    // target
+    if (!_isUndefined(filters.target_type)) {
+      queryFilter.target_type &#x3D; filters.target_type
     }
-
+    if (!_isUndefined(filters.target_id)) {
+      queryFilter.target_id &#x3D; filters.target_id
+    }
+    // author type
+    if (!_isUndefined(filters.author_type)) {
+      queryFilter.author_type &#x3D; filters.author_type
+    }
     // search
     if (filters.keyword) {
-      const trimmed &#x3D; _trim(filters.keyword)
-      const keywordRegExp &#x3D; new RegExp(trimmed, &#x27;i&#x27;)
+      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
       queryFilter.$or &#x3D; [
         { content: keywordRegExp },
-        { &#x27;author.name&#x27;: keywordRegExp },
-        { &#x27;author.email&#x27;: keywordRegExp }
+        { author_name: keywordRegExp },
+        { author_email: keywordRegExp }
       ]
     }
 
-    const result &#x3D; await this.commentService.paginate(queryFilter, paginateOptions)
     // for admin: original structure data
-    if (!isUnauthenticated) return result
+    if (identity.isAdmin) {
+      return await this.commentService.paginate&lt;CommentWith&lt;User&gt;&gt;(queryFilter, {
+        ...paginateOptions,
+        populate: &#x27;user&#x27;
+      })
+    }
+
     // for guest: desensitizing personal information
+    const result &#x3D; await this.commentService.paginate&lt;CommentWith&lt;UserPublic&gt;&gt;(queryFilter, {
+      ...paginateOptions,
+      populate: { path: &#x27;user&#x27;, select: USER_PUBLIC_POPULATE_SELECT }
+    })
+
+    const publicParentSet &#x3D; await this.commentService.getPublicCommentIdSet(
+      result.documents.map((comment) &#x3D;&gt; comment.parent_id).filter((id) &#x3D;&gt; id !&#x3D; null)
+    )
+
     return {
       ...result,
       documents: result.documents.map((document) &#x3D;&gt; {
-        const comment &#x3D; document.toObject()
-        Reflect.deleteProperty(comment, &#x27;ip&#x27;)
-        Reflect.deleteProperty(comment.author, &#x27;email&#x27;)
-        return comment
+        document.orphaned &#x3D; document.parent_id !&#x3D; null &amp;&amp; !publicParentSet.has(document.parent_id)
+        Reflect.deleteProperty(document, &#x27;ip&#x27;)
+        Reflect.deleteProperty(document, &#x27;author_email&#x27;)
+        return document
       })
     }
   }
 
   @Get(&#x27;calendar&#x27;)
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse(&#x27;Get comments calendar succeeded&#x27;)
   getCommentsCalendar(
-    @Query() query: CommentCalendarQueryDTO,
-    @RequestContext() { isUnauthenticated }: IRequestContext
-  ) {
-    return this.commentService.getCalendar(isUnauthenticated, query.timezone)
+    @Query() query: CommentCalendarQueryDto,
+    @RequestContext() { identity }: IRequestContext
+  ): Promise&lt;Array&lt;{ date: string; count: number }&gt;&gt; {
+    return this.commentStatsService.getCalendar(!identity.isAdmin, query.timezone)
   }
 
-  @Post()
-  @Throttle({ default: { ttl: seconds(30), limit: 6 } })
-  @SuccessResponse(&#x27;Create comment succeeded&#x27;)
-  createComment(@Body() comment: CommentBase, @RequestContext() { visitor }: IRequestContext): Promise&lt;Comment&gt; {
-    return this.commentService.createFormClient(comment, visitor).catch((error) &#x3D;&gt; {
-      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { comment, visitor, error })
-      return Promise.reject(error)
-    })
+  @Patch(&#x27;claim&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse(&#x27;Claim comments succeeded&#x27;)
+  public async claimComments(@Body() dto: ClaimCommentsDto) {
+    const user &#x3D; await this.userService.findOne(dto.user_id)
+    return await this.commentService.claimCommentsUser(dto.comment_ids, user._id)
   }
 
-  @Patch()
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse(&#x27;Update comments succeeded&#x27;)
-  patchComments(@RequestContext() { visitor }: IRequestContext, @Body() body: CommentsStatusDTO) {
-    return this.commentService.batchPatchStatus(body, visitor.referer)
+  @Patch(&#x27;status&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse(&#x27;Update comments status succeeded&#x27;)
+  updateCommentsStatus(@Body() dto: CommentIdsStatusDto) {
+    return this.commentService.batchUpdateStatus(dto.comment_ids, dto.status)
   }
 
   @Delete()
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete comments succeeded&#x27;)
-  delComments(@Body() body: CommentsDTO) {
-    return this.commentService.batchDelete(body.comment_ids, body.post_ids)
+  deleteComments(@Body() { comment_ids }: CommentIdsDto) {
+    return this.commentService.batchDelete(comment_ids)
   }
 
   @Get(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Get comment detail succeeded&#x27;)
-  getComment(@RequestContext() { params }: IRequestContext): Promise&lt;Comment&gt; {
-    return this.commentService.getDetailByObjectId(params.id)
+  getComment(@Param(&#x27;id&#x27;, ParseIntPipe) id: number): Promise&lt;Comment&gt; {
+    return this.commentService.getDetail(id)
   }
 
-  @Put(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @Patch(&#x27;:id&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update comment succeeded&#x27;)
-  putComment(@RequestContext() { params, visitor }: IRequestContext, @Body() comment: Comment): Promise&lt;Comment&gt; {
-    return this.commentService.update(params.id, comment, visitor.referer)
-  }
-
-  @Put(&#x27;:id/ip_location&#x27;)
-  @UseGuards(AdminOnlyGuard)
-  @SuccessResponse(&#x27;Update comment IP location succeeded&#x27;)
-  putCommentIPLocation(@RequestContext() { params }: IRequestContext) {
-    return this.commentService.reviseIPLocation(params.id)
+  updateComment(@Param(&#x27;id&#x27;, ParseIntPipe) id: number, @Body() dto: UpdateCommentDto): Promise&lt;Comment&gt; {
+    return this.commentService.update(id, dto)
   }
 
   @Delete(&#x27;:id&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete comment succeeded&#x27;)
-  delComment(@RequestContext() { params }: IRequestContext) {
-    return this.commentService.delete(params.id)
+  async deleteComment(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
+    return this.commentService.delete(id)
   }
 }
 </code></pre>

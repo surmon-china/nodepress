@@ -135,13 +135,13 @@
 <title>cluster_AuthModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="173,-70 173,-268 323,-268 323,-70 173,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_AuthModule_providers</title>
-<polygon fill="none" stroke="black" points="181,-78 181,-130 315,-130 315,-78 181,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_AuthModule_exports</title>
 <polygon fill="none" stroke="black" points="195,-208 195,-260 301,-260 301,-208 195,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_AuthModule_providers</title>
+<polygon fill="none" stroke="black" points="181,-78 181,-130 315,-130 315,-78 181,-78"/>
 </g>
 <!-- AuthService  -->
 <g id="node1" class="node">
@@ -251,10 +251,10 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import { Module, Global } from &#x27;@nestjs/common&#x27;
 import { JwtModule } from &#x27;@nestjs/jwt&#x27;
-import { APP_BIZ } from &#x27;@app/app.config&#x27;
+import { Module, Global } from &#x27;@nestjs/common&#x27;
 import { AuthService } from &#x27;./auth.service&#x27;
+import { APP_AUTH } from &#x27;@app/app.config&#x27;
 
 @Global()
 @Module({
@@ -262,8 +262,16 @@ import { AuthService } from &#x27;./auth.service&#x27;
     // https://docs.nestjs.com/security/authentication#jwt-token
     JwtModule.register({
       global: true,
-      secret: APP_BIZ.AUTH_JWT.secret,
-      signOptions: { expiresIn: APP_BIZ.AUTH_JWT.expiresIn }
+      secret: APP_AUTH.jwtSecret,
+      signOptions: {
+        algorithm: &#x27;HS256&#x27;,
+        issuer: APP_AUTH.jwtIssuer,
+        audience: APP_AUTH.jwtAudience
+      },
+      verifyOptions: {
+        issuer: APP_AUTH.jwtIssuer,
+        audience: APP_AUTH.jwtAudience
+      }
     })
   ],
   providers: [AuthService],

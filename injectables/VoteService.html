@@ -163,6 +163,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
                                 <a href="#create" >create</a>
                             </li>
                             <li>
@@ -173,11 +174,6 @@
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#paginate" >paginate</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#update" >update</a>
                             </li>
                         </ul>
                     </td>
@@ -197,12 +193,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(voteModel: <a href="../classes/Vote.html" target="_self">MongooseModel&lt;Vote&gt;</a>)</code>
+<code>constructor(eventEmitter: EventEmitter2, voteModel: <a href="../classes/Vote.html" target="_self">MongooseModel&lt;Vote&gt;</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/modules/vote/vote.service.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/vote/vote.service.ts:18</a></div>
                             </td>
                         </tr>
 
@@ -219,6 +215,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                                <tr>
+                                                        <td>eventEmitter</td>
+                                                  
+                                                        <td>
+                                                                    <code>EventEmitter2</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                                 <tr>
                                                         <td>voteModel</td>
                                                   
@@ -260,15 +268,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(voteIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId[]</a>)</code>
+                    <code>batchDelete(voteIds: number[])</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="38"
-                                    class="link-to-prism">src/modules/vote/vote.service.ts:38</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/vote/vote.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -291,7 +299,7 @@
                                         <tr>
                                                 <td>voteIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
+                                                        <code>number[]</code>
                                             </td>
 
                                             <td>
@@ -329,15 +337,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>countDocuments(filter: <a href="../classes/Vote.html" target="_self">QueryFilter&lt;Vote&gt;</a>, options?: MongooseBaseQueryOptions<Vote>)</code>
+                    <code>countDocuments(filter: <a href="../classes/Vote.html" target="_self">QueryFilter&lt;Vote&gt;</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="42"
-                                    class="link-to-prism">src/modules/vote/vote.service.ts:42</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="24"
+                                    class="link-to-prism">src/modules/vote/vote.service.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -369,18 +377,6 @@
 
 
                                         </tr>
-                                        <tr>
-                                                <td>options</td>
-                                            <td>
-                                                        <code>MongooseBaseQueryOptions&lt;Vote&gt;</code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -402,6 +398,7 @@
                     <a name="create"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
                         <span ><b>create</b></span>
                         <a href="#create"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -410,77 +407,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(vote: <a href="../classes/Vote.html" target="_self">Vote</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">src/modules/vote/vote.service.ts:22</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>vote</td>
-                                            <td>
-                                                            <code><a href="../classes/Vote.html" target="_self" >Vote</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Vote.html" target="_self" >Promise&lt;MongooseDoc&lt;Vote&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="delete"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>delete</b></span>
-                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(voteId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
+                    <code>create(vote: <a href="../miscellaneous/typealiases.html#NormalizedVote" target="_self">NormalizedVote</a>)</code>
                 </td>
             </tr>
 
@@ -509,9 +436,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>voteId</td>
+                                                <td>vote</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
+                                                            <code><a href="../miscellaneous/typealiases.html#NormalizedVote" target="_self" >NormalizedVote</a></code>
                                             </td>
 
                                             <td>
@@ -524,7 +451,77 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>    <code>Promise&lt;VoteDocWithUser&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delete"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>delete</b></span>
+                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>delete(voteId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/vote/vote.service.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>voteId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Vote.html" target="_self" >Promise&lt;Vote&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -556,11 +553,19 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="18"
-                                    class="link-to-prism">src/modules/vote/vote.service.ts:18</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">src/modules/vote/vote.service.ts:28</a></div>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
 
             <tr>
                 <td class="col-md-4">
@@ -605,89 +610,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Vote&gt;&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="update"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>update</b></span>
-                        <a href="#update"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(voteId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>, newVote: <a href="../classes/Vote.html" target="_self">Partial&lt;Vote&gt;</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">src/modules/vote/vote.service.ts:26</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>voteId</td>
-                                            <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>newVote</td>
-                                            <td>
-                                                            <code><a href="../classes/Vote.html" target="_self" >Partial&lt;Vote&gt;</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Vote.html" target="_self" >Promise&lt;MongooseDoc&lt;Vote&gt;&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;T&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -703,43 +626,46 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter, MongooseBaseQueryOptions } from &#x27;mongoose&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter } from &#x27;mongoose&#x27;
 import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
+import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
+import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel, MongooseDoc, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
-import { Vote } from &#x27;./vote.model&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { User } from &#x27;@app/modules/user/user.model&#x27;
+import { Vote, VoteDocWithUser, NormalizedVote } from &#x27;./vote.model&#x27;
 
 @Injectable()
 export class VoteService {
-  constructor(@InjectModel(Vote) private readonly voteModel: MongooseModel&lt;Vote&gt;) {}
+  constructor(
+    private readonly eventEmitter: EventEmitter2,
+    @InjectModel(Vote) private readonly voteModel: MongooseModel&lt;Vote&gt;
+  ) {}
 
-  public paginate(filter: QueryFilter&lt;Vote&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;Vote&gt;&gt; {
-    return this.voteModel.paginateRaw(filter, options)
+  public countDocuments(filter: QueryFilter&lt;Vote&gt;): Promise&lt;number&gt; {
+    return this.voteModel.countDocuments(filter).lean().exec()
   }
 
-  public create(vote: Vote): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
-    return this.voteModel.create(vote)
+  public paginate&lt;T &#x3D; Vote&gt;(filter: QueryFilter&lt;Vote&gt;, options: PaginateOptions): Promise&lt;PaginateResult&lt;T&gt;&gt; {
+    return this.voteModel.paginateRaw&lt;T&gt;(filter, { ...options, lean: { virtuals: true } })
   }
 
-  public async update(voteId: MongooseId, newVote: Partial&lt;Vote&gt;): Promise&lt;MongooseDoc&lt;Vote&gt;&gt; {
-    const updated &#x3D; await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec()
-    if (!updated) throw new NotFoundException(&#x60;Vote &#x27;${voteId}&#x27; not found&#x60;)
-    return updated
+  public async create(vote: NormalizedVote): Promise&lt;VoteDocWithUser&gt; {
+    const created &#x3D; await this.voteModel.create(vote)
+    const populated &#x3D; await created.populate&lt;{ user: User | null }&gt;(&#x27;user&#x27;)
+    this.eventEmitter.emit(EventKeys.VoteCreated, populated.toObject())
+    return populated
   }
 
-  public async delete(voteId: MongooseId) {
-    const deleted &#x3D; await this.voteModel.findByIdAndDelete(voteId, null).exec()
+  public async delete(voteId: number): Promise&lt;Vote&gt; {
+    const deleted &#x3D; await this.voteModel.findOneAndDelete({ id: voteId }).exec()
     if (!deleted) throw new NotFoundException(&#x60;Vote &#x27;${voteId}&#x27; not found&#x60;)
     return deleted
   }
 
-  public batchDelete(voteIds: MongooseId[]) {
-    return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec()
-  }
-
-  public countDocuments(filter: QueryFilter&lt;Vote&gt;, options?: MongooseBaseQueryOptions&lt;Vote&gt;): Promise&lt;number&gt; {
-    return this.voteModel.countDocuments(filter, options).exec()
+  public batchDelete(voteIds: number[]) {
+    return this.voteModel.deleteMany({ id: { $in: voteIds } }).exec()
   }
 }
 </code></pre>

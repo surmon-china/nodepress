@@ -140,7 +140,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/core/helper/helper.service.akismet.ts</code>
+            <code>src/modules/comment/comment.service.akismet.ts</code>
         </p>
 
 
@@ -184,6 +184,13 @@
                                         <a href="#comment_content" 
 >
                                             comment_content
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#comment_date_gmt" 
+>
+                                            comment_date_gmt
                                         </a>
                                 </li>
                                 <li>
@@ -243,7 +250,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>comment_author:     <code>string | null</code>
+                                        <code>comment_author:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -251,7 +258,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -281,7 +288,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>comment_author_email:     <code>string | null</code>
+                                        <code>comment_author_email:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -289,7 +296,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -319,7 +326,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>comment_author_url:     <code>string | null</code>
+                                        <code>comment_author_url:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -327,7 +334,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -357,7 +364,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>comment_content:     <code>string | null</code>
+                                        <code>comment_content:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -365,7 +372,45 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="comment_date_gmt"></a>
+                                        <span class="name "><b>comment_date_gmt</b>
+                                            <a href="#comment_date_gmt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>comment_date_gmt:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -395,7 +440,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>comment_type:     <code>&quot;comment&quot; | &quot;reply&quot;</code>
+                                        <code>comment_type:     <code>&quot;comment&quot; | &quot;reply&quot; | &quot;forum-post&quot; | &quot;blog-post&quot;</code>
 </code>
                                     </td>
                                 </tr>
@@ -403,7 +448,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>&quot;comment&quot; | &quot;reply&quot;</code>
+                                            <i>Type : </i>    <code>&quot;comment&quot; | &quot;reply&quot; | &quot;forum-post&quot; | &quot;blog-post&quot;</code>
 
                                         </td>
                                     </tr>
@@ -433,7 +478,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>permalink:     <code>string | null</code>
+                                        <code>permalink:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -441,7 +486,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>string | null</code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                                         </td>
                                     </tr>
@@ -563,107 +608,103 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AkismetClient } from &#x27;akismet-api&#x27;
 import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
-import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
+import { getPermalink } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
-import * as APP_CONFIG from &#x27;@app/app.config&#x27;
+import { AKISMET } from &#x27;@app/app.config&#x27;
+import { NormalizedComment } from &#x27;./comment.model&#x27;
 
-const logger &#x3D; createLogger({ scope: &#x27;AkismetService&#x27;, time: isDevEnv })
+const logger &#x3D; createLogger({ scope: &#x27;CommentAkismetService&#x27;, time: isDevEnv })
 
-export enum AkismetAction {
-  CheckSpam &#x3D; &#x27;checkSpam&#x27;,
-  SubmitSpam &#x3D; &#x27;submitSpam&#x27;,
-  SubmitHam &#x3D; &#x27;submitHam&#x27;
-}
-
-// https://github.com/chrisfosterelli/akismet-api/blob/master/docs/comments.md
+// https://github.com/chrisfosterelli/akismet-api/blob/main/docs/comments.md
 export interface AkismetPayload {
   user_ip: string
   user_agent: string
   referrer: string
-  permalink?: string | null
-  comment_type?: &#x27;comment&#x27; | &#x27;reply&#x27;
-  comment_author?: string | null
-  comment_author_email?: string | null
-  comment_author_url?: string | null
-  comment_content?: string | null
+  permalink?: string
+  comment_type?: &#x27;comment&#x27; | &#x27;reply&#x27; | &#x27;forum-post&#x27; | &#x27;blog-post&#x27;
+  comment_content?: string
+  comment_author?: string
+  comment_author_email?: string
+  comment_author_url?: string
+  comment_date_gmt?: string
 }
 
 @Injectable()
-export class AkismetService implements OnModuleInit {
+export class CommentAkismetService implements OnModuleInit {
   private client: AkismetClient
-  private clientIsValid &#x3D; false
+  private isAvailable &#x3D; false
 
   constructor() {
     // https://github.com/chrisfosterelli/akismet-api
     this.client &#x3D; new AkismetClient({
-      key: APP_CONFIG.AKISMET.apiKey,
-      blog: APP_CONFIG.AKISMET.blog
+      key: AKISMET.apiKey,
+      blog: AKISMET.blog
     })
   }
 
   async onModuleInit() {
     try {
-      if (await this.client.verifyKey()) {
-        this.clientIsValid &#x3D; true
-        logger.success(&#x27;client initialized.&#x27;)
+      this.isAvailable &#x3D; await this.client.verifyKey()
+      if (this.isAvailable) {
+        logger.success(&#x27;Client initialized.&#x27;)
       } else {
-        this.clientIsValid &#x3D; false
-        logger.failure(&#x27;client initialization failed! (invalid Akismet key)&#x27;)
+        logger.failure(&#x27;Invalid Akismet key, service unavailable.&#x27;)
       }
     } catch (error) {
-      this.clientIsValid &#x3D; false
-      logger.failure(&#x60;client initialization failed! (${getMessageFromNormalError(error)})&#x60;)
+      this.isAvailable &#x3D; false
+      logger.failure(&#x27;Initialization failed!&#x27;, error)
     }
   }
 
-  private makeInterceptor(handleType: AkismetAction) {
-    return (content: AkismetPayload): Promise&lt;any&gt; &#x3D;&gt; {
-      return new Promise((resolve, reject) &#x3D;&gt; {
-        // continue operation only when initialization successful
-        if (!this.clientIsValid) {
-          const message &#x3D; &#x60;${handleType} failed! reason: init failed&#x60;
-          logger.warn(message)
-          return resolve(message)
-        }
+  public async checkSpam(payload: AkismetPayload): Promise&lt;boolean&gt; {
+    if (!this.isAvailable) {
+      logger.warn(&#x27;checkSpam skipped: Akismet service unavailable.&#x27;)
+      return false
+    }
 
-        logger.log(&#x60;${handleType}...&#x60;, new Date())
-        this.client[handleType]({
-          ...content,
-          permalink: content.permalink || undefined,
-          comment_author: content.comment_author || undefined,
-          comment_author_email: content.comment_author_email || undefined,
-          comment_author_url: content.comment_author_url || undefined,
-          comment_content: content.comment_content || undefined
-        })
-          .then((result) &#x3D;&gt; {
-            if (handleType &#x3D;&#x3D;&#x3D; AkismetAction.CheckSpam &amp;&amp; result) {
-              logger.info(&#x60;${handleType} found SPAM!&#x60;, new Date(), content)
-              reject(&#x27;SPAM!&#x27;)
-            } else {
-              logger.info(&#x60;${handleType} succeeded.&#x60;)
-              resolve(result)
-            }
-          })
-          .catch((error) &#x3D;&gt; {
-            const message &#x3D; &#x60;${handleType} failed!&#x60;
-            logger.warn(message, error)
-            reject(message)
-          })
-      })
+    try {
+      return await this.client.checkSpam(payload)
+    } catch (error) {
+      logger.error(&#x27;checkSpam failed, default to HAM (Fail-open).&#x27;, error)
+      return false
     }
   }
 
-  public checkSpam(payload: AkismetPayload): Promise&lt;any&gt; {
-    return this.makeInterceptor(AkismetAction.CheckSpam)(payload)
+  public async submitSpam(payload: AkismetPayload): Promise&lt;void&gt; {
+    if (this.isAvailable) {
+      try {
+        await this.client.submitSpam(payload)
+        logger.info(&#x27;Spam reported!&#x27;)
+      } catch (error) {
+        logger.error(&#x27;submitSpam failed!&#x27;, error)
+      }
+    }
   }
 
-  public submitSpam(payload: AkismetPayload): Promise&lt;any&gt; {
-    return this.makeInterceptor(AkismetAction.SubmitSpam)(payload)
+  public async submitHam(payload: AkismetPayload): Promise&lt;void&gt; {
+    if (this.isAvailable) {
+      try {
+        await this.client.submitHam(payload)
+        logger.info(&#x27;Non-spam reported!&#x27;)
+      } catch (error) {
+        logger.error(&#x27;submitHam failed!&#x27;, error)
+      }
+    }
   }
 
-  public submitHam(payload: AkismetPayload): Promise&lt;any&gt; {
-    return this.makeInterceptor(AkismetAction.SubmitHam)(payload)
+  public transformCommentToAkismet(comment: NormalizedComment, referer?: string): AkismetPayload {
+    return {
+      user_ip: comment.ip!,
+      user_agent: comment.user_agent!,
+      referrer: referer || &#x27;&#x27;,
+      permalink: getPermalink(comment.target_type, comment.target_id),
+      comment_type: comment.parent_id ? &#x27;reply&#x27; : &#x27;comment&#x27;,
+      comment_author: comment.author_name,
+      comment_author_email: comment.author_email ?? void 0,
+      comment_author_url: comment.author_website ?? void 0,
+      comment_content: comment.content
+    }
   }
 }
 </code></pre>

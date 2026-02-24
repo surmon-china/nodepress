@@ -220,7 +220,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>generateArticleReview(payload: <a href="../classes/GenerateAiArticleContentDTO.html" target="_self">GenerateAiArticleContentDTO</a>)</code>
+                    <code>generateArticleReview(dto: <a href="../classes/GenerateAiArticleContentDto.html" target="_self">GenerateAiArticleContentDto</a>)</code>
                 </td>
             </tr>
 
@@ -228,14 +228,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;generate-article-review&#x27;)<br />@Throttle({default: undefined})<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Generate article review succeeded&#x27;)<br /></code>
+                    <code>@Post(&#x27;generate-article-review&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Generate article review succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">src/modules/ai/ai.controller.ts:56</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -256,9 +256,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>payload</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/GenerateAiArticleContentDTO.html" target="_self" >GenerateAiArticleContentDTO</a></code>
+                                                            <code><a href="../classes/GenerateAiArticleContentDto.html" target="_self" >GenerateAiArticleContentDto</a></code>
                                             </td>
 
                                             <td>
@@ -271,7 +271,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/AiGenerateResult.html" target="_self" >Promise&lt;AiGenerateResult&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -299,7 +299,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>generateArticleSummary(payload: <a href="../classes/GenerateAiArticleContentDTO.html" target="_self">GenerateAiArticleContentDTO</a>)</code>
+                    <code>generateArticleSummary(dto: <a href="../classes/GenerateAiArticleContentDto.html" target="_self">GenerateAiArticleContentDto</a>)</code>
                 </td>
             </tr>
 
@@ -307,14 +307,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;generate-article-summary&#x27;)<br />@Throttle({default: undefined})<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Generate article summary succeeded&#x27;)<br /></code>
+                    <code>@Post(&#x27;generate-article-summary&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Generate article summary succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="48"
-                                    class="link-to-prism">src/modules/ai/ai.controller.ts:48</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="49"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:49</a></div>
                         </td>
                     </tr>
 
@@ -335,9 +335,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>payload</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/GenerateAiArticleContentDTO.html" target="_self" >GenerateAiArticleContentDTO</a></code>
+                                                            <code><a href="../classes/GenerateAiArticleContentDto.html" target="_self" >GenerateAiArticleContentDto</a></code>
                                             </td>
 
                                             <td>
@@ -350,7 +350,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/AiGenerateResult.html" target="_self" >Promise&lt;AiGenerateResult&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -379,7 +379,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>generateCommentReply(payload: <a href="../classes/GenerateAiCommentReplyDTO.html" target="_self">GenerateAiCommentReplyDTO</a>)</code>
+                    <code>generateCommentReply(dto: <a href="../classes/GenerateAiCommentReplyDto.html" target="_self">GenerateAiCommentReplyDto</a>)</code>
                 </td>
             </tr>
 
@@ -387,14 +387,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;generate-comment-reply&#x27;)<br />@Throttle({default: undefined})<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Generate comment reply succeeded&#x27;)<br /></code>
+                    <code>@Post(&#x27;generate-comment-reply&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Generate comment reply succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="64"
-                                    class="link-to-prism">src/modules/ai/ai.controller.ts:64</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -415,9 +415,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>payload</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/GenerateAiCommentReplyDTO.html" target="_self" >GenerateAiCommentReplyDTO</a></code>
+                                                            <code><a href="../classes/GenerateAiCommentReplyDto.html" target="_self" >GenerateAiCommentReplyDto</a></code>
                                             </td>
 
                                             <td>
@@ -430,7 +430,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="../classes/AiGenerateResult.html" target="_self" >Promise&lt;AiGenerateResult&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -465,14 +465,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;config&#x27;)<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Get AI config succeeded&#x27;)<br /></code>
+                    <code>@Get(&#x27;config&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Get AI config succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="32"
-                                    class="link-to-prism">src/modules/ai/ai.controller.ts:32</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -499,12 +499,13 @@
  */
 
 import { Throttle, minutes } from &#x27;@nestjs/throttler&#x27;
-import { Controller, Get, Post, Body, UseGuards } from &#x27;@nestjs/common&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
+import { Controller, Get, Post, Body } from &#x27;@nestjs/common&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
-import { GenerateAiArticleContentDTO, GenerateAiCommentReplyDTO } from &#x27;./ai.dto&#x27;
+import { GenerateAiArticleContentDto, GenerateAiCommentReplyDto } from &#x27;./ai.dto&#x27;
 import { AiModelsList, DEFAULT_AI_PROMPT_TEMPLATES } from &#x27;./ai.config&#x27;
+import { AiGenerateResult } from &#x27;./ai.interface&#x27;
 import { AiService } from &#x27;./ai.service&#x27;
 
 import {
@@ -521,7 +522,7 @@ export class AiController {
   ) {}
 
   @Get(&#x27;config&#x27;)
-  @UseGuards(AdminOnlyGuard)
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Get AI config succeeded&#x27;)
   getAiConfig() {
     return {
@@ -536,28 +537,28 @@ export class AiController {
   }
 
   @Post(&#x27;generate-article-summary&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @Throttle({ default: { ttl: minutes(10), limit: 50 } })
-  @UseGuards(AdminOnlyGuard)
   @SuccessResponse(&#x27;Generate article summary succeeded&#x27;)
-  generateArticleSummary(@Body() payload: GenerateAiArticleContentDTO) {
-    return this.aiService.generateArticleSummary(payload)
+  generateArticleSummary(@Body() dto: GenerateAiArticleContentDto): Promise&lt;AiGenerateResult&gt; {
+    return this.aiService.generateArticleSummary(dto)
   }
 
   @Post(&#x27;generate-article-review&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @Throttle({ default: { ttl: minutes(10), limit: 50 } })
-  @UseGuards(AdminOnlyGuard)
   @SuccessResponse(&#x27;Generate article review succeeded&#x27;)
-  generateArticleReview(@Body() payload: GenerateAiArticleContentDTO) {
-    return this.aiService.generateArticleReview(payload)
+  generateArticleReview(@Body() dto: GenerateAiArticleContentDto): Promise&lt;AiGenerateResult&gt; {
+    return this.aiService.generateArticleReview(dto)
   }
 
   @Post(&#x27;generate-comment-reply&#x27;)
+  @OnlyIdentity(IdentityRole.Admin)
   @Throttle({ default: { ttl: minutes(10), limit: 50 } })
-  @UseGuards(AdminOnlyGuard)
   @SuccessResponse(&#x27;Generate comment reply succeeded&#x27;)
-  async generateCommentReply(@Body() payload: GenerateAiCommentReplyDTO) {
-    const comment &#x3D; await this.commentService.getDetailByNumberId(payload.comment_id)
-    return this.aiService.generateCommentReply(comment, payload)
+  async generateCommentReply(@Body() dto: GenerateAiCommentReplyDto): Promise&lt;AiGenerateResult&gt; {
+    const comment &#x3D; await this.commentService.getDetail(dto.comment_id)
+    return this.aiService.generateCommentReply(comment, dto)
   }
 }
 </code></pre>

@@ -159,25 +159,22 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#avatar" >avatar</a>
+                                <a href="#avatar_url" >avatar_url</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                 <a href="#name" >name</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier">Optional</span>
                                 <a href="#password" >password</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#singleton" >singleton</a>
+                            </li>
+                            <li>
                                     <span class="modifier"></span>
                                 <a href="#slogan" >slogan</a>
                             </li>
@@ -204,13 +201,11 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="avatar"></a>
+                    <a name="avatar_url"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>avatar</b></span>
-                        <a href="#avatar"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>avatar_url</b></span>
+                        <a href="#avatar_url"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -225,13 +220,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@prop({default: &#x27;&#x27;})<br />
+                            @prop({type: String, default: &#x27;&#x27;, trim: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/modules/admin/admin.model.ts:36</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/modules/admin/admin.model.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -244,8 +239,6 @@
                 <td class="col-md-4">
                     <a name="name"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>name</b></span>
                         <a href="#name"><span class="icon ion-ios-link"></span></a>
@@ -263,13 +256,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString({message: &#x27;What&#x27;s your name?&#x27;})<br />@IsDefined()<br />@prop({required: true})<br />
+                            @prop({type: String, required: true, trim: true, validate: /\S+/})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/admin/admin.model.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/modules/admin/admin.model.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -283,8 +276,6 @@
                     <a name="password"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Optional</span>
                         <span ><b>password</b></span>
                         <a href="#password"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -301,13 +292,50 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@prop({select: false})<br />
+                            @prop({type: String, required: true, validate: /\S+/, select: false})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/modules/admin/admin.model.ts:40</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/admin/admin.model.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="singleton"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>singleton</b></span>
+                        <a href="#singleton"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @prop({type: Boolean, default: true, unique: true, select: false})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/modules/admin/admin.model.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -320,8 +348,6 @@
                 <td class="col-md-4">
                     <a name="slogan"></a>
                     <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                         <span ><b>slogan</b></span>
                         <a href="#slogan"><span class="icon ion-ios-link"></span></a>
@@ -339,13 +365,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsDefined()<br />@prop({required: true})<br />
+                            @prop({type: String, default: &#x27;&#x27;, trim: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/admin/admin.model.ts:31</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/modules/admin/admin.model.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -365,13 +391,16 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { prop, modelOptions } from &#x27;@typegoose/typegoose&#x27;
-import { IsString, IsDefined, IsOptional } from &#x27;class-validator&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 
-export const DEFAULT_ADMIN_PROFILE &#x3D; Object.freeze&lt;Admin&gt;({
-  name: &#x27;&#x27;,
-  slogan: &#x27;&#x27;,
-  avatar: &#x27;&#x27;
+export type AdminProfile &#x3D; Omit&lt;Admin, &#x27;singleton&#x27; | &#x27;password&#x27;&gt;
+
+export const ADMIN_SINGLETON_QUERY &#x3D; Object.freeze({ singleton: true } as const)
+
+export const DEFAULT_ADMIN_PROFILE &#x3D; Object.freeze&lt;AdminProfile&gt;({
+  name: &#x27;Admin&#x27;,
+  slogan: &#x27;This is admin slogan&#x27;,
+  avatar_url: &#x27;&#x27;
 })
 
 @modelOptions({
@@ -380,24 +409,20 @@ export const DEFAULT_ADMIN_PROFILE &#x3D; Object.freeze&lt;Admin&gt;({
   }
 })
 export class Admin {
-  @IsString({ message: &quot;What&#x27;s your name?&quot; })
-  @IsDefined()
-  @prop({ required: true })
+  @prop({ type: Boolean, default: true, unique: true, select: false })
+  singleton?: boolean
+
+  @prop({ type: String, required: true, validate: /\S+/, select: false })
+  password: string
+
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   name: string
 
-  @IsString()
-  @IsDefined()
-  @prop({ required: true })
+  @prop({ type: String, default: &#x27;&#x27;, trim: true })
   slogan: string
 
-  @IsString()
-  @IsOptional()
-  @prop({ default: &#x27;&#x27; })
-  avatar: string
-
-  @IsString()
-  @prop({ select: false })
-  password?: string
+  @prop({ type: String, default: &#x27;&#x27;, trim: true })
+  avatar_url: string
 }
 
 export const AdminProvider &#x3D; getProviderByTypegooseClass(Admin)

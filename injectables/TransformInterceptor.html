@@ -264,7 +264,7 @@ import type { Observable } from &#x27;rxjs&#x27;
 import type { FastifyRequest, FastifyReply } from &#x27;fastify&#x27;
 import type { CallHandler, ExecutionContext } from &#x27;@nestjs/common&#x27;
 import { Injectable, NestInterceptor } from &#x27;@nestjs/common&#x27;
-import { HttpSuccessResponse, ResponseStatus } from &#x27;@app/interfaces/response.interface&#x27;
+import { HttpSuccessResponse, ResponseStatus, PaginationPayload } from &#x27;@app/interfaces/response.interface&#x27;
 import { getSuccessResponseOptions } from &#x27;@app/decorators/success-response.decorator&#x27;
 
 /**
@@ -288,20 +288,25 @@ export class TransformInterceptor&lt;T&gt; implements NestInterceptor&lt;T, T | 
           response.status(reponseOptions.status)
         }
 
-        const responseBody: HttpSuccessResponse&lt;T&gt; &#x3D; {
+        return {
           status: ResponseStatus.Success,
           message: reponseOptions.message ?? &#x27;Success&#x27;,
           context: {
             url: request.url,
             method: request.method,
             route_params: request.params ?? {},
-            query_params: request.locals.validatedQueryParams ?? {},
-            is_authenticated: request.locals.isAuthenticated,
-            is_unauthenticated: request.locals.isUnauthenticated
+            query_params: request.validatedQueryParams ?? {},
+            identity: {
+              role: request.identity.role,
+              is_guest: request.identity.isGuest,
+              is_admin: request.identity.isAdmin,
+              is_user: request.identity.isUser,
+              uid: request.identity.payload?.uid ?? null
+            }
           },
           result: !reponseOptions.usePaginate
             ? data
-            : {
+            : ({
                 data: data.documents,
                 pagination: {
                   total: data.total,
@@ -309,10 +314,8 @@ export class TransformInterceptor&lt;T&gt; implements NestInterceptor&lt;T, T | 
                   per_page: data.perPage,
                   total_page: data.totalPage
                 }
-              }
-        }
-
-        return responseBody
+              } satisfies PaginationPayload&lt;T&gt;)
+        } satisfies HttpSuccessResponse&lt;T&gt;
       })
     )
   }

@@ -180,7 +180,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, counterService: <a href="../injectables/CounterService.html" target="_self">CounterService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>, feedbackService: <a href="../injectables/FeedbackService.html" target="_self">FeedbackService</a>, voteService: <a href="../injectables/VoteService.html" target="_self">VoteService</a>, tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
+<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, counterService: <a href="../injectables/CounterService.html" target="_self">CounterService</a>, commentStatsService: <a href="../injectables/CommentStatsService.html" target="_self">CommentStatsService</a>, articleStatsService: <a href="../injectables/ArticleStatsService.html" target="_self">ArticleStatsService</a>, feedbackService: <a href="../injectables/FeedbackService.html" target="_self">FeedbackService</a>, voteService: <a href="../injectables/VoteService.html" target="_self">VoteService</a>, tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -227,10 +227,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>articleService</td>
+                                                        <td>commentStatsService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/ArticleService.html" target="_self" >ArticleService</a></code>
+                                                                        <code><a href="../injectables/CommentStatsService.html" target="_self" >CommentStatsService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -239,10 +239,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>commentService</td>
+                                                        <td>articleStatsService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/CommentService.html" target="_self" >CommentService</a></code>
+                                                                        <code><a href="../injectables/ArticleStatsService.html" target="_self" >ArticleStatsService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -426,10 +426,10 @@
 import { Cron } from &#x27;@nestjs/schedule&#x27;
 import { CounterService } from &#x27;@app/core/helper/helper.service.counter&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import { VoteTarget, VoteType } from &#x27;@app/modules/vote/vote.constant&#x27;
 import { VoteService } from &#x27;@app/modules/vote/vote.service&#x27;
-import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
-import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
+import { VoteTargetType, VoteType } from &#x27;@app/modules/vote/vote.constant&#x27;
+import { ArticleStatsService } from &#x27;@app/modules/article/article.service.stats&#x27;
+import { CommentStatsService } from &#x27;@app/modules/comment/comment.service.stats&#x27;
 import { FeedbackService } from &#x27;@app/modules/feedback/feedback.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
@@ -457,8 +457,8 @@ export class StatisticsService {
   constructor(
     private readonly emailService: EmailService,
     private readonly counterService: CounterService,
-    private readonly articleService: ArticleService,
-    private readonly commentService: CommentService,
+    private readonly commentStatsService: CommentStatsService,
+    private readonly articleStatsService: ArticleStatsService,
     private readonly feedbackService: FeedbackService,
     private readonly voteService: VoteService,
     private readonly tagService: TagService
@@ -474,20 +474,20 @@ export class StatisticsService {
       const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] &#x3D;
         await Promise.all([
           this.counterService.getGlobalCount(CacheKeys.TodayViewCount),
-          this.commentService.countDocuments({ created_at: createdAt }),
+          this.commentStatsService.countDocuments({ created_at: createdAt }),
           this.voteService.countDocuments({
             created_at: createdAt,
-            target_type: VoteTarget.Article,
+            target_type: VoteTargetType.Article,
             vote_type: VoteType.Upvote
           }),
           this.voteService.countDocuments({
             created_at: createdAt,
-            target_type: VoteTarget.Comment,
+            target_type: VoteTargetType.Comment,
             vote_type: VoteType.Upvote
           }),
           this.voteService.countDocuments({
             created_at: createdAt,
-            target_type: VoteTarget.Comment,
+            target_type: VoteTargetType.Comment,
             vote_type: VoteType.Downvote
           })
         ])
@@ -517,21 +517,21 @@ export class StatisticsService {
       this.tagService.getTotalCount().then((value) &#x3D;&gt; {
         statistics.tags &#x3D; value
       }),
-      this.articleService.getTotalCount(publicOnly).then((value) &#x3D;&gt; {
+      this.articleStatsService.getTotalCount(publicOnly).then((value) &#x3D;&gt; {
         statistics.articles &#x3D; value
       }),
-      this.commentService.getTotalCount(publicOnly).then((value) &#x3D;&gt; {
+      this.commentStatsService.getTotalCount(publicOnly).then((value) &#x3D;&gt; {
         statistics.comments &#x3D; value
       }),
-      this.feedbackService.getRootFeedbackAverageEmotion().then((value) &#x3D;&gt; {
-        statistics.averageEmotion &#x3D; value ?? 0
-      }),
-      this.articleService.getTotalStatistics().then((value) &#x3D;&gt; {
-        statistics.totalViews &#x3D; value?.totalViews ?? 0
-        statistics.totalLikes &#x3D; value?.totalLikes ?? 0
+      this.articleStatsService.getTotalStatistics().then((value) &#x3D;&gt; {
+        statistics.totalViews &#x3D; value.totalViews
+        statistics.totalLikes &#x3D; value.totalLikes
       }),
       this.counterService.getGlobalCount(CacheKeys.TodayViewCount).then((value) &#x3D;&gt; {
         statistics.todayViews &#x3D; value
+      }),
+      this.feedbackService.getAverageEmotion().then((value) &#x3D;&gt; {
+        statistics.averageEmotion &#x3D; value ?? 0
       })
     ])
 

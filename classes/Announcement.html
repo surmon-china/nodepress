@@ -161,6 +161,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#content" >content</a>
                             </li>
                             <li>
@@ -173,7 +174,6 @@
                                 <a href="#id" >id</a>
                             </li>
                             <li>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
@@ -212,6 +212,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>content</b></span>
                         <a href="#content"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -228,13 +229,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty({message: &#x27;content?&#x27;})<br />@prop({required: true, validate: /\S+/})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@NormalizeString({trim: true})<br />@prop({type: String, required: true, trim: true, validate: /\S+/})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/modules/announcement/announcement.model.ts:34</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/modules/announcement/announcement.model.ts:37</a></div>
                         </td>
                     </tr>
 
@@ -265,13 +266,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined, immutable: true})<br />
+                            @prop({type: Date, default: undefined, immutable: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/modules/announcement/announcement.model.ts:43</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/announcement/announcement.model.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -307,7 +308,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/modules/announcement/announcement.model.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/announcement/announcement.model.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -320,7 +321,6 @@
                 <td class="col-md-4">
                     <a name="status"></a>
                     <span class="name">
-                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -340,13 +340,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsIn(ANNOUNCEMENT_STATUSES)<br />@IsInt()<br />@IsDefined()<br />@prop({enum: AnnouncementStatus, default: undefined, index: true})<br />
+                            @IsEnum(AnnouncementStatus)<br />@IsOptional()<br />@prop({type: Number, enum: AnnouncementStatus, default: undefined, index: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/modules/announcement/announcement.model.ts:40</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/announcement/announcement.model.ts:42</a></div>
                         </td>
                     </tr>
 
@@ -377,13 +377,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined})<br />
+                            @prop({type: Date, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/modules/announcement/announcement.model.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/announcement/announcement.model.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -402,16 +402,18 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
-import { prop, plugin, modelOptions } from &#x27;@typegoose/typegoose&#x27;
-import { IsString, IsInt, IsIn, IsDefined, IsNotEmpty } from &#x27;class-validator&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsOptional, IsNotEmpty, IsEnum } from &#x27;class-validator&#x27;
+import { AutoIncrementID } from &#x27;@typegoose/auto-increment&#x27;
+import { prop, index, plugin, modelOptions } from &#x27;@typegoose/typegoose&#x27;
+import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from &#x27;@app/constants/database.constant&#x27;
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { mongoosePaginate } from &#x27;@app/utils/paginate&#x27;
-import { AnnouncementStatus, ANNOUNCEMENT_STATUSES } from &#x27;./announcement.constant&#x27;
+import { AnnouncementStatus } from &#x27;./announcement.constant&#x27;
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@index({ status: 1, created_at: -1 })
 @modelOptions({
   schemaOptions: {
     id: false,
@@ -427,20 +429,20 @@ export class Announcement {
   id: number
 
   @IsString()
-  @IsNotEmpty({ message: &#x27;content?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
+  @IsNotEmpty()
+  @NormalizeString({ trim: true })
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   content: string
 
-  @IsIn(ANNOUNCEMENT_STATUSES)
-  @IsInt()
-  @IsDefined()
-  @prop({ enum: AnnouncementStatus, default: AnnouncementStatus.Published, index: true })
+  @IsEnum(AnnouncementStatus)
+  @IsOptional()
+  @prop({ type: Number, enum: AnnouncementStatus, default: AnnouncementStatus.Published, index: true })
   status: AnnouncementStatus
 
-  @prop({ default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true })
   created_at?: Date
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 

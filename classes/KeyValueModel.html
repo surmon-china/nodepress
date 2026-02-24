@@ -161,6 +161,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#key" >key</a>
                             </li>
                             <li>
@@ -197,6 +198,7 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>key</b></span>
                         <a href="#key"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -213,13 +215,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty()<br />@prop({required: true, trim: true, validate: /\S+/})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@NormalizeString({trim: true})<br />@prop({type: String, required: true, trim: true, validate: /\S+/})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/models/key-value.model.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/models/key-value.model.ts:16</a></div>
                         </td>
                     </tr>
 
@@ -251,13 +253,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@prop({required: false})<br />
+                            @IsString()<br />@IsOptional()<br />@prop({type: String, required: false})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/models/key-value.model.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/models/key-value.model.ts:21</a></div>
                         </td>
                     </tr>
 
@@ -278,16 +280,18 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { prop } from &#x27;@typegoose/typegoose&#x27;
 import { IsString, IsNotEmpty, IsOptional } from &#x27;class-validator&#x27;
+import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
 
 export class KeyValueModel {
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true, trim: true, validate: /\S+/ })
+  @NormalizeString({ trim: true })
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   key: string
 
   @IsString()
   @IsOptional()
-  @prop({ required: false })
+  @prop({ type: String, required: false })
   value: string
 }
 </code></pre>

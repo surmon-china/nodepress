@@ -276,7 +276,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isString from &#x27;lodash/isString&#x27;
-import { FastifyReply } from &#x27;fastify&#x27;
+import type { FastifyReply } from &#x27;fastify&#x27;
 import type { ArgumentsHost } from &#x27;@nestjs/common&#x27;
 import { ExceptionFilter, Catch, HttpStatus, HttpException } from &#x27;@nestjs/common&#x27;
 import { ResponseStatus, HttpErrorResponse } from &#x27;@app/interfaces/response.interface&#x27;
@@ -307,14 +307,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message: _isString(errorInfo) ? errorInfo : errorInfo.message,
         error: _isString(errorInfo) ? null : errorInfo.error,
         timestamp
-      } as HttpErrorResponse)
+      } satisfies HttpErrorResponse)
     } else {
       response.code(HttpStatus.INTERNAL_SERVER_ERROR).send({
         status: ResponseStatus.Error,
         message: exception instanceof Error ? exception.message : String(exception),
         error: &#x27;Internal Server Error&#x27;,
         timestamp
-      } as HttpErrorResponse)
+      } satisfies HttpErrorResponse)
     }
   }
 }

@@ -155,7 +155,6 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Async</span>
                                 <a href="#handleFeedbackCreated" >handleFeedbackCreated</a>
                             </li>
                         </ul>
@@ -231,7 +230,6 @@
                     <a name="handleFeedbackCreated"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                            <span class="modifier">Async</span>
                         <span ><b>handleFeedbackCreated</b></span>
                         <a href="#handleFeedbackCreated"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -248,7 +246,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.FeedbackCreated, {async: true})<br /></code>
+                    <code>@OnEvent(EventKeys.FeedbackCreated)<br /></code>
                 </td>
             </tr>
 
@@ -291,7 +289,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
                             <div class="io-description">
@@ -319,20 +317,22 @@ import { APP_BIZ } from &#x27;@app/app.config&#x27;
 export class FeedbackListener {
   constructor(private readonly emailService: EmailService) {}
 
-  @OnEvent(EventKeys.FeedbackCreated, { async: true })
-  async handleFeedbackCreated(feedback: Feedback) {
+  @OnEvent(EventKeys.FeedbackCreated)
+  handleFeedbackCreated(feedback: Feedback) {
     const subject &#x3D; &#x27;You have a new feedback&#x27;
 
     this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
       to: APP_BIZ.ADMIN_EMAIL,
       subject,
       ...linesToEmailContent([
-        &#x60;${subject} on &#x27;${feedback.tid}&#x27;.&#x60;,
+        &#x60;${subject}.&#x60;,
         &#x60;Emotion: ${feedback.emotion_emoji} ${feedback.emotion_text} (${feedback.emotion})&#x60;,
         &#x60;Content: ${feedback.content}&#x60;,
-        &#x60;Author: ${feedback.user_name || &#x27;Anonymous user&#x27;}&#x60;,
+        &#x60;&#x60;,
+        &#x60;Author: ${feedback.author_name || &#x27;Anonymous user&#x27;}&#x60;,
+        &#x60;Origin: ${feedback.origin || &#x27;unknown&#x27;}&#x60;,
         &#x60;Location: ${feedback.ip_location ? getLocationText(feedback.ip_location) : &#x27;unknown&#x27;}&#x60;,
-        &#x60;UserAgent: ${feedback.user_agent ? getUserAgentText(feedback.user_agent) : &#x27;unknown&#x27;}&#x60;
+        &#x60;Agent: ${feedback.user_agent ? getUserAgentText(feedback.user_agent) : &#x27;unknown&#x27;}&#x60;
       ])
     })
   }

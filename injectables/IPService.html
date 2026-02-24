@@ -188,7 +188,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/core/helper/helper.service.ip.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/core/helper/helper.service.ip.ts:26</a></div>
                             </td>
                         </tr>
 
@@ -253,8 +253,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="76"
-                                    class="link-to-prism">src/core/helper/helper.service.ip.ts:76</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="73"
+                                    class="link-to-prism">src/core/helper/helper.service.ip.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -322,8 +322,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/core/helper/helper.service.ip.ts:54</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/core/helper/helper.service.ip.ts:52</a></div>
                         </td>
                     </tr>
 
@@ -391,8 +391,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/core/helper/helper.service.ip.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="30"
+                                    class="link-to-prism">src/core/helper/helper.service.ip.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -459,7 +459,6 @@ export interface IPLocation {
   region: string
   region_code: string
   city: string
-  zip: string
   [key: string]: any
 }
 
@@ -470,7 +469,7 @@ export class IPService {
   // query by https://ip-api.com/docs/api:json
   private queryLocationByIpApi(ip: IP): Promise&lt;IPLocation&gt; {
     return this.httpService.axiosRef
-      .get&lt;any&gt;(&#x60;http://ip-api.com/json/${ip}?fields&#x3D;status,message,country,countryCode,region,regionName,city,zip&#x60;)
+      .get&lt;any&gt;(&#x60;http://ip-api.com/json/${ip}?fields&#x3D;status,message,country,countryCode,region,regionName,city&#x60;)
       .then((response) &#x3D;&gt; {
         return response.data?.status !&#x3D;&#x3D; &#x27;success&#x27;
           ? Promise.reject(response.data.message)
@@ -479,9 +478,8 @@ export class IPService {
               country_code: response.data.countryCode,
               region: response.data.regionName,
               region_code: response.data.region,
-              city: response.data.city,
-              zip: response.data.zip
-            })
+              city: response.data.city
+            } satisfies IPLocation)
       })
       .catch((error) &#x3D;&gt; {
         const message &#x3D; getMessageFromAxiosError(error)
@@ -502,9 +500,8 @@ export class IPService {
               country_code: response.data.country_code,
               region: response.data.region,
               region_code: response.data.region_code,
-              city: response.data.city,
-              zip: response.data.postal
-            })
+              city: response.data.city
+            } satisfies IPLocation)
       })
       .catch((error) &#x3D;&gt; {
         const message &#x3D; getMessageFromAxiosError(error)

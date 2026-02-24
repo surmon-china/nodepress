@@ -183,6 +183,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#friend_links" >friend_links</a>
                             </li>
                             <li>
@@ -190,7 +191,13 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#keywords" >keywords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#singleton" >singleton</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
@@ -279,7 +286,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">src/modules/options/options.model.ts:139</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/modules/options/options.model.ts:143</a></div>
                         </td>
                     </tr>
 
@@ -313,13 +320,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @Type(undefined)<br />@ValidateNested()<br />@IsObject()<br />@IsOptional()<br />@prop({_id: false, default: undefined})<br />
+                            @Type(undefined)<br />@ValidateNested()<br />@IsObject()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; Blocklist, _id: false, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/modules/options/options.model.ts:133</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/modules/options/options.model.ts:137</a></div>
                         </td>
                     </tr>
 
@@ -351,13 +358,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty()<br />@prop({required: true})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true, trim: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/modules/options/options.model.ts:95</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/modules/options/options.model.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -370,6 +377,7 @@
                 <td class="col-md-4">
                     <a name="friend_links"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -391,13 +399,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @Type(undefined)<br />@ValidateNested()<br />@ArrayUnique()<br />@IsArray()<br />@prop({_id: false, default: undefined, type: () &#x3D;&gt; })<br />
+                            @Type(undefined)<br />@ValidateNested({each: true})<br />@ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; , _id: false, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="125" class="link-to-prism">src/modules/options/options.model.ts:125</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/modules/options/options.model.ts:130</a></div>
                         </td>
                     </tr>
 
@@ -410,6 +418,7 @@
                 <td class="col-md-4">
                     <a name="keywords"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -430,13 +439,50 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({default: undefined, type: () &#x3D;&gt; })<br />
+                            @IsString({each: true})<br />@ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; , default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">src/modules/options/options.model.ts:101</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/modules/options/options.model.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="singleton"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>singleton</b></span>
+                        <a href="#singleton"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @prop({type: Boolean, default: true, unique: true, select: false})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/modules/options/options.model.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -469,13 +515,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsEmail()<br />@IsString()<br />@IsNotEmpty()<br />@prop({required: true})<br />
+                            @IsEmail()<br />@IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">src/modules/options/options.model.ts:113</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">src/modules/options/options.model.ts:117</a></div>
                         </td>
                     </tr>
 
@@ -508,13 +554,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsUrl({require_protocol: true})<br />@IsString()<br />@IsNotEmpty()<br />@prop({required: true})<br />
+                            @IsUrl({require_protocol: true})<br />@IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/modules/options/options.model.ts:107</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">src/modules/options/options.model.ts:111</a></div>
                         </td>
                     </tr>
 
@@ -546,13 +592,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@prop({default: &#x27;&#x27;})<br />
+                            @IsString()<br />@IsOptional()<br />@prop({type: String, default: &#x27;&#x27;})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="118" class="link-to-prism">src/modules/options/options.model.ts:118</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">src/modules/options/options.model.ts:122</a></div>
                         </td>
                     </tr>
 
@@ -584,13 +630,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty({message: &#x27;sub title?&#x27;})<br />@prop({required: true, validate: /\S+/})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true, trim: true, validate: /\S+/})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/modules/options/options.model.ts:90</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/modules/options/options.model.ts:93</a></div>
                         </td>
                     </tr>
 
@@ -622,13 +668,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty({message: &#x27;title?&#x27;})<br />@prop({required: true, validate: /\S+/})<br />
+                            @IsString()<br />@IsNotEmpty()<br />@prop({type: String, required: true, trim: true, validate: /\S+/})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/modules/options/options.model.ts:85</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/modules/options/options.model.ts:88</a></div>
                         </td>
                     </tr>
 
@@ -659,13 +705,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @prop({default: undefined})<br />
+                            @prop({type: Date, default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/modules/options/options.model.ts:142</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">src/modules/options/options.model.ts:146</a></div>
                         </td>
                     </tr>
 
@@ -691,9 +737,13 @@ import { IsString, IsObject, IsUrl, IsEmail, IsArray, IsOptional, IsNotEmpty } f
 import { getProviderByTypegooseClass } from &#x27;@app/transformers/model.transformer&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
+export type OptionPublic &#x3D; Omit&lt;Option, &#x27;blocklist&#x27;&gt;
+
+export const OPTIONS_SINGLETON_QUERY &#x3D; Object.freeze({ singleton: true } as const)
+
 const DEFAULT_OPTIONS_BLOCKLIST: Blocklist &#x3D; Object.freeze({
   ips: [],
-  mails: [],
+  emails: [],
   keywords: []
 })
 
@@ -705,12 +755,7 @@ export const DEFAULT_OPTIONS: Option &#x3D; Object.freeze&lt;Option&gt;({
   statement: &#x27;&#x27;,
   site_url: &#x27;https://github.com/surmon-china/nodepress&#x27;,
   site_email: &#x27;admin@example.com&#x27;,
-  friend_links: [
-    {
-      name: APP_BIZ.FE_NAME,
-      url: APP_BIZ.FE_URL
-    }
-  ],
+  friend_links: [{ name: APP_BIZ.FE_NAME, url: APP_BIZ.FE_URL }],
   blocklist: DEFAULT_OPTIONS_BLOCKLIST,
   app_config: &#x27;&#x27;
 })
@@ -718,17 +763,16 @@ export const DEFAULT_OPTIONS: Option &#x3D; Object.freeze&lt;Option&gt;({
 export class FriendLink {
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true, trim: true, validate: /\S+/ })
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   name: string
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true, trim: true })
+  @prop({ type: String, required: true, trim: true })
   url: string
 }
 
-// user block list
 export class Blocklist {
   @ArrayUnique()
   @IsArray()
@@ -736,12 +780,14 @@ export class Blocklist {
   @prop({ type: () &#x3D;&gt; [String], default: [] })
   ips: string[]
 
+  @IsEmail(undefined, { each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()
   @prop({ type: () &#x3D;&gt; [String], default: [] })
-  mails: string[]
+  emails: string[]
 
+  @IsString({ each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()
@@ -759,57 +805,61 @@ export class Blocklist {
   }
 })
 export class Option {
+  @prop({ type: Boolean, default: true, unique: true, select: false })
+  singleton?: boolean
+
   @IsString()
-  @IsNotEmpty({ message: &#x27;title?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   title: string
 
   @IsString()
-  @IsNotEmpty({ message: &#x27;sub title?&#x27; })
-  @prop({ required: true, validate: /\S+/ })
+  @IsNotEmpty()
+  @prop({ type: String, required: true, trim: true, validate: /\S+/ })
   sub_title: string
 
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true })
+  @prop({ type: String, required: true, trim: true })
   description: string
 
+  @IsString({ each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()
-  @prop({ default: [], type: () &#x3D;&gt; [String] })
+  @prop({ type: () &#x3D;&gt; [String], default: [] })
   keywords: string[]
 
   @IsUrl({ require_protocol: true })
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true })
+  @prop({ type: String, required: true })
   site_url: string
 
   @IsEmail()
   @IsString()
   @IsNotEmpty()
-  @prop({ required: true })
+  @prop({ type: String, required: true })
   site_email: string
 
   @IsString()
   @IsOptional()
-  @prop({ default: &#x27;&#x27; })
+  @prop({ type: String, default: &#x27;&#x27; })
   statement: string
 
   @Type(() &#x3D;&gt; FriendLink)
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @ArrayUnique()
   @IsArray()
-  @prop({ _id: false, default: [], type: () &#x3D;&gt; [FriendLink] })
+  @IsOptional()
+  @prop({ type: () &#x3D;&gt; [FriendLink], _id: false, default: [] })
   friend_links: FriendLink[]
 
-  // site user block list
   @Type(() &#x3D;&gt; Blocklist)
   @ValidateNested()
   @IsObject()
   @IsOptional()
-  @prop({ _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } })
+  @prop({ type: () &#x3D;&gt; Blocklist, _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } })
   blocklist: Blocklist
 
   // app config (for broader client configuration usage)
@@ -818,7 +868,7 @@ export class Option {
   @prop({ type: String, default: null })
   app_config: string | null
 
-  @prop({ default: Date.now })
+  @prop({ type: Date, default: Date.now })
   updated_at?: Date
 }
 

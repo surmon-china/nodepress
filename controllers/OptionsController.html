@@ -160,7 +160,6 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getOptions" >getOptions</a>
                             </li>
                             <li>
@@ -168,7 +167,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier">Async</span>
-                                <a href="#putOptions" >putOptions</a>
+                                <a href="#updateOptions" >updateOptions</a>
                             </li>
                         </ul>
                     </td>
@@ -195,7 +194,6 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>getOptions</b></span>
                         <a href="#getOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -212,14 +210,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@UseGuards(AdminOptionalGuard)<br />@SuccessResponse(&#x27;Get app options succeeded&#x27;)<br /></code>
+                    <code>@Get()<br />@SuccessResponse(&#x27;Get app options succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="27"
-                                    class="link-to-prism">src/modules/options/options.controller.ts:27</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/modules/options/options.controller.ts:26</a></div>
                         </td>
                     </tr>
 
@@ -268,21 +266,21 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="putOptions"></a>
+                    <a name="updateOptions"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier">Async</span>
-                        <span ><b>putOptions</b></span>
-                        <a href="#putOptions"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateOptions</b></span>
+                        <a href="#updateOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>putOptions(options: <a href="../classes/Option.html" target="_self">Option</a>)</code>
+                    <code>updateOptions(dto: <a href="../classes/UpdateOptionsDto.html" target="_self">UpdateOptionsDto</a>)</code>
                 </td>
             </tr>
 
@@ -290,14 +288,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Put()<br />@UseGuards(AdminOnlyGuard)<br />@SuccessResponse(&#x27;Update app options succeeded&#x27;)<br /></code>
+                    <code>@Patch()<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update app options succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/modules/options/options.controller.ts:34</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">src/modules/options/options.controller.ts:33</a></div>
                         </td>
                     </tr>
 
@@ -318,9 +316,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>options</td>
+                                                <td>dto</td>
                                             <td>
-                                                            <code><a href="../classes/Option.html" target="_self" >Option</a></code>
+                                                            <code><a href="../classes/UpdateOptionsDto.html" target="_self" >UpdateOptionsDto</a></code>
                                             </td>
 
                                             <td>
@@ -354,13 +352,13 @@
  */
 
 import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
-import { Controller, Get, Put, Body, UseGuards } from &#x27;@nestjs/common&#x27;
+import { Controller, Get, Patch, Body } from &#x27;@nestjs/common&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
-import { AdminOnlyGuard } from &#x27;@app/guards/admin-only.guard&#x27;
-import { AdminOptionalGuard } from &#x27;@app/guards/admin-optional.guard&#x27;
+import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { OptionsService } from &#x27;./options.service&#x27;
+import { UpdateOptionsDto } from &#x27;./options.dto&#x27;
 import { Option } from &#x27;./options.model&#x27;
 
 @Controller(&#x27;options&#x27;)
@@ -371,17 +369,16 @@ export class OptionsController {
   ) {}
 
   @Get()
-  @UseGuards(AdminOptionalGuard)
   @SuccessResponse(&#x27;Get app options succeeded&#x27;)
-  getOptions(@RequestContext() { isAuthenticated }: IRequestContext) {
-    return isAuthenticated ? this.optionsService.ensureAppOptions() : this.optionsService.getOptionsCacheForGuest()
+  getOptions(@RequestContext() { identity }: IRequestContext) {
+    return identity.isAdmin ? this.optionsService.ensureOptions() : this.optionsService.getPublicOptionsCache()
   }
 
-  @Put()
-  @UseGuards(AdminOnlyGuard)
+  @Patch()
+  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update app options succeeded&#x27;)
-  async putOptions(@Body() options: Option): Promise&lt;Option&gt; {
-    const updated &#x3D; await this.optionsService.putOptions(options)
+  async updateOptions(@Body() dto: UpdateOptionsDto): Promise&lt;Option&gt; {
+    const updated &#x3D; await this.optionsService.updateOptions(dto)
     this.eventEmitter.emit(EventKeys.OptionsUpdated, updated)
     return updated
   }

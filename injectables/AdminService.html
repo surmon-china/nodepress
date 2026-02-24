@@ -144,6 +144,21 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#profileCache" >profileCache</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -155,7 +170,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#createToken" >createToken</a>
+                                <a href="#getDocument" >getDocument</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -164,8 +179,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#login" >login</a>
+                                <a href="#getProfileCache" >getProfileCache</a>
+                            </li>
+                            <li>
+                                <a href="#onModuleInit" >onModuleInit</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -173,7 +190,7 @@
                                 <a href="#updateProfile" >updateProfile</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#validatePassword" >validatePassword</a>
                             </li>
@@ -195,12 +212,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(authService: <a href="../injectables/AuthService.html" target="_self">AuthService</a>, adminModel: <a href="../classes/Admin.html" target="_self">MongooseModel&lt;Admin&gt;</a>)</code>
+<code>constructor(cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, adminModel: <a href="../classes/Admin.html" target="_self">MongooseModel&lt;Admin&gt;</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/admin/admin.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/admin/admin.service.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -218,10 +235,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>authService</td>
+                                                        <td>cacheService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                                        <code><a href="../injectables/CacheService.html" target="_self" >CacheService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -259,26 +276,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="createToken"></a>
+                    <a name="getDocument"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>createToken</b></span>
-                        <a href="#createToken"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getDocument</b></span>
+                        <a href="#getDocument"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createToken()</code>
+                    <code>getDocument()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="40"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:40</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -287,7 +304,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/TokenResult.html" target="_self" >TokenResult</a></code>
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#MongooseDoc" target="_self" >Promise&lt;MongooseDoc | null&gt;</a></code>
 
                         </div>
                 </td>
@@ -317,8 +334,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="55"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:55</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -327,7 +344,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;Admin&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;AdminProfile&gt;</a></code>
 
                         </div>
                 </td>
@@ -338,27 +355,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="login"></a>
+                    <a name="getProfileCache"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>login</b></span>
-                        <a href="#login"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getProfileCache</b></span>
+                        <a href="#getProfileCache"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>login(base64Password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>getProfileCache()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:47</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="35"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:35</a></div>
                         </td>
                     </tr>
 
@@ -366,40 +382,47 @@
             <tr>
                 <td class="col-md-4">
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>base64Password</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/TokenResult.html" target="_self" >Promise&lt;TokenResult&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;AdminProfile&gt;</a></code>
 
                         </div>
-                            <div class="io-description">
-                                
-                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onModuleInit"></a>
+                    <span class="name">
+                        <span ><b>onModuleInit</b></span>
+                        <a href="#onModuleInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onModuleInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="31"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -420,15 +443,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateProfile(adminProfile: <a href="../classes/AdminUpdateDTO.html" target="_self">AdminUpdateDTO</a>)</code>
+                    <code>updateProfile(input: <a href="../classes/UpdateProfileDto.html" target="_self">UpdateProfileDto</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="60"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:60</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -449,9 +472,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>adminProfile</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="../classes/AdminUpdateDTO.html" target="_self" >AdminUpdateDTO</a></code>
+                                                            <code><a href="../classes/UpdateProfileDto.html" target="_self" >UpdateProfileDto</a></code>
                                             </td>
 
                                             <td>
@@ -464,7 +487,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;Admin&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../classes/Admin.html" target="_self" >Promise&lt;AdminProfile&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -480,7 +503,7 @@
                 <td class="col-md-4">
                     <a name="validatePassword"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
+                            <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
                         <span ><b>validatePassword</b></span>
                         <a href="#validatePassword"><span class="icon ion-ios-link"></span></a>
@@ -490,27 +513,21 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>validatePassword(plainPassword: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>validatePassword(plainPassword: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, hashedPassword?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/admin/admin.service.ts:48</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Validate the provided plain password against the stored password.</p>
-<ul>
-<li>If a hashed password exists in the database, verify with bcrypt.</li>
-<li>If no password exists (e.g., initial state), fall back to comparing with the default password.</li>
-</ul>
-</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -536,6 +553,18 @@
 
 
                                         </tr>
+                                        <tr>
+                                                <td>hashedPassword</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -551,68 +580,103 @@
         </tbody>
     </table>
 </section>
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileCache"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>profileCache</b></span>
+                        <a href="#profileCache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/CacheManualResult.html" target="_self" >CacheManualResult&lt;AdminProfile&gt;</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/admin/admin.service.ts:19</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import bcrypt from &#x27;bcryptjs&#x27;
-import { Injectable, UnauthorizedException, BadRequestException } from &#x27;@nestjs/common&#x27;
+import { Injectable, BadRequestException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { AuthService } from &#x27;@app/core/auth/auth.service&#x27;
+import { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
+import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { decodeBase64 } from &#x27;@app/transformers/codec.transformer&#x27;
-import { Admin, DEFAULT_ADMIN_PROFILE } from &#x27;./admin.model&#x27;
-import { TokenResult } from &#x27;./admin.interface&#x27;
-import { AdminUpdateDTO } from &#x27;./admin.dto&#x27;
-import { APP_BIZ } from &#x27;@app/app.config&#x27;
+import { Admin, AdminProfile, DEFAULT_ADMIN_PROFILE, ADMIN_SINGLETON_QUERY } from &#x27;./admin.model&#x27;
+import { UpdateProfileDto } from &#x27;./admin.dto&#x27;
+import { APP_AUTH } from &#x27;@app/app.config&#x27;
 
 @Injectable()
 export class AdminService {
+  private profileCache: CacheManualResult&lt;AdminProfile&gt;
+
   constructor(
-    private readonly authService: AuthService,
+    private readonly cacheService: CacheService,
     @InjectModel(Admin) private readonly adminModel: MongooseModel&lt;Admin&gt;
-  ) {}
-
-  /**
-   * Validate the provided plain password against the stored password.
-   * - If a hashed password exists in the database, verify with bcrypt.
-   * - If no password exists (e.g., initial state), fall back to comparing with the default password.
-   */
-  private async validatePassword(plainPassword: string): Promise&lt;boolean&gt; {
-    const existedProfile &#x3D; await this.adminModel.findOne().select(&#x27;+password&#x27;).exec()
-    if (existedProfile?.password) {
-      // Password exists in database → validate using bcrypt
-      return await bcrypt.compare(plainPassword, existedProfile.password)
-    } else {
-      // No password in database → compare directly with default password (no hashing)
-      return plainPassword &#x3D;&#x3D;&#x3D; APP_BIZ.PASSWORD.defaultPassword
-    }
+  ) {
+    this.profileCache &#x3D; this.cacheService.manual({
+      key: CacheKeys.AdminProfile,
+      promise: () &#x3D;&gt; this.getProfile()
+    })
   }
 
-  public createToken(): TokenResult {
-    return {
-      access_token: this.authService.signToken(),
-      expires_in: APP_BIZ.AUTH_JWT.expiresIn
-    }
+  onModuleInit() {
+    this.profileCache.update()
   }
 
-  public async login(base64Password: string): Promise&lt;TokenResult&gt; {
-    if (await this.validatePassword(decodeBase64(base64Password))) {
-      return this.createToken()
-    } else {
-      throw new UnauthorizedException(&#x27;Password incorrect&#x27;)
-    }
+  public getProfileCache(): Promise&lt;AdminProfile&gt; {
+    return this.profileCache.get()
   }
 
-  public async getProfile(): Promise&lt;Admin&gt; {
-    const adminProfile &#x3D; await this.adminModel.findOne().select(&#x27;-_id&#x27;).lean().exec()
+  public async getProfile(): Promise&lt;AdminProfile&gt; {
+    const adminProfile &#x3D; await this.adminModel.findOne(ADMIN_SINGLETON_QUERY).select(&#x27;-_id&#x27;).lean().exec()
     return adminProfile ?? DEFAULT_ADMIN_PROFILE
   }
 
-  public async updateProfile(adminProfile: AdminUpdateDTO): Promise&lt;Admin&gt; {
-    const { password: inputOldPassword, new_password: inputNewPassword, ...profile } &#x3D; adminProfile
-    const newProfile: Admin &#x3D; { ...profile }
+  public getDocument(): Promise&lt;MongooseDoc&lt;Admin&gt; | null&gt; {
+    return this.adminModel.findOne(ADMIN_SINGLETON_QUERY).select(&#x27;+password&#x27;).exec()
+  }
+
+  public async validatePassword(plainPassword: string, hashedPassword?: string): Promise&lt;boolean&gt; {
+    return hashedPassword
+      ? // Hashed password exists in database → validate using bcrypt
+        await bcrypt.compare(plainPassword, hashedPassword)
+      : // No password in database → compare directly with default password (no hashing)
+        plainPassword &#x3D;&#x3D;&#x3D; APP_AUTH.adminDefaultPassword
+  }
+
+  public async updateProfile(input: UpdateProfileDto): Promise&lt;AdminProfile&gt; {
+    const { password: inputOldPassword, new_password: inputNewPassword, ...profile } &#x3D; input
+    const newProfile: Partial&lt;Admin&gt; &#x3D; { ...profile }
+
+    // Enforce password change during the initial profile update.
+    const existedAdmin &#x3D; await this.getDocument()
+    if (!existedAdmin &amp;&amp; !inputNewPassword) {
+      throw new BadRequestException(&#x27;First initialization must set password&#x27;)
+    }
 
     // Verify password
     if (inputOldPassword || inputNewPassword) {
@@ -622,23 +686,24 @@ export class AdminService {
       if (inputOldPassword &#x3D;&#x3D;&#x3D; inputNewPassword) {
         throw new BadRequestException(&#x27;Old password and new password cannot be the same&#x27;)
       }
-      if (!(await this.validatePassword(decodeBase64(inputOldPassword)))) {
+      if (!(await this.validatePassword(decodeBase64(inputOldPassword), existedAdmin?.password))) {
         throw new BadRequestException(&#x27;Old password incorrect&#x27;)
       }
+
       // Set new password
       const plainNewPassword &#x3D; decodeBase64(inputNewPassword)
-      newProfile.password &#x3D; await bcrypt.hash(plainNewPassword, APP_BIZ.PASSWORD.bcryptSaltRounds)
+      newProfile.password &#x3D; await bcrypt.hash(plainNewPassword, APP_AUTH.adminBcryptSaltRounds)
     }
 
-    // save
-    const existedProfile &#x3D; await this.adminModel.findOne().select(&#x27;+password&#x27;).exec()
-    if (existedProfile) {
-      await Object.assign(existedProfile, newProfile).save()
+    // Save or create
+    if (existedAdmin) {
+      await existedAdmin.set(newProfile).save()
     } else {
       await this.adminModel.create(newProfile)
     }
 
-    return this.getProfile()
+    // Update cache and return
+    return await this.profileCache.update()
   }
 }
 </code></pre>

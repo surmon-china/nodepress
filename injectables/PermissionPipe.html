@@ -312,7 +312,7 @@ export class PermissionPipe implements PipeTransform&lt;any&gt; {
 
   transform(value) {
     // Allow any authenticated user to pass through without validation.
-    if (this.request.locals.isAuthenticated) {
+    if (this.request.identity.isAdmin) {
       return value
     }
 
@@ -325,7 +325,7 @@ export class PermissionPipe implements PipeTransform&lt;any&gt; {
         // Validate guest user request params&#x27;s field permission.
         if (fieldMeta?.only?.length &amp;&amp; !fieldMeta.only.includes(fieldValue)) {
           throw new ForbiddenException(
-            &#x60;Invalid value for field &#x27;${field}&#x27;: allowed values are [${fieldMeta.only.join(&#x27;, &#x27;)}]&#x60;
+            &#x60;Permission denied: field &#x27;${field}&#x27; only accepts values: [${fieldMeta.only.join(&#x27;, &#x27;)}]&#x60;
           )
         }
       }
@@ -337,7 +337,7 @@ export class PermissionPipe implements PipeTransform&lt;any&gt; {
     })
 
     // HACK: Persisting validated query params to request.locals for debugging (non-standard side effect)
-    this.request.locals.validatedQueryParams &#x3D; { ...value }
+    this.request.validatedQueryParams &#x3D; { ...value }
 
     return value
   }

@@ -156,6 +156,11 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier">Async</span>
+                                <a href="#handleCommentCreated" >handleCommentCreated</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#handleCommentCreateFailed" >handleCommentCreateFailed</a>
                             </li>
                         </ul>
@@ -176,12 +181,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, ipService: <a href="../injectables/IPService.html" target="_self">IPService</a>)</code>
+<code>constructor(ipService: <a href="../injectables/IPService.html" target="_self">IPService</a>, emailService: <a href="../injectables/EmailService.html" target="_self">EmailService</a>, commentService: <a href="../injectables/CommentService.html" target="_self">CommentService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/comment/comment.listener.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/comment/comment.listener.ts:30</a></div>
                             </td>
                         </tr>
 
@@ -199,6 +204,18 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
+                                                        <td>ipService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/IPService.html" target="_self" >IPService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
                                                         <td>emailService</td>
                                                   
                                                         <td>
@@ -211,10 +228,22 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>ipService</td>
+                                                        <td>commentService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/IPService.html" target="_self" >IPService</a></code>
+                                                                        <code><a href="../injectables/CommentService.html" target="_self" >CommentService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>articleService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ArticleService.html" target="_self" >ArticleService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -240,19 +269,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleCommentCreateFailed"></a>
+                    <a name="handleCommentCreated"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier">Async</span>
-                        <span ><b>handleCommentCreateFailed</b></span>
-                        <a href="#handleCommentCreateFailed"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>handleCommentCreated</b></span>
+                        <a href="#handleCommentCreated"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleCommentCreateFailed(: <a href="../interfaces/CommentCreateFailedEventPayload.html" target="_self">CommentCreateFailedEventPayload</a>)</code>
+                    <code>handleCommentCreated(comment: CommentWith<UserPublic>)</code>
                 </td>
             </tr>
 
@@ -260,14 +289,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.CommentCreateFailed, {async: true})<br /></code>
+                    <code>@OnEvent(EventKeys.CommentCreated, {async: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="33"
-                                    class="link-to-prism">src/modules/comment/comment.listener.ts:33</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/comment/comment.listener.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -288,8 +317,86 @@
                                     </thead>
                                     <tbody>
                                         <tr>
+                                                <td>comment</td>
                                             <td>
-                                                            <code><a href="../interfaces/CommentCreateFailedEventPayload.html" target="_self" >CommentCreateFailedEventPayload</a></code>
+                                                        <code>CommentWith&lt;UserPublic&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleCommentCreateFailed"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleCommentCreateFailed</b></span>
+                        <a href="#handleCommentCreateFailed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleCommentCreateFailed(payload: literal type)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.CommentCreateFailed, {async: true})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">src/modules/comment/comment.listener.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>payload</td>
+                                            <td>
+                                                        <code>literal type</code>
                                             </td>
 
                                             <td>
@@ -323,44 +430,105 @@ import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
-import { GUESTBOOK_POST_ID } from &#x27;@app/constants/biz.constant&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { CommentBase } from &#x27;@app/modules/comment/comment.model&#x27;
-import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
+import { UserPublic } from &#x27;@app/modules/user/user.model&#x27;
+import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
+import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
+import { getCommentNotificationEmail } from &#x27;@app/modules/comment/comment.helper&#x27;
+import { CommentTargetType } from &#x27;@app/modules/comment/comment.constant&#x27;
+import { CreateCommentDto } from &#x27;@app/modules/comment/comment.dto&#x27;
+import { CommentWith } from &#x27;@app/modules/comment/comment.model&#x27;
 import { getLocationText, getUserAgentText, linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
+import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
+import { getPermalink } from &#x27;@app/transformers/urlmap.transformer&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
+import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
-interface CommentCreateFailedEventPayload {
-  visitor: QueryVisitor
-  comment: CommentBase
-  error: any
-}
+const logger &#x3D; createLogger({ scope: &#x27;CommentListener&#x27;, time: isDevEnv })
 
 @Injectable()
 export class CommentListener {
   constructor(
+    private readonly ipService: IPService,
     private readonly emailService: EmailService,
-    private readonly ipService: IPService
+    private readonly commentService: CommentService,
+    private readonly articleService: ArticleService
   ) {}
 
+  @OnEvent(EventKeys.CommentCreated, { async: true })
+  async handleCommentCreated(comment: CommentWith&lt;UserPublic&gt;) {
+    const targetLink &#x3D; getPermalink(comment.target_type, comment.target_id) + &#x60;#comment-${comment.id}&#x60;
+    const targetTitle &#x3D;
+      comment.target_type &#x3D;&#x3D;&#x3D; CommentTargetType.Page
+        ? &#x60;Page #${comment.target_id}&#x60;
+        : await this.articleService
+            .getDetail(comment.target_id, { lean: true })
+            .then((article) &#x3D;&gt; &#x60;&quot;${article.title}&quot;&#x60;)
+            .catch(() &#x3D;&gt; &#x60;Article #${comment.target_id}&#x60;)
+
+    // Email to admin
+    const subject &#x3D; &#x60;You have a new comment on &quot;${targetTitle}&quot;&#x60;
+    this.emailService.sendMailAs(APP_BIZ.NAME, {
+      to: APP_BIZ.ADMIN_EMAIL,
+      subject,
+      ...linesToEmailContent([
+        subject,
+        &#x60;Content: ${comment.content}&#x60;,
+        &#x60;Author: ${comment.author_name || &#x27;-&#x27;} · ${comment.author_email || &#x27;-&#x27;} · ${comment.author_website || &#x27;-&#x27;}&#x60;,
+        &#x60;Agent: ${comment.user_agent ? getUserAgentText(comment.user_agent) : &#x27;unknown&#x27;}&#x60;,
+        &#x60;IP: ${comment.ip || &#x27;unknown&#x27;}&#x60;,
+        &#x60;Location: ${comment.ip_location ? getLocationText(comment.ip_location) : &#x27;unknown&#x27;}&#x60;,
+        &#x60;URL: ${targetLink}&#x60;
+      ])
+    })
+
+    // Email to parent comment author
+    if (comment.parent_id) {
+      try {
+        const parentComment &#x3D; await this.commentService.getDetail(comment.parent_id, &#x27;withUser&#x27;)
+        const parentCommentEmail &#x3D; getCommentNotificationEmail(parentComment)
+
+        if (!parentCommentEmail) return
+        if (parentCommentEmail &#x3D;&#x3D;&#x3D; comment.author_email) return
+
+        const subject &#x3D; &#x60;Your comment #${parentComment.id} has a new reply&#x60;
+        this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
+          to: parentCommentEmail,
+          subject,
+          ...linesToEmailContent([
+            &#x60;Hello, ${parentComment.author_name || &#x27;there&#x27;}.&#x60;,
+            &#x60;Your comment has a new reply from ${comment.author_name}:&#x60;,
+            &#x60;&#x60;,
+            &#x60;${comment.content}&#x60;,
+            &#x60;&#x60;,
+            &#x60;View on ${targetTitle}: ${targetLink}&#x60;
+          ])
+        })
+      } catch (error) {
+        logger.warn(&#x27;Failed to send email to parent comment author:&#x27;, error)
+      }
+    }
+  }
+
   @OnEvent(EventKeys.CommentCreateFailed, { async: true })
-  async handleCommentCreateFailed({ comment, visitor, error }: CommentCreateFailedEventPayload) {
+  async handleCommentCreateFailed(payload: { input: CreateCommentDto; visitor: QueryVisitor; error: any }) {
+    const { input, visitor, error } &#x3D; payload
+
     const subject &#x3D; &#x27;User comment creation failed&#x27;
-    const userAgent &#x3D; visitor.ua ?? comment.agent
     const location &#x3D; visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
-    const targetPage &#x3D; comment.post_id &#x3D;&#x3D;&#x3D; GUESTBOOK_POST_ID ? &#x27;Guestbook&#x27; : &#x60;Article ${comment.post_id}&#x60;
 
     this.emailService.sendMailAs(APP_BIZ.NAME, {
       to: APP_BIZ.ADMIN_EMAIL,
       subject,
       ...linesToEmailContent([
         &#x60;${subject}!&#x60;,
-        &#x60;CommentPid: ${comment.pid}&#x60;,
-        &#x60;CommentPostId: ${targetPage}&#x60;,
-        &#x60;CommentContent: ${comment.content || &#x27;-&#x27;}&#x60;,
-        &#x60;CommentAuthor: ${comment.author.name || &#x27;-&#x27;} · ${comment.author.email || &#x27;-&#x27;} · ${comment.author.site || &#x27;-&#x27;}&#x60;,
-        &#x60;ErrorDetail: ${getMessageFromNormalError(error)}&#x60;,
-        &#x60;AuthorAgent: ${userAgent ? getUserAgentText(userAgent) : &#x27;unknown&#x27;}&#x60;,
+        &#x60;Comment Parent: ${input.parent_id}&#x60;,
+        &#x60;Comment Target: ${input.target_type} - ${input.target_id}&#x60;,
+        &#x60;Comment Content: ${input.content || &#x27;-&#x27;}&#x60;,
+        &#x60;Comment Author: ${input.author_name || &#x27;-&#x27;} · ${input.author_email || &#x27;-&#x27;} · ${input.author_website || &#x27;-&#x27;}&#x60;,
+        &#x60;Error Detail: ${getMessageFromNormalError(error)}&#x60;,
+        &#x60;Author Agent: ${visitor.agent ? getUserAgentText(visitor.agent) : &#x27;unknown&#x27;}&#x60;,
         &#x60;Referer: ${visitor.referer || &#x27;unknown&#x27;}&#x60;,
         &#x60;IP: ${visitor.ip || &#x27;unknown&#x27;}&#x60;,
         &#x60;Location: ${location ? getLocationText(location) : &#x27;unknown&#x27;}&#x60;

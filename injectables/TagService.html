@@ -154,7 +154,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#allTagsCache" >allTagsCache</a>
+                                <a href="#allPublicTagsCache" >allPublicTagsCache</a>
                             </li>
                         </ul>
                     </td>
@@ -190,17 +190,17 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#getAllPublicTagsCache" >getAllPublicTagsCache</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
                                 <a href="#getAllTags" >getAllTags</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getAllTagsCache" >getAllTagsCache</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getDetailBySlug" >getDetailBySlug</a>
+                                <a href="#getDetail" >getDetail</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -222,7 +222,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#updateAllTagsCache" >updateAllTagsCache</a>
+                                <a href="#updateAllPublicTagsCache" >updateAllPublicTagsCache</a>
                             </li>
                         </ul>
                     </td>
@@ -247,7 +247,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/modules/tag/tag.service.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/tag/tag.service.ts:30</a></div>
                             </td>
                         </tr>
 
@@ -354,15 +354,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>aggregateArticleCount(publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>, tags: <a href="../classes/Tag.html" target="_self">Array&lt;WithId&lt;Tag&gt;&gt;</a>)</code>
+                    <code>aggregateArticleCount(tags: <a href="../classes/Tag.html" target="_self">Array&lt;WithId&lt;Tag&gt;&gt;</a>, publicOnly: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="59"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:59</a></div>
                         </td>
                     </tr>
 
@@ -383,9 +383,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>publicOnly</td>
+                                                <td>tags</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                                            <code><a href="../classes/Tag.html" target="_self" >Array&lt;WithId&lt;Tag&gt;&gt;</a></code>
                                             </td>
 
                                             <td>
@@ -395,9 +395,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>tags</td>
+                                                <td>publicOnly</td>
                                             <td>
-                                                            <code><a href="../classes/Tag.html" target="_self" >Array&lt;WithId&lt;Tag&gt;&gt;</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
                                             </td>
 
                                             <td>
@@ -436,15 +436,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>batchDelete(tagIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId[]</a>)</code>
+                    <code>batchDelete(tagIds: number[])</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="127"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:127</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:145</a></div>
                         </td>
                     </tr>
 
@@ -467,7 +467,7 @@
                                         <tr>
                                                 <td>tagIds</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId[]</a></code>
+                                                        <code>number[]</code>
                                             </td>
 
                                             <td>
@@ -506,15 +506,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(newTag: <a href="../classes/Tag.html" target="_self">Tag</a>)</code>
+                    <code>create(input: <a href="../classes/CreateTagDto.html" target="_self">CreateTagDto</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="104"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:104</a></div>
                         </td>
                     </tr>
 
@@ -535,9 +535,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>newTag</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="../classes/Tag.html" target="_self" >Tag</a></code>
+                                                            <code><a href="../classes/CreateTagDto.html" target="_self" >CreateTagDto</a></code>
                                             </td>
 
                                             <td>
@@ -576,15 +576,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>delete(tagId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>)</code>
+                    <code>delete(tagId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="117"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:117</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="132"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:132</a></div>
                         </td>
                     </tr>
 
@@ -607,7 +607,7 @@
                                         <tr>
                                                 <td>tagId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -626,6 +626,45 @@
                             <div class="io-description">
                                 
                             </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllPublicTagsCache"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getAllPublicTagsCache</b></span>
+                        <a href="#getAllPublicTagsCache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllPublicTagsCache()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;Array&lt;Tag&gt;&gt;</a></code>
+
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -653,8 +692,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="62"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:62</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:86</a></div>
                         </td>
                     </tr>
 
@@ -704,66 +743,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getAllTagsCache"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>getAllTagsCache</b></span>
-                        <a href="#getAllTagsCache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAllTagsCache()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="67"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:67</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/Tag.html" target="_self" >Promise&lt;Array&lt;Tag&gt;&gt;</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getDetailBySlug"></a>
+                    <a name="getDetail"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>getDetailBySlug</b></span>
-                        <a href="#getDetailBySlug"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getDetail</b></span>
+                        <a href="#getDetail"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDetailBySlug(slug: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>getDetail(idOrSlug: number | string)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="85"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:85</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -784,9 +784,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>slug</td>
+                                                <td>idOrSlug</td>
                                             <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        <code>number | string</code>
                                             </td>
 
                                             <td>
@@ -832,8 +832,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="139"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:139</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:91</a></div>
                         </td>
                     </tr>
 
@@ -869,8 +869,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -909,8 +909,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="75"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:75</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:76</a></div>
                         </td>
                     </tr>
 
@@ -996,15 +996,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>update(tagId: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId</a>, newTag: <a href="../classes/Tag.html" target="_self">Tag</a>)</code>
+                    <code>update(tagId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, input: <a href="../classes/UpdateTagDto.html" target="_self">UpdateTagDto</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="102"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:102</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="115"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:115</a></div>
                         </td>
                     </tr>
 
@@ -1027,7 +1027,7 @@
                                         <tr>
                                                 <td>tagId</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -1037,9 +1037,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>newTag</td>
+                                                <td>input</td>
                                             <td>
-                                                            <code><a href="../classes/Tag.html" target="_self" >Tag</a></code>
+                                                            <code><a href="../classes/UpdateTagDto.html" target="_self" >UpdateTagDto</a></code>
                                             </td>
 
                                             <td>
@@ -1066,26 +1066,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="updateAllTagsCache"></a>
+                    <a name="updateAllPublicTagsCache"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>updateAllTagsCache</b></span>
-                        <a href="#updateAllTagsCache"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>updateAllPublicTagsCache</b></span>
+                        <a href="#updateAllPublicTagsCache"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateAllTagsCache()</code>
+                    <code>updateAllPublicTagsCache()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="71"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:71</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -1111,11 +1111,11 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="allTagsCache"></a>
+                    <a name="allPublicTagsCache"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
-                        <span ><b>allTagsCache</b></span>
-                        <a href="#allTagsCache"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>allPublicTagsCache</b></span>
+                        <a href="#allPublicTagsCache"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -1127,7 +1127,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/modules/tag/tag.service.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/tag/tag.service.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -1144,25 +1144,26 @@
 import { Injectable, OnModuleInit, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import type { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import type { MongooseId, MongooseObjectId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import type { MongooseId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
 import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
 import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { ARTICLE_LIST_QUERY_GUEST_FILTER } from &#x27;@app/modules/article/article.constant&#x27;
+import { ARTICLE_PUBLIC_FILTER } from &#x27;@app/modules/article/article.constant&#x27;
 import { Article } from &#x27;@app/modules/article/article.model&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
-import { SortOrder } from &#x27;@app/constants/biz.constant&#x27;
+import { SortOrder } from &#x27;@app/constants/sort.constant&#x27;
 import { getTagUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
+import { CreateTagDto, UpdateTagDto } from &#x27;./tag.dto&#x27;
 import { Tag } from &#x27;./tag.model&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;TagService&#x27;, time: isDevEnv })
 
 @Injectable()
 export class TagService implements OnModuleInit {
-  private allTagsCache: CacheManualResult&lt;Array&lt;Tag&gt;&gt;
+  private allPublicTagsCache: CacheManualResult&lt;Array&lt;Tag&gt;&gt;
 
   constructor(
     private readonly seoService: SeoService,
@@ -1171,41 +1172,41 @@ export class TagService implements OnModuleInit {
     @InjectModel(Tag) private readonly tagModel: MongooseModel&lt;Tag&gt;,
     @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;
   ) {
-    this.allTagsCache &#x3D; this.cacheService.manual&lt;Array&lt;Tag&gt;&gt;({
+    this.allPublicTagsCache &#x3D; this.cacheService.manual&lt;Array&lt;Tag&gt;&gt;({
       key: CacheKeys.AllTags,
       promise: () &#x3D;&gt; this.getAllTags({ aggregatePublicOnly: true })
     })
   }
 
   onModuleInit() {
-    this.allTagsCache.update().catch((error) &#x3D;&gt; {
+    this.allPublicTagsCache.update().catch((error) &#x3D;&gt; {
       logger.warn(&#x27;Init getAllTags failed!&#x27;, error)
     })
   }
 
-  private async aggregateArticleCount(publicOnly: boolean, tags: Array&lt;WithId&lt;Tag&gt;&gt;) {
-    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseObjectId; count: number }&gt;([
-      { $match: publicOnly ? ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
+  public getAllPublicTagsCache(): Promise&lt;Array&lt;Tag&gt;&gt; {
+    return this.allPublicTagsCache.get()
+  }
+
+  public updateAllPublicTagsCache(): Promise&lt;Array&lt;Tag&gt;&gt; {
+    return this.allPublicTagsCache.update()
+  }
+
+  private async aggregateArticleCount(tags: Array&lt;WithId&lt;Tag&gt;&gt;, publicOnly: boolean) {
+    if (!tags.length) return []
+    const tagIds &#x3D; tags.map((c) &#x3D;&gt; c._id)
+    const matchStage &#x3D; publicOnly ? { ...ARTICLE_PUBLIC_FILTER } : {}
+    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseId; count: number }&gt;([
+      { $match: { tags: { $in: tagIds }, ...matchStage } },
       { $unwind: &#x27;$tags&#x27; },
+      { $match: { tags: { $in: tagIds } } },
       { $group: { _id: &#x27;$tags&#x27;, count: { $sum: 1 } } }
     ])
-    return tags.map&lt;Tag&gt;((tag) &#x3D;&gt; {
-      const found &#x3D; counts.find((item) &#x3D;&gt; item._id.equals(tag._id))
-      return { ...tag, article_count: found ? found.count : 0 }
-    })
-  }
-
-  public async getAllTags(options: { aggregatePublicOnly: boolean }): Promise&lt;Array&lt;Tag&gt;&gt; {
-    const allTags &#x3D; await this.tagModel.find().lean().sort({ _id: SortOrder.Desc }).exec()
-    return await this.aggregateArticleCount(options.aggregatePublicOnly, allTags)
-  }
-
-  public getAllTagsCache(): Promise&lt;Array&lt;Tag&gt;&gt; {
-    return this.allTagsCache.get()
-  }
-
-  public updateAllTagsCache(): Promise&lt;Array&lt;Tag&gt;&gt; {
-    return this.allTagsCache.update()
+    const countMap &#x3D; new Map(counts.map((c) &#x3D;&gt; [c._id.toString(), c.count]))
+    return tags.map&lt;Tag&gt;((tag) &#x3D;&gt; ({
+      ...tag,
+      article_count: countMap.get(tag._id.toString()) ?? 0
+    }))
   }
 
   public async paginate(
@@ -1214,66 +1215,88 @@ export class TagService implements OnModuleInit {
     publicOnly: boolean
   ): Promise&lt;PaginateResult&lt;Tag&gt;&gt; {
     const result &#x3D; await this.tagModel.paginateRaw(filter, options)
-    const documents &#x3D; await this.aggregateArticleCount(publicOnly, result.documents)
+    const documents &#x3D; await this.aggregateArticleCount(result.documents, publicOnly)
     return { ...result, documents }
   }
 
-  public async getDetailBySlug(slug: string): Promise&lt;WithId&lt;Tag&gt;&gt; {
-    const tag &#x3D; await this.tagModel.findOne({ slug }).lean().exec()
-    if (!tag) throw new NotFoundException(&#x60;Tag &#x27;${slug}&#x27; not found&#x60;)
-    return tag
-  }
-
-  public async create(newTag: Tag): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
-    const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).lean().exec()
-    if (existedTag) throw new ConflictException(&#x60;Tag slug &#x27;${newTag.slug}&#x27; already exists&#x60;)
-
-    const tag &#x3D; await this.tagModel.create(newTag)
-    this.seoService.push(getTagUrl(tag.slug))
-    this.archiveService.updateCache()
-    this.updateAllTagsCache()
-    return tag
-  }
-
-  public async update(tagId: MongooseId, newTag: Tag): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
-    const existedTag &#x3D; await this.tagModel.findOne({ slug: newTag.slug }).lean().exec()
-    if (existedTag &amp;&amp; !existedTag._id.equals(tagId)) {
-      throw new ConflictException(&#x60;Tag slug &#x27;${newTag.slug}&#x27; already exists&#x60;)
-    }
-
-    const updated &#x3D; await this.tagModel.findByIdAndUpdate(tagId, newTag as any, { new: true }).exec()
-    if (!updated) throw new NotFoundException(&#x60;Tag &#x27;${tagId}&#x27; not found&#x60;)
-
-    this.seoService.push(getTagUrl(updated.slug))
-    this.archiveService.updateCache()
-    this.updateAllTagsCache()
-    return updated
-  }
-
-  public async delete(tagId: MongooseId) {
-    const deleted &#x3D; await this.tagModel.findByIdAndDelete(tagId, null).exec()
-    if (!deleted) throw new NotFoundException(&#x60;Tag &#x27;${tagId}&#x27; not found&#x60;)
-
-    this.seoService.delete(getTagUrl(deleted.slug))
-    this.archiveService.updateCache()
-    this.updateAllTagsCache()
-    return deleted
-  }
-
-  public async batchDelete(tagIds: MongooseId[]) {
-    const tags &#x3D; await this.tagModel.find({ _id: { $in: tagIds } }).exec()
-    // DB remove
-    const actionResult &#x3D; await this.tagModel.deleteMany({ _id: { $in: tagIds } }).exec()
-    // Cache update
-    this.archiveService.updateCache()
-    this.updateAllTagsCache()
-    // SEO remove
-    this.seoService.delete(tags.map((tag) &#x3D;&gt; getTagUrl(tag.slug)))
-    return actionResult
+  public async getAllTags(options: { aggregatePublicOnly: boolean }): Promise&lt;Array&lt;Tag&gt;&gt; {
+    const allTags &#x3D; await this.tagModel.find().lean().sort({ _id: SortOrder.Desc }).exec()
+    return await this.aggregateArticleCount(allTags, options.aggregatePublicOnly)
   }
 
   public async getTotalCount(): Promise&lt;number&gt; {
-    return await this.tagModel.countDocuments().exec()
+    return await this.tagModel.countDocuments().lean().exec()
+  }
+
+  public async getDetail(idOrSlug: number | string): Promise&lt;WithId&lt;Tag&gt;&gt; {
+    const tag &#x3D; await this.tagModel
+      .findOne(typeof idOrSlug &#x3D;&#x3D;&#x3D; &#x27;number&#x27; ? { id: idOrSlug } : { slug: idOrSlug })
+      .lean()
+      .exec()
+    if (!tag) throw new NotFoundException(&#x60;Tag &#x27;${idOrSlug}&#x27; not found&#x60;)
+    return tag
+  }
+
+  public async create(input: CreateTagDto): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
+    const existed &#x3D; await this.tagModel.findOne({ slug: input.slug }).lean().exec()
+    if (existed) throw new ConflictException(&#x60;Tag slug &#x27;${input.slug}&#x27; already exists&#x60;)
+
+    const created &#x3D; await this.tagModel.create(input)
+    this.updateAllPublicTagsCache()
+    this.archiveService.updateCache()
+    this.seoService.push(getTagUrl(created.slug))
+    return created
+  }
+
+  public async update(tagId: number, input: UpdateTagDto): Promise&lt;MongooseDoc&lt;Tag&gt;&gt; {
+    const existed &#x3D; await this.tagModel.findOne({ slug: input.slug }).lean().exec()
+    if (existed &amp;&amp; existed.id !&#x3D;&#x3D; tagId) {
+      throw new ConflictException(&#x60;Tag slug &#x27;${input.slug}&#x27; already exists&#x60;)
+    }
+
+    const updated &#x3D; await this.tagModel
+      .findOneAndUpdate({ id: tagId }, { $set: input }, { returnDocument: &#x27;after&#x27; })
+      .exec()
+    if (!updated) throw new NotFoundException(&#x60;Tag &#x27;${tagId}&#x27; not found&#x60;)
+
+    this.updateAllPublicTagsCache()
+    this.archiveService.updateCache()
+    this.seoService.push(getTagUrl(updated.slug))
+    return updated
+  }
+
+  public async delete(tagId: number) {
+    const deleted &#x3D; await this.tagModel.findOneAndDelete({ id: tagId }).exec()
+    if (!deleted) throw new NotFoundException(&#x60;Tag &#x27;${tagId}&#x27; not found&#x60;)
+
+    // Remove this Tag ID from all associated articles
+    await this.articleModel.updateMany({ tags: deleted._id }, { $pull: { tags: deleted._id } }).exec()
+
+    this.updateAllPublicTagsCache()
+    this.archiveService.updateCache()
+    this.seoService.delete(getTagUrl(deleted.slug))
+    return deleted
+  }
+
+  public async batchDelete(tagIds: number[]) {
+    const tags &#x3D; await this.tagModel
+      .find({ id: { $in: tagIds } })
+      .lean()
+      .exec()
+
+    // DB remove
+    const actionResult &#x3D; await this.tagModel.deleteMany({ id: { $in: tagIds } }).exec()
+    // Remove this Tag ID from all associated articles
+    const tagObjectIds &#x3D; tags.map((tag) &#x3D;&gt; tag._id)
+    await this.articleModel
+      .updateMany({ tags: { $in: tagObjectIds } }, { $pull: { tags: { $in: tagObjectIds } } })
+      .exec()
+
+    // effects
+    this.updateAllPublicTagsCache()
+    this.archiveService.updateCache()
+    this.seoService.delete(tags.map((tag) &#x3D;&gt; getTagUrl(tag.slug)))
+    return actionResult
   }
 }
 </code></pre>

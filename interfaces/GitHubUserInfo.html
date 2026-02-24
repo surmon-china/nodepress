@@ -1,0 +1,693 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NodePress documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">NodePress documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  GitHubUserInfo</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/modules/account/auth/auth.service.github.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#avatar_url" 
+>
+                                            avatar_url
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#bio" 
+>
+                                            bio
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#blog" 
+>
+                                            blog
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#email" 
+>
+                                            email
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#location" 
+>
+                                            location
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#login" 
+>
+                                            login
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#name" 
+>
+                                            name
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#node_id" 
+>
+                                            node_id
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="avatar_url"></a>
+                                        <span class="name "><b>avatar_url</b>
+                                            <a href="#avatar_url">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>avatar_url:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="bio"></a>
+                                        <span class="name "><b>bio</b>
+                                            <a href="#bio">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>bio:     <code>string | null</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string | null</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="blog"></a>
+                                        <span class="name "><b>blog</b>
+                                            <a href="#blog">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>blog:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="email"></a>
+                                        <span class="name "><b>email</b>
+                                            <a href="#email">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>email:     <code>string | null</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string | null</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="location"></a>
+                                        <span class="name "><b>location</b>
+                                            <a href="#location">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>location:     <code>string | null</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string | null</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="login"></a>
+                                        <span class="name "><b>login</b>
+                                            <a href="#login">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>login:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="name"></a>
+                                        <span class="name "><b>name</b>
+                                            <a href="#name">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>name:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="node_id"></a>
+                                        <span class="name "><b>node_id</b>
+                                            <a href="#node_id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>node_id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpService } from &#x27;@nestjs/axios&#x27;
+import { Injectable, UnauthorizedException } from &#x27;@nestjs/common&#x27;
+import { createLogger } from &#x27;@app/utils/logger&#x27;
+import { isDevEnv, isProdEnv } from &#x27;@app/app.environment&#x27;
+import { APP_BIZ, GITHUB_OAUTH } from &#x27;@app/app.config&#x27;
+import { UserIdentityProvider } from &#x27;@app/modules/user/user.constant&#x27;
+import { UserIdentity } from &#x27;@app/modules/user/user.model&#x27;
+
+const logger &#x3D; createLogger({ scope: &#x27;GithubAuthService&#x27;, time: isDevEnv })
+
+export interface GitHubUserInfo {
+  login: string
+  id: number
+  node_id: string
+  avatar_url: string
+  name: string
+  blog: string
+  email: string | null
+  bio: string | null
+  location: string | null
+}
+
+@Injectable()
+export class GithubAuthService {
+  constructor(private readonly httpService: HttpService) {}
+
+  /** Generate GitHub authorization URL with a unique state */
+  public async getAuthorizeURL(callbackPath: string, state: string) {
+    const redirectUri &#x3D; isProdEnv
+      ? &#x60;${APP_BIZ.URL}${callbackPath}&#x60;
+      : &#x60;http://localhost:${APP_BIZ.PORT}${callbackPath}&#x60;
+
+    // https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
+    const url &#x3D; new URL(&#x27;https://github.com/login/oauth/authorize&#x27;)
+    url.searchParams.set(&#x27;client_id&#x27;, GITHUB_OAUTH.clientId)
+    url.searchParams.set(&#x27;redirect_uri&#x27;, redirectUri)
+    url.searchParams.set(&#x27;state&#x27;, state)
+    url.searchParams.set(&#x27;scope&#x27;, GITHUB_OAUTH.scope)
+
+    return url.toString()
+  }
+
+  /** Exchange the temporary authorization code for an access token */
+  public async getAccessTokenByCode(code: string) {
+    const api &#x3D; &#x27;https://github.com/login/oauth/access_token&#x27;
+    const data &#x3D; {
+      client_id: GITHUB_OAUTH.clientId,
+      client_secret: GITHUB_OAUTH.clientSecret,
+      code
+    }
+
+    // https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps#2-users-are-redirected-back-to-your-site-by-github
+    return this.httpService.axiosRef
+      .post(api, data, { headers: { Accept: &#x27;application/json&#x27; } })
+      .then((response) &#x3D;&gt; response.data.access_token as string)
+      .catch((error) &#x3D;&gt; {
+        logger.error(&#x27;Failed to fetch AccessToken:&#x27;, error)
+        throw new UnauthorizedException(&#x27;GitHub authentication failed. Please try again later.&#x27;)
+      })
+  }
+
+  /** Fetch GitHub user profile using the access token */
+  public getUserInfoByToken(accessToken: string): Promise&lt;GitHubUserInfo&gt; {
+    return this.httpService.axiosRef
+      .get(&#x27;https://api.github.com/user&#x27;, { headers: { Authorization: &#x60;Bearer ${accessToken}&#x60; } })
+      .then((response) &#x3D;&gt; response.data)
+      .catch((error) &#x3D;&gt; {
+        logger.error(&#x27;Failed to fetch GitHub user info:&#x27;, error)
+        throw new UnauthorizedException(&#x27;Failed to retrieve GitHub profile. Please re-authenticate.&#x27;)
+      })
+  }
+
+  public transformUserInfoToIdentity(userInfo: GitHubUserInfo): UserIdentity {
+    return {
+      provider: UserIdentityProvider.GitHub,
+      uid: String(userInfo.id),
+      email: userInfo.email,
+      username: userInfo.login,
+      display_name: userInfo.name,
+      avatar_url: userInfo.avatar_url,
+      profile_url: userInfo.blog
+    }
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'GitHubUserInfo.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

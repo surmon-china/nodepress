@@ -350,8 +350,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="79"
-                                    class="link-to-prism">src/core/helper/helper.service.email.ts:79</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="73"
+                                    class="link-to-prism">src/core/helper/helper.service.email.ts:73</a></div>
                         </td>
                     </tr>
 
@@ -532,19 +532,13 @@ export class EmailService implements OnModuleInit {
       return false
     }
 
-    this.transporter.sendMail(
-      {
-        ...mailOptions,
-        from: APP_CONFIG.EMAIL.from
-      },
-      (error, info) &#x3D;&gt; {
-        if (error) {
-          logger.failure(&#x27;send failed!&#x27;, getMessageFromNormalError(error))
-        } else {
-          logger.success(&#x27;send succeeded.&#x27;, info.messageId, info.response)
-        }
+    this.transporter.sendMail({ ...mailOptions, from: APP_CONFIG.EMAIL.from }, (error, info) &#x3D;&gt; {
+      if (error) {
+        logger.failure(&#x27;send failed!&#x27;, getMessageFromNormalError(error))
+      } else {
+        logger.success(&#x27;send succeeded.&#x27;, info.messageId, info.response)
       }
-    )
+    })
   }
 
   public sendMailAs(prefix: string, mailOptions: EmailOptions) {
