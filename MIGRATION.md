@@ -39,7 +39,7 @@ db.votes.updateMany({}, [
       author_email: '$author.email'
     }
   },
-  { $unset: ['author', 'author_type'] }
+  { $unset: ['author'] }
 ])
 
 // 2. Map target_type: 1 -> 'article', 2 -> 'comment'
@@ -53,6 +53,24 @@ db.votes.updateMany({ target_type: { $in: [1, 2] } }, [
             { case: { $eq: ['$target_type', 2] }, then: 'comment' }
           ],
           default: '$target_type'
+        }
+      }
+    }
+  }
+])
+
+// 3. author_type
+db.votes.updateMany({ author_type: { $in: [0, 1, 2] } }, [
+  {
+    $set: {
+      author_type: {
+        $switch: {
+          branches: [
+            { case: { $eq: ['$author_type', 0] }, then: 'anonymous' },
+            { case: { $eq: ['$author_type', 1] }, then: 'guest' },
+            { case: { $eq: ['$author_type', 2] }, then: 'user' }
+          ],
+          default: '$author_type'
         }
       }
     }
@@ -73,6 +91,27 @@ db.feedbacks.updateMany(
   { $or: [{ user_name: { $exists: true } }, { user_email: { $exists: true } }] },
   { $rename: { user_name: 'author_name', user_email: 'author_email' } }
 )
+
+// 3. author_type
+// 3. Infer author_type based on the existence of author_name or author_email
+db.feedbacks.updateMany({ author_type: { $exists: false } }, [
+  {
+    $set: {
+      author_type: {
+        $cond: {
+          if: {
+            $or: [
+              { $ne: [{ $ifNull: ['$author_name', null] }, null] },
+              { $ne: [{ $ifNull: ['$author_email', null] }, null] }
+            ]
+          },
+          then: 'guest',
+          else: 'anonymous'
+        }
+      }
+    }
+  }
+])
 ```
 
 #### Comments
@@ -111,6 +150,7 @@ db.comments.updateMany({ author: { $exists: true } }, [
   }
 ])
 db.comments.updateMany({ author: { $exists: true } }, { $unset: { author: '' } })
+db.comments.updateMany({ author_type: { $exists: false } }, { $set: { author_type: 'guest' } })
 ```
 
 ---

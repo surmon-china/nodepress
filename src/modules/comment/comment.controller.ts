@@ -20,7 +20,8 @@ import { EventKeys } from '@app/constants/events.constant'
 import { SortMode, SortOrder } from '@app/constants/sort.constant'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { CommentPaginateQueryDto, CommentCalendarQueryDto } from './comment.dto'
-import { CreateCommentDto, UpdateCommentDto, CommentIdsDto, CommentIdsStatusDto } from './comment.dto'
+import { CreateCommentDto, UpdateCommentDto, CommentIdsDto } from './comment.dto'
+import { CommentIdsStatusDto, ClaimCommentsDto } from './comment.dto'
 import { Comment, CommentWith } from './comment.model'
 import { CommentStatsService } from './comment.service.stats'
 import { CommentService } from './comment.service'
@@ -144,9 +145,17 @@ export class CommentController {
     return this.commentStatsService.getCalendar(!identity.isAdmin, query.timezone)
   }
 
-  @Patch()
+  @Patch('claim')
   @OnlyIdentity(IdentityRole.Admin)
-  @SuccessResponse('Update comments succeeded')
+  @SuccessResponse('Claim comments succeeded')
+  public async claimComments(@Body() dto: ClaimCommentsDto) {
+    const user = await this.userService.findOne(dto.user_id)
+    return await this.commentService.claimCommentsUser(dto.comment_ids, user._id)
+  }
+
+  @Patch('status')
+  @OnlyIdentity(IdentityRole.Admin)
+  @SuccessResponse('Update comments status succeeded')
   updateCommentsStatus(@Body() dto: CommentIdsStatusDto) {
     return this.commentService.batchUpdateStatus(dto.comment_ids, dto.status)
   }

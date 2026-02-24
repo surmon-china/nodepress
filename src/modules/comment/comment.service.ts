@@ -7,7 +7,7 @@
 import type { QueryFilter } from 'mongoose'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { Injectable, BadRequestException, NotFoundException, ForbiddenException } from '@nestjs/common'
-import { MongooseModel, WithId } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseId, WithId } from '@app/interfaces/mongoose.interface'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { EventKeys } from '@app/constants/events.constant'
@@ -165,6 +165,15 @@ export class CommentService {
     const result = await this.commentModel.deleteMany({ id: { $in: commentIds } }).exec()
     this.effectService.syncTargetEffects(targets)
     return result
+  }
+
+  public claimCommentsUser(commentIds: number[], userObjectId: MongooseId) {
+    return this.commentModel
+      .updateMany(
+        { id: { $in: commentIds }, author_type: CommentAuthorType.Guest },
+        { $set: { user: userObjectId, author_type: CommentAuthorType.User } }
+      )
+      .exec()
   }
 
   public async incrementVote(commentId: number, field: 'likes' | 'dislikes'): Promise<number> {

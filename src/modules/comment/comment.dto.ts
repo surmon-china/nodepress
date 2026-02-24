@@ -71,3 +71,9 @@ export class CommentIdsStatusDto extends CommentIdsDto {
   @IsDefined()
   status: CommentStatus
 }
+
+export class ClaimCommentsDto extends CommentIdsDto {
+  @IsInt()
+  @IsDefined()
+  user_id: number
+}
