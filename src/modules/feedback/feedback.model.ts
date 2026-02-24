@@ -7,7 +7,7 @@
 import type { MergeType } from 'mongoose'
 import MongooseLeanVirtuals from 'mongoose-lean-virtuals'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, plugin, modelOptions, Ref, Severity } from '@typegoose/typegoose'
+import { prop, index, plugin, modelOptions, Ref, Severity } from '@typegoose/typegoose'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { mongoosePaginate } from '@app/utils/paginate'
@@ -21,6 +21,7 @@ export type FeedbackWithUser = MergeType<Feedback, { user: User | null }>
 @plugin(mongoosePaginate)
 @plugin(MongooseLeanVirtuals)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@index({ marked: 1, created_at: -1 })
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
@@ -64,7 +65,7 @@ export class Feedback {
   @prop({ ref: () => User, default: null, index: true })
   user: Ref<User> | null
 
-  @prop({ type: Boolean, default: false, index: true })
+  @prop({ type: Boolean, default: false })
   marked: boolean
 
   @prop({ type: String, default: null, maxlength: 1000 })
@@ -82,7 +83,7 @@ export class Feedback {
   @prop({ type: String, default: null })
   user_agent: string | null
 
-  @prop({ type: Date, default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
   @prop({ type: Date, default: Date.now })

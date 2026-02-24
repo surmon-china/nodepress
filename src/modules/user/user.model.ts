@@ -141,7 +141,7 @@ export class User {
   @prop({ type: Boolean, default: false, index: true })
   disabled: boolean
 
-  @prop({ type: Date, default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
   @prop({ type: Date, default: Date.now })

@@ -58,6 +58,13 @@ export class ArticleStats {
     }
   }
 })
+// index article list page
+@index({ status: 1, created_at: -1 })
+// tag article list page
+@index({ tags: 1, status: 1, created_at: -1 })
+// category article list page
+@index({ categories: 1, status: 1, created_at: -1 })
+// search list
 @index(
   { title: 'text', content: 'text', summary: 'text' },
   {
@@ -115,7 +122,7 @@ export class Article {
 
   @IsEnum(ArticleOrigin)
   @IsOptional()
-  @prop({ type: Number, enum: ArticleOrigin, default: ArticleOrigin.Original, index: true })
+  @prop({ type: Number, enum: ArticleOrigin, default: ArticleOrigin.Original })
   origin: ArticleOrigin
 
   // language
@@ -124,7 +131,7 @@ export class Article {
   // https://docs.mongodb.com/manual/reference/text-search-languages/#std-label-text-search-languages
   @IsEnum(ArticleLanguage)
   @IsOptional()
-  @prop({ type: String, enum: ArticleLanguage, default: ArticleLanguage.Chinese, index: true })
+  @prop({ type: String, enum: ArticleLanguage, default: ArticleLanguage.Chinese })
   lang: ArticleLanguage
 
   @IsBoolean()
@@ -143,13 +150,13 @@ export class Article {
   @ArrayUnique()
   @IsArray()
   @IsOptional()
-  @prop({ ref: () => Tag, default: [], index: true })
+  @prop({ ref: () => Tag, default: [] })
   tags: Ref<Tag>[]
 
   @ArrayUnique()
   @ArrayNotEmpty()
   @IsArray()
-  @prop({ ref: () => Category, required: true, index: true })
+  @prop({ ref: () => Category, required: true })
   categories: Ref<Category>[]
 
   @Type(() => KeyValueModel)

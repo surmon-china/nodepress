@@ -58,7 +58,7 @@ function doPaginate<TRawDocType>(
   const listQuery = this.find(queryFilter, projection, {
     skip: (page - 1) * perPage,
     limit: perPage,
-    sort: dateSort ? { _id: dateSort } : findQueryOptions.sort,
+    sort: dateSort ? { created_at: dateSort } : findQueryOptions.sort,
     ...findQueryOptions
   }).exec()
 

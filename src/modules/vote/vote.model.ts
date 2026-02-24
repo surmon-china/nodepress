@@ -7,7 +7,7 @@
 import type { MergeType } from 'mongoose'
 import MongooseLeanVirtuals from 'mongoose-lean-virtuals'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, plugin, modelOptions, Ref, Severity } from '@typegoose/typegoose'
+import { prop, index, plugin, modelOptions, Ref, Severity } from '@typegoose/typegoose'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
 import { MongooseDoc } from '@app/interfaces/mongoose.interface'
@@ -26,6 +26,8 @@ export type NormalizedVote = Omit<Vote, 'id' | 'created_at' | 'updated_at'>
 @plugin(mongoosePaginate)
 @plugin(MongooseLeanVirtuals)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@index({ target_type: 1, target_id: 1, created_at: -1 })
+@index({ target_type: 1, target_id: 1, user: 1 })
 @modelOptions({
   options: { allowMixed: Severity.ALLOW },
   schemaOptions: {
@@ -71,7 +73,7 @@ export class Vote {
   @prop({ type: String, default: null })
   user_agent: string | null
 
-  @prop({ type: Date, default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
   @prop({ type: Date, default: Date.now })

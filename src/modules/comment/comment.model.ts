@@ -73,7 +73,7 @@ export class Comment {
   @Min(0)
   @IsInt()
   @IsOptional()
-  @prop({ type: Number, default: null, index: true })
+  @prop({ type: Number, default: null })
   parent_id: number | null
 
   @MinLength(3)
@@ -163,7 +163,7 @@ export class Comment {
   @prop({ type: () => [KeyValueModel], _id: false, default: [] })
   extras: KeyValueModel[]
 
-  @prop({ type: Date, default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
   @prop({ type: Date, default: Date.now })

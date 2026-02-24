@@ -6,7 +6,7 @@
 
 import { IsString, IsOptional, IsNotEmpty, IsEnum } from 'class-validator'
 import { AutoIncrementID } from '@typegoose/auto-increment'
-import { prop, plugin, modelOptions } from '@typegoose/typegoose'
+import { prop, index, plugin, modelOptions } from '@typegoose/typegoose'
 import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 import { GENERAL_DB_AUTO_INCREMENT_ID_CONFIG } from '@app/constants/database.constant'
 import { getProviderByTypegooseClass } from '@app/transformers/model.transformer'
@@ -15,6 +15,7 @@ import { AnnouncementStatus } from './announcement.constant'
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
+@index({ status: 1, created_at: -1 })
 @modelOptions({
   schemaOptions: {
     id: false,

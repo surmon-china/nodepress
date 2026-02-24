@@ -59,7 +59,7 @@ export class Tag {
   @prop({ type: () => [KeyValueModel], _id: false, default: [] })
   extras: KeyValueModel[]
 
-  @prop({ type: Date, default: Date.now, immutable: true })
+  @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
 
   @prop({ type: Date, default: Date.now })
