@@ -8,14 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteProvider = exports.Vote = void 0;
+const mongoose_lean_virtuals_1 = __importDefault(require("mongoose-lean-virtuals"));
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
-const class_validator_1 = require("class-validator");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
+const user_model_1 = require("../user/user.model");
+const author_constant_1 = require("../../constants/author.constant");
 const vote_constant_1 = require("./vote.constant");
 let Vote = class Vote {
     id;
@@ -23,7 +28,9 @@ let Vote = class Vote {
     target_id;
     vote_type;
     author_type;
-    author;
+    author_name;
+    author_email;
+    user;
     ip;
     ip_location;
     user_agent;
@@ -36,39 +43,34 @@ __decorate([
     __metadata("design:type", Number)
 ], Vote.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(vote_constant_1.VOTE_TARGETS),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, index: true }),
-    __metadata("design:type", Number)
+    (0, typegoose_1.prop)({ type: String, enum: vote_constant_1.VoteTargetType, required: true, index: true }),
+    __metadata("design:type", String)
 ], Vote.prototype, "target_type", void 0);
 __decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, index: true }),
+    (0, typegoose_1.prop)({ type: Number, required: true, index: true }),
     __metadata("design:type", Number)
 ], Vote.prototype, "target_id", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(vote_constant_1.VOTE_TYPES),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, index: true }),
+    (0, typegoose_1.prop)({ type: Number, enum: vote_constant_1.VoteType, required: true, index: true }),
     __metadata("design:type", Number)
 ], Vote.prototype, "vote_type", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(vote_constant_1.VOTE_AUTHOR_TYPES),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, index: true }),
-    __metadata("design:type", Number)
+    (0, typegoose_1.prop)({ type: String, enum: author_constant_1.GeneralAuthorType, required: true, index: true }),
+    __metadata("design:type", String)
 ], Vote.prototype, "author_type", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ type: Object, default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
-], Vote.prototype, "author", void 0);
+], Vote.prototype, "author_name", void 0);
 __decorate([
-    (0, class_validator_1.IsIP)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, typegoose_1.prop)({ type: String, default: null }),
+    __metadata("design:type", Object)
+], Vote.prototype, "author_email", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ ref: () => user_model_1.User, default: null, index: true }),
+    __metadata("design:type", Object)
+], Vote.prototype, "user", void 0);
+__decorate([
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Vote.prototype, "ip", void 0);
@@ -77,28 +79,28 @@ __decorate([
     __metadata("design:type", Object)
 ], Vote.prototype, "ip_location", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Vote.prototype, "user_agent", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
+    (0, typegoose_1.prop)({ type: Date, default: Date.now, immutable: true, index: true }),
     __metadata("design:type", Date)
 ], Vote.prototype, "created_at", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now }),
+    (0, typegoose_1.prop)({ type: Date, default: Date.now }),
     __metadata("design:type", Date)
 ], Vote.prototype, "updated_at", void 0);
 exports.Vote = Vote = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
+    (0, typegoose_1.plugin)(mongoose_lean_virtuals_1.default),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
+    (0, typegoose_1.index)({ target_type: 1, target_id: 1, created_at: -1 }),
+    (0, typegoose_1.index)({ target_type: 1, target_id: 1, user: 1 }),
     (0, typegoose_1.modelOptions)({
         options: { allowMixed: typegoose_1.Severity.ALLOW },
         schemaOptions: {
             id: false,
             versionKey: false,
-            toJSON: { virtuals: true },
-            toObject: { virtuals: true },
             timestamps: {
                 createdAt: 'created_at',
                 updatedAt: 'updated_at'

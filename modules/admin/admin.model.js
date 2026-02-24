@@ -9,45 +9,43 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminProvider = exports.Admin = exports.DEFAULT_ADMIN_PROFILE = void 0;
+exports.AdminProvider = exports.Admin = exports.DEFAULT_ADMIN_PROFILE = exports.ADMIN_SINGLETON_QUERY = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
-const class_validator_1 = require("class-validator");
 const model_transformer_1 = require("../../transformers/model.transformer");
+exports.ADMIN_SINGLETON_QUERY = Object.freeze({ singleton: true });
 exports.DEFAULT_ADMIN_PROFILE = Object.freeze({
-    name: '',
-    slogan: '',
-    avatar: ''
+    name: 'Admin',
+    slogan: 'This is admin slogan',
+    avatar_url: ''
 });
 let Admin = class Admin {
+    singleton;
+    password;
     name;
     slogan;
-    avatar;
-    password;
+    avatar_url;
 };
 exports.Admin = Admin;
 __decorate([
-    (0, class_validator_1.IsString)({ message: "What's your name?" }),
-    (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ required: true }),
+    (0, typegoose_1.prop)({ type: Boolean, default: true, unique: true, select: false }),
+    __metadata("design:type", Boolean)
+], Admin.prototype, "singleton", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/, select: false }),
+    __metadata("design:type", String)
+], Admin.prototype, "password", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Admin.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ required: true }),
+    (0, typegoose_1.prop)({ type: String, default: '', trim: true }),
     __metadata("design:type", String)
 ], Admin.prototype, "slogan", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ default: '' }),
+    (0, typegoose_1.prop)({ type: String, default: '', trim: true }),
     __metadata("design:type", String)
-], Admin.prototype, "avatar", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    (0, typegoose_1.prop)({ select: false }),
-    __metadata("design:type", String)
-], Admin.prototype, "password", void 0);
+], Admin.prototype, "avatar_url", void 0);
 exports.Admin = Admin = __decorate([
     (0, typegoose_1.modelOptions)({
         schemaOptions: {

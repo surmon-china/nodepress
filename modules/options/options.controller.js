@@ -17,11 +17,10 @@ const event_emitter_1 = require("@nestjs/event-emitter");
 const common_1 = require("@nestjs/common");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
-const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
+const only_identity_decorator_1 = require("../../decorators/only-identity.decorator");
 const events_constant_1 = require("../../constants/events.constant");
 const options_service_1 = require("./options.service");
-const options_model_1 = require("./options.model");
+const options_dto_1 = require("./options.dto");
 let OptionsController = class OptionsController {
     eventEmitter;
     optionsService;
@@ -29,11 +28,11 @@ let OptionsController = class OptionsController {
         this.eventEmitter = eventEmitter;
         this.optionsService = optionsService;
     }
-    getOptions({ isAuthenticated }) {
-        return isAuthenticated ? this.optionsService.ensureAppOptions() : this.optionsService.getOptionsCacheForGuest();
+    getOptions({ identity }) {
+        return identity.isAdmin ? this.optionsService.ensureOptions() : this.optionsService.getPublicOptionsCache();
     }
-    async putOptions(options) {
-        const updated = await this.optionsService.putOptions(options);
+    async updateOptions(dto) {
+        const updated = await this.optionsService.updateOptions(dto);
         this.eventEmitter.emit(events_constant_1.EventKeys.OptionsUpdated, updated);
         return updated;
     }
@@ -41,7 +40,6 @@ let OptionsController = class OptionsController {
 exports.OptionsController = OptionsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
     (0, success_response_decorator_1.SuccessResponse)('Get app options succeeded'),
     __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
@@ -49,14 +47,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], OptionsController.prototype, "getOptions", null);
 __decorate([
-    (0, common_1.Put)(),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, common_1.Patch)(),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Update app options succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [options_model_1.Option]),
+    __metadata("design:paramtypes", [options_dto_1.UpdateOptionsDto]),
     __metadata("design:returntype", Promise)
-], OptionsController.prototype, "putOptions", null);
+], OptionsController.prototype, "updateOptions", null);
 exports.OptionsController = OptionsController = __decorate([
     (0, common_1.Controller)('options'),
     __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,

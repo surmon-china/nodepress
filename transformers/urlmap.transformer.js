@@ -1,58 +1,25 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTagUrl = getTagUrl;
 exports.getCategoryUrl = getCategoryUrl;
 exports.getArticleUrl = getArticleUrl;
-exports.getGuestbookPageUrl = getGuestbookPageUrl;
-exports.getPermalinkById = getPermalinkById;
-const biz_constant_1 = require("../constants/biz.constant");
-const APP_CONFIG = __importStar(require("../app.config"));
+exports.getPageUrl = getPageUrl;
+exports.getPermalink = getPermalink;
+const app_config_1 = require("../app.config");
+const pages_constant_1 = require("../constants/pages.constant");
 function getTagUrl(tagSlug) {
-    return `${APP_CONFIG.APP_BIZ.FE_URL}/tag/${tagSlug}`;
+    return `${app_config_1.APP_BIZ.FE_URL}/tag/${tagSlug}`;
 }
 function getCategoryUrl(categorySlug) {
-    return `${APP_CONFIG.APP_BIZ.FE_URL}/category/${categorySlug}`;
+    return `${app_config_1.APP_BIZ.FE_URL}/category/${categorySlug}`;
 }
 function getArticleUrl(articleId) {
-    return `${APP_CONFIG.APP_BIZ.FE_URL}/article/${articleId}`;
+    return `${app_config_1.APP_BIZ.FE_URL}/article/${articleId}`;
 }
-function getGuestbookPageUrl() {
-    return `${APP_CONFIG.APP_BIZ.FE_URL}/guestbook`;
+function getPageUrl(pageId) {
+    return `${app_config_1.APP_BIZ.FE_URL}/${pages_constant_1.PAGES_ID[pageId]}`;
 }
-function getPermalinkById(id) {
-    return id === biz_constant_1.GUESTBOOK_POST_ID ? getGuestbookPageUrl() : getArticleUrl(id);
+function getPermalink(targetType, targetId) {
+    return targetType === 'article' ? getArticleUrl(targetId) : getPageUrl(targetId);
 }
 //# sourceMappingURL=urlmap.transformer.js.map

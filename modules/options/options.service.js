@@ -17,14 +17,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OptionsService = void 0;
 const omit_1 = __importDefault(require("lodash/omit"));
-const uniq_1 = __importDefault(require("lodash/uniq"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_service_1 = require("../../core/cache/cache.service");
-const options_model_1 = require("./options.model");
 const cache_constant_1 = require("../../constants/cache.constant");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
+const options_model_1 = require("./options.model");
 const logger = (0, logger_1.createLogger)({ scope: 'OptionsService', time: app_environment_1.isDevEnv });
 let OptionsService = class OptionsService {
     optionsModel;
@@ -36,8 +35,8 @@ let OptionsService = class OptionsService {
         this.optionsCache = this.cacheService.manual({
             key: cache_constant_1.CacheKeys.Options,
             promise: () => {
-                return this.ensureAppOptions().then((option) => {
-                    return (0, omit_1.default)(option.toObject(), ['blocklist', '_id']);
+                return this.ensureOptions().then((option) => {
+                    return (0, omit_1.default)(option, ['blocklist', '_id']);
                 });
             }
         });
@@ -47,33 +46,36 @@ let OptionsService = class OptionsService {
             logger.warn('Init getAppOptions failed!', error);
         });
     }
-    async ensureAppOptions() {
-        const options = await this.optionsModel.findOne().exec();
-        return options ?? (await this.optionsModel.create({ ...options_model_1.DEFAULT_OPTIONS }));
-    }
-    getOptionsCacheForGuest() {
+    getPublicOptionsCache() {
         return this.optionsCache.get();
     }
-    async putOptions(newOptions) {
-        Reflect.deleteProperty(newOptions, '_id');
-        await this.ensureAppOptions();
-        await this.optionsModel.updateOne({}, newOptions).exec();
+    ensureOptions() {
+        return this.optionsModel
+            .findOneAndUpdate(options_model_1.OPTIONS_SINGLETON_QUERY, { $setOnInsert: { ...options_model_1.DEFAULT_OPTIONS, ...options_model_1.OPTIONS_SINGLETON_QUERY } }, { upsert: true, setDefaultsOnInsert: true, returnDocument: 'after' })
+            .lean()
+            .exec();
+    }
+    async updateOptions(input) {
+        await this.ensureOptions();
+        const updated = await this.optionsModel
+            .findOneAndUpdate(options_model_1.OPTIONS_SINGLETON_QUERY, { $set: input }, { returnDocument: 'after' })
+            .exec();
         await this.optionsCache.update();
-        return await this.ensureAppOptions();
+        return updated;
     }
-    async appendToBlocklist(payload) {
-        const options = await this.ensureAppOptions();
-        options.blocklist.ips = (0, uniq_1.default)([...options.blocklist.ips, ...payload.ips]);
-        options.blocklist.mails = (0, uniq_1.default)([...options.blocklist.mails, ...payload.emails]);
-        await options.save();
-        return options.blocklist;
+    async appendToBlocklist({ ips, emails }) {
+        await this.ensureOptions();
+        const updated = await this.optionsModel
+            .findOneAndUpdate(options_model_1.OPTIONS_SINGLETON_QUERY, { $addToSet: { 'blocklist.ips': { $each: ips }, 'blocklist.emails': { $each: emails } } }, { returnDocument: 'after' })
+            .exec();
+        return updated.blocklist;
     }
-    async removeFromBlocklist(payload) {
-        const options = await this.ensureAppOptions();
-        options.blocklist.ips = options.blocklist.ips.filter((ip) => !payload.ips.includes(ip));
-        options.blocklist.mails = options.blocklist.mails.filter((email) => !payload.emails.includes(email));
-        await options.save();
-        return options.blocklist;
+    async removeFromBlocklist({ ips, emails }) {
+        await this.ensureOptions();
+        const updated = await this.optionsModel
+            .findOneAndUpdate(options_model_1.OPTIONS_SINGLETON_QUERY, { $pull: { 'blocklist.ips': { $in: ips }, 'blocklist.emails': { $in: emails } } }, { returnDocument: 'after' })
+            .exec();
+        return updated.blocklist;
     }
 };
 exports.OptionsService = OptionsService;

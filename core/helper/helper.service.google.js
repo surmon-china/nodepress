@@ -56,8 +56,8 @@ let GoogleService = class GoogleService {
     constructor() {
         try {
             this.authJWT = new googleapis_1.google.auth.JWT({
-                email: APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.client_email,
-                key: APP_CONFIG.GOOGLE.jwtServiceAccountCredentials?.private_key,
+                email: APP_CONFIG.GOOGLE_API.jwtServiceAccountCredentials?.client_email,
+                key: APP_CONFIG.GOOGLE_API.jwtServiceAccountCredentials?.private_key,
                 scopes: [
                     'https://www.googleapis.com/auth/indexing',
                     'https://www.googleapis.com/auth/analytics.readonly'

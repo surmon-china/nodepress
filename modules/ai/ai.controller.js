@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AiController = void 0;
 const throttler_1 = require("@nestjs/throttler");
 const common_1 = require("@nestjs/common");
-const admin_only_guard_1 = require("../../guards/admin-only.guard");
+const only_identity_decorator_1 = require("../../decorators/only-identity.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const comment_service_1 = require("../comment/comment.service");
 const ai_dto_1 = require("./ai.dto");
@@ -40,21 +40,21 @@ let AiController = class AiController {
             }
         };
     }
-    generateArticleSummary(payload) {
-        return this.aiService.generateArticleSummary(payload);
+    generateArticleSummary(dto) {
+        return this.aiService.generateArticleSummary(dto);
     }
-    generateArticleReview(payload) {
-        return this.aiService.generateArticleReview(payload);
+    generateArticleReview(dto) {
+        return this.aiService.generateArticleReview(dto);
     }
-    async generateCommentReply(payload) {
-        const comment = await this.commentService.getDetailByNumberId(payload.comment_id);
-        return this.aiService.generateCommentReply(comment, payload);
+    async generateCommentReply(dto) {
+        const comment = await this.commentService.getDetail(dto.comment_id);
+        return this.aiService.generateCommentReply(comment, dto);
     }
 };
 exports.AiController = AiController;
 __decorate([
     (0, common_1.Get)('config'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Get AI config succeeded'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -62,32 +62,32 @@ __decorate([
 ], AiController.prototype, "getAiConfig", null);
 __decorate([
     (0, common_1.Post)('generate-article-summary'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.minutes)(10), limit: 50 } }),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     (0, success_response_decorator_1.SuccessResponse)('Generate article summary succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ai_dto_1.GenerateAiArticleContentDTO]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [ai_dto_1.GenerateAiArticleContentDto]),
+    __metadata("design:returntype", Promise)
 ], AiController.prototype, "generateArticleSummary", null);
 __decorate([
     (0, common_1.Post)('generate-article-review'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.minutes)(10), limit: 50 } }),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     (0, success_response_decorator_1.SuccessResponse)('Generate article review succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ai_dto_1.GenerateAiArticleContentDTO]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [ai_dto_1.GenerateAiArticleContentDto]),
+    __metadata("design:returntype", Promise)
 ], AiController.prototype, "generateArticleReview", null);
 __decorate([
     (0, common_1.Post)('generate-comment-reply'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.minutes)(10), limit: 50 } }),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
     (0, success_response_decorator_1.SuccessResponse)('Generate comment reply succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [ai_dto_1.GenerateAiCommentReplyDTO]),
+    __metadata("design:paramtypes", [ai_dto_1.GenerateAiCommentReplyDto]),
     __metadata("design:returntype", Promise)
 ], AiController.prototype, "generateCommentReply", null);
 exports.AiController = AiController = __decorate([

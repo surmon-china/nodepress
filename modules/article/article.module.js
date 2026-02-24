@@ -14,7 +14,8 @@ const tag_module_1 = require("../tag/tag.module");
 const article_controller_1 = require("./article.controller");
 const article_model_1 = require("./article.model");
 const article_service_1 = require("./article.service");
-const article_listener_1 = require("./article.listener");
+const article_service_context_1 = require("./article.service.context");
+const article_service_stats_1 = require("./article.service.stats");
 let ArticleModule = class ArticleModule {
 };
 exports.ArticleModule = ArticleModule;
@@ -22,8 +23,8 @@ exports.ArticleModule = ArticleModule = __decorate([
     (0, common_1.Module)({
         imports: [archive_module_1.ArchiveModule, category_module_1.CategoryModule, tag_module_1.TagModule],
         controllers: [article_controller_1.ArticleController],
-        providers: [article_model_1.ArticleProvider, article_service_1.ArticleService, article_listener_1.ArticleListener],
-        exports: [article_service_1.ArticleService]
+        providers: [article_model_1.ArticleProvider, article_service_1.ArticleService, article_service_context_1.ArticleContextService, article_service_stats_1.ArticleStatsService],
+        exports: [article_service_1.ArticleService, article_service_context_1.ArticleContextService, article_service_stats_1.ArticleStatsService]
     })
 ], ArticleModule);
 //# sourceMappingURL=article.module.js.map

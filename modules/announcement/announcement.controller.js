@@ -16,16 +16,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnnouncementController = void 0;
-const trim_1 = __importDefault(require("lodash/trim"));
+const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const common_1 = require("@nestjs/common");
-const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
-const permission_pipe_1 = require("../../pipes/permission.pipe");
+const only_identity_decorator_1 = require("../../decorators/only-identity.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
-const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const permission_pipe_1 = require("../../pipes/permission.pipe");
 const announcement_dto_1 = require("./announcement.dto");
+const announcement_dto_2 = require("./announcement.dto");
 const announcement_service_1 = require("./announcement.service");
-const announcement_model_1 = require("./announcement.model");
 let AnnouncementController = class AnnouncementController {
     announcementService;
     constructor(announcementService) {
@@ -35,9 +33,9 @@ let AnnouncementController = class AnnouncementController {
         const { sort, page, per_page, ...filters } = query;
         const queryFilter = {};
         if (filters.keyword) {
-            queryFilter.content = new RegExp((0, trim_1.default)(filters.keyword), 'i');
+            queryFilter.content = new RegExp(filters.keyword, 'i');
         }
-        if (filters.status != null) {
+        if (!(0, isUndefined_1.default)(filters.status)) {
             queryFilter.status = filters.status;
         }
         return this.announcementService.paginate(queryFilter, {
@@ -46,68 +44,67 @@ let AnnouncementController = class AnnouncementController {
             dateSort: sort
         });
     }
-    createAnnouncement(announcement) {
-        return this.announcementService.create(announcement);
+    createAnnouncement(dto) {
+        return this.announcementService.create(dto);
     }
-    delAnnouncements(body) {
-        return this.announcementService.batchDelete(body.announcement_ids);
+    deleteAnnouncements({ announcement_ids }) {
+        return this.announcementService.batchDelete(announcement_ids);
     }
-    putAnnouncement({ params }, announcement) {
-        return this.announcementService.update(params.id, announcement);
+    updateAnnouncement(id, dto) {
+        return this.announcementService.update(id, dto);
     }
-    delAnnouncement({ params }) {
-        return this.announcementService.delete(params.id);
+    deleteAnnouncement(id) {
+        return this.announcementService.delete(id);
     }
 };
 exports.AnnouncementController = AnnouncementController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
     (0, success_response_decorator_1.SuccessResponse)({ message: 'Get announcements succeeded', usePaginate: true }),
     __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [announcement_dto_1.AnnouncementPaginateQueryDTO]),
+    __metadata("design:paramtypes", [announcement_dto_1.AnnouncementPaginateQueryDto]),
     __metadata("design:returntype", void 0)
 ], AnnouncementController.prototype, "getAnnouncements", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Create announcement succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [announcement_model_1.Announcement]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [announcement_dto_2.CreateAnnouncementDto]),
+    __metadata("design:returntype", Promise)
 ], AnnouncementController.prototype, "createAnnouncement", null);
 __decorate([
     (0, common_1.Delete)(),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Delete announcements succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [announcement_dto_1.AnnouncementsDTO]),
+    __metadata("design:paramtypes", [announcement_dto_1.AnnouncementIdsDto]),
     __metadata("design:returntype", void 0)
-], AnnouncementController.prototype, "delAnnouncements", null);
+], AnnouncementController.prototype, "deleteAnnouncements", null);
 __decorate([
-    (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, common_1.Patch)(':id'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Update announcement succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, announcement_model_1.Announcement]),
+    __metadata("design:paramtypes", [Number, announcement_dto_2.UpdateAnnouncementDto]),
     __metadata("design:returntype", void 0)
-], AnnouncementController.prototype, "putAnnouncement", null);
+], AnnouncementController.prototype, "updateAnnouncement", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Delete announcement succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
-], AnnouncementController.prototype, "delAnnouncement", null);
+], AnnouncementController.prototype, "deleteAnnouncement", null);
 exports.AnnouncementController = AnnouncementController = __decorate([
-    (0, common_1.Controller)('announcement'),
+    (0, common_1.Controller)('announcements'),
     __metadata("design:paramtypes", [announcement_service_1.AnnouncementService])
 ], AnnouncementController);
 //# sourceMappingURL=announcement.controller.js.map

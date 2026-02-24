@@ -9,52 +9,85 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FeedbacksDTO = exports.FeedbackPaginateQueryDTO = void 0;
-const mapped_types_1 = require("@nestjs/mapped-types");
+exports.FeedbackIdsDto = exports.FeedbackPaginateQueryDto = exports.UpdateFeedbackDto = exports.CreateFeedbackDto = void 0;
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-const query_model_1 = require("../../models/query.model");
-const paginate_model_1 = require("../../models/paginate.model");
+const class_validator_2 = require("class-validator");
+const mapped_types_1 = require("@nestjs/mapped-types");
+const normalize_string_decorator_1 = require("../../decorators/normalize-string.decorator");
 const value_transformer_1 = require("../../transformers/value.transformer");
+const querys_dto_1 = require("../../dtos/querys.dto");
+const author_dto_1 = require("../../dtos/author.dto");
+const paginate_dto_1 = require("../../dtos/paginate.dto");
+const author_constant_1 = require("../../constants/author.constant");
 const feedback_constant_1 = require("./feedback.constant");
-class FeedbackPaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionDTO, query_model_1.KeywordQueryDTO) {
-    tid;
+class CreateFeedbackDto extends author_dto_1.OptionalAuthorDto {
+    emotion;
+    content;
+}
+exports.CreateFeedbackDto = CreateFeedbackDto;
+__decorate([
+    (0, class_validator_1.IsEnum)(feedback_constant_1.FeedbackEmotion),
+    (0, class_validator_1.IsDefined)(),
+    __metadata("design:type", Number)
+], CreateFeedbackDto.prototype, "emotion", void 0);
+__decorate([
+    (0, class_validator_2.MinLength)(3),
+    (0, class_validator_2.MaxLength)(3000),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_2.IsNotEmpty)(),
+    (0, normalize_string_decorator_1.NormalizeString)({ trim: true }),
+    __metadata("design:type", String)
+], CreateFeedbackDto.prototype, "content", void 0);
+class UpdateFeedbackDto extends (0, mapped_types_1.PartialType)(CreateFeedbackDto) {
+    marked;
+    remark;
+}
+exports.UpdateFeedbackDto = UpdateFeedbackDto;
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_2.IsOptional)(),
+    __metadata("design:type", Boolean)
+], UpdateFeedbackDto.prototype, "marked", void 0);
+__decorate([
+    (0, class_validator_2.MaxLength)(1000),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_2.IsOptional)(),
+    (0, normalize_string_decorator_1.NormalizeString)({ trim: true }),
+    __metadata("design:type", String)
+], UpdateFeedbackDto.prototype, "remark", void 0);
+class FeedbackPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, querys_dto_1.KeywordQueryDto) {
     emotion;
     marked;
+    author_type;
 }
-exports.FeedbackPaginateQueryDTO = FeedbackPaginateQueryDTO;
+exports.FeedbackPaginateQueryDto = FeedbackPaginateQueryDto;
 __decorate([
-    (0, class_validator_1.Min)(0),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEnum)(feedback_constant_1.FeedbackEmotion),
+    (0, class_validator_2.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
-], FeedbackPaginateQueryDTO.prototype, "tid", void 0);
+], FeedbackPaginateQueryDto.prototype, "emotion", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(feedback_constant_1.FEEDBACK_EMOTION_VALUES),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
-    __metadata("design:type", Number)
-], FeedbackPaginateQueryDTO.prototype, "emotion", void 0);
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_2.IsOptional)(),
+    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToBoolean)(value)),
+    __metadata("design:type", Boolean)
+], FeedbackPaginateQueryDto.prototype, "marked", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)([0, 1]),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsOptional)(),
-    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
-    __metadata("design:type", Number)
-], FeedbackPaginateQueryDTO.prototype, "marked", void 0);
-class FeedbacksDTO {
+    (0, class_validator_1.IsEnum)(author_constant_1.GeneralAuthorType),
+    (0, class_validator_2.IsOptional)(),
+    __metadata("design:type", String)
+], FeedbackPaginateQueryDto.prototype, "author_type", void 0);
+class FeedbackIdsDto {
     feedback_ids;
 }
-exports.FeedbacksDTO = FeedbacksDTO;
+exports.FeedbackIdsDto = FeedbackIdsDto;
 __decorate([
+    (0, class_validator_2.ArrayNotEmpty)(),
+    (0, class_validator_2.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ArrayNotEmpty)(),
-    (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsInt)({ each: true }),
     __metadata("design:type", Array)
-], FeedbacksDTO.prototype, "feedback_ids", void 0);
+], FeedbackIdsDto.prototype, "feedback_ids", void 0);
 //# sourceMappingURL=feedback.dto.js.map

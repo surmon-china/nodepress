@@ -19,47 +19,50 @@ exports.AdminService = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const auth_service_1 = require("../../core/auth/auth.service");
+const cache_service_1 = require("../../core/cache/cache.service");
+const cache_constant_1 = require("../../constants/cache.constant");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
 const admin_model_1 = require("./admin.model");
 const app_config_1 = require("../../app.config");
 let AdminService = class AdminService {
-    authService;
+    cacheService;
     adminModel;
-    constructor(authService, adminModel) {
-        this.authService = authService;
+    profileCache;
+    constructor(cacheService, adminModel) {
+        this.cacheService = cacheService;
         this.adminModel = adminModel;
+        this.profileCache = this.cacheService.manual({
+            key: cache_constant_1.CacheKeys.AdminProfile,
+            promise: () => this.getProfile()
+        });
     }
-    async validatePassword(plainPassword) {
-        const existedProfile = await this.adminModel.findOne().select('+password').exec();
-        if (existedProfile?.password) {
-            return await bcryptjs_1.default.compare(plainPassword, existedProfile.password);
-        }
-        else {
-            return plainPassword === app_config_1.APP_BIZ.PASSWORD.defaultPassword;
-        }
+    onModuleInit() {
+        this.profileCache.update();
     }
-    createToken() {
-        return {
-            access_token: this.authService.signToken(),
-            expires_in: app_config_1.APP_BIZ.AUTH_JWT.expiresIn
-        };
-    }
-    async login(base64Password) {
-        if (await this.validatePassword((0, codec_transformer_1.decodeBase64)(base64Password))) {
-            return this.createToken();
-        }
-        else {
-            throw new common_1.UnauthorizedException('Password incorrect');
-        }
+    getProfileCache() {
+        return this.profileCache.get();
     }
     async getProfile() {
-        const adminProfile = await this.adminModel.findOne().select('-_id').lean().exec();
+        const adminProfile = await this.adminModel.findOne(admin_model_1.ADMIN_SINGLETON_QUERY).select('-_id').lean().exec();
         return adminProfile ?? admin_model_1.DEFAULT_ADMIN_PROFILE;
     }
-    async updateProfile(adminProfile) {
-        const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = adminProfile;
+    getDocument() {
+        return this.adminModel.findOne(admin_model_1.ADMIN_SINGLETON_QUERY).select('+password').exec();
+    }
+    async validatePassword(plainPassword, hashedPassword) {
+        return hashedPassword
+            ?
+                await bcryptjs_1.default.compare(plainPassword, hashedPassword)
+            :
+                plainPassword === app_config_1.APP_AUTH.adminDefaultPassword;
+    }
+    async updateProfile(input) {
+        const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = input;
         const newProfile = { ...profile };
+        const existedAdmin = await this.getDocument();
+        if (!existedAdmin && !inputNewPassword) {
+            throw new common_1.BadRequestException('First initialization must set password');
+        }
         if (inputOldPassword || inputNewPassword) {
             if (!inputOldPassword || !inputNewPassword) {
                 throw new common_1.BadRequestException('Incomplete passwords');
@@ -67,26 +70,25 @@ let AdminService = class AdminService {
             if (inputOldPassword === inputNewPassword) {
                 throw new common_1.BadRequestException('Old password and new password cannot be the same');
             }
-            if (!(await this.validatePassword((0, codec_transformer_1.decodeBase64)(inputOldPassword)))) {
+            if (!(await this.validatePassword((0, codec_transformer_1.decodeBase64)(inputOldPassword), existedAdmin?.password))) {
                 throw new common_1.BadRequestException('Old password incorrect');
             }
             const plainNewPassword = (0, codec_transformer_1.decodeBase64)(inputNewPassword);
-            newProfile.password = await bcryptjs_1.default.hash(plainNewPassword, app_config_1.APP_BIZ.PASSWORD.bcryptSaltRounds);
+            newProfile.password = await bcryptjs_1.default.hash(plainNewPassword, app_config_1.APP_AUTH.adminBcryptSaltRounds);
         }
-        const existedProfile = await this.adminModel.findOne().select('+password').exec();
-        if (existedProfile) {
-            await Object.assign(existedProfile, newProfile).save();
+        if (existedAdmin) {
+            await existedAdmin.set(newProfile).save();
         }
         else {
             await this.adminModel.create(newProfile);
         }
-        return this.getProfile();
+        return await this.profileCache.update();
     }
 };
 exports.AdminService = AdminService;
 exports.AdminService = AdminService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, model_transformer_1.InjectModel)(admin_model_1.Admin)),
-    __metadata("design:paramtypes", [auth_service_1.AuthService, Object])
+    __metadata("design:paramtypes", [cache_service_1.CacheService, Object])
 ], AdminService);
 //# sourceMappingURL=admin.service.js.map

@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const admin_controller_1 = require("./admin.controller");
 const admin_model_1 = require("./admin.model");
 const admin_service_1 = require("./admin.service");
+const admin_service_token_1 = require("./admin.service.token");
 const admin_listener_1 = require("./admin.listener");
 let AdminModule = class AdminModule {
 };
@@ -18,7 +19,7 @@ exports.AdminModule = AdminModule;
 exports.AdminModule = AdminModule = __decorate([
     (0, common_1.Module)({
         controllers: [admin_controller_1.AdminController],
-        providers: [admin_service_1.AdminService, admin_model_1.AdminProvider, admin_listener_1.AdminListener],
+        providers: [admin_model_1.AdminProvider, admin_service_1.AdminService, admin_service_token_1.AdminAuthTokenService, admin_listener_1.AdminListener],
         exports: [admin_service_1.AdminService]
     })
 ], AdminModule);

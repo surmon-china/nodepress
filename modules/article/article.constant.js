@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ARTICLE_HOTTEST_SORT_CONFIG = exports.ARTICLE_LIST_QUERY_GUEST_FILTER = exports.ARTICLE_LIST_QUERY_PROJECTION = exports.ARTICLE_FULL_QUERY_REF_POPULATE = exports.ARTICLE_ORIGINS = exports.ARTICLE_LANGUAGES = exports.ARTICLE_STATUSES = exports.ArticleLanguage = exports.ArticleOrigin = exports.ArticleStatus = void 0;
-const biz_constant_1 = require("../../constants/biz.constant");
+exports.ARTICLE_HOTTEST_SORT_CONFIG = exports.ARTICLE_PUBLIC_FILTER = exports.ArticleLanguage = exports.ArticleOrigin = exports.ArticleStatus = void 0;
+const sort_constant_1 = require("../../constants/sort.constant");
 var ArticleStatus;
 (function (ArticleStatus) {
     ArticleStatus[ArticleStatus["Draft"] = 0] = "Draft";
@@ -21,25 +21,11 @@ var ArticleLanguage;
     ArticleLanguage["Chinese"] = "zh";
     ArticleLanguage["Multiple"] = "mul";
 })(ArticleLanguage || (exports.ArticleLanguage = ArticleLanguage = {}));
-exports.ARTICLE_STATUSES = [
-    ArticleStatus.Draft,
-    ArticleStatus.Published,
-    ArticleStatus.Private,
-    ArticleStatus.Trash
-];
-exports.ARTICLE_LANGUAGES = [
-    ArticleLanguage.English,
-    ArticleLanguage.Chinese,
-    ArticleLanguage.Multiple
-];
-exports.ARTICLE_ORIGINS = [ArticleOrigin.Original, ArticleOrigin.Reprint, ArticleOrigin.Hybrid];
-exports.ARTICLE_FULL_QUERY_REF_POPULATE = ['categories', 'tags'];
-exports.ARTICLE_LIST_QUERY_PROJECTION = { content: false };
-exports.ARTICLE_LIST_QUERY_GUEST_FILTER = Object.freeze({
+exports.ARTICLE_PUBLIC_FILTER = Object.freeze({
     status: ArticleStatus.Published
 });
 exports.ARTICLE_HOTTEST_SORT_CONFIG = Object.freeze({
-    'stats.comments': biz_constant_1.SortOrder.Desc,
-    'stats.likes': biz_constant_1.SortOrder.Desc
+    'stats.comments': sort_constant_1.SortOrder.Desc,
+    'stats.likes': sort_constant_1.SortOrder.Desc
 });
 //# sourceMappingURL=article.constant.js.map

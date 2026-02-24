@@ -1,43 +1,10 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
@@ -46,275 +13,155 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentService = void 0;
-const common_1 = require("@nestjs/common");
-const common_2 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
+const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const biz_constant_1 = require("../../constants/biz.constant");
 const events_constant_1 = require("../../constants/events.constant");
-const article_service_1 = require("../article/article.service");
 const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
-const helper_service_email_1 = require("../../core/helper/helper.service.email");
-const helper_service_akismet_1 = require("../../core/helper/helper.service.akismet");
-const options_service_1 = require("../options/options.service");
-const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
+const article_service_1 = require("../article/article.service");
+const user_model_1 = require("../user/user.model");
 const comment_constant_1 = require("./comment.constant");
 const comment_model_1 = require("./comment.model");
-const app_environment_1 = require("../../app.environment");
+const comment_service_blocklist_1 = require("./comment.service.blocklist");
+const comment_service_akismet_1 = require("./comment.service.akismet");
+const comment_service_effect_1 = require("./comment.service.effect");
 const logger_1 = require("../../utils/logger");
-const APP_CONFIG = __importStar(require("../../app.config"));
+const app_environment_1 = require("../../app.environment");
 const logger = (0, logger_1.createLogger)({ scope: 'CommentService', time: app_environment_1.isDevEnv });
 let CommentService = class CommentService {
     ipService;
-    emailService;
     eventEmitter;
-    akismetService;
-    optionsService;
     articleService;
+    akismetService;
+    blocklistService;
+    effectService;
     commentModel;
-    constructor(ipService, emailService, eventEmitter, akismetService, optionsService, articleService, commentModel) {
+    constructor(ipService, eventEmitter, articleService, akismetService, blocklistService, effectService, commentModel) {
         this.ipService = ipService;
-        this.emailService = emailService;
         this.eventEmitter = eventEmitter;
-        this.akismetService = akismetService;
-        this.optionsService = optionsService;
         this.articleService = articleService;
+        this.akismetService = akismetService;
+        this.blocklistService = blocklistService;
+        this.effectService = effectService;
         this.commentModel = commentModel;
     }
-    async emailToAdminAndTargetAuthor(comment) {
-        const onWhere = comment.post_id === biz_constant_1.GUESTBOOK_POST_ID
-            ? 'guestbook'
-            : await this.articleService
-                .getDetailByNumberIdOrSlug({ numberId: comment.post_id, lean: true })
-                .then((article) => `"${article.title}"`);
-        const authorName = comment.author.name;
-        const getMailContent = (subject = '') => {
-            const texts = [`${subject} on ${onWhere}.`, `${authorName}: ${comment.content}`];
-            const textHTML = texts.map((text) => `<p>${text}</p>`).join('');
-            const replyText = `Reply to ${authorName} #${comment.id}`;
-            const commentLink = (0, urlmap_transformer_1.getPermalinkById)(comment.post_id) + `#comment-${comment.id}`;
-            const linkHTML = `<a href="${commentLink}" target="_blank">${replyText}</a>`;
-            return {
-                text: texts.join('\n'),
-                html: [textHTML, `<br>`, linkHTML].join('\n')
-            };
-        };
-        const subject = `You have a new comment`;
-        this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-            to: APP_CONFIG.APP_BIZ.ADMIN_EMAIL,
-            subject,
-            ...getMailContent(subject)
-        });
-        if (comment.pid) {
-            this.commentModel.findOne({ id: comment.pid }).then((parentComment) => {
-                if (parentComment?.author.email) {
-                    const subject = `Your comment #${parentComment.id} has a new reply`;
-                    this.emailService.sendMailAs(APP_CONFIG.APP_BIZ.FE_NAME, {
-                        to: parentComment.author.email,
-                        subject,
-                        ...getMailContent(subject)
-                    });
-                }
-            });
-        }
-    }
-    submitCommentAkismet(action, comment, referer) {
-        return this.akismetService[action]({
-            user_ip: comment.ip,
-            user_agent: comment.agent,
-            referrer: referer || '',
-            permalink: (0, urlmap_transformer_1.getPermalinkById)(comment.post_id),
-            comment_type: comment.pid ? 'reply' : 'comment',
-            comment_author: comment.author.name,
-            comment_author_email: comment.author.email,
-            comment_author_url: comment.author.site,
-            comment_content: comment.content
-        });
-    }
-    async updateCommentsCountWithArticles(postIds) {
-        postIds = postIds.map(Number).filter(Boolean);
-        if (!postIds.length) {
-            return false;
-        }
-        try {
-            const counts = await this.commentModel.aggregate([
-                { $match: { ...comment_constant_1.COMMENT_GUEST_QUERY_FILTER, post_id: { $in: postIds } } },
-                { $group: { _id: '$post_id', num_tutorial: { $sum: 1 } } }
-            ]);
-            if (!counts || !counts.length) {
-                await this.articleService.updateStatsComments(postIds[0], 0);
-            }
-            else {
-                await Promise.all(counts.map((count) => {
-                    return this.articleService.updateStatsComments(count._id, count.num_tutorial);
-                }));
-            }
-        }
-        catch (error) {
-            logger.warn('updateCommentCountWithArticle failed!', error);
-        }
-    }
-    updateBlocklistAkismetWithComment(comments, status, referer) {
-        const isSPAM = status === comment_constant_1.CommentStatus.Spam;
-        const action = isSPAM ? helper_service_akismet_1.AkismetAction.SubmitSpam : helper_service_akismet_1.AkismetAction.SubmitHam;
-        comments.forEach((comment) => this.submitCommentAkismet(action, comment, referer));
-        const ips = comments.map((comment) => comment.ip).filter(Boolean);
-        const emails = comments.map((comment) => comment.author.email).filter(Boolean);
-        const blocklistAction = isSPAM
-            ? this.optionsService.appendToBlocklist({ ips, emails })
-            : this.optionsService.removeFromBlocklist({ ips, emails });
-        blocklistAction
-            .then(() => logger.info('updateBlocklistAkismetWithComment.blocklistAction succeeded.'))
-            .catch((error) => logger.warn('updateBlocklistAkismetWithComment.blocklistAction failed!', error));
-    }
-    async verifyCommentValidity(comment) {
-        const { blocklist } = await this.optionsService.ensureAppOptions();
-        const { keywords, mails, ips } = blocklist;
-        const blockByIP = ips.includes(comment.ip);
-        const blockByEmail = mails.includes(comment.author.email);
-        const blockByKeyword = keywords.length && new RegExp(`${keywords.join('|')}`, 'ig').test(comment.content);
-        if (blockByIP || blockByEmail || blockByKeyword) {
-            const reason = blockByIP ? 'Blocked IP' : blockByEmail ? 'Blocked Email' : 'Blocked Keywords';
-            throw new common_2.ForbiddenException(`Comment blocked. Reason: ${reason}`);
-        }
-    }
-    async verifyTargetCommentable(targetPostId) {
-        if (targetPostId !== biz_constant_1.GUESTBOOK_POST_ID) {
-            if (!(await this.articleService.isCommentableArticle(targetPostId))) {
-                throw new common_2.BadRequestException(`Comment is not allowed on article ${targetPostId}`);
-            }
-        }
-    }
-    getAll() {
-        return this.commentModel.find().lean().exec();
-    }
-    paginate(filter, options) {
-        return this.commentModel.paginate(filter, options);
-    }
-    normalizeNewComment(comment, visitor) {
+    normalize(input, context) {
+        const { visitor, extras, user } = context;
         return {
-            ...comment,
-            pid: Number(comment.pid),
-            post_id: Number(comment.post_id),
+            ...input,
+            parent_id: input.parent_id ?? null,
             status: comment_constant_1.CommentStatus.Published,
+            user: user?._id ?? null,
+            author_type: user?._id ? comment_constant_1.CommentAuthorType.User : comment_constant_1.CommentAuthorType.Guest,
+            author_name: user?.name ?? input.author_name,
+            author_email: user?.email ?? input.author_email ?? null,
+            author_website: user?.website ?? input.author_website ?? null,
             likes: 0,
             dislikes: 0,
             ip: visitor.ip,
-            ip_location: {},
-            agent: visitor.ua || comment.agent,
-            extras: comment.extras ?? []
+            ip_location: null,
+            user_agent: visitor.agent,
+            extras: extras ?? []
         };
     }
-    async create(comment) {
-        const ip_location = app_environment_1.isProdEnv && comment.ip ? await this.ipService.queryLocation(comment.ip) : null;
-        const succeededComment = await this.commentModel.create({
-            ...comment,
-            ip_location
-        });
-        this.updateCommentsCountWithArticles([succeededComment.post_id]);
-        this.emailToAdminAndTargetAuthor(succeededComment);
-        this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreated, succeededComment);
-        return succeededComment;
+    async create(input) {
+        const ip_location = input.ip ? await this.ipService.queryLocation(input.ip) : null;
+        const created = await this.commentModel.create({ ...input, ip_location });
+        const populated = await created.populate('user', user_model_1.USER_PUBLIC_POPULATE_SELECT);
+        this.effectService.syncTargetEffects([populated]);
+        this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreated, populated.toObject());
+        return populated;
     }
-    async createFormClient(comment, visitor) {
-        if (!comment.author.email) {
-            throw new common_2.BadRequestException('Author email should not be empty');
+    async validateAndCreate(input, referer) {
+        if (input.target_type === comment_constant_1.CommentTargetType.Article) {
+            if (!(await this.articleService.isCommentableArticle(input.target_id))) {
+                throw new common_1.BadRequestException(`Comment is disabled for article: ${input.target_id}`);
+            }
         }
-        const newComment = this.normalizeNewComment(comment, visitor);
-        await this.verifyTargetCommentable(newComment.post_id);
-        await Promise.all([
-            this.verifyCommentValidity(newComment),
-            this.submitCommentAkismet(helper_service_akismet_1.AkismetAction.CheckSpam, newComment, visitor.referer)
+        const [isSpam] = await Promise.all([
+            this.akismetService.checkSpam(this.akismetService.transformCommentToAkismet(input, referer)),
+            this.blocklistService.validate(input)
         ]);
-        return this.create(newComment);
+        if (isSpam) {
+            throw new common_1.ForbiddenException('Comment blocked by Akismet SPAM.');
+        }
+        return this.create(input);
     }
-    async getDetailByObjectId(commentId) {
-        const comment = await this.commentModel.findById(commentId).exec();
+    async getDetail(commentId, populate) {
+        const query = this.commentModel.findOne({ id: commentId });
+        if (populate === 'withUser') {
+            query.populate('user');
+        }
+        else if (populate === 'withUserPublic') {
+            query.populate('user', user_model_1.USER_PUBLIC_POPULATE_SELECT);
+        }
+        const comment = await query.exec();
         if (!comment)
-            throw new common_2.NotFoundException(`Comment '${commentId}' not found`);
+            throw new common_1.NotFoundException(`Comment '${commentId}' not found`);
         return comment;
     }
-    async getDetailByNumberId(commentId) {
-        const comment = await this.commentModel.findOne({ id: commentId }).exec();
-        if (!comment)
-            throw new common_2.NotFoundException(`Comment '${commentId}' not found`);
-        return comment;
+    paginate(filter, options) {
+        return this.commentModel.paginateRaw(filter, { ...options, lean: { virtuals: true } });
     }
-    async update(commentId, newComment, referer) {
-        const updated = await this.commentModel.findByIdAndUpdate(commentId, newComment, { new: true }).exec();
+    async getPublicCommentIdSet(commentIds) {
+        if (!commentIds.length)
+            return new Set();
+        const found = await this.commentModel
+            .find({ id: { $in: commentIds }, status: comment_constant_1.CommentStatus.Published })
+            .select('id')
+            .lean()
+            .exec();
+        return new Set(found.map(({ id }) => id));
+    }
+    async update(commentId, input) {
+        const updated = await this.commentModel
+            .findOneAndUpdate({ id: commentId }, { $set: input }, { returnDocument: 'after' })
+            .exec();
         if (!updated)
-            throw new common_2.NotFoundException(`Comment '${commentId}' not found`);
-        this.updateCommentsCountWithArticles([updated.post_id]);
-        this.updateBlocklistAkismetWithComment([updated], updated.status, referer);
+            throw new common_1.NotFoundException(`Comment '${commentId}' not found`);
+        this.effectService.syncTargetEffects([updated]);
+        this.blocklistService.syncByStatus([updated], updated.status);
         return updated;
     }
     async delete(commentId) {
-        const deleted = await this.commentModel.findByIdAndDelete(commentId, null).exec();
+        const deleted = await this.commentModel.findOneAndDelete({ id: commentId }).exec();
         if (!deleted)
-            throw new common_2.NotFoundException(`Comment '${commentId}' not found`);
-        this.updateCommentsCountWithArticles([deleted.post_id]);
+            throw new common_1.NotFoundException(`Comment '${commentId}' not found`);
+        this.effectService.syncTargetEffects([deleted]);
         return deleted;
     }
-    async batchPatchStatus(action, referer) {
-        const { comment_ids, post_ids, status } = action;
-        const actionResult = await this.commentModel
-            .updateMany({ _id: { $in: comment_ids } }, { $set: { status } })
+    async batchUpdateStatus(commentIds, status) {
+        const comments = await this.commentModel
+            .find({ id: { $in: commentIds } })
+            .lean()
             .exec();
-        this.updateCommentsCountWithArticles(post_ids);
-        try {
-            const todoComments = await this.commentModel.find({ _id: { $in: comment_ids } });
-            this.updateBlocklistAkismetWithComment(todoComments, status, referer);
-        }
-        catch (error) {
-            logger.warn(`batchPatchStatus to ${status} failed!`, error);
-        }
-        return actionResult;
-    }
-    async batchDelete(commentIds, postIds) {
-        const result = await this.commentModel.deleteMany({ _id: { $in: commentIds } }).exec();
-        this.updateCommentsCountWithArticles(postIds);
+        const result = await this.commentModel.updateMany({ id: { $in: commentIds } }, { $set: { status } }).exec();
+        this.blocklistService.syncByStatus(comments, status);
+        this.effectService.syncTargetEffects(comments);
         return result;
     }
-    async countDocuments(queryFilter, queryOptions) {
-        return await this.commentModel.countDocuments(queryFilter, queryOptions).exec();
+    async batchDelete(commentIds) {
+        const targets = await this.commentModel
+            .find({ id: { $in: commentIds } })
+            .lean()
+            .exec();
+        const result = await this.commentModel.deleteMany({ id: { $in: commentIds } }).exec();
+        this.effectService.syncTargetEffects(targets);
+        return result;
     }
-    async getTotalCount(publicOnly) {
-        return await this.countDocuments(publicOnly ? comment_constant_1.COMMENT_GUEST_QUERY_FILTER : {});
+    claimCommentsUser(commentIds, userObjectId) {
+        return this.commentModel
+            .updateMany({ id: { $in: commentIds }, author_type: comment_constant_1.CommentAuthorType.Guest }, { $set: { user: userObjectId, author_type: comment_constant_1.CommentAuthorType.User } })
+            .exec();
     }
-    async getCalendar(publicOnly, timezone = 'GMT') {
-        try {
-            const calendar = await this.commentModel.aggregate([
-                { $match: publicOnly ? comment_constant_1.COMMENT_GUEST_QUERY_FILTER : {} },
-                { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
-                { $group: { _id: '$day', count: { $sum: 1 } } },
-                { $sort: { _id: 1 } }
-            ]);
-            return calendar.map(({ _id, ...rest }) => ({ ...rest, date: _id }));
-        }
-        catch (error) {
-            throw new common_2.BadRequestException(`Invalid timezone identifier: '${timezone}'`, String(error));
-        }
-    }
-    async reviseIPLocation(commentId) {
-        const comment = await this.getDetailByObjectId(commentId);
-        if (!comment.ip) {
-            throw new common_2.BadRequestException(`Comment '${commentId}' hasn't IP address`);
-        }
-        const location = await this.ipService.queryLocation(comment.ip);
-        if (!location) {
-            throw new common_1.InternalServerErrorException(`Failed to resolve location for IP: ${comment.ip}`);
-        }
-        comment.ip_location = { ...location };
-        return await comment.save();
-    }
-    async vote(commentId, isLike) {
-        const comment = await this.getDetailByNumberId(commentId);
-        isLike ? comment.likes++ : comment.dislikes++;
-        await comment.save({ timestamps: false });
-        return {
-            likes: comment.likes,
-            dislikes: comment.dislikes
-        };
+    async incrementVote(commentId, field) {
+        const updated = await this.commentModel
+            .findOneAndUpdate({ id: commentId }, { $inc: { [field]: 1 } }, { returnDocument: 'after', timestamps: false })
+            .lean()
+            .exec();
+        if (!updated)
+            throw new common_1.NotFoundException(`Comment '${commentId}' not found`);
+        return updated[field];
     }
 };
 exports.CommentService = CommentService;
@@ -322,10 +169,10 @@ exports.CommentService = CommentService = __decorate([
     (0, common_1.Injectable)(),
     __param(6, (0, model_transformer_1.InjectModel)(comment_model_1.Comment)),
     __metadata("design:paramtypes", [helper_service_ip_1.IPService,
-        helper_service_email_1.EmailService,
         event_emitter_1.EventEmitter2,
-        helper_service_akismet_1.AkismetService,
-        options_service_1.OptionsService,
-        article_service_1.ArticleService, Object])
+        article_service_1.ArticleService,
+        comment_service_akismet_1.CommentAkismetService,
+        comment_service_blocklist_1.CommentBlocklistService,
+        comment_service_effect_1.CommentEffectService, Object])
 ], CommentService);
 //# sourceMappingURL=comment.service.js.map

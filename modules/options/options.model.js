@@ -9,16 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OptionsProvider = exports.Option = exports.Blocklist = exports.FriendLink = exports.DEFAULT_OPTIONS = void 0;
+exports.OptionsProvider = exports.Option = exports.Blocklist = exports.FriendLink = exports.DEFAULT_OPTIONS = exports.OPTIONS_SINGLETON_QUERY = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const app_config_1 = require("../../app.config");
+exports.OPTIONS_SINGLETON_QUERY = Object.freeze({ singleton: true });
 const DEFAULT_OPTIONS_BLOCKLIST = Object.freeze({
     ips: [],
-    mails: [],
+    emails: [],
     keywords: []
 });
 exports.DEFAULT_OPTIONS = Object.freeze({
@@ -29,12 +30,7 @@ exports.DEFAULT_OPTIONS = Object.freeze({
     statement: '',
     site_url: 'https://github.com/surmon-china/nodepress',
     site_email: 'admin@example.com',
-    friend_links: [
-        {
-            name: app_config_1.APP_BIZ.FE_NAME,
-            url: app_config_1.APP_BIZ.FE_URL
-        }
-    ],
+    friend_links: [{ name: app_config_1.APP_BIZ.FE_NAME, url: app_config_1.APP_BIZ.FE_URL }],
     blocklist: DEFAULT_OPTIONS_BLOCKLIST,
     app_config: ''
 });
@@ -46,19 +42,19 @@ exports.FriendLink = FriendLink;
 __decorate([
     (0, class_validator_2.IsString)(),
     (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, trim: true, validate: /\S+/ }),
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], FriendLink.prototype, "name", void 0);
 __decorate([
     (0, class_validator_2.IsUrl)({ require_protocol: true }),
     (0, class_validator_2.IsString)(),
     (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, trim: true }),
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true }),
     __metadata("design:type", String)
 ], FriendLink.prototype, "url", void 0);
 class Blocklist {
     ips;
-    mails;
+    emails;
     keywords;
 }
 exports.Blocklist = Blocklist;
@@ -70,13 +66,15 @@ __decorate([
     __metadata("design:type", Array)
 ], Blocklist.prototype, "ips", void 0);
 __decorate([
+    (0, class_validator_2.IsEmail)(undefined, { each: true }),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_2.IsArray)(),
     (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
-], Blocklist.prototype, "mails", void 0);
+], Blocklist.prototype, "emails", void 0);
 __decorate([
+    (0, class_validator_2.IsString)({ each: true }),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_2.IsArray)(),
     (0, class_validator_2.IsOptional)(),
@@ -84,6 +82,7 @@ __decorate([
     __metadata("design:type", Array)
 ], Blocklist.prototype, "keywords", void 0);
 let Option = class Option {
+    singleton;
     title;
     sub_title;
     description;
@@ -98,56 +97,62 @@ let Option = class Option {
 };
 exports.Option = Option;
 __decorate([
+    (0, typegoose_1.prop)({ type: Boolean, default: true, unique: true, select: false }),
+    __metadata("design:type", Boolean)
+], Option.prototype, "singleton", void 0);
+__decorate([
     (0, class_validator_2.IsString)(),
-    (0, class_validator_2.IsNotEmpty)({ message: 'title?' }),
-    (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
+    (0, class_validator_2.IsNotEmpty)(),
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Option.prototype, "title", void 0);
 __decorate([
     (0, class_validator_2.IsString)(),
-    (0, class_validator_2.IsNotEmpty)({ message: 'sub title?' }),
-    (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
+    (0, class_validator_2.IsNotEmpty)(),
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Option.prototype, "sub_title", void 0);
 __decorate([
     (0, class_validator_2.IsString)(),
     (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true }),
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true }),
     __metadata("design:type", String)
 ], Option.prototype, "description", void 0);
 __decorate([
+    (0, class_validator_2.IsString)({ each: true }),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_2.IsArray)(),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ default: [], type: () => [String] }),
+    (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
 ], Option.prototype, "keywords", void 0);
 __decorate([
     (0, class_validator_2.IsUrl)({ require_protocol: true }),
     (0, class_validator_2.IsString)(),
     (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true }),
+    (0, typegoose_1.prop)({ type: String, required: true }),
     __metadata("design:type", String)
 ], Option.prototype, "site_url", void 0);
 __decorate([
     (0, class_validator_2.IsEmail)(),
     (0, class_validator_2.IsString)(),
     (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true }),
+    (0, typegoose_1.prop)({ type: String, required: true }),
     __metadata("design:type", String)
 ], Option.prototype, "site_email", void 0);
 __decorate([
     (0, class_validator_2.IsString)(),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ default: '' }),
+    (0, typegoose_1.prop)({ type: String, default: '' }),
     __metadata("design:type", String)
 ], Option.prototype, "statement", void 0);
 __decorate([
     (0, class_transformer_1.Type)(() => FriendLink),
-    (0, class_validator_1.ValidateNested)(),
+    (0, class_validator_1.ValidateNested)({ each: true }),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_2.IsArray)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [FriendLink] }),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: () => [FriendLink], _id: false, default: [] }),
     __metadata("design:type", Array)
 ], Option.prototype, "friend_links", void 0);
 __decorate([
@@ -155,7 +160,7 @@ __decorate([
     (0, class_validator_1.ValidateNested)(),
     (0, class_validator_2.IsObject)(),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } }),
+    (0, typegoose_1.prop)({ type: () => Blocklist, _id: false, default: { ...DEFAULT_OPTIONS_BLOCKLIST } }),
     __metadata("design:type", Blocklist)
 ], Option.prototype, "blocklist", void 0);
 __decorate([
@@ -165,7 +170,7 @@ __decorate([
     __metadata("design:type", Object)
 ], Option.prototype, "app_config", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now }),
+    (0, typegoose_1.prop)({ type: Date, default: Date.now }),
     __metadata("design:type", Date)
 ], Option.prototype, "updated_at", void 0);
 exports.Option = Option = __decorate([

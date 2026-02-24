@@ -9,11 +9,13 @@ var EventKeys;
     EventKeys["AdminLoggedOut"] = "admin.logged_out";
     EventKeys["OptionsUpdated"] = "options.updated";
     EventKeys["FeedbackCreated"] = "feedback.created";
+    EventKeys["VoteCreated"] = "vote.created";
+    EventKeys["UserCreated"] = "user.created";
+    EventKeys["UserDeleted"] = "user.deleted";
     EventKeys["CommentCreated"] = "comment.created";
     EventKeys["CommentCreateFailed"] = "comment.create_failed";
     EventKeys["ArticleCreated"] = "article.created";
     EventKeys["ArticleUpdated"] = "article.updated";
     EventKeys["ArticleDeleted"] = "article.deleted";
-    EventKeys["ArticleViewed"] = "article.viewed";
 })(EventKeys || (exports.EventKeys = EventKeys = {}));
 //# sourceMappingURL=events.constant.js.map

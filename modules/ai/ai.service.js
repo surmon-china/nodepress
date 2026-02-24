@@ -14,7 +14,7 @@ const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const options_service_1 = require("../options/options.service");
 const article_service_1 = require("../article/article.service");
-const biz_constant_1 = require("../../constants/biz.constant");
+const comment_constant_1 = require("../comment/comment.constant");
 const extras_constant_1 = require("../../constants/extras.constant");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const extra_transformer_1 = require("../../transformers/extra.transformer");
@@ -65,7 +65,7 @@ let AiService = class AiService {
         return template.replace(/{{(\w+)}}/g, (_, key) => data[key] || '');
     }
     async generateArticleSummary({ model, prompt, article_id }) {
-        const article = await this.articleService.getDetailByNumberIdOrSlug({ numberId: article_id, lean: true });
+        const article = await this.articleService.getDetail(article_id, { lean: true });
         const promptTemplate = prompt ?? ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.articleSummary;
         const finalPrompt = this.renderTemplate(promptTemplate, { article: article.content });
         return await this.requestAiGateway({
@@ -75,7 +75,7 @@ let AiService = class AiService {
         });
     }
     async generateArticleReview({ model, prompt, article_id }) {
-        const article = await this.articleService.getDetailByNumberIdOrSlug({ numberId: article_id, lean: true });
+        const article = await this.articleService.getDetail(article_id, { lean: true });
         const promptTemplate = prompt ?? ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.articleReview;
         const finalPrompt = this.renderTemplate(promptTemplate, { article: article.content });
         return await this.requestAiGateway({
@@ -86,21 +86,18 @@ let AiService = class AiService {
     }
     async generateCommentReply(comment, payload) {
         let contextInfo = 'nil';
-        if (comment.post_id === biz_constant_1.GUESTBOOK_POST_ID) {
-            const options = await this.optionsService.ensureAppOptions();
+        if (comment.target_type === comment_constant_1.CommentTargetType.Page) {
+            const options = await this.optionsService.ensureOptions();
             contextInfo = [
-                `This message is from the blog's general guestbook.`,
+                `This message is from the blog's general page.`,
                 `The following is the blogger's "Statement & FAQ". You may extract relevant information from it IF the user's comment requires specific answers. Otherwise, feel free to ignore this section and respond naturally:`,
                 `"""`,
                 options.statement,
                 `"""`
             ].join('\n');
         }
-        else {
-            const article = await this.articleService.getDetailByNumberIdOrSlug({
-                numberId: comment.post_id,
-                lean: true
-            });
+        else if (comment.target_type === comment_constant_1.CommentTargetType.Article) {
+            const article = await this.articleService.getDetail(comment.target_id, { lean: true });
             contextInfo = [
                 `Article Title: ${article.title}`,
                 `Article Summary: ${(0, extra_transformer_1.getExtraValue)(article.extras, extras_constant_1.ArticleAiSummaryExtraKeys.Content) || article.content.substring(0, 800)}`

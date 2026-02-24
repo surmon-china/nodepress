@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeyValueModel = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const class_validator_1 = require("class-validator");
+const normalize_string_decorator_1 = require("../decorators/normalize-string.decorator");
 class KeyValueModel {
     key;
     value;
@@ -20,13 +21,14 @@ exports.KeyValueModel = KeyValueModel;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, trim: true, validate: /\S+/ }),
+    (0, normalize_string_decorator_1.NormalizeString)({ trim: true }),
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], KeyValueModel.prototype, "key", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, typegoose_1.prop)({ required: false }),
+    (0, typegoose_1.prop)({ type: String, required: false }),
     __metadata("design:type", String)
 ], KeyValueModel.prototype, "value", void 0);
 //# sourceMappingURL=key-value.model.js.map

@@ -21,7 +21,7 @@ const archive_service_1 = require("../archive/archive.service");
 const article_constant_1 = require("../article/article.constant");
 const article_model_1 = require("../article/article.model");
 const cache_constant_1 = require("../../constants/cache.constant");
-const biz_constant_1 = require("../../constants/biz.constant");
+const sort_constant_1 = require("../../constants/sort.constant");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
@@ -33,97 +33,116 @@ let TagService = class TagService {
     archiveService;
     tagModel;
     articleModel;
-    allTagsCache;
+    allPublicTagsCache;
     constructor(seoService, cacheService, archiveService, tagModel, articleModel) {
         this.seoService = seoService;
         this.cacheService = cacheService;
         this.archiveService = archiveService;
         this.tagModel = tagModel;
         this.articleModel = articleModel;
-        this.allTagsCache = this.cacheService.manual({
+        this.allPublicTagsCache = this.cacheService.manual({
             key: cache_constant_1.CacheKeys.AllTags,
             promise: () => this.getAllTags({ aggregatePublicOnly: true })
         });
     }
     onModuleInit() {
-        this.allTagsCache.update().catch((error) => {
+        this.allPublicTagsCache.update().catch((error) => {
             logger.warn('Init getAllTags failed!', error);
         });
     }
-    async aggregateArticleCount(publicOnly, tags) {
+    getAllPublicTagsCache() {
+        return this.allPublicTagsCache.get();
+    }
+    updateAllPublicTagsCache() {
+        return this.allPublicTagsCache.update();
+    }
+    async aggregateArticleCount(tags, publicOnly) {
+        if (!tags.length)
+            return [];
+        const tagIds = tags.map((c) => c._id);
+        const matchStage = publicOnly ? { ...article_constant_1.ARTICLE_PUBLIC_FILTER } : {};
         const counts = await this.articleModel.aggregate([
-            { $match: publicOnly ? article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
+            { $match: { tags: { $in: tagIds }, ...matchStage } },
             { $unwind: '$tags' },
+            { $match: { tags: { $in: tagIds } } },
             { $group: { _id: '$tags', count: { $sum: 1 } } }
         ]);
-        return tags.map((tag) => {
-            const found = counts.find((item) => item._id.equals(tag._id));
-            return { ...tag, article_count: found ? found.count : 0 };
-        });
-    }
-    async getAllTags(options) {
-        const allTags = await this.tagModel.find().lean().sort({ _id: biz_constant_1.SortOrder.Desc }).exec();
-        return await this.aggregateArticleCount(options.aggregatePublicOnly, allTags);
-    }
-    getAllTagsCache() {
-        return this.allTagsCache.get();
-    }
-    updateAllTagsCache() {
-        return this.allTagsCache.update();
+        const countMap = new Map(counts.map((c) => [c._id.toString(), c.count]));
+        return tags.map((tag) => ({
+            ...tag,
+            article_count: countMap.get(tag._id.toString()) ?? 0
+        }));
     }
     async paginate(filter, options, publicOnly) {
         const result = await this.tagModel.paginateRaw(filter, options);
-        const documents = await this.aggregateArticleCount(publicOnly, result.documents);
+        const documents = await this.aggregateArticleCount(result.documents, publicOnly);
         return { ...result, documents };
     }
-    async getDetailBySlug(slug) {
-        const tag = await this.tagModel.findOne({ slug }).lean().exec();
+    async getAllTags(options) {
+        const allTags = await this.tagModel.find().lean().sort({ _id: sort_constant_1.SortOrder.Desc }).exec();
+        return await this.aggregateArticleCount(allTags, options.aggregatePublicOnly);
+    }
+    async getTotalCount() {
+        return await this.tagModel.countDocuments().lean().exec();
+    }
+    async getDetail(idOrSlug) {
+        const tag = await this.tagModel
+            .findOne(typeof idOrSlug === 'number' ? { id: idOrSlug } : { slug: idOrSlug })
+            .lean()
+            .exec();
         if (!tag)
-            throw new common_1.NotFoundException(`Tag '${slug}' not found`);
+            throw new common_1.NotFoundException(`Tag '${idOrSlug}' not found`);
         return tag;
     }
-    async create(newTag) {
-        const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).lean().exec();
-        if (existedTag)
-            throw new common_1.ConflictException(`Tag slug '${newTag.slug}' already exists`);
-        const tag = await this.tagModel.create(newTag);
-        this.seoService.push((0, urlmap_transformer_1.getTagUrl)(tag.slug));
+    async create(input) {
+        const existed = await this.tagModel.findOne({ slug: input.slug }).lean().exec();
+        if (existed)
+            throw new common_1.ConflictException(`Tag slug '${input.slug}' already exists`);
+        const created = await this.tagModel.create(input);
+        this.updateAllPublicTagsCache();
         this.archiveService.updateCache();
-        this.updateAllTagsCache();
-        return tag;
+        this.seoService.push((0, urlmap_transformer_1.getTagUrl)(created.slug));
+        return created;
     }
-    async update(tagId, newTag) {
-        const existedTag = await this.tagModel.findOne({ slug: newTag.slug }).lean().exec();
-        if (existedTag && !existedTag._id.equals(tagId)) {
-            throw new common_1.ConflictException(`Tag slug '${newTag.slug}' already exists`);
+    async update(tagId, input) {
+        const existed = await this.tagModel.findOne({ slug: input.slug }).lean().exec();
+        if (existed && existed.id !== tagId) {
+            throw new common_1.ConflictException(`Tag slug '${input.slug}' already exists`);
         }
-        const updated = await this.tagModel.findByIdAndUpdate(tagId, newTag, { new: true }).exec();
+        const updated = await this.tagModel
+            .findOneAndUpdate({ id: tagId }, { $set: input }, { returnDocument: 'after' })
+            .exec();
         if (!updated)
             throw new common_1.NotFoundException(`Tag '${tagId}' not found`);
-        this.seoService.push((0, urlmap_transformer_1.getTagUrl)(updated.slug));
+        this.updateAllPublicTagsCache();
         this.archiveService.updateCache();
-        this.updateAllTagsCache();
+        this.seoService.push((0, urlmap_transformer_1.getTagUrl)(updated.slug));
         return updated;
     }
     async delete(tagId) {
-        const deleted = await this.tagModel.findByIdAndDelete(tagId, null).exec();
+        const deleted = await this.tagModel.findOneAndDelete({ id: tagId }).exec();
         if (!deleted)
             throw new common_1.NotFoundException(`Tag '${tagId}' not found`);
-        this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(deleted.slug));
+        await this.articleModel.updateMany({ tags: deleted._id }, { $pull: { tags: deleted._id } }).exec();
+        this.updateAllPublicTagsCache();
         this.archiveService.updateCache();
-        this.updateAllTagsCache();
+        this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(deleted.slug));
         return deleted;
     }
     async batchDelete(tagIds) {
-        const tags = await this.tagModel.find({ _id: { $in: tagIds } }).exec();
-        const actionResult = await this.tagModel.deleteMany({ _id: { $in: tagIds } }).exec();
+        const tags = await this.tagModel
+            .find({ id: { $in: tagIds } })
+            .lean()
+            .exec();
+        const actionResult = await this.tagModel.deleteMany({ id: { $in: tagIds } }).exec();
+        const tagObjectIds = tags.map((tag) => tag._id);
+        await this.articleModel
+            .updateMany({ tags: { $in: tagObjectIds } }, { $pull: { tags: { $in: tagObjectIds } } })
+            .exec();
+        this.updateAllPublicTagsCache();
         this.archiveService.updateCache();
-        this.updateAllTagsCache();
         this.seoService.delete(tags.map((tag) => (0, urlmap_transformer_1.getTagUrl)(tag.slug)));
         return actionResult;
-    }
-    async getTotalCount() {
-        return await this.tagModel.countDocuments().exec();
     }
 };
 exports.TagService = TagService;

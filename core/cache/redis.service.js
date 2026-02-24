@@ -46,10 +46,10 @@ exports.RedisService = void 0;
 const client_1 = require("@redis/client");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const error_transformer_1 = require("../../transformers/error.transformer");
-const logger_1 = require("../../utils/logger");
-const redis_store_1 = require("./redis.store");
 const events_constant_1 = require("../../constants/events.constant");
+const error_transformer_1 = require("../../transformers/error.transformer");
+const redis_store_1 = require("./redis.store");
+const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const APP_CONFIG = __importStar(require("../../app.config"));
 const logger = (0, logger_1.createLogger)({ scope: 'RedisService', time: app_environment_1.isDevEnv });
@@ -82,7 +82,9 @@ let RedisService = class RedisService {
         }
     }
     getOptions() {
-        const redisOptions = {
+        return {
+            username: APP_CONFIG.REDIS.username ?? void 0,
+            password: APP_CONFIG.REDIS.password ?? void 0,
             socket: {
                 host: APP_CONFIG.REDIS.host,
                 port: APP_CONFIG.REDIS.port,
@@ -96,13 +98,6 @@ let RedisService = class RedisService {
                 }
             }
         };
-        if (APP_CONFIG.REDIS.username) {
-            redisOptions.username = APP_CONFIG.REDIS.username;
-        }
-        if (APP_CONFIG.REDIS.password) {
-            redisOptions.password = APP_CONFIG.REDIS.password;
-        }
-        return redisOptions;
     }
     get client() {
         return this.redisClient;

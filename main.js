@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cookie_1 = __importDefault(require("@fastify/cookie"));
 const multipart_1 = __importDefault(require("@fastify/multipart"));
 const core_1 = require("@nestjs/core");
+const common_1 = require("@nestjs/common");
 const platform_fastify_1 = require("@nestjs/platform-fastify");
 const transform_interceptor_1 = require("./interceptors/transform.interceptor");
 const logging_interceptor_1 = require("./interceptors/logging.interceptor");
 const exception_filter_1 = require("./filters/exception.filter");
-const validation_pipe_1 = require("./pipes/validation.pipe");
+const identity_constant_1 = require("./constants/identity.constant");
+const auth_constant_1 = require("./constants/auth.constant");
 const auth_service_1 = require("./core/auth/auth.service");
 const app_environment_1 = require("./app.environment");
 const app_module_1 = require("./app.module");
@@ -26,12 +28,26 @@ async function bootstrap() {
     const authService = app.get(auth_service_1.AuthService);
     const fastify = app.getHttpAdapter().getInstance();
     fastify.addHook('onRequest', async (request) => {
+        request.identity = new identity_constant_1.Identity({ role: identity_constant_1.IdentityRole.Guest });
         const token = authService.extractTokenFromAuthorization(request.headers.authorization);
-        const isAuthenticated = Boolean(token && (await authService.verifyToken(token)));
-        request.locals ??= {};
-        request.locals.token = token;
-        request.locals.isAuthenticated = isAuthenticated;
-        request.locals.isUnauthenticated = !isAuthenticated;
+        if (!token)
+            return;
+        try {
+            const payload = await authService.verifyToken(token);
+            if (!payload)
+                throw new common_1.UnauthorizedException('Access denied: invalid identity payload');
+            if (payload.role === auth_constant_1.AuthRole.Admin) {
+                request.identity = new identity_constant_1.Identity({ role: identity_constant_1.IdentityRole.Admin, token, payload });
+            }
+            else if (payload.role === auth_constant_1.AuthRole.User) {
+                request.identity = new identity_constant_1.Identity({ role: identity_constant_1.IdentityRole.User, token, payload });
+            }
+        }
+        catch (error) {
+            throw error instanceof common_1.UnauthorizedException
+                ? error
+                : new common_1.UnauthorizedException('Authentication failed: token expired or malformed', { cause: error });
+        }
     });
     app.enableCors({
         origin: app_environment_1.isDevEnv ? true : app_config_1.APP_BIZ.CORS_ALLOWED_ORIGINS,
@@ -40,11 +56,27 @@ async function bootstrap() {
         maxAge: 600,
         methods: ['HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE']
     });
-    app.useGlobalPipes(new validation_pipe_1.ValidationPipe());
-    app.useGlobalFilters(new exception_filter_1.HttpExceptionFilter());
-    app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
     if (app_environment_1.isDevEnv)
         app.useGlobalInterceptors(new logging_interceptor_1.LoggingInterceptor());
+    app.useGlobalFilters(new exception_filter_1.HttpExceptionFilter());
+    app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
+    app.useGlobalPipes(new common_1.ValidationPipe({
+        transform: true,
+        whitelist: true,
+        exceptionFactory: (errors) => {
+            const collectMessages = (_errors) => {
+                const messages = [];
+                for (const error of _errors) {
+                    if (error.constraints)
+                        messages.push(...Object.values(error.constraints));
+                    if (error.children?.length)
+                        messages.push(...collectMessages(error.children));
+                }
+                return messages;
+            };
+            throw new common_1.BadRequestException(`Validation failed: ${collectMessages(errors).join('; ')}`);
+        }
+    }));
     return await app.listen(app_config_1.APP_BIZ.PORT);
 }
 bootstrap().then((server) => {

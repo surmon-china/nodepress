@@ -23,16 +23,21 @@ let TransformInterceptor = class TransformInterceptor {
             if (reponseOptions.status) {
                 response.status(reponseOptions.status);
             }
-            const responseBody = {
+            return {
                 status: response_interface_1.ResponseStatus.Success,
                 message: reponseOptions.message ?? 'Success',
                 context: {
                     url: request.url,
                     method: request.method,
                     route_params: request.params ?? {},
-                    query_params: request.locals.validatedQueryParams ?? {},
-                    is_authenticated: request.locals.isAuthenticated,
-                    is_unauthenticated: request.locals.isUnauthenticated
+                    query_params: request.validatedQueryParams ?? {},
+                    identity: {
+                        role: request.identity.role,
+                        is_guest: request.identity.isGuest,
+                        is_admin: request.identity.isAdmin,
+                        is_user: request.identity.isUser,
+                        uid: request.identity.payload?.uid ?? null
+                    }
                 },
                 result: !reponseOptions.usePaginate
                     ? data
@@ -46,7 +51,6 @@ let TransformInterceptor = class TransformInterceptor {
                         }
                     }
             };
-            return responseBody;
         }));
     }
 };

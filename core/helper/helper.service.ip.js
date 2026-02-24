@@ -23,7 +23,7 @@ let IPService = class IPService {
     }
     queryLocationByIpApi(ip) {
         return this.httpService.axiosRef
-            .get(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,region,regionName,city,zip`)
+            .get(`http://ip-api.com/json/${ip}?fields=status,message,country,countryCode,region,regionName,city`)
             .then((response) => {
             return response.data?.status !== 'success'
                 ? Promise.reject(response.data.message)
@@ -32,8 +32,7 @@ let IPService = class IPService {
                     country_code: response.data.countryCode,
                     region: response.data.regionName,
                     region_code: response.data.region,
-                    city: response.data.city,
-                    zip: response.data.zip
+                    city: response.data.city
                 });
         })
             .catch((error) => {
@@ -53,8 +52,7 @@ let IPService = class IPService {
                     country_code: response.data.country_code,
                     region: response.data.region,
                     region_code: response.data.region_code,
-                    city: response.data.city,
-                    zip: response.data.postal
+                    city: response.data.city
                 });
         })
             .catch((error) => {

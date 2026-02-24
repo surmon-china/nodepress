@@ -14,14 +14,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArchiveService = void 0;
 const common_1 = require("@nestjs/common");
-const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_service_1 = require("../../core/cache/cache.service");
+const model_transformer_1 = require("../../transformers/model.transformer");
 const cache_constant_1 = require("../../constants/cache.constant");
-const biz_constant_1 = require("../../constants/biz.constant");
+const sort_constant_1 = require("../../constants/sort.constant");
+const article_constant_1 = require("../article/article.constant");
+const article_model_1 = require("../article/article.model");
 const category_model_1 = require("../category/category.model");
 const tag_model_1 = require("../tag/tag.model");
-const article_model_1 = require("../article/article.model");
-const article_constant_1 = require("../article/article.constant");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const logger = (0, logger_1.createLogger)({ scope: 'ArchiveService', time: app_environment_1.isDevEnv });
@@ -46,38 +46,29 @@ let ArchiveService = class ArchiveService {
             logger.warn('Init getArchiveData failed!', error);
         });
     }
-    getAllTags() {
-        return this.tagModel.find().sort({ _id: biz_constant_1.SortOrder.Desc }).lean().exec();
-    }
-    getAllCategories() {
-        return this.categoryModel.find().sort({ _id: biz_constant_1.SortOrder.Desc }).lean().exec();
-    }
-    getAllArticles() {
-        return this.articleModel
-            .find(article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER, article_constant_1.ARTICLE_LIST_QUERY_PROJECTION)
-            .sort({ _id: biz_constant_1.SortOrder.Desc })
-            .lean()
-            .exec();
-    }
-    async getArchiveData() {
-        try {
-            const [tags, categories, articles] = await Promise.all([
-                this.getAllTags(),
-                this.getAllCategories(),
-                this.getAllArticles()
-            ]);
-            return { tags, categories, articles };
-        }
-        catch (error) {
-            logger.warn('getArchiveData failed!', error);
-            return {};
-        }
-    }
     getCache() {
         return this.archiveCache.get();
     }
     updateCache() {
         return this.archiveCache.update();
+    }
+    async getArchiveData() {
+        try {
+            const [tags, categories, articles] = await Promise.all([
+                this.tagModel.find().sort({ created_at: sort_constant_1.SortOrder.Desc }).lean().exec(),
+                this.categoryModel.find().sort({ created_at: sort_constant_1.SortOrder.Desc }).lean().exec(),
+                this.articleModel.find(article_constant_1.ARTICLE_PUBLIC_FILTER).sort({ created_at: sort_constant_1.SortOrder.Desc }).lean().exec()
+            ]);
+            return { tags, categories, articles };
+        }
+        catch (error) {
+            logger.warn('getArchiveData failed!', error);
+            return {
+                tags: [],
+                categories: [],
+                articles: []
+            };
+        }
     }
 };
 exports.ArchiveService = ArchiveService;

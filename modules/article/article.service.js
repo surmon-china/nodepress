@@ -15,13 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticleService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
+const sort_constant_1 = require("../../constants/sort.constant");
 const helper_service_seo_1 = require("../../core/helper/helper.service.seo");
 const archive_service_1 = require("../archive/archive.service");
 const category_service_1 = require("../category/category.service");
 const tag_service_1 = require("../tag/tag.service");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
-const article_model_1 = require("./article.model");
 const article_constant_1 = require("./article.constant");
+const article_model_1 = require("./article.model");
+const article_model_2 = require("./article.model");
 let ArticleService = class ArticleService {
     seoService;
     tagService;
@@ -35,195 +37,103 @@ let ArticleService = class ArticleService {
         this.archiveService = archiveService;
         this.articleModel = articleModel;
     }
-    async getNearArticles(articleId, type, count) {
-        const typeFieldMap = {
-            early: { field: '$lt', sort: -1 },
-            later: { field: '$gt', sort: 1 }
-        };
-        const targetType = typeFieldMap[type];
-        return this.articleModel
-            .find({ ...article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER, id: { [targetType.field]: articleId } }, article_constant_1.ARTICLE_LIST_QUERY_PROJECTION)
-            .populate(article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE)
-            .sort({ id: targetType.sort })
-            .limit(count)
-            .lean()
-            .exec();
-    }
-    getRelatedArticles(article, count) {
-        const queryFilter = {
-            ...article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER,
-            tags: { $in: article.tags },
-            categories: { $in: article.categories },
-            id: { $ne: article.id }
-        };
-        return this.articleModel.aggregate([
-            { $match: queryFilter },
-            { $sample: { size: count } },
-            { $project: article_constant_1.ARTICLE_LIST_QUERY_PROJECTION },
-            ...article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE.map((field) => ({
-                $lookup: {
-                    from: field,
-                    localField: field,
-                    foreignField: '_id',
-                    as: field
-                }
-            }))
-        ]);
-    }
     paginate(filter, options) {
         return this.articleModel.paginateRaw(filter, {
             ...options,
-            projection: article_constant_1.ARTICLE_LIST_QUERY_PROJECTION,
-            populate: article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE
+            populate: article_model_2.ARTICLE_RELATION_FIELDS
         });
     }
     getAll() {
         return this.articleModel.find({}, null, {
-            sort: { _id: -1 },
-            populate: article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE
+            sort: { _id: sort_constant_1.SortOrder.Desc },
+            populate: article_model_2.ARTICLE_RELATION_FIELDS
         });
     }
-    getList(articleIds) {
-        return this.articleModel
-            .find({ id: { $in: articleIds } })
-            .lean()
-            .exec();
-    }
-    async getDetailByObjectId(articleId) {
-        const article = await this.articleModel.findById(articleId).lean().exec();
-        if (!article)
-            throw new common_1.NotFoundException(`Article '${articleId}' not found`);
-        return article;
-    }
-    async getDetailByNumberIdOrSlug({ numberId, slug, publicOnly = false, populate = false, lean = false }) {
+    async getDetail(idOrSlug, options = {}) {
+        const { publicOnly = false, populate = false, lean = false } = options;
         const queryFilter = {};
-        if (slug)
-            queryFilter.slug = slug;
-        if (numberId)
-            queryFilter.id = numberId;
+        if (typeof idOrSlug === 'number')
+            queryFilter.id = idOrSlug;
+        if (typeof idOrSlug === 'string')
+            queryFilter.slug = idOrSlug;
         const articleQuery = this.articleModel
-            .findOne(publicOnly ? { ...queryFilter, ...article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER } : queryFilter)
-            .populate(populate ? article_constant_1.ARTICLE_FULL_QUERY_REF_POPULATE : []);
+            .findOne(publicOnly ? { ...queryFilter, ...article_constant_1.ARTICLE_PUBLIC_FILTER } : queryFilter)
+            .populate(populate ? article_model_2.ARTICLE_RELATION_FIELDS : [])
+            .select(article_model_2.ARTICLE_WITH_CONTENT_PROJECTION);
         const article = lean ? await articleQuery.lean().exec() : await articleQuery.exec();
         if (!article)
-            throw new common_1.NotFoundException(`Article '${numberId ?? slug}' not found`);
+            throw new common_1.NotFoundException(`Article '${idOrSlug}' not found`);
         return article;
     }
-    async create(newArticle) {
-        if (newArticle.slug) {
-            const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).lean().exec();
-            if (existedArticle)
-                throw new common_1.ConflictException(`Article slug '${newArticle.slug}' already exists`);
+    async create(input) {
+        if (input.slug) {
+            const existed = await this.articleModel.findOne({ slug: input.slug }).lean().exec();
+            if (existed)
+                throw new common_1.ConflictException(`Article slug '${input.slug}' already exists`);
         }
-        const article = await this.articleModel.create(newArticle);
-        this.seoService.push((0, urlmap_transformer_1.getArticleUrl)(article.id));
-        this.tagService.updateAllTagsCache();
-        this.categoryService.updateAllCategoriesCache();
+        const created = await this.articleModel.create(input);
+        this.seoService.push((0, urlmap_transformer_1.getArticleUrl)(created.id));
+        this.tagService.updateAllPublicTagsCache();
+        this.categoryService.updateAllPublicCategoriesCache();
         this.archiveService.updateCache();
-        return article;
+        return created;
     }
-    async update(articleId, newArticle) {
-        if (newArticle.slug) {
-            const existedArticle = await this.articleModel.findOne({ slug: newArticle.slug }).lean().exec();
-            if (existedArticle && !existedArticle._id.equals(articleId)) {
-                throw new common_1.ConflictException(`Article slug '${newArticle.slug}' already exists`);
+    async update(articleId, input) {
+        if (input.slug) {
+            const existed = await this.articleModel.findOne({ slug: input.slug }).lean().exec();
+            if (existed && existed.id !== articleId) {
+                throw new common_1.ConflictException(`Article slug '${input.slug}' already exists`);
             }
         }
-        Reflect.deleteProperty(newArticle, 'stats');
-        Reflect.deleteProperty(newArticle, 'created_at');
-        Reflect.deleteProperty(newArticle, 'updated_at');
-        const article = await this.articleModel.findByIdAndUpdate(articleId, newArticle, { new: true }).exec();
-        if (!article)
+        Reflect.deleteProperty(input, 'id');
+        Reflect.deleteProperty(input, 'stats');
+        Reflect.deleteProperty(input, 'created_at');
+        Reflect.deleteProperty(input, 'updated_at');
+        const updated = await this.articleModel
+            .findOneAndUpdate({ id: articleId }, { $set: input }, { returnDocument: 'after' })
+            .exec();
+        if (!updated)
             throw new common_1.NotFoundException(`Article '${articleId}' not found`);
-        this.seoService.update((0, urlmap_transformer_1.getArticleUrl)(article.id));
-        this.tagService.updateAllTagsCache();
-        this.categoryService.updateAllCategoriesCache();
+        this.seoService.update((0, urlmap_transformer_1.getArticleUrl)(updated.id));
+        this.tagService.updateAllPublicTagsCache();
+        this.categoryService.updateAllPublicCategoriesCache();
         this.archiveService.updateCache();
-        return article;
+        return updated;
     }
     async delete(articleId) {
-        const article = await this.articleModel.findByIdAndDelete(articleId, null).exec();
-        if (!article)
+        const deleted = await this.articleModel.findOneAndDelete({ id: articleId }).exec();
+        if (!deleted)
             throw new common_1.NotFoundException(`Article '${articleId}' not found`);
-        this.seoService.delete((0, urlmap_transformer_1.getArticleUrl)(article.id));
-        this.tagService.updateAllTagsCache();
-        this.categoryService.updateAllCategoriesCache();
+        this.seoService.delete((0, urlmap_transformer_1.getArticleUrl)(deleted.id));
+        this.tagService.updateAllPublicTagsCache();
+        this.categoryService.updateAllPublicCategoriesCache();
         this.archiveService.updateCache();
-        return article;
+        return deleted;
     }
-    async batchPatchStatus(articleIds, status) {
+    async batchUpdateStatus(articleIds, status) {
         const actionResult = await this.articleModel
-            .updateMany({ _id: { $in: articleIds } }, { $set: { status } })
+            .updateMany({ id: { $in: articleIds } }, { $set: { status } })
             .exec();
-        this.tagService.updateAllTagsCache();
-        this.categoryService.updateAllCategoriesCache();
+        this.tagService.updateAllPublicTagsCache();
+        this.categoryService.updateAllPublicCategoriesCache();
         this.archiveService.updateCache();
         return actionResult;
     }
     async batchDelete(articleIds) {
         const articles = await this.articleModel
-            .find({ _id: { $in: articleIds } })
+            .find({ id: { $in: articleIds } })
             .lean()
             .exec();
-        const actionResult = await this.articleModel.deleteMany({ _id: { $in: articleIds } }).exec();
+        const actionResult = await this.articleModel.deleteMany({ id: { $in: articleIds } }).exec();
         this.seoService.delete(articles.map((article) => (0, urlmap_transformer_1.getArticleUrl)(article.id)));
-        this.tagService.updateAllTagsCache();
-        this.categoryService.updateAllCategoriesCache();
+        this.tagService.updateAllPublicTagsCache();
+        this.categoryService.updateAllPublicCategoriesCache();
         this.archiveService.updateCache();
         return actionResult;
-    }
-    async getTotalCount(publicOnly) {
-        return await this.articleModel.countDocuments(publicOnly ? article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {}).exec();
-    }
-    async getCalendar(publicOnly, timezone = 'GMT') {
-        try {
-            const calendar = await this.articleModel.aggregate([
-                { $match: publicOnly ? article_constant_1.ARTICLE_LIST_QUERY_GUEST_FILTER : {} },
-                { $project: { day: { $dateToString: { date: '$created_at', format: '%Y-%m-%d', timezone } } } },
-                { $group: { _id: '$day', count: { $sum: 1 } } },
-                { $sort: { _id: 1 } }
-            ]);
-            return calendar.map(({ _id, ...rest }) => ({ ...rest, date: _id }));
-        }
-        catch (error) {
-            throw new common_1.BadRequestException(`Invalid timezone identifier: '${timezone}'`);
-        }
-    }
-    async incrementStatistics(articleId, field) {
-        const article = await this.getDetailByNumberIdOrSlug({
-            numberId: articleId,
-            publicOnly: true
-        });
-        article.stats[field]++;
-        article.save({ timestamps: false });
-        return article.stats[field];
-    }
-    async getTotalStatistics() {
-        const [result] = await this.articleModel.aggregate([
-            {
-                $group: {
-                    _id: null,
-                    totalViews: { $sum: '$stats.views' },
-                    totalLikes: { $sum: '$stats.likes' }
-                }
-            }
-        ]);
-        if (!result) {
-            return null;
-        }
-        return {
-            totalViews: result.totalViews,
-            totalLikes: result.totalLikes
-        };
     }
     async isCommentableArticle(articleId) {
         const article = await this.articleModel.findOne({ id: articleId }).lean().exec();
         return Boolean(article && !article.disabled_comments);
-    }
-    async updateStatsComments(articleId, commentCount) {
-        const findParams = { id: articleId };
-        const patchParams = { $set: { 'stats.comments': commentCount } };
-        return this.articleModel.updateOne(findParams, patchParams, { timestamps: false }).exec();
     }
 };
 exports.ArticleService = ArticleService;

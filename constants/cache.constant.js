@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInvalidatedTokenCacheKey = exports.getDisqusCacheKey = exports.CacheKeys = void 0;
+exports.getInvalidatedTokenCacheKey = exports.getUserAuthStateCacheKey = exports.CacheKeys = void 0;
 var CacheKeys;
 (function (CacheKeys) {
     CacheKeys["Options"] = "options";
@@ -8,13 +8,14 @@ var CacheKeys;
     CacheKeys["AllTags"] = "all-tags";
     CacheKeys["AllCategories"] = "all-categories";
     CacheKeys["TodayViewCount"] = "today-view-count";
+    CacheKeys["AdminProfile"] = "admin-profile";
 })(CacheKeys || (exports.CacheKeys = CacheKeys = {}));
-const getDisqusCacheKey = (key) => {
-    return `disqus:${key}`;
+const getUserAuthStateCacheKey = (key) => {
+    return `auth:user-oauth-state:${key}`;
 };
-exports.getDisqusCacheKey = getDisqusCacheKey;
+exports.getUserAuthStateCacheKey = getUserAuthStateCacheKey;
 const getInvalidatedTokenCacheKey = (key) => {
-    return `auth:invalidated:${key}`;
+    return `auth:invalidated-token:${key}`;
 };
 exports.getInvalidatedTokenCacheKey = getInvalidatedTokenCacheKey;
 //# sourceMappingURL=cache.constant.js.map

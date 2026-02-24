@@ -26,7 +26,7 @@ let PermissionPipe = class PermissionPipe {
         this.request = request;
     }
     transform(value) {
-        if (this.request.locals.isAuthenticated) {
+        if (this.request.identity.isAdmin) {
             return value;
         }
         Object.keys(value).forEach((field) => {
@@ -34,14 +34,14 @@ let PermissionPipe = class PermissionPipe {
             const fieldMeta = (0, guest_permission_decorator_1.getGuestRequestPermission)(value, field);
             if (!(0, isUndefined_1.default)(fieldValue)) {
                 if (fieldMeta?.only?.length && !fieldMeta.only.includes(fieldValue)) {
-                    throw new common_1.ForbiddenException(`Invalid value for field '${field}': allowed values are [${fieldMeta.only.join(', ')}]`);
+                    throw new common_1.ForbiddenException(`Permission denied: field '${field}' only accepts values: [${fieldMeta.only.join(', ')}]`);
                 }
             }
             if ((0, isUndefined_1.default)(fieldValue) && !(0, isUndefined_1.default)(fieldMeta?.default)) {
                 value[field] = fieldMeta.default;
             }
         });
-        this.request.locals.validatedQueryParams = { ...value };
+        this.request.validatedQueryParams = { ...value };
         return value;
     }
 };

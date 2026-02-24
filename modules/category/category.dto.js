@@ -9,20 +9,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CategoriesDTO = exports.CategoryPaginateQueryDTO = void 0;
+exports.CategoryIdsDto = exports.CategoryPaginateQueryDto = exports.UpdateCategoryDto = exports.CreateCategoryDto = void 0;
+const mapped_types_1 = require("@nestjs/mapped-types");
 const class_validator_1 = require("class-validator");
-const paginate_model_1 = require("../../models/paginate.model");
-class CategoryPaginateQueryDTO extends paginate_model_1.PaginateOptionDTO {
+const paginate_dto_1 = require("../../dtos/paginate.dto");
+const querys_dto_1 = require("../../dtos/querys.dto");
+const category_model_1 = require("./category.model");
+class CreateCategoryDto extends (0, mapped_types_1.PickType)(category_model_1.Category, [
+    'parent_id',
+    'name',
+    'slug',
+    'description',
+    'extras'
+]) {
 }
-exports.CategoryPaginateQueryDTO = CategoryPaginateQueryDTO;
-class CategoriesDTO {
+exports.CreateCategoryDto = CreateCategoryDto;
+class UpdateCategoryDto extends (0, mapped_types_1.PartialType)(CreateCategoryDto) {
+}
+exports.UpdateCategoryDto = UpdateCategoryDto;
+class CategoryPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, querys_dto_1.KeywordQueryDto) {
+}
+exports.CategoryPaginateQueryDto = CategoryPaginateQueryDto;
+class CategoryIdsDto {
     category_ids;
 }
-exports.CategoriesDTO = CategoriesDTO;
+exports.CategoryIdsDto = CategoryIdsDto;
 __decorate([
-    (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.ArrayNotEmpty)(),
+    (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsInt)({ each: true }),
     __metadata("design:type", Array)
-], CategoriesDTO.prototype, "category_ids", void 0);
+], CategoryIdsDto.prototype, "category_ids", void 0);
 //# sourceMappingURL=category.dto.js.map

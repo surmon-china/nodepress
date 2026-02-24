@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FeedbackService = void 0;
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const biz_constant_1 = require("../../constants/biz.constant");
 const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
+const author_constant_1 = require("../../constants/author.constant");
 const feedback_model_1 = require("./feedback.model");
 let FeedbackService = class FeedbackService {
     ipService;
@@ -26,35 +26,37 @@ let FeedbackService = class FeedbackService {
         this.feedbackModel = feedbackModel;
     }
     paginate(filter, options) {
-        return this.feedbackModel.paginate(filter, options);
+        return this.feedbackModel.paginateRaw(filter, { ...options, lean: { virtuals: true } });
     }
-    async create(feedback, visitor) {
-        return this.feedbackModel.create({
-            ...feedback,
+    async create(input, visitor, user) {
+        return await this.feedbackModel.create({
+            ...input,
+            ...(0, author_constant_1.resolveGeneralAuthor)(input, user),
+            user_agent: visitor.agent,
             origin: visitor.origin,
-            user_agent: visitor.ua,
             ip: visitor.ip,
             ip_location: visitor.ip ? await this.ipService.queryLocation(visitor.ip) : null
         });
     }
-    async update(feedbackId, newFeedback) {
-        const updated = await this.feedbackModel.findByIdAndUpdate(feedbackId, newFeedback, { new: true }).exec();
+    async update(feedbackId, input) {
+        const updated = await this.feedbackModel
+            .findOneAndUpdate({ id: feedbackId }, { $set: input }, { returnDocument: 'after' })
+            .exec();
         if (!updated)
             throw new common_1.NotFoundException(`Feedback '${feedbackId}' not found`);
         return updated;
     }
     async delete(feedbackId) {
-        const deleted = await this.feedbackModel.findByIdAndDelete(feedbackId, null).exec();
+        const deleted = await this.feedbackModel.findOneAndDelete({ id: feedbackId }).exec();
         if (!deleted)
             throw new common_1.NotFoundException(`Feedback '${feedbackId}' not found`);
         return deleted;
     }
     batchDelete(feedbackIds) {
-        return this.feedbackModel.deleteMany({ _id: { $in: feedbackIds } }).exec();
+        return this.feedbackModel.deleteMany({ id: { $in: feedbackIds } }).exec();
     }
-    async getRootFeedbackAverageEmotion() {
+    async getAverageEmotion() {
         const [result] = await this.feedbackModel.aggregate([
-            { $match: { tid: biz_constant_1.ROOT_FEEDBACK_TID } },
             { $group: { _id: null, avgEmotion: { $avg: '$emotion' } } }
         ]);
         return result ? Math.round(result.avgEmotion * 1000) / 1000 : null;

@@ -9,12 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleProvider = exports.Article = exports.ArticleStats = void 0;
+exports.ArticleProvider = exports.Article = exports.ArticleStats = exports.ARTICLE_WITHOUT_CONTENT_PROJECTION = exports.ARTICLE_WITH_CONTENT_PROJECTION = exports.ARTICLE_RELATION_FIELDS = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
+const normalize_string_decorator_1 = require("../../decorators/normalize-string.decorator");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
@@ -22,7 +23,9 @@ const key_value_model_1 = require("../../models/key-value.model");
 const category_model_1 = require("../category/category.model");
 const tag_model_1 = require("../tag/tag.model");
 const article_constant_1 = require("./article.constant");
-const article_constant_2 = require("./article.constant");
+exports.ARTICLE_RELATION_FIELDS = ['tags', 'categories'];
+exports.ARTICLE_WITH_CONTENT_PROJECTION = '+content';
+exports.ARTICLE_WITHOUT_CONTENT_PROJECTION = { content: 0 };
 const ARTICLE_DEFAULT_STATS = Object.freeze({
     likes: 0,
     views: 0,
@@ -35,18 +38,15 @@ class ArticleStats {
 }
 exports.ArticleStats = ArticleStats;
 __decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, typegoose_1.prop)({ default: 0 }),
+    (0, typegoose_1.prop)({ type: Number, default: 0, min: 0 }),
     __metadata("design:type", Number)
 ], ArticleStats.prototype, "likes", void 0);
 __decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, typegoose_1.prop)({ default: 0 }),
+    (0, typegoose_1.prop)({ type: Number, default: 0, min: 0 }),
     __metadata("design:type", Number)
 ], ArticleStats.prototype, "views", void 0);
 __decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, typegoose_1.prop)({ default: 0 }),
+    (0, typegoose_1.prop)({ type: Number, default: 0, min: 0 }),
     __metadata("design:type", Number)
 ], ArticleStats.prototype, "comments", void 0);
 let Article = class Article {
@@ -63,9 +63,9 @@ let Article = class Article {
     featured;
     disabled_comments;
     stats;
-    extras;
     tags;
     categories;
+    extras;
     created_at;
     updated_at;
 };
@@ -75,103 +75,109 @@ __decorate([
     __metadata("design:type", Number)
 ], Article.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_2.Matches)(/^[a-zA-Z0-9-_]+$/),
     (0, class_validator_2.MaxLength)(50),
+    (0, class_validator_2.Matches)(/^[a-zA-Z0-9-_]+$/),
     (0, class_validator_1.IsString)(),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ default: null, trim: true, validate: /^[a-zA-Z0-9-_]+$/, index: true }),
-    __metadata("design:type", String)
+    (0, normalize_string_decorator_1.NormalizeString)({ trim: true }),
+    (0, typegoose_1.prop)({ type: String, default: null, unique: true, index: true, trim: true, validate: /^[a-zA-Z0-9-_]+$/ }),
+    __metadata("design:type", Object)
 ], Article.prototype, "slug", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsNotEmpty)({ message: 'title?' }),
-    (0, typegoose_1.prop)({ required: true, validate: /\S+/, text: true }),
+    (0, class_validator_2.IsNotEmpty)(),
+    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/, text: true }),
     __metadata("design:type", String)
 ], Article.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsNotEmpty)({ message: 'content?' }),
-    (0, typegoose_1.prop)({ required: true, validate: /\S+/, text: true }),
+    (0, class_validator_2.IsNotEmpty)(),
+    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/, select: false, text: true }),
     __metadata("design:type", String)
 ], Article.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, typegoose_1.prop)({ default: '', text: true }),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: String, default: '', text: true }),
     __metadata("design:type", String)
 ], Article.prototype, "summary", void 0);
 __decorate([
+    (0, class_validator_1.IsString)({ each: true }),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
-    (0, class_validator_2.IsDefined)(),
-    (0, typegoose_1.prop)({ default: [], type: () => [String] }),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: () => [String], default: [] }),
     __metadata("design:type", Array)
 ], Article.prototype, "keywords", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ type: String, default: null }),
+    (0, typegoose_1.prop)({ type: String, default: null, trim: true }),
     __metadata("design:type", Object)
 ], Article.prototype, "thumbnail", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(article_constant_2.ARTICLE_STATUSES),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_2.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: article_constant_1.ArticleStatus, default: article_constant_1.ArticleStatus.Published, index: true }),
+    (0, class_validator_1.IsEnum)(article_constant_1.ArticleStatus),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: Number, enum: article_constant_1.ArticleStatus, default: article_constant_1.ArticleStatus.Published, index: true }),
     __metadata("design:type", Number)
 ], Article.prototype, "status", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(article_constant_2.ARTICLE_ORIGINS),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_2.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: article_constant_1.ArticleOrigin, default: article_constant_1.ArticleOrigin.Original, index: true }),
+    (0, class_validator_1.IsEnum)(article_constant_1.ArticleOrigin),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: Number, enum: article_constant_1.ArticleOrigin, default: article_constant_1.ArticleOrigin.Original }),
     __metadata("design:type", Number)
 ], Article.prototype, "origin", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(article_constant_2.ARTICLE_LANGUAGES),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsDefined)(),
-    (0, typegoose_1.prop)({ default: article_constant_1.ArticleLanguage.Chinese, index: true }),
+    (0, class_validator_1.IsEnum)(article_constant_1.ArticleLanguage),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: String, enum: article_constant_1.ArticleLanguage, default: article_constant_1.ArticleLanguage.Chinese }),
     __metadata("design:type", String)
 ], Article.prototype, "lang", void 0);
 __decorate([
     (0, class_validator_1.IsBoolean)(),
-    (0, typegoose_1.prop)({ default: false, index: true }),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: Boolean, default: false, index: true }),
     __metadata("design:type", Boolean)
 ], Article.prototype, "featured", void 0);
 __decorate([
     (0, class_validator_1.IsBoolean)(),
-    (0, typegoose_1.prop)({ default: false }),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: Boolean, default: false }),
     __metadata("design:type", Boolean)
 ], Article.prototype, "disabled_comments", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ _id: false, default: { ...ARTICLE_DEFAULT_STATS } }),
+    (0, typegoose_1.prop)({ type: () => ArticleStats, _id: false, default: { ...ARTICLE_DEFAULT_STATS } }),
     __metadata("design:type", ArticleStats)
 ], Article.prototype, "stats", void 0);
 __decorate([
-    (0, class_transformer_1.Type)(() => key_value_model_1.KeyValueModel),
-    (0, class_validator_2.ValidateNested)(),
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
-    (0, typegoose_1.prop)({ _id: false, default: [], type: () => [key_value_model_1.KeyValueModel] }),
-    __metadata("design:type", Array)
-], Article.prototype, "extras", void 0);
-__decorate([
-    (0, typegoose_1.prop)({ ref: () => tag_model_1.Tag, index: true }),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ ref: () => tag_model_1.Tag, default: [] }),
     __metadata("design:type", Array)
 ], Article.prototype, "tags", void 0);
 __decorate([
     (0, class_validator_1.ArrayUnique)(),
     (0, class_validator_1.ArrayNotEmpty)(),
     (0, class_validator_1.IsArray)(),
-    (0, typegoose_1.prop)({ ref: () => category_model_1.Category, required: true, index: true }),
+    (0, typegoose_1.prop)({ ref: () => category_model_1.Category, required: true }),
     __metadata("design:type", Array)
 ], Article.prototype, "categories", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now, index: true, immutable: true }),
+    (0, class_transformer_1.Type)(() => key_value_model_1.KeyValueModel),
+    (0, class_validator_2.ValidateNested)({ each: true }),
+    (0, class_validator_1.ArrayUnique)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: () => [key_value_model_1.KeyValueModel], _id: false, default: [] }),
+    __metadata("design:type", Array)
+], Article.prototype, "extras", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: Date, default: Date.now, immutable: true, index: true }),
     __metadata("design:type", Date)
 ], Article.prototype, "created_at", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now }),
+    (0, typegoose_1.prop)({ type: Date, default: Date.now }),
     __metadata("design:type", Date)
 ], Article.prototype, "updated_at", void 0);
 exports.Article = Article = __decorate([
@@ -188,6 +194,9 @@ exports.Article = Article = __decorate([
             }
         }
     }),
+    (0, typegoose_1.index)({ status: 1, created_at: -1 }),
+    (0, typegoose_1.index)({ tags: 1, status: 1, created_at: -1 }),
+    (0, typegoose_1.index)({ categories: 1, status: 1, created_at: -1 }),
     (0, typegoose_1.index)({ title: 'text', content: 'text', summary: 'text' }, {
         name: 'SearchIndex',
         weights: {

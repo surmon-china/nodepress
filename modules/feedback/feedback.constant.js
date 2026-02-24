@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FEEDBACK_EMOTION_VALUES = exports.FEEDBACK_EMOTIONS = exports.emotionsMap = exports.FeedbackEmotion = void 0;
+exports.emotionsMap = exports.FeedbackEmotion = void 0;
 var FeedbackEmotion;
 (function (FeedbackEmotion) {
     FeedbackEmotion[FeedbackEmotion["Terrible"] = 1] = "Terrible";
@@ -36,6 +36,4 @@ exports.emotionsMap = new Map([
         emoji: '🥰'
     }
 ].map((item) => [item.value, item]));
-exports.FEEDBACK_EMOTIONS = Array.from(exports.emotionsMap.values());
-exports.FEEDBACK_EMOTION_VALUES = exports.FEEDBACK_EMOTIONS.map((e) => e.value);
 //# sourceMappingURL=feedback.constant.js.map

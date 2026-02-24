@@ -22,28 +22,30 @@ let FeedbackListener = class FeedbackListener {
     constructor(emailService) {
         this.emailService = emailService;
     }
-    async handleFeedbackCreated(feedback) {
+    handleFeedbackCreated(feedback) {
         const subject = 'You have a new feedback';
         this.emailService.sendMailAs(app_config_1.APP_BIZ.FE_NAME, {
             to: app_config_1.APP_BIZ.ADMIN_EMAIL,
             subject,
             ...(0, email_transformer_1.linesToEmailContent)([
-                `${subject} on '${feedback.tid}'.`,
+                `${subject}.`,
                 `Emotion: ${feedback.emotion_emoji} ${feedback.emotion_text} (${feedback.emotion})`,
                 `Content: ${feedback.content}`,
-                `Author: ${feedback.user_name || 'Anonymous user'}`,
+                ``,
+                `Author: ${feedback.author_name || 'Anonymous user'}`,
+                `Origin: ${feedback.origin || 'unknown'}`,
                 `Location: ${feedback.ip_location ? (0, email_transformer_1.getLocationText)(feedback.ip_location) : 'unknown'}`,
-                `UserAgent: ${feedback.user_agent ? (0, email_transformer_1.getUserAgentText)(feedback.user_agent) : 'unknown'}`
+                `Agent: ${feedback.user_agent ? (0, email_transformer_1.getUserAgentText)(feedback.user_agent) : 'unknown'}`
             ])
         });
     }
 };
 exports.FeedbackListener = FeedbackListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.FeedbackCreated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.FeedbackCreated),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [feedback_model_1.Feedback]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], FeedbackListener.prototype, "handleFeedbackCreated", null);
 exports.FeedbackListener = FeedbackListener = __decorate([
     (0, common_1.Injectable)(),

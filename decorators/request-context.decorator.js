@@ -7,14 +7,12 @@ exports.RequestContext = (0, common_1.createParamDecorator)((_, context) => {
     const ip = request.ip ?? request.ips?.[0];
     const visitor = {
         ip: ip?.replace('::ffff:', '').replace('::1', '') || null,
-        ua: request.headers['user-agent'],
-        origin: request.headers.origin,
-        referer: request.headers.referer
+        agent: request.headers['user-agent'] || null,
+        origin: request.headers.origin || null,
+        referer: request.headers.referer || null
     };
     return {
-        token: request.locals.token,
-        isAuthenticated: request.locals.isAuthenticated,
-        isUnauthenticated: request.locals.isUnauthenticated,
+        identity: request.identity,
         params: request.params,
         query: request.query,
         cookies: request.cookies,

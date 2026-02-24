@@ -14,42 +14,43 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VoteService = void 0;
 const common_1 = require("@nestjs/common");
+const event_emitter_1 = require("@nestjs/event-emitter");
 const model_transformer_1 = require("../../transformers/model.transformer");
+const events_constant_1 = require("../../constants/events.constant");
 const vote_model_1 = require("./vote.model");
 let VoteService = class VoteService {
+    eventEmitter;
     voteModel;
-    constructor(voteModel) {
+    constructor(eventEmitter, voteModel) {
+        this.eventEmitter = eventEmitter;
         this.voteModel = voteModel;
     }
+    countDocuments(filter) {
+        return this.voteModel.countDocuments(filter).lean().exec();
+    }
     paginate(filter, options) {
-        return this.voteModel.paginateRaw(filter, options);
+        return this.voteModel.paginateRaw(filter, { ...options, lean: { virtuals: true } });
     }
-    create(vote) {
-        return this.voteModel.create(vote);
-    }
-    async update(voteId, newVote) {
-        const updated = await this.voteModel.findByIdAndUpdate(voteId, newVote, { new: true }).exec();
-        if (!updated)
-            throw new common_1.NotFoundException(`Vote '${voteId}' not found`);
-        return updated;
+    async create(vote) {
+        const created = await this.voteModel.create(vote);
+        const populated = await created.populate('user');
+        this.eventEmitter.emit(events_constant_1.EventKeys.VoteCreated, populated.toObject());
+        return populated;
     }
     async delete(voteId) {
-        const deleted = await this.voteModel.findByIdAndDelete(voteId, null).exec();
+        const deleted = await this.voteModel.findOneAndDelete({ id: voteId }).exec();
         if (!deleted)
             throw new common_1.NotFoundException(`Vote '${voteId}' not found`);
         return deleted;
     }
     batchDelete(voteIds) {
-        return this.voteModel.deleteMany({ _id: { $in: voteIds } }).exec();
-    }
-    countDocuments(filter, options) {
-        return this.voteModel.countDocuments(filter, options).exec();
+        return this.voteModel.deleteMany({ id: { $in: voteIds } }).exec();
     }
 };
 exports.VoteService = VoteService;
 exports.VoteService = VoteService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, model_transformer_1.InjectModel)(vote_model_1.Vote)),
-    __metadata("design:paramtypes", [Object])
+    __param(1, (0, model_transformer_1.InjectModel)(vote_model_1.Vote)),
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2, Object])
 ], VoteService);
 //# sourceMappingURL=vote.service.js.map

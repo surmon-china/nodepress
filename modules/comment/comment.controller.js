@@ -16,35 +16,60 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentController = void 0;
-const trim_1 = __importDefault(require("lodash/trim"));
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const common_1 = require("@nestjs/common");
+const common_2 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
+const user_service_1 = require("../user/user.service");
+const user_model_1 = require("../user/user.model");
+const only_identity_decorator_1 = require("../../decorators/only-identity.decorator");
+const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
 const events_constant_1 = require("../../constants/events.constant");
-const biz_constant_1 = require("../../constants/biz.constant");
-const success_response_decorator_1 = require("../../decorators/success-response.decorator");
-const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const sort_constant_1 = require("../../constants/sort.constant");
 const comment_dto_1 = require("./comment.dto");
+const comment_dto_2 = require("./comment.dto");
+const comment_dto_3 = require("./comment.dto");
+const comment_service_stats_1 = require("./comment.service.stats");
 const comment_service_1 = require("./comment.service");
-const comment_model_1 = require("./comment.model");
 let CommentController = class CommentController {
     eventEmitter;
+    commentStatsService;
     commentService;
-    constructor(eventEmitter, commentService) {
+    userService;
+    constructor(eventEmitter, commentStatsService, commentService, userService) {
         this.eventEmitter = eventEmitter;
+        this.commentStatsService = commentStatsService;
         this.commentService = commentService;
+        this.userService = userService;
     }
-    async getComments(query, { isUnauthenticated }) {
+    async createComment({ visitor, identity }, input) {
+        try {
+            if (identity.isUser) {
+                const user = await this.userService.findOne(identity.payload.uid);
+                const userComment = this.commentService.normalize(input, { visitor, user });
+                return this.commentService.validateAndCreate(userComment, visitor.referer ?? void 0);
+            }
+            const guestComment = this.commentService.normalize(input, { visitor });
+            if (!guestComment.author_name || !guestComment.author_email) {
+                throw new common_2.BadRequestException('Author name and email are required');
+            }
+            return this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0);
+        }
+        catch (error) {
+            this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreateFailed, { input, visitor, error });
+            throw error;
+        }
+    }
+    async getComments(query, { identity }) {
         const { sort, page, per_page, ...filters } = query;
         const queryFilter = {};
         const paginateOptions = { page, perPage: per_page };
         if (!(0, isUndefined_1.default)(sort)) {
-            if (sort === biz_constant_1.SortMode.Hottest) {
-                paginateOptions.sort = { likes: biz_constant_1.SortOrder.Desc };
+            if (sort === sort_constant_1.SortMode.Hottest) {
+                paginateOptions.sort = { likes: sort_constant_1.SortOrder.Desc };
             }
             else {
                 paginateOptions.dateSort = sort;
@@ -53,149 +78,156 @@ let CommentController = class CommentController {
         if (!(0, isUndefined_1.default)(filters.status)) {
             queryFilter.status = filters.status;
         }
-        if (!(0, isUndefined_1.default)(filters.post_id)) {
-            queryFilter.post_id = filters.post_id;
+        if (!(0, isUndefined_1.default)(filters.target_type)) {
+            queryFilter.target_type = filters.target_type;
+        }
+        if (!(0, isUndefined_1.default)(filters.target_id)) {
+            queryFilter.target_id = filters.target_id;
+        }
+        if (!(0, isUndefined_1.default)(filters.author_type)) {
+            queryFilter.author_type = filters.author_type;
         }
         if (filters.keyword) {
-            const trimmed = (0, trim_1.default)(filters.keyword);
-            const keywordRegExp = new RegExp(trimmed, 'i');
+            const keywordRegExp = new RegExp(filters.keyword, 'i');
             queryFilter.$or = [
                 { content: keywordRegExp },
-                { 'author.name': keywordRegExp },
-                { 'author.email': keywordRegExp }
+                { author_name: keywordRegExp },
+                { author_email: keywordRegExp }
             ];
         }
-        const result = await this.commentService.paginate(queryFilter, paginateOptions);
-        if (!isUnauthenticated)
-            return result;
+        if (identity.isAdmin) {
+            return await this.commentService.paginate(queryFilter, {
+                ...paginateOptions,
+                populate: 'user'
+            });
+        }
+        const result = await this.commentService.paginate(queryFilter, {
+            ...paginateOptions,
+            populate: { path: 'user', select: user_model_1.USER_PUBLIC_POPULATE_SELECT }
+        });
+        const publicParentSet = await this.commentService.getPublicCommentIdSet(result.documents.map((comment) => comment.parent_id).filter((id) => id != null));
         return {
             ...result,
             documents: result.documents.map((document) => {
-                const comment = document.toObject();
-                Reflect.deleteProperty(comment, 'ip');
-                Reflect.deleteProperty(comment.author, 'email');
-                return comment;
+                document.orphaned = document.parent_id != null && !publicParentSet.has(document.parent_id);
+                Reflect.deleteProperty(document, 'ip');
+                Reflect.deleteProperty(document, 'author_email');
+                return document;
             })
         };
     }
-    getCommentsCalendar(query, { isUnauthenticated }) {
-        return this.commentService.getCalendar(isUnauthenticated, query.timezone);
+    getCommentsCalendar(query, { identity }) {
+        return this.commentStatsService.getCalendar(!identity.isAdmin, query.timezone);
     }
-    createComment(comment, { visitor }) {
-        return this.commentService.createFormClient(comment, visitor).catch((error) => {
-            this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreateFailed, { comment, visitor, error });
-            return Promise.reject(error);
-        });
+    async claimComments(dto) {
+        const user = await this.userService.findOne(dto.user_id);
+        return await this.commentService.claimCommentsUser(dto.comment_ids, user._id);
     }
-    patchComments({ visitor }, body) {
-        return this.commentService.batchPatchStatus(body, visitor.referer);
+    updateCommentsStatus(dto) {
+        return this.commentService.batchUpdateStatus(dto.comment_ids, dto.status);
     }
-    delComments(body) {
-        return this.commentService.batchDelete(body.comment_ids, body.post_ids);
+    deleteComments({ comment_ids }) {
+        return this.commentService.batchDelete(comment_ids);
     }
-    getComment({ params }) {
-        return this.commentService.getDetailByObjectId(params.id);
+    getComment(id) {
+        return this.commentService.getDetail(id);
     }
-    putComment({ params, visitor }, comment) {
-        return this.commentService.update(params.id, comment, visitor.referer);
+    updateComment(id, dto) {
+        return this.commentService.update(id, dto);
     }
-    putCommentIPLocation({ params }) {
-        return this.commentService.reviseIPLocation(params.id);
-    }
-    delComment({ params }) {
-        return this.commentService.delete(params.id);
+    async deleteComment(id) {
+        return this.commentService.delete(id);
     }
 };
 exports.CommentController = CommentController;
 __decorate([
+    (0, common_1.Post)(),
+    (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 6 } }),
+    (0, success_response_decorator_1.SuccessResponse)('Create comment succeeded'),
+    __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, comment_dto_2.CreateCommentDto]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "createComment", null);
+__decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
     (0, success_response_decorator_1.SuccessResponse)({ message: 'Get comments succeeded', usePaginate: true }),
     __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe)),
     __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [comment_dto_1.CommentPaginateQueryDTO, Object]),
+    __metadata("design:paramtypes", [comment_dto_1.CommentPaginateQueryDto, Object]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getComments", null);
 __decorate([
     (0, common_1.Get)('calendar'),
-    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
     (0, success_response_decorator_1.SuccessResponse)('Get comments calendar succeeded'),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [comment_dto_1.CommentCalendarQueryDTO, Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [comment_dto_1.CommentCalendarQueryDto, Object]),
+    __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getCommentsCalendar", null);
 __decorate([
-    (0, common_1.Post)(),
-    (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.seconds)(30), limit: 6 } }),
-    (0, success_response_decorator_1.SuccessResponse)('Create comment succeeded'),
+    (0, common_1.Patch)('claim'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
+    (0, success_response_decorator_1.SuccessResponse)('Claim comments succeeded'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [comment_model_1.CommentBase, Object]),
+    __metadata("design:paramtypes", [comment_dto_3.ClaimCommentsDto]),
     __metadata("design:returntype", Promise)
-], CommentController.prototype, "createComment", null);
+], CommentController.prototype, "claimComments", null);
 __decorate([
-    (0, common_1.Patch)(),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    (0, success_response_decorator_1.SuccessResponse)('Update comments succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
-    __param(1, (0, common_1.Body)()),
+    (0, common_1.Patch)('status'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
+    (0, success_response_decorator_1.SuccessResponse)('Update comments status succeeded'),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, comment_dto_1.CommentsStatusDTO]),
+    __metadata("design:paramtypes", [comment_dto_3.CommentIdsStatusDto]),
     __metadata("design:returntype", void 0)
-], CommentController.prototype, "patchComments", null);
+], CommentController.prototype, "updateCommentsStatus", null);
 __decorate([
     (0, common_1.Delete)(),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Delete comments succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [comment_dto_1.CommentsDTO]),
+    __metadata("design:paramtypes", [comment_dto_2.CommentIdsDto]),
     __metadata("design:returntype", void 0)
-], CommentController.prototype, "delComments", null);
+], CommentController.prototype, "deleteComments", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Get comment detail succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getComment", null);
 __decorate([
-    (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, common_1.Patch)(':id'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Update comment succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, comment_model_1.Comment]),
+    __metadata("design:paramtypes", [Number, comment_dto_2.UpdateCommentDto]),
     __metadata("design:returntype", Promise)
-], CommentController.prototype, "putComment", null);
-__decorate([
-    (0, common_1.Put)(':id/ip_location'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
-    (0, success_response_decorator_1.SuccessResponse)('Update comment IP location succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], CommentController.prototype, "putCommentIPLocation", null);
+], CommentController.prototype, "updateComment", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Delete comment succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], CommentController.prototype, "delComment", null);
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "deleteComment", null);
 exports.CommentController = CommentController = __decorate([
-    (0, common_1.Controller)('comment'),
+    (0, common_1.Controller)('comments'),
     __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
-        comment_service_1.CommentService])
+        comment_service_stats_1.CommentStatsService,
+        comment_service_1.CommentService,
+        user_service_1.UserService])
 ], CommentController);
 //# sourceMappingURL=comment.controller.js.map

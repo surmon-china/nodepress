@@ -13,11 +13,10 @@ exports.AiListener = void 0;
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const events_constant_1 = require("../../constants/events.constant");
-const biz_constant_1 = require("../../constants/biz.constant");
 const extras_constant_1 = require("../../constants/extras.constant");
-const comment_model_1 = require("../comment/comment.model");
 const comment_service_1 = require("../comment/comment.service");
 const comment_constant_1 = require("../comment/comment.constant");
+const user_constant_1 = require("../user/user.constant");
 const extra_transformer_1 = require("../../transformers/extra.transformer");
 const app_config_1 = require("../../app.config");
 const ai_service_1 = require("./ai.service");
@@ -29,7 +28,7 @@ let AiListener = class AiListener {
         this.commentService = commentService;
     }
     async handleCommentCreated(comment) {
-        if (comment.pid !== biz_constant_1.ROOT_COMMENT_PID)
+        if (comment.parent_id !== null)
             return;
         if (comment.status !== comment_constant_1.CommentStatus.Published)
             return;
@@ -37,33 +36,34 @@ let AiListener = class AiListener {
             return;
         if ((0, extra_transformer_1.getExtraValue)(comment.extras, extras_constant_1.CommentAiGenerationExtraKeys.Flag))
             return;
-        const disqusAuthorName = (0, extra_transformer_1.getExtraValue)(comment.extras, extras_constant_1.CommentDisqusExtraKeys.AuthorUsername);
-        if (disqusAuthorName && disqusAuthorName === app_config_1.DISQUS.adminUsername)
+        if (comment.user?.type === user_constant_1.UserType.Moderator)
             return;
         try {
             const aiResult = await this.aiService.generateCommentReply(comment);
             const aiComment = {
-                post_id: comment.post_id,
-                pid: comment.id,
+                target_type: comment.target_type,
+                target_id: comment.target_id,
+                parent_id: comment.id,
                 content: aiResult.content,
-                author: {
-                    name: app_config_1.APP_BIZ.NAME,
-                    email: app_config_1.APP_BIZ.ADMIN_EMAIL
-                },
-                extras: [
-                    { key: extras_constant_1.CommentAiGenerationExtraKeys.Flag, value: 'true' },
-                    { key: extras_constant_1.CommentAiGenerationExtraKeys.Model, value: aiResult.model },
-                    { key: extras_constant_1.CommentAiGenerationExtraKeys.Provider, value: aiResult.provider }
-                ]
+                author_name: app_config_1.APP_BIZ.AI_AUTHOR_NAME,
+                author_email: app_config_1.APP_BIZ.AI_AUTHOR_EMAIL,
+                author_website: null
             };
+            const aiCommentExtras = [
+                { key: extras_constant_1.CommentAiGenerationExtraKeys.Flag, value: 'true' },
+                { key: extras_constant_1.CommentAiGenerationExtraKeys.Model, value: aiResult.model },
+                { key: extras_constant_1.CommentAiGenerationExtraKeys.Provider, value: aiResult.provider }
+            ];
             const aiVisitor = {
                 ip: null,
-                ua: undefined,
-                origin: undefined,
-                referer: undefined
+                agent: null,
+                origin: null,
+                referer: null
             };
-            const todoComment = this.commentService.normalizeNewComment(aiComment, aiVisitor);
-            const createdComment = await this.commentService.create(todoComment);
+            const createdComment = await this.commentService.create(this.commentService.normalize(aiComment, {
+                visitor: aiVisitor,
+                extras: aiCommentExtras
+            }));
             ai_service_1.logger.success('AI auto-reply comment succeeded.', createdComment.id);
         }
         catch (error) {
@@ -75,7 +75,7 @@ exports.AiListener = AiListener;
 __decorate([
     (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.CommentCreated, { async: true }),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [comment_model_1.Comment]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AiListener.prototype, "handleCommentCreated", null);
 exports.AiListener = AiListener = __decorate([

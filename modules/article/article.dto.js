@@ -9,97 +9,123 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticlesStatusDTO = exports.ArticleIdsDTO = exports.ArticleCalendarQueryDTO = exports.ArticlePaginateQueryDTO = void 0;
-const mapped_types_1 = require("@nestjs/mapped-types");
+exports.ArticleIdsStatusDto = exports.ArticleIdsDto = exports.ArticleCalendarQueryDto = exports.ArticleContextQueryDto = exports.ArticlePaginateQueryDto = exports.UpdateArticleDto = exports.CreateArticleDto = void 0;
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
+const mapped_types_1 = require("@nestjs/mapped-types");
 const guest_permission_decorator_1 = require("../../decorators/guest-permission.decorator");
 const value_transformer_1 = require("../../transformers/value.transformer");
-const query_model_1 = require("../../models/query.model");
-const paginate_model_1 = require("../../models/paginate.model");
+const querys_dto_1 = require("../../dtos/querys.dto");
+const paginate_dto_1 = require("../../dtos/paginate.dto");
 const article_constant_1 = require("./article.constant");
-const article_constant_2 = require("./article.constant");
-class ArticlePaginateQueryDTO extends (0, mapped_types_1.IntersectionType)(paginate_model_1.PaginateOptionWithHotSortDTO, query_model_1.KeywordQueryDTO, query_model_1.DateQueryDTO) {
+const article_model_1 = require("./article.model");
+class CreateArticleDto extends (0, mapped_types_1.PickType)(article_model_1.Article, [
+    'slug',
+    'title',
+    'content',
+    'summary',
+    'keywords',
+    'thumbnail',
+    'status',
+    'origin',
+    'lang',
+    'featured',
+    'disabled_comments',
+    'tags',
+    'categories',
+    'extras'
+]) {
+}
+exports.CreateArticleDto = CreateArticleDto;
+class UpdateArticleDto extends (0, mapped_types_1.PartialType)(CreateArticleDto) {
+}
+exports.UpdateArticleDto = UpdateArticleDto;
+class ArticlePaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionWithHotSortDto, querys_dto_1.KeywordQueryDto, querys_dto_1.DateQueryDto) {
     status;
     origin;
-    featured;
     lang;
+    featured;
     tag_slug;
     category_slug;
 }
-exports.ArticlePaginateQueryDTO = ArticlePaginateQueryDTO;
+exports.ArticlePaginateQueryDto = ArticlePaginateQueryDto;
 __decorate([
-    (0, guest_permission_decorator_1.WithGuestPermission)({ only: [article_constant_2.ArticleStatus.Published], default: article_constant_2.ArticleStatus.Published }),
-    (0, class_validator_1.IsIn)(article_constant_1.ARTICLE_STATUSES),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_2.IsNotEmpty)(),
+    (0, guest_permission_decorator_1.WithGuestPermission)({ only: [article_constant_1.ArticleStatus.Published], default: article_constant_1.ArticleStatus.Published }),
+    (0, class_validator_1.IsEnum)(article_constant_1.ArticleStatus),
     (0, class_validator_2.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
-], ArticlePaginateQueryDTO.prototype, "status", void 0);
+], ArticlePaginateQueryDto.prototype, "status", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(article_constant_1.ARTICLE_ORIGINS),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_2.IsNotEmpty)(),
+    (0, class_validator_1.IsEnum)(article_constant_1.ArticleOrigin),
     (0, class_validator_2.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
-], ArticlePaginateQueryDTO.prototype, "origin", void 0);
+], ArticlePaginateQueryDto.prototype, "origin", void 0);
+__decorate([
+    (0, class_validator_1.IsEnum)(article_constant_1.ArticleLanguage),
+    (0, class_validator_2.IsOptional)(),
+    __metadata("design:type", String)
+], ArticlePaginateQueryDto.prototype, "lang", void 0);
 __decorate([
     (0, class_validator_1.IsBoolean)(),
-    (0, class_validator_2.IsNotEmpty)(),
     (0, class_validator_2.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToBoolean)(value)),
     __metadata("design:type", Boolean)
-], ArticlePaginateQueryDTO.prototype, "featured", void 0);
-__decorate([
-    (0, class_validator_1.IsIn)(article_constant_1.ARTICLE_LANGUAGES),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsNotEmpty)(),
-    (0, class_validator_2.IsOptional)(),
-    __metadata("design:type", String)
-], ArticlePaginateQueryDTO.prototype, "lang", void 0);
+], ArticlePaginateQueryDto.prototype, "featured", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsNotEmpty)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_2.IsOptional)(),
     __metadata("design:type", String)
-], ArticlePaginateQueryDTO.prototype, "tag_slug", void 0);
+], ArticlePaginateQueryDto.prototype, "tag_slug", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsNotEmpty)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_2.IsOptional)(),
     __metadata("design:type", String)
-], ArticlePaginateQueryDTO.prototype, "category_slug", void 0);
-class ArticleCalendarQueryDTO {
+], ArticlePaginateQueryDto.prototype, "category_slug", void 0);
+class ArticleContextQueryDto {
+    related_count;
+}
+exports.ArticleContextQueryDto = ArticleContextQueryDto;
+__decorate([
+    (0, class_validator_1.Min)(2),
+    (0, class_validator_1.Max)(20),
+    (0, class_validator_1.IsInt)(),
+    (0, class_validator_2.IsOptional)(),
+    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
+    __metadata("design:type", Number)
+], ArticleContextQueryDto.prototype, "related_count", void 0);
+class ArticleCalendarQueryDto {
     timezone;
 }
-exports.ArticleCalendarQueryDTO = ArticleCalendarQueryDTO;
+exports.ArticleCalendarQueryDto = ArticleCalendarQueryDto;
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsNotEmpty)(),
+    (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_2.IsOptional)(),
     __metadata("design:type", String)
-], ArticleCalendarQueryDTO.prototype, "timezone", void 0);
-class ArticleIdsDTO {
+], ArticleCalendarQueryDto.prototype, "timezone", void 0);
+class ArticleIdsDto {
     article_ids;
 }
-exports.ArticleIdsDTO = ArticleIdsDTO;
+exports.ArticleIdsDto = ArticleIdsDto;
 __decorate([
     (0, class_validator_2.ArrayNotEmpty)(),
     (0, class_validator_2.ArrayUnique)(),
     (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsInt)({ each: true }),
     __metadata("design:type", Array)
-], ArticleIdsDTO.prototype, "article_ids", void 0);
-class ArticlesStatusDTO extends ArticleIdsDTO {
+], ArticleIdsDto.prototype, "article_ids", void 0);
+class ArticleIdsStatusDto extends ArticleIdsDto {
     status;
 }
-exports.ArticlesStatusDTO = ArticlesStatusDTO;
+exports.ArticleIdsStatusDto = ArticleIdsStatusDto;
 __decorate([
-    (0, class_validator_1.IsIn)(article_constant_1.ARTICLE_STATUSES),
-    (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.IsEnum)(article_constant_1.ArticleStatus),
     (0, class_validator_2.IsDefined)(),
     __metadata("design:type", Number)
-], ArticlesStatusDTO.prototype, "status", void 0);
+], ArticleIdsStatusDto.prototype, "status", void 0);
 //# sourceMappingURL=article.dto.js.map

@@ -11,17 +11,17 @@ const DEFAULT_OPTIONS = Object.freeze({
     dateSort: -1
 });
 function doPaginate(queryFilter = {}, paginateOptions = {}, forceLean = false) {
-    const { page, perPage, dateSort, projection, $queryOptions, ...restOptions } = (0, merge_1.default)({ ...DEFAULT_OPTIONS }, { ...paginateOptions });
+    const { page, perPage, dateSort, projection, lean, $queryOptions, ...restOptions } = (0, merge_1.default)({ ...DEFAULT_OPTIONS }, { ...paginateOptions });
     const findQueryOptions = {
         ...restOptions,
         ...$queryOptions,
-        lean: forceLean
+        lean: forceLean ? (lean ?? true) : false
     };
-    const countQuery = this.countDocuments(queryFilter).exec();
+    const countQuery = this.countDocuments(queryFilter).lean().exec();
     const listQuery = this.find(queryFilter, projection, {
         skip: (page - 1) * perPage,
         limit: perPage,
-        sort: dateSort ? { _id: dateSort } : findQueryOptions.sort,
+        sort: dateSort ? { created_at: dateSort } : findQueryOptions.sort,
         ...findQueryOptions
     }).exec();
     return Promise.all([countQuery, listQuery]).then(([countResult, listResult]) => ({

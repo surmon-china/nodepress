@@ -48,8 +48,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SystemController = void 0;
 const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
-const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
+const only_identity_decorator_1 = require("../../decorators/only-identity.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const uploaded_file_decorator_1 = require("../../decorators/uploaded-file.decorator");
@@ -69,8 +68,8 @@ let SystemController = class SystemController {
         this.dbBackupService = dbBackupService;
         this.statisticsService = statisticsService;
     }
-    getSystemStatistics({ isUnauthenticated }) {
-        return this.statisticsService.getStatistics(isUnauthenticated);
+    getSystemStatistics({ identity }) {
+        return this.statisticsService.getStatistics(!identity.isAdmin);
     }
     updateDatabaseBackup() {
         return this.dbBackupService.backup();
@@ -114,19 +113,19 @@ let SystemController = class SystemController {
     }
     googleAnalyticsBatchRunReports(requestBody) {
         return this.googleService.getAnalyticsDataClient().properties.batchRunReports({
-            property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+            property: `properties/${APP_CONFIG.GOOGLE_API.analyticsV4PropertyId}`,
             requestBody
         });
     }
     googleAnalyticsBatchRunPivotReports(requestBody) {
         return this.googleService.getAnalyticsDataClient().properties.batchRunPivotReports({
-            property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+            property: `properties/${APP_CONFIG.GOOGLE_API.analyticsV4PropertyId}`,
             requestBody
         });
     }
     googleAnalyticsRunRealtimeReport(requestBody) {
         return this.googleService.getAnalyticsDataClient().properties.runRealtimeReport({
-            property: `properties/${APP_CONFIG.GOOGLE.analyticsV4PropertyId}`,
+            property: `properties/${APP_CONFIG.GOOGLE_API.analyticsV4PropertyId}`,
             requestBody
         });
     }
@@ -134,7 +133,6 @@ let SystemController = class SystemController {
 exports.SystemController = SystemController;
 __decorate([
     (0, common_1.Get)('statistics'),
-    (0, common_2.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
     (0, success_response_decorator_1.SuccessResponse)('Get statistics succeeded'),
     __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
@@ -142,8 +140,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], SystemController.prototype, "getSystemStatistics", null);
 __decorate([
-    (0, common_1.Patch)('database-backup'),
-    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, common_1.Post)('database-backup'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Update database backup succeeded'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -151,7 +149,7 @@ __decorate([
 ], SystemController.prototype, "updateDatabaseBackup", null);
 __decorate([
     (0, common_1.Get)('static/list'),
-    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Get file list succeeded'),
     __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
@@ -160,7 +158,7 @@ __decorate([
 ], SystemController.prototype, "getStaticFileList", null);
 __decorate([
     (0, common_1.Post)('static/upload'),
-    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Upload file to cloud storage succeeded'),
     __param(0, (0, uploaded_file_decorator_1.UploadedFile)()),
     __metadata("design:type", Function),
@@ -169,7 +167,7 @@ __decorate([
 ], SystemController.prototype, "uploadStaticFile", null);
 __decorate([
     (0, common_1.Post)('google-analytics/batch-run-reports'),
-    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Google analytics batchRunReports succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -178,7 +176,7 @@ __decorate([
 ], SystemController.prototype, "googleAnalyticsBatchRunReports", null);
 __decorate([
     (0, common_1.Post)('google-analytics/batch-run-pivot-reports'),
-    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Google analytics batchRunPivotReports succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -187,7 +185,7 @@ __decorate([
 ], SystemController.prototype, "googleAnalyticsBatchRunPivotReports", null);
 __decorate([
     (0, common_1.Post)('google-analytics/run-realtime-report'),
-    (0, common_2.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Google analytics runRealtimeReport succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

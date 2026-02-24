@@ -14,57 +14,60 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryController = void 0;
 const common_1 = require("@nestjs/common");
-const admin_only_guard_1 = require("../../guards/admin-only.guard");
-const admin_optional_guard_1 = require("../../guards/admin-optional.guard");
-const permission_pipe_1 = require("../../pipes/permission.pipe");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
+const only_identity_decorator_1 = require("../../decorators/only-identity.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const category_dto_1 = require("./category.dto");
+const category_dto_2 = require("./category.dto");
 const category_service_1 = require("./category.service");
-const category_model_1 = require("./category.model");
 let CategoryController = class CategoryController {
     categoryService;
     constructor(categoryService) {
         this.categoryService = categoryService;
     }
-    getCategories(query, { isUnauthenticated }) {
-        return this.categoryService.paginate({}, { page: query.page, perPage: query.per_page, dateSort: query.sort }, isUnauthenticated);
+    getCategories(query, { identity }) {
+        const { sort, page, per_page, ...filters } = query;
+        const queryFilter = {};
+        const paginateOptions = { page, perPage: per_page, dateSort: sort };
+        if (filters.keyword) {
+            const keywordRegExp = new RegExp(filters.keyword, 'i');
+            queryFilter.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }];
+        }
+        return this.categoryService.paginate(queryFilter, paginateOptions, !identity.isAdmin);
     }
-    getAllCategories({ isAuthenticated }) {
-        return isAuthenticated
+    getAllCategories({ identity }) {
+        return identity.isAdmin
             ? this.categoryService.getAllCategories({ aggregatePublicOnly: false })
-            : this.categoryService.getAllCategoriesCache();
+            : this.categoryService.getAllPublicCategoriesCache();
     }
-    createCategory(category) {
-        return this.categoryService.create(category);
+    getCategory(id) {
+        return this.categoryService.getDetail(id);
     }
-    delCategories(body) {
-        return this.categoryService.batchDelete(body.category_ids);
+    createCategory(dto) {
+        return this.categoryService.create(dto);
     }
-    getCategory({ params }) {
-        return this.categoryService.getGenealogyById(params.id);
+    deleteCategories({ category_ids }) {
+        return this.categoryService.batchDelete(category_ids);
     }
-    putCategory({ params }, category) {
-        return this.categoryService.update(params.id, category);
+    updateCategory(id, dto) {
+        return this.categoryService.update(id, dto);
     }
-    delCategory({ params }) {
-        return this.categoryService.delete(params.id);
+    deleteCategory(id) {
+        return this.categoryService.delete(id);
     }
 };
 exports.CategoryController = CategoryController;
 __decorate([
     (0, common_1.Get)(),
-    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
     (0, success_response_decorator_1.SuccessResponse)({ message: 'Get categories succeeded', usePaginate: true }),
-    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe)),
+    __param(0, (0, common_1.Query)()),
     __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [category_dto_1.CategoryPaginateQueryDTO, Object]),
+    __metadata("design:paramtypes", [category_dto_1.CategoryPaginateQueryDto, Object]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "getCategories", null);
 __decorate([
     (0, common_1.Get)('all'),
-    (0, common_1.UseGuards)(admin_optional_guard_1.AdminOptionalGuard),
     (0, success_response_decorator_1.SuccessResponse)('Get all categories succeeded'),
     __param(0, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
@@ -72,52 +75,52 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "getAllCategories", null);
 __decorate([
+    (0, common_1.Get)(':id'),
+    (0, success_response_decorator_1.SuccessResponse)('Get category succeeded'),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], CategoryController.prototype, "getCategory", null);
+__decorate([
     (0, common_1.Post)(),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Create category succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [category_model_1.Category]),
+    __metadata("design:paramtypes", [category_dto_2.CreateCategoryDto]),
     __metadata("design:returntype", Promise)
 ], CategoryController.prototype, "createCategory", null);
 __decorate([
     (0, common_1.Delete)(),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Delete categories succeeded'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [category_dto_1.CategoriesDTO]),
+    __metadata("design:paramtypes", [category_dto_1.CategoryIdsDto]),
     __metadata("design:returntype", void 0)
-], CategoryController.prototype, "delCategories", null);
+], CategoryController.prototype, "deleteCategories", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    (0, success_response_decorator_1.SuccessResponse)('Get categories tree succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], CategoryController.prototype, "getCategory", null);
-__decorate([
-    (0, common_1.Put)(':id'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, common_1.Patch)(':id'),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Update category succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, category_model_1.Category]),
+    __metadata("design:paramtypes", [Number, category_dto_2.UpdateCategoryDto]),
     __metadata("design:returntype", Promise)
-], CategoryController.prototype, "putCategory", null);
+], CategoryController.prototype, "updateCategory", null);
 __decorate([
     (0, common_1.Delete)(':id'),
-    (0, common_1.UseGuards)(admin_only_guard_1.AdminOnlyGuard),
+    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Delete category succeeded'),
-    __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
-], CategoryController.prototype, "delCategory", null);
+], CategoryController.prototype, "deleteCategory", null);
 exports.CategoryController = CategoryController = __decorate([
-    (0, common_1.Controller)('category'),
+    (0, common_1.Controller)('categories'),
     __metadata("design:paramtypes", [category_service_1.CategoryService])
 ], CategoryController);
 //# sourceMappingURL=category.controller.js.map

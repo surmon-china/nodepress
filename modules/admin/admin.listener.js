@@ -24,7 +24,7 @@ let AdminListener = class AdminListener {
         this.emailService = emailService;
         this.ipService = ipService;
     }
-    async handleAdminLogin({ ip, ua, referer }) {
+    async handleAdminLogin({ ip, agent, referer }) {
         const subject = 'App has a new login activity';
         const location = ip ? await this.ipService.queryLocation(ip) : null;
         this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
@@ -36,7 +36,7 @@ let AdminListener = class AdminListener {
                 `Referer: ${referer || 'unknown'}`,
                 `IP: ${ip || 'unknown'}`,
                 `Location: ${location ? (0, email_transformer_1.getLocationText)(location) : 'unknown'}`,
-                `UserAgent: ${ua ? (0, email_transformer_1.getUserAgentText)(ua) : 'unknown'}`
+                `UserAgent: ${agent ? (0, email_transformer_1.getUserAgentText)(agent) : 'unknown'}`
             ])
         });
     }

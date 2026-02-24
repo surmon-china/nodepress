@@ -24,25 +24,25 @@ let AnnouncementService = class AnnouncementService {
     paginate(filter, options) {
         return this.announcementModel.paginateRaw(filter, options);
     }
-    create(announcement) {
-        return this.announcementModel.create(announcement);
+    create(input) {
+        return this.announcementModel.create(input);
     }
-    async update(announcementId, announcement) {
+    async update(announcementId, input) {
         const updated = await this.announcementModel
-            .findByIdAndUpdate(announcementId, announcement, { new: true })
+            .findOneAndUpdate({ id: announcementId }, { $set: input }, { returnDocument: 'after' })
             .exec();
         if (!updated)
             throw new common_1.NotFoundException(`Announcement '${announcementId}' not found`);
         return updated;
     }
     async delete(announcementId) {
-        const deleted = await this.announcementModel.findByIdAndDelete(announcementId).exec();
+        const deleted = await this.announcementModel.findOneAndDelete({ id: announcementId }).exec();
         if (!deleted)
             throw new common_1.NotFoundException(`Announcement '${announcementId}' not found`);
         return deleted;
     }
     batchDelete(announcementIds) {
-        return this.announcementModel.deleteMany({ _id: { $in: announcementIds } }).exec();
+        return this.announcementModel.deleteMany({ id: { $in: announcementIds } }).exec();
     }
 };
 exports.AnnouncementService = AnnouncementService;

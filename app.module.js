@@ -7,13 +7,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
-const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
+const common_1 = require("@nestjs/common");
 const schedule_1 = require("@nestjs/schedule");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const throttler_1 = require("@nestjs/throttler");
-const app_controller_1 = require("./app.controller");
+const identity_guard_1 = require("./guards/identity.guard");
 const noop_middleware_1 = require("./middlewares/noop.middleware");
+const app_controller_1 = require("./app.controller");
 const database_module_1 = require("./core/database/database.module");
 const cache_module_1 = require("./core/cache/cache.module");
 const auth_module_1 = require("./core/auth/auth.module");
@@ -28,10 +29,11 @@ const feedback_module_1 = require("./modules/feedback/feedback.module");
 const vote_module_1 = require("./modules/vote/vote.module");
 const options_module_1 = require("./modules/options/options.module");
 const admin_module_1 = require("./modules/admin/admin.module");
-const disqus_module_1 = require("./modules/disqus/disqus.module");
 const system_module_1 = require("./modules/system/system.module");
 const webhook_module_1 = require("./modules/webhook/webhook.module");
 const ai_module_1 = require("./modules/ai/ai.module");
+const user_module_1 = require("./modules/user/user.module");
+const account_module_1 = require("./modules/account/account.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(noop_middleware_1.NoopMiddleware).forRoutes('*');
@@ -51,8 +53,9 @@ exports.AppModule = AppModule = __decorate([
                     skipIf: (context) => {
                         const request = context.switchToHttp().getRequest();
                         return (request.hostname === 'localhost' ||
-                            request.ip.startsWith('::ffff:127.0.0.1') ||
-                            ['127.0.0.1', '::1'].includes(request.ip ?? ''));
+                            request.ip.startsWith('::ffff:127.') ||
+                            request.ip.startsWith('127.') ||
+                            request.ip === '::1');
                     }
                 }
             ]),
@@ -68,18 +71,23 @@ exports.AppModule = AppModule = __decorate([
             category_module_1.CategoryModule,
             article_module_1.ArticleModule,
             comment_module_1.CommentModule,
-            disqus_module_1.DisqusModule,
             archive_module_1.ArchiveModule,
             vote_module_1.VoteModule,
             system_module_1.SystemModule,
             webhook_module_1.WebhookModule,
-            ai_module_1.AiModule
+            ai_module_1.AiModule,
+            user_module_1.UserModule,
+            account_module_1.AccountModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [
             {
                 provide: core_1.APP_GUARD,
                 useClass: throttler_1.ThrottlerGuard
+            },
+            {
+                provide: core_1.APP_GUARD,
+                useClass: identity_guard_1.IdentityGuard
             }
         ]
     })

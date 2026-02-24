@@ -87,10 +87,7 @@ let EmailService = class EmailService {
             logger.warn('send failed! (no recipient)');
             return false;
         }
-        this.transporter.sendMail({
-            ...mailOptions,
-            from: APP_CONFIG.EMAIL.from
-        }, (error, info) => {
+        this.transporter.sendMail({ ...mailOptions, from: APP_CONFIG.EMAIL.from }, (error, info) => {
             if (error) {
                 logger.failure('send failed!', (0, error_transformer_1.getMessageFromNormalError)(error));
             }

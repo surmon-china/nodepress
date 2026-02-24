@@ -7,10 +7,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
-const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const app_config_1 = require("../../app.config");
+const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
+const app_config_1 = require("../../app.config");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -20,8 +20,16 @@ exports.AuthModule = AuthModule = __decorate([
         imports: [
             jwt_1.JwtModule.register({
                 global: true,
-                secret: app_config_1.APP_BIZ.AUTH_JWT.secret,
-                signOptions: { expiresIn: app_config_1.APP_BIZ.AUTH_JWT.expiresIn }
+                secret: app_config_1.APP_AUTH.jwtSecret,
+                signOptions: {
+                    algorithm: 'HS256',
+                    issuer: app_config_1.APP_AUTH.jwtIssuer,
+                    audience: app_config_1.APP_AUTH.jwtAudience
+                },
+                verifyOptions: {
+                    issuer: app_config_1.APP_AUTH.jwtIssuer,
+                    audience: app_config_1.APP_AUTH.jwtAudience
+                }
             })
         ],
         providers: [auth_service_1.AuthService],

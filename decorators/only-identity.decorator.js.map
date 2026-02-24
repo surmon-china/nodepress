@@ -1,0 +1,1 @@
+{"version":3,"file":"only-identity.decorator.js","sourceRoot":"","sources":["../../src/decorators/only-identity.decorator.ts"],"names":[],"mappings":";;;AAMA,2CAA4C;AAE5C,oEAA+D;AAAtD,iHAAA,YAAY,OAAA;AAER,QAAA,0BAA0B,GAAG,mBAAmB,CAAA;AAStD,MAAM,YAAY,GAAG,CAAC,GAAG,KAAqB,EAAE,EAAE,CAAC,IAAA,oBAAW,EAAC,kCAA0B,EAAE,KAAK,CAAC,CAAA;AAA3F,QAAA,YAAY,gBAA+E"}

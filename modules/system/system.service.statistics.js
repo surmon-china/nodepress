@@ -47,10 +47,10 @@ const common_1 = require("@nestjs/common");
 const schedule_1 = require("@nestjs/schedule");
 const helper_service_counter_1 = require("../../core/helper/helper.service.counter");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
-const vote_constant_1 = require("../vote/vote.constant");
 const vote_service_1 = require("../vote/vote.service");
-const article_service_1 = require("../article/article.service");
-const comment_service_1 = require("../comment/comment.service");
+const vote_constant_1 = require("../vote/vote.constant");
+const article_service_stats_1 = require("../article/article.service.stats");
+const comment_service_stats_1 = require("../comment/comment.service.stats");
 const feedback_service_1 = require("../feedback/feedback.service");
 const tag_service_1 = require("../tag/tag.service");
 const cache_constant_1 = require("../../constants/cache.constant");
@@ -71,16 +71,16 @@ const DEFAULT_STATISTICS = Object.freeze({
 let StatisticsService = class StatisticsService {
     emailService;
     counterService;
-    articleService;
-    commentService;
+    commentStatsService;
+    articleStatsService;
     feedbackService;
     voteService;
     tagService;
-    constructor(emailService, counterService, articleService, commentService, feedbackService, voteService, tagService) {
+    constructor(emailService, counterService, commentStatsService, articleStatsService, feedbackService, voteService, tagService) {
         this.emailService = emailService;
         this.counterService = counterService;
-        this.articleService = articleService;
-        this.commentService = commentService;
+        this.commentStatsService = commentStatsService;
+        this.articleStatsService = articleStatsService;
         this.feedbackService = feedbackService;
         this.voteService = voteService;
         this.tagService = tagService;
@@ -92,20 +92,20 @@ let StatisticsService = class StatisticsService {
             const createdAt = { $gte: oneDayAgo, $lt: now };
             const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] = await Promise.all([
                 this.counterService.getGlobalCount(cache_constant_1.CacheKeys.TodayViewCount),
-                this.commentService.countDocuments({ created_at: createdAt }),
+                this.commentStatsService.countDocuments({ created_at: createdAt }),
                 this.voteService.countDocuments({
                     created_at: createdAt,
-                    target_type: vote_constant_1.VoteTarget.Article,
+                    target_type: vote_constant_1.VoteTargetType.Article,
                     vote_type: vote_constant_1.VoteType.Upvote
                 }),
                 this.voteService.countDocuments({
                     created_at: createdAt,
-                    target_type: vote_constant_1.VoteTarget.Comment,
+                    target_type: vote_constant_1.VoteTargetType.Comment,
                     vote_type: vote_constant_1.VoteType.Upvote
                 }),
                 this.voteService.countDocuments({
                     created_at: createdAt,
-                    target_type: vote_constant_1.VoteTarget.Comment,
+                    target_type: vote_constant_1.VoteTargetType.Comment,
                     vote_type: vote_constant_1.VoteType.Downvote
                 })
             ]);
@@ -135,21 +135,21 @@ let StatisticsService = class StatisticsService {
             this.tagService.getTotalCount().then((value) => {
                 statistics.tags = value;
             }),
-            this.articleService.getTotalCount(publicOnly).then((value) => {
+            this.articleStatsService.getTotalCount(publicOnly).then((value) => {
                 statistics.articles = value;
             }),
-            this.commentService.getTotalCount(publicOnly).then((value) => {
+            this.commentStatsService.getTotalCount(publicOnly).then((value) => {
                 statistics.comments = value;
             }),
-            this.feedbackService.getRootFeedbackAverageEmotion().then((value) => {
-                statistics.averageEmotion = value ?? 0;
-            }),
-            this.articleService.getTotalStatistics().then((value) => {
-                statistics.totalViews = value?.totalViews ?? 0;
-                statistics.totalLikes = value?.totalLikes ?? 0;
+            this.articleStatsService.getTotalStatistics().then((value) => {
+                statistics.totalViews = value.totalViews;
+                statistics.totalLikes = value.totalLikes;
             }),
             this.counterService.getGlobalCount(cache_constant_1.CacheKeys.TodayViewCount).then((value) => {
                 statistics.todayViews = value;
+            }),
+            this.feedbackService.getAverageEmotion().then((value) => {
+                statistics.averageEmotion = value ?? 0;
             })
         ]);
         return tasks
@@ -171,8 +171,8 @@ exports.StatisticsService = StatisticsService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [helper_service_email_1.EmailService,
         helper_service_counter_1.CounterService,
-        article_service_1.ArticleService,
-        comment_service_1.CommentService,
+        comment_service_stats_1.CommentStatsService,
+        article_service_stats_1.ArticleStatsService,
         feedback_service_1.FeedbackService,
         vote_service_1.VoteService,
         tag_service_1.TagService])

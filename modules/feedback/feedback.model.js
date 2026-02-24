@@ -8,74 +8,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FeedbackProvider = exports.Feedback = exports.FeedbackBase = void 0;
+exports.FeedbackProvider = exports.Feedback = void 0;
+const mongoose_lean_virtuals_1 = __importDefault(require("mongoose-lean-virtuals"));
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
-const class_validator_1 = require("class-validator");
-const class_validator_2 = require("class-validator");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
+const user_model_1 = require("../user/user.model");
+const author_constant_1 = require("../../constants/author.constant");
 const feedback_constant_1 = require("./feedback.constant");
-class FeedbackBase {
-    tid;
+let Feedback = class Feedback {
+    id;
     emotion;
     get emotion_text() {
-        return feedback_constant_1.emotionsMap.get(this.emotion).text;
+        return feedback_constant_1.emotionsMap.get(this.emotion)?.text;
     }
     get emotion_emoji() {
-        return feedback_constant_1.emotionsMap.get(this.emotion).emoji;
+        return feedback_constant_1.emotionsMap.get(this.emotion)?.emoji;
     }
     content;
-    user_name;
-    user_email;
-}
-exports.FeedbackBase = FeedbackBase;
-__decorate([
-    (0, class_validator_1.Min)(0),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, index: true }),
-    __metadata("design:type", Number)
-], FeedbackBase.prototype, "tid", void 0);
-__decorate([
-    (0, class_validator_2.IsIn)(feedback_constant_1.FEEDBACK_EMOTION_VALUES),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, index: true }),
-    __metadata("design:type", Number)
-], FeedbackBase.prototype, "emotion", void 0);
-__decorate([
-    (0, class_validator_1.MinLength)(3),
-    (0, class_validator_1.MaxLength)(3000),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
-    __metadata("design:type", String)
-], FeedbackBase.prototype, "content", void 0);
-__decorate([
-    (0, class_validator_1.MaxLength)(20),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ type: String, default: null }),
-    __metadata("design:type", Object)
-], FeedbackBase.prototype, "user_name", void 0);
-__decorate([
-    (0, class_validator_1.IsEmail)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ type: String, default: null }),
-    __metadata("design:type", Object)
-], FeedbackBase.prototype, "user_email", void 0);
-let Feedback = class Feedback extends FeedbackBase {
-    id;
+    author_type;
+    author_name;
+    author_email;
+    user;
     marked;
     remark;
     origin;
-    user_agent;
     ip;
     ip_location;
+    user_agent;
     created_at;
     updated_at;
 };
@@ -85,30 +51,42 @@ __decorate([
     __metadata("design:type", Number)
 ], Feedback.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.IsBoolean)(),
-    (0, typegoose_1.prop)({ default: false, index: true }),
+    (0, typegoose_1.prop)({ type: Number, enum: feedback_constant_1.FeedbackEmotion, required: true, index: true }),
+    __metadata("design:type", Number)
+], Feedback.prototype, "emotion", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true, validate: /\S+/, maxlength: 3000 }),
+    __metadata("design:type", String)
+], Feedback.prototype, "content", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: String, enum: author_constant_1.GeneralAuthorType, required: true, index: true }),
+    __metadata("design:type", String)
+], Feedback.prototype, "author_type", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: String, default: null }),
+    __metadata("design:type", Object)
+], Feedback.prototype, "author_name", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: String, default: null }),
+    __metadata("design:type", Object)
+], Feedback.prototype, "author_email", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ ref: () => user_model_1.User, default: null, index: true }),
+    __metadata("design:type", Object)
+], Feedback.prototype, "user", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: Boolean, default: false }),
     __metadata("design:type", Boolean)
 ], Feedback.prototype, "marked", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ default: '' }),
-    __metadata("design:type", String)
+    (0, typegoose_1.prop)({ type: String, default: null, maxlength: 1000 }),
+    __metadata("design:type", Object)
 ], Feedback.prototype, "remark", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Feedback.prototype, "origin", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, typegoose_1.prop)({ default: null }),
-    __metadata("design:type", String)
-], Feedback.prototype, "user_agent", void 0);
-__decorate([
-    (0, class_validator_1.IsIP)(),
-    (0, class_validator_2.IsOptional)(),
     (0, typegoose_1.prop)({ type: String, default: null }),
     __metadata("design:type", Object)
 ], Feedback.prototype, "ip", void 0);
@@ -117,16 +95,22 @@ __decorate([
     __metadata("design:type", Object)
 ], Feedback.prototype, "ip_location", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
+    (0, typegoose_1.prop)({ type: String, default: null }),
+    __metadata("design:type", Object)
+], Feedback.prototype, "user_agent", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: Date, default: Date.now, immutable: true, index: true }),
     __metadata("design:type", Date)
 ], Feedback.prototype, "created_at", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now }),
+    (0, typegoose_1.prop)({ type: Date, default: Date.now }),
     __metadata("design:type", Date)
 ], Feedback.prototype, "updated_at", void 0);
 exports.Feedback = Feedback = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
+    (0, typegoose_1.plugin)(mongoose_lean_virtuals_1.default),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
+    (0, typegoose_1.index)({ marked: 1, created_at: -1 }),
     (0, typegoose_1.modelOptions)({
         options: { allowMixed: typegoose_1.Severity.ALLOW },
         schemaOptions: {

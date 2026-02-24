@@ -9,47 +9,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GenerateAiCommentReplyDTO = exports.GenerateAiArticleContentDTO = exports.GenerateAiContentDTO = void 0;
+exports.GenerateAiCommentReplyDto = exports.GenerateAiArticleContentDto = exports.GenerateAiContentDto = void 0;
 const class_validator_1 = require("class-validator");
 const ai_config_1 = require("./ai.config");
-class GenerateAiContentDTO {
+class GenerateAiContentDto {
     prompt;
     model;
     temperature;
 }
-exports.GenerateAiContentDTO = GenerateAiContentDTO;
+exports.GenerateAiContentDto = GenerateAiContentDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], GenerateAiContentDTO.prototype, "prompt", void 0);
+], GenerateAiContentDto.prototype, "prompt", void 0);
 __decorate([
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(ai_config_1.AiModelIds),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], GenerateAiContentDTO.prototype, "model", void 0);
+], GenerateAiContentDto.prototype, "model", void 0);
 __decorate([
     (0, class_validator_1.Min)(0),
     (0, class_validator_1.IsNumber)(),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
-], GenerateAiContentDTO.prototype, "temperature", void 0);
-class GenerateAiArticleContentDTO extends GenerateAiContentDTO {
+], GenerateAiContentDto.prototype, "temperature", void 0);
+class GenerateAiArticleContentDto extends GenerateAiContentDto {
     article_id;
 }
-exports.GenerateAiArticleContentDTO = GenerateAiArticleContentDTO;
+exports.GenerateAiArticleContentDto = GenerateAiArticleContentDto;
 __decorate([
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsDefined)(),
     __metadata("design:type", Number)
-], GenerateAiArticleContentDTO.prototype, "article_id", void 0);
-class GenerateAiCommentReplyDTO extends GenerateAiContentDTO {
+], GenerateAiArticleContentDto.prototype, "article_id", void 0);
+class GenerateAiCommentReplyDto extends GenerateAiContentDto {
     comment_id;
 }
-exports.GenerateAiCommentReplyDTO = GenerateAiCommentReplyDTO;
+exports.GenerateAiCommentReplyDto = GenerateAiCommentReplyDto;
 __decorate([
     (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsDefined)(),
     __metadata("design:type", Number)
-], GenerateAiCommentReplyDTO.prototype, "comment_id", void 0);
+], GenerateAiCommentReplyDto.prototype, "comment_id", void 0);
 //# sourceMappingURL=ai.dto.js.map

@@ -10,9 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnnouncementProvider = exports.Announcement = void 0;
+const class_validator_1 = require("class-validator");
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
-const class_validator_1 = require("class-validator");
+const normalize_string_decorator_1 = require("../../decorators/normalize-string.decorator");
 const database_constant_1 = require("../../constants/database.constant");
 const model_transformer_1 = require("../../transformers/model.transformer");
 const paginate_1 = require("../../utils/paginate");
@@ -31,28 +32,29 @@ __decorate([
 ], Announcement.prototype, "id", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)({ message: 'content?' }),
-    (0, typegoose_1.prop)({ required: true, validate: /\S+/ }),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, normalize_string_decorator_1.NormalizeString)({ trim: true }),
+    (0, typegoose_1.prop)({ type: String, required: true, trim: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Announcement.prototype, "content", void 0);
 __decorate([
-    (0, class_validator_1.IsIn)(announcement_constant_1.ANNOUNCEMENT_STATUSES),
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsDefined)(),
-    (0, typegoose_1.prop)({ enum: announcement_constant_1.AnnouncementStatus, default: announcement_constant_1.AnnouncementStatus.Published, index: true }),
+    (0, class_validator_1.IsEnum)(announcement_constant_1.AnnouncementStatus),
+    (0, class_validator_1.IsOptional)(),
+    (0, typegoose_1.prop)({ type: Number, enum: announcement_constant_1.AnnouncementStatus, default: announcement_constant_1.AnnouncementStatus.Published, index: true }),
     __metadata("design:type", Number)
 ], Announcement.prototype, "status", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now, immutable: true }),
+    (0, typegoose_1.prop)({ type: Date, default: Date.now, immutable: true }),
     __metadata("design:type", Date)
 ], Announcement.prototype, "created_at", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ default: Date.now }),
+    (0, typegoose_1.prop)({ type: Date, default: Date.now }),
     __metadata("design:type", Date)
 ], Announcement.prototype, "updated_at", void 0);
 exports.Announcement = Announcement = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
+    (0, typegoose_1.index)({ status: 1, created_at: -1 }),
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
             id: false,

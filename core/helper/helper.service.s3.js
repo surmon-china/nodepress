@@ -113,7 +113,6 @@ let S3Service = class S3Service {
             }))
         }));
     }
-    async deleteFile() { }
 };
 exports.S3Service = S3Service;
 exports.S3Service = S3Service = __decorate([
