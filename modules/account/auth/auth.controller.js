@@ -42,6 +42,9 @@ let AccountAuthController = class AccountAuthController {
         this.googleAuthService = googleAuthService;
         this.githubAuthService = githubAuthService;
     }
+    closeWindowScript(response) {
+        response.type('application/javascript').send(auth_helper_1.OAUTH_CALLBACK_SCRIPT);
+    }
     async githubLink({ identity }) {
         const payload = { intent: auth_service_state_1.AuthIntent.Link, uid: identity.payload.uid };
         const state = await this.authStateService.generateCallbackState(payload);
@@ -122,6 +125,13 @@ let AccountAuthController = class AccountAuthController {
     }
 };
 exports.AccountAuthController = AccountAuthController;
+__decorate([
+    (0, common_1.Get)('oauth-callback.js'),
+    __param(0, (0, common_1.Response)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AccountAuthController.prototype, "closeWindowScript", null);
 __decorate([
     (0, common_1.Get)('github/link'),
     (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.User),
