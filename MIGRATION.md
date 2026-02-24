@@ -8,6 +8,20 @@ This migration guide provides the necessary MongoDB shell scripts to transition 
 
 Version 7 introduces significant schema flattening, the move to a singleton pattern for core configurations, and the replacement of numeric constants with semantic strings.
 
+#### Ip location zip
+
+```javascript
+db.feedbacks.updateMany({ 'ip_location.zip': { $exists: true } }, { $unset: { 'ip_location.zip': '' } })
+db.votes.updateMany({ 'ip_location.zip': { $exists: true } }, { $unset: { 'ip_location.zip': '' } })
+db.comments.updateMany({ 'ip_location.zip': { $exists: true } }, { $unset: { 'ip_location.zip': '' } })
+```
+
+#### Categories
+
+```javascript
+db.categories.updateMany({}, { $rename: { pid: 'parent_id' } })
+```
+
 #### Options & Admin
 
 Enforce the singleton pattern and update blocklist field naming.
