@@ -11,6 +11,7 @@ import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decora
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { CreateUserDto, UpdateUserDto, UserPaginateQueryDto } from './user.dto'
+import { UserIdentityProvider } from './user.constant'
 import { UserService } from './user.service'
 import { User } from './user.model'
 
@@ -63,5 +64,11 @@ export class UserController {
   @SuccessResponse('Delete user succeeded')
   deleteUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.delete(id)
+  }
+
+  @Delete(':id/identities/:provider')
+  @SuccessResponse('Delete user identity succeeded')
+  deleteUserIdentity(@Param('id', ParseIntPipe) userId: number, @Param('provider') provider: UserIdentityProvider) {
+    return this.userService.pullIdentity(userId, provider)
   }
 }
