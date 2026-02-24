@@ -54,6 +54,12 @@ export class UserController {
     return this.userService.create(dto)
   }
 
+  @Get(':id')
+  @SuccessResponse('Get user succeeded')
+  getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    return this.userService.findOne(id)
+  }
+
   @Patch(':id')
   @SuccessResponse('Update user succeeded')
   updateUser(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateUserDto): Promise<User> {
