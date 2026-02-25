@@ -19,6 +19,7 @@ const comment_service_1 = require("../comment/comment.service");
 const comment_helper_1 = require("../comment/comment.helper");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const email_transformer_1 = require("../../transformers/email.transformer");
+const email_transformer_2 = require("../../transformers/email.transformer");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const app_config_1 = require("../../app.config");
@@ -37,22 +38,19 @@ let VoteListener = class VoteListener {
         try {
             const voteEmoji = vote.vote_type === vote_constant_1.VoteType.Upvote ? '👍' : '👎';
             const voteAction = vote_constant_1.VoteType[vote.vote_type];
-            const voteText = `${voteEmoji} (${voteAction})`;
+            const voteText = `${voteEmoji}  ${voteAction}`;
             const sendMailToAdmin = (targetTitle, targetLink) => {
                 this.emailService.sendMailAs(app_config_1.APP_BIZ.FE_NAME, {
                     to: app_config_1.APP_BIZ.ADMIN_EMAIL,
-                    subject: `New vote on "${targetTitle}"`,
-                    ...(0, email_transformer_1.linesToEmailContent)([
-                        `You have a new ${vote.target_type} vote.`,
-                        `Target: ${targetTitle}`,
-                        `URL: ${targetLink}`,
-                        `Vote: ${voteText}`,
-                        vote.user
-                            ? `User: ${vote.user.name} (ID: ${vote.user.id})`
-                            : `Guest: ${vote.author_name || 'Anonymous'} (${vote.author_email || 'No Email'})`,
+                    subject: `New vote on ${targetTitle}`,
+                    ...(0, email_transformer_2.linesToEmailContent)([
+                        `You have a new vote on ${targetTitle}.`,
+                        `Link: ${targetLink}`,
+                        `Type: ${voteText}`,
+                        `Author: ${(0, email_transformer_1.getAuthorText)({ user: vote.user, name: vote.author_name, email: vote.author_email })}`,
                         `IP: ${vote.ip || 'Unknown'}`,
                         `Location: ${vote.ip_location ? (0, email_transformer_1.getLocationText)(vote.ip_location) : 'Unknown'}`,
-                        `User Agent: ${vote.user_agent ? (0, email_transformer_1.getUserAgentText)(vote.user_agent) : 'Unknown'}`
+                        `Agent: ${vote.user_agent ? (0, email_transformer_1.getUserAgentText)(vote.user_agent) : 'Unknown'}`
                     ])
                 });
             };
@@ -61,13 +59,13 @@ let VoteListener = class VoteListener {
                 const targetTitle = await this.articleService
                     .getDetail(vote.target_id, { lean: true })
                     .then((article) => `"${article.title}"`)
-                    .catch(() => `Article #${vote.target_id}`);
+                    .catch(() => `article #${vote.target_id}`);
                 sendMailToAdmin(targetTitle, targetLink);
             }
             if (vote.target_type === vote_constant_1.VoteTargetType.Comment) {
                 const comment = await this.commentService.getDetail(vote.target_id, 'withUser');
                 const targetLink = (0, urlmap_transformer_1.getPermalink)(comment.target_type, comment.target_id) + `#comment-${comment.id}`;
-                const targetTitle = `Comment #${comment.id}`;
+                const targetTitle = `comment #${comment.id}`;
                 sendMailToAdmin(targetTitle, targetLink);
                 const voteAuthorEmail = vote.user?.email ?? vote.author_email;
                 const commentAuthorEmail = (0, comment_helper_1.getCommentNotificationEmail)(comment);
@@ -79,11 +77,11 @@ let VoteListener = class VoteListener {
                 this.emailService.sendMailAs(app_config_1.APP_BIZ.FE_NAME, {
                     to: commentAuthorEmail,
                     subject,
-                    ...(0, email_transformer_1.linesToEmailContent)([
+                    ...(0, email_transformer_2.linesToEmailContent)([
                         `Hello ${comment.author_name}, ${subject}.`,
-                        `Vote: ${voteText}`,
                         `Target: ${targetTitle}`,
-                        `From: ${vote.user ? vote.user.name : vote.author_name || 'Anonymous'}`,
+                        `Type: ${voteText}`,
+                        `From: ${vote.author_name || 'Anonymous'}`,
                         `View on: ${targetLink}`
                     ])
                 });

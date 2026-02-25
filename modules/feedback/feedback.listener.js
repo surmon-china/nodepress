@@ -15,6 +15,7 @@ const event_emitter_1 = require("@nestjs/event-emitter");
 const helper_service_email_1 = require("../../core/helper/helper.service.email");
 const events_constant_1 = require("../../constants/events.constant");
 const email_transformer_1 = require("../../transformers/email.transformer");
+const email_transformer_2 = require("../../transformers/email.transformer");
 const feedback_model_1 = require("./feedback.model");
 const app_config_1 = require("../../app.config");
 let FeedbackListener = class FeedbackListener {
@@ -27,15 +28,15 @@ let FeedbackListener = class FeedbackListener {
         this.emailService.sendMailAs(app_config_1.APP_BIZ.FE_NAME, {
             to: app_config_1.APP_BIZ.ADMIN_EMAIL,
             subject,
-            ...(0, email_transformer_1.linesToEmailContent)([
+            ...(0, email_transformer_2.linesToEmailContent)([
                 `${subject}.`,
                 `Emotion: ${feedback.emotion_emoji} ${feedback.emotion_text} (${feedback.emotion})`,
                 `Content: ${feedback.content}`,
                 ``,
-                `Author: ${feedback.author_name || 'Anonymous user'}`,
-                `Origin: ${feedback.origin || 'unknown'}`,
-                `Location: ${feedback.ip_location ? (0, email_transformer_1.getLocationText)(feedback.ip_location) : 'unknown'}`,
-                `Agent: ${feedback.user_agent ? (0, email_transformer_1.getUserAgentText)(feedback.user_agent) : 'unknown'}`
+                `Author: ${feedback.author_name || 'Anonymous'}`,
+                `Origin: ${feedback.origin || 'Unknown'}`,
+                `Location: ${feedback.ip_location ? (0, email_transformer_1.getLocationText)(feedback.ip_location) : 'Unknown'}`,
+                `Agent: ${feedback.user_agent ? (0, email_transformer_1.getUserAgentText)(feedback.user_agent) : 'Unknown'}`
             ])
         });
     }

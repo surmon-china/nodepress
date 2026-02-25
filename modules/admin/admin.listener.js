@@ -33,10 +33,10 @@ let AdminListener = class AdminListener {
             ...(0, email_transformer_1.linesToEmailContent)([
                 `${subject}!`,
                 `Time: ${(0, email_transformer_1.getTimeText)(new Date())}`,
-                `Referer: ${referer || 'unknown'}`,
-                `IP: ${ip || 'unknown'}`,
-                `Location: ${location ? (0, email_transformer_1.getLocationText)(location) : 'unknown'}`,
-                `UserAgent: ${agent ? (0, email_transformer_1.getUserAgentText)(agent) : 'unknown'}`
+                `Referer: ${referer || 'Unknown'}`,
+                `IP: ${ip || 'Unknown'}`,
+                `Location: ${location ? (0, email_transformer_1.getLocationText)(location) : 'Unknown'}`,
+                `Agent: ${agent ? (0, email_transformer_1.getUserAgentText)(agent) : 'Unknown'}`
             ])
         });
     }

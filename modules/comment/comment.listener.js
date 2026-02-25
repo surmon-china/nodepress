@@ -20,6 +20,7 @@ const comment_service_1 = require("./comment.service");
 const comment_helper_1 = require("./comment.helper");
 const comment_constant_1 = require("./comment.constant");
 const email_transformer_1 = require("../../transformers/email.transformer");
+const email_transformer_2 = require("../../transformers/email.transformer");
 const error_transformer_1 = require("../../transformers/error.transformer");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const logger_1 = require("../../utils/logger");
@@ -40,23 +41,23 @@ let CommentListener = class CommentListener {
     async handleCommentCreated(comment) {
         const targetLink = (0, urlmap_transformer_1.getPermalink)(comment.target_type, comment.target_id) + `#comment-${comment.id}`;
         const targetTitle = comment.target_type === comment_constant_1.CommentTargetType.Page
-            ? `Page #${comment.target_id}`
+            ? `page #${comment.target_id}`
             : await this.articleService
                 .getDetail(comment.target_id, { lean: true })
                 .then((article) => `"${article.title}"`)
-                .catch(() => `Article #${comment.target_id}`);
-        const subject = `You have a new comment on "${targetTitle}"`;
+                .catch(() => `article #${comment.target_id}`);
+        const subject = `You have a new comment on ${targetTitle}`;
         this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
             to: app_config_1.APP_BIZ.ADMIN_EMAIL,
             subject,
-            ...(0, email_transformer_1.linesToEmailContent)([
+            ...(0, email_transformer_2.linesToEmailContent)([
                 subject,
-                `Content: ${comment.content}`,
-                `Author: ${comment.author_name || '-'} · ${comment.author_email || '-'} · ${comment.author_website || '-'}`,
-                `Agent: ${comment.user_agent ? (0, email_transformer_1.getUserAgentText)(comment.user_agent) : 'unknown'}`,
-                `IP: ${comment.ip || 'unknown'}`,
-                `Location: ${comment.ip_location ? (0, email_transformer_1.getLocationText)(comment.ip_location) : 'unknown'}`,
-                `URL: ${targetLink}`
+                comment.content,
+                `Link: ${targetLink}`,
+                `Author: ${(0, email_transformer_1.getAuthorText)({ user: comment.user, name: comment.author_name, email: comment.author_email })}`,
+                `IP: ${comment.ip || 'Unknown'}`,
+                `Location: ${comment.ip_location ? (0, email_transformer_1.getLocationText)(comment.ip_location) : 'Unknown'}`,
+                `Agent: ${comment.user_agent ? (0, email_transformer_1.getUserAgentText)(comment.user_agent) : 'Unknown'}`
             ])
         });
         if (comment.parent_id) {
@@ -71,11 +72,11 @@ let CommentListener = class CommentListener {
                 this.emailService.sendMailAs(app_config_1.APP_BIZ.FE_NAME, {
                     to: parentCommentEmail,
                     subject,
-                    ...(0, email_transformer_1.linesToEmailContent)([
+                    ...(0, email_transformer_2.linesToEmailContent)([
                         `Hello, ${parentComment.author_name || 'there'}.`,
                         `Your comment has a new reply from ${comment.author_name}:`,
                         ``,
-                        `${comment.content}`,
+                        comment.content,
                         ``,
                         `View on ${targetTitle}: ${targetLink}`
                     ])
@@ -93,17 +94,17 @@ let CommentListener = class CommentListener {
         this.emailService.sendMailAs(app_config_1.APP_BIZ.NAME, {
             to: app_config_1.APP_BIZ.ADMIN_EMAIL,
             subject,
-            ...(0, email_transformer_1.linesToEmailContent)([
+            ...(0, email_transformer_2.linesToEmailContent)([
                 `${subject}!`,
                 `Comment Parent: ${input.parent_id}`,
                 `Comment Target: ${input.target_type} - ${input.target_id}`,
                 `Comment Content: ${input.content || '-'}`,
                 `Comment Author: ${input.author_name || '-'} · ${input.author_email || '-'} · ${input.author_website || '-'}`,
                 `Error Detail: ${(0, error_transformer_1.getMessageFromNormalError)(error)}`,
-                `Author Agent: ${visitor.agent ? (0, email_transformer_1.getUserAgentText)(visitor.agent) : 'unknown'}`,
-                `Referer: ${visitor.referer || 'unknown'}`,
-                `IP: ${visitor.ip || 'unknown'}`,
-                `Location: ${location ? (0, email_transformer_1.getLocationText)(location) : 'unknown'}`
+                `Referer: ${visitor.referer || 'Unknown'}`,
+                `IP: ${visitor.ip || 'Unknown'}`,
+                `Location: ${location ? (0, email_transformer_1.getLocationText)(location) : 'Unknown'}`,
+                `Agent: ${visitor.agent ? (0, email_transformer_1.getUserAgentText)(visitor.agent) : 'Unknown'}`
             ])
         });
     }

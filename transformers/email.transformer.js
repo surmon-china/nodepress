@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.linesToEmailContent = exports.getUserAgentText = exports.getLocationText = exports.getTimeText = void 0;
+exports.linesToEmailContent = exports.getAuthorText = exports.getUserAgentText = exports.getLocationText = exports.getTimeText = void 0;
 const ua_parser_js_1 = require("ua-parser-js");
 const getTimeText = (date) => {
     const dtf = new Intl.DateTimeFormat('zh-CN', {
@@ -29,6 +29,18 @@ const getUserAgentText = (userAgent) => {
     return [browser, os, device].join(' · ');
 };
 exports.getUserAgentText = getUserAgentText;
+const getAuthorText = (context) => {
+    if (context.user) {
+        return `${context.user.name} (#${context.user.id})`;
+    }
+    else if (context.name || context.email) {
+        return `${context.name || 'Unknown'} (${context.email || 'No Email'})`;
+    }
+    else {
+        return 'Anonymous';
+    }
+};
+exports.getAuthorText = getAuthorText;
 const linesToEmailContent = (lines) => {
     return {
         text: lines.join('\n'),

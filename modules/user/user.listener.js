@@ -26,7 +26,6 @@ let UserListener = class UserListener {
         this.emailService = emailService;
     }
     handleUserCreated(user) {
-        logger.log(`New user created: ${user.name} (#${user.id})`);
         const subject = `New user registered: ${user.name} (#${user.id})`;
         this.emailService.sendMailAs(app_config_1.APP_BIZ.FE_NAME, {
             to: app_config_1.APP_BIZ.ADMIN_EMAIL,
@@ -38,7 +37,7 @@ let UserListener = class UserListener {
                 `Email: ${user.email || 'No email'}`,
                 `Website: ${user.website || 'No website'}`,
                 `Providers: ${user.identities.map((identity) => identity.provider).join(', ')}`,
-                `Created At: ${(0, email_transformer_1.getTimeText)(user.created_at)}`
+                `At: ${(0, email_transformer_1.getTimeText)(user.created_at)}`
             ])
         });
     }
@@ -53,6 +52,7 @@ let UserListener = class UserListener {
                     `Hi ${user.name},`,
                     `Your account (#${user.id}) and all related data have been permanently deleted from our database.`,
                     `We are sorry to see you go.`,
+                    ``,
                     ``,
                     `Best regards,`,
                     `${app_config_1.APP_BIZ.FE_NAME} Team`
