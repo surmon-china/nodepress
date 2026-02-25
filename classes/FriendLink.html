@@ -328,7 +328,6 @@ export class Blocklist {
   @prop({ type: () &#x3D;&gt; [String], default: [] })
   ips: string[]
 
-  @IsEmail(undefined, { each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()

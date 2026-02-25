@@ -162,7 +162,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#emails" >emails</a>
                             </li>
                             <li>
@@ -209,7 +208,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
                         <span ><b>emails</b></span>
                         <a href="#emails"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -226,13 +224,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsEmail(undefined, {each: true})<br />@ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; , default: undefined})<br />
+                            @ArrayUnique()<br />@IsArray()<br />@IsOptional()<br />@prop({type: () &#x3D;&gt; , default: undefined})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/options/options.model.ts:62</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/modules/options/options.model.ts:61</a></div>
                         </td>
                     </tr>
 
@@ -311,7 +309,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/modules/options/options.model.ts:69</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/modules/options/options.model.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -380,7 +378,6 @@ export class Blocklist {
   @prop({ type: () &#x3D;&gt; [String], default: [] })
   ips: string[]
 
-  @IsEmail(undefined, { each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()
