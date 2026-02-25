@@ -333,8 +333,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="143"
-                                    class="link-to-prism">src/modules/article/article.service.ts:143</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/modules/article/article.service.ts:144</a></div>
                         </td>
                     </tr>
 
@@ -403,8 +403,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="133"
-                                    class="link-to-prism">src/modules/article/article.service.ts:133</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/modules/article/article.service.ts:134</a></div>
                         </td>
                     </tr>
 
@@ -485,8 +485,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="83"
-                                    class="link-to-prism">src/modules/article/article.service.ts:83</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/modules/article/article.service.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -555,8 +555,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="122"
-                                    class="link-to-prism">src/modules/article/article.service.ts:122</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="123"
+                                    class="link-to-prism">src/modules/article/article.service.ts:123</a></div>
                         </td>
                     </tr>
 
@@ -664,8 +664,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/article/article.service.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/modules/article/article.service.ts:51</a></div>
                         </td>
                     </tr>
 
@@ -761,8 +761,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="158"
-                                    class="link-to-prism">src/modules/article/article.service.ts:158</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/modules/article/article.service.ts:159</a></div>
                         </td>
                     </tr>
 
@@ -912,8 +912,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="97"
-                                    class="link-to-prism">src/modules/article/article.service.ts:97</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/modules/article/article.service.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -1014,8 +1014,9 @@ export class ArticleService {
   // MARK: Providing this capability only for admin. (Consumes a lot of computing resources.)
   public getAll(): Promise&lt;Article[]&gt; {
     return this.articleModel.find({}, null, {
-      sort: { _id: SortOrder.Desc },
-      populate: ARTICLE_RELATION_FIELDS
+      sort: { created_at: SortOrder.Desc },
+      populate: ARTICLE_RELATION_FIELDS,
+      projection: ARTICLE_WITH_CONTENT_PROJECTION
     })
   }
 

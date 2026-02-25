@@ -316,7 +316,7 @@ export class UpdateCommentDto extends IntersectionType(
 ) {}
 
 export class CommentPaginateQueryDto extends IntersectionType(PaginateOptionWithHotSortDto, KeywordQueryDto) {
-  @WithGuestPermission({ only: [CommentStatus.Published], default: CommentStatus.Published })
+  @WithGuestPermission({ only: [CommentStatus.Approved], default: CommentStatus.Approved })
   @IsEnum(CommentStatus)
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
