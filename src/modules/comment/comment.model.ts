@@ -57,7 +57,7 @@ export class Comment {
 
   @IsEnum(CommentStatus)
   @IsOptional()
-  @prop({ type: Number, enum: CommentStatus, default: CommentStatus.Published, index: true })
+  @prop({ type: Number, enum: CommentStatus, default: CommentStatus.Approved, index: true })
   status: CommentStatus
 
   @IsEnum(CommentTargetType)

@@ -52,7 +52,7 @@ export class CommentService {
     return {
       ...input,
       parent_id: input.parent_id ?? null,
-      status: CommentStatus.Published,
+      status: CommentStatus.Approved,
       user: user?._id ?? null,
       author_type: user?._id ? CommentAuthorType.User : CommentAuthorType.Guest,
       author_name: user?.name ?? input.author_name,
@@ -122,7 +122,7 @@ export class CommentService {
   public async getPublicCommentIdSet(commentIds: number[]): Promise<Set<number>> {
     if (!commentIds.length) return new Set()
     const found = await this.commentModel
-      .find({ id: { $in: commentIds }, status: CommentStatus.Published })
+      .find({ id: { $in: commentIds }, status: CommentStatus.Approved })
       .select('id')
       .lean()
       .exec()

@@ -32,7 +32,7 @@ export class AiListener {
     // 1. Only respond to top-level comments (no parent comment)
     if (comment.parent_id !== null) return
     // 2. Only respond to publicly published comments
-    if (comment.status !== CommentStatus.Published) return
+    if (comment.status !== CommentStatus.Approved) return
     // 3. Minimum length requirement: at least 5 characters (excluding whitespace)
     if (comment.content.trim().length < 5) return
     // 4. Prevent loops: Do not respond to comments already marked as AI-generated

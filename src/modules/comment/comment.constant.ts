@@ -11,7 +11,7 @@ export enum CommentTargetType {
 
 export enum CommentStatus {
   Pending = 0,
-  Published = 1,
+  Approved = 1,
   Trash = -1,
   Spam = -2
 }
@@ -28,5 +28,5 @@ export enum CommentAuthorStatus {
 }
 
 export const COMMENT_PUBLIC_FILTER = Object.freeze({
-  status: CommentStatus.Published
+  status: CommentStatus.Approved
 })
