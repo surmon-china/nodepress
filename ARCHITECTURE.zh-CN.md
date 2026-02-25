@@ -154,9 +154,9 @@ NodePress 采用双 ID 体系：
 
 NodePress 中的数据来源包括：
 
-- Database：数据库物理存储字段。
-- Virtuals：通过 [Mongoose Virtuals](https://mongoosejs.com/docs/tutorials/virtuals.html) 衍生的数据字段。
-- 第三方数据：如 Google Analytics 聚合数据。
+- **Database**：数据库物理存储字段。
+- **Virtuals**：通过 [Mongoose Virtuals](https://mongoosejs.com/docs/tutorials/virtuals.html) 衍生的数据字段。
+- **第三方数据**：如 Google Analytics 聚合数据。
 
 ## 5. 业务模块的划分（Modules）
 
