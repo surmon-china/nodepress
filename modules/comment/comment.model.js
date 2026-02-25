@@ -75,7 +75,7 @@ __decorate([
 __decorate([
     (0, class_validator_3.IsEnum)(comment_constant_1.CommentStatus),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ type: Number, enum: comment_constant_1.CommentStatus, default: comment_constant_1.CommentStatus.Published, index: true }),
+    (0, typegoose_1.prop)({ type: Number, enum: comment_constant_1.CommentStatus, default: comment_constant_1.CommentStatus.Approved, index: true }),
     __metadata("design:type", Number)
 ], Comment.prototype, "status", void 0);
 __decorate([

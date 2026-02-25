@@ -9,7 +9,7 @@ var CommentTargetType;
 var CommentStatus;
 (function (CommentStatus) {
     CommentStatus[CommentStatus["Pending"] = 0] = "Pending";
-    CommentStatus[CommentStatus["Published"] = 1] = "Published";
+    CommentStatus[CommentStatus["Approved"] = 1] = "Approved";
     CommentStatus[CommentStatus["Trash"] = -1] = "Trash";
     CommentStatus[CommentStatus["Spam"] = -2] = "Spam";
 })(CommentStatus || (exports.CommentStatus = CommentStatus = {}));
@@ -25,6 +25,6 @@ var CommentAuthorStatus;
     CommentAuthorStatus["Ghost"] = "ghost";
 })(CommentAuthorStatus || (exports.CommentAuthorStatus = CommentAuthorStatus = {}));
 exports.COMMENT_PUBLIC_FILTER = Object.freeze({
-    status: CommentStatus.Published
+    status: CommentStatus.Approved
 });
 //# sourceMappingURL=comment.constant.js.map

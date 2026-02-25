@@ -30,7 +30,7 @@ let AiListener = class AiListener {
     async handleCommentCreated(comment) {
         if (comment.parent_id !== null)
             return;
-        if (comment.status !== comment_constant_1.CommentStatus.Published)
+        if (comment.status !== comment_constant_1.CommentStatus.Approved)
             return;
         if (comment.content.trim().length < 5)
             return;

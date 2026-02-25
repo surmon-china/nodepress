@@ -42,7 +42,7 @@ class CommentPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(pagin
 }
 exports.CommentPaginateQueryDto = CommentPaginateQueryDto;
 __decorate([
-    (0, guest_permission_decorator_1.WithGuestPermission)({ only: [comment_constant_1.CommentStatus.Published], default: comment_constant_1.CommentStatus.Published }),
+    (0, guest_permission_decorator_1.WithGuestPermission)({ only: [comment_constant_1.CommentStatus.Approved], default: comment_constant_1.CommentStatus.Approved }),
     (0, class_validator_2.IsEnum)(comment_constant_1.CommentStatus),
     (0, class_validator_2.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),

@@ -50,7 +50,7 @@ let CommentService = class CommentService {
         return {
             ...input,
             parent_id: input.parent_id ?? null,
-            status: comment_constant_1.CommentStatus.Published,
+            status: comment_constant_1.CommentStatus.Approved,
             user: user?._id ?? null,
             author_type: user?._id ? comment_constant_1.CommentAuthorType.User : comment_constant_1.CommentAuthorType.Guest,
             author_name: user?.name ?? input.author_name,
@@ -107,7 +107,7 @@ let CommentService = class CommentService {
         if (!commentIds.length)
             return new Set();
         const found = await this.commentModel
-            .find({ id: { $in: commentIds }, status: comment_constant_1.CommentStatus.Published })
+            .find({ id: { $in: commentIds }, status: comment_constant_1.CommentStatus.Approved })
             .select('id')
             .lean()
             .exec();

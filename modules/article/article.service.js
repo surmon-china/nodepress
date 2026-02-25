@@ -45,8 +45,9 @@ let ArticleService = class ArticleService {
     }
     getAll() {
         return this.articleModel.find({}, null, {
-            sort: { _id: sort_constant_1.SortOrder.Desc },
-            populate: article_model_2.ARTICLE_RELATION_FIELDS
+            sort: { created_at: sort_constant_1.SortOrder.Desc },
+            populate: article_model_2.ARTICLE_RELATION_FIELDS,
+            projection: article_model_2.ARTICLE_WITH_CONTENT_PROJECTION
         });
     }
     async getDetail(idOrSlug, options = {}) {
