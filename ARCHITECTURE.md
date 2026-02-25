@@ -77,40 +77,32 @@ flowchart LR
 #### Lifecycle Steps
 
 1. **Request**
-
-- Within the Fastify [`onRequest`](./src/main.ts) hook, the system immediately parses the user's identity (Admin / User / Guest).
-- The Identity is attached to the request context for downstream consumption.
+   - Within the Fastify [`onRequest`](./src/main.ts) hook, the system immediately parses the user's identity (Admin / User / Guest).
+   - The Identity is attached to the request context for downstream consumption.
 
 2. **Middleware**
-
-- Empty in this application.
+   - Empty in this application.
 
 3. **Guards**
-
-- `ThrottlerGuard`: Global and local rate limiting to prevent API abuse.
-- `IdentityGuard`: Intercepts and validates the requested identity.
+   - `ThrottlerGuard`: Global and local rate limiting to prevent API abuse.
+   - `IdentityGuard`: Intercepts and validates the requested identity.
 
 4. **Pipes**
-
-- `ValidationPipe`: Strictly validates the input payload based on DTOs and `class-validator`.
-- `PermissionPipe`: Fine-grained validation for field-level read permissions (e.g., preventing guests from querying sensitive fields).
+   - `ValidationPipe`: Strictly validates the input payload based on DTOs and `class-validator`.
+   - `PermissionPipe`: Fine-grained validation for field-level read permissions (e.g., preventing guests from querying sensitive fields).
 
 5. **Controller**
-
-- Route dispatching.
+   - Route dispatching.
 
 6. **Service**
-
-- Core business logic execution.
+   - Core business logic execution.
 
 7. **Interceptor**
-
-- `LoggingInterceptor`: Supplements global logging.
-- `TransformInterceptor`: Standardizes the response structure.
+   - `LoggingInterceptor`: Supplements global logging.
+   - `TransformInterceptor`: Standardizes the response structure.
 
 8. **Filter (Exception Filter)**
-
-- `ExceptionFilter` catches unhandled exceptions and converts them into standardized error responses.
+   - `ExceptionFilter` catches unhandled exceptions and converts them into standardized error responses.
 
 ### 3.2 HTTP Status Code Standards
 
