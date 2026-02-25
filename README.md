@@ -24,7 +24,7 @@
 
 - [Changelog](/CHANGELOG.md#changelog)
 - [API Documentation](https://github.surmon.me/nodepress)
-- [Architecture Documentation](/ARCHITECTURE.md)
+- [Architecture Documentation](/ARCHITECTURE.md) | [中文架构文档](/ARCHITECTURE.zh-CN.md)
 
 **Related projects:**
 
