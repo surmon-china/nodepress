@@ -41,8 +41,9 @@ export class ArticleService {
   // MARK: Providing this capability only for admin. (Consumes a lot of computing resources.)
   public getAll(): Promise<Article[]> {
     return this.articleModel.find({}, null, {
-      sort: { _id: SortOrder.Desc },
-      populate: ARTICLE_RELATION_FIELDS
+      sort: { created_at: SortOrder.Desc },
+      populate: ARTICLE_RELATION_FIELDS,
+      projection: ARTICLE_WITH_CONTENT_PROJECTION
     })
   }
 
