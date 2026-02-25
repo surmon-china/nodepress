@@ -7,6 +7,7 @@
 import { UAParser } from 'ua-parser-js'
 import { IPLocation } from '@app/core/helper/helper.service.ip'
 import { EmailOptions } from '@app/core/helper/helper.service.email'
+import type { UserPublic } from '@app/modules/user/user.model'
 
 export const getTimeText = (date: Date) => {
   const dtf = new Intl.DateTimeFormat('zh-CN', {
@@ -34,6 +35,18 @@ export const getUserAgentText = (userAgent: string) => {
   const os = parsed.os.name ? `${parsed.os.name}/${parsed.os.version}` : 'Unknown OS'
   const device = parsed.device.vendor ? `${parsed.device.vendor} ${parsed.device.model}` : 'PC/Generic'
   return [browser, os, device].join(' · ')
+}
+
+export const getAuthorText = (
+  context: Partial<{ user: UserPublic | null; name: string | null; email: string | null }>
+) => {
+  if (context.user) {
+    return `${context.user.name} (#${context.user.id})`
+  } else if (context.name || context.email) {
+    return `${context.name || 'Unknown'} (${context.email || 'No Email'})`
+  } else {
+    return 'Anonymous'
+  }
 }
 
 export const linesToEmailContent = (lines: string[]): Pick<EmailOptions, 'text' | 'html'> => {

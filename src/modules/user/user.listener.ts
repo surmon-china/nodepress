@@ -22,7 +22,7 @@ export class UserListener {
 
   @OnEvent(EventKeys.UserCreated)
   handleUserCreated(user: User) {
-    logger.log(`New user created: ${user.name} (#${user.id})`)
+    // logger.log(`New user created: ${user.name} (#${user.id})`)
 
     const subject = `New user registered: ${user.name} (#${user.id})`
     this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
@@ -35,7 +35,7 @@ export class UserListener {
         `Email: ${user.email || 'No email'}`,
         `Website: ${user.website || 'No website'}`,
         `Providers: ${user.identities.map((identity) => identity.provider).join(', ')}`,
-        `Created At: ${getTimeText(user.created_at!)}`
+        `At: ${getTimeText(user.created_at!)}`
       ])
     })
   }
@@ -53,6 +53,7 @@ export class UserListener {
           `Hi ${user.name},`,
           `Your account (#${user.id}) and all related data have been permanently deleted from our database.`,
           `We are sorry to see you go.`,
+          ``,
           ``,
           `Best regards,`,
           `${APP_BIZ.FE_NAME} Team`

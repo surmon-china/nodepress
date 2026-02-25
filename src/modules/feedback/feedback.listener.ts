@@ -8,7 +8,8 @@ import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { EventKeys } from '@app/constants/events.constant'
-import { getLocationText, getUserAgentText, linesToEmailContent } from '@app/transformers/email.transformer'
+import { getLocationText, getUserAgentText } from '@app/transformers/email.transformer'
+import { linesToEmailContent } from '@app/transformers/email.transformer'
 import { Feedback } from './feedback.model'
 import { APP_BIZ } from '@app/app.config'
 
@@ -28,10 +29,10 @@ export class FeedbackListener {
         `Emotion: ${feedback.emotion_emoji} ${feedback.emotion_text} (${feedback.emotion})`,
         `Content: ${feedback.content}`,
         ``,
-        `Author: ${feedback.author_name || 'Anonymous user'}`,
-        `Origin: ${feedback.origin || 'unknown'}`,
-        `Location: ${feedback.ip_location ? getLocationText(feedback.ip_location) : 'unknown'}`,
-        `Agent: ${feedback.user_agent ? getUserAgentText(feedback.user_agent) : 'unknown'}`
+        `Author: ${feedback.author_name || 'Anonymous'}`,
+        `Origin: ${feedback.origin || 'Unknown'}`,
+        `Location: ${feedback.ip_location ? getLocationText(feedback.ip_location) : 'Unknown'}`,
+        `Agent: ${feedback.user_agent ? getUserAgentText(feedback.user_agent) : 'Unknown'}`
       ])
     })
   }

@@ -36,10 +36,10 @@ export class AdminListener {
       ...linesToEmailContent([
         `${subject}!`,
         `Time: ${getTimeText(new Date())}`,
-        `Referer: ${referer || 'unknown'}`,
-        `IP: ${ip || 'unknown'}`,
-        `Location: ${location ? getLocationText(location) : 'unknown'}`,
-        `UserAgent: ${agent ? getUserAgentText(agent) : 'unknown'}`
+        `Referer: ${referer || 'Unknown'}`,
+        `IP: ${ip || 'Unknown'}`,
+        `Location: ${location ? getLocationText(location) : 'Unknown'}`,
+        `Agent: ${agent ? getUserAgentText(agent) : 'Unknown'}`
       ])
     })
   }

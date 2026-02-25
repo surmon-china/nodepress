@@ -11,7 +11,8 @@ import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { getCommentNotificationEmail } from '@app/modules/comment/comment.helper'
 import { getArticleUrl, getPermalink } from '@app/transformers/urlmap.transformer'
-import { getLocationText, getUserAgentText, linesToEmailContent } from '@app/transformers/email.transformer'
+import { getLocationText, getUserAgentText, getAuthorText } from '@app/transformers/email.transformer'
+import { linesToEmailContent } from '@app/transformers/email.transformer'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import { APP_BIZ } from '@app/app.config'
@@ -33,23 +34,20 @@ export class VoteListener {
     try {
       const voteEmoji = vote.vote_type === VoteType.Upvote ? '👍' : '👎'
       const voteAction = VoteType[vote.vote_type]
-      const voteText = `${voteEmoji} (${voteAction})`
+      const voteText = `${voteEmoji}  ${voteAction}`
 
       const sendMailToAdmin = (targetTitle: string, targetLink: string) => {
         this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
           to: APP_BIZ.ADMIN_EMAIL,
-          subject: `New vote on "${targetTitle}"`,
+          subject: `New vote on ${targetTitle}`,
           ...linesToEmailContent([
-            `You have a new ${vote.target_type} vote.`,
-            `Target: ${targetTitle}`,
-            `URL: ${targetLink}`,
-            `Vote: ${voteText}`,
-            vote.user
-              ? `User: ${vote.user.name} (ID: ${vote.user.id})`
-              : `Guest: ${vote.author_name || 'Anonymous'} (${vote.author_email || 'No Email'})`,
+            `You have a new vote on ${targetTitle}.`,
+            `Link: ${targetLink}`,
+            `Type: ${voteText}`,
+            `Author: ${getAuthorText({ user: vote.user, name: vote.author_name, email: vote.author_email })}`,
             `IP: ${vote.ip || 'Unknown'}`,
             `Location: ${vote.ip_location ? getLocationText(vote.ip_location) : 'Unknown'}`,
-            `User Agent: ${vote.user_agent ? getUserAgentText(vote.user_agent) : 'Unknown'}`
+            `Agent: ${vote.user_agent ? getUserAgentText(vote.user_agent) : 'Unknown'}`
           ])
         })
       }
@@ -60,7 +58,7 @@ export class VoteListener {
         const targetTitle = await this.articleService
           .getDetail(vote.target_id, { lean: true })
           .then((article) => `"${article.title}"`)
-          .catch(() => `Article #${vote.target_id}`)
+          .catch(() => `article #${vote.target_id}`)
         sendMailToAdmin(targetTitle, targetLink)
       }
 
@@ -68,7 +66,7 @@ export class VoteListener {
       if (vote.target_type === VoteTargetType.Comment) {
         const comment = await this.commentService.getDetail(vote.target_id, 'withUser')
         const targetLink = getPermalink(comment.target_type, comment.target_id) + `#comment-${comment.id}`
-        const targetTitle = `Comment #${comment.id}`
+        const targetTitle = `comment #${comment.id}`
         sendMailToAdmin(targetTitle, targetLink)
 
         //  If the voter is NOT the comment author, also send an email to the comment author.
@@ -84,9 +82,9 @@ export class VoteListener {
           subject,
           ...linesToEmailContent([
             `Hello ${comment.author_name}, ${subject}.`,
-            `Vote: ${voteText}`,
             `Target: ${targetTitle}`,
-            `From: ${vote.user ? vote.user.name : vote.author_name || 'Anonymous'}`,
+            `Type: ${voteText}`,
+            `From: ${vote.author_name || 'Anonymous'}`,
             `View on: ${targetLink}`
           ])
         })

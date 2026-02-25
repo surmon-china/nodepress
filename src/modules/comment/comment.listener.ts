@@ -17,7 +17,8 @@ import { getCommentNotificationEmail } from '@app/modules/comment/comment.helper
 import { CommentTargetType } from '@app/modules/comment/comment.constant'
 import { CreateCommentDto } from '@app/modules/comment/comment.dto'
 import { CommentWith } from '@app/modules/comment/comment.model'
-import { getLocationText, getUserAgentText, linesToEmailContent } from '@app/transformers/email.transformer'
+import { getLocationText, getUserAgentText, getAuthorText } from '@app/transformers/email.transformer'
+import { linesToEmailContent } from '@app/transformers/email.transformer'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import { getPermalink } from '@app/transformers/urlmap.transformer'
 import { createLogger } from '@app/utils/logger'
@@ -40,25 +41,25 @@ export class CommentListener {
     const targetLink = getPermalink(comment.target_type, comment.target_id) + `#comment-${comment.id}`
     const targetTitle =
       comment.target_type === CommentTargetType.Page
-        ? `Page #${comment.target_id}`
+        ? `page #${comment.target_id}`
         : await this.articleService
             .getDetail(comment.target_id, { lean: true })
             .then((article) => `"${article.title}"`)
-            .catch(() => `Article #${comment.target_id}`)
+            .catch(() => `article #${comment.target_id}`)
 
     // Email to admin
-    const subject = `You have a new comment on "${targetTitle}"`
+    const subject = `You have a new comment on ${targetTitle}`
     this.emailService.sendMailAs(APP_BIZ.NAME, {
       to: APP_BIZ.ADMIN_EMAIL,
       subject,
       ...linesToEmailContent([
         subject,
-        `Content: ${comment.content}`,
-        `Author: ${comment.author_name || '-'} · ${comment.author_email || '-'} · ${comment.author_website || '-'}`,
-        `Agent: ${comment.user_agent ? getUserAgentText(comment.user_agent) : 'unknown'}`,
-        `IP: ${comment.ip || 'unknown'}`,
-        `Location: ${comment.ip_location ? getLocationText(comment.ip_location) : 'unknown'}`,
-        `URL: ${targetLink}`
+        comment.content,
+        `Link: ${targetLink}`,
+        `Author: ${getAuthorText({ user: comment.user, name: comment.author_name, email: comment.author_email })}`,
+        `IP: ${comment.ip || 'Unknown'}`,
+        `Location: ${comment.ip_location ? getLocationText(comment.ip_location) : 'Unknown'}`,
+        `Agent: ${comment.user_agent ? getUserAgentText(comment.user_agent) : 'Unknown'}`
       ])
     })
 
@@ -79,7 +80,7 @@ export class CommentListener {
             `Hello, ${parentComment.author_name || 'there'}.`,
             `Your comment has a new reply from ${comment.author_name}:`,
             ``,
-            `${comment.content}`,
+            comment.content,
             ``,
             `View on ${targetTitle}: ${targetLink}`
           ])
@@ -107,10 +108,10 @@ export class CommentListener {
         `Comment Content: ${input.content || '-'}`,
         `Comment Author: ${input.author_name || '-'} · ${input.author_email || '-'} · ${input.author_website || '-'}`,
         `Error Detail: ${getMessageFromNormalError(error)}`,
-        `Author Agent: ${visitor.agent ? getUserAgentText(visitor.agent) : 'unknown'}`,
-        `Referer: ${visitor.referer || 'unknown'}`,
-        `IP: ${visitor.ip || 'unknown'}`,
-        `Location: ${location ? getLocationText(location) : 'unknown'}`
+        `Referer: ${visitor.referer || 'Unknown'}`,
+        `IP: ${visitor.ip || 'Unknown'}`,
+        `Location: ${location ? getLocationText(location) : 'Unknown'}`,
+        `Agent: ${visitor.agent ? getUserAgentText(visitor.agent) : 'Unknown'}`
       ])
     })
   }
