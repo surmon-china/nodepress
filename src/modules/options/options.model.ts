@@ -54,7 +54,6 @@ export class Blocklist {
   @prop({ type: () => [String], default: [] })
   ips: string[]
 
-  @IsEmail(undefined, { each: true })
   @ArrayUnique()
   @IsArray()
   @IsOptional()
