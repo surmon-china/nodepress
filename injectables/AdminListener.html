@@ -350,10 +350,10 @@ export class AdminListener {
       ...linesToEmailContent([
         &#x60;${subject}!&#x60;,
         &#x60;Time: ${getTimeText(new Date())}&#x60;,
-        &#x60;Referer: ${referer || &#x27;unknown&#x27;}&#x60;,
-        &#x60;IP: ${ip || &#x27;unknown&#x27;}&#x60;,
-        &#x60;Location: ${location ? getLocationText(location) : &#x27;unknown&#x27;}&#x60;,
-        &#x60;UserAgent: ${agent ? getUserAgentText(agent) : &#x27;unknown&#x27;}&#x60;
+        &#x60;Referer: ${referer || &#x27;Unknown&#x27;}&#x60;,
+        &#x60;IP: ${ip || &#x27;Unknown&#x27;}&#x60;,
+        &#x60;Location: ${location ? getLocationText(location) : &#x27;Unknown&#x27;}&#x60;,
+        &#x60;Agent: ${agent ? getUserAgentText(agent) : &#x27;Unknown&#x27;}&#x60;
       ])
     })
   }

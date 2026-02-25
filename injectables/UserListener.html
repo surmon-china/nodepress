@@ -403,7 +403,7 @@ export class UserListener {
 
   @OnEvent(EventKeys.UserCreated)
   handleUserCreated(user: User) {
-    logger.log(&#x60;New user created: ${user.name} (#${user.id})&#x60;)
+    // logger.log(&#x60;New user created: ${user.name} (#${user.id})&#x60;)
 
     const subject &#x3D; &#x60;New user registered: ${user.name} (#${user.id})&#x60;
     this.emailService.sendMailAs(APP_BIZ.FE_NAME, {
@@ -416,7 +416,7 @@ export class UserListener {
         &#x60;Email: ${user.email || &#x27;No email&#x27;}&#x60;,
         &#x60;Website: ${user.website || &#x27;No website&#x27;}&#x60;,
         &#x60;Providers: ${user.identities.map((identity) &#x3D;&gt; identity.provider).join(&#x27;, &#x27;)}&#x60;,
-        &#x60;Created At: ${getTimeText(user.created_at!)}&#x60;
+        &#x60;At: ${getTimeText(user.created_at!)}&#x60;
       ])
     })
   }
@@ -434,6 +434,7 @@ export class UserListener {
           &#x60;Hi ${user.name},&#x60;,
           &#x60;Your account (#${user.id}) and all related data have been permanently deleted from our database.&#x60;,
           &#x60;We are sorry to see you go.&#x60;,
+          &#x60;&#x60;,
           &#x60;&#x60;,
           &#x60;Best regards,&#x60;,
           &#x60;${APP_BIZ.FE_NAME} Team&#x60;

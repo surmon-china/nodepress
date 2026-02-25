@@ -186,7 +186,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/comment/comment.listener.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/comment/comment.listener.ts:31</a></div>
                             </td>
                         </tr>
 
@@ -295,8 +295,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="39"
-                                    class="link-to-prism">src/modules/comment/comment.listener.ts:39</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/modules/comment/comment.listener.ts:40</a></div>
                         </td>
                     </tr>
 
@@ -372,8 +372,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/modules/comment/comment.listener.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="95"
+                                    class="link-to-prism">src/modules/comment/comment.listener.ts:95</a></div>
                         </td>
                     </tr>
 
@@ -438,7 +438,8 @@ import { getCommentNotificationEmail } from &#x27;@app/modules/comment/comment.h
 import { CommentTargetType } from &#x27;@app/modules/comment/comment.constant&#x27;
 import { CreateCommentDto } from &#x27;@app/modules/comment/comment.dto&#x27;
 import { CommentWith } from &#x27;@app/modules/comment/comment.model&#x27;
-import { getLocationText, getUserAgentText, linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
+import { getLocationText, getUserAgentText, getAuthorText } from &#x27;@app/transformers/email.transformer&#x27;
+import { linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { getPermalink } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
@@ -461,25 +462,25 @@ export class CommentListener {
     const targetLink &#x3D; getPermalink(comment.target_type, comment.target_id) + &#x60;#comment-${comment.id}&#x60;
     const targetTitle &#x3D;
       comment.target_type &#x3D;&#x3D;&#x3D; CommentTargetType.Page
-        ? &#x60;Page #${comment.target_id}&#x60;
+        ? &#x60;page #${comment.target_id}&#x60;
         : await this.articleService
             .getDetail(comment.target_id, { lean: true })
             .then((article) &#x3D;&gt; &#x60;&quot;${article.title}&quot;&#x60;)
-            .catch(() &#x3D;&gt; &#x60;Article #${comment.target_id}&#x60;)
+            .catch(() &#x3D;&gt; &#x60;article #${comment.target_id}&#x60;)
 
     // Email to admin
-    const subject &#x3D; &#x60;You have a new comment on &quot;${targetTitle}&quot;&#x60;
+    const subject &#x3D; &#x60;You have a new comment on ${targetTitle}&#x60;
     this.emailService.sendMailAs(APP_BIZ.NAME, {
       to: APP_BIZ.ADMIN_EMAIL,
       subject,
       ...linesToEmailContent([
         subject,
-        &#x60;Content: ${comment.content}&#x60;,
-        &#x60;Author: ${comment.author_name || &#x27;-&#x27;} · ${comment.author_email || &#x27;-&#x27;} · ${comment.author_website || &#x27;-&#x27;}&#x60;,
-        &#x60;Agent: ${comment.user_agent ? getUserAgentText(comment.user_agent) : &#x27;unknown&#x27;}&#x60;,
-        &#x60;IP: ${comment.ip || &#x27;unknown&#x27;}&#x60;,
-        &#x60;Location: ${comment.ip_location ? getLocationText(comment.ip_location) : &#x27;unknown&#x27;}&#x60;,
-        &#x60;URL: ${targetLink}&#x60;
+        comment.content,
+        &#x60;Link: ${targetLink}&#x60;,
+        &#x60;Author: ${getAuthorText({ user: comment.user, name: comment.author_name, email: comment.author_email })}&#x60;,
+        &#x60;IP: ${comment.ip || &#x27;Unknown&#x27;}&#x60;,
+        &#x60;Location: ${comment.ip_location ? getLocationText(comment.ip_location) : &#x27;Unknown&#x27;}&#x60;,
+        &#x60;Agent: ${comment.user_agent ? getUserAgentText(comment.user_agent) : &#x27;Unknown&#x27;}&#x60;
       ])
     })
 
@@ -500,7 +501,7 @@ export class CommentListener {
             &#x60;Hello, ${parentComment.author_name || &#x27;there&#x27;}.&#x60;,
             &#x60;Your comment has a new reply from ${comment.author_name}:&#x60;,
             &#x60;&#x60;,
-            &#x60;${comment.content}&#x60;,
+            comment.content,
             &#x60;&#x60;,
             &#x60;View on ${targetTitle}: ${targetLink}&#x60;
           ])
@@ -528,10 +529,10 @@ export class CommentListener {
         &#x60;Comment Content: ${input.content || &#x27;-&#x27;}&#x60;,
         &#x60;Comment Author: ${input.author_name || &#x27;-&#x27;} · ${input.author_email || &#x27;-&#x27;} · ${input.author_website || &#x27;-&#x27;}&#x60;,
         &#x60;Error Detail: ${getMessageFromNormalError(error)}&#x60;,
-        &#x60;Author Agent: ${visitor.agent ? getUserAgentText(visitor.agent) : &#x27;unknown&#x27;}&#x60;,
-        &#x60;Referer: ${visitor.referer || &#x27;unknown&#x27;}&#x60;,
-        &#x60;IP: ${visitor.ip || &#x27;unknown&#x27;}&#x60;,
-        &#x60;Location: ${location ? getLocationText(location) : &#x27;unknown&#x27;}&#x60;
+        &#x60;Referer: ${visitor.referer || &#x27;Unknown&#x27;}&#x60;,
+        &#x60;IP: ${visitor.ip || &#x27;Unknown&#x27;}&#x60;,
+        &#x60;Location: ${location ? getLocationText(location) : &#x27;Unknown&#x27;}&#x60;,
+        &#x60;Agent: ${visitor.agent ? getUserAgentText(visitor.agent) : &#x27;Unknown&#x27;}&#x60;
       ])
     })
   }
