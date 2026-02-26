@@ -180,7 +180,13 @@ __decorate([
 exports.User = User = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(auto_increment_1.AutoIncrementID, database_constant_1.GENERAL_DB_AUTO_INCREMENT_ID_CONFIG),
-    (0, typegoose_1.index)({ 'identities.provider': 1, 'identities.uid': 1 }, { unique: true, sparse: true }),
+    (0, typegoose_1.index)({ 'identities.provider': 1, 'identities.uid': 1 }, {
+        unique: true,
+        partialFilterExpression: {
+            'identities.provider': { $type: 'string' },
+            'identities.uid': { $type: 'string' }
+        }
+    }),
     (0, typegoose_1.modelOptions)({
         schemaOptions: {
             id: false,
