@@ -75,9 +75,6 @@ export class Vote {
 
   @prop({ type: Date, default: Date.now, immutable: true, index: true })
   created_at?: Date
-
-  @prop({ type: Date, default: Date.now })
-  updated_at?: Date
 }
 
 export const VoteProvider = getProviderByTypegooseClass(Vote)
