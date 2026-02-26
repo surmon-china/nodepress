@@ -4,6 +4,8 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { GeneralAuthorType } from '@app/constants/author.constant'
+
 export enum CommentTargetType {
   Article = 'article',
   Page = 'page'
@@ -17,8 +19,8 @@ export enum CommentStatus {
 }
 
 export enum CommentAuthorType {
-  Guest = 'guest',
-  User = 'user'
+  Guest = GeneralAuthorType.Guest,
+  User = GeneralAuthorType.User
 }
 
 export enum CommentAuthorStatus {
