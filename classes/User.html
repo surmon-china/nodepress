@@ -288,7 +288,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">src/modules/user/user.model.ts:121</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/modules/user/user.model.ts:130</a></div>
                         </td>
                     </tr>
 
@@ -325,7 +325,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/modules/user/user.model.ts:145</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="154" class="link-to-prism">src/modules/user/user.model.ts:154</a></div>
                         </td>
                     </tr>
 
@@ -363,7 +363,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/modules/user/user.model.ts:142</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="151" class="link-to-prism">src/modules/user/user.model.ts:151</a></div>
                         </td>
                     </tr>
 
@@ -403,7 +403,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/modules/user/user.model.ts:105</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="114" class="link-to-prism">src/modules/user/user.model.ts:114</a></div>
                         </td>
                     </tr>
 
@@ -444,7 +444,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/modules/user/user.model.ts:137</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">src/modules/user/user.model.ts:146</a></div>
                         </td>
                     </tr>
 
@@ -480,7 +480,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/modules/user/user.model.ts:85</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/modules/user/user.model.ts:94</a></div>
                         </td>
                     </tr>
 
@@ -521,7 +521,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="129" class="link-to-prism">src/modules/user/user.model.ts:129</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/modules/user/user.model.ts:138</a></div>
                         </td>
                     </tr>
 
@@ -561,7 +561,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/modules/user/user.model.ts:97</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/modules/user/user.model.ts:106</a></div>
                         </td>
                     </tr>
 
@@ -599,7 +599,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/modules/user/user.model.ts:90</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/modules/user/user.model.ts:99</a></div>
                         </td>
                     </tr>
 
@@ -636,7 +636,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/modules/user/user.model.ts:148</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="157" class="link-to-prism">src/modules/user/user.model.ts:157</a></div>
                         </td>
                     </tr>
 
@@ -677,7 +677,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">src/modules/user/user.model.ts:113</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">src/modules/user/user.model.ts:122</a></div>
                         </td>
                     </tr>
 
@@ -761,7 +761,16 @@ export class UserIdentity {
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
-@index({ &#x27;identities.provider&#x27;: 1, &#x27;identities.uid&#x27;: 1 }, { unique: true, sparse: true })
+@index(
+  { &#x27;identities.provider&#x27;: 1, &#x27;identities.uid&#x27;: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      &#x27;identities.provider&#x27;: { $type: &#x27;string&#x27; },
+      &#x27;identities.uid&#x27;: { $type: &#x27;string&#x27; }
+    }
+  }
+)
 @modelOptions({
   schemaOptions: {
     id: false,
