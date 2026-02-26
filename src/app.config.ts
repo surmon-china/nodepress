@@ -39,6 +39,7 @@ export const APP_BIZ = Object.freeze({
   DEFAULT_CACHE_TTL: 0,
   /** The maximum number of items allowed per page in paginated requests. */
   PAGINATION_MAX_SIZE: 50,
+  /** Default pagination page size for lists. */
   PAGINATION_DEFAULT_SIZE: 16,
   /** Application display name */
   NAME: 'NodePress',
