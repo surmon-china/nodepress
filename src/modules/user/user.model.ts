@@ -69,7 +69,16 @@ export class UserIdentity {
 
 @plugin(mongoosePaginate)
 @plugin(AutoIncrementID, GENERAL_DB_AUTO_INCREMENT_ID_CONFIG)
-@index({ 'identities.provider': 1, 'identities.uid': 1 }, { unique: true, sparse: true })
+@index(
+  { 'identities.provider': 1, 'identities.uid': 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      'identities.provider': { $type: 'string' },
+      'identities.uid': { $type: 'string' }
+    }
+  }
+)
 @modelOptions({
   schemaOptions: {
     id: false,
