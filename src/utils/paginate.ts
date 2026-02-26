@@ -6,6 +6,7 @@
 
 import _merge from 'lodash/merge'
 import type { Model, Schema, QueryFilter, QueryOptions, LeanOptions, HydratedDocument } from 'mongoose'
+import { APP_BIZ } from '@app/app.config'
 
 export interface PaginateResult<T> {
   documents: Array<T>
@@ -32,7 +33,7 @@ export interface PaginateOptions {
 
 const DEFAULT_OPTIONS: Required<Pick<PaginateOptions, 'page' | 'perPage' | 'dateSort'>> = Object.freeze({
   page: 1,
-  perPage: 16,
+  perPage: APP_BIZ.PAGINATION_DEFAULT_SIZE,
   dateSort: -1 as const
 })
 
