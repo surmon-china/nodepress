@@ -415,7 +415,7 @@ export class UserListener {
         &#x60;Name: ${user.name}&#x60;,
         &#x60;Email: ${user.email || &#x27;No email&#x27;}&#x60;,
         &#x60;Website: ${user.website || &#x27;No website&#x27;}&#x60;,
-        &#x60;Providers: ${user.identities.map((identity) &#x3D;&gt; identity.provider).join(&#x27;, &#x27;)}&#x60;,
+        &#x60;Identities: ${user.identities.map((identity) &#x3D;&gt; identity.provider).join(&#x27;, &#x27;) || &#x27;No identities&#x27;}&#x60;,
         &#x60;At: ${getTimeText(user.created_at!)}&#x60;
       ])
     })

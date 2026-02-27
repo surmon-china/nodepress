@@ -560,6 +560,7 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _merge from &#x27;lodash/merge&#x27;
 import type { Model, Schema, QueryFilter, QueryOptions, LeanOptions, HydratedDocument } from &#x27;mongoose&#x27;
+import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 export interface PaginateResult&lt;T&gt; {
   documents: Array&lt;T&gt;
@@ -586,7 +587,7 @@ export interface PaginateOptions {
 
 const DEFAULT_OPTIONS: Required&lt;Pick&lt;PaginateOptions, &#x27;page&#x27; | &#x27;perPage&#x27; | &#x27;dateSort&#x27;&gt;&gt; &#x3D; Object.freeze({
   page: 1,
-  perPage: 16,
+  perPage: APP_BIZ.PAGINATION_DEFAULT_SIZE,
   dateSort: -1 as const
 })
 

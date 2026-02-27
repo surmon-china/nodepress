@@ -255,7 +255,7 @@ export class CreateCommentDto extends PickType(Comment, [
 
 export class UpdateCommentDto extends IntersectionType(
   PartialType(CreateCommentDto),
-  PartialType(PickType(Comment, [&#x27;status&#x27;, &#x27;likes&#x27;, &#x27;dislikes&#x27;, &#x27;ip&#x27;, &#x27;user_agent&#x27;, &#x27;extras&#x27;] as const))
+  PartialType(PickType(Comment, [&#x27;status&#x27;, &#x27;likes&#x27;, &#x27;dislikes&#x27;, &#x27;extras&#x27;] as const))
 ) {}
 
 export class CommentPaginateQueryDto extends IntersectionType(PaginateOptionWithHotSortDto, KeywordQueryDto) {
