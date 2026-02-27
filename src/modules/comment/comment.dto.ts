@@ -27,7 +27,7 @@ export class CreateCommentDto extends PickType(Comment, [
 
 export class UpdateCommentDto extends IntersectionType(
   PartialType(CreateCommentDto),
-  PartialType(PickType(Comment, ['status', 'likes', 'dislikes', 'ip', 'user_agent', 'extras'] as const))
+  PartialType(PickType(Comment, ['status', 'likes', 'dislikes', 'extras'] as const))
 ) {}
 
 export class CommentPaginateQueryDto extends IntersectionType(PaginateOptionWithHotSortDto, KeywordQueryDto) {
