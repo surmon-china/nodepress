@@ -5,9 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mongoosePaginate = mongoosePaginate;
 const merge_1 = __importDefault(require("lodash/merge"));
+const app_config_1 = require("../app.config");
 const DEFAULT_OPTIONS = Object.freeze({
     page: 1,
-    perPage: 16,
+    perPage: app_config_1.APP_BIZ.PAGINATION_DEFAULT_SIZE,
     dateSort: -1
 });
 function doPaginate(queryFilter = {}, paginateOptions = {}, forceLean = false) {

@@ -35,7 +35,6 @@ let Vote = class Vote {
     ip_location;
     user_agent;
     created_at;
-    updated_at;
 };
 exports.Vote = Vote;
 __decorate([
@@ -86,10 +85,6 @@ __decorate([
     (0, typegoose_1.prop)({ type: Date, default: Date.now, immutable: true, index: true }),
     __metadata("design:type", Date)
 ], Vote.prototype, "created_at", void 0);
-__decorate([
-    (0, typegoose_1.prop)({ type: Date, default: Date.now }),
-    __metadata("design:type", Date)
-], Vote.prototype, "updated_at", void 0);
 exports.Vote = Vote = __decorate([
     (0, typegoose_1.plugin)(paginate_1.mongoosePaginate),
     (0, typegoose_1.plugin)(mongoose_lean_virtuals_1.default),

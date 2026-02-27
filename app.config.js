@@ -24,6 +24,7 @@ exports.APP_BIZ = Object.freeze({
     PORT: 8000,
     DEFAULT_CACHE_TTL: 0,
     PAGINATION_MAX_SIZE: 50,
+    PAGINATION_DEFAULT_SIZE: 16,
     NAME: 'NodePress',
     URL: 'https://api.surmon.me',
     ADMIN_EMAIL: arg({ key: 'admin_email' }),

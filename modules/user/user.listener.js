@@ -36,7 +36,7 @@ let UserListener = class UserListener {
                 `Name: ${user.name}`,
                 `Email: ${user.email || 'No email'}`,
                 `Website: ${user.website || 'No website'}`,
-                `Providers: ${user.identities.map((identity) => identity.provider).join(', ')}`,
+                `Identities: ${user.identities.map((identity) => identity.provider).join(', ') || 'No identities'}`,
                 `At: ${(0, email_transformer_1.getTimeText)(user.created_at)}`
             ])
         });

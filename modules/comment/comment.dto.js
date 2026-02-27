@@ -31,7 +31,7 @@ class CreateCommentDto extends (0, mapped_types_1.PickType)(comment_model_1.Comm
 ]) {
 }
 exports.CreateCommentDto = CreateCommentDto;
-class UpdateCommentDto extends (0, mapped_types_1.IntersectionType)((0, mapped_types_1.PartialType)(CreateCommentDto), (0, mapped_types_1.PartialType)((0, mapped_types_1.PickType)(comment_model_1.Comment, ['status', 'likes', 'dislikes', 'ip', 'user_agent', 'extras']))) {
+class UpdateCommentDto extends (0, mapped_types_1.IntersectionType)((0, mapped_types_1.PartialType)(CreateCommentDto), (0, mapped_types_1.PartialType)((0, mapped_types_1.PickType)(comment_model_1.Comment, ['status', 'likes', 'dislikes', 'extras']))) {
 }
 exports.UpdateCommentDto = UpdateCommentDto;
 class CommentPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionWithHotSortDto, querys_dto_1.KeywordQueryDto) {
