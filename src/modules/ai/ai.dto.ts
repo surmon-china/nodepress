@@ -4,10 +4,11 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IsString, IsNumber, IsEnum, IsDefined, IsOptional, Min } from 'class-validator'
+import { IsString, IsNotEmpty, IsNumber, IsEnum, IsDefined, IsOptional, Min } from 'class-validator'
 import { AiModelIds } from './ai.config'
 
 export class GenerateAiContentDto {
+  @IsNotEmpty()
   @IsString()
   @IsOptional()
   prompt?: string
