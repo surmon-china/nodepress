@@ -166,6 +166,7 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#prompt" >prompt</a>
                             </li>
@@ -226,7 +227,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/modules/ai/ai.dto.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/ai/ai.dto.ts:18</a></div>
                         </td>
                     </tr>
 
@@ -239,6 +240,7 @@
                 <td class="col-md-4">
                     <a name="prompt"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier">Optional</span>
@@ -258,13 +260,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />
+                            @IsNotEmpty()<br />@IsString()<br />@IsOptional()<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/modules/ai/ai.dto.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/modules/ai/ai.dto.ts:14</a></div>
                         </td>
                     </tr>
 
@@ -303,7 +305,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/modules/ai/ai.dto.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/modules/ai/ai.dto.ts:23</a></div>
                         </td>
                     </tr>
 
@@ -322,10 +324,11 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsNumber, IsEnum, IsDefined, IsOptional, Min } from &#x27;class-validator&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsNotEmpty, IsNumber, IsEnum, IsDefined, IsOptional, Min } from &#x27;class-validator&#x27;
 import { AiModelIds } from &#x27;./ai.config&#x27;
 
 export class GenerateAiContentDto {
+  @IsNotEmpty()
   @IsString()
   @IsOptional()
   prompt?: string

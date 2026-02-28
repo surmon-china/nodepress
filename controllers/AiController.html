@@ -234,8 +234,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="57"
-                                    class="link-to-prism">src/modules/ai/ai.controller.ts:57</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="61"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:61</a></div>
                         </td>
                     </tr>
 
@@ -313,8 +313,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/modules/ai/ai.controller.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:53</a></div>
                         </td>
                     </tr>
 
@@ -393,8 +393,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/modules/ai/ai.controller.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/modules/ai/ai.controller.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -481,7 +481,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>    <code>{ models: any; prompts: any; extra_keys: { article_summary: any; article_review: any; comment_generation: any; }; }</code>
+                            <b>Returns : </b>    <code>{ models: any; prompts: { article_summary: any; article_review: any; comment_reply: any; }; extra_keys: { article_summary: any; article_review: any; comment_generation: any; }; }</code>
 
                         </div>
                 </td>
@@ -527,7 +527,11 @@ export class AiController {
   getAiConfig() {
     return {
       models: AiModelsList,
-      prompts: DEFAULT_AI_PROMPT_TEMPLATES,
+      prompts: {
+        article_summary: DEFAULT_AI_PROMPT_TEMPLATES.articleSummary,
+        article_review: DEFAULT_AI_PROMPT_TEMPLATES.articleReview,
+        comment_reply: DEFAULT_AI_PROMPT_TEMPLATES.commentReply
+      },
       extra_keys: {
         article_summary: ArticleAiSummaryExtraKeys,
         article_review: ArticleAiReviewExtraKeys,

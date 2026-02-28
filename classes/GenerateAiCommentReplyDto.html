@@ -177,6 +177,7 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#prompt" >prompt</a>
                             </li>
@@ -236,7 +237,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/modules/ai/ai.dto.ts:34</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/modules/ai/ai.dto.ts:35</a></div>
                         </td>
                     </tr>
 
@@ -280,7 +281,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/GenerateAiContentDto.html#source" target="_self" >GenerateAiContentDto:17</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/GenerateAiContentDto.html#source" target="_self" >GenerateAiContentDto:18</a></code>
 </div>
                         </td>
                     </tr>
@@ -294,6 +295,7 @@
                 <td class="col-md-4">
                     <a name="prompt"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier">Optional</span>
@@ -313,7 +315,7 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />
+                            @IsNotEmpty()<br />@IsString()<br />@IsOptional()<br />
                         </code>
                     </td>
                 </tr>
@@ -325,7 +327,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/GenerateAiContentDto.html#source" target="_self" >GenerateAiContentDto:13</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/GenerateAiContentDto.html#source" target="_self" >GenerateAiContentDto:14</a></code>
 </div>
                         </td>
                     </tr>
@@ -371,7 +373,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/GenerateAiContentDto.html#source" target="_self" >GenerateAiContentDto:22</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/GenerateAiContentDto.html#source" target="_self" >GenerateAiContentDto:23</a></code>
 </div>
                         </td>
                     </tr>
@@ -391,10 +393,11 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsNumber, IsEnum, IsDefined, IsOptional, Min } from &#x27;class-validator&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsNotEmpty, IsNumber, IsEnum, IsDefined, IsOptional, Min } from &#x27;class-validator&#x27;
 import { AiModelIds } from &#x27;./ai.config&#x27;
 
 export class GenerateAiContentDto {
+  @IsNotEmpty()
   @IsString()
   @IsOptional()
   prompt?: string

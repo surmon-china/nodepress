@@ -420,7 +420,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>generateCommentReply(comment: <a href="../classes/Comment.html" target="_self">Omit&lt;Comment | user&gt;</a>, payload?: <a href="../classes/GenerateAiCommentReplyDto.html" target="_self">GenerateAiCommentReplyDto</a>)</code>
+                    <code>generateCommentReply(comment: <a href="../classes/Comment.html" target="_self">Omit&lt;Comment | user&gt;</a>, config?: <a href="../classes/GenerateAiCommentReplyDto.html" target="_self">GenerateAiCommentReplyDto</a>)</code>
                 </td>
             </tr>
 
@@ -461,7 +461,7 @@
 
                                         </tr>
                                         <tr>
-                                                <td>payload</td>
+                                                <td>config</td>
                                             <td>
                                                             <code><a href="../classes/GenerateAiCommentReplyDto.html" target="_self" >GenerateAiCommentReplyDto</a></code>
                                             </td>
@@ -711,29 +711,29 @@ export class AiService {
     return template.replace(/{{(\w+)}}/g, (_, key) &#x3D;&gt; data[key] || &#x27;&#x27;)
   }
 
-  public async generateArticleSummary({ model, prompt, article_id }: GenerateAiArticleContentDto) {
+  public async generateArticleSummary({ model, prompt, temperature, article_id }: GenerateAiArticleContentDto) {
     const article &#x3D; await this.articleService.getDetail(article_id, { lean: true })
     const promptTemplate &#x3D; prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.articleSummary
     const finalPrompt &#x3D; this.renderTemplate(promptTemplate, { article: article.content })
     return await this.requestAiGateway({
       prompt: finalPrompt,
       model: model ?? AiModelIds.DeepSeekChat,
-      temperature: 0.4
+      temperature: temperature ?? 0.4
     })
   }
 
-  public async generateArticleReview({ model, prompt, article_id }: GenerateAiArticleContentDto) {
+  public async generateArticleReview({ model, prompt, temperature, article_id }: GenerateAiArticleContentDto) {
     const article &#x3D; await this.articleService.getDetail(article_id, { lean: true })
     const promptTemplate &#x3D; prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.articleReview
     const finalPrompt &#x3D; this.renderTemplate(promptTemplate, { article: article.content })
     return await this.requestAiGateway({
       prompt: finalPrompt,
       model: model ?? AiModelIds.DeepSeekChat,
-      temperature: 1.4
+      temperature: temperature ?? 1.4
     })
   }
 
-  public async generateCommentReply(comment: Omit&lt;Comment, &#x27;user&#x27;&gt;, payload?: GenerateAiCommentReplyDto) {
+  public async generateCommentReply(comment: Omit&lt;Comment, &#x27;user&#x27;&gt;, config?: GenerateAiCommentReplyDto) {
     let contextInfo &#x3D; &#x27;nil&#x27;
 
     if (comment.target_type &#x3D;&#x3D;&#x3D; CommentTargetType.Page) {
@@ -753,16 +753,16 @@ export class AiService {
       ].join(&#x27;\n&#x27;)
     }
 
-    const promptTemplate &#x3D; payload?.prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.commentReply
+    const promptTemplate &#x3D; config?.prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.commentReply
     const finalPrompt &#x3D; this.renderTemplate(promptTemplate, {
       context: contextInfo,
       comment: comment.content
     })
 
     return await this.requestAiGateway({
-      model: payload?.model ?? AiModelIds.Gemini25Flash,
       prompt: finalPrompt,
-      temperature: 0.8
+      model: config?.model ?? AiModelIds.Gemini25Flash,
+      temperature: config?.temperature ?? 0.8
     })
   }
 }
