@@ -73,29 +73,29 @@ export class AiService {
     return template.replace(/{{(\w+)}}/g, (_, key) => data[key] || '')
   }
 
-  public async generateArticleSummary({ model, prompt, article_id }: GenerateAiArticleContentDto) {
+  public async generateArticleSummary({ model, prompt, temperature, article_id }: GenerateAiArticleContentDto) {
     const article = await this.articleService.getDetail(article_id, { lean: true })
     const promptTemplate = prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.articleSummary
     const finalPrompt = this.renderTemplate(promptTemplate, { article: article.content })
     return await this.requestAiGateway({
       prompt: finalPrompt,
       model: model ?? AiModelIds.DeepSeekChat,
-      temperature: 0.4
+      temperature: temperature ?? 0.4
     })
   }
 
-  public async generateArticleReview({ model, prompt, article_id }: GenerateAiArticleContentDto) {
+  public async generateArticleReview({ model, prompt, temperature, article_id }: GenerateAiArticleContentDto) {
     const article = await this.articleService.getDetail(article_id, { lean: true })
     const promptTemplate = prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.articleReview
     const finalPrompt = this.renderTemplate(promptTemplate, { article: article.content })
     return await this.requestAiGateway({
       prompt: finalPrompt,
       model: model ?? AiModelIds.DeepSeekChat,
-      temperature: 1.4
+      temperature: temperature ?? 1.4
     })
   }
 
-  public async generateCommentReply(comment: Omit<Comment, 'user'>, payload?: GenerateAiCommentReplyDto) {
+  public async generateCommentReply(comment: Omit<Comment, 'user'>, config?: GenerateAiCommentReplyDto) {
     let contextInfo = 'nil'
 
     if (comment.target_type === CommentTargetType.Page) {
@@ -115,16 +115,16 @@ export class AiService {
       ].join('\n')
     }
 
-    const promptTemplate = payload?.prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.commentReply
+    const promptTemplate = config?.prompt ?? DEFAULT_AI_PROMPT_TEMPLATES.commentReply
     const finalPrompt = this.renderTemplate(promptTemplate, {
       context: contextInfo,
       comment: comment.content
     })
 
     return await this.requestAiGateway({
-      model: payload?.model ?? AiModelIds.Gemini25Flash,
       prompt: finalPrompt,
-      temperature: 0.8
+      model: config?.model ?? AiModelIds.Gemini25Flash,
+      temperature: config?.temperature ?? 0.8
     })
   }
 }

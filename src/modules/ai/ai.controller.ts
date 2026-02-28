@@ -33,7 +33,11 @@ export class AiController {
   getAiConfig() {
     return {
       models: AiModelsList,
-      prompts: DEFAULT_AI_PROMPT_TEMPLATES,
+      prompts: {
+        article_summary: DEFAULT_AI_PROMPT_TEMPLATES.articleSummary,
+        article_review: DEFAULT_AI_PROMPT_TEMPLATES.articleReview,
+        comment_reply: DEFAULT_AI_PROMPT_TEMPLATES.commentReply
+      },
       extra_keys: {
         article_summary: ArticleAiSummaryExtraKeys,
         article_review: ArticleAiReviewExtraKeys,
