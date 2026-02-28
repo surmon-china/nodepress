@@ -64,27 +64,27 @@ let AiService = class AiService {
     renderTemplate(template, data) {
         return template.replace(/{{(\w+)}}/g, (_, key) => data[key] || '');
     }
-    async generateArticleSummary({ model, prompt, article_id }) {
+    async generateArticleSummary({ model, prompt, temperature, article_id }) {
         const article = await this.articleService.getDetail(article_id, { lean: true });
         const promptTemplate = prompt ?? ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.articleSummary;
         const finalPrompt = this.renderTemplate(promptTemplate, { article: article.content });
         return await this.requestAiGateway({
             prompt: finalPrompt,
             model: model ?? ai_config_1.AiModelIds.DeepSeekChat,
-            temperature: 0.4
+            temperature: temperature ?? 0.4
         });
     }
-    async generateArticleReview({ model, prompt, article_id }) {
+    async generateArticleReview({ model, prompt, temperature, article_id }) {
         const article = await this.articleService.getDetail(article_id, { lean: true });
         const promptTemplate = prompt ?? ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.articleReview;
         const finalPrompt = this.renderTemplate(promptTemplate, { article: article.content });
         return await this.requestAiGateway({
             prompt: finalPrompt,
             model: model ?? ai_config_1.AiModelIds.DeepSeekChat,
-            temperature: 1.4
+            temperature: temperature ?? 1.4
         });
     }
-    async generateCommentReply(comment, payload) {
+    async generateCommentReply(comment, config) {
         let contextInfo = 'nil';
         if (comment.target_type === comment_constant_1.CommentTargetType.Page) {
             const options = await this.optionsService.ensureOptions();
@@ -103,15 +103,15 @@ let AiService = class AiService {
                 `Article Summary: ${(0, extra_transformer_1.getExtraValue)(article.extras, extras_constant_1.ArticleAiSummaryExtraKeys.Content) || article.content.substring(0, 800)}`
             ].join('\n');
         }
-        const promptTemplate = payload?.prompt ?? ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.commentReply;
+        const promptTemplate = config?.prompt ?? ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.commentReply;
         const finalPrompt = this.renderTemplate(promptTemplate, {
             context: contextInfo,
             comment: comment.content
         });
         return await this.requestAiGateway({
-            model: payload?.model ?? ai_config_1.AiModelIds.Gemini25Flash,
             prompt: finalPrompt,
-            temperature: 0.8
+            model: config?.model ?? ai_config_1.AiModelIds.Gemini25Flash,
+            temperature: config?.temperature ?? 0.8
         });
     }
 };

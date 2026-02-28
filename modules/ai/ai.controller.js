@@ -32,7 +32,11 @@ let AiController = class AiController {
     getAiConfig() {
         return {
             models: ai_config_1.AiModelsList,
-            prompts: ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES,
+            prompts: {
+                article_summary: ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.articleSummary,
+                article_review: ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.articleReview,
+                comment_reply: ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.commentReply
+            },
             extra_keys: {
                 article_summary: extras_constant_1.ArticleAiSummaryExtraKeys,
                 article_review: extras_constant_1.ArticleAiReviewExtraKeys,
