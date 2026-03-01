@@ -13,7 +13,7 @@ import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { resolveGeneralAuthor } from '@app/constants/author.constant'
-import { ArticleStatsService } from '@app/modules/article/article.service.stats'
+import { ArticleSyncService } from '@app/modules/article/article.service.sync'
 import { CommentService } from '@app/modules/comment/comment.service'
 import { UserService } from '@app/modules/user/user.service'
 import { IPService } from '@app/core/helper/helper.service.ip'
@@ -29,7 +29,7 @@ export class VoteController {
     private readonly voteService: VoteService,
     private readonly userService: UserService,
     private readonly commentService: CommentService,
-    private readonly articleStatsService: ArticleStatsService
+    private readonly articleSyncService: ArticleSyncService
   ) {}
 
   @Post('/article')
@@ -39,7 +39,7 @@ export class VoteController {
     @Body() dto: ArticleVoteDto,
     @RequestContext() { visitor, identity }: IRequestContext
   ): Promise<number> {
-    const result = await this.articleStatsService.incrementStatistics(dto.article_id, 'likes')
+    const result = await this.articleSyncService.incrementStatistics(dto.article_id, 'likes')
 
     const [user, ipLocation] = await Promise.all([
       identity.isUser ? this.userService.findOne(identity.payload!.uid!) : null,

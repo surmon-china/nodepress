@@ -5,39 +5,36 @@
  */
 
 import { Injectable, BadRequestException } from '@nestjs/common'
+import { MongooseModel, MongooseId } from '@app/interfaces/mongoose.interface'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { SortOrder } from '@app/constants/sort.constant'
 import { ARTICLE_PUBLIC_FILTER } from './article.constant'
-import { Article, ArticleStats } from './article.model'
+import { Article } from './article.model'
 
 @Injectable()
 export class ArticleStatsService {
   constructor(@InjectModel(Article) private readonly articleModel: MongooseModel<Article>) {}
 
-  public async incrementStatistics(articleId: number, field: keyof ArticleStats): Promise<number> {
-    const result = await this.articleModel
-      .findOneAndUpdate(
-        { id: articleId, ...ARTICLE_PUBLIC_FILTER },
-        { $inc: { [`stats.${field}`]: 1 } },
-        { projection: { [`stats.${field}`]: 1 }, timestamps: false, returnDocument: 'after' }
-      )
-      .lean()
-      .exec()
-    return result?.stats?.[field] ?? 0
+  public async getCountsByTagIds(tagIds: MongooseId[], publicOnly: boolean) {
+    const matchStage = publicOnly ? { ...ARTICLE_PUBLIC_FILTER } : {}
+    const counts = await this.articleModel.aggregate<{ _id: MongooseId; count: number }>([
+      { $match: { tags: { $in: tagIds }, ...matchStage } },
+      { $unwind: '$tags' },
+      { $match: { tags: { $in: tagIds } } },
+      { $group: { _id: '$tags', count: { $sum: 1 } } }
+    ])
+    return new Map(counts.map((c) => [c._id.toString(), c.count]))
   }
 
-  public updateStatsComments(articleId: number, commentCount: number) {
-    return this.articleModel
-      .updateOne({ id: articleId }, { $set: { 'stats.comments': commentCount } }, { timestamps: false })
-      .exec()
-  }
-
-  public getTotalCount(publicOnly: boolean): Promise<number> {
-    return this.articleModel
-      .countDocuments(publicOnly ? ARTICLE_PUBLIC_FILTER : {})
-      .lean()
-      .exec()
+  public async getCountsByCategoryIds(categoryIds: MongooseId[], publicOnly: boolean) {
+    const matchStage = publicOnly ? { ...ARTICLE_PUBLIC_FILTER } : {}
+    const counts = await this.articleModel.aggregate<{ _id: MongooseId; count: number }>([
+      { $match: { categories: { $in: categoryIds }, ...matchStage } },
+      { $unwind: '$categories' },
+      { $match: { categories: { $in: categoryIds } } },
+      { $group: { _id: '$categories', count: { $sum: 1 } } }
+    ])
+    return new Map(counts.map((c) => [c._id.toString(), c.count]))
   }
 
   public async getCalendar(publicOnly: boolean, timezone = 'GMT') {
@@ -73,5 +70,9 @@ export class ArticleStatsService {
       totalViews: result?.totalViews ?? 0,
       totalLikes: result?.totalLikes ?? 0
     }
+  }
+
+  public getTotalCount(publicOnly: boolean): Promise<number> {
+    return this.articleModel.countDocuments(publicOnly ? ARTICLE_PUBLIC_FILTER : {}).exec()
   }
 }

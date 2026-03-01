@@ -5,16 +5,15 @@
  */
 
 import type { QueryFilter } from 'mongoose'
-import { Injectable, OnModuleInit, NotFoundException, ConflictException } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { Injectable, Inject, forwardRef, OnModuleInit, NotFoundException, ConflictException } from '@nestjs/common'
+import { MongooseModel, MongooseDoc, WithId } from '@app/interfaces/mongoose.interface'
 import { InjectModel } from '@app/transformers/model.transformer'
-import type { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
-import type { MongooseId, WithId } from '@app/interfaces/mongoose.interface'
-import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
-import { SeoService } from '@app/core/helper/helper.service.seo'
-import { ArchiveService } from '@app/modules/archive/archive.service'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { ARTICLE_PUBLIC_FILTER } from '@app/modules/article/article.constant'
-import { Article } from '@app/modules/article/article.model'
+import { SeoService } from '@app/core/helper/helper.service.seo'
+import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
+import { ArticleStatsService } from '@app/modules/article/article.service.stats'
+import { EventKeys } from '@app/constants/events.constant'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { SortOrder } from '@app/constants/sort.constant'
 import { getTagUrl } from '@app/transformers/urlmap.transformer'
@@ -30,14 +29,14 @@ export class TagService implements OnModuleInit {
   private allPublicTagsCache: CacheManualResult<Array<Tag>>
 
   constructor(
+    private readonly eventEmitter: EventEmitter2,
     private readonly seoService: SeoService,
     private readonly cacheService: CacheService,
-    private readonly archiveService: ArchiveService,
-    @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>,
-    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
+    @Inject(forwardRef(() => ArticleStatsService)) private readonly articleStatsService: ArticleStatsService,
+    @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>
   ) {
     this.allPublicTagsCache = this.cacheService.manual<Array<Tag>>({
-      key: CacheKeys.AllTags,
+      key: CacheKeys.PublicAllTags,
       promise: () => this.getAllTags({ aggregatePublicOnly: true })
     })
   }
@@ -58,15 +57,10 @@ export class TagService implements OnModuleInit {
 
   private async aggregateArticleCount(tags: Array<WithId<Tag>>, publicOnly: boolean) {
     if (!tags.length) return []
-    const tagIds = tags.map((c) => c._id)
-    const matchStage = publicOnly ? { ...ARTICLE_PUBLIC_FILTER } : {}
-    const counts = await this.articleModel.aggregate<{ _id: MongooseId; count: number }>([
-      { $match: { tags: { $in: tagIds }, ...matchStage } },
-      { $unwind: '$tags' },
-      { $match: { tags: { $in: tagIds } } },
-      { $group: { _id: '$tags', count: { $sum: 1 } } }
-    ])
-    const countMap = new Map(counts.map((c) => [c._id.toString(), c.count]))
+
+    const tagObjectIds = tags.map((c) => c._id)
+    const countMap = await this.articleStatsService.getCountsByTagIds(tagObjectIds, publicOnly)
+
     return tags.map<Tag>((tag) => ({
       ...tag,
       article_count: countMap.get(tag._id.toString()) ?? 0
@@ -84,7 +78,7 @@ export class TagService implements OnModuleInit {
   }
 
   public async getAllTags(options: { aggregatePublicOnly: boolean }): Promise<Array<Tag>> {
-    const allTags = await this.tagModel.find().lean().sort({ _id: SortOrder.Desc }).exec()
+    const allTags = await this.tagModel.find().lean().sort({ created_at: SortOrder.Desc }).exec()
     return await this.aggregateArticleCount(allTags, options.aggregatePublicOnly)
   }
 
@@ -107,7 +101,7 @@ export class TagService implements OnModuleInit {
 
     const created = await this.tagModel.create(input)
     this.updateAllPublicTagsCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.TagCreated, created)
     this.seoService.push(getTagUrl(created.slug))
     return created
   }
@@ -124,7 +118,7 @@ export class TagService implements OnModuleInit {
     if (!updated) throw new NotFoundException(`Tag '${tagId}' not found`)
 
     this.updateAllPublicTagsCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.TagUpdated, updated)
     this.seoService.push(getTagUrl(updated.slug))
     return updated
   }
@@ -133,11 +127,8 @@ export class TagService implements OnModuleInit {
     const deleted = await this.tagModel.findOneAndDelete({ id: tagId }).exec()
     if (!deleted) throw new NotFoundException(`Tag '${tagId}' not found`)
 
-    // Remove this Tag ID from all associated articles
-    await this.articleModel.updateMany({ tags: deleted._id }, { $pull: { tags: deleted._id } }).exec()
-
     this.updateAllPublicTagsCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.TagDeleted, deleted._id)
     this.seoService.delete(getTagUrl(deleted.slug))
     return deleted
   }
@@ -150,15 +141,11 @@ export class TagService implements OnModuleInit {
 
     // DB remove
     const actionResult = await this.tagModel.deleteMany({ id: { $in: tagIds } }).exec()
-    // Remove this Tag ID from all associated articles
-    const tagObjectIds = tags.map((tag) => tag._id)
-    await this.articleModel
-      .updateMany({ tags: { $in: tagObjectIds } }, { $pull: { tags: { $in: tagObjectIds } } })
-      .exec()
 
     // effects
+    const tagObjectIds = tags.map((tag) => tag._id)
     this.updateAllPublicTagsCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.TagsDeleted, tagObjectIds)
     this.seoService.delete(tags.map((tag) => getTagUrl(tag.slug)))
     return actionResult
   }

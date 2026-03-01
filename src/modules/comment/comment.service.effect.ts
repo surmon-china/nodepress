@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
-import { ArticleStatsService } from '@app/modules/article/article.service.stats'
+import { ArticleSyncService } from '@app/modules/article/article.service.sync'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import { CommentTargetType, COMMENT_PUBLIC_FILTER } from './comment.constant'
@@ -20,7 +20,7 @@ export type CommentTarget = Pick<Comment, 'target_type' | 'target_id'>
 @Injectable()
 export class CommentEffectService {
   constructor(
-    private readonly articleStatsService: ArticleStatsService,
+    private readonly articleSyncService: ArticleSyncService,
     @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>
   ) {}
 
@@ -54,7 +54,7 @@ export class CommentEffectService {
       const countMap = new Map(counts.map((c) => [c._id, c.comment_count]))
       await Promise.all(
         // If an ID is missing from the countMap, it means the article has 0 valid comments.
-        articleIds.map((id) => this.articleStatsService.updateStatsComments(id, countMap.get(id) || 0))
+        articleIds.map((id) => this.articleSyncService.updateStatsComments(id, countMap.get(id) || 0))
       )
 
       // logger.info(`Synced comment counts for ${articleIds.length} articles.`)

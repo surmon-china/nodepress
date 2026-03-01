@@ -5,12 +5,13 @@
  */
 
 export enum CacheKeys {
-  Options = 'options',
-  Archive = 'archive',
-  AllTags = 'all-tags',
-  AllCategories = 'all-categories',
   TodayViewCount = 'today-view-count',
-  AdminProfile = 'admin-profile'
+
+  PublicOptions = 'public-options',
+  PublicAdminProfile = 'public-admin-profile',
+  PublicAllArticles = 'public-all-articles',
+  PublicAllCategories = 'public-all-categories',
+  PublicAllTags = 'public-all-tags'
 }
 
 export const getUserAuthStateCacheKey = (key: string) => {

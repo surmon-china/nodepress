@@ -5,15 +5,15 @@
  */
 
 import type { QueryFilter } from 'mongoose'
-import { Injectable, OnModuleInit, NotFoundException, ConflictException } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { Injectable, Inject, forwardRef, OnModuleInit, NotFoundException, ConflictException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { MongooseModel, MongooseDoc, MongooseId, WithId } from '@app/interfaces/mongoose.interface'
+import { MongooseModel, MongooseDoc, WithId } from '@app/interfaces/mongoose.interface'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
-import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
-import { ArchiveService } from '@app/modules/archive/archive.service'
 import { SeoService } from '@app/core/helper/helper.service.seo'
-import { Article } from '@app/modules/article/article.model'
-import { ARTICLE_PUBLIC_FILTER } from '@app/modules/article/article.constant'
+import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
+import { ArticleStatsService } from '@app/modules/article/article.service.stats'
+import { EventKeys } from '@app/constants/events.constant'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { SortOrder } from '@app/constants/sort.constant'
 import { getCategoryUrl } from '@app/transformers/urlmap.transformer'
@@ -29,14 +29,14 @@ export class CategoryService implements OnModuleInit {
   private allPublicCategoriesCache: CacheManualResult<Array<Category>>
 
   constructor(
+    private readonly eventEmitter: EventEmitter2,
     private readonly seoService: SeoService,
     private readonly cacheService: CacheService,
-    private readonly archiveService: ArchiveService,
-    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>,
+    @Inject(forwardRef(() => ArticleStatsService)) private readonly articleStatsService: ArticleStatsService,
     @InjectModel(Category) private readonly categoryModel: MongooseModel<Category>
   ) {
     this.allPublicCategoriesCache = this.cacheService.manual<Array<Category>>({
-      key: CacheKeys.AllCategories,
+      key: CacheKeys.PublicAllCategories,
       promise: () => this.getAllCategories({ aggregatePublicOnly: true })
     })
   }
@@ -57,15 +57,10 @@ export class CategoryService implements OnModuleInit {
 
   private async aggregateArticleCount(categories: Array<WithId<Category>>, publicOnly: boolean) {
     if (!categories.length) return []
+
     const categoryIds = categories.map((c) => c._id)
-    const matchStage = publicOnly ? { ...ARTICLE_PUBLIC_FILTER } : {}
-    const counts = await this.articleModel.aggregate<{ _id: MongooseId; count: number }>([
-      { $match: { categories: { $in: categoryIds }, ...matchStage } },
-      { $unwind: '$categories' },
-      { $match: { categories: { $in: categoryIds } } },
-      { $group: { _id: '$categories', count: { $sum: 1 } } }
-    ])
-    const countMap = new Map(counts.map((c) => [c._id.toString(), c.count]))
+    const countMap = await this.articleStatsService.getCountsByCategoryIds(categoryIds, publicOnly)
+
     return categories.map<Category>((category) => ({
       ...category,
       article_count: countMap.get(category._id.toString()) ?? 0
@@ -104,7 +99,7 @@ export class CategoryService implements OnModuleInit {
 
     const created = await this.categoryModel.create(input)
     this.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.CategoryCreated, created)
     this.seoService.push(getCategoryUrl(created.slug))
     return created
   }
@@ -121,7 +116,7 @@ export class CategoryService implements OnModuleInit {
     if (!updated) throw new NotFoundException(`Category '${categoryId}' not found`)
 
     this.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.CategoryUpdated, updated)
     this.seoService.push(getCategoryUrl(updated.slug))
     return updated
   }
@@ -135,12 +130,9 @@ export class CategoryService implements OnModuleInit {
       .updateMany({ parent_id: deleted.id }, { $set: { parent_id: deleted.parent_id || null } })
       .exec()
 
-    // Remove this category ID from all associated articles
-    await this.articleModel.updateMany({ categories: deleted._id }, { $pull: { categories: deleted._id } }).exec()
-
     // effects
     this.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.CategoryDeleted, deleted._id)
     this.seoService.delete(getCategoryUrl(deleted.slug))
     return deleted
   }
@@ -155,15 +147,11 @@ export class CategoryService implements OnModuleInit {
     const actionResult = await this.categoryModel.deleteMany({ id: { $in: categoryIds } }).exec()
     // Reassign parent_id for subcategories to prevent hierarchy breakage
     await this.categoryModel.updateMany({ parent_id: { $in: categoryIds } }, { $set: { parent_id: null } }).exec()
-    // Remove this category ID from all associated articles
-    const categoryObjectIds = categories.map((category) => category._id)
-    await this.articleModel
-      .updateMany({ categories: { $in: categoryObjectIds } }, { $pull: { categories: { $in: categoryObjectIds } } })
-      .exec()
 
     // effects
+    const categoryObjectIds = categories.map((category) => category._id)
     this.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.CategoriesDeleted, categoryObjectIds)
     this.seoService.delete(categories.map((category) => getCategoryUrl(category.slug)))
     return actionResult
   }

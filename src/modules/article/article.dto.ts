@@ -99,3 +99,10 @@ export class ArticleIdsStatusDto extends ArticleIdsDto {
   @IsDefined()
   status: ArticleStatus
 }
+
+export class AllArticlesQueryDto {
+  @WithGuestPermission({ only: [false], default: false })
+  @IsOptional()
+  @Transform(({ value }) => unknownToBoolean(value))
+  with_content?: boolean
+}

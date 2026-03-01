@@ -6,42 +6,43 @@
 
 import _isUndefined from 'lodash/isUndefined'
 import type { QueryFilter } from 'mongoose'
-import { EventEmitter2 } from '@nestjs/event-emitter'
+import { Inject, forwardRef } from '@nestjs/common'
 import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from '@nestjs/common'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { EventKeys } from '@app/constants/events.constant'
 import { CacheKeys } from '@app/constants/cache.constant'
 import { SortMode } from '@app/constants/sort.constant'
 import { CounterService } from '@app/core/helper/helper.service.counter'
 import { CategoryService } from '@app/modules/category/category.service'
 import { TagService } from '@app/modules/tag/tag.service'
-import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
-import { ArticlePaginateQueryDto, ArticleContextQueryDto, ArticleCalendarQueryDto } from './article.dto'
+import { PaginateOptions } from '@app/utils/paginate'
+import { ArticlePaginateQueryDto, AllArticlesQueryDto } from './article.dto'
+import { ArticleContextQueryDto, ArticleCalendarQueryDto } from './article.dto'
 import { CreateArticleDto, UpdateArticleDto, ArticleIdsDto, ArticleIdsStatusDto } from './article.dto'
 import { ARTICLE_HOTTEST_SORT_CONFIG } from './article.constant'
 import { ArticleContextService } from './article.service.context'
 import { ArticleStatsService } from './article.service.stats'
+import { ArticleSyncService } from './article.service.sync'
 import { ArticleService } from './article.service'
 import { Article } from './article.model'
 
 @Controller('articles')
 export class ArticleController {
   constructor(
-    private readonly eventEmitter: EventEmitter2,
     private readonly counterService: CounterService,
-    private readonly tagService: TagService,
-    private readonly categoryService: CategoryService,
     private readonly articleService: ArticleService,
     private readonly articleContextService: ArticleContextService,
-    private readonly articleStatsService: ArticleStatsService
+    private readonly articleStatsService: ArticleStatsService,
+    private readonly articleSyncService: ArticleSyncService,
+    @Inject(forwardRef(() => TagService)) private readonly tagService: TagService,
+    @Inject(forwardRef(() => CategoryService)) private readonly categoryService: CategoryService
   ) {}
 
   @Get()
   @SuccessResponse({ message: 'Get articles succeeded', usePaginate: true })
-  async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDto): Promise<PaginateResult<Article>> {
+  async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDto) {
     const { page, per_page, sort, ...filters } = query
     const queryFilter: QueryFilter<Article> = {}
     const paginateOptions: PaginateOptions = { page, perPage: per_page }
@@ -99,10 +100,14 @@ export class ArticleController {
   }
 
   @Get('all')
-  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Get all articles succeeded')
-  getAllArticles() {
-    return this.articleService.getAll()
+  public getAllArticles(
+    @Query(PermissionPipe) { with_content }: AllArticlesQueryDto,
+    @RequestContext() { identity }: IRequestContext
+  ) {
+    return identity.isAdmin
+      ? this.articleService.getAllArticles({ publicOnly: false, withContent: !!with_content })
+      : this.articleService.getAllPublicArticlesCache()
   }
 
   @Get('calendar')
@@ -124,7 +129,7 @@ export class ArticleController {
     })
     if (!identity.isAdmin) {
       // increment article views
-      this.articleStatsService.incrementStatistics(article.id, 'views')
+      this.articleSyncService.incrementStatistics(article.id, 'views')
       // increment global views
       this.counterService.incrementGlobalCount(CacheKeys.TodayViewCount)
     }
@@ -154,28 +159,22 @@ export class ArticleController {
   @Post()
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Create article succeeded')
-  async createArticle(@Body() dto: CreateArticleDto): Promise<Article> {
-    const created = await this.articleService.create(dto)
-    this.eventEmitter.emit(EventKeys.ArticleCreated, created)
-    return created
+  createArticle(@Body() dto: CreateArticleDto): Promise<Article> {
+    return this.articleService.create(dto)
   }
 
   @Patch(':id')
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update article succeeded')
-  async updateArticle(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateArticleDto): Promise<Article> {
-    const updated = await this.articleService.update(id, dto)
-    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated)
-    return updated
+  updateArticle(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateArticleDto): Promise<Article> {
+    return this.articleService.update(id, dto)
   }
 
   @Delete(':id')
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete article succeeded')
-  async deleteArticle(@Param('id', ParseIntPipe) id: number) {
-    const result = await this.articleService.delete(id)
-    this.eventEmitter.emit(EventKeys.ArticleDeleted, result)
-    return result
+  deleteArticle(@Param('id', ParseIntPipe) id: number) {
+    return this.articleService.delete(id)
   }
 
   @Patch()

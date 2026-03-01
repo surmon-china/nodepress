@@ -27,7 +27,7 @@ export class OptionsService implements OnModuleInit {
     private readonly cacheService: CacheService
   ) {
     this.optionsCache = this.cacheService.manual({
-      key: CacheKeys.Options,
+      key: CacheKeys.PublicOptions,
       promise: () => {
         return this.ensureOptions().then((option) => {
           return _omit(option, ['blocklist', '_id']) as OptionPublic

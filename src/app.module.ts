@@ -31,7 +31,6 @@ import { CategoryModule } from '@app/modules/category/category.module'
 import { TagModule } from '@app/modules/tag/tag.module'
 import { ArticleModule } from '@app/modules/article/article.module'
 import { CommentModule } from '@app/modules/comment/comment.module'
-import { ArchiveModule } from '@app/modules/archive/archive.module'
 import { FeedbackModule } from '@app/modules/feedback/feedback.module'
 import { VoteModule } from '@app/modules/vote/vote.module'
 import { OptionsModule } from '@app/modules/options/options.module'
@@ -78,7 +77,6 @@ import { AccountModule } from '@app/modules/account/account.module'
     CategoryModule,
     ArticleModule,
     CommentModule,
-    ArchiveModule,
     VoteModule,
     SystemModule,
     WebhookModule,

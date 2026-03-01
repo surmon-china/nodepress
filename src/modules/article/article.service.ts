@@ -5,32 +5,63 @@
  */
 
 import type { QueryFilter } from 'mongoose'
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { Injectable, OnModuleInit, NotFoundException, ConflictException } from '@nestjs/common'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { SortOrder } from '@app/constants/sort.constant'
+import { CacheKeys } from '@app/constants/cache.constant'
+import { EventKeys } from '@app/constants/events.constant'
 import { SeoService } from '@app/core/helper/helper.service.seo'
-import { ArchiveService } from '@app/modules/archive/archive.service'
-import { CategoryService } from '@app/modules/category/category.service'
-import { TagService } from '@app/modules/tag/tag.service'
+import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
 import { ArticleStatus, ARTICLE_PUBLIC_FILTER } from './article.constant'
-import { Article, ArticlePopulated, ArticleDoc, ArticleDocPopulated } from './article.model'
-import { ARTICLE_RELATION_FIELDS, ARTICLE_WITH_CONTENT_PROJECTION } from './article.model'
+import { Article, ArticleDoc, ArticleDocPopulated } from './article.model'
+import { ArticlePopulated, ArticlePopulatedWithoutContent } from './article.model'
+import { ARTICLE_WITH_CONTENT_PROJECTION, ARTICLE_WITHOUT_CONTENT_PROJECTION } from './article.model'
+import { ARTICLE_RELATION_FIELDS } from './article.model'
 import { CreateArticleDto, UpdateArticleDto } from './article.dto'
+import { createLogger } from '@app/utils/logger'
+import { isDevEnv } from '@app/app.environment'
+
+const logger = createLogger({ scope: 'ArticleService', time: isDevEnv })
 
 @Injectable()
-export class ArticleService {
-  constructor(
-    private readonly seoService: SeoService,
-    private readonly tagService: TagService,
-    private readonly categoryService: CategoryService,
-    private readonly archiveService: ArchiveService,
-    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
-  ) {}
+export class ArticleService implements OnModuleInit {
+  private allPublicArticlesCache: CacheManualResult<Array<ArticlePopulatedWithoutContent>>
 
-  public paginate(filter: QueryFilter<Article>, options: PaginateOptions): Promise<PaginateResult<Article>> {
+  constructor(
+    private readonly eventEmitter: EventEmitter2,
+    private readonly seoService: SeoService,
+    private readonly cacheService: CacheService,
+    @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
+  ) {
+    this.allPublicArticlesCache = this.cacheService.manual<Array<ArticlePopulatedWithoutContent>>({
+      key: CacheKeys.PublicAllArticles,
+      promise: () => this.getAllArticles({ publicOnly: true, withContent: false })
+    })
+  }
+
+  onModuleInit() {
+    this.allPublicArticlesCache.update().catch((error) => {
+      logger.warn('Init getAllArticles failed!', error)
+    })
+  }
+
+  public getAllPublicArticlesCache(): Promise<Array<ArticlePopulatedWithoutContent>> {
+    return this.allPublicArticlesCache.get()
+  }
+
+  public updateAllPublicArticlesCache(): Promise<Array<ArticlePopulatedWithoutContent>> {
+    return this.allPublicArticlesCache.update()
+  }
+
+  // Get paginate articles
+  public paginate(
+    filter: QueryFilter<Article>,
+    options: PaginateOptions
+  ): Promise<PaginateResult<ArticlePopulatedWithoutContent>> {
     return this.articleModel.paginateRaw(filter, {
       ...options,
       populate: ARTICLE_RELATION_FIELDS
@@ -38,13 +69,18 @@ export class ArticleService {
   }
 
   // Get all articles
-  // MARK: Providing this capability only for admin. (Consumes a lot of computing resources.)
-  public getAll(): Promise<Article[]> {
-    return this.articleModel.find({}, null, {
-      sort: { created_at: SortOrder.Desc },
-      populate: ARTICLE_RELATION_FIELDS,
-      projection: ARTICLE_WITH_CONTENT_PROJECTION
-    })
+  public getAllArticles(options: { publicOnly: boolean; withContent: boolean }) {
+    const query = this.articleModel
+      .find(options.publicOnly ? ARTICLE_PUBLIC_FILTER : {})
+      .sort({ created_at: SortOrder.Desc })
+      .populate(ARTICLE_RELATION_FIELDS)
+      .lean()
+
+    if (options.withContent) {
+      return query.select<ArticlePopulated>(ARTICLE_WITH_CONTENT_PROJECTION).exec()
+    } else {
+      return query.select<ArticlePopulatedWithoutContent>(ARTICLE_WITHOUT_CONTENT_PROJECTION).exec()
+    }
   }
 
   // Get article by number id or slug
@@ -88,10 +124,9 @@ export class ArticleService {
     }
 
     const created = await this.articleModel.create(input)
+    this.updateAllPublicArticlesCache()
+    this.eventEmitter.emit(EventKeys.ArticleCreated, created)
     this.seoService.push(getArticleUrl(created.id))
-    this.tagService.updateAllPublicTagsCache()
-    this.categoryService.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
     return created
   }
 
@@ -113,10 +148,9 @@ export class ArticleService {
       .exec()
     if (!updated) throw new NotFoundException(`Article '${articleId}' not found`)
 
+    this.updateAllPublicArticlesCache()
+    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated)
     this.seoService.update(getArticleUrl(updated.id))
-    this.tagService.updateAllPublicTagsCache()
-    this.categoryService.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
     return updated
   }
 
@@ -124,10 +158,9 @@ export class ArticleService {
     const deleted = await this.articleModel.findOneAndDelete({ id: articleId }).exec()
     if (!deleted) throw new NotFoundException(`Article '${articleId}' not found`)
 
+    this.updateAllPublicArticlesCache()
+    this.eventEmitter.emit(EventKeys.ArticleDeleted, deleted)
     this.seoService.delete(getArticleUrl(deleted.id))
-    this.tagService.updateAllPublicTagsCache()
-    this.categoryService.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
     return deleted
   }
 
@@ -135,9 +168,8 @@ export class ArticleService {
     const actionResult = await this.articleModel
       .updateMany({ id: { $in: articleIds } }, { $set: { status } })
       .exec()
-    this.tagService.updateAllPublicTagsCache()
-    this.categoryService.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
+    this.updateAllPublicArticlesCache()
+    this.eventEmitter.emit(EventKeys.ArticlesStatusChanged, { articleIds, status })
     return actionResult
   }
 
@@ -148,10 +180,9 @@ export class ArticleService {
       .exec()
 
     const actionResult = await this.articleModel.deleteMany({ id: { $in: articleIds } }).exec()
+    this.updateAllPublicArticlesCache()
+    this.eventEmitter.emit(EventKeys.ArticlesDeleted, articleIds)
     this.seoService.delete(articles.map((article) => getArticleUrl(article.id)))
-    this.tagService.updateAllPublicTagsCache()
-    this.categoryService.updateAllPublicCategoriesCache()
-    this.archiveService.updateCache()
     return actionResult
   }
 

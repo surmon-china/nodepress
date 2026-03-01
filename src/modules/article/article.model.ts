@@ -24,6 +24,8 @@ export type ArticleDoc = MongooseDoc<Article>
 export type ArticlePopulated = MergeType<Article, { tags: Tag[]; categories: Category[] }>
 export type ArticleDocPopulated = MergeType<ArticleDoc, { tags: Tag[]; categories: Category[] }>
 
+export type ArticlePopulatedWithoutContent = Omit<ArticlePopulated, 'content'>
+
 export const ARTICLE_RELATION_FIELDS = ['tags', 'categories']
 export const ARTICLE_WITH_CONTENT_PROJECTION = '+content'
 export const ARTICLE_WITHOUT_CONTENT_PROJECTION = { content: 0 }
