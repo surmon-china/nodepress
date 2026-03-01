@@ -6,7 +6,6 @@
 
 export enum CacheKeys {
   TodayViewCount = 'today-view-count',
-
   PublicOptions = 'public-options',
   PublicAdminProfile = 'public-admin-profile',
   PublicAllArticles = 'public-all-articles',
