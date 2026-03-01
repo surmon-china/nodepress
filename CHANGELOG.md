@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+### 8.0.0 (2026-03-02)
+
+This update brings a foundational architectural shift to the backend, strictly adhering to Domain-Driven Design (DDD) principles and Event-Driven Architecture (EDA). It resolves legacy circular dependencies and dramatically improves system maintainability.
+
+#### 1. BFF Delegation & Archive Module Removal
+
+- **[BREAKING]** Completely removed the backend `ArchiveModule` and the `/archive` endpoint.
+- **Why**: The backend is no longer responsible for assembling massive, global JSON payloads. The frontend (SSR) will now utilize `Promise.all` to concurrently fetch `/tags`, `/categories`, and `/articles`, assuming the BFF (Backend For Frontend) role. This significantly reduces backend memory overhead and unnecessary serialization.
+
+#### 2. Event-Driven Architecture Implementation
+
+- Integrated `@nestjs/event-emitter` as the central Event Bus, replacing direct cross-module method invocations.
+- **Decoupled Side-Effects**: When a `Tag` or `Category` is deleted, its respective module only handles its own database/cache cleanup and then broadcasts events (`TagDeleted`, `CategoryDeleted`).
+- **Silent Cascading Updates**: The `Article` module now utilizes `ArticleListener` to asynchronously react to these events, safely executing `$pull` operations to erase orphaned foreign keys without creating tight bidirectional coupling.
+
+#### 3. Article Module SRP (Single Responsibility Principle)
+
+The previously monolithic `ArticleService` has been surgically divided into specialized sub-services:
+
+- **`ArticleStatsService`**: Dedicated to complex MongoDB aggregations (providing article counts for Tags/Categories, global reading statistics, and calendar data).
+- **`ArticleSyncService`**: Dedicated to silent data synchronization and cleanup (e.g., atomic `$pull` of deleted taxonomies).
+- **`ArticleContextService`**: Dedicated to contextual queries (previous/next and related articles).
+
+#### 4. Database & Performance Optimizations
+
+- **Cache Race-Condition Prevention**: Refactored event listener execution order to guarantee that database `$pull` operations complete strictly _before_ Redis caches are flushed and rebuilt, preventing stale data write-backs under high concurrency.
+
 ### 7.0.0 (2026-02-20)
 
 #### Global Architecture & Model Refactoring
