@@ -161,14 +161,12 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Async</span>
                                 <a href="#createArticle" >createArticle</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Async</span>
                                 <a href="#deleteArticle" >deleteArticle</a>
                             </li>
                             <li>
@@ -180,7 +178,7 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Public</span>
                                 <a href="#getAllArticles" >getAllArticles</a>
                             </li>
                             <li>
@@ -210,7 +208,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Async</span>
                                 <a href="#updateArticle" >updateArticle</a>
                             </li>
                             <li>
@@ -245,7 +242,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier">Async</span>
                         <span ><b>createArticle</b></span>
                         <a href="#createArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -268,8 +264,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="157"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:157</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="162"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:162</a></div>
                         </td>
                     </tr>
 
@@ -324,7 +320,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier">Async</span>
                         <span ><b>deleteArticle</b></span>
                         <a href="#deleteArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -347,8 +342,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="175"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:175</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="176"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:176</a></div>
                         </td>
                     </tr>
 
@@ -384,7 +379,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -425,8 +420,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="191"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:191</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="190"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:190</a></div>
                         </td>
                     </tr>
 
@@ -479,7 +474,7 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier"></span>
+                            <span class="modifier">Public</span>
                         <span ><b>getAllArticles</b></span>
                         <a href="#getAllArticles"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -488,7 +483,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAllArticles()</code>
+                    <code>getAllArticles(: <a href="../classes/AllArticlesQueryDto.html" target="_self">AllArticlesQueryDto</a>, : <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
                 </td>
             </tr>
 
@@ -496,7 +491,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get(&#x27;all&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Get all articles succeeded&#x27;)<br /></code>
+                    <code>@Get(&#x27;all&#x27;)<br />@SuccessResponse(&#x27;Get all articles succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
@@ -511,10 +506,50 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../classes/AllArticlesQueryDto.html" target="_self" >AllArticlesQueryDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -550,8 +585,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="119"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:119</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="124"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:124</a></div>
                         </td>
                     </tr>
 
@@ -639,8 +674,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="136"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:136</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="141"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:141</a></div>
                         </td>
                     </tr>
 
@@ -728,8 +763,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -765,7 +800,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/PaginateResult.html" target="_self" >Promise&lt;PaginateResult&lt;Article&gt;&gt;</a></code>
+                            <b>Returns : </b>    <code>unknown</code>
 
                         </div>
                             <div class="io-description">
@@ -805,8 +840,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="110"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:110</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="115"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:115</a></div>
                         </td>
                     </tr>
 
@@ -871,7 +906,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier">Async</span>
                         <span ><b>updateArticle</b></span>
                         <a href="#updateArticle"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -894,8 +928,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="166"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:166</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="169"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:169</a></div>
                         </td>
                     </tr>
 
@@ -984,8 +1018,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="184"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:184</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="183"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:183</a></div>
                         </td>
                     </tr>
 
@@ -1043,42 +1077,43 @@
 
 import _isUndefined from &#x27;lodash/isUndefined&#x27;
 import type { QueryFilter } from &#x27;mongoose&#x27;
-import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
+import { Inject, forwardRef } from &#x27;@nestjs/common&#x27;
 import { Controller, Get, Patch, Post, Delete, Query, Body, Param, ParseIntPipe } from &#x27;@nestjs/common&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { SortMode } from &#x27;@app/constants/sort.constant&#x27;
 import { CounterService } from &#x27;@app/core/helper/helper.service.counter&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { ArticlePaginateQueryDto, ArticleContextQueryDto, ArticleCalendarQueryDto } from &#x27;./article.dto&#x27;
+import { PaginateOptions } from &#x27;@app/utils/paginate&#x27;
+import { ArticlePaginateQueryDto, AllArticlesQueryDto } from &#x27;./article.dto&#x27;
+import { ArticleContextQueryDto, ArticleCalendarQueryDto } from &#x27;./article.dto&#x27;
 import { CreateArticleDto, UpdateArticleDto, ArticleIdsDto, ArticleIdsStatusDto } from &#x27;./article.dto&#x27;
 import { ARTICLE_HOTTEST_SORT_CONFIG } from &#x27;./article.constant&#x27;
 import { ArticleContextService } from &#x27;./article.service.context&#x27;
 import { ArticleStatsService } from &#x27;./article.service.stats&#x27;
+import { ArticleSyncService } from &#x27;./article.service.sync&#x27;
 import { ArticleService } from &#x27;./article.service&#x27;
 import { Article } from &#x27;./article.model&#x27;
 
 @Controller(&#x27;articles&#x27;)
 export class ArticleController {
   constructor(
-    private readonly eventEmitter: EventEmitter2,
     private readonly counterService: CounterService,
-    private readonly tagService: TagService,
-    private readonly categoryService: CategoryService,
     private readonly articleService: ArticleService,
     private readonly articleContextService: ArticleContextService,
-    private readonly articleStatsService: ArticleStatsService
+    private readonly articleStatsService: ArticleStatsService,
+    private readonly articleSyncService: ArticleSyncService,
+    @Inject(forwardRef(() &#x3D;&gt; TagService)) private readonly tagService: TagService,
+    @Inject(forwardRef(() &#x3D;&gt; CategoryService)) private readonly categoryService: CategoryService
   ) {}
 
   @Get()
   @SuccessResponse({ message: &#x27;Get articles succeeded&#x27;, usePaginate: true })
-  async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDto): Promise&lt;PaginateResult&lt;Article&gt;&gt; {
+  async getArticles(@Query(PermissionPipe) query: ArticlePaginateQueryDto) {
     const { page, per_page, sort, ...filters } &#x3D; query
     const queryFilter: QueryFilter&lt;Article&gt; &#x3D; {}
     const paginateOptions: PaginateOptions &#x3D; { page, perPage: per_page }
@@ -1136,10 +1171,14 @@ export class ArticleController {
   }
 
   @Get(&#x27;all&#x27;)
-  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Get all articles succeeded&#x27;)
-  getAllArticles() {
-    return this.articleService.getAll()
+  public getAllArticles(
+    @Query(PermissionPipe) { with_content }: AllArticlesQueryDto,
+    @RequestContext() { identity }: IRequestContext
+  ) {
+    return identity.isAdmin
+      ? this.articleService.getAllArticles({ publicOnly: false, withContent: !!with_content })
+      : this.articleService.getAllPublicArticlesCache()
   }
 
   @Get(&#x27;calendar&#x27;)
@@ -1161,7 +1200,7 @@ export class ArticleController {
     })
     if (!identity.isAdmin) {
       // increment article views
-      this.articleStatsService.incrementStatistics(article.id, &#x27;views&#x27;)
+      this.articleSyncService.incrementStatistics(article.id, &#x27;views&#x27;)
       // increment global views
       this.counterService.incrementGlobalCount(CacheKeys.TodayViewCount)
     }
@@ -1191,28 +1230,22 @@ export class ArticleController {
   @Post()
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Create article succeeded&#x27;)
-  async createArticle(@Body() dto: CreateArticleDto): Promise&lt;Article&gt; {
-    const created &#x3D; await this.articleService.create(dto)
-    this.eventEmitter.emit(EventKeys.ArticleCreated, created)
-    return created
+  createArticle(@Body() dto: CreateArticleDto): Promise&lt;Article&gt; {
+    return this.articleService.create(dto)
   }
 
   @Patch(&#x27;:id&#x27;)
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update article succeeded&#x27;)
-  async updateArticle(@Param(&#x27;id&#x27;, ParseIntPipe) id: number, @Body() dto: UpdateArticleDto): Promise&lt;Article&gt; {
-    const updated &#x3D; await this.articleService.update(id, dto)
-    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated)
-    return updated
+  updateArticle(@Param(&#x27;id&#x27;, ParseIntPipe) id: number, @Body() dto: UpdateArticleDto): Promise&lt;Article&gt; {
+    return this.articleService.update(id, dto)
   }
 
   @Delete(&#x27;:id&#x27;)
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete article succeeded&#x27;)
-  async deleteArticle(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
-    const result &#x3D; await this.articleService.delete(id)
-    this.eventEmitter.emit(EventKeys.ArticleDeleted, result)
-    return result
+  deleteArticle(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
+    return this.articleService.delete(id)
   }
 
   @Patch()

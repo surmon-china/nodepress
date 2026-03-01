@@ -217,7 +217,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/article/article.model.ts:45</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/modules/article/article.model.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -253,7 +253,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/modules/article/article.model.ts:39</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/modules/article/article.model.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -289,7 +289,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/article/article.model.ts:42</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/modules/article/article.model.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -327,6 +327,8 @@ import { ArticleStatus, ArticleOrigin, ArticleLanguage } from &#x27;./article.co
 export type ArticleDoc &#x3D; MongooseDoc&lt;Article&gt;
 export type ArticlePopulated &#x3D; MergeType&lt;Article, { tags: Tag[]; categories: Category[] }&gt;
 export type ArticleDocPopulated &#x3D; MergeType&lt;ArticleDoc, { tags: Tag[]; categories: Category[] }&gt;
+
+export type ArticlePopulatedWithoutContent &#x3D; Omit&lt;ArticlePopulated, &#x27;content&#x27;&gt;
 
 export const ARTICLE_RELATION_FIELDS &#x3D; [&#x27;tags&#x27;, &#x27;categories&#x27;]
 export const ARTICLE_WITH_CONTENT_PROJECTION &#x3D; &#x27;+content&#x27;

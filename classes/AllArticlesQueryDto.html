@@ -113,7 +113,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >ArticleCalendarQueryDto</li>
+  <li class="breadcrumb-item" >AllArticlesQueryDto</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -162,7 +162,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#timezone" >timezone</a>
+                                <a href="#with_content" >with_content</a>
                             </li>
                         </ul>
                     </td>
@@ -187,20 +187,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="timezone"></a>
+                    <a name="with_content"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>timezone</b></span>
-                        <a href="#timezone"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>with_content</b></span>
+                        <a href="#with_content"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
 
                     </td>
                 </tr>
@@ -209,13 +209,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty()<br />@IsOptional()<br />
+                            @WithGuestPermission({only: undefined, default: false})<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/modules/article/article.dto.ts:86</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/modules/article/article.dto.ts:107</a></div>
                         </td>
                     </tr>
 
@@ -374,7 +374,7 @@ export class AllArticlesQueryDto {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'ArticleCalendarQueryDto.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AllArticlesQueryDto.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

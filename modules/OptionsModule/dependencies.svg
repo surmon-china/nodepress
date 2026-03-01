@@ -24,13 +24,13 @@
 <title>cluster_OptionsModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="161,-70 161,-268 335,-268 335,-70 161,-70"/>
 </g>
-<g id="clust4" class="cluster">
-<title>cluster_OptionsModule_exports</title>
-<polygon fill="none" stroke="black" points="187,-208 187,-260 309,-260 309,-208 187,-208"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_OptionsModule_providers</title>
 <polygon fill="none" stroke="black" points="169,-78 169,-130 327,-130 327,-78 169,-78"/>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_OptionsModule_exports</title>
+<polygon fill="none" stroke="black" points="187,-208 187,-260 309,-260 309,-208 187,-208"/>
 </g>
 <!-- OptionsService  -->
 <g id="node1" class="node">

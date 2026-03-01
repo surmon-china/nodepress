@@ -242,12 +242,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(seoService: <a href="../injectables/SeoService.html" target="_self">SeoService</a>, cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, archiveService: <a href="../injectables/ArchiveService.html" target="_self">ArchiveService</a>, tagModel: <a href="../classes/Tag.html" target="_self">MongooseModel&lt;Tag&gt;</a>, articleModel: <a href="../classes/Article.html" target="_self">MongooseModel&lt;Article&gt;</a>)</code>
+<code>constructor(eventEmitter: EventEmitter2, seoService: <a href="../injectables/SeoService.html" target="_self">SeoService</a>, cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, articleStatsService: <a href="../injectables/ArticleStatsService.html" target="_self">ArticleStatsService</a>, tagModel: <a href="../classes/Tag.html" target="_self">MongooseModel&lt;Tag&gt;</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/tag/tag.service.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/modules/tag/tag.service.ts:29</a></div>
                             </td>
                         </tr>
 
@@ -264,6 +264,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                                <tr>
+                                                        <td>eventEmitter</td>
+                                                  
+                                                        <td>
+                                                                    <code>EventEmitter2</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                                 <tr>
                                                         <td>seoService</td>
                                                   
@@ -289,10 +301,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>archiveService</td>
+                                                        <td>articleStatsService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/ArchiveService.html" target="_self" >ArchiveService</a></code>
+                                                                        <code><a href="../injectables/ArticleStatsService.html" target="_self" >ArticleStatsService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -305,18 +317,6 @@
                                                   
                                                         <td>
                                                                         <code><a href="../classes/Tag.html" target="_self" >MongooseModel&lt;Tag&gt;</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>articleModel</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../classes/Article.html" target="_self" >MongooseModel&lt;Article&gt;</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -361,8 +361,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:59</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -443,8 +443,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="145"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:145</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="136"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:136</a></div>
                         </td>
                     </tr>
 
@@ -513,8 +513,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="104"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:104</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="98"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:98</a></div>
                         </td>
                     </tr>
 
@@ -583,8 +583,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="132"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:132</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="126"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:126</a></div>
                         </td>
                     </tr>
 
@@ -652,8 +652,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="51"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:51</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="50"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:50</a></div>
                         </td>
                     </tr>
 
@@ -692,8 +692,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="86"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:86</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -762,8 +762,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="95"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:95</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="89"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:89</a></div>
                         </td>
                     </tr>
 
@@ -832,8 +832,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="91"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:91</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:85</a></div>
                         </td>
                     </tr>
 
@@ -869,8 +869,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -909,8 +909,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="76"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:76</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="70"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:70</a></div>
                         </td>
                     </tr>
 
@@ -1003,8 +1003,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="115"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:115</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="109"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:109</a></div>
                         </td>
                     </tr>
 
@@ -1084,8 +1084,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="55"
-                                    class="link-to-prism">src/modules/tag/tag.service.ts:55</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/modules/tag/tag.service.ts:54</a></div>
                         </td>
                     </tr>
 
@@ -1127,7 +1127,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/tag/tag.service.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/modules/tag/tag.service.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -1141,16 +1141,15 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { QueryFilter } from &#x27;mongoose&#x27;
-import { Injectable, OnModuleInit, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
+import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
+import { Injectable, Inject, forwardRef, OnModuleInit, NotFoundException, ConflictException } from &#x27;@nestjs/common&#x27;
+import { MongooseModel, MongooseDoc, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import type { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import type { MongooseId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
-import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
-import { ArchiveService } from &#x27;@app/modules/archive/archive.service&#x27;
 import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
-import { ARTICLE_PUBLIC_FILTER } from &#x27;@app/modules/article/article.constant&#x27;
-import { Article } from &#x27;@app/modules/article/article.model&#x27;
+import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
+import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
+import { ArticleStatsService } from &#x27;@app/modules/article/article.service.stats&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
 import { SortOrder } from &#x27;@app/constants/sort.constant&#x27;
 import { getTagUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
@@ -1166,14 +1165,14 @@ export class TagService implements OnModuleInit {
   private allPublicTagsCache: CacheManualResult&lt;Array&lt;Tag&gt;&gt;
 
   constructor(
+    private readonly eventEmitter: EventEmitter2,
     private readonly seoService: SeoService,
     private readonly cacheService: CacheService,
-    private readonly archiveService: ArchiveService,
-    @InjectModel(Tag) private readonly tagModel: MongooseModel&lt;Tag&gt;,
-    @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;
+    @Inject(forwardRef(() &#x3D;&gt; ArticleStatsService)) private readonly articleStatsService: ArticleStatsService,
+    @InjectModel(Tag) private readonly tagModel: MongooseModel&lt;Tag&gt;
   ) {
     this.allPublicTagsCache &#x3D; this.cacheService.manual&lt;Array&lt;Tag&gt;&gt;({
-      key: CacheKeys.AllTags,
+      key: CacheKeys.PublicAllTags,
       promise: () &#x3D;&gt; this.getAllTags({ aggregatePublicOnly: true })
     })
   }
@@ -1194,15 +1193,10 @@ export class TagService implements OnModuleInit {
 
   private async aggregateArticleCount(tags: Array&lt;WithId&lt;Tag&gt;&gt;, publicOnly: boolean) {
     if (!tags.length) return []
-    const tagIds &#x3D; tags.map((c) &#x3D;&gt; c._id)
-    const matchStage &#x3D; publicOnly ? { ...ARTICLE_PUBLIC_FILTER } : {}
-    const counts &#x3D; await this.articleModel.aggregate&lt;{ _id: MongooseId; count: number }&gt;([
-      { $match: { tags: { $in: tagIds }, ...matchStage } },
-      { $unwind: &#x27;$tags&#x27; },
-      { $match: { tags: { $in: tagIds } } },
-      { $group: { _id: &#x27;$tags&#x27;, count: { $sum: 1 } } }
-    ])
-    const countMap &#x3D; new Map(counts.map((c) &#x3D;&gt; [c._id.toString(), c.count]))
+
+    const tagObjectIds &#x3D; tags.map((c) &#x3D;&gt; c._id)
+    const countMap &#x3D; await this.articleStatsService.getCountsByTagIds(tagObjectIds, publicOnly)
+
     return tags.map&lt;Tag&gt;((tag) &#x3D;&gt; ({
       ...tag,
       article_count: countMap.get(tag._id.toString()) ?? 0
@@ -1220,7 +1214,7 @@ export class TagService implements OnModuleInit {
   }
 
   public async getAllTags(options: { aggregatePublicOnly: boolean }): Promise&lt;Array&lt;Tag&gt;&gt; {
-    const allTags &#x3D; await this.tagModel.find().lean().sort({ _id: SortOrder.Desc }).exec()
+    const allTags &#x3D; await this.tagModel.find().lean().sort({ created_at: SortOrder.Desc }).exec()
     return await this.aggregateArticleCount(allTags, options.aggregatePublicOnly)
   }
 
@@ -1243,7 +1237,7 @@ export class TagService implements OnModuleInit {
 
     const created &#x3D; await this.tagModel.create(input)
     this.updateAllPublicTagsCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.TagCreated, created)
     this.seoService.push(getTagUrl(created.slug))
     return created
   }
@@ -1260,7 +1254,7 @@ export class TagService implements OnModuleInit {
     if (!updated) throw new NotFoundException(&#x60;Tag &#x27;${tagId}&#x27; not found&#x60;)
 
     this.updateAllPublicTagsCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.TagUpdated, updated)
     this.seoService.push(getTagUrl(updated.slug))
     return updated
   }
@@ -1269,11 +1263,8 @@ export class TagService implements OnModuleInit {
     const deleted &#x3D; await this.tagModel.findOneAndDelete({ id: tagId }).exec()
     if (!deleted) throw new NotFoundException(&#x60;Tag &#x27;${tagId}&#x27; not found&#x60;)
 
-    // Remove this Tag ID from all associated articles
-    await this.articleModel.updateMany({ tags: deleted._id }, { $pull: { tags: deleted._id } }).exec()
-
     this.updateAllPublicTagsCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.TagDeleted, deleted._id)
     this.seoService.delete(getTagUrl(deleted.slug))
     return deleted
   }
@@ -1286,15 +1277,11 @@ export class TagService implements OnModuleInit {
 
     // DB remove
     const actionResult &#x3D; await this.tagModel.deleteMany({ id: { $in: tagIds } }).exec()
-    // Remove this Tag ID from all associated articles
-    const tagObjectIds &#x3D; tags.map((tag) &#x3D;&gt; tag._id)
-    await this.articleModel
-      .updateMany({ tags: { $in: tagObjectIds } }, { $pull: { tags: { $in: tagObjectIds } } })
-      .exec()
 
     // effects
+    const tagObjectIds &#x3D; tags.map((tag) &#x3D;&gt; tag._id)
     this.updateAllPublicTagsCache()
-    this.archiveService.updateCache()
+    this.eventEmitter.emit(EventKeys.TagsDeleted, tagObjectIds)
     this.seoService.delete(tags.map((tag) &#x3D;&gt; getTagUrl(tag.slug)))
     return actionResult
   }

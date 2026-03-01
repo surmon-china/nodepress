@@ -100,6 +100,30 @@
 
 <h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3>8.0.0 (2026-03-02)</h3>
+<p>This update brings a foundational architectural shift to the backend, strictly adhering to Domain-Driven Design (DDD) principles and Event-Driven Architecture (EDA). It resolves legacy circular dependencies and dramatically improves system maintainability.</p>
+<h4>1. BFF Delegation &amp; Archive Module Removal</h4>
+<ul>
+<li><strong>[BREAKING]</strong> Completely removed the backend <code>ArchiveModule</code> and the <code>/archive</code> endpoint.</li>
+<li><strong>Why</strong>: The backend is no longer responsible for assembling massive, global JSON payloads. The frontend (SSR) will now utilize <code>Promise.all</code> to concurrently fetch <code>/tags</code>, <code>/categories</code>, and <code>/articles</code>, assuming the BFF (Backend For Frontend) role. This significantly reduces backend memory overhead and unnecessary serialization.</li>
+</ul>
+<h4>2. Event-Driven Architecture Implementation</h4>
+<ul>
+<li>Integrated <code>@nestjs/event-emitter</code> as the central Event Bus, replacing direct cross-module method invocations.</li>
+<li><strong>Decoupled Side-Effects</strong>: When a <code>Tag</code> or <code>Category</code> is deleted, its respective module only handles its own database/cache cleanup and then broadcasts events (<code>TagDeleted</code>, <code>CategoryDeleted</code>).</li>
+<li><strong>Silent Cascading Updates</strong>: The <code>Article</code> module now utilizes <code>ArticleListener</code> to asynchronously react to these events, safely executing <code>$pull</code> operations to erase orphaned foreign keys without creating tight bidirectional coupling.</li>
+</ul>
+<h4>3. Article Module SRP (Single Responsibility Principle)</h4>
+<p>The previously monolithic <code>ArticleService</code> has been surgically divided into specialized sub-services:</p>
+<ul>
+<li><strong><code>ArticleStatsService</code></strong>: Dedicated to complex MongoDB aggregations (providing article counts for Tags/Categories, global reading statistics, and calendar data).</li>
+<li><strong><code>ArticleSyncService</code></strong>: Dedicated to silent data synchronization and cleanup (e.g., atomic <code>$pull</code> of deleted taxonomies).</li>
+<li><strong><code>ArticleContextService</code></strong>: Dedicated to contextual queries (previous/next and related articles).</li>
+</ul>
+<h4>4. Database &amp; Performance Optimizations</h4>
+<ul>
+<li><strong>Cache Race-Condition Prevention</strong>: Refactored event listener execution order to guarantee that database <code>$pull</code> operations complete strictly <em>before</em> Redis caches are flushed and rebuilt, preventing stale data write-backs under high concurrency.</li>
+</ul>
 <h3>7.0.0 (2026-02-20)</h3>
 <h4>Global Architecture &amp; Model Refactoring</h4>
 <ul>

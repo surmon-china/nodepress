@@ -554,7 +554,7 @@ import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { resolveGeneralAuthor } from &#x27;@app/constants/author.constant&#x27;
-import { ArticleStatsService } from &#x27;@app/modules/article/article.service.stats&#x27;
+import { ArticleSyncService } from &#x27;@app/modules/article/article.service.sync&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
 import { UserService } from &#x27;@app/modules/user/user.service&#x27;
 import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
@@ -570,7 +570,7 @@ export class VoteController {
     private readonly voteService: VoteService,
     private readonly userService: UserService,
     private readonly commentService: CommentService,
-    private readonly articleStatsService: ArticleStatsService
+    private readonly articleSyncService: ArticleSyncService
   ) {}
 
   @Post(&#x27;/article&#x27;)
@@ -580,7 +580,7 @@ export class VoteController {
     @Body() dto: ArticleVoteDto,
     @RequestContext() { visitor, identity }: IRequestContext
   ): Promise&lt;number&gt; {
-    const result &#x3D; await this.articleStatsService.incrementStatistics(dto.article_id, &#x27;likes&#x27;)
+    const result &#x3D; await this.articleSyncService.incrementStatistics(dto.article_id, &#x27;likes&#x27;)
 
     const [user, ipLocation] &#x3D; await Promise.all([
       identity.isUser ? this.userService.findOne(identity.payload!.uid!) : null,

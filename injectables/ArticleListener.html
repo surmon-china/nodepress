@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >ArchiveService</li>
+  <li class="breadcrumb-item" >ArticleListener</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/archive/archive.service.ts</code>
+            <code>src/modules/article/article.listener.ts</code>
         </p>
 
 
@@ -144,21 +144,6 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#archiveCache" >archiveCache</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -169,20 +154,22 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Private</span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Async</span>
-                                <a href="#getArchiveData" >getArchiveData</a>
+                                <a href="#handleCategoriesDeleted" >handleCategoriesDeleted</a>
                             </li>
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getCache" >getCache</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleRelationalDataUpdated" >handleRelationalDataUpdated</a>
                             </li>
                             <li>
-                                <a href="#onModuleInit" >onModuleInit</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#updateCache" >updateCache</a>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleTagsDeleted" >handleTagsDeleted</a>
                             </li>
                         </ul>
                     </td>
@@ -202,12 +189,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>, tagModel: <a href="../classes/Tag.html" target="_self">MongooseModel&lt;Tag&gt;</a>, articleModel: <a href="../classes/Article.html" target="_self">MongooseModel&lt;Article&gt;</a>, categoryModel: <a href="../classes/Category.html" target="_self">MongooseModel&lt;Category&gt;</a>)</code>
+<code>constructor(articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>, articleSyncService: <a href="../injectables/ArticleSyncService.html" target="_self">ArticleSyncService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/archive/archive.service.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/modules/article/article.listener.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -225,10 +212,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>cacheService</td>
+                                                        <td>articleService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/CacheService.html" target="_self" >CacheService</a></code>
+                                                                        <code><a href="../injectables/ArticleService.html" target="_self" >ArticleService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -237,34 +224,10 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>tagModel</td>
+                                                        <td>articleSyncService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../classes/Tag.html" target="_self" >MongooseModel&lt;Tag&gt;</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>articleModel</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../classes/Article.html" target="_self" >MongooseModel&lt;Article&gt;</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>categoryModel</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../classes/Category.html" target="_self" >MongooseModel&lt;Category&gt;</a></code>
+                                                                        <code><a href="../injectables/ArticleSyncService.html" target="_self" >ArticleSyncService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -290,27 +253,35 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getArchiveData"></a>
+                    <a name="handleCategoriesDeleted"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Async</span>
-                        <span ><b>getArchiveData</b></span>
-                        <a href="#getArchiveData"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>handleCategoriesDeleted</b></span>
+                        <a href="#handleCategoriesDeleted"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getArchiveData()</code>
+                    <code>handleCategoriesDeleted(categoryObjectIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId | MongooseId[]</a>)</code>
                 </td>
             </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.CategoryDeleted, {async: true})<br />@OnEvent(EventKeys.CategoriesDeleted, {async: true})<br /></code>
+                </td>
+            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="58"
-                                    class="link-to-prism">src/modules/archive/archive.service.ts:58</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/modules/article/article.listener.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -318,10 +289,40 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>categoryObjectIds</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId | MongooseId[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/ArchiveData.html" target="_self" >Promise&lt;ArchiveData&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -330,26 +331,35 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getCache"></a>
+                    <a name="handleRelationalDataUpdated"></a>
                     <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>getCache</b></span>
-                        <a href="#getCache"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleRelationalDataUpdated</b></span>
+                        <a href="#handleRelationalDataUpdated"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCache()</code>
+                    <code>handleRelationalDataUpdated()</code>
                 </td>
             </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.TagUpdated, {async: true})<br />@OnEvent(EventKeys.CategoryUpdated, {async: true})<br /></code>
+                </td>
+            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/archive/archive.service.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="23"
+                                    class="link-to-prism">src/modules/article/article.listener.ts:23</a></div>
                         </td>
                     </tr>
 
@@ -358,7 +368,7 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/ArchiveData.html" target="_self" >Promise&lt;ArchiveData&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                 </td>
@@ -369,63 +379,35 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="onModuleInit"></a>
+                    <a name="handleTagsDeleted"></a>
                     <span class="name">
-                        <span ><b>onModuleInit</b></span>
-                        <a href="#onModuleInit"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>onModuleInit()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/archive/archive.service.ts:44</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="updateCache"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>updateCache</b></span>
-                        <a href="#updateCache"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleTagsDeleted</b></span>
+                        <a href="#handleTagsDeleted"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateCache()</code>
+                    <code>handleTagsDeleted(tagObjectIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId | MongooseId[]</a>)</code>
                 </td>
             </tr>
 
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.TagDeleted, {async: true})<br />@OnEvent(EventKeys.TagsDeleted, {async: true})<br /></code>
+                </td>
+            </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/modules/archive/archive.service.ts:54</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/article/article.listener.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -433,45 +415,42 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tagObjectIds</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId | MongooseId[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/ArchiveData.html" target="_self" >Promise&lt;ArchiveData&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
-        </tbody>
-    </table>
-</section>
-            <section data-compodoc="block-properties">
-    
-    <h3 id="inputs">
-        Properties
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="archiveCache"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>archiveCache</b></span>
-                        <a href="#archiveCache"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>CacheManualResult&lt;ArchiveData&gt;</code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/archive/archive.service.ts:30</a></div>
-                        </td>
-                    </tr>
-
-
         </tbody>
     </table>
 </section>
@@ -480,73 +459,38 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
-import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
-import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
-import { SortOrder } from &#x27;@app/constants/sort.constant&#x27;
-import { ARTICLE_PUBLIC_FILTER } from &#x27;@app/modules/article/article.constant&#x27;
-import { Article } from &#x27;@app/modules/article/article.model&#x27;
-import { Category } from &#x27;@app/modules/category/category.model&#x27;
-import { Tag } from &#x27;@app/modules/tag/tag.model&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
-
-const logger &#x3D; createLogger({ scope: &#x27;ArchiveService&#x27;, time: isDevEnv })
-
-export interface ArchiveData {
-  tags: Tag[]
-  categories: Category[]
-  articles: Article[]
-}
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { ArticleService } from &#x27;./article.service&#x27;
+import { ArticleSyncService } from &#x27;./article.service.sync&#x27;
 
 @Injectable()
-export class ArchiveService implements OnModuleInit {
-  private archiveCache: CacheManualResult&lt;ArchiveData&gt;
-
+export class ArticleListener {
   constructor(
-    private readonly cacheService: CacheService,
-    @InjectModel(Tag) private readonly tagModel: MongooseModel&lt;Tag&gt;,
-    @InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;,
-    @InjectModel(Category) private readonly categoryModel: MongooseModel&lt;Category&gt;
-  ) {
-    this.archiveCache &#x3D; this.cacheService.manual({
-      key: CacheKeys.Archive,
-      promise: () &#x3D;&gt; this.getArchiveData()
-    })
+    private readonly articleService: ArticleService,
+    private readonly articleSyncService: ArticleSyncService
+  ) {}
+
+  @OnEvent(EventKeys.TagUpdated, { async: true })
+  @OnEvent(EventKeys.CategoryUpdated, { async: true })
+  async handleRelationalDataUpdated() {
+    await this.articleService.updateAllPublicArticlesCache()
   }
 
-  onModuleInit() {
-    this.archiveCache.update().catch((error) &#x3D;&gt; {
-      logger.warn(&#x27;Init getArchiveData failed!&#x27;, error)
-    })
+  @OnEvent(EventKeys.TagDeleted, { async: true })
+  @OnEvent(EventKeys.TagsDeleted, { async: true })
+  async handleTagsDeleted(tagObjectIds: MongooseId | MongooseId[]) {
+    await this.articleSyncService.removeTagsFromAllArticles(tagObjectIds)
+    await this.articleService.updateAllPublicArticlesCache()
   }
 
-  public getCache(): Promise&lt;ArchiveData&gt; {
-    return this.archiveCache.get()
-  }
-
-  public updateCache(): Promise&lt;ArchiveData&gt; {
-    return this.archiveCache.update()
-  }
-
-  private async getArchiveData(): Promise&lt;ArchiveData&gt; {
-    try {
-      const [tags, categories, articles] &#x3D; await Promise.all([
-        this.tagModel.find().sort({ created_at: SortOrder.Desc }).lean().exec(),
-        this.categoryModel.find().sort({ created_at: SortOrder.Desc }).lean().exec(),
-        this.articleModel.find(ARTICLE_PUBLIC_FILTER).sort({ created_at: SortOrder.Desc }).lean().exec()
-      ])
-      return { tags, categories, articles }
-    } catch (error) {
-      logger.warn(&#x27;getArchiveData failed!&#x27;, error)
-      return {
-        tags: [],
-        categories: [],
-        articles: []
-      }
-    }
+  @OnEvent(EventKeys.CategoryDeleted, { async: true })
+  @OnEvent(EventKeys.CategoriesDeleted, { async: true })
+  async handleCategoriesDeleted(categoryObjectIds: MongooseId | MongooseId[]) {
+    await this.articleSyncService.removeCategoriesFromAllArticles(categoryObjectIds)
+    await this.articleService.updateAllPublicArticlesCache()
   }
 }
 </code></pre>
@@ -592,7 +536,7 @@ export class ArchiveService implements OnModuleInit {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'ArchiveService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ArticleListener.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

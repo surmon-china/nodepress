@@ -93,7 +93,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content controller">
+               <div class="content injectable">
                    <div class="content-data">
 
 
@@ -104,9 +104,12 @@
 
 
 
+
+
+
 <ol class="breadcrumb">
-  <li class="breadcrumb-item">Controllers</li>
-  <li class="breadcrumb-item" >ArchiveController</li>
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >TagListener</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -130,15 +133,8 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/archive/archive.controller.ts</code>
+            <code>src/modules/tag/tag.listener.ts</code>
         </p>
-            <p class="comment">
-                <h3>Prefix</h3>
-            </p>
-            <p class="comment">
-                <code>archive</code>
-            </p>
-
 
 
 
@@ -160,13 +156,11 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#getArchive" >getArchive</a>
-                            </li>
-                            <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                <a href="#updateArchive" >updateArchive</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleAnyArticleChanged" >handleAnyArticleChanged</a>
                             </li>
                         </ul>
                     </td>
@@ -180,6 +174,55 @@
     </table>
 </section>
 
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(tagService: <a href="../injectables/TagService.html" target="_self">TagService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/modules/tag/tag.listener.ts:13</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>tagService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/TagService.html" target="_self" >TagService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
             <section data-compodoc="block-methods">
     
     <h3 id="methods">
@@ -189,19 +232,23 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getArchive"></a>
+                    <a name="handleAnyArticleChanged"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                        <span ><b>getArchive</b></span>
-                        <a href="#getArchive"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleAnyArticleChanged</b></span>
+                        <a href="#handleAnyArticleChanged"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getArchive()</code>
+                    <code>handleAnyArticleChanged()</code>
                 </td>
             </tr>
 
@@ -209,14 +256,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Get()<br />@SuccessResponse(&#x27;Get archive succeeded&#x27;)<br /></code>
+                    <code>@OnEvent(EventKeys.ArticleCreated, {async: true})<br />@OnEvent(EventKeys.ArticleUpdated, {async: true})<br />@OnEvent(EventKeys.ArticleDeleted, {async: true})<br />@OnEvent(EventKeys.ArticlesStatusChanged, {async: true})<br />@OnEvent(EventKeys.ArticlesDeleted, {async: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="18"
-                                    class="link-to-prism">src/modules/archive/archive.controller.ts:18</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="21"
+                                    class="link-to-prism">src/modules/tag/tag.listener.ts:21</a></div>
                         </td>
                     </tr>
 
@@ -225,99 +272,41 @@
                 <td class="col-md-4">
 
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/ArchiveData.html" target="_self" >Promise&lt;ArchiveData&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                 </td>
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="updateArchive"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>updateArchive</b></span>
-                        <a href="#updateArchive"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateArchive()</code>
-                </td>
-            </tr>
+</section>
 
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Post(&#x27;refresh&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Update archive cache succeeded&#x27;)<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="25"
-                                    class="link-to-prism">src/modules/archive/archive.controller.ts:25</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    </div>
+    </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">/**
- * @file Archive controller
- * @module module/archive/controller
- * @author Surmon &lt;https://github.com/surmon-china&gt;
- */
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
+import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { TagService } from &#x27;./tag.service&#x27;
 
-import { Controller, Get, Post } from &#x27;@nestjs/common&#x27;
-import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
-import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
-import { ArchiveService, ArchiveData } from &#x27;./archive.service&#x27;
+@Injectable()
+export class TagListener {
+  constructor(private readonly tagService: TagService) {}
 
-@Controller(&#x27;archive&#x27;)
-export class ArchiveController {
-  constructor(private readonly archiveService: ArchiveService) {}
-
-  @Get()
-  @SuccessResponse(&#x27;Get archive succeeded&#x27;)
-  getArchive(): Promise&lt;ArchiveData&gt; {
-    return this.archiveService.getCache()
-  }
-
-  @Post(&#x27;refresh&#x27;)
-  @OnlyIdentity(IdentityRole.Admin)
-  @SuccessResponse(&#x27;Update archive cache succeeded&#x27;)
-  updateArchive(): Promise&lt;any&gt; {
-    return this.archiveService.updateCache()
+  @OnEvent(EventKeys.ArticleCreated, { async: true })
+  @OnEvent(EventKeys.ArticleUpdated, { async: true })
+  @OnEvent(EventKeys.ArticleDeleted, { async: true })
+  @OnEvent(EventKeys.ArticlesStatusChanged, { async: true })
+  @OnEvent(EventKeys.ArticlesDeleted, { async: true })
+  async handleAnyArticleChanged() {
+    await this.tagService.updateAllPublicTagsCache()
   }
 }
 </code></pre>
     </div>
+
 </div>
-
-
-
 
 
 
@@ -356,8 +345,8 @@ export class ArchiveController {
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'controller';
-            var COMPODOC_CURRENT_PAGE_URL = 'ArchiveController.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'TagListener.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

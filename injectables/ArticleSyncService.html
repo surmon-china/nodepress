@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >CommentEffectService</li>
+  <li class="breadcrumb-item" >ArticleSyncService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/comment/comment.service.effect.ts</code>
+            <code>src/modules/article/article.service.sync.ts</code>
         </p>
 
 
@@ -154,18 +154,21 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#getUniqueTargetIds" >getUniqueTargetIds</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#syncArticleCommentCounts" >syncArticleCommentCounts</a>
+                                <a href="#incrementStatistics" >incrementStatistics</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#syncTargetEffects" >syncTargetEffects</a>
+                                <a href="#removeCategoriesFromAllArticles" >removeCategoriesFromAllArticles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#removeTagsFromAllArticles" >removeTagsFromAllArticles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#updateStatsComments" >updateStatsComments</a>
                             </li>
                         </ul>
                     </td>
@@ -185,12 +188,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(articleSyncService: <a href="../injectables/ArticleSyncService.html" target="_self">ArticleSyncService</a>, commentModel: <a href="../classes/Comment.html" target="_self">MongooseModel&lt;Comment&gt;</a>)</code>
+<code>constructor(articleModel: <a href="../classes/Article.html" target="_self">MongooseModel&lt;Article&gt;</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/modules/comment/comment.service.effect.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/modules/article/article.service.sync.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -208,22 +211,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>articleSyncService</td>
+                                                        <td>articleModel</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/ArticleSyncService.html" target="_self" >ArticleSyncService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>commentModel</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../classes/Comment.html" target="_self" >MongooseModel&lt;Comment&gt;</a></code>
+                                                                        <code><a href="../classes/Article.html" target="_self" >MongooseModel&lt;Article&gt;</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -249,26 +240,27 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getUniqueTargetIds"></a>
+                    <a name="incrementStatistics"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>getUniqueTargetIds</b></span>
-                        <a href="#getUniqueTargetIds"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>incrementStatistics</b></span>
+                        <a href="#incrementStatistics"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getUniqueTargetIds(targets: <a href="../classes/Comment.html" target="_self">CommentTarget[]</a>, type: <a href="../miscellaneous/enumerations.html#CommentTargetType" target="_self">CommentTargetType</a>)</code>
+                    <code>incrementStatistics(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, field: unknown)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="37"
-                                    class="link-to-prism">src/modules/comment/comment.service.effect.ts:37</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="29"
+                                    class="link-to-prism">src/modules/article/article.service.sync.ts:29</a></div>
                         </td>
                     </tr>
 
@@ -289,9 +281,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>targets</td>
+                                                <td>articleId</td>
                                             <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >CommentTarget[]</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -301,9 +293,9 @@
 
                                         </tr>
                                         <tr>
-                                                <td>type</td>
+                                                <td>field</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/enumerations.html#CommentTargetType" target="_self" >CommentTargetType</a></code>
+                                                        <code>unknown</code>
                                             </td>
 
                                             <td>
@@ -316,7 +308,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>number[]</code>
+                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -330,19 +322,156 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="syncArticleCommentCounts"></a>
+                    <a name="removeCategoriesFromAllArticles"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>syncArticleCommentCounts</b></span>
-                        <a href="#syncArticleCommentCounts"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Public</span>
+                        <span ><b>removeCategoriesFromAllArticles</b></span>
+                        <a href="#removeCategoriesFromAllArticles"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>syncArticleCommentCounts(articleIds: number[])</code>
+                    <code>removeCategoriesFromAllArticles(categoryObjectIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId | MongooseId[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/modules/article/article.service.sync.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>categoryObjectIds</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId | MongooseId[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeTagsFromAllArticles"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>removeTagsFromAllArticles</b></span>
+                        <a href="#removeTagsFromAllArticles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>removeTagsFromAllArticles(tagObjectIds: <a href="../miscellaneous/typealiases.html#MongooseId" target="_self">MongooseId | MongooseId[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="17"
+                                    class="link-to-prism">src/modules/article/article.service.sync.ts:17</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tagObjectIds</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#MongooseId" target="_self" >MongooseId | MongooseId[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateStatsComments"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>updateStatsComments</b></span>
+                        <a href="#updateStatsComments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateStatsComments(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, commentCount: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -350,7 +479,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="41"
-                                    class="link-to-prism">src/modules/comment/comment.service.effect.ts:41</a></div>
+                                    class="link-to-prism">src/modules/article/article.service.sync.ts:41</a></div>
                         </td>
                     </tr>
 
@@ -371,9 +500,21 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>articleIds</td>
+                                                <td>articleId</td>
                                             <td>
-                                                        <code>number[]</code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>commentCount</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -386,79 +527,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="syncTargetEffects"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>syncTargetEffects</b></span>
-                        <a href="#syncTargetEffects"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>syncTargetEffects(targets: <a href="../classes/Comment.html" target="_self">CommentTarget[]</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="28"
-                                    class="link-to-prism">src/modules/comment/comment.service.effect.ts:28</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-description"><p>Sync effects to targets</p>
-</div>
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>targets</td>
-                                            <td>
-                                                            <code><a href="../classes/Comment.html" target="_self" >CommentTarget[]</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -476,61 +545,42 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
-import { ArticleSyncService } from &#x27;@app/modules/article/article.service.sync&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { isDevEnv } from &#x27;@app/app.environment&#x27;
-import { CommentTargetType, COMMENT_PUBLIC_FILTER } from &#x27;./comment.constant&#x27;
-import { Comment } from &#x27;./comment.model&#x27;
-
-const logger &#x3D; createLogger({ scope: &#x27;CommentEffectService&#x27;, time: isDevEnv })
-
-export type CommentTarget &#x3D; Pick&lt;Comment, &#x27;target_type&#x27; | &#x27;target_id&#x27;&gt;
+import { MongooseModel, MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
+import { ARTICLE_PUBLIC_FILTER } from &#x27;./article.constant&#x27;
+import { Article, ArticleStats } from &#x27;./article.model&#x27;
 
 @Injectable()
-export class CommentEffectService {
-  constructor(
-    private readonly articleSyncService: ArticleSyncService,
-    @InjectModel(Comment) private readonly commentModel: MongooseModel&lt;Comment&gt;
-  ) {}
+export class ArticleSyncService {
+  constructor(@InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;) {}
 
-  /** Sync effects to targets */
-  public async syncTargetEffects(targets: CommentTarget[]): Promise&lt;void&gt; {
-    if (!targets.length) return
-
-    const articleIds &#x3D; this.getUniqueTargetIds(targets, CommentTargetType.Article)
-    if (articleIds.length &gt; 0) {
-      await this.syncArticleCommentCounts(articleIds)
-    }
+  public removeTagsFromAllArticles(tagObjectIds: MongooseId | MongooseId[]) {
+    const ids &#x3D; Array.isArray(tagObjectIds) ? tagObjectIds : [tagObjectIds]
+    return this.articleModel.updateMany({ tags: { $in: ids } }, { $pull: { tags: { $in: ids } } }).exec()
   }
 
-  private getUniqueTargetIds(targets: CommentTarget[], type: CommentTargetType): number[] {
-    return [...new Set(targets.filter((t) &#x3D;&gt; t.target_type &#x3D;&#x3D;&#x3D; type).map((t) &#x3D;&gt; t.target_id))]
+  public removeCategoriesFromAllArticles(categoryObjectIds: MongooseId | MongooseId[]) {
+    const ids &#x3D; Array.isArray(categoryObjectIds) ? categoryObjectIds : [categoryObjectIds]
+    return this.articleModel
+      .updateMany({ categories: { $in: ids } }, { $pull: { categories: { $in: ids } } })
+      .exec()
   }
 
-  private async syncArticleCommentCounts(articleIds: number[]): Promise&lt;void&gt; {
-    try {
-      const counts &#x3D; await this.commentModel.aggregate&lt;{ _id: number; comment_count: number }&gt;([
-        {
-          $match: {
-            ...COMMENT_PUBLIC_FILTER,
-            target_type: CommentTargetType.Article,
-            target_id: { $in: articleIds }
-          }
-        },
-        { $group: { _id: &#x27;$target_id&#x27;, comment_count: { $sum: 1 } } }
-      ])
-
-      const countMap &#x3D; new Map(counts.map((c) &#x3D;&gt; [c._id, c.comment_count]))
-      await Promise.all(
-        // If an ID is missing from the countMap, it means the article has 0 valid comments.
-        articleIds.map((id) &#x3D;&gt; this.articleSyncService.updateStatsComments(id, countMap.get(id) || 0))
+  public async incrementStatistics(articleId: number, field: keyof ArticleStats): Promise&lt;number&gt; {
+    const result &#x3D; await this.articleModel
+      .findOneAndUpdate(
+        { id: articleId, ...ARTICLE_PUBLIC_FILTER },
+        { $inc: { [&#x60;stats.${field}&#x60;]: 1 } },
+        { projection: { [&#x60;stats.${field}&#x60;]: 1 }, timestamps: false, returnDocument: &#x27;after&#x27; }
       )
+      .lean()
+      .exec()
+    return result?.stats?.[field] ?? 0
+  }
 
-      // logger.info(&#x60;Synced comment counts for ${articleIds.length} articles.&#x60;)
-    } catch (error) {
-      logger.warn(&#x27;syncArticleCommentCounts failed!&#x27;, error)
-    }
+  public updateStatsComments(articleId: number, commentCount: number) {
+    return this.articleModel
+      .updateOne({ id: articleId }, { $set: { &#x27;stats.comments&#x27;: commentCount } }, { timestamps: false })
+      .exec()
   }
 }
 </code></pre>
@@ -576,7 +626,7 @@ export class CommentEffectService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'CommentEffectService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ArticleSyncService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

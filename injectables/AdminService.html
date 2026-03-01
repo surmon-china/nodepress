@@ -638,7 +638,7 @@ export class AdminService {
     @InjectModel(Admin) private readonly adminModel: MongooseModel&lt;Admin&gt;
   ) {
     this.profileCache &#x3D; this.cacheService.manual({
-      key: CacheKeys.AdminProfile,
+      key: CacheKeys.PublicAdminProfile,
       promise: () &#x3D;&gt; this.getProfile()
     })
   }
