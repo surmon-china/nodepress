@@ -13,13 +13,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TagService = void 0;
+const event_emitter_1 = require("@nestjs/event-emitter");
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const cache_service_1 = require("../../core/cache/cache.service");
 const helper_service_seo_1 = require("../../core/helper/helper.service.seo");
-const archive_service_1 = require("../archive/archive.service");
-const article_constant_1 = require("../article/article.constant");
-const article_model_1 = require("../article/article.model");
+const cache_service_1 = require("../../core/cache/cache.service");
+const article_service_stats_1 = require("../article/article.service.stats");
+const events_constant_1 = require("../../constants/events.constant");
 const cache_constant_1 = require("../../constants/cache.constant");
 const sort_constant_1 = require("../../constants/sort.constant");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
@@ -28,20 +28,20 @@ const app_environment_1 = require("../../app.environment");
 const tag_model_1 = require("./tag.model");
 const logger = (0, logger_1.createLogger)({ scope: 'TagService', time: app_environment_1.isDevEnv });
 let TagService = class TagService {
+    eventEmitter;
     seoService;
     cacheService;
-    archiveService;
+    articleStatsService;
     tagModel;
-    articleModel;
     allPublicTagsCache;
-    constructor(seoService, cacheService, archiveService, tagModel, articleModel) {
+    constructor(eventEmitter, seoService, cacheService, articleStatsService, tagModel) {
+        this.eventEmitter = eventEmitter;
         this.seoService = seoService;
         this.cacheService = cacheService;
-        this.archiveService = archiveService;
+        this.articleStatsService = articleStatsService;
         this.tagModel = tagModel;
-        this.articleModel = articleModel;
         this.allPublicTagsCache = this.cacheService.manual({
-            key: cache_constant_1.CacheKeys.AllTags,
+            key: cache_constant_1.CacheKeys.PublicAllTags,
             promise: () => this.getAllTags({ aggregatePublicOnly: true })
         });
     }
@@ -59,15 +59,8 @@ let TagService = class TagService {
     async aggregateArticleCount(tags, publicOnly) {
         if (!tags.length)
             return [];
-        const tagIds = tags.map((c) => c._id);
-        const matchStage = publicOnly ? { ...article_constant_1.ARTICLE_PUBLIC_FILTER } : {};
-        const counts = await this.articleModel.aggregate([
-            { $match: { tags: { $in: tagIds }, ...matchStage } },
-            { $unwind: '$tags' },
-            { $match: { tags: { $in: tagIds } } },
-            { $group: { _id: '$tags', count: { $sum: 1 } } }
-        ]);
-        const countMap = new Map(counts.map((c) => [c._id.toString(), c.count]));
+        const tagObjectIds = tags.map((c) => c._id);
+        const countMap = await this.articleStatsService.getCountsByTagIds(tagObjectIds, publicOnly);
         return tags.map((tag) => ({
             ...tag,
             article_count: countMap.get(tag._id.toString()) ?? 0
@@ -79,7 +72,7 @@ let TagService = class TagService {
         return { ...result, documents };
     }
     async getAllTags(options) {
-        const allTags = await this.tagModel.find().lean().sort({ _id: sort_constant_1.SortOrder.Desc }).exec();
+        const allTags = await this.tagModel.find().lean().sort({ created_at: sort_constant_1.SortOrder.Desc }).exec();
         return await this.aggregateArticleCount(allTags, options.aggregatePublicOnly);
     }
     async getTotalCount() {
@@ -100,7 +93,7 @@ let TagService = class TagService {
             throw new common_1.ConflictException(`Tag slug '${input.slug}' already exists`);
         const created = await this.tagModel.create(input);
         this.updateAllPublicTagsCache();
-        this.archiveService.updateCache();
+        this.eventEmitter.emit(events_constant_1.EventKeys.TagCreated, created);
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(created.slug));
         return created;
     }
@@ -115,7 +108,7 @@ let TagService = class TagService {
         if (!updated)
             throw new common_1.NotFoundException(`Tag '${tagId}' not found`);
         this.updateAllPublicTagsCache();
-        this.archiveService.updateCache();
+        this.eventEmitter.emit(events_constant_1.EventKeys.TagUpdated, updated);
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(updated.slug));
         return updated;
     }
@@ -123,9 +116,8 @@ let TagService = class TagService {
         const deleted = await this.tagModel.findOneAndDelete({ id: tagId }).exec();
         if (!deleted)
             throw new common_1.NotFoundException(`Tag '${tagId}' not found`);
-        await this.articleModel.updateMany({ tags: deleted._id }, { $pull: { tags: deleted._id } }).exec();
         this.updateAllPublicTagsCache();
-        this.archiveService.updateCache();
+        this.eventEmitter.emit(events_constant_1.EventKeys.TagDeleted, deleted._id);
         this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(deleted.slug));
         return deleted;
     }
@@ -136,11 +128,8 @@ let TagService = class TagService {
             .exec();
         const actionResult = await this.tagModel.deleteMany({ id: { $in: tagIds } }).exec();
         const tagObjectIds = tags.map((tag) => tag._id);
-        await this.articleModel
-            .updateMany({ tags: { $in: tagObjectIds } }, { $pull: { tags: { $in: tagObjectIds } } })
-            .exec();
         this.updateAllPublicTagsCache();
-        this.archiveService.updateCache();
+        this.eventEmitter.emit(events_constant_1.EventKeys.TagsDeleted, tagObjectIds);
         this.seoService.delete(tags.map((tag) => (0, urlmap_transformer_1.getTagUrl)(tag.slug)));
         return actionResult;
     }
@@ -148,10 +137,11 @@ let TagService = class TagService {
 exports.TagService = TagService;
 exports.TagService = TagService = __decorate([
     (0, common_1.Injectable)(),
-    __param(3, (0, model_transformer_1.InjectModel)(tag_model_1.Tag)),
-    __param(4, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
-    __metadata("design:paramtypes", [helper_service_seo_1.SeoService,
+    __param(3, (0, common_1.Inject)((0, common_1.forwardRef)(() => article_service_stats_1.ArticleStatsService))),
+    __param(4, (0, model_transformer_1.InjectModel)(tag_model_1.Tag)),
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
+        helper_service_seo_1.SeoService,
         cache_service_1.CacheService,
-        archive_service_1.ArchiveService, Object, Object])
+        article_service_stats_1.ArticleStatsService, Object])
 ], TagService);
 //# sourceMappingURL=tag.service.js.map

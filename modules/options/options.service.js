@@ -33,7 +33,7 @@ let OptionsService = class OptionsService {
         this.optionsModel = optionsModel;
         this.cacheService = cacheService;
         this.optionsCache = this.cacheService.manual({
-            key: cache_constant_1.CacheKeys.Options,
+            key: cache_constant_1.CacheKeys.PublicOptions,
             promise: () => {
                 return this.ensureOptions().then((option) => {
                     return (0, omit_1.default)(option, ['blocklist', '_id']);

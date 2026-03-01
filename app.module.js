@@ -24,7 +24,6 @@ const category_module_1 = require("./modules/category/category.module");
 const tag_module_1 = require("./modules/tag/tag.module");
 const article_module_1 = require("./modules/article/article.module");
 const comment_module_1 = require("./modules/comment/comment.module");
-const archive_module_1 = require("./modules/archive/archive.module");
 const feedback_module_1 = require("./modules/feedback/feedback.module");
 const vote_module_1 = require("./modules/vote/vote.module");
 const options_module_1 = require("./modules/options/options.module");
@@ -71,7 +70,6 @@ exports.AppModule = AppModule = __decorate([
             category_module_1.CategoryModule,
             article_module_1.ArticleModule,
             comment_module_1.CommentModule,
-            archive_module_1.ArchiveModule,
             vote_module_1.VoteModule,
             system_module_1.SystemModule,
             webhook_module_1.WebhookModule,

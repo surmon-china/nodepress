@@ -13,13 +13,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryService = void 0;
+const event_emitter_1 = require("@nestjs/event-emitter");
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
-const cache_service_1 = require("../../core/cache/cache.service");
-const archive_service_1 = require("../archive/archive.service");
 const helper_service_seo_1 = require("../../core/helper/helper.service.seo");
-const article_model_1 = require("../article/article.model");
-const article_constant_1 = require("../article/article.constant");
+const cache_service_1 = require("../../core/cache/cache.service");
+const article_service_stats_1 = require("../article/article.service.stats");
+const events_constant_1 = require("../../constants/events.constant");
 const cache_constant_1 = require("../../constants/cache.constant");
 const sort_constant_1 = require("../../constants/sort.constant");
 const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
@@ -28,20 +28,20 @@ const app_environment_1 = require("../../app.environment");
 const category_model_1 = require("./category.model");
 const logger = (0, logger_1.createLogger)({ scope: 'CategoryService', time: app_environment_1.isDevEnv });
 let CategoryService = class CategoryService {
+    eventEmitter;
     seoService;
     cacheService;
-    archiveService;
-    articleModel;
+    articleStatsService;
     categoryModel;
     allPublicCategoriesCache;
-    constructor(seoService, cacheService, archiveService, articleModel, categoryModel) {
+    constructor(eventEmitter, seoService, cacheService, articleStatsService, categoryModel) {
+        this.eventEmitter = eventEmitter;
         this.seoService = seoService;
         this.cacheService = cacheService;
-        this.archiveService = archiveService;
-        this.articleModel = articleModel;
+        this.articleStatsService = articleStatsService;
         this.categoryModel = categoryModel;
         this.allPublicCategoriesCache = this.cacheService.manual({
-            key: cache_constant_1.CacheKeys.AllCategories,
+            key: cache_constant_1.CacheKeys.PublicAllCategories,
             promise: () => this.getAllCategories({ aggregatePublicOnly: true })
         });
     }
@@ -60,14 +60,7 @@ let CategoryService = class CategoryService {
         if (!categories.length)
             return [];
         const categoryIds = categories.map((c) => c._id);
-        const matchStage = publicOnly ? { ...article_constant_1.ARTICLE_PUBLIC_FILTER } : {};
-        const counts = await this.articleModel.aggregate([
-            { $match: { categories: { $in: categoryIds }, ...matchStage } },
-            { $unwind: '$categories' },
-            { $match: { categories: { $in: categoryIds } } },
-            { $group: { _id: '$categories', count: { $sum: 1 } } }
-        ]);
-        const countMap = new Map(counts.map((c) => [c._id.toString(), c.count]));
+        const countMap = await this.articleStatsService.getCountsByCategoryIds(categoryIds, publicOnly);
         return categories.map((category) => ({
             ...category,
             article_count: countMap.get(category._id.toString()) ?? 0
@@ -98,7 +91,7 @@ let CategoryService = class CategoryService {
         }
         const created = await this.categoryModel.create(input);
         this.updateAllPublicCategoriesCache();
-        this.archiveService.updateCache();
+        this.eventEmitter.emit(events_constant_1.EventKeys.CategoryCreated, created);
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(created.slug));
         return created;
     }
@@ -113,7 +106,7 @@ let CategoryService = class CategoryService {
         if (!updated)
             throw new common_1.NotFoundException(`Category '${categoryId}' not found`);
         this.updateAllPublicCategoriesCache();
-        this.archiveService.updateCache();
+        this.eventEmitter.emit(events_constant_1.EventKeys.CategoryUpdated, updated);
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(updated.slug));
         return updated;
     }
@@ -124,9 +117,8 @@ let CategoryService = class CategoryService {
         await this.categoryModel
             .updateMany({ parent_id: deleted.id }, { $set: { parent_id: deleted.parent_id || null } })
             .exec();
-        await this.articleModel.updateMany({ categories: deleted._id }, { $pull: { categories: deleted._id } }).exec();
         this.updateAllPublicCategoriesCache();
-        this.archiveService.updateCache();
+        this.eventEmitter.emit(events_constant_1.EventKeys.CategoryDeleted, deleted._id);
         this.seoService.delete((0, urlmap_transformer_1.getCategoryUrl)(deleted.slug));
         return deleted;
     }
@@ -138,11 +130,8 @@ let CategoryService = class CategoryService {
         const actionResult = await this.categoryModel.deleteMany({ id: { $in: categoryIds } }).exec();
         await this.categoryModel.updateMany({ parent_id: { $in: categoryIds } }, { $set: { parent_id: null } }).exec();
         const categoryObjectIds = categories.map((category) => category._id);
-        await this.articleModel
-            .updateMany({ categories: { $in: categoryObjectIds } }, { $pull: { categories: { $in: categoryObjectIds } } })
-            .exec();
         this.updateAllPublicCategoriesCache();
-        this.archiveService.updateCache();
+        this.eventEmitter.emit(events_constant_1.EventKeys.CategoriesDeleted, categoryObjectIds);
         this.seoService.delete(categories.map((category) => (0, urlmap_transformer_1.getCategoryUrl)(category.slug)));
         return actionResult;
     }
@@ -150,10 +139,11 @@ let CategoryService = class CategoryService {
 exports.CategoryService = CategoryService;
 exports.CategoryService = CategoryService = __decorate([
     (0, common_1.Injectable)(),
-    __param(3, (0, model_transformer_1.InjectModel)(article_model_1.Article)),
+    __param(3, (0, common_1.Inject)((0, common_1.forwardRef)(() => article_service_stats_1.ArticleStatsService))),
     __param(4, (0, model_transformer_1.InjectModel)(category_model_1.Category)),
-    __metadata("design:paramtypes", [helper_service_seo_1.SeoService,
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
+        helper_service_seo_1.SeoService,
         cache_service_1.CacheService,
-        archive_service_1.ArchiveService, Object, Object])
+        article_service_stats_1.ArticleStatsService, Object])
 ], CategoryService);
 //# sourceMappingURL=category.service.js.map

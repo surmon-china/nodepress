@@ -23,7 +23,7 @@ const only_identity_decorator_1 = require("../../decorators/only-identity.decora
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const author_constant_1 = require("../../constants/author.constant");
-const article_service_stats_1 = require("../article/article.service.stats");
+const article_service_sync_1 = require("../article/article.service.sync");
 const comment_service_1 = require("../comment/comment.service");
 const user_service_1 = require("../user/user.service");
 const helper_service_ip_1 = require("../../core/helper/helper.service.ip");
@@ -35,16 +35,16 @@ let VoteController = class VoteController {
     voteService;
     userService;
     commentService;
-    articleStatsService;
-    constructor(ipService, voteService, userService, commentService, articleStatsService) {
+    articleSyncService;
+    constructor(ipService, voteService, userService, commentService, articleSyncService) {
         this.ipService = ipService;
         this.voteService = voteService;
         this.userService = userService;
         this.commentService = commentService;
-        this.articleStatsService = articleStatsService;
+        this.articleSyncService = articleSyncService;
     }
     async votePost(dto, { visitor, identity }) {
-        const result = await this.articleStatsService.incrementStatistics(dto.article_id, 'likes');
+        const result = await this.articleSyncService.incrementStatistics(dto.article_id, 'likes');
         const [user, ipLocation] = await Promise.all([
             identity.isUser ? this.userService.findOne(identity.payload.uid) : null,
             visitor.ip ? this.ipService.queryLocation(visitor.ip) : null
@@ -147,6 +147,6 @@ exports.VoteController = VoteController = __decorate([
         vote_service_1.VoteService,
         user_service_1.UserService,
         comment_service_1.CommentService,
-        article_service_stats_1.ArticleStatsService])
+        article_service_sync_1.ArticleSyncService])
 ], VoteController);
 //# sourceMappingURL=vote.controller.js.map

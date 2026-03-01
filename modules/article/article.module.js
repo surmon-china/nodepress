@@ -8,23 +8,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticleModule = void 0;
 const common_1 = require("@nestjs/common");
-const archive_module_1 = require("../archive/archive.module");
 const category_module_1 = require("../category/category.module");
 const tag_module_1 = require("../tag/tag.module");
 const article_controller_1 = require("./article.controller");
 const article_model_1 = require("./article.model");
+const article_listener_1 = require("./article.listener");
 const article_service_1 = require("./article.service");
 const article_service_context_1 = require("./article.service.context");
 const article_service_stats_1 = require("./article.service.stats");
+const article_service_sync_1 = require("./article.service.sync");
 let ArticleModule = class ArticleModule {
 };
 exports.ArticleModule = ArticleModule;
 exports.ArticleModule = ArticleModule = __decorate([
     (0, common_1.Module)({
-        imports: [archive_module_1.ArchiveModule, category_module_1.CategoryModule, tag_module_1.TagModule],
+        imports: [(0, common_1.forwardRef)(() => category_module_1.CategoryModule), (0, common_1.forwardRef)(() => tag_module_1.TagModule)],
         controllers: [article_controller_1.ArticleController],
-        providers: [article_model_1.ArticleProvider, article_service_1.ArticleService, article_service_context_1.ArticleContextService, article_service_stats_1.ArticleStatsService],
-        exports: [article_service_1.ArticleService, article_service_context_1.ArticleContextService, article_service_stats_1.ArticleStatsService]
+        providers: [
+            article_model_1.ArticleProvider,
+            article_listener_1.ArticleListener,
+            article_service_1.ArticleService,
+            article_service_context_1.ArticleContextService,
+            article_service_stats_1.ArticleStatsService,
+            article_service_sync_1.ArticleSyncService
+        ],
+        exports: [article_service_1.ArticleService, article_service_context_1.ArticleContextService, article_service_stats_1.ArticleStatsService, article_service_sync_1.ArticleSyncService]
     })
 ], ArticleModule);
 //# sourceMappingURL=article.module.js.map

@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getInvalidatedTokenCacheKey = exports.getUserAuthStateCacheKey = exports.CacheKeys = void 0;
 var CacheKeys;
 (function (CacheKeys) {
-    CacheKeys["Options"] = "options";
-    CacheKeys["Archive"] = "archive";
-    CacheKeys["AllTags"] = "all-tags";
-    CacheKeys["AllCategories"] = "all-categories";
     CacheKeys["TodayViewCount"] = "today-view-count";
-    CacheKeys["AdminProfile"] = "admin-profile";
+    CacheKeys["PublicOptions"] = "public-options";
+    CacheKeys["PublicAdminProfile"] = "public-admin-profile";
+    CacheKeys["PublicAllArticles"] = "public-all-articles";
+    CacheKeys["PublicAllCategories"] = "public-all-categories";
+    CacheKeys["PublicAllTags"] = "public-all-tags";
 })(CacheKeys || (exports.CacheKeys = CacheKeys = {}));
 const getUserAuthStateCacheKey = (key) => {
     return `auth:user-oauth-state:${key}`;

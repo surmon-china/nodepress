@@ -8,19 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryModule = void 0;
 const common_1 = require("@nestjs/common");
-const archive_module_1 = require("../archive/archive.module");
-const article_model_1 = require("../article/article.model");
+const article_module_1 = require("../article/article.module");
 const category_controller_1 = require("./category.controller");
 const category_model_1 = require("./category.model");
 const category_service_1 = require("./category.service");
+const category_listener_1 = require("./category.listener");
 let CategoryModule = class CategoryModule {
 };
 exports.CategoryModule = CategoryModule;
 exports.CategoryModule = CategoryModule = __decorate([
     (0, common_1.Module)({
-        imports: [archive_module_1.ArchiveModule],
+        imports: [(0, common_1.forwardRef)(() => article_module_1.ArticleModule)],
         controllers: [category_controller_1.CategoryController],
-        providers: [article_model_1.ArticleProvider, category_model_1.CategoryProvider, category_service_1.CategoryService],
+        providers: [category_model_1.CategoryProvider, category_service_1.CategoryService, category_listener_1.CategoryListener],
         exports: [category_service_1.CategoryService]
     })
 ], CategoryModule);

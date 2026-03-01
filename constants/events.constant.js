@@ -17,5 +17,15 @@ var EventKeys;
     EventKeys["ArticleCreated"] = "article.created";
     EventKeys["ArticleUpdated"] = "article.updated";
     EventKeys["ArticleDeleted"] = "article.deleted";
+    EventKeys["ArticlesStatusChanged"] = "articles.status_changed";
+    EventKeys["ArticlesDeleted"] = "articles.deleted";
+    EventKeys["TagCreated"] = "tag.created";
+    EventKeys["TagUpdated"] = "tag.updated";
+    EventKeys["TagDeleted"] = "tag.deleted";
+    EventKeys["TagsDeleted"] = "tags.deleted";
+    EventKeys["CategoryCreated"] = "category.created";
+    EventKeys["CategoryUpdated"] = "category.updated";
+    EventKeys["CategoryDeleted"] = "category.deleted";
+    EventKeys["CategoriesDeleted"] = "categories.deleted";
 })(EventKeys || (exports.EventKeys = EventKeys = {}));
 //# sourceMappingURL=events.constant.js.map

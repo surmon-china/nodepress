@@ -17,13 +17,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ArticleController = void 0;
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
-const event_emitter_1 = require("@nestjs/event-emitter");
 const common_1 = require("@nestjs/common");
+const common_2 = require("@nestjs/common");
 const request_context_decorator_1 = require("../../decorators/request-context.decorator");
 const only_identity_decorator_1 = require("../../decorators/only-identity.decorator");
 const success_response_decorator_1 = require("../../decorators/success-response.decorator");
 const permission_pipe_1 = require("../../pipes/permission.pipe");
-const events_constant_1 = require("../../constants/events.constant");
 const cache_constant_1 = require("../../constants/cache.constant");
 const sort_constant_1 = require("../../constants/sort.constant");
 const helper_service_counter_1 = require("../../core/helper/helper.service.counter");
@@ -31,26 +30,28 @@ const category_service_1 = require("../category/category.service");
 const tag_service_1 = require("../tag/tag.service");
 const article_dto_1 = require("./article.dto");
 const article_dto_2 = require("./article.dto");
+const article_dto_3 = require("./article.dto");
 const article_constant_1 = require("./article.constant");
 const article_service_context_1 = require("./article.service.context");
 const article_service_stats_1 = require("./article.service.stats");
+const article_service_sync_1 = require("./article.service.sync");
 const article_service_1 = require("./article.service");
 let ArticleController = class ArticleController {
-    eventEmitter;
     counterService;
-    tagService;
-    categoryService;
     articleService;
     articleContextService;
     articleStatsService;
-    constructor(eventEmitter, counterService, tagService, categoryService, articleService, articleContextService, articleStatsService) {
-        this.eventEmitter = eventEmitter;
+    articleSyncService;
+    tagService;
+    categoryService;
+    constructor(counterService, articleService, articleContextService, articleStatsService, articleSyncService, tagService, categoryService) {
         this.counterService = counterService;
-        this.tagService = tagService;
-        this.categoryService = categoryService;
         this.articleService = articleService;
         this.articleContextService = articleContextService;
         this.articleStatsService = articleStatsService;
+        this.articleSyncService = articleSyncService;
+        this.tagService = tagService;
+        this.categoryService = categoryService;
     }
     async getArticles(query) {
         const { page, per_page, sort, ...filters } = query;
@@ -97,8 +98,10 @@ let ArticleController = class ArticleController {
         }
         return this.articleService.paginate(queryFilter, paginateOptions);
     }
-    getAllArticles() {
-        return this.articleService.getAll();
+    getAllArticles({ with_content }, { identity }) {
+        return identity.isAdmin
+            ? this.articleService.getAllArticles({ publicOnly: false, withContent: !!with_content })
+            : this.articleService.getAllPublicArticlesCache();
     }
     getArticlesCalendar({ timezone }, { identity }) {
         return this.articleStatsService.getCalendar(!identity.isAdmin, timezone);
@@ -110,7 +113,7 @@ let ArticleController = class ArticleController {
             lean: true
         });
         if (!identity.isAdmin) {
-            this.articleStatsService.incrementStatistics(article.id, 'views');
+            this.articleSyncService.incrementStatistics(article.id, 'views');
             this.counterService.incrementGlobalCount(cache_constant_1.CacheKeys.TodayViewCount);
         }
         return article;
@@ -129,20 +132,14 @@ let ArticleController = class ArticleController {
             related_articles: relatedArticles || []
         };
     }
-    async createArticle(dto) {
-        const created = await this.articleService.create(dto);
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleCreated, created);
-        return created;
+    createArticle(dto) {
+        return this.articleService.create(dto);
     }
-    async updateArticle(id, dto) {
-        const updated = await this.articleService.update(id, dto);
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleUpdated, updated);
-        return updated;
+    updateArticle(id, dto) {
+        return this.articleService.update(id, dto);
     }
-    async deleteArticle(id) {
-        const result = await this.articleService.delete(id);
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleDeleted, result);
-        return result;
+    deleteArticle(id) {
+        return this.articleService.delete(id);
     }
     updateArticlesStatus(dto) {
         return this.articleService.batchUpdateStatus(dto.article_ids, dto.status);
@@ -153,102 +150,105 @@ let ArticleController = class ArticleController {
 };
 exports.ArticleController = ArticleController;
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_2.Get)(),
     (0, success_response_decorator_1.SuccessResponse)({ message: 'Get articles succeeded', usePaginate: true }),
-    __param(0, (0, common_1.Query)(permission_pipe_1.PermissionPipe)),
+    __param(0, (0, common_2.Query)(permission_pipe_1.PermissionPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [article_dto_1.ArticlePaginateQueryDto]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticles", null);
 __decorate([
-    (0, common_1.Get)('all'),
-    (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
+    (0, common_2.Get)('all'),
     (0, success_response_decorator_1.SuccessResponse)('Get all articles succeeded'),
+    __param(0, (0, common_2.Query)(permission_pipe_1.PermissionPipe)),
+    __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [article_dto_1.AllArticlesQueryDto, Object]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "getAllArticles", null);
 __decorate([
-    (0, common_1.Get)('calendar'),
+    (0, common_2.Get)('calendar'),
     (0, success_response_decorator_1.SuccessResponse)('Get articles calendar succeeded'),
-    __param(0, (0, common_1.Query)()),
+    __param(0, (0, common_2.Query)()),
     __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_dto_1.ArticleCalendarQueryDto, Object]),
+    __metadata("design:paramtypes", [article_dto_2.ArticleCalendarQueryDto, Object]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "getArticlesCalendar", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_2.Get)(':id'),
     (0, success_response_decorator_1.SuccessResponse)('Get article detail succeeded'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_2.Param)('id', common_2.ParseIntPipe)),
     __param(1, (0, request_context_decorator_1.RequestContext)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticle", null);
 __decorate([
-    (0, common_1.Get)(':id/context'),
+    (0, common_2.Get)(':id/context'),
     (0, success_response_decorator_1.SuccessResponse)('Get context articles succeeded'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Query)()),
+    __param(0, (0, common_2.Param)('id', common_2.ParseIntPipe)),
+    __param(1, (0, common_2.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, article_dto_1.ArticleContextQueryDto]),
+    __metadata("design:paramtypes", [Number, article_dto_2.ArticleContextQueryDto]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "getArticleContext", null);
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_2.Post)(),
     (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Create article succeeded'),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_2.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_dto_2.CreateArticleDto]),
+    __metadata("design:paramtypes", [article_dto_3.CreateArticleDto]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "createArticle", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_2.Patch)(':id'),
     (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Update article succeeded'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_2.Param)('id', common_2.ParseIntPipe)),
+    __param(1, (0, common_2.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, article_dto_2.UpdateArticleDto]),
+    __metadata("design:paramtypes", [Number, article_dto_3.UpdateArticleDto]),
     __metadata("design:returntype", Promise)
 ], ArticleController.prototype, "updateArticle", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_2.Delete)(':id'),
     (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Delete article succeeded'),
-    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_2.Param)('id', common_2.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "deleteArticle", null);
 __decorate([
-    (0, common_1.Patch)(),
+    (0, common_2.Patch)(),
     (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Update articles succeeded'),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_2.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_dto_2.ArticleIdsStatusDto]),
+    __metadata("design:paramtypes", [article_dto_3.ArticleIdsStatusDto]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "updateArticlesStatus", null);
 __decorate([
-    (0, common_1.Delete)(),
+    (0, common_2.Delete)(),
     (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.Admin),
     (0, success_response_decorator_1.SuccessResponse)('Delete articles succeeded'),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_2.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [article_dto_2.ArticleIdsDto]),
+    __metadata("design:paramtypes", [article_dto_3.ArticleIdsDto]),
     __metadata("design:returntype", void 0)
 ], ArticleController.prototype, "deleteArticles", null);
 exports.ArticleController = ArticleController = __decorate([
-    (0, common_1.Controller)('articles'),
-    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
-        helper_service_counter_1.CounterService,
-        tag_service_1.TagService,
-        category_service_1.CategoryService,
+    (0, common_2.Controller)('articles'),
+    __param(5, (0, common_1.Inject)((0, common_1.forwardRef)(() => tag_service_1.TagService))),
+    __param(6, (0, common_1.Inject)((0, common_1.forwardRef)(() => category_service_1.CategoryService))),
+    __metadata("design:paramtypes", [helper_service_counter_1.CounterService,
         article_service_1.ArticleService,
         article_service_context_1.ArticleContextService,
-        article_service_stats_1.ArticleStatsService])
+        article_service_stats_1.ArticleStatsService,
+        article_service_sync_1.ArticleSyncService,
+        tag_service_1.TagService,
+        category_service_1.CategoryService])
 ], ArticleController);
 //# sourceMappingURL=article.controller.js.map

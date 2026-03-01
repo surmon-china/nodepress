@@ -32,7 +32,7 @@ let AdminService = class AdminService {
         this.cacheService = cacheService;
         this.adminModel = adminModel;
         this.profileCache = this.cacheService.manual({
-            key: cache_constant_1.CacheKeys.AdminProfile,
+            key: cache_constant_1.CacheKeys.PublicAdminProfile,
             promise: () => this.getProfile()
         });
     }

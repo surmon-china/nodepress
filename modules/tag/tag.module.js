@@ -8,19 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TagModule = void 0;
 const common_1 = require("@nestjs/common");
-const archive_module_1 = require("../archive/archive.module");
-const article_model_1 = require("../article/article.model");
+const article_module_1 = require("../article/article.module");
 const tag_controller_1 = require("./tag.controller");
 const tag_model_1 = require("./tag.model");
 const tag_service_1 = require("./tag.service");
+const tag_listener_1 = require("./tag.listener");
 let TagModule = class TagModule {
 };
 exports.TagModule = TagModule;
 exports.TagModule = TagModule = __decorate([
     (0, common_1.Module)({
-        imports: [archive_module_1.ArchiveModule],
+        imports: [(0, common_1.forwardRef)(() => article_module_1.ArticleModule)],
         controllers: [tag_controller_1.TagController],
-        providers: [article_model_1.ArticleProvider, tag_model_1.TagProvider, tag_service_1.TagService],
+        providers: [tag_model_1.TagProvider, tag_service_1.TagService, tag_listener_1.TagListener],
         exports: [tag_service_1.TagService]
     })
 ], TagModule);

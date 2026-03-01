@@ -23,23 +23,25 @@ let ArticleStatsService = class ArticleStatsService {
     constructor(articleModel) {
         this.articleModel = articleModel;
     }
-    async incrementStatistics(articleId, field) {
-        const result = await this.articleModel
-            .findOneAndUpdate({ id: articleId, ...article_constant_1.ARTICLE_PUBLIC_FILTER }, { $inc: { [`stats.${field}`]: 1 } }, { projection: { [`stats.${field}`]: 1 }, timestamps: false, returnDocument: 'after' })
-            .lean()
-            .exec();
-        return result?.stats?.[field] ?? 0;
+    async getCountsByTagIds(tagIds, publicOnly) {
+        const matchStage = publicOnly ? { ...article_constant_1.ARTICLE_PUBLIC_FILTER } : {};
+        const counts = await this.articleModel.aggregate([
+            { $match: { tags: { $in: tagIds }, ...matchStage } },
+            { $unwind: '$tags' },
+            { $match: { tags: { $in: tagIds } } },
+            { $group: { _id: '$tags', count: { $sum: 1 } } }
+        ]);
+        return new Map(counts.map((c) => [c._id.toString(), c.count]));
     }
-    updateStatsComments(articleId, commentCount) {
-        return this.articleModel
-            .updateOne({ id: articleId }, { $set: { 'stats.comments': commentCount } }, { timestamps: false })
-            .exec();
-    }
-    getTotalCount(publicOnly) {
-        return this.articleModel
-            .countDocuments(publicOnly ? article_constant_1.ARTICLE_PUBLIC_FILTER : {})
-            .lean()
-            .exec();
+    async getCountsByCategoryIds(categoryIds, publicOnly) {
+        const matchStage = publicOnly ? { ...article_constant_1.ARTICLE_PUBLIC_FILTER } : {};
+        const counts = await this.articleModel.aggregate([
+            { $match: { categories: { $in: categoryIds }, ...matchStage } },
+            { $unwind: '$categories' },
+            { $match: { categories: { $in: categoryIds } } },
+            { $group: { _id: '$categories', count: { $sum: 1 } } }
+        ]);
+        return new Map(counts.map((c) => [c._id.toString(), c.count]));
     }
     async getCalendar(publicOnly, timezone = 'GMT') {
         try {
@@ -69,6 +71,9 @@ let ArticleStatsService = class ArticleStatsService {
             totalViews: result?.totalViews ?? 0,
             totalLikes: result?.totalLikes ?? 0
         };
+    }
+    getTotalCount(publicOnly) {
+        return this.articleModel.countDocuments(publicOnly ? article_constant_1.ARTICLE_PUBLIC_FILTER : {}).exec();
     }
 };
 exports.ArticleStatsService = ArticleStatsService;

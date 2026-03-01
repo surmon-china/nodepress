@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleIdsStatusDto = exports.ArticleIdsDto = exports.ArticleCalendarQueryDto = exports.ArticleContextQueryDto = exports.ArticlePaginateQueryDto = exports.UpdateArticleDto = exports.CreateArticleDto = void 0;
+exports.AllArticlesQueryDto = exports.ArticleIdsStatusDto = exports.ArticleIdsDto = exports.ArticleCalendarQueryDto = exports.ArticleContextQueryDto = exports.ArticlePaginateQueryDto = exports.UpdateArticleDto = exports.CreateArticleDto = void 0;
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
@@ -128,4 +128,14 @@ __decorate([
     (0, class_validator_2.IsDefined)(),
     __metadata("design:type", Number)
 ], ArticleIdsStatusDto.prototype, "status", void 0);
+class AllArticlesQueryDto {
+    with_content;
+}
+exports.AllArticlesQueryDto = AllArticlesQueryDto;
+__decorate([
+    (0, guest_permission_decorator_1.WithGuestPermission)({ only: [false], default: false }),
+    (0, class_validator_2.IsOptional)(),
+    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToBoolean)(value)),
+    __metadata("design:type", Boolean)
+], AllArticlesQueryDto.prototype, "with_content", void 0);
 //# sourceMappingURL=article.dto.js.map
