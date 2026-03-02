@@ -97,7 +97,7 @@ let CommentListener = class CommentListener {
             ...(0, email_transformer_2.linesToEmailContent)([
                 `${subject}!`,
                 `Comment Parent: ${input.parent_id}`,
-                `Comment Target: ${input.target_type} - ${input.target_id}`,
+                `Comment Target: ${input.target_type} #${input.target_id}`,
                 `Comment Content: ${input.content || '-'}`,
                 `Comment Author: ${input.author_name || '-'} · ${input.author_email || '-'} · ${input.author_website || '-'}`,
                 `Error Detail: ${(0, error_transformer_1.getMessageFromNormalError)(error)}`,
