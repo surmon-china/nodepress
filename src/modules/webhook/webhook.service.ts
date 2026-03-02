@@ -4,34 +4,34 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
+import { createHmac } from 'node:crypto'
 import { Injectable } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
-import { EventKeys } from '@app/constants/events.constant'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
+import { APP_BIZ, WEBHOOK } from '@app/app.config'
 import { isDevEnv } from '@app/app.environment'
 import { createLogger } from '@app/utils/logger'
-import { APP_BIZ, WEBHOOK } from '@app/app.config'
+import { WebhookEvent } from './webhook.constant'
 
 const logger = createLogger({ scope: 'WebhookService', time: isDevEnv })
 
 export interface WebhookPayload {
-  event: EventKeys
+  event: WebhookEvent
+  payload: any
   timestamp: number
-  data: any
 }
 
 @Injectable()
 export class WebhookService {
   constructor(private readonly httpService: HttpService) {}
 
-  public dispatch(event: EventKeys, payload: any): void {
-    if (!WEBHOOK.endpoint) return
+  public dispatch(event: WebhookEvent, payload: any): void {
+    if (!WEBHOOK.endpoint || !WEBHOOK.secret) return
 
-    const postData: WebhookPayload = {
-      event,
-      timestamp: Date.now(),
-      data: payload
-    }
+    const timestamp = Date.now()
+    const postData: WebhookPayload = { event, payload, timestamp }
+    const rawData = JSON.stringify(postData)
+    const signature = createHmac('sha256', WEBHOOK.secret).update(rawData).digest('hex')
 
     logger.log(`Dispatching event: ${event}...`)
 
@@ -39,7 +39,8 @@ export class WebhookService {
       .post(WEBHOOK.endpoint, postData, {
         timeout: 15000,
         headers: {
-          'X-Webhook-Token': WEBHOOK.token || '',
+          'X-Webhook-Signature': signature,
+          'X-Webhook-Timestamp': timestamp.toString(),
           'User-Agent': `${APP_BIZ.NAME}-Webhook-Service`
         }
       })

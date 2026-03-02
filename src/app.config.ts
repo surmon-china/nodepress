@@ -112,8 +112,8 @@ export const EMAIL = Object.freeze({
 export const WEBHOOK = Object.freeze({
   /** The target URL where the webhook notifications will be sent */
   endpoint: arg<string>('webhook_endpoint'),
-  /** Secret token for authenticating and verifying webhook requests */
-  token: arg<string>('webhook_token')
+  /** Secret for authenticating and verifying webhook requests */
+  secret: arg<string>('webhook_secret')
 })
 
 // Akismet Configuration

@@ -62,6 +62,7 @@ export class OptionsService implements OnModuleInit {
     await this.ensureOptions()
     const updated = await this.optionsModel
       .findOneAndUpdate(OPTIONS_SINGLETON_QUERY, { $set: input }, { returnDocument: 'after' })
+      .lean()
       .exec()
     // update cache when options updated
     await this.optionsCache.update()

@@ -6,11 +6,12 @@
 
 import { Module } from '@nestjs/common'
 import { HttpModule } from '@nestjs/axios'
+import { ArticleModule } from '@app/modules/article/article.module'
 import { WebhookService } from './webhook.service'
 import { WebhookListener } from './webhook.listener'
 
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule, ArticleModule],
   providers: [WebhookService, WebhookListener],
   exports: [WebhookService]
 })

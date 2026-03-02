@@ -81,6 +81,14 @@ export class ArticleService implements OnModuleInit {
       : query.exec()
   }
 
+  public getListByIds(articleIds: number[]): Promise<ArticlePopulated[]> {
+    return this.articleModel
+      .find({ id: { $in: articleIds } })
+      .populate<ArticlePopulated>(ARTICLE_RELATION_FIELDS)
+      .lean()
+      .exec()
+  }
+
   // Get article by number id or slug
   public async getDetail<TLean extends boolean = false, TPopulate extends boolean = false>(
     idOrSlug: number | string,
@@ -122,7 +130,7 @@ export class ArticleService implements OnModuleInit {
 
     const created = await this.articleModel.create(input)
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleCreated, created)
+    this.eventEmitter.emit(EventKeys.ArticleCreated, created.toObject())
     this.seoService.push(getArticleUrl(created.id))
     return created
   }
@@ -146,7 +154,7 @@ export class ArticleService implements OnModuleInit {
     if (!updated) throw new NotFoundException(`Article '${articleId}' not found`)
 
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated)
+    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated.toObject())
     this.seoService.update(getArticleUrl(updated.id))
     return updated
   }
@@ -156,7 +164,7 @@ export class ArticleService implements OnModuleInit {
     if (!deleted) throw new NotFoundException(`Article '${articleId}' not found`)
 
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleDeleted, deleted)
+    this.eventEmitter.emit(EventKeys.ArticleDeleted, articleId)
     this.seoService.delete(getArticleUrl(deleted.id))
     return deleted
   }
