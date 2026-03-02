@@ -129,8 +129,10 @@ export class ArticleService implements OnModuleInit {
     }
 
     const created = await this.articleModel.create(input)
+    const populated = await this.getDetail(created.id, { lean: true, populate: true })
+
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleCreated, created.toObject())
+    this.eventEmitter.emit(EventKeys.ArticleCreated, populated)
     this.seoService.push(getArticleUrl(created.id))
     return created
   }
@@ -153,8 +155,10 @@ export class ArticleService implements OnModuleInit {
       .exec()
     if (!updated) throw new NotFoundException(`Article '${articleId}' not found`)
 
+    const populated = await this.getDetail(updated.id, { lean: true, populate: true })
+
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated.toObject())
+    this.eventEmitter.emit(EventKeys.ArticleUpdated, populated)
     this.seoService.update(getArticleUrl(updated.id))
     return updated
   }
