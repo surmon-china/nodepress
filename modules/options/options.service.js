@@ -59,6 +59,7 @@ let OptionsService = class OptionsService {
         await this.ensureOptions();
         const updated = await this.optionsModel
             .findOneAndUpdate(options_model_1.OPTIONS_SINGLETON_QUERY, { $set: input }, { returnDocument: 'after' })
+            .lean()
             .exec();
         await this.optionsCache.update();
         return updated;

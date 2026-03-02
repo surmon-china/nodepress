@@ -72,6 +72,13 @@ let ArticleService = class ArticleService {
             ? query.select(article_model_2.ARTICLE_LIST_QUERY_PROJECTION).exec()
             : query.exec();
     }
+    getListByIds(articleIds) {
+        return this.articleModel
+            .find({ id: { $in: articleIds } })
+            .populate(article_model_2.ARTICLE_RELATION_FIELDS)
+            .lean()
+            .exec();
+    }
     async getDetail(idOrSlug, options = {}) {
         const { publicOnly = false, populate = false, lean = false } = options;
         const queryFilter = {};
@@ -95,7 +102,7 @@ let ArticleService = class ArticleService {
         }
         const created = await this.articleModel.create(input);
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleCreated, created);
+        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleCreated, created.toObject());
         this.seoService.push((0, urlmap_transformer_1.getArticleUrl)(created.id));
         return created;
     }
@@ -116,7 +123,7 @@ let ArticleService = class ArticleService {
         if (!updated)
             throw new common_1.NotFoundException(`Article '${articleId}' not found`);
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleUpdated, updated);
+        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleUpdated, updated.toObject());
         this.seoService.update((0, urlmap_transformer_1.getArticleUrl)(updated.id));
         return updated;
     }
@@ -125,7 +132,7 @@ let ArticleService = class ArticleService {
         if (!deleted)
             throw new common_1.NotFoundException(`Article '${articleId}' not found`);
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleDeleted, deleted);
+        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleDeleted, articleId);
         this.seoService.delete((0, urlmap_transformer_1.getArticleUrl)(deleted.id));
         return deleted;
     }

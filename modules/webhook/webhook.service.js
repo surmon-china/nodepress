@@ -10,12 +10,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WebhookService = void 0;
+const node_crypto_1 = require("node:crypto");
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const error_transformer_1 = require("../../transformers/error.transformer");
+const app_config_1 = require("../../app.config");
 const app_environment_1 = require("../../app.environment");
 const logger_1 = require("../../utils/logger");
-const app_config_1 = require("../../app.config");
 const logger = (0, logger_1.createLogger)({ scope: 'WebhookService', time: app_environment_1.isDevEnv });
 let WebhookService = class WebhookService {
     httpService;
@@ -23,19 +24,19 @@ let WebhookService = class WebhookService {
         this.httpService = httpService;
     }
     dispatch(event, payload) {
-        if (!app_config_1.WEBHOOK.endpoint)
+        if (!app_config_1.WEBHOOK.endpoint || !app_config_1.WEBHOOK.secret)
             return;
-        const postData = {
-            event,
-            timestamp: Date.now(),
-            data: payload
-        };
+        const timestamp = Date.now();
+        const postData = { event, payload, timestamp };
+        const rawData = JSON.stringify(postData);
+        const signature = (0, node_crypto_1.createHmac)('sha256', app_config_1.WEBHOOK.secret).update(rawData).digest('hex');
         logger.log(`Dispatching event: ${event}...`);
         this.httpService.axiosRef
             .post(app_config_1.WEBHOOK.endpoint, postData, {
             timeout: 15000,
             headers: {
-                'X-Webhook-Token': app_config_1.WEBHOOK.token || '',
+                'X-Webhook-Signature': signature,
+                'X-Webhook-Timestamp': timestamp.toString(),
                 'User-Agent': `${app_config_1.APP_BIZ.NAME}-Webhook-Service`
             }
         })

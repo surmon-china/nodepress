@@ -63,7 +63,7 @@ exports.EMAIL = Object.freeze({
 });
 exports.WEBHOOK = Object.freeze({
     endpoint: arg('webhook_endpoint'),
-    token: arg('webhook_token')
+    secret: arg('webhook_secret')
 });
 exports.AKISMET = Object.freeze({
     apiKey: arg('akismet_api_key'),

@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WebhookModule = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
+const article_module_1 = require("../article/article.module");
 const webhook_service_1 = require("./webhook.service");
 const webhook_listener_1 = require("./webhook.listener");
 let WebhookModule = class WebhookModule {
@@ -16,7 +17,7 @@ let WebhookModule = class WebhookModule {
 exports.WebhookModule = WebhookModule;
 exports.WebhookModule = WebhookModule = __decorate([
     (0, common_1.Module)({
-        imports: [axios_1.HttpModule],
+        imports: [axios_1.HttpModule, article_module_1.ArticleModule],
         providers: [webhook_service_1.WebhookService, webhook_listener_1.WebhookListener],
         exports: [webhook_service_1.WebhookService]
     })
