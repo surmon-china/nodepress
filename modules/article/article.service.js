@@ -101,8 +101,9 @@ let ArticleService = class ArticleService {
                 throw new common_1.ConflictException(`Article slug '${input.slug}' already exists`);
         }
         const created = await this.articleModel.create(input);
+        const populated = await this.getDetail(created.id, { lean: true, populate: true });
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleCreated, created.toObject());
+        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleCreated, populated);
         this.seoService.push((0, urlmap_transformer_1.getArticleUrl)(created.id));
         return created;
     }
@@ -122,8 +123,9 @@ let ArticleService = class ArticleService {
             .exec();
         if (!updated)
             throw new common_1.NotFoundException(`Article '${articleId}' not found`);
+        const populated = await this.getDetail(updated.id, { lean: true, populate: true });
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleUpdated, updated.toObject());
+        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleUpdated, populated);
         this.seoService.update((0, urlmap_transformer_1.getArticleUrl)(updated.id));
         return updated;
     }
