@@ -47,7 +47,7 @@ export class CommentController {
       if (identity.isUser) {
         const user = await this.userService.findOne(identity.payload!.uid!)
         const userComment = this.commentService.normalize(input, { visitor, user })
-        return this.commentService.validateAndCreate(userComment, visitor.referer ?? void 0)
+        return await this.commentService.validateAndCreate(userComment, visitor.referer ?? void 0)
       }
 
       // Guest flow: enforce author info validation
@@ -56,7 +56,7 @@ export class CommentController {
         throw new BadRequestException('Author name and email are required')
       }
 
-      return this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0)
+      return await this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0)
     } catch (error) {
       this.eventEmitter.emit(EventKeys.CommentCreateFailed, { input, visitor, error })
       throw error
