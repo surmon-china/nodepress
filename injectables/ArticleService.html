@@ -351,8 +351,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="181"
-                                    class="link-to-prism">src/modules/article/article.service.ts:181</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/modules/article/article.service.ts:185</a></div>
                         </td>
                     </tr>
 
@@ -421,8 +421,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="172"
-                                    class="link-to-prism">src/modules/article/article.service.ts:172</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="176"
+                                    class="link-to-prism">src/modules/article/article.service.ts:176</a></div>
                         </td>
                     </tr>
 
@@ -573,8 +573,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="162"
-                                    class="link-to-prism">src/modules/article/article.service.ts:162</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="166"
+                                    class="link-to-prism">src/modules/article/article.service.ts:166</a></div>
                         </td>
                     </tr>
 
@@ -917,8 +917,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="195"
-                                    class="link-to-prism">src/modules/article/article.service.ts:195</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="199"
+                                    class="link-to-prism">src/modules/article/article.service.ts:199</a></div>
                         </td>
                     </tr>
 
@@ -1105,8 +1105,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="138"
-                                    class="link-to-prism">src/modules/article/article.service.ts:138</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="140"
+                                    class="link-to-prism">src/modules/article/article.service.ts:140</a></div>
                         </td>
                     </tr>
 
@@ -1367,8 +1367,10 @@ export class ArticleService implements OnModuleInit {
     }
 
     const created &#x3D; await this.articleModel.create(input)
+    const populated &#x3D; await this.getDetail(created.id, { lean: true, populate: true })
+
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleCreated, created.toObject())
+    this.eventEmitter.emit(EventKeys.ArticleCreated, populated)
     this.seoService.push(getArticleUrl(created.id))
     return created
   }
@@ -1391,8 +1393,10 @@ export class ArticleService implements OnModuleInit {
       .exec()
     if (!updated) throw new NotFoundException(&#x60;Article &#x27;${articleId}&#x27; not found&#x60;)
 
+    const populated &#x3D; await this.getDetail(updated.id, { lean: true, populate: true })
+
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleUpdated, updated.toObject())
+    this.eventEmitter.emit(EventKeys.ArticleUpdated, populated)
     this.seoService.update(getArticleUrl(updated.id))
     return updated
   }
