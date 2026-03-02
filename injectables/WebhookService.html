@@ -180,7 +180,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/modules/webhook/webhook.service.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/modules/webhook/webhook.service.ts:25</a></div>
                             </td>
                         </tr>
 
@@ -238,15 +238,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>dispatch(event: <a href="../miscellaneous/enumerations.html#EventKeys" target="_self">EventKeys</a>, payload: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    <code>dispatch(event: <a href="../miscellaneous/enumerations.html#WebhookEvent" target="_self">WebhookEvent</a>, payload: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="27"
-                                    class="link-to-prism">src/modules/webhook/webhook.service.ts:27</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="28"
+                                    class="link-to-prism">src/modules/webhook/webhook.service.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -269,7 +269,7 @@
                                         <tr>
                                                 <td>event</td>
                                             <td>
-                                                            <code><a href="../miscellaneous/enumerations.html#EventKeys" target="_self" >EventKeys</a></code>
+                                                            <code><a href="../miscellaneous/enumerations.html#WebhookEvent" target="_self" >WebhookEvent</a></code>
                                             </td>
 
                                             <td>
@@ -310,34 +310,34 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { createHmac } from &#x27;node:crypto&#x27;
+import { Injectable } from &#x27;@nestjs/common&#x27;
 import { HttpService } from &#x27;@nestjs/axios&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transformer&#x27;
+import { APP_BIZ, WEBHOOK } from &#x27;@app/app.config&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { APP_BIZ, WEBHOOK } from &#x27;@app/app.config&#x27;
+import { WebhookEvent } from &#x27;./webhook.constant&#x27;
 
 const logger &#x3D; createLogger({ scope: &#x27;WebhookService&#x27;, time: isDevEnv })
 
 export interface WebhookPayload {
-  event: EventKeys
+  event: WebhookEvent
+  payload: any
   timestamp: number
-  data: any
 }
 
 @Injectable()
 export class WebhookService {
   constructor(private readonly httpService: HttpService) {}
 
-  public dispatch(event: EventKeys, payload: any): void {
-    if (!WEBHOOK.endpoint) return
+  public dispatch(event: WebhookEvent, payload: any): void {
+    if (!WEBHOOK.endpoint || !WEBHOOK.secret) return
 
-    const postData: WebhookPayload &#x3D; {
-      event,
-      timestamp: Date.now(),
-      data: payload
-    }
+    const timestamp &#x3D; Date.now()
+    const postData: WebhookPayload &#x3D; { event, payload, timestamp }
+    const rawData &#x3D; JSON.stringify(postData)
+    const signature &#x3D; createHmac(&#x27;sha256&#x27;, WEBHOOK.secret).update(rawData).digest(&#x27;hex&#x27;)
 
     logger.log(&#x60;Dispatching event: ${event}...&#x60;)
 
@@ -345,7 +345,8 @@ export class WebhookService {
       .post(WEBHOOK.endpoint, postData, {
         timeout: 15000,
         headers: {
-          &#x27;X-Webhook-Token&#x27;: WEBHOOK.token || &#x27;&#x27;,
+          &#x27;X-Webhook-Signature&#x27;: signature,
+          &#x27;X-Webhook-Timestamp&#x27;: timestamp.toString(),
           &#x27;User-Agent&#x27;: &#x60;${APP_BIZ.NAME}-Webhook-Service&#x60;
         }
       })

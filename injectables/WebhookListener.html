@@ -155,18 +155,28 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier"></span>
-                                <a href="#handleArticleCreated" >handleArticleCreated</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#handleArticleDeleted" >handleArticleDeleted</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
-                                <a href="#handleArticleUpdated" >handleArticleUpdated</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleArticlesDeleted" >handleArticlesDeleted</a>
                             </li>
                             <li>
                                     <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleArticlesStatusChange" >handleArticlesStatusChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleArticleUpsert" >handleArticleUpsert</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
                                 <a href="#handleOptionsUpdated" >handleOptionsUpdated</a>
                             </li>
                         </ul>
@@ -187,12 +197,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(webhookService: <a href="../injectables/WebhookService.html" target="_self">WebhookService</a>)</code>
+<code>constructor(webhookService: <a href="../injectables/WebhookService.html" target="_self">WebhookService</a>, articleService: <a href="../injectables/ArticleService.html" target="_self">ArticleService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/modules/webhook/webhook.listener.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/modules/webhook/webhook.listener.ts:18</a></div>
                             </td>
                         </tr>
 
@@ -221,6 +231,18 @@
                                                     </td>
                                                     
                                                 </tr>
+                                                <tr>
+                                                        <td>articleService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ArticleService.html" target="_self" >ArticleService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                         </tbody>
                                     </table>
                             </div>
@@ -239,85 +261,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleArticleCreated"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                        <span ><b>handleArticleCreated</b></span>
-                        <a href="#handleArticleCreated"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleCreated(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@OnEvent(EventKeys.ArticleCreated, {async: true})<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="24"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:24</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="handleArticleDeleted"></a>
                     <span class="name">
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>handleArticleDeleted</b></span>
                         <a href="#handleArticleDeleted"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -326,7 +273,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleDeleted(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>handleArticleDeleted(articleId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -340,8 +287,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:34</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="50"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:50</a></div>
                         </td>
                     </tr>
 
@@ -362,9 +309,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>payload</td>
+                                                <td>articleId</td>
                                             <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -391,18 +338,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="handleArticleUpdated"></a>
+                    <a name="handleArticlesDeleted"></a>
                     <span class="name">
                             <span class="modifier"></span>
-                        <span ><b>handleArticleUpdated</b></span>
-                        <a href="#handleArticleUpdated"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleArticlesDeleted</b></span>
+                        <a href="#handleArticlesDeleted"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleArticleUpdated(payload: <a href="../classes/Article.html" target="_self">Article</a>)</code>
+                    <code>handleArticlesDeleted(articleIds: number[])</code>
                 </td>
             </tr>
 
@@ -410,14 +358,91 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticleUpdated, {async: true})<br /></code>
+                    <code>@OnEvent(EventKeys.ArticlesDeleted, {async: true})<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>articleIds</td>
+                                            <td>
+                                                        <code>number[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleArticlesStatusChange"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleArticlesStatusChange</b></span>
+                        <a href="#handleArticlesStatusChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleArticlesStatusChange(payload: literal type)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.ArticlesStatusChanged, {async: true})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:40</a></div>
                         </td>
                     </tr>
 
@@ -440,7 +465,85 @@
                                         <tr>
                                                 <td>payload</td>
                                             <td>
-                                                            <code><a href="../classes/Article.html" target="_self" >Article</a></code>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleArticleUpsert"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleArticleUpsert</b></span>
+                        <a href="#handleArticleUpsert"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleArticleUpsert(article: <a href="../miscellaneous/typealiases.html#ArticlePopulated" target="_self">ArticlePopulated</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@OnEvent(EventKeys.ArticleCreated, {async: true})<br />@OnEvent(EventKeys.ArticleUpdated, {async: true})<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="31"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>article</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#ArticlePopulated" target="_self" >ArticlePopulated</a></code>
                                             </td>
 
                                             <td>
@@ -470,6 +573,7 @@
                     <a name="handleOptionsUpdated"></a>
                     <span class="name">
                             <span class="modifier"></span>
+                            <span class="modifier">Async</span>
                         <span ><b>handleOptionsUpdated</b></span>
                         <a href="#handleOptionsUpdated"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -478,7 +582,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>handleOptionsUpdated(payload: <a href="../classes/Option.html" target="_self">Option</a>)</code>
+                    <code>handleOptionsUpdated(options: <a href="../classes/Option.html" target="_self">Option</a>)</code>
                 </td>
             </tr>
 
@@ -492,8 +596,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="19"
-                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:19</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/modules/webhook/webhook.listener.ts:25</a></div>
                         </td>
                     </tr>
 
@@ -514,7 +618,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>payload</td>
+                                                <td>options</td>
                                             <td>
                                                             <code><a href="../classes/Option.html" target="_self" >Option</a></code>
                                             </td>
@@ -549,31 +653,52 @@
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
 import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
 import { Option } from &#x27;@app/modules/options/options.model&#x27;
-import { Article } from &#x27;@app/modules/article/article.model&#x27;
+import { ArticlePopulated } from &#x27;@app/modules/article/article.model&#x27;
+import { ArticleStatus } from &#x27;@app/modules/article/article.constant&#x27;
+import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { WebhookService } from &#x27;./webhook.service&#x27;
+import { WebhookEvent } from &#x27;./webhook.constant&#x27;
 
 @Injectable()
 export class WebhookListener {
-  constructor(private readonly webhookService: WebhookService) {}
+  constructor(
+    private readonly webhookService: WebhookService,
+    private readonly articleService: ArticleService
+  ) {}
 
   @OnEvent(EventKeys.OptionsUpdated, { async: true })
-  handleOptionsUpdated(payload: Option) {
-    return this.webhookService.dispatch(EventKeys.OptionsUpdated, payload)
+  async handleOptionsUpdated(options: Option) {
+    await this.webhookService.dispatch(WebhookEvent.UpsertOptions, options)
   }
 
   @OnEvent(EventKeys.ArticleCreated, { async: true })
-  handleArticleCreated(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleCreated, payload)
+  @OnEvent(EventKeys.ArticleUpdated, { async: true })
+  async handleArticleUpsert(article: ArticlePopulated) {
+    if (article.status &#x3D;&#x3D;&#x3D; ArticleStatus.Published) {
+      await this.webhookService.dispatch(WebhookEvent.UpsertArticles, [article])
+    } else {
+      await this.webhookService.dispatch(WebhookEvent.DeleteArticles, [article.id])
+    }
   }
 
-  @OnEvent(EventKeys.ArticleUpdated, { async: true })
-  handleArticleUpdated(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleUpdated, payload)
+  @OnEvent(EventKeys.ArticlesStatusChanged, { async: true })
+  async handleArticlesStatusChange(payload: { articleIds: number[]; status: ArticleStatus }) {
+    if (payload.status &#x3D;&#x3D;&#x3D; ArticleStatus.Published) {
+      const articles &#x3D; await this.articleService.getListByIds(payload.articleIds)
+      await this.webhookService.dispatch(WebhookEvent.UpsertArticles, articles)
+    } else {
+      await this.webhookService.dispatch(WebhookEvent.DeleteArticles, payload.articleIds)
+    }
   }
 
   @OnEvent(EventKeys.ArticleDeleted, { async: true })
-  handleArticleDeleted(payload: Article) {
-    return this.webhookService.dispatch(EventKeys.ArticleDeleted, payload)
+  async handleArticleDeleted(articleId: number) {
+    await this.webhookService.dispatch(WebhookEvent.DeleteArticles, [articleId])
+  }
+
+  @OnEvent(EventKeys.ArticlesDeleted, { async: true })
+  async handleArticlesDeleted(articleIds: number[]) {
+    await this.webhookService.dispatch(WebhookEvent.DeleteArticles, articleIds)
   }
 }
 </code></pre>

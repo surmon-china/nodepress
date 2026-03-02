@@ -295,8 +295,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="71"
-                                    class="link-to-prism">src/modules/options/options.service.ts:71</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/modules/options/options.service.ts:72</a></div>
                         </td>
                     </tr>
 
@@ -479,8 +479,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="83"
-                                    class="link-to-prism">src/modules/options/options.service.ts:83</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="84"
+                                    class="link-to-prism">src/modules/options/options.service.ts:84</a></div>
                         </td>
                     </tr>
 
@@ -692,6 +692,7 @@ export class OptionsService implements OnModuleInit {
     await this.ensureOptions()
     const updated &#x3D; await this.optionsModel
       .findOneAndUpdate(OPTIONS_SINGLETON_QUERY, { $set: input }, { returnDocument: &#x27;after&#x27; })
+      .lean()
       .exec()
     // update cache when options updated
     await this.optionsCache.update()

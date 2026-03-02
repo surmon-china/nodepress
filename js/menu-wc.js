@@ -653,13 +653,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/WebhookModule.html" data-type="entity-link" >WebhookModule</a>
                                 <li class="chapter inner">
                                     <div class="simple menu-toggler" data-bs-toggle="collapse" ${ isNormalMode ?
-                                        'data-bs-target="#injectables-links-module-WebhookModule-0b96511d5ad4f7da002a2e5ec85de8cdf49acf63853c0069c4e96e1d0ae0ac9bdc59a8ea62f2ed199d25d8c66e9c745aea4f84780b77229e6a0b291ca4be86b6"' : 'data-bs-target="#xs-injectables-links-module-WebhookModule-0b96511d5ad4f7da002a2e5ec85de8cdf49acf63853c0069c4e96e1d0ae0ac9bdc59a8ea62f2ed199d25d8c66e9c745aea4f84780b77229e6a0b291ca4be86b6"' }>
+                                        'data-bs-target="#injectables-links-module-WebhookModule-c4da44caefbad14097e2e98f3c17e76c67d77a4421a3e54effe5ff603dcbd209bcc2a6b1221e1bdc0b0e04909581ddec1d765d1fa8e0aa75e8a4faac70638310"' : 'data-bs-target="#xs-injectables-links-module-WebhookModule-c4da44caefbad14097e2e98f3c17e76c67d77a4421a3e54effe5ff603dcbd209bcc2a6b1221e1bdc0b0e04909581ddec1d765d1fa8e0aa75e8a4faac70638310"' }>
                                         <span class="icon ion-md-arrow-round-down"></span>
                                         <span>Injectables</span>
                                         <span class="icon ion-ios-arrow-down"></span>
                                     </div>
-                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-WebhookModule-0b96511d5ad4f7da002a2e5ec85de8cdf49acf63853c0069c4e96e1d0ae0ac9bdc59a8ea62f2ed199d25d8c66e9c745aea4f84780b77229e6a0b291ca4be86b6"' :
-                                        'id="xs-injectables-links-module-WebhookModule-0b96511d5ad4f7da002a2e5ec85de8cdf49acf63853c0069c4e96e1d0ae0ac9bdc59a8ea62f2ed199d25d8c66e9c745aea4f84780b77229e6a0b291ca4be86b6"' }>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="injectables-links-module-WebhookModule-c4da44caefbad14097e2e98f3c17e76c67d77a4421a3e54effe5ff603dcbd209bcc2a6b1221e1bdc0b0e04909581ddec1d765d1fa8e0aa75e8a4faac70638310"' :
+                                        'id="xs-injectables-links-module-WebhookModule-c4da44caefbad14097e2e98f3c17e76c67d77a4421a3e54effe5ff603dcbd209bcc2a6b1221e1bdc0b0e04909581ddec1d765d1fa8e0aa75e8a4faac70638310"' }>
                                         <li class="link">
                                             <a href="injectables/WebhookListener.html" data-type="entity-link" data-context="sub-entity" data-context-id="modules" >WebhookListener</a>
                                         </li>
