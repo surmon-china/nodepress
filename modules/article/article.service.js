@@ -25,7 +25,6 @@ const urlmap_transformer_1 = require("../../transformers/urlmap.transformer");
 const article_constant_1 = require("./article.constant");
 const article_model_1 = require("./article.model");
 const article_model_2 = require("./article.model");
-const article_model_3 = require("./article.model");
 const logger_1 = require("../../utils/logger");
 const app_environment_1 = require("../../app.environment");
 const logger = (0, logger_1.createLogger)({ scope: 'ArticleService', time: app_environment_1.isDevEnv });
@@ -42,7 +41,7 @@ let ArticleService = class ArticleService {
         this.articleModel = articleModel;
         this.allPublicArticlesCache = this.cacheService.manual({
             key: cache_constant_1.CacheKeys.PublicAllArticles,
-            promise: () => this.getAllArticles({ publicOnly: true, withContent: false })
+            promise: () => this.getAllArticles({ publicOnly: true, withDetail: false })
         });
     }
     onModuleInit() {
@@ -59,21 +58,19 @@ let ArticleService = class ArticleService {
     paginate(filter, options) {
         return this.articleModel.paginateRaw(filter, {
             ...options,
-            populate: article_model_3.ARTICLE_RELATION_FIELDS
+            populate: article_model_2.ARTICLE_RELATION_FIELDS,
+            projection: article_model_2.ARTICLE_LIST_QUERY_PROJECTION
         });
     }
     getAllArticles(options) {
         const query = this.articleModel
             .find(options.publicOnly ? article_constant_1.ARTICLE_PUBLIC_FILTER : {})
             .sort({ created_at: sort_constant_1.SortOrder.Desc })
-            .populate(article_model_3.ARTICLE_RELATION_FIELDS)
+            .populate(article_model_2.ARTICLE_RELATION_FIELDS)
             .lean();
-        if (options.withContent) {
-            return query.select(article_model_2.ARTICLE_WITH_CONTENT_PROJECTION).exec();
-        }
-        else {
-            return query.select(article_model_2.ARTICLE_WITHOUT_CONTENT_PROJECTION).exec();
-        }
+        return !options.withDetail
+            ? query.select(article_model_2.ARTICLE_LIST_QUERY_PROJECTION).exec()
+            : query.exec();
     }
     async getDetail(idOrSlug, options = {}) {
         const { publicOnly = false, populate = false, lean = false } = options;
@@ -84,8 +81,7 @@ let ArticleService = class ArticleService {
             queryFilter.slug = idOrSlug;
         const articleQuery = this.articleModel
             .findOne(publicOnly ? { ...queryFilter, ...article_constant_1.ARTICLE_PUBLIC_FILTER } : queryFilter)
-            .populate(populate ? article_model_3.ARTICLE_RELATION_FIELDS : [])
-            .select(article_model_2.ARTICLE_WITH_CONTENT_PROJECTION);
+            .populate(populate ? article_model_2.ARTICLE_RELATION_FIELDS : []);
         const article = lean ? await articleQuery.lean().exec() : await articleQuery.exec();
         if (!article)
             throw new common_1.NotFoundException(`Article '${idOrSlug}' not found`);
@@ -153,7 +149,7 @@ let ArticleService = class ArticleService {
         return actionResult;
     }
     async isCommentableArticle(articleId) {
-        const article = await this.articleModel.findOne({ id: articleId }).lean().exec();
+        const article = await this.articleModel.findOne({ id: articleId }).select('disabled_comments').lean().exec();
         return Boolean(article && !article.disabled_comments);
     }
 };

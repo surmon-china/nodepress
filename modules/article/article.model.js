@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ArticleProvider = exports.Article = exports.ArticleStats = exports.ARTICLE_WITHOUT_CONTENT_PROJECTION = exports.ARTICLE_WITH_CONTENT_PROJECTION = exports.ARTICLE_RELATION_FIELDS = void 0;
+exports.ArticleProvider = exports.Article = exports.ArticleStats = exports.ARTICLE_LIST_QUERY_PROJECTION = exports.ARTICLE_RELATION_FIELDS = void 0;
 const auto_increment_1 = require("@typegoose/auto-increment");
 const typegoose_1 = require("@typegoose/typegoose");
 const class_transformer_1 = require("class-transformer");
@@ -24,8 +24,7 @@ const category_model_1 = require("../category/category.model");
 const tag_model_1 = require("../tag/tag.model");
 const article_constant_1 = require("./article.constant");
 exports.ARTICLE_RELATION_FIELDS = ['tags', 'categories'];
-exports.ARTICLE_WITH_CONTENT_PROJECTION = '+content';
-exports.ARTICLE_WITHOUT_CONTENT_PROJECTION = { content: 0 };
+exports.ARTICLE_LIST_QUERY_PROJECTION = { content: 0, extras: 0 };
 const ARTICLE_DEFAULT_STATS = Object.freeze({
     likes: 0,
     views: 0,
@@ -92,7 +91,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/, select: false, text: true }),
+    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/, text: true }),
     __metadata("design:type", String)
 ], Article.prototype, "content", void 0);
 __decorate([

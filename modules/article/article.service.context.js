@@ -32,6 +32,7 @@ let ArticleContextService = class ArticleContextService {
         const targetType = typeFieldMap[type];
         return this.articleModel
             .find({ ...article_constant_1.ARTICLE_PUBLIC_FILTER, id: { [targetType.field]: articleId } })
+            .select(article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
             .populate(article_model_1.ARTICLE_RELATION_FIELDS)
             .sort({ id: targetType.sort })
             .limit(count)
@@ -67,7 +68,7 @@ let ArticleContextService = class ArticleContextService {
             { $sort: { totalScore: sort_constant_1.SortOrder.Desc, created_at: sort_constant_1.SortOrder.Desc } },
             { $limit: count * 2 },
             { $sample: { size: count } },
-            { $project: article_model_1.ARTICLE_WITHOUT_CONTENT_PROJECTION },
+            { $project: article_model_1.ARTICLE_LIST_QUERY_PROJECTION },
             ...article_model_1.ARTICLE_RELATION_FIELDS.map((field) => ({
                 $lookup: {
                     from: field,

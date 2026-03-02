@@ -129,7 +129,7 @@ __decorate([
     __metadata("design:type", Number)
 ], ArticleIdsStatusDto.prototype, "status", void 0);
 class AllArticlesQueryDto {
-    with_content;
+    with_detail;
 }
 exports.AllArticlesQueryDto = AllArticlesQueryDto;
 __decorate([
@@ -137,5 +137,5 @@ __decorate([
     (0, class_validator_2.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToBoolean)(value)),
     __metadata("design:type", Boolean)
-], AllArticlesQueryDto.prototype, "with_content", void 0);
+], AllArticlesQueryDto.prototype, "with_detail", void 0);
 //# sourceMappingURL=article.dto.js.map

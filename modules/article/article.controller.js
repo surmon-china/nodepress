@@ -98,9 +98,9 @@ let ArticleController = class ArticleController {
         }
         return this.articleService.paginate(queryFilter, paginateOptions);
     }
-    getAllArticles({ with_content }, { identity }) {
+    getAllArticles({ with_detail }, { identity }) {
         return identity.isAdmin
-            ? this.articleService.getAllArticles({ publicOnly: false, withContent: !!with_content })
+            ? this.articleService.getAllArticles({ publicOnly: false, withDetail: !!with_detail })
             : this.articleService.getAllPublicArticlesCache();
     }
     getArticlesCalendar({ timezone }, { identity }) {
