@@ -10,15 +10,19 @@ import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { SortOrder } from '@app/constants/sort.constant'
 import { ARTICLE_PUBLIC_FILTER } from './article.constant'
-import { ARTICLE_RELATION_FIELDS, ARTICLE_WITHOUT_CONTENT_PROJECTION } from './article.model'
-import { Article } from './article.model'
+import { ARTICLE_RELATION_FIELDS, ARTICLE_LIST_QUERY_PROJECTION } from './article.model'
+import { Article, ArticleListItemPopulated } from './article.model'
 
 @Injectable()
 export class ArticleContextService {
   constructor(@InjectModel(Article) private readonly articleModel: MongooseModel<Article>) {}
 
   // Get near articles
-  public async getNearArticles(articleId: number, type: 'later' | 'early', count: number): Promise<Article[]> {
+  public async getNearArticles(
+    articleId: number,
+    type: 'later' | 'early',
+    count: number
+  ): Promise<ArticleListItemPopulated[]> {
     const typeFieldMap = {
       early: { field: '$lt', sort: -1 as SortOrderType },
       later: { field: '$gt', sort: 1 as SortOrderType }
@@ -26,7 +30,8 @@ export class ArticleContextService {
     const targetType = typeFieldMap[type]
     return this.articleModel
       .find({ ...ARTICLE_PUBLIC_FILTER, id: { [targetType.field]: articleId } })
-      .populate(ARTICLE_RELATION_FIELDS)
+      .select(ARTICLE_LIST_QUERY_PROJECTION)
+      .populate<ArticleListItemPopulated>(ARTICLE_RELATION_FIELDS)
       .sort({ id: targetType.sort })
       .limit(count)
       .lean()
@@ -34,14 +39,14 @@ export class ArticleContextService {
   }
 
   // Get related articles
-  public async getRelatedArticles(article: Article, count: number): Promise<Article[]> {
+  public async getRelatedArticles(article: Article, count: number): Promise<ArticleListItemPopulated[]> {
     // 1. Guard Clause: "Hard-match" logic requires both tags and categories to compute similarity.
     // If either is missing, return an empty array to avoid irrelevant global results.
     if (!article.tags?.length || !article.categories?.length) {
       return []
     }
 
-    return await this.articleModel.aggregate<Article>([
+    return await this.articleModel.aggregate<ArticleListItemPopulated>([
       {
         // 2. Initial Match: Filter by public status and ensure intersection in BOTH tags AND categories.
         $match: {
@@ -78,7 +83,7 @@ export class ArticleContextService {
       // Aggregation bypasses Mongoose's default 'select' schema configuration.
       // We must manually apply the PROJECTION to exclude large fields (e.g., content)
       // and maintain consistency with the standard article list structure.
-      { $project: ARTICLE_WITHOUT_CONTENT_PROJECTION },
+      { $project: ARTICLE_LIST_QUERY_PROJECTION },
       // 8. Manual Population:
       // Aggregation does not support automatic Mongoose population.
       // Use $lookup to join related collections (tags, categories).

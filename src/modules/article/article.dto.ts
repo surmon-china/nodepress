@@ -104,5 +104,5 @@ export class AllArticlesQueryDto {
   @WithGuestPermission({ only: [false], default: false })
   @IsOptional()
   @Transform(({ value }) => unknownToBoolean(value))
-  with_content?: boolean
+  with_detail?: boolean
 }

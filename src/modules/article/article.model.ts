@@ -23,12 +23,10 @@ import { ArticleStatus, ArticleOrigin, ArticleLanguage } from './article.constan
 export type ArticleDoc = MongooseDoc<Article>
 export type ArticlePopulated = MergeType<Article, { tags: Tag[]; categories: Category[] }>
 export type ArticleDocPopulated = MergeType<ArticleDoc, { tags: Tag[]; categories: Category[] }>
-
-export type ArticlePopulatedWithoutContent = Omit<ArticlePopulated, 'content'>
-
 export const ARTICLE_RELATION_FIELDS = ['tags', 'categories']
-export const ARTICLE_WITH_CONTENT_PROJECTION = '+content'
-export const ARTICLE_WITHOUT_CONTENT_PROJECTION = { content: 0 }
+
+export type ArticleListItemPopulated = Omit<ArticlePopulated, 'content' | 'extras'>
+export const ARTICLE_LIST_QUERY_PROJECTION = { content: 0, extras: 0 }
 
 const ARTICLE_DEFAULT_STATS: ArticleStats = Object.freeze({
   likes: 0,
@@ -97,7 +95,7 @@ export class Article {
 
   @IsString()
   @IsNotEmpty()
-  @prop({ type: String, required: true, validate: /\S+/, select: false, text: true })
+  @prop({ type: String, required: true, validate: /\S+/, text: true })
   content: string
 
   @IsString()

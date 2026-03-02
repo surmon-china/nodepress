@@ -18,9 +18,8 @@ import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
 import { ArticleStatus, ARTICLE_PUBLIC_FILTER } from './article.constant'
 import { Article, ArticleDoc, ArticleDocPopulated } from './article.model'
-import { ArticlePopulated, ArticlePopulatedWithoutContent } from './article.model'
-import { ARTICLE_WITH_CONTENT_PROJECTION, ARTICLE_WITHOUT_CONTENT_PROJECTION } from './article.model'
-import { ARTICLE_RELATION_FIELDS } from './article.model'
+import { ArticlePopulated, ArticleListItemPopulated } from './article.model'
+import { ARTICLE_RELATION_FIELDS, ARTICLE_LIST_QUERY_PROJECTION } from './article.model'
 import { CreateArticleDto, UpdateArticleDto } from './article.dto'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
@@ -29,7 +28,7 @@ const logger = createLogger({ scope: 'ArticleService', time: isDevEnv })
 
 @Injectable()
 export class ArticleService implements OnModuleInit {
-  private allPublicArticlesCache: CacheManualResult<Array<ArticlePopulatedWithoutContent>>
+  private allPublicArticlesCache: CacheManualResult<Array<ArticleListItemPopulated>>
 
   constructor(
     private readonly eventEmitter: EventEmitter2,
@@ -37,9 +36,9 @@ export class ArticleService implements OnModuleInit {
     private readonly cacheService: CacheService,
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
   ) {
-    this.allPublicArticlesCache = this.cacheService.manual<Array<ArticlePopulatedWithoutContent>>({
+    this.allPublicArticlesCache = this.cacheService.manual<Array<ArticleListItemPopulated>>({
       key: CacheKeys.PublicAllArticles,
-      promise: () => this.getAllArticles({ publicOnly: true, withContent: false })
+      promise: () => this.getAllArticles({ publicOnly: true, withDetail: false })
     })
   }
 
@@ -49,11 +48,11 @@ export class ArticleService implements OnModuleInit {
     })
   }
 
-  public getAllPublicArticlesCache(): Promise<Array<ArticlePopulatedWithoutContent>> {
+  public getAllPublicArticlesCache(): Promise<Array<ArticleListItemPopulated>> {
     return this.allPublicArticlesCache.get()
   }
 
-  public updateAllPublicArticlesCache(): Promise<Array<ArticlePopulatedWithoutContent>> {
+  public updateAllPublicArticlesCache(): Promise<Array<ArticleListItemPopulated>> {
     return this.allPublicArticlesCache.update()
   }
 
@@ -61,26 +60,25 @@ export class ArticleService implements OnModuleInit {
   public paginate(
     filter: QueryFilter<Article>,
     options: PaginateOptions
-  ): Promise<PaginateResult<ArticlePopulatedWithoutContent>> {
+  ): Promise<PaginateResult<ArticleListItemPopulated>> {
     return this.articleModel.paginateRaw(filter, {
       ...options,
-      populate: ARTICLE_RELATION_FIELDS
+      populate: ARTICLE_RELATION_FIELDS,
+      projection: ARTICLE_LIST_QUERY_PROJECTION
     })
   }
 
   // Get all articles
-  public getAllArticles(options: { publicOnly: boolean; withContent: boolean }) {
+  public getAllArticles(options: { publicOnly: boolean; withDetail: boolean }) {
     const query = this.articleModel
       .find(options.publicOnly ? ARTICLE_PUBLIC_FILTER : {})
       .sort({ created_at: SortOrder.Desc })
-      .populate(ARTICLE_RELATION_FIELDS)
+      .populate<ArticlePopulated>(ARTICLE_RELATION_FIELDS)
       .lean()
 
-    if (options.withContent) {
-      return query.select<ArticlePopulated>(ARTICLE_WITH_CONTENT_PROJECTION).exec()
-    } else {
-      return query.select<ArticlePopulatedWithoutContent>(ARTICLE_WITHOUT_CONTENT_PROJECTION).exec()
-    }
+    return !options.withDetail
+      ? query.select<ArticleListItemPopulated>(ARTICLE_LIST_QUERY_PROJECTION).exec()
+      : query.exec()
   }
 
   // Get article by number id or slug
@@ -109,7 +107,6 @@ export class ArticleService implements OnModuleInit {
     const articleQuery = this.articleModel
       .findOne(publicOnly ? { ...queryFilter, ...ARTICLE_PUBLIC_FILTER } : queryFilter)
       .populate(populate ? ARTICLE_RELATION_FIELDS : [])
-      .select(ARTICLE_WITH_CONTENT_PROJECTION)
 
     const article = lean ? await articleQuery.lean<Article>().exec() : await articleQuery.exec()
     if (!article) throw new NotFoundException(`Article '${idOrSlug}' not found`)
@@ -188,7 +185,7 @@ export class ArticleService implements OnModuleInit {
 
   // Article commentable state
   public async isCommentableArticle(articleId: number): Promise<boolean> {
-    const article = await this.articleModel.findOne({ id: articleId }).lean().exec()
+    const article = await this.articleModel.findOne({ id: articleId }).select('disabled_comments').lean().exec()
     return Boolean(article && !article.disabled_comments)
   }
 }
