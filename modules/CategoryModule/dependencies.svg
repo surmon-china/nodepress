@@ -24,13 +24,13 @@
 <title>cluster_CategoryModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="70,-70 70,-268 426,-268 426,-70 70,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_CategoryModule_providers</title>
-<polygon fill="none" stroke="black" points="78,-78 78,-130 418,-130 418,-78 78,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_CategoryModule_exports</title>
 <polygon fill="none" stroke="black" points="182,-208 182,-260 310,-260 310,-208 182,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_CategoryModule_providers</title>
+<polygon fill="none" stroke="black" points="78,-78 78,-130 418,-130 418,-78 78,-78"/>
 </g>
 <!-- CategoryService  -->
 <g id="node1" class="node">

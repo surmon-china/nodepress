@@ -525,7 +525,7 @@ export class CommentListener {
       ...linesToEmailContent([
         &#x60;${subject}!&#x60;,
         &#x60;Comment Parent: ${input.parent_id}&#x60;,
-        &#x60;Comment Target: ${input.target_type} - ${input.target_id}&#x60;,
+        &#x60;Comment Target: ${input.target_type} #${input.target_id}&#x60;,
         &#x60;Comment Content: ${input.content || &#x27;-&#x27;}&#x60;,
         &#x60;Comment Author: ${input.author_name || &#x27;-&#x27;} · ${input.author_email || &#x27;-&#x27;} · ${input.author_website || &#x27;-&#x27;}&#x60;,
         &#x60;Error Detail: ${getMessageFromNormalError(error)}&#x60;,
