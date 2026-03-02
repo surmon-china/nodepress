@@ -162,7 +162,7 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#with_content" >with_content</a>
+                                <a href="#with_detail" >with_detail</a>
                             </li>
                         </ul>
                     </td>
@@ -187,14 +187,14 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="with_content"></a>
+                    <a name="with_detail"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>with_content</b></span>
-                        <a href="#with_content"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>with_detail</b></span>
+                        <a href="#with_detail"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -334,7 +334,7 @@ export class AllArticlesQueryDto {
   @WithGuestPermission({ only: [false], default: false })
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToBoolean(value))
-  with_content?: boolean
+  with_detail?: boolean
 }
 </code></pre>
     </div>

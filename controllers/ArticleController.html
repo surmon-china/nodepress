@@ -1173,11 +1173,11 @@ export class ArticleController {
   @Get(&#x27;all&#x27;)
   @SuccessResponse(&#x27;Get all articles succeeded&#x27;)
   public getAllArticles(
-    @Query(PermissionPipe) { with_content }: AllArticlesQueryDto,
+    @Query(PermissionPipe) { with_detail }: AllArticlesQueryDto,
     @RequestContext() { identity }: IRequestContext
   ) {
     return identity.isAdmin
-      ? this.articleService.getAllArticles({ publicOnly: false, withContent: !!with_content })
+      ? this.articleService.getAllArticles({ publicOnly: false, withDetail: !!with_detail })
       : this.articleService.getAllPublicArticlesCache()
   }
 
