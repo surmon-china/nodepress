@@ -50,13 +50,13 @@ let CommentController = class CommentController {
             if (identity.isUser) {
                 const user = await this.userService.findOne(identity.payload.uid);
                 const userComment = this.commentService.normalize(input, { visitor, user });
-                return this.commentService.validateAndCreate(userComment, visitor.referer ?? void 0);
+                return await this.commentService.validateAndCreate(userComment, visitor.referer ?? void 0);
             }
             const guestComment = this.commentService.normalize(input, { visitor });
             if (!guestComment.author_name || !guestComment.author_email) {
                 throw new common_2.BadRequestException('Author name and email are required');
             }
-            return this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0);
+            return await this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0);
         }
         catch (error) {
             this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreateFailed, { input, visitor, error });
