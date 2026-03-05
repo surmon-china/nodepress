@@ -20,3 +20,7 @@ export const getUserAuthStateCacheKey = (key: string) => {
 export const getInvalidatedTokenCacheKey = (key: string) => {
   return `auth:invalidated-token:${key}`
 }
+
+export const getRefreshTokenCacheKey = (key: string) => {
+  return `auth:refresh-token:${key}`
+}

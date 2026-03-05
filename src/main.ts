@@ -15,7 +15,7 @@ import { LoggingInterceptor } from '@app/interceptors/logging.interceptor'
 import { HttpExceptionFilter } from '@app/filters/exception.filter'
 import { Identity, IdentityRole } from '@app/constants/identity.constant'
 import { AuthRole } from '@app/constants/auth.constant'
-import { AuthService } from '@app/core/auth/auth.service'
+import { AuthAccessTokenService } from '@app/core/auth/auth.service.access-token'
 import { environment, isDevEnv } from './app.environment'
 import { AppModule } from './app.module'
 import { APP_BIZ } from './app.config'
@@ -38,19 +38,19 @@ async function bootstrap() {
   // Therefore, Fastify's `onRequest` hook is used to access the full request object.
   // Reference: https://github.com/nestjs/nest/issues/9865#issuecomment-1174056923
   // Reference: https://stackoverflow.com/a/79056477/6222535
-  const authService = app.get(AuthService)
+  const authAccessTokenService = app.get(AuthAccessTokenService)
   const fastify = app.getHttpAdapter().getInstance()
   // Use Fastify 'onRequest' hook for early-stage identity authentication
   fastify.addHook('onRequest', async (request) => {
     // Initialize default identity as Guest (Anonymous mode)
     request.identity = new Identity({ role: IdentityRole.Guest })
     // Extract token from authorization header, skip if not provided
-    const token = authService.extractTokenFromAuthorization(request.headers.authorization)
+    const token = authAccessTokenService.extractTokenFromAuthorization(request.headers.authorization)
     if (!token) return
 
     try {
       // Verify the token. If an identity is declared, it MUST be valid (Explicit Failure policy)
-      const payload = await authService.verifyToken(token)
+      const payload = await authAccessTokenService.verifyToken(token)
       if (!payload) throw new UnauthorizedException('Access denied: invalid identity payload')
       // Map AuthRole to IdentityRole based on token payload
       if (payload.role === AuthRole.Admin) {

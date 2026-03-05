@@ -1,10 +1,10 @@
 /**
- * @file Admin service
- * @module module/admin/service
+ * @file Admin profile service
+ * @module module/admin/service.profile
  */
 
 import bcrypt from 'bcryptjs'
-import { Injectable, BadRequestException } from '@nestjs/common'
+import { Injectable, OnModuleInit, BadRequestException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
@@ -15,28 +15,28 @@ import { UpdateProfileDto } from './admin.dto'
 import { APP_AUTH } from '@app/app.config'
 
 @Injectable()
-export class AdminService {
-  private profileCache: CacheManualResult<AdminProfile>
+export class AdminProfileService implements OnModuleInit {
+  private cache: CacheManualResult<AdminProfile>
 
   constructor(
     private readonly cacheService: CacheService,
     @InjectModel(Admin) private readonly adminModel: MongooseModel<Admin>
   ) {
-    this.profileCache = this.cacheService.manual({
+    this.cache = this.cacheService.manual({
       key: CacheKeys.PublicAdminProfile,
-      promise: () => this.getProfile()
+      promise: () => this.getRaw()
     })
   }
 
   onModuleInit() {
-    this.profileCache.update()
+    this.cache.update()
   }
 
-  public getProfileCache(): Promise<AdminProfile> {
-    return this.profileCache.get()
+  public getCache(): Promise<AdminProfile> {
+    return this.cache.get()
   }
 
-  public async getProfile(): Promise<AdminProfile> {
+  public async getRaw(): Promise<AdminProfile> {
     const adminProfile = await this.adminModel.findOne(ADMIN_SINGLETON_QUERY).select('-_id').lean().exec()
     return adminProfile ?? DEFAULT_ADMIN_PROFILE
   }
@@ -53,7 +53,7 @@ export class AdminService {
         plainPassword === APP_AUTH.adminDefaultPassword
   }
 
-  public async updateProfile(input: UpdateProfileDto): Promise<AdminProfile> {
+  public async update(input: UpdateProfileDto): Promise<AdminProfile> {
     const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = input
     const newProfile: Partial<Admin> = { ...profile }
 
@@ -88,6 +88,6 @@ export class AdminService {
     }
 
     // Update cache and return
-    return await this.profileCache.update()
+    return await this.cache.update()
   }
 }

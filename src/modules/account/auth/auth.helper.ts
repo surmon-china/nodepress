@@ -1,5 +1,6 @@
 import type { FastifyReply } from 'fastify'
 import { ResponseStatus } from '@app/interfaces/response.interface'
+import { AuthTokenResult } from '@app/core/auth/auth.interface'
 import { isDevEnv } from '@app/app.environment'
 import { APP_BIZ } from '@app/app.config'
 import { AuthIntent } from './auth.service.state'
@@ -10,7 +11,7 @@ export type PostMessagePayload =
   | {
       status: ResponseStatus.Success
       type: AuthIntent
-      token?: string
+      auth_data?: AuthTokenResult
     }
   | {
       status: ResponseStatus.Error

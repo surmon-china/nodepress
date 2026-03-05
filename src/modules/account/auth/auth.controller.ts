@@ -5,21 +5,22 @@
  */
 
 import type { FastifyReply } from 'fastify'
-import { Throttle, minutes } from '@nestjs/throttler'
-import { Controller, Get, Post, Query, Response, BadRequestException } from '@nestjs/common'
+import { Throttle, hours, minutes } from '@nestjs/throttler'
+import { Controller, Get, Post, Query, Body, Response, BadRequestException } from '@nestjs/common'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
-import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
+import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { ResponseStatus } from '@app/interfaces/response.interface'
-import { getMessageFromNormalError } from '@app/transformers/error.transformer'
+import { AuthTokenResult } from '@app/core/auth/auth.interface'
 import { UserIdentity } from '@app/modules/user/user.model'
+import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import { AccountIdentityService } from '../account.service.identity'
 import { UserAuthStateService, AuthIntent, AuthStatePayload } from './auth.service.state'
 import { UserAuthTokenService } from './auth.service.token'
 import { GithubAuthService } from './auth.service.github'
 import { GoogleAuthService } from './auth.service.google'
-import { OAuthCallbackDto } from './auth.dto'
-import { sendWindowPostMessage, OAUTH_CALLBACK_SCRIPT } from './auth.helper'
+import { OAuthCallbackDto, AuthLogoutDto, AuthRefreshTokenDto } from './auth.dto'
+import { sendWindowPostMessage, PostMessagePayload, OAUTH_CALLBACK_SCRIPT } from './auth.helper'
 
 const GITHUB_CALLBACK_PATH = '/account/auth/github/callback'
 const GOOGLE_CALLBACK_PATH = '/account/auth/google/callback'
@@ -140,26 +141,36 @@ export class AccountAuthController {
         // Upsert local user record based on thrid-party profile information
         const user = await this.accountIdentityService.upsertUser(userIdentity)
         // Generate internal JWT for the authenticated user
-        const token = this.authTokenService.createToken(user)
-        return { type: AuthIntent.Login, token }
+        const authToken = await this.authTokenService.createToken(user.id)
+        return { type: AuthIntent.Login, auth_data: authToken } satisfies Partial<PostMessagePayload>
       }
       // OAuth link
       case AuthIntent.Link: {
         await this.accountIdentityService.addIdentity(statePayload.uid, userIdentity)
-        return { type: AuthIntent.Link }
+        return { type: AuthIntent.Link } satisfies Partial<PostMessagePayload>
       }
       default:
         throw new BadRequestException('Invalid OAuth intent')
     }
   }
 
-  // ==================== Logout ====================
+  // ==================== Auth ====================
 
   @Post('logout')
   @OnlyIdentity(IdentityRole.User)
   @SuccessResponse('Logout succeeded')
-  async logout(@RequestContext() { identity }: IRequestContext): Promise<string> {
-    await this.authTokenService.invalidateToken(identity.token!)
+  async logout(
+    @RequestContext() { identity }: IRequestContext,
+    @Body() { refresh_token }: AuthLogoutDto
+  ): Promise<string> {
+    await this.authTokenService.revokeTokens(identity.token!, refresh_token)
     return 'ok'
+  }
+
+  @Post('refresh-token')
+  @Throttle({ default: { ttl: hours(1), limit: 10 } })
+  @SuccessResponse('Refresh token succeeded')
+  async refreshToken(@Body() { refresh_token }: AuthRefreshTokenDto): Promise<AuthTokenResult> {
+    return await this.authTokenService.refreshToken(refresh_token)
   }
 }

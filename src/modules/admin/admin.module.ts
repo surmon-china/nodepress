@@ -7,13 +7,13 @@
 import { Module } from '@nestjs/common'
 import { AdminController } from './admin.controller'
 import { AdminProvider } from './admin.model'
-import { AdminService } from './admin.service'
-import { AdminAuthTokenService } from './admin.service.token'
+import { AdminProfileService } from './admin.service.profile'
+import { AdminAuthService } from './admin.service.auth'
 import { AdminListener } from './admin.listener'
 
 @Module({
   controllers: [AdminController],
-  providers: [AdminProvider, AdminService, AdminAuthTokenService, AdminListener],
-  exports: [AdminService]
+  providers: [AdminProvider, AdminProfileService, AdminAuthService, AdminListener],
+  exports: [AdminProfileService]
 })
 export class AdminModule {}

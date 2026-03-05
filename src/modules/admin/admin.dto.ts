@@ -14,6 +14,18 @@ export class AuthLoginDto {
   password: string
 }
 
+export class AuthLogoutDto {
+  @IsString()
+  @IsOptional()
+  refresh_token?: string
+}
+
+export class AuthRefreshTokenDto {
+  @IsString()
+  @IsNotEmpty()
+  refresh_token: string
+}
+
 export class UpdateProfileDto {
   @IsString()
   @IsNotEmpty()

@@ -4,50 +4,49 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { Controller, Get, Patch, Post, Body, UnauthorizedException } from '@nestjs/common'
+import { Throttle, hours, minutes } from '@nestjs/throttler'
 import { EventEmitter2 } from '@nestjs/event-emitter'
+import { Controller, Get, Patch, Post, Body } from '@nestjs/common'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
-import { decodeBase64 } from '@app/transformers/codec.transformer'
+import { AuthTokenResult } from '@app/core/auth/auth.interface'
 import { EventKeys } from '@app/constants/events.constant'
 import { AdminProfile } from './admin.model'
-import { AuthLoginDto, UpdateProfileDto } from './admin.dto'
-import { AdminAuthTokenService, TokenResult } from './admin.service.token'
-import { AdminService } from './admin.service'
+import { UpdateProfileDto } from './admin.dto'
+import { AuthLoginDto, AuthLogoutDto, AuthRefreshTokenDto } from './admin.dto'
+import { AdminProfileService } from './admin.service.profile'
+import { AdminAuthService } from './admin.service.auth'
 
 @Controller('admin')
 export class AdminController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
-    private readonly adminService: AdminService,
-    private readonly authTokenService: AdminAuthTokenService
+    private readonly adminProfileService: AdminProfileService,
+    private readonly adminAuthService: AdminAuthService
   ) {}
 
   @Get('profile')
   @SuccessResponse('Get admin profile succeeded')
   getAdminProfile(): Promise<AdminProfile> {
-    return this.adminService.getProfileCache()
+    return this.adminProfileService.getCache()
   }
 
   @Patch('profile')
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Update admin profile succeeded')
   updateAdminProfile(@Body() dto: UpdateProfileDto): Promise<AdminProfile> {
-    return this.adminService.updateProfile(dto)
+    return this.adminProfileService.update(dto)
   }
 
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
   @Post('login')
   @SuccessResponse('Login succeeded')
-  async login(@RequestContext() { visitor }: IRequestContext, @Body() dto: AuthLoginDto): Promise<TokenResult> {
-    const inputPassword = decodeBase64(dto.password)
-    const existedAdminDoc = await this.adminService.getDocument()
-    const isValidPassword = await this.adminService.validatePassword(inputPassword, existedAdminDoc?.password)
-    if (!isValidPassword) {
-      throw new UnauthorizedException('Password incorrect')
-    }
-
-    const token = this.authTokenService.createToken()
+  async login(
+    @RequestContext() { visitor }: IRequestContext,
+    @Body() { password }: AuthLoginDto
+  ): Promise<AuthTokenResult> {
+    const token = await this.adminAuthService.createTokenByPassword(password)
     this.eventEmitter.emit(EventKeys.AdminLoggedIn, visitor)
     return token
   }
@@ -55,23 +54,26 @@ export class AdminController {
   @Post('logout')
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Logout succeeded')
-  async logout(@RequestContext() { identity }: IRequestContext): Promise<string> {
-    await this.authTokenService.invalidateToken(identity.token!)
-    this.eventEmitter.emit(EventKeys.AdminLoggedOut, identity.token)
+  async logout(
+    @RequestContext() { identity }: IRequestContext,
+    @Body() { refresh_token }: AuthLogoutDto
+  ): Promise<string> {
+    await this.adminAuthService.revokeTokens(identity.token!, refresh_token)
+    this.eventEmitter.emit(EventKeys.AdminLoggedOut)
     return 'ok'
   }
 
+  @Throttle({ default: { ttl: hours(1), limit: 10 } })
   @Post('refresh-token')
-  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Refresh token succeeded')
-  refreshToken(): TokenResult {
-    return this.authTokenService.createToken()
+  refreshToken(@Body() { refresh_token }: AuthRefreshTokenDto): Promise<AuthTokenResult> {
+    return this.adminAuthService.refreshToken(refresh_token)
   }
 
-  @Post('check-token')
+  @Post('verify-token')
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Token is valid')
-  checkToken(): string {
+  verifyToken(): string {
     return 'ok'
   }
 }

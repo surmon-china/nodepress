@@ -1,6 +1,6 @@
 /**
- * @file Global auth jwt service
- * @module core/auth/service
+ * @file Global Auth JWT service
+ * @module core/auth/service.access-token
  * @author Surmon <https://github.com/surmon-china>
  * @link https://docs.nestjs.com/security/authentication#enable-authentication-globally
  */
@@ -12,7 +12,7 @@ import { AuthPayload } from '@app/constants/auth.constant'
 import { getInvalidatedTokenCacheKey } from '@app/constants/cache.constant'
 
 @Injectable()
-export class AuthService {
+export class AuthAccessTokenService {
   constructor(
     private jwtService: JwtService,
     private cacheService: CacheService

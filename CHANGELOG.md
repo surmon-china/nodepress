@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+### 8.2.0 (2026-03-06)
+
+### Added
+
+- **Standard OAuth 2.0 Support**: Implemented a complete Access Token + Refresh Token flow for both Admin and Account modules.
+- **Refresh Token Rotation**: Added `AuthRefreshTokenService` utilizing Redis for secure, high-performance token management.
+- **Enhanced Security**:
+  - Integrated `@nestjs/throttler` for granular rate limiting on sensitive auth endpoints.
+  - Implemented token revocation (blacklist) for both short-lived and long-lived tokens.
+  - Unified `AuthPayload` interface to ensure strict type safety across the auth lifecycle.
+- **Defensive Programming**: Added optional `refresh_token` support during logout to prevent client-side deadlocks.
+
+### Changed
+
+- **API Response Structure**: Standardized token responses to use `access_token`, `refresh_token`, `expires_in`, and `token_type` (Bearer).
+- **Service Refactoring**: Decoupled authentication logic from Controllers into dedicated `AdminAuthService` and `UserAuthTokenService`.
+- **Route Renaming**: Renamed `/admin/check-token` to `/admin/verify-token` to better reflect its functional purpose.
+
+### Fixed
+
+- **Race Condition Prevention**: Optimized token refresh logic to minimize potential concurrency issues in single-admin scenarios.
+
 ### 8.0.0 (2026-03-02)
 
 This update brings a foundational architectural shift to the backend, strictly adhering to Domain-Driven Design (DDD) principles and Event-Driven Architecture (EDA). It resolves legacy circular dependencies and dramatically improves system maintainability.

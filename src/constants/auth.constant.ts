@@ -12,5 +12,5 @@ export enum AuthRole {
 export interface AuthPayload {
   role: AuthRole
   uid?: number
-  [key: string]: any
+  [key: string]: unknown
 }

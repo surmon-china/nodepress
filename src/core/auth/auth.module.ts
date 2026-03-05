@@ -6,7 +6,8 @@
 
 import { JwtModule } from '@nestjs/jwt'
 import { Module, Global } from '@nestjs/common'
-import { AuthService } from './auth.service'
+import { AuthAccessTokenService } from './auth.service.access-token'
+import { AuthRefreshTokenService } from './auth.service.refresh-token'
 import { APP_AUTH } from '@app/app.config'
 
 @Global()
@@ -27,7 +28,7 @@ import { APP_AUTH } from '@app/app.config'
       }
     })
   ],
-  providers: [AuthService],
-  exports: [AuthService]
+  providers: [AuthAccessTokenService, AuthRefreshTokenService],
+  exports: [AuthAccessTokenService, AuthRefreshTokenService]
 })
 export class AuthModule {}

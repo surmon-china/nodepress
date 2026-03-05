@@ -72,10 +72,14 @@ export const APP_AUTH = Object.freeze({
   jwtIssuer: arg({ key: 'auth_jwt_issuer', default: 'nodepress' }),
   /** The 'aud' (audience) claim identifies the recipients that the JWT is intended for */
   jwtAudience: arg({ key: 'auth_jwt_audience', default: 'nodepress-api' }),
-  /** Token expiration time (seconds) for administrators. Recommended to be short (e.g., 1-2 hours) for higher security */
+  /** Access Token (JWT) expiration time (seconds) for administrators. Recommended to be short (e.g., 1-2 hours) for higher security */
   jwtExpiresInForAdmin: 2 * 3600,
-  /** Token expiration time (seconds) for regular users. Can be longer (e.g., 7 days) to provide a better user experience by reducing re-logins */
-  jwtExpiresInForUser: 7 * 24 * 3600
+  /** Refresh Token expiration time (seconds) for administrators. (e.g., 30 days) */
+  refreshTokenExpiresInForAdmin: 30 * 24 * 3600,
+  /** Access Token (JWT) expiration time (seconds) for regular users. (e.g., 2 hours / 7 days) */
+  jwtExpiresInForUser: 7 * 24 * 3600,
+  /** Refresh Token expiration time (seconds) for regular users. (e.g., 60 days) */
+  refreshTokenExpiresInForUser: 60 * 24 * 3600
 })
 
 // MongoDB Configuration
