@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-export enum EventKeys {
+export enum GlobalEventKey {
   RedisError = 'redis.error',
   DatabaseError = 'database.error',
 

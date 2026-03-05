@@ -6,10 +6,10 @@
 
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { KeyValueModel } from '@app/models/key-value.model'
-import { CommentAiGenerationExtraKeys } from '@app/constants/extras.constant'
+import { CommentAiGenerationExtraKey } from '@app/constants/extras.constant'
 import { CommentWith } from '@app/modules/comment/comment.model'
 import { CreateCommentDto } from '@app/modules/comment/comment.dto'
 import { CommentService } from '@app/modules/comment/comment.service'
@@ -27,7 +27,7 @@ export class AiListener {
     private readonly commentService: CommentService
   ) {}
 
-  @OnEvent(EventKeys.CommentCreated, { async: true })
+  @OnEvent(GlobalEventKey.CommentCreated, { async: true })
   async handleCommentCreated(comment: CommentWith<UserPublic>) {
     // 1. Only respond to top-level comments (no parent comment)
     if (comment.parent_id !== null) return
@@ -36,7 +36,7 @@ export class AiListener {
     // 3. Minimum length requirement: at least 5 characters (excluding whitespace)
     if (comment.content.trim().length < 5) return
     // 4. Prevent loops: Do not respond to comments already marked as AI-generated
-    if (getExtraValue(comment.extras, CommentAiGenerationExtraKeys.Flag)) return
+    if (getExtraValue(comment.extras, CommentAiGenerationExtraKey.Flag)) return
     // 5. Do not respond to comments made by the moderator
     if (comment.user?.type === UserType.Moderator) return
 
@@ -56,9 +56,9 @@ export class AiListener {
       }
 
       const aiCommentExtras: KeyValueModel[] = [
-        { key: CommentAiGenerationExtraKeys.Flag, value: 'true' },
-        { key: CommentAiGenerationExtraKeys.Model, value: aiResult.model },
-        { key: CommentAiGenerationExtraKeys.Provider, value: aiResult.provider }
+        { key: CommentAiGenerationExtraKey.Flag, value: 'true' },
+        { key: CommentAiGenerationExtraKey.Model, value: aiResult.model },
+        { key: CommentAiGenerationExtraKey.Provider, value: aiResult.provider }
       ]
 
       // Initialize a clean visitor context for the AI

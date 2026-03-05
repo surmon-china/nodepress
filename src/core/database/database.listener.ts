@@ -8,7 +8,7 @@ import _throttle from 'lodash/throttle'
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { EmailService } from '@app/core/helper/helper.service.email'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { APP_BIZ } from '@app/app.config'
 
 @Injectable()
@@ -24,7 +24,7 @@ export class DatabaseListener {
     })
   }, 10 * 1000)
 
-  @OnEvent(EventKeys.DatabaseError, { async: true })
+  @OnEvent(GlobalEventKey.DatabaseError, { async: true })
   async handleDatabaseError(error: any) {
     await this.sendAlarmMail(String(error))
   }

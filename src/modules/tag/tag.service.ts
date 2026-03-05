@@ -13,8 +13,8 @@ import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { SeoService } from '@app/core/helper/helper.service.seo'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { ArticleStatsService } from '@app/modules/article/article.service.stats'
-import { EventKeys } from '@app/constants/events.constant'
-import { CacheKeys } from '@app/constants/cache.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
+import { GlobalCacheKey } from '@app/constants/cache.constant'
 import { SortOrder } from '@app/constants/sort.constant'
 import { getTagUrl } from '@app/transformers/urlmap.transformer'
 import { createLogger } from '@app/utils/logger'
@@ -36,7 +36,7 @@ export class TagService implements OnModuleInit {
     @InjectModel(Tag) private readonly tagModel: MongooseModel<Tag>
   ) {
     this.allPublicTagsCache = this.cacheService.manual<Array<Tag>>({
-      key: CacheKeys.PublicAllTags,
+      key: GlobalCacheKey.PublicAllTags,
       promise: () => this.getAllTags({ aggregatePublicOnly: true })
     })
   }
@@ -101,7 +101,7 @@ export class TagService implements OnModuleInit {
 
     const created = await this.tagModel.create(input)
     this.updateAllPublicTagsCache()
-    this.eventEmitter.emit(EventKeys.TagCreated, created)
+    this.eventEmitter.emit(GlobalEventKey.TagCreated, created)
     this.seoService.push(getTagUrl(created.slug))
     return created
   }
@@ -118,7 +118,7 @@ export class TagService implements OnModuleInit {
     if (!updated) throw new NotFoundException(`Tag '${tagId}' not found`)
 
     this.updateAllPublicTagsCache()
-    this.eventEmitter.emit(EventKeys.TagUpdated, updated)
+    this.eventEmitter.emit(GlobalEventKey.TagUpdated, updated)
     this.seoService.push(getTagUrl(updated.slug))
     return updated
   }
@@ -128,7 +128,7 @@ export class TagService implements OnModuleInit {
     if (!deleted) throw new NotFoundException(`Tag '${tagId}' not found`)
 
     this.updateAllPublicTagsCache()
-    this.eventEmitter.emit(EventKeys.TagDeleted, deleted._id)
+    this.eventEmitter.emit(GlobalEventKey.TagDeleted, deleted._id)
     this.seoService.delete(getTagUrl(deleted.slug))
     return deleted
   }
@@ -145,7 +145,7 @@ export class TagService implements OnModuleInit {
     // effects
     const tagObjectIds = tags.map((tag) => tag._id)
     this.updateAllPublicTagsCache()
-    this.eventEmitter.emit(EventKeys.TagsDeleted, tagObjectIds)
+    this.eventEmitter.emit(GlobalEventKey.TagsDeleted, tagObjectIds)
     this.seoService.delete(tags.map((tag) => getTagUrl(tag.slug)))
     return actionResult
   }

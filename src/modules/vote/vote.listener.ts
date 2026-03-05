@@ -5,7 +5,7 @@
 
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
@@ -29,7 +29,7 @@ export class VoteListener {
     private readonly commentService: CommentService
   ) {}
 
-  @OnEvent(EventKeys.VoteCreated, { async: true })
+  @OnEvent(GlobalEventKey.VoteCreated, { async: true })
   async handleVoteCreated(vote: VoteWithUser) {
     try {
       const voteEmoji = vote.vote_type === VoteType.Upvote ? '👍' : '👎'

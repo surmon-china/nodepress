@@ -16,7 +16,7 @@ import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decora
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { SortMode, SortOrder } from '@app/constants/sort.constant'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { CommentPaginateQueryDto, CommentCalendarQueryDto } from './comment.dto'
@@ -58,7 +58,7 @@ export class CommentController {
 
       return await this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0)
     } catch (error) {
-      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { input, visitor, error })
+      this.eventEmitter.emit(GlobalEventKey.CommentCreateFailed, { input, visitor, error })
       throw error
     }
   }

@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { IPService } from '@app/core/helper/helper.service.ip'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import {
   getTimeText,
@@ -25,7 +25,7 @@ export class AdminListener {
     private readonly ipService: IPService
   ) {}
 
-  @OnEvent(EventKeys.AdminLoggedIn, { async: true })
+  @OnEvent(GlobalEventKey.AdminLoggedIn, { async: true })
   async handleAdminLogin({ ip, agent, referer }: QueryVisitor) {
     const subject = 'App has a new login activity'
     const location = ip ? await this.ipService.queryLocation(ip) : null

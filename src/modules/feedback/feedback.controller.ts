@@ -14,7 +14,7 @@ import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decora
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { PaginateResult, PaginateOptions } from '@app/utils/paginate'
 import { UserService } from '@app/modules/user/user.service'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { CreateFeedbackDto, UpdateFeedbackDto, FeedbackPaginateQueryDto, FeedbackIdsDto } from './feedback.dto'
 import { Feedback, FeedbackWithUser } from './feedback.model'
 import { FeedbackService } from './feedback.service'
@@ -33,7 +33,7 @@ export class FeedbackController {
   async createFeedback(@Body() dto: CreateFeedbackDto, @RequestContext() { visitor, identity }: IRequestContext) {
     const user = identity.isUser ? await this.userService.findOne(identity.payload!.uid!) : void 0
     const created = await this.feedbackService.create(dto, visitor, user)
-    this.eventEmitter.emit(EventKeys.FeedbackCreated, created.toObject())
+    this.eventEmitter.emit(GlobalEventKey.FeedbackCreated, created.toObject())
     return created
   }
 

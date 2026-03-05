@@ -6,7 +6,7 @@
  */
 
 // Article AI Summary
-export enum ArticleAiSummaryExtraKeys {
+export enum ArticleAiSummaryExtraKey {
   Content = 'ai-summary-content',
   Model = 'ai-summary-model',
   Provider = 'ai-summary-provider',
@@ -14,7 +14,7 @@ export enum ArticleAiSummaryExtraKeys {
 }
 
 // Article AI Review
-export enum ArticleAiReviewExtraKeys {
+export enum ArticleAiReviewExtraKey {
   Content = 'ai-review-content',
   Model = 'ai-review-model',
   Provider = 'ai-review-provider',
@@ -23,14 +23,14 @@ export enum ArticleAiReviewExtraKeys {
 }
 
 // Comment AI Generation
-export enum CommentAiGenerationExtraKeys {
+export enum CommentAiGenerationExtraKey {
   Flag = 'ai-generated',
   Model = 'ai-model',
   Provider = 'ai-provider'
 }
 
 // Comment Disqus (Third-party)
-export enum CommentDisqusExtraKeys {
+export enum CommentDisqusExtraKey {
   PostId = 'disqus-post-id',
   ThreadId = 'disqus-thread-id',
   AuthorId = 'disqus-author-id',

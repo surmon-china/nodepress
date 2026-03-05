@@ -14,7 +14,7 @@ import { ArticleStatsService } from '@app/modules/article/article.service.stats'
 import { CommentStatsService } from '@app/modules/comment/comment.service.stats'
 import { FeedbackService } from '@app/modules/feedback/feedback.service'
 import { TagService } from '@app/modules/tag/tag.service'
-import { CacheKeys } from '@app/constants/cache.constant'
+import { GlobalCacheKey } from '@app/constants/cache.constant'
 import { linesToEmailContent } from '@app/transformers/email.transformer'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
@@ -55,7 +55,7 @@ export class StatisticsService {
       const createdAt = { $gte: oneDayAgo, $lt: now }
       const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] =
         await Promise.all([
-          this.counterService.getGlobalCount(CacheKeys.TodayViewCount),
+          this.counterService.getGlobalCount(GlobalCacheKey.TodayViewCount),
           this.commentStatsService.countDocuments({ created_at: createdAt }),
           this.voteService.countDocuments({
             created_at: createdAt,
@@ -87,7 +87,7 @@ export class StatisticsService {
     } catch (error) {
       logger.failure('DailyStatisticsJob failed!', error)
     } finally {
-      this.counterService.resetGlobalCount(CacheKeys.TodayViewCount).catch((error) => {
+      this.counterService.resetGlobalCount(GlobalCacheKey.TodayViewCount).catch((error) => {
         logger.warn('reset TODAY_VIEWS failed!', error)
       })
     }
@@ -109,7 +109,7 @@ export class StatisticsService {
         statistics.totalViews = value.totalViews
         statistics.totalLikes = value.totalLikes
       }),
-      this.counterService.getGlobalCount(CacheKeys.TodayViewCount).then((value) => {
+      this.counterService.getGlobalCount(GlobalCacheKey.TodayViewCount).then((value) => {
         statistics.todayViews = value
       }),
       this.feedbackService.getAverageEmotion().then((value) => {

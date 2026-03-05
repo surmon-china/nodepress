@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { EmailService } from '@app/core/helper/helper.service.email'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { getLocationText, getUserAgentText } from '@app/transformers/email.transformer'
 import { linesToEmailContent } from '@app/transformers/email.transformer'
 import { Feedback } from './feedback.model'
@@ -17,7 +17,7 @@ import { APP_BIZ } from '@app/app.config'
 export class FeedbackListener {
   constructor(private readonly emailService: EmailService) {}
 
-  @OnEvent(EventKeys.FeedbackCreated)
+  @OnEvent(GlobalEventKey.FeedbackCreated)
   handleFeedbackCreated(feedback: Feedback) {
     const subject = 'You have a new feedback'
 

@@ -6,7 +6,7 @@
 
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { getTimeText, linesToEmailContent } from '@app/transformers/email.transformer'
 import { createLogger } from '@app/utils/logger'
@@ -20,7 +20,7 @@ const logger = createLogger({ scope: 'UserListener', time: isDevEnv })
 export class UserListener {
   constructor(private readonly emailService: EmailService) {}
 
-  @OnEvent(EventKeys.UserCreated)
+  @OnEvent(GlobalEventKey.UserCreated)
   handleUserCreated(user: User) {
     // logger.log(`New user created: ${user.name} (#${user.id})`)
 
@@ -40,7 +40,7 @@ export class UserListener {
     })
   }
 
-  @OnEvent(EventKeys.UserDeleted)
+  @OnEvent(GlobalEventKey.UserDeleted)
   handleUserDeleted(user: User) {
     logger.log(`User deleted: ${user.name} (#${user.id})`)
 

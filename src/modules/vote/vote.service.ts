@@ -10,7 +10,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { User } from '@app/modules/user/user.model'
 import { Vote, VoteDocWithUser, NormalizedVote } from './vote.model'
 
@@ -32,7 +32,7 @@ export class VoteService {
   public async create(vote: NormalizedVote): Promise<VoteDocWithUser> {
     const created = await this.voteModel.create(vote)
     const populated = await created.populate<{ user: User | null }>('user')
-    this.eventEmitter.emit(EventKeys.VoteCreated, populated.toObject())
+    this.eventEmitter.emit(GlobalEventKey.VoteCreated, populated.toObject())
     return populated
   }
 

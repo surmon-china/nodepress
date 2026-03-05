@@ -10,8 +10,8 @@ import { Injectable, OnModuleInit, NotFoundException, ConflictException } from '
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { SortOrder } from '@app/constants/sort.constant'
-import { CacheKeys } from '@app/constants/cache.constant'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalCacheKey } from '@app/constants/cache.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { SeoService } from '@app/core/helper/helper.service.seo'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
@@ -37,7 +37,7 @@ export class ArticleService implements OnModuleInit {
     @InjectModel(Article) private readonly articleModel: MongooseModel<Article>
   ) {
     this.allPublicArticlesCache = this.cacheService.manual<Array<ArticleListItemPopulated>>({
-      key: CacheKeys.PublicAllArticles,
+      key: GlobalCacheKey.PublicAllArticles,
       promise: () => this.getAllArticles({ publicOnly: true, withDetail: false })
     })
   }
@@ -132,7 +132,7 @@ export class ArticleService implements OnModuleInit {
     const populated = await this.getDetail(created.id, { lean: true, populate: true })
 
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleCreated, populated)
+    this.eventEmitter.emit(GlobalEventKey.ArticleCreated, populated)
     this.seoService.push(getArticleUrl(created.id))
     return created
   }
@@ -158,7 +158,7 @@ export class ArticleService implements OnModuleInit {
     const populated = await this.getDetail(updated.id, { lean: true, populate: true })
 
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleUpdated, populated)
+    this.eventEmitter.emit(GlobalEventKey.ArticleUpdated, populated)
     this.seoService.update(getArticleUrl(updated.id))
     return updated
   }
@@ -168,7 +168,7 @@ export class ArticleService implements OnModuleInit {
     if (!deleted) throw new NotFoundException(`Article '${articleId}' not found`)
 
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticleDeleted, articleId)
+    this.eventEmitter.emit(GlobalEventKey.ArticleDeleted, articleId)
     this.seoService.delete(getArticleUrl(deleted.id))
     return deleted
   }
@@ -178,7 +178,7 @@ export class ArticleService implements OnModuleInit {
       .updateMany({ id: { $in: articleIds } }, { $set: { status } })
       .exec()
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticlesStatusChanged, { articleIds, status })
+    this.eventEmitter.emit(GlobalEventKey.ArticlesStatusChanged, { articleIds, status })
     return actionResult
   }
 
@@ -190,7 +190,7 @@ export class ArticleService implements OnModuleInit {
 
     const actionResult = await this.articleModel.deleteMany({ id: { $in: articleIds } }).exec()
     this.updateAllPublicArticlesCache()
-    this.eventEmitter.emit(EventKeys.ArticlesDeleted, articleIds)
+    this.eventEmitter.emit(GlobalEventKey.ArticlesDeleted, articleIds)
     this.seoService.delete(articles.map((article) => getArticleUrl(article.id)))
     return actionResult
   }

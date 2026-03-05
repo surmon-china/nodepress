@@ -11,7 +11,7 @@ import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { RequestContext, IRequestContext } from '@app/decorators/request-context.decorator'
 import { AuthTokenResult } from '@app/core/auth/auth.interface'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { AdminProfile } from './admin.model'
 import { UpdateProfileDto } from './admin.dto'
 import { AuthLoginDto, AuthLogoutDto, AuthRefreshTokenDto } from './admin.dto'
@@ -47,7 +47,7 @@ export class AdminController {
     @Body() { password }: AuthLoginDto
   ): Promise<AuthTokenResult> {
     const token = await this.adminAuthService.createTokenByPassword(password)
-    this.eventEmitter.emit(EventKeys.AdminLoggedIn, visitor)
+    this.eventEmitter.emit(GlobalEventKey.AdminLoggedIn, visitor)
     return token
   }
 
@@ -59,7 +59,7 @@ export class AdminController {
     @Body() { refresh_token }: AuthLogoutDto
   ): Promise<string> {
     await this.adminAuthService.revokeTokens(identity.token!, refresh_token)
-    this.eventEmitter.emit(EventKeys.AdminLoggedOut)
+    this.eventEmitter.emit(GlobalEventKey.AdminLoggedOut)
     return 'ok'
   }
 

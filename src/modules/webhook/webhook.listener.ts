@@ -6,7 +6,7 @@
 
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { Option } from '@app/modules/options/options.model'
 import { ArticlePopulated } from '@app/modules/article/article.model'
 import { ArticleStatus } from '@app/modules/article/article.constant'
@@ -21,13 +21,13 @@ export class WebhookListener {
     private readonly articleService: ArticleService
   ) {}
 
-  @OnEvent(EventKeys.OptionsUpdated, { async: true })
+  @OnEvent(GlobalEventKey.OptionsUpdated, { async: true })
   async handleOptionsUpdated(options: Option) {
     await this.webhookService.dispatch(WebhookEvent.UpsertOptions, options)
   }
 
-  @OnEvent(EventKeys.ArticleCreated, { async: true })
-  @OnEvent(EventKeys.ArticleUpdated, { async: true })
+  @OnEvent(GlobalEventKey.ArticleCreated, { async: true })
+  @OnEvent(GlobalEventKey.ArticleUpdated, { async: true })
   async handleArticleUpsert(article: ArticlePopulated) {
     if (article.status === ArticleStatus.Published) {
       await this.webhookService.dispatch(WebhookEvent.UpsertArticles, [article])
@@ -36,7 +36,7 @@ export class WebhookListener {
     }
   }
 
-  @OnEvent(EventKeys.ArticlesStatusChanged, { async: true })
+  @OnEvent(GlobalEventKey.ArticlesStatusChanged, { async: true })
   async handleArticlesStatusChange(payload: { articleIds: number[]; status: ArticleStatus }) {
     if (payload.status === ArticleStatus.Published) {
       const articles = await this.articleService.getListByIds(payload.articleIds)
@@ -46,12 +46,12 @@ export class WebhookListener {
     }
   }
 
-  @OnEvent(EventKeys.ArticleDeleted, { async: true })
+  @OnEvent(GlobalEventKey.ArticleDeleted, { async: true })
   async handleArticleDeleted(articleId: number) {
     await this.webhookService.dispatch(WebhookEvent.DeleteArticles, [articleId])
   }
 
-  @OnEvent(EventKeys.ArticlesDeleted, { async: true })
+  @OnEvent(GlobalEventKey.ArticlesDeleted, { async: true })
   async handleArticlesDeleted(articleIds: number[]) {
     await this.webhookService.dispatch(WebhookEvent.DeleteArticles, articleIds)
   }

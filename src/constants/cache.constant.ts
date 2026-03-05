@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-export enum CacheKeys {
+export enum GlobalCacheKey {
   TodayViewCount = 'today-view-count',
   PublicOptions = 'public-options',
   PublicAdminProfile = 'public-admin-profile',

@@ -9,7 +9,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
-import { CacheKeys } from '@app/constants/cache.constant'
+import { GlobalCacheKey } from '@app/constants/cache.constant'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import { Option, OptionPublic, Blocklist, DEFAULT_OPTIONS, OPTIONS_SINGLETON_QUERY } from './options.model'
@@ -27,7 +27,7 @@ export class OptionsService implements OnModuleInit {
     private readonly cacheService: CacheService
   ) {
     this.optionsCache = this.cacheService.manual({
-      key: CacheKeys.PublicOptions,
+      key: GlobalCacheKey.PublicOptions,
       promise: () => {
         return this.ensureOptions().then((option) => {
           return _omit(option, ['blocklist', '_id']) as OptionPublic

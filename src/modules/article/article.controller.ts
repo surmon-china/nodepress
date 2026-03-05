@@ -12,7 +12,7 @@ import { RequestContext, IRequestContext } from '@app/decorators/request-context
 import { OnlyIdentity, IdentityRole } from '@app/decorators/only-identity.decorator'
 import { SuccessResponse } from '@app/decorators/success-response.decorator'
 import { PermissionPipe } from '@app/pipes/permission.pipe'
-import { CacheKeys } from '@app/constants/cache.constant'
+import { GlobalCacheKey } from '@app/constants/cache.constant'
 import { SortMode } from '@app/constants/sort.constant'
 import { CounterService } from '@app/core/helper/helper.service.counter'
 import { CategoryService } from '@app/modules/category/category.service'
@@ -131,7 +131,7 @@ export class ArticleController {
       // increment article views
       this.articleSyncService.incrementStatistics(article.id, 'views')
       // increment global views
-      this.counterService.incrementGlobalCount(CacheKeys.TodayViewCount)
+      this.counterService.incrementGlobalCount(GlobalCacheKey.TodayViewCount)
     }
     return article
   }

@@ -9,7 +9,7 @@ import { OnEvent } from '@nestjs/event-emitter'
 import { QueryVisitor } from '@app/decorators/request-context.decorator'
 import { EmailService } from '@app/core/helper/helper.service.email'
 import { IPService } from '@app/core/helper/helper.service.ip'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { UserPublic } from '@app/modules/user/user.model'
 import { ArticleService } from '@app/modules/article/article.service'
 import { CommentService } from '@app/modules/comment/comment.service'
@@ -36,7 +36,7 @@ export class CommentListener {
     private readonly articleService: ArticleService
   ) {}
 
-  @OnEvent(EventKeys.CommentCreated, { async: true })
+  @OnEvent(GlobalEventKey.CommentCreated, { async: true })
   async handleCommentCreated(comment: CommentWith<UserPublic>) {
     const targetLink = getPermalink(comment.target_type, comment.target_id) + `#comment-${comment.id}`
     const targetTitle =
@@ -91,7 +91,7 @@ export class CommentListener {
     }
   }
 
-  @OnEvent(EventKeys.CommentCreateFailed, { async: true })
+  @OnEvent(GlobalEventKey.CommentCreateFailed, { async: true })
   async handleCommentCreateFailed(payload: { input: CreateCommentDto; visitor: QueryVisitor; error: any }) {
     const { input, visitor, error } = payload
 

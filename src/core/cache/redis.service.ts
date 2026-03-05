@@ -12,7 +12,7 @@
 import { createClient, RedisClientOptions } from '@redis/client'
 import { Injectable, OnModuleInit } from '@nestjs/common'
 import { EventEmitter2 } from '@nestjs/event-emitter'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { getMessageFromNormalError } from '@app/transformers/error.transformer'
 import { createRedisStore, RedisStore } from './redis.store'
 import { createLogger } from '@app/utils/logger'
@@ -44,7 +44,7 @@ export class RedisService implements OnModuleInit {
     this.redisClient.on('end', () => logger.info('client end!'))
     this.redisClient.on('error', (error) => {
       logger.failure('client error!', String(error))
-      this.eventEmitter.emit(EventKeys.RedisError, error)
+      this.eventEmitter.emit(GlobalEventKey.RedisError, error)
     })
   }
 

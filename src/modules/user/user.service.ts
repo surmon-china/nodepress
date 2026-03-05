@@ -10,7 +10,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { MongooseModel, WithId } from '@app/interfaces/mongoose.interface'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { InjectModel } from '@app/transformers/model.transformer'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { isDevEnv } from '@app/app.environment'
 import { createLogger } from '@app/utils/logger'
 import { CreateUserDto, UpdateUserDto } from './user.dto'
@@ -59,7 +59,7 @@ export class UserService {
 
   public async create(input: CreateUserDto): Promise<WithId<User>> {
     const created = (await this.userModel.create(input)).toObject()
-    this.eventEmitter.emit(EventKeys.UserCreated, created)
+    this.eventEmitter.emit(GlobalEventKey.UserCreated, created)
     return created
   }
 
@@ -75,7 +75,7 @@ export class UserService {
   public async delete(userId: number): Promise<WithId<User>> {
     const deleted = await this.userModel.findOneAndDelete({ id: userId }).lean().exec()
     if (!deleted) throw new NotFoundException(`User '${userId}' not found`)
-    this.eventEmitter.emit(EventKeys.UserDeleted, deleted)
+    this.eventEmitter.emit(GlobalEventKey.UserDeleted, deleted)
     return deleted
   }
 }

@@ -7,7 +7,7 @@
 import mongoose from 'mongoose'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { DB_CONNECTION_TOKEN } from '@app/constants/database.constant'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { createLogger } from '@app/utils/logger'
 import { isDevEnv } from '@app/app.environment'
 import * as APP_CONFIG from '@app/app.config'
@@ -49,13 +49,13 @@ export const databaseProvider = {
 
     mongoose.connection.on('disconnected', () => {
       logger.error(`disconnected! Attempting to reconnect after ${DATABASE_RECONNECT_INTERVAL / 1000}s`)
-      eventEmitter.emit(EventKeys.DatabaseError, 'MongoDB disconnected from server!')
+      eventEmitter.emit(GlobalEventKey.DatabaseError, 'MongoDB disconnected from server!')
       reconnectionTask = setTimeout(connect, DATABASE_RECONNECT_INTERVAL)
     })
 
     mongoose.connection.on('error', (error) => {
       logger.error('error!', error)
-      eventEmitter.emit(EventKeys.DatabaseError, error)
+      eventEmitter.emit(GlobalEventKey.DatabaseError, error)
       if (mongoose.connection.readyState !== 0) {
         mongoose.disconnect()
       }

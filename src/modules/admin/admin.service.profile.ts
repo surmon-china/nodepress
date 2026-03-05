@@ -8,7 +8,7 @@ import { Injectable, OnModuleInit, BadRequestException } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel, MongooseDoc } from '@app/interfaces/mongoose.interface'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
-import { CacheKeys } from '@app/constants/cache.constant'
+import { GlobalCacheKey } from '@app/constants/cache.constant'
 import { decodeBase64 } from '@app/transformers/codec.transformer'
 import { Admin, AdminProfile, DEFAULT_ADMIN_PROFILE, ADMIN_SINGLETON_QUERY } from './admin.model'
 import { UpdateProfileDto } from './admin.dto'
@@ -23,7 +23,7 @@ export class AdminProfileService implements OnModuleInit {
     @InjectModel(Admin) private readonly adminModel: MongooseModel<Admin>
   ) {
     this.cache = this.cacheService.manual({
-      key: CacheKeys.PublicAdminProfile,
+      key: GlobalCacheKey.PublicAdminProfile,
       promise: () => this.getRaw()
     })
   }

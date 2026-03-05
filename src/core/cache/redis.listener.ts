@@ -8,7 +8,7 @@ import _throttle from 'lodash/throttle'
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
 import { EmailService } from '@app/core/helper/helper.service.email'
-import { EventKeys } from '@app/constants/events.constant'
+import { GlobalEventKey } from '@app/constants/events.constant'
 import { APP_BIZ } from '@app/app.config'
 
 @Injectable()
@@ -24,7 +24,7 @@ export class RedisListener {
     })
   }, 30 * 1000)
 
-  @OnEvent(EventKeys.RedisError, { async: true })
+  @OnEvent(GlobalEventKey.RedisError, { async: true })
   async handleRedisError(error: any) {
     const message = error.errors?.map((e) => e.message) ?? error.message ?? error
     await this.sendAlarmMail(String(message))

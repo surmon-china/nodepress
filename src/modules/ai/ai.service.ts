@@ -10,7 +10,7 @@ import { OptionsService } from '@app/modules/options/options.service'
 import { ArticleService } from '@app/modules/article/article.service'
 import { Comment } from '@app/modules/comment/comment.model'
 import { CommentTargetType } from '@app/modules/comment/comment.constant'
-import { ArticleAiSummaryExtraKeys } from '@app/constants/extras.constant'
+import { ArticleAiSummaryExtraKey } from '@app/constants/extras.constant'
 import { getMessageFromAxiosError } from '@app/transformers/error.transformer'
 import { getExtraValue } from '@app/transformers/extra.transformer'
 import { createLogger } from '@app/utils/logger'
@@ -111,7 +111,7 @@ export class AiService {
       const article = await this.articleService.getDetail(comment.target_id, { lean: true })
       contextInfo = [
         `Article Title: ${article.title}`,
-        `Article Summary: ${getExtraValue(article.extras, ArticleAiSummaryExtraKeys.Content) || article.content.substring(0, 800)}`
+        `Article Summary: ${getExtraValue(article.extras, ArticleAiSummaryExtraKey.Content) || article.content.substring(0, 800)}`
       ].join('\n')
     }
 
