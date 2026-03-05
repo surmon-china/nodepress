@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ### 8.2.0 (2026-03-06)
 
-### Added
+#### Added
 
 - **Standard OAuth 2.0 Support**: Implemented a complete Access Token + Refresh Token flow for both Admin and Account modules.
 - **Refresh Token Rotation**: Added `AuthRefreshTokenService` utilizing Redis for secure, high-performance token management.
@@ -14,13 +14,13 @@ All notable changes to this project will be documented in this file.
   - Unified `AuthPayload` interface to ensure strict type safety across the auth lifecycle.
 - **Defensive Programming**: Added optional `refresh_token` support during logout to prevent client-side deadlocks.
 
-### Changed
+#### Changed
 
 - **API Response Structure**: Standardized token responses to use `access_token`, `refresh_token`, `expires_in`, and `token_type` (Bearer).
 - **Service Refactoring**: Decoupled authentication logic from Controllers into dedicated `AdminAuthService` and `UserAuthTokenService`.
 - **Route Renaming**: Renamed `/admin/check-token` to `/admin/verify-token` to better reflect its functional purpose.
 
-### Fixed
+#### Fixed
 
 - **Race Condition Prevention**: Optimized token refresh logic to minimize potential concurrency issues in single-admin scenarios.
 
