@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 8.3.0 (2026-03-06)
+
+#### Security
+
+- **Search Endpoints:** Fixed a Regular Expression Denial of Service (ReDoS) vulnerability in public search endpoints. User-supplied keywords are now strictly sanitized using `lodash/escapeRegExp` at the global DTO validation layer to prevent malicious backtracking in MongoDB's regex engine. ([#128](https://github.com/surmon-china/nodepress/issues/128))
+- **Defense-in-Depth:** Added strict length limits (`@MaxLength(50)`) and space-collapsing to search keywords to prevent memory/resource exhaustion and space-padding bypasses.
+
+#### Changed
+
+- **Database:** Removed legacy and inefficient MongoDB `$text` indices from the `Article` model. Search operations now exclusively use native `$regex` operators for consistent and predictable substring matching across all languages (including CJK).
+
 ### 8.2.0 (2026-03-06)
 
 #### Added
