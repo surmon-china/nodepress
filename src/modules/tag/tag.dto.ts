@@ -7,7 +7,7 @@
 import { IntersectionType, PickType, PartialType } from '@nestjs/mapped-types'
 import { IsInt, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { PaginateOptionDto } from '@app/dtos/paginate.dto'
-import { KeywordQueryDto } from '@app/dtos/querys.dto'
+import { KeywordQueryDto } from '@app/dtos/queries.dto'
 import { Tag } from './tag.model'
 
 export class CreateTagDto extends PickType(Tag, ['name', 'slug', 'description', 'extras'] as const) {}

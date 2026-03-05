@@ -7,7 +7,7 @@
 import { IntersectionType, PickType, PartialType } from '@nestjs/mapped-types'
 import { IsInt, IsArray, ArrayNotEmpty, ArrayUnique } from 'class-validator'
 import { PaginateOptionDto } from '@app/dtos/paginate.dto'
-import { KeywordQueryDto } from '@app/dtos/querys.dto'
+import { KeywordQueryDto } from '@app/dtos/queries.dto'
 import { Category } from './category.model'
 
 export class CreateCategoryDto extends PickType(Category, [

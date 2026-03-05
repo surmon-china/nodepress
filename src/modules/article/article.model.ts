@@ -64,18 +64,18 @@ export class ArticleStats {
 @index({ tags: 1, status: 1, created_at: -1 })
 // category article list page
 @index({ categories: 1, status: 1, created_at: -1 })
-// search list
-@index(
-  { title: 'text', content: 'text', summary: 'text' },
-  {
-    name: 'SearchIndex',
-    weights: {
-      title: 10,
-      summary: 12,
-      content: 8
-    }
-  }
-)
+// NOTE:
+// MongoDB text index was intentionally removed.
+//
+// MongoDB's full-text search relies on whitespace-based tokenization and does
+// not work well with languages like Chinese that do not use spaces between words.
+// In practice this caused most Chinese keyword searches to return no results.
+//
+// NodePress therefore uses sanitized `$regex` queries for article searching.
+// All user inputs are escaped before constructing RegExp to prevent ReDoS attacks.
+//
+// If advanced full-text search is required in the future, integrating a
+// dedicated search engine (e.g. Meilisearch / Elasticsearch) would be preferable.
 export class Article {
   @prop({ unique: true })
   id: number
@@ -90,17 +90,17 @@ export class Article {
 
   @IsString()
   @IsNotEmpty()
-  @prop({ type: String, required: true, validate: /\S+/, text: true })
+  @prop({ type: String, required: true, validate: /\S+/ })
   title: string
 
   @IsString()
   @IsNotEmpty()
-  @prop({ type: String, required: true, validate: /\S+/, text: true })
+  @prop({ type: String, required: true, validate: /\S+/ })
   content: string
 
   @IsString()
   @IsOptional()
-  @prop({ type: String, default: '', text: true })
+  @prop({ type: String, default: '' })
   summary: string
 
   @IsString({ each: true })

@@ -72,8 +72,11 @@ export class ArticleController {
 
     // search
     if (filters.keyword) {
-      const keywordRegExp = new RegExp(filters.keyword, 'i')
-      queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { summary: keywordRegExp }]
+      queryFilter.$or = [
+        { title: { $regex: filters.keyword, $options: 'i' } },
+        { summary: { $regex: filters.keyword, $options: 'i' } },
+        { content: { $regex: filters.keyword, $options: 'i' } }
+      ]
     }
 
     // date

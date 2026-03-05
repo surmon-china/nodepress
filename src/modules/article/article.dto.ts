@@ -10,7 +10,7 @@ import { IsOptional, IsDefined, ArrayNotEmpty, ArrayUnique } from 'class-validat
 import { IntersectionType, PartialType, PickType } from '@nestjs/mapped-types'
 import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
 import { unknownToNumber, unknownToBoolean } from '@app/transformers/value.transformer'
-import { DateQueryDto, KeywordQueryDto } from '@app/dtos/querys.dto'
+import { DateQueryDto, KeywordQueryDto } from '@app/dtos/queries.dto'
 import { PaginateOptionWithHotSortDto } from '@app/dtos/paginate.dto'
 import { ArticleStatus, ArticleOrigin, ArticleLanguage } from './article.constant'
 import { Article } from './article.model'

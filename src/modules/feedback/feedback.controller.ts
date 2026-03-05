@@ -59,12 +59,11 @@ export class FeedbackController {
     }
     // search
     if (filters.keyword) {
-      const keywordRegExp = new RegExp(filters.keyword, 'i')
       queryFilter.$or = [
-        { content: keywordRegExp },
-        { author_name: keywordRegExp },
-        { author_email: keywordRegExp },
-        { remark: keywordRegExp }
+        { content: { $regex: filters.keyword, $options: 'i' } },
+        { author_name: { $regex: filters.keyword, $options: 'i' } },
+        { author_email: { $regex: filters.keyword, $options: 'i' } },
+        { remark: { $regex: filters.keyword, $options: 'i' } }
       ]
     }
 

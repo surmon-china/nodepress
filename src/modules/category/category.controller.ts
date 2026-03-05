@@ -31,8 +31,11 @@ export class CategoryController {
 
     // search
     if (filters.keyword) {
-      const keywordRegExp = new RegExp(filters.keyword, 'i')
-      queryFilter.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
+      queryFilter.$or = [
+        { name: { $regex: filters.keyword, $options: 'i' } },
+        { slug: { $regex: filters.keyword, $options: 'i' } },
+        { description: { $regex: filters.keyword, $options: 'i' } }
+      ]
     }
 
     // paginate

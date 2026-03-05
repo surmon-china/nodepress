@@ -10,7 +10,7 @@ import { IntersectionType, PartialType, PickType } from '@nestjs/mapped-types'
 import { WithGuestPermission } from '@app/decorators/guest-permission.decorator'
 import { unknownToNumber } from '@app/transformers/value.transformer'
 import { PaginateOptionDto } from '@app/dtos/paginate.dto'
-import { KeywordQueryDto } from '@app/dtos/querys.dto'
+import { KeywordQueryDto } from '@app/dtos/queries.dto'
 import { AnnouncementStatus } from './announcement.constant'
 import { Announcement } from './announcement.model'
 

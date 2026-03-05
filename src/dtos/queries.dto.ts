@@ -1,10 +1,12 @@
 /**
  * @file General query params DTO
- * @module dto/querys
+ * @module dto/queries
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IsOptional, IsNotEmpty, IsDateString, IsString } from 'class-validator'
+import _escapeRegExp from 'lodash/escapeRegExp'
+import { Transform } from 'class-transformer'
+import { IsDateString, IsString, IsOptional, IsNotEmpty, MaxLength } from 'class-validator'
 import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 
 // https://www.progress.com/blogs/understanding-iso-8601-date-and-time-format
@@ -16,9 +18,11 @@ export class DateQueryDto {
 }
 
 export class KeywordQueryDto {
-  @IsString()
+  @MaxLength(50)
   @IsNotEmpty()
+  @IsString()
   @IsOptional()
-  @NormalizeString({ trim: true })
+  @NormalizeString({ trim: true, collapseSpaces: true })
+  @Transform(({ value }) => (typeof value === 'string' ? _escapeRegExp(value) : value))
   keyword?: string
 }

@@ -27,8 +27,9 @@ export class AnnouncementController {
 
     // search
     if (filters.keyword) {
-      queryFilter.content = new RegExp(filters.keyword, 'i')
+      queryFilter.content = { $regex: filters.keyword, $options: 'i' }
     }
+
     // status
     if (!_isUndefined(filters.status)) {
       queryFilter.status = filters.status

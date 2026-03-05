@@ -10,7 +10,7 @@ import { IsOptional, IsNotEmpty, MinLength, MaxLength, ArrayNotEmpty, ArrayUniqu
 import { PartialType, IntersectionType } from '@nestjs/mapped-types'
 import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 import { unknownToNumber, unknownToBoolean } from '@app/transformers/value.transformer'
-import { KeywordQueryDto } from '@app/dtos/querys.dto'
+import { KeywordQueryDto } from '@app/dtos/queries.dto'
 import { OptionalAuthorDto } from '@app/dtos/author.dto'
 import { PaginateOptionDto } from '@app/dtos/paginate.dto'
 import { GeneralAuthorType } from '@app/constants/author.constant'
