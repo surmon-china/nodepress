@@ -131,7 +131,7 @@ export class ArticleController {
       // increment article views
       this.articleSyncService.incrementStatistics(article.id, 'views')
       // increment global views
-      this.counterService.incrementGlobalCount(GlobalCacheKey.TodayViewCount)
+      this.counterService.incrementGlobalCount(GlobalCacheKey.DailyArticleViewCount)
     }
     return article
   }

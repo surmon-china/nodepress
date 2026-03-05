@@ -5,7 +5,7 @@
  */
 
 export enum GlobalCacheKey {
-  TodayViewCount = 'today-view-count',
+  DailyArticleViewCount = 'daily-article-view-count',
   PublicOptions = 'public-options',
   PublicAdminProfile = 'public-admin-profile',
   PublicAllArticles = 'public-all-articles',

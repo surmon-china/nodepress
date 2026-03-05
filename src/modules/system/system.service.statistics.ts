@@ -55,7 +55,7 @@ export class StatisticsService {
       const createdAt = { $gte: oneDayAgo, $lt: now }
       const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] =
         await Promise.all([
-          this.counterService.getGlobalCount(GlobalCacheKey.TodayViewCount),
+          this.counterService.getGlobalCount(GlobalCacheKey.DailyArticleViewCount),
           this.commentStatsService.countDocuments({ created_at: createdAt }),
           this.voteService.countDocuments({
             created_at: createdAt,
@@ -87,7 +87,7 @@ export class StatisticsService {
     } catch (error) {
       logger.failure('DailyStatisticsJob failed!', error)
     } finally {
-      this.counterService.resetGlobalCount(GlobalCacheKey.TodayViewCount).catch((error) => {
+      this.counterService.resetGlobalCount(GlobalCacheKey.DailyArticleViewCount).catch((error) => {
         logger.warn('reset TODAY_VIEWS failed!', error)
       })
     }
@@ -109,7 +109,7 @@ export class StatisticsService {
         statistics.totalViews = value.totalViews
         statistics.totalLikes = value.totalLikes
       }),
-      this.counterService.getGlobalCount(GlobalCacheKey.TodayViewCount).then((value) => {
+      this.counterService.getGlobalCount(GlobalCacheKey.DailyArticleViewCount).then((value) => {
         statistics.todayViews = value
       }),
       this.feedbackService.getAverageEmotion().then((value) => {
