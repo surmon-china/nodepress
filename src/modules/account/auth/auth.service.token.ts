@@ -27,8 +27,8 @@ export class UserAuthTokenService {
     const accessToken = this.accessTokenService.signToken(authPayload, { expiresIn })
 
     // refresh token
-    const refreshExpiresIn = APP_AUTH.refreshTokenExpiresInForUser
     const refreshToken = this.refreshTokenService.generateToken()
+    const refreshExpiresIn = APP_AUTH.refreshTokenExpiresInForUser
     await this.refreshTokenService.storeToken(refreshToken, authPayload, refreshExpiresIn)
 
     return {
