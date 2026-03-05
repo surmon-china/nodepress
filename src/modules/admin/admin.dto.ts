@@ -4,7 +4,7 @@
  * @author Surmon <https://github.com/surmon-china>
  */
 
-import { IsString, IsBase64, IsOptional, IsNotEmpty } from 'class-validator'
+import { IsString, IsBase64, IsHexadecimal, IsOptional, IsNotEmpty } from 'class-validator'
 import { NormalizeString } from '@app/decorators/normalize-string.decorator'
 
 export class AuthLoginDto {
@@ -15,12 +15,14 @@ export class AuthLoginDto {
 }
 
 export class AuthLogoutDto {
+  @IsHexadecimal()
   @IsString()
   @IsOptional()
   refresh_token?: string
 }
 
 export class AuthRefreshTokenDto {
+  @IsHexadecimal()
   @IsString()
   @IsNotEmpty()
   refresh_token: string
