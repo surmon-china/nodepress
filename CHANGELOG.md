@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 8.4.0 (2026-03-06)
+
+#### Refactored
+
+- **Architecture / Config:** Migrated the entire application configuration system from command-line arguments (CLI) to environment variables (`process.env`). This aligns NodePress with modern cloud-native deployment standards (Twelve-Factor App methodology).
+- **Environment Utility:** Replaced the `parseArgv` utility with a robust `createEnvGetter` utility. It features strict type-safe transformations, smart environment fallbacks (`devFallback`), and namespace isolation (all application variables are now strictly prefixed with `NP_`, e.g., `NP_ADMIN_EMAIL`).
+- **DX (Developer Experience):** Retained the non-blocking validation mechanism for the configuration flow. Missing required environment variables will explicitly log descriptive errors/warnings to the output stream, guiding developers on what is critically missing without forcefully crashing the application during local startup.
+
 ### 8.3.0 (2026-03-06)
 
 #### Security
