@@ -209,6 +209,13 @@
                                 <a href="#logout" >logout</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Async</span>
+                                <a href="#refreshToken" >refreshToken</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
                                 <a href="#resolveOAuthIntent" >resolveOAuthIntent</a>
@@ -259,8 +266,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="43"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:43</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:44</a></div>
                         </td>
                     </tr>
 
@@ -339,8 +346,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="53"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:53</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="54"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:54</a></div>
                         </td>
                     </tr>
 
@@ -417,8 +424,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="63"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:63</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:64</a></div>
                         </td>
                     </tr>
 
@@ -464,8 +471,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="70"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:70</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:71</a></div>
                         </td>
                     </tr>
 
@@ -555,8 +562,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="101"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:101</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:102</a></div>
                         </td>
                     </tr>
 
@@ -633,8 +640,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="111"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:111</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:112</a></div>
                         </td>
                     </tr>
 
@@ -680,8 +687,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="118"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:118</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="119"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:119</a></div>
                         </td>
                     </tr>
 
@@ -756,7 +763,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>logout(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>logout(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, : <a href="../classes/AuthLogoutDto.html" target="_self">AuthLogoutDto</a>)</code>
                 </td>
             </tr>
 
@@ -770,8 +777,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="161"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:161</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="162"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:162</a></div>
                         </td>
                     </tr>
 
@@ -802,11 +809,100 @@
 
 
                                         </tr>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../classes/AuthLogoutDto.html" target="_self" >AuthLogoutDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         <div class="io-description">
                             <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="refreshToken"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Async</span>
+                        <span ><b>refreshToken</b></span>
+                        <a href="#refreshToken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>refreshToken(: <a href="../classes/AuthRefreshTokenDto.html" target="_self">AuthRefreshTokenDto</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;refresh-token&#x27;)<br />@Throttle({default: undefined})<br />@SuccessResponse(&#x27;Refresh token succeeded&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="173"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:173</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../classes/AuthRefreshTokenDto.html" target="_self" >AuthRefreshTokenDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthTokenResult.html" target="_self" >Promise&lt;AuthTokenResult&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -839,8 +935,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="136"
-                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:136</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="137"
+                                    class="link-to-prism">src/modules/account/auth/auth.controller.ts:137</a></div>
                         </td>
                     </tr>
 
@@ -909,21 +1005,22 @@
  */
 
 import type { FastifyReply } from &#x27;fastify&#x27;
-import { Throttle, minutes } from &#x27;@nestjs/throttler&#x27;
-import { Controller, Get, Post, Query, Response, BadRequestException } from &#x27;@nestjs/common&#x27;
+import { Throttle, hours, minutes } from &#x27;@nestjs/throttler&#x27;
+import { Controller, Get, Post, Query, Body, Response, BadRequestException } from &#x27;@nestjs/common&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
+import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { ResponseStatus } from &#x27;@app/interfaces/response.interface&#x27;
-import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
+import { AuthTokenResult } from &#x27;@app/core/auth/auth.interface&#x27;
 import { UserIdentity } from &#x27;@app/modules/user/user.model&#x27;
+import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { AccountIdentityService } from &#x27;../account.service.identity&#x27;
 import { UserAuthStateService, AuthIntent, AuthStatePayload } from &#x27;./auth.service.state&#x27;
 import { UserAuthTokenService } from &#x27;./auth.service.token&#x27;
 import { GithubAuthService } from &#x27;./auth.service.github&#x27;
 import { GoogleAuthService } from &#x27;./auth.service.google&#x27;
-import { OAuthCallbackDto } from &#x27;./auth.dto&#x27;
-import { sendWindowPostMessage, OAUTH_CALLBACK_SCRIPT } from &#x27;./auth.helper&#x27;
+import { OAuthCallbackDto, AuthLogoutDto, AuthRefreshTokenDto } from &#x27;./auth.dto&#x27;
+import { sendWindowPostMessage, PostMessagePayload, OAUTH_CALLBACK_SCRIPT } from &#x27;./auth.helper&#x27;
 
 const GITHUB_CALLBACK_PATH &#x3D; &#x27;/account/auth/github/callback&#x27;
 const GOOGLE_CALLBACK_PATH &#x3D; &#x27;/account/auth/google/callback&#x27;
@@ -957,7 +1054,7 @@ export class AccountAuthController {
   async githubLink(@RequestContext() { identity }: IRequestContext) {
     const payload &#x3D; { intent: AuthIntent.Link, uid: identity.payload!.uid! }
     const state &#x3D; await this.authStateService.generateCallbackState(payload)
-    const authorizeUrl &#x3D; await this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
+    const authorizeUrl &#x3D; this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
     return { url: authorizeUrl }
   }
 
@@ -966,7 +1063,7 @@ export class AccountAuthController {
   @SuccessResponse(&#x27;Get GitHub login URL succeeded&#x27;)
   async githubLogin() {
     const state &#x3D; await this.authStateService.generateCallbackState({ intent: AuthIntent.Login })
-    const authorizeUrl &#x3D; await this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
+    const authorizeUrl &#x3D; this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
     return { url: authorizeUrl }
   }
 
@@ -1005,7 +1102,7 @@ export class AccountAuthController {
   async googleLink(@RequestContext() { identity }: IRequestContext) {
     const payload &#x3D; { intent: AuthIntent.Link, uid: identity.payload!.uid! }
     const state &#x3D; await this.authStateService.generateCallbackState(payload)
-    const authorizeUrl &#x3D; await this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
+    const authorizeUrl &#x3D; this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
     return { url: authorizeUrl }
   }
 
@@ -1014,7 +1111,7 @@ export class AccountAuthController {
   @SuccessResponse(&#x27;Get Google login URL succeeded&#x27;)
   async googleLogin() {
     const state &#x3D; await this.authStateService.generateCallbackState({ intent: AuthIntent.Login })
-    const authorizeUrl &#x3D; await this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
+    const authorizeUrl &#x3D; this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
     return { url: authorizeUrl }
   }
 
@@ -1044,27 +1141,37 @@ export class AccountAuthController {
         // Upsert local user record based on thrid-party profile information
         const user &#x3D; await this.accountIdentityService.upsertUser(userIdentity)
         // Generate internal JWT for the authenticated user
-        const token &#x3D; this.authTokenService.createToken(user)
-        return { type: AuthIntent.Login, token }
+        const authToken &#x3D; await this.authTokenService.createToken(user.id)
+        return { type: AuthIntent.Login, auth: authToken } satisfies Partial&lt;PostMessagePayload&gt;
       }
       // OAuth link
       case AuthIntent.Link: {
         await this.accountIdentityService.addIdentity(statePayload.uid, userIdentity)
-        return { type: AuthIntent.Link }
+        return { type: AuthIntent.Link } satisfies Partial&lt;PostMessagePayload&gt;
       }
       default:
         throw new BadRequestException(&#x27;Invalid OAuth intent&#x27;)
     }
   }
 
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Logout &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; Auth &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
 
   @Post(&#x27;logout&#x27;)
   @OnlyIdentity(IdentityRole.User)
   @SuccessResponse(&#x27;Logout succeeded&#x27;)
-  async logout(@RequestContext() { identity }: IRequestContext): Promise&lt;string&gt; {
-    await this.authTokenService.invalidateToken(identity.token!)
+  async logout(
+    @RequestContext() { identity }: IRequestContext,
+    @Body() { refresh_token }: AuthLogoutDto
+  ): Promise&lt;string&gt; {
+    await this.authTokenService.revokeTokens(identity.token!, refresh_token)
     return &#x27;ok&#x27;
+  }
+
+  @Post(&#x27;refresh-token&#x27;)
+  @Throttle({ default: { ttl: hours(1), limit: 10 } })
+  @SuccessResponse(&#x27;Refresh token succeeded&#x27;)
+  async refreshToken(@Body() { refresh_token }: AuthRefreshTokenDto): Promise&lt;AuthTokenResult&gt; {
+    return await this.authTokenService.refreshToken(refresh_token)
   }
 }
 </code></pre>

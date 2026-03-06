@@ -24,103 +24,103 @@
 <title>cluster_AccountModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-195 1400,-195 1400,-70 8,-70"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_AccountModule_imports</title>
-<polygon fill="none" stroke="black" points="1290,-78 1290,-130 1392,-130 1392,-78 1290,-78"/>
-</g>
 <g id="clust6" class="cluster">
 <title>cluster_AccountModule_providers</title>
-<polygon fill="none" stroke="black" points="16,-78 16,-130 1282,-130 1282,-78 16,-78"/>
+<polygon fill="none" stroke="black" points="126,-78 126,-130 1392,-130 1392,-78 126,-78"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_AccountModule_imports</title>
+<polygon fill="none" stroke="black" points="16,-78 16,-130 118,-130 118,-78 16,-78"/>
 </g>
 <!-- UserModule -->
 <g id="node1" class="node">
 <title>UserModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="1383.98,-122 1380.98,-126 1359.98,-126 1356.98,-122 1298.02,-122 1298.02,-86 1383.98,-86 1383.98,-122"/>
-<text text-anchor="middle" x="1341" y="-99.8" font-family="Times,serif" font-size="14.00">UserModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="109.98,-122 106.98,-126 85.98,-126 82.98,-122 24.02,-122 24.02,-86 109.98,-86 109.98,-122"/>
+<text text-anchor="middle" x="67" y="-99.8" font-family="Times,serif" font-size="14.00">UserModule</text>
 </g>
 <!-- AccountModule -->
 <g id="node2" class="node">
 <title>AccountModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="791.48,-187 788.48,-191 767.48,-191 764.48,-187 684.52,-187 684.52,-151 791.48,-151 791.48,-187"/>
-<text text-anchor="middle" x="738" y="-164.8" font-family="Times,serif" font-size="14.00">AccountModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="709.48,-187 706.48,-191 685.48,-191 682.48,-187 602.52,-187 602.52,-151 709.48,-151 709.48,-187"/>
+<text text-anchor="middle" x="656" y="-164.8" font-family="Times,serif" font-size="14.00">AccountModule</text>
 </g>
 <!-- UserModule&#45;&gt;AccountModule -->
 <g id="edge1" class="edge">
 <title>UserModule&#45;&gt;AccountModule</title>
-<path fill="none" stroke="black" d="M1341,-122.29C1341,-144.21 1341,-178 1341,-178 1341,-178 801.51,-178 801.51,-178"/>
-<polygon fill="black" stroke="black" points="801.51,-174.5 791.51,-178 801.51,-181.5 801.51,-174.5"/>
+<path fill="none" stroke="black" d="M67,-122.29C67,-144.21 67,-178 67,-178 67,-178 592.43,-178 592.43,-178"/>
+<polygon fill="black" stroke="black" points="592.43,-181.5 602.43,-178 592.43,-174.5 592.43,-181.5"/>
 </g>
 <!-- AccountActivityService -->
 <g id="node3" class="node">
 <title>AccountActivityService</title>
-<ellipse fill="#fdb462" stroke="black" cx="1170" cy="-104" rx="104.21" ry="18"/>
-<text text-anchor="middle" x="1170" y="-99.8" font-family="Times,serif" font-size="14.00">AccountActivityService</text>
+<ellipse fill="#fdb462" stroke="black" cx="1280" cy="-104" rx="104.21" ry="18"/>
+<text text-anchor="middle" x="1280" y="-99.8" font-family="Times,serif" font-size="14.00">AccountActivityService</text>
 </g>
 <!-- AccountActivityService&#45;&gt;AccountModule -->
 <g id="edge2" class="edge">
 <title>AccountActivityService&#45;&gt;AccountModule</title>
-<path fill="none" stroke="black" d="M1170,-122.11C1170,-141.34 1170,-169 1170,-169 1170,-169 801.84,-169 801.84,-169"/>
-<polygon fill="black" stroke="black" points="801.84,-165.5 791.84,-169 801.84,-172.5 801.84,-165.5"/>
+<path fill="none" stroke="black" d="M1280,-122.29C1280,-144.21 1280,-178 1280,-178 1280,-178 719.74,-178 719.74,-178"/>
+<polygon fill="black" stroke="black" points="719.74,-174.5 709.74,-178 719.74,-181.5 719.74,-174.5"/>
 </g>
 <!-- AccountIdentityService -->
 <g id="node4" class="node">
 <title>AccountIdentityService</title>
-<ellipse fill="#fdb462" stroke="black" cx="945" cy="-104" rx="102.99" ry="18"/>
-<text text-anchor="middle" x="945" y="-99.8" font-family="Times,serif" font-size="14.00">AccountIdentityService</text>
+<ellipse fill="#fdb462" stroke="black" cx="1055" cy="-104" rx="102.99" ry="18"/>
+<text text-anchor="middle" x="1055" y="-99.8" font-family="Times,serif" font-size="14.00">AccountIdentityService</text>
 </g>
 <!-- AccountIdentityService&#45;&gt;AccountModule -->
 <g id="edge3" class="edge">
 <title>AccountIdentityService&#45;&gt;AccountModule</title>
-<path fill="none" stroke="black" d="M945,-122.03C945,-138.4 945,-160 945,-160 945,-160 801.58,-160 801.58,-160"/>
-<polygon fill="black" stroke="black" points="801.58,-156.5 791.58,-160 801.58,-163.5 801.58,-156.5"/>
+<path fill="none" stroke="black" d="M1055,-122.11C1055,-141.34 1055,-169 1055,-169 1055,-169 719.81,-169 719.81,-169"/>
+<polygon fill="black" stroke="black" points="719.81,-165.5 709.81,-169 719.81,-172.5 719.81,-165.5"/>
 </g>
 <!-- GithubAuthService -->
 <g id="node5" class="node">
 <title>GithubAuthService</title>
-<ellipse fill="#fdb462" stroke="black" cx="738" cy="-104" rx="86.26" ry="18"/>
-<text text-anchor="middle" x="738" y="-99.8" font-family="Times,serif" font-size="14.00">GithubAuthService</text>
+<ellipse fill="#fdb462" stroke="black" cx="848" cy="-104" rx="86.26" ry="18"/>
+<text text-anchor="middle" x="848" y="-99.8" font-family="Times,serif" font-size="14.00">GithubAuthService</text>
 </g>
 <!-- GithubAuthService&#45;&gt;AccountModule -->
 <g id="edge4" class="edge">
 <title>GithubAuthService&#45;&gt;AccountModule</title>
-<path fill="none" stroke="black" d="M738,-122.11C738,-122.11 738,-140.99 738,-140.99"/>
-<polygon fill="black" stroke="black" points="734.5,-140.99 738,-150.99 741.5,-140.99 734.5,-140.99"/>
+<path fill="none" stroke="black" d="M848,-122.03C848,-138.4 848,-160 848,-160 848,-160 719.48,-160 719.48,-160"/>
+<polygon fill="black" stroke="black" points="719.48,-156.5 709.48,-160 719.48,-163.5 719.48,-156.5"/>
 </g>
 <!-- GoogleAuthService -->
 <g id="node6" class="node">
 <title>GoogleAuthService</title>
-<ellipse fill="#fdb462" stroke="black" cx="546" cy="-104" rx="87.96" ry="18"/>
-<text text-anchor="middle" x="546" y="-99.8" font-family="Times,serif" font-size="14.00">GoogleAuthService</text>
+<ellipse fill="#fdb462" stroke="black" cx="656" cy="-104" rx="87.96" ry="18"/>
+<text text-anchor="middle" x="656" y="-99.8" font-family="Times,serif" font-size="14.00">GoogleAuthService</text>
 </g>
 <!-- GoogleAuthService&#45;&gt;AccountModule -->
 <g id="edge5" class="edge">
 <title>GoogleAuthService&#45;&gt;AccountModule</title>
-<path fill="none" stroke="black" d="M546,-122.03C546,-138.4 546,-160 546,-160 546,-160 674.52,-160 674.52,-160"/>
-<polygon fill="black" stroke="black" points="674.52,-163.5 684.52,-160 674.52,-156.5 674.52,-163.5"/>
+<path fill="none" stroke="black" d="M656,-122.11C656,-122.11 656,-140.99 656,-140.99"/>
+<polygon fill="black" stroke="black" points="652.5,-140.99 656,-150.99 659.5,-140.99 652.5,-140.99"/>
 </g>
 <!-- UserAuthStateService -->
 <g id="node7" class="node">
 <title>UserAuthStateService</title>
-<ellipse fill="#fdb462" stroke="black" cx="343" cy="-104" rx="96.68" ry="18"/>
-<text text-anchor="middle" x="343" y="-99.8" font-family="Times,serif" font-size="14.00">UserAuthStateService</text>
+<ellipse fill="#fdb462" stroke="black" cx="453" cy="-104" rx="96.68" ry="18"/>
+<text text-anchor="middle" x="453" y="-99.8" font-family="Times,serif" font-size="14.00">UserAuthStateService</text>
 </g>
 <!-- UserAuthStateService&#45;&gt;AccountModule -->
 <g id="edge6" class="edge">
 <title>UserAuthStateService&#45;&gt;AccountModule</title>
-<path fill="none" stroke="black" d="M343,-122.11C343,-141.34 343,-169 343,-169 343,-169 674.32,-169 674.32,-169"/>
-<polygon fill="black" stroke="black" points="674.32,-172.5 684.32,-169 674.32,-165.5 674.32,-172.5"/>
+<path fill="none" stroke="black" d="M453,-122.03C453,-138.4 453,-160 453,-160 453,-160 592.4,-160 592.4,-160"/>
+<polygon fill="black" stroke="black" points="592.4,-163.5 602.4,-160 592.4,-156.5 592.4,-163.5"/>
 </g>
 <!-- UserAuthTokenService -->
 <g id="node8" class="node">
 <title>UserAuthTokenService</title>
-<ellipse fill="#fdb462" stroke="black" cx="126" cy="-104" rx="102.41" ry="18"/>
-<text text-anchor="middle" x="126" y="-99.8" font-family="Times,serif" font-size="14.00">UserAuthTokenService</text>
+<ellipse fill="#fdb462" stroke="black" cx="236" cy="-104" rx="102.41" ry="18"/>
+<text text-anchor="middle" x="236" y="-99.8" font-family="Times,serif" font-size="14.00">UserAuthTokenService</text>
 </g>
 <!-- UserAuthTokenService&#45;&gt;AccountModule -->
 <g id="edge7" class="edge">
 <title>UserAuthTokenService&#45;&gt;AccountModule</title>
-<path fill="none" stroke="black" d="M126,-122.29C126,-144.21 126,-178 126,-178 126,-178 674.49,-178 674.49,-178"/>
-<polygon fill="black" stroke="black" points="674.49,-181.5 684.49,-178 674.49,-174.5 674.49,-181.5"/>
+<path fill="none" stroke="black" d="M236,-122.11C236,-141.34 236,-169 236,-169 236,-169 592.38,-169 592.38,-169"/>
+<polygon fill="black" stroke="black" points="592.38,-172.5 602.38,-169 592.38,-165.5 592.38,-172.5"/>
 </g>
 </g>
 </svg>

@@ -289,7 +289,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.CommentCreated, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.CommentCreated, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -366,7 +366,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.CommentCreateFailed, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.CommentCreateFailed, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -430,7 +430,7 @@ import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { UserPublic } from &#x27;@app/modules/user/user.model&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
@@ -457,7 +457,7 @@ export class CommentListener {
     private readonly articleService: ArticleService
   ) {}
 
-  @OnEvent(EventKeys.CommentCreated, { async: true })
+  @OnEvent(GlobalEventKey.CommentCreated, { async: true })
   async handleCommentCreated(comment: CommentWith&lt;UserPublic&gt;) {
     const targetLink &#x3D; getPermalink(comment.target_type, comment.target_id) + &#x60;#comment-${comment.id}&#x60;
     const targetTitle &#x3D;
@@ -512,7 +512,7 @@ export class CommentListener {
     }
   }
 
-  @OnEvent(EventKeys.CommentCreateFailed, { async: true })
+  @OnEvent(GlobalEventKey.CommentCreateFailed, { async: true })
   async handleCommentCreateFailed(payload: { input: CreateCommentDto; visitor: QueryVisitor; error: any }) {
     const { input, visitor, error } &#x3D; payload
 

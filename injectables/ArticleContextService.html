@@ -155,7 +155,6 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#getNearArticles" >getNearArticles</a>
                             </li>
                             <li>
@@ -236,7 +235,6 @@
                     <a name="getNearArticles"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
                         <span ><b>getNearArticles</b></span>
                         <a href="#getNearArticles"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -425,7 +423,7 @@ export class ArticleContextService {
   constructor(@InjectModel(Article) private readonly articleModel: MongooseModel&lt;Article&gt;) {}
 
   // Get near articles
-  public async getNearArticles(
+  public getNearArticles(
     articleId: number,
     type: &#x27;later&#x27; | &#x27;early&#x27;,
     count: number

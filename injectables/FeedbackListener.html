@@ -246,7 +246,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.FeedbackCreated)<br /></code>
+                    <code>@OnEvent(GlobalEventKey.FeedbackCreated)<br /></code>
                 </td>
             </tr>
 
@@ -308,7 +308,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { getLocationText, getUserAgentText } from &#x27;@app/transformers/email.transformer&#x27;
 import { linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
 import { Feedback } from &#x27;./feedback.model&#x27;
@@ -318,7 +318,7 @@ import { APP_BIZ } from &#x27;@app/app.config&#x27;
 export class FeedbackListener {
   constructor(private readonly emailService: EmailService) {}
 
-  @OnEvent(EventKeys.FeedbackCreated)
+  @OnEvent(GlobalEventKey.FeedbackCreated)
   handleFeedbackCreated(feedback: Feedback) {
     const subject &#x3D; &#x27;You have a new feedback&#x27;
 

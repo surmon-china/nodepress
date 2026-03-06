@@ -552,7 +552,7 @@ export class GithubAuthService {
   constructor(private readonly httpService: HttpService) {}
 
   /** Generate GitHub authorization URL with a unique state */
-  public async getAuthorizeURL(callbackPath: string, state: string) {
+  public getAuthorizeURL(callbackPath: string, state: string) {
     const redirectUri &#x3D; isProdEnv
       ? &#x60;${APP_BIZ.URL}${callbackPath}&#x60;
       : &#x60;http://localhost:${APP_BIZ.PORT}${callbackPath}&#x60;
@@ -568,7 +568,7 @@ export class GithubAuthService {
   }
 
   /** Exchange the temporary authorization code for an access token */
-  public async getAccessTokenByCode(code: string) {
+  public getAccessTokenByCode(code: string) {
     const api &#x3D; &#x27;https://github.com/login/oauth/access_token&#x27;
     const data &#x3D; {
       client_id: GITHUB_OAUTH.clientId,

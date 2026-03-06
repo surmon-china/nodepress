@@ -167,7 +167,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IntersectionType, PickType, PartialType } from &#x27;@nestjs/mapped-types&#x27;
 import { IsInt, IsArray, ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
 import { PaginateOptionDto } from &#x27;@app/dtos/paginate.dto&#x27;
-import { KeywordQueryDto } from &#x27;@app/dtos/querys.dto&#x27;
+import { KeywordQueryDto } from &#x27;@app/dtos/queries.dto&#x27;
 import { Tag } from &#x27;./tag.model&#x27;
 
 export class CreateTagDto extends PickType(Tag, [&#x27;name&#x27;, &#x27;slug&#x27;, &#x27;description&#x27;, &#x27;extras&#x27;] as const) {}

@@ -232,7 +232,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsBase64, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsBase64, IsHexadecimal, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
 import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
 
 export class AuthLoginDto {
@@ -240,6 +240,20 @@ export class AuthLoginDto {
   @IsString()
   @IsNotEmpty()
   password: string
+}
+
+export class AuthLogoutDto {
+  @IsHexadecimal()
+  @IsString()
+  @IsOptional()
+  refresh_token?: string
+}
+
+export class AuthRefreshTokenDto {
+  @IsHexadecimal()
+  @IsString()
+  @IsNotEmpty()
+  refresh_token: string
 }
 
 export class UpdateProfileDto {

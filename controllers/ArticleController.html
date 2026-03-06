@@ -264,8 +264,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="162"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:162</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:165</a></div>
                         </td>
                     </tr>
 
@@ -342,8 +342,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="176"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:176</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:179</a></div>
                         </td>
                     </tr>
 
@@ -420,8 +420,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="190"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:190</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="193"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:193</a></div>
                         </td>
                     </tr>
 
@@ -497,8 +497,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="104"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:104</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:107</a></div>
                         </td>
                     </tr>
 
@@ -585,8 +585,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="124"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:124</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="127"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:127</a></div>
                         </td>
                     </tr>
 
@@ -674,8 +674,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="141"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:141</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:144</a></div>
                         </td>
                     </tr>
 
@@ -840,8 +840,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="115"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:115</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:118</a></div>
                         </td>
                     </tr>
 
@@ -928,8 +928,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="169"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:169</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="172"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:172</a></div>
                         </td>
                     </tr>
 
@@ -1018,8 +1018,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="183"
-                                    class="link-to-prism">src/modules/article/article.controller.ts:183</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="186"
+                                    class="link-to-prism">src/modules/article/article.controller.ts:186</a></div>
                         </td>
                     </tr>
 
@@ -1083,7 +1083,7 @@ import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-co
 import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
+import { GlobalCacheKey } from &#x27;@app/constants/cache.constant&#x27;
 import { SortMode } from &#x27;@app/constants/sort.constant&#x27;
 import { CounterService } from &#x27;@app/core/helper/helper.service.counter&#x27;
 import { CategoryService } from &#x27;@app/modules/category/category.service&#x27;
@@ -1143,8 +1143,11 @@ export class ArticleController {
 
     // search
     if (filters.keyword) {
-      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
-      queryFilter.$or &#x3D; [{ title: keywordRegExp }, { content: keywordRegExp }, { summary: keywordRegExp }]
+      queryFilter.$or &#x3D; [
+        { title: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { summary: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { content: { $regex: filters.keyword, $options: &#x27;i&#x27; } }
+      ]
     }
 
     // date
@@ -1202,7 +1205,7 @@ export class ArticleController {
       // increment article views
       this.articleSyncService.incrementStatistics(article.id, &#x27;views&#x27;)
       // increment global views
-      this.counterService.incrementGlobalCount(CacheKeys.TodayViewCount)
+      this.counterService.incrementGlobalCount(GlobalCacheKey.DailyArticleViewCount)
     }
     return article
   }

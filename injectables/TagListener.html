@@ -256,7 +256,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticleCreated, {async: true})<br />@OnEvent(EventKeys.ArticleUpdated, {async: true})<br />@OnEvent(EventKeys.ArticleDeleted, {async: true})<br />@OnEvent(EventKeys.ArticlesStatusChanged, {async: true})<br />@OnEvent(EventKeys.ArticlesDeleted, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.ArticleCreated, {async: true})<br />@OnEvent(GlobalEventKey.ArticleUpdated, {async: true})<br />@OnEvent(GlobalEventKey.ArticleDeleted, {async: true})<br />@OnEvent(GlobalEventKey.ArticlesStatusChanged, {async: true})<br />@OnEvent(GlobalEventKey.ArticlesDeleted, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -287,18 +287,18 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { TagService } from &#x27;./tag.service&#x27;
 
 @Injectable()
 export class TagListener {
   constructor(private readonly tagService: TagService) {}
 
-  @OnEvent(EventKeys.ArticleCreated, { async: true })
-  @OnEvent(EventKeys.ArticleUpdated, { async: true })
-  @OnEvent(EventKeys.ArticleDeleted, { async: true })
-  @OnEvent(EventKeys.ArticlesStatusChanged, { async: true })
-  @OnEvent(EventKeys.ArticlesDeleted, { async: true })
+  @OnEvent(GlobalEventKey.ArticleCreated, { async: true })
+  @OnEvent(GlobalEventKey.ArticleUpdated, { async: true })
+  @OnEvent(GlobalEventKey.ArticleDeleted, { async: true })
+  @OnEvent(GlobalEventKey.ArticlesStatusChanged, { async: true })
+  @OnEvent(GlobalEventKey.ArticlesDeleted, { async: true })
   async handleAnyArticleChanged() {
     await this.tagService.updateAllPublicTagsCache()
   }

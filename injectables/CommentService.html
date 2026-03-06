@@ -1550,7 +1550,7 @@ import { Injectable, BadRequestException, NotFoundException, ForbiddenException 
 import { MongooseModel, MongooseId, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { IPService } from &#x27;@app/core/helper/helper.service.ip&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
@@ -1616,7 +1616,7 @@ export class CommentService {
     // effect: sync target (article / page) effects
     this.effectService.syncTargetEffects([populated])
     // event: dispatch created event (for emails, notifications, etc.)
-    this.eventEmitter.emit(EventKeys.CommentCreated, populated.toObject())
+    this.eventEmitter.emit(GlobalEventKey.CommentCreated, populated.toObject())
     return populated
   }
 

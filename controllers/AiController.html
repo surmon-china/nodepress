@@ -509,9 +509,9 @@ import { AiGenerateResult } from &#x27;./ai.interface&#x27;
 import { AiService } from &#x27;./ai.service&#x27;
 
 import {
-  ArticleAiSummaryExtraKeys,
-  ArticleAiReviewExtraKeys,
-  CommentAiGenerationExtraKeys
+  ArticleAiSummaryExtraKey,
+  ArticleAiReviewExtraKey,
+  CommentAiGenerationExtraKey
 } from &#x27;@app/constants/extras.constant&#x27;
 
 @Controller(&#x27;ai&#x27;)
@@ -533,9 +533,9 @@ export class AiController {
         comment_reply: DEFAULT_AI_PROMPT_TEMPLATES.commentReply
       },
       extra_keys: {
-        article_summary: ArticleAiSummaryExtraKeys,
-        article_review: ArticleAiReviewExtraKeys,
-        comment_generation: CommentAiGenerationExtraKeys
+        article_summary: ArticleAiSummaryExtraKey,
+        article_review: ArticleAiReviewExtraKey,
+        comment_generation: CommentAiGenerationExtraKey
       }
     }
   }

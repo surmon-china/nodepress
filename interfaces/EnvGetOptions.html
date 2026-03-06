@@ -116,7 +116,7 @@
   <li class="breadcrumb-item">Interfaces</li>
   <li class="breadcrumb-item"
   >
-  ArgGetOptions</li>
+  EnvGetOptions</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -140,7 +140,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/utils/args.ts</code>
+            <code>src/utils/env.ts</code>
         </p>
 
 
@@ -166,6 +166,13 @@
                                         </a>
                                 </li>
                                 <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#devFallback" 
+>
+                                            devFallback
+                                        </a>
+                                </li>
+                                <li>
                                         <a href="#key" 
 >
                                             key
@@ -183,6 +190,13 @@
                                         <a href="#required" 
 >
                                             required
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#transform" 
+>
+                                            transform
                                         </a>
                                 </li>
                             </ul>
@@ -219,6 +233,44 @@
                                     <tr>
                                         <td class="col-md-4">
                                             <i>Type : </i>    <code>T</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="devFallback"></a>
+                                        <span class="name "><b>devFallback</b>
+                                            <a href="#devFallback">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>devFallback:     <code>NoInfer&lt;T&gt;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>NoInfer&lt;T&gt;</code>
 
                                         </td>
                                     </tr>
@@ -343,55 +395,117 @@
 
                         </tbody>
                     </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="transform"></a>
+                                        <span class="name "><b>transform</b>
+                                            <a href="#transform">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>transform:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
             </section>
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _isNil from &#x27;lodash/isNil&#x27;
-import _isUndefined from &#x27;lodash/isUndefined&#x27;
-import yargsArgv from &#x27;yargs-parser&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import logger from &#x27;./logger&#x27;
+import { isDevEnv } from &#x27;../app.environment&#x27;
 
-export type DefaultArgs &#x3D; Record&lt;string, string | boolean | number&gt;
-export const parseArgv &#x3D; &lt;T &#x3D; DefaultArgs&gt;(argv: string[]): T &#x3D;&gt; yargsArgv(argv)
+export const Transforms &#x3D; {
+  number: (v: string) &#x3D;&gt; Number(v),
+  json: &lt;T&gt;(v: string) &#x3D;&gt; JSON.parse(v) as T
+} as const
 
-export interface ArgGetOptions&lt;T&gt; {
+export interface EnvGetOptions&lt;T&gt; {
   key: string
   default?: T
+  devFallback?: NoInfer&lt;T&gt;
   required?: boolean
   message?: string
+  transform?: (raw: string) &#x3D;&gt; T
 }
 
-export function parseArgs(parsedArgs: Record&lt;string, any&gt;) {
-  function get&lt;T &#x3D; any&gt;(options: ArgGetOptions&lt;T&gt;): T
-  function get&lt;T &#x3D; any&gt;(key: string, defaultValue?: T): T
-  function get&lt;T &#x3D; any&gt;(input: string | ArgGetOptions&lt;T&gt;, defaultValue?: T): T {
-    // If options is not provided, throw an error
-    if (_isNil(input)) {
-      throw new Error(&#x27;Argument options must be a string or an object with key and default properties.&#x27;)
-    }
+/**
+ * Create a type-safe getter for environment variables.
+ * @param env - The environment object to read from, typically &#x60;process.env&#x60;
+ * @param prefix - Optional prefix for all keys, used for namespace isolation (e.g. &#x60;&quot;MYAPP&quot;&#x60; → &#x60;MYAPP_KEY&#x60;)
+ */
+export function createEnvGetter(processEnv: NodeJS.ProcessEnv, prefix?: string) {
+  const getKey &#x3D; (key: string) &#x3D;&gt; (prefix ? &#x60;${prefix}_${key}&#x60; : key)
 
-    // If options is a string, return the value directly
+  function get&lt;T &#x3D; string&gt;(options: EnvGetOptions&lt;T&gt; &amp; { default: T }): T
+  function get&lt;T &#x3D; string&gt;(options: EnvGetOptions&lt;T&gt; &amp; { required: true }): T
+  function get&lt;T &#x3D; string&gt;(options: EnvGetOptions&lt;T&gt; &amp; { devFallback: NoInfer&lt;T&gt; }): T
+  function get&lt;T &#x3D; string&gt;(options: EnvGetOptions&lt;T&gt;): T | undefined
+  function get(key: string): string | undefined
+  function get&lt;T&gt;(input: string | EnvGetOptions&lt;T&gt;): T | string | undefined {
+    // Simple key lookup
     if (typeof input &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
-      const value &#x3D; parsedArgs[input]
-      return _isUndefined(value) ? (defaultValue as T) : value
+      return processEnv[getKey(input)]
     }
 
     // If options is an object, extract the key and handle default and required logic
-    const key &#x3D; input.key
-    const value &#x3D; parsedArgs[key]
+    const { key, required, message, transform, default: fallback, devFallback } &#x3D; input
+    const fullKey &#x3D; getKey(key)
+    const raw &#x3D; processEnv[fullKey]
 
-    // If the key is required and the value is nil, throw an error
-    if (input.required &amp;&amp; _isNil(value)) {
-      throw new Error(input.message || &#x60;Missing required argument: &quot;${key}&quot;. Please pass it using --${key}&#x3D;&lt;value&gt;&#x60;)
+    if (raw &#x3D;&#x3D;&#x3D; undefined) {
+      // 1. Prefer explicit default (works in all environments)
+      if (fallback !&#x3D;&#x3D; undefined) return fallback
+
+      // 2. Use devFallback in development only
+      if (isDevEnv &amp;&amp; devFallback !&#x3D;&#x3D; undefined) {
+        // Warn if also marked required, so developers know this must be set in production
+        if (required) logger.warn(&#x60;&quot;${fullKey}&quot; is required in production. Currently using devFallback.&#x60;)
+        return devFallback as T
+      }
+
+      // 3. Log error if required and no fallback resolved
+      if (required) {
+        logger.error(message ?? &#x60;Missing required environment variable: &quot;${fullKey}&quot;&#x60;)
+      }
+
+      // 4. Truly optional or forcefully bypassed, return undefined
+      // HACK: We return &#x60;undefined as T&#x60; here to bypass strict type checking.
+      // The goal is to allow the application to boot up unconditionally with minimal configuration (DX first),
+      // while explicitly warning developers (via logger.error above) about what is critically missing.
+      // By forcing the type to &#x60;T&#x60;, we avoid scattering &#x60;undefined&#x60; checks throughout the codebase
+      // for features that might gracefully fail or remain unused during local evaluation.
+      return undefined as T
     }
 
-    // If the value is undefined, return the default value if provided
-    if (_isUndefined(value)) {
-      return input.default as T
-    }
-
-    return value
+    // Transform raw string value if transformer provided
+    return transform ? transform(raw) : (raw as T)
   }
 
   return get
@@ -433,7 +547,7 @@ export function parseArgs(parsedArgs: Record&lt;string, any&gt;) {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'ArgGetOptions.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'EnvGetOptions.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

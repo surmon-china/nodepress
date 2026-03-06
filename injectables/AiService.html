@@ -648,7 +648,7 @@ import { OptionsService } from &#x27;@app/modules/options/options.service&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { Comment } from &#x27;@app/modules/comment/comment.model&#x27;
 import { CommentTargetType } from &#x27;@app/modules/comment/comment.constant&#x27;
-import { ArticleAiSummaryExtraKeys } from &#x27;@app/constants/extras.constant&#x27;
+import { ArticleAiSummaryExtraKey } from &#x27;@app/constants/extras.constant&#x27;
 import { getMessageFromAxiosError } from &#x27;@app/transformers/error.transformer&#x27;
 import { getExtraValue } from &#x27;@app/transformers/extra.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
@@ -749,7 +749,7 @@ export class AiService {
       const article &#x3D; await this.articleService.getDetail(comment.target_id, { lean: true })
       contextInfo &#x3D; [
         &#x60;Article Title: ${article.title}&#x60;,
-        &#x60;Article Summary: ${getExtraValue(article.extras, ArticleAiSummaryExtraKeys.Content) || article.content.substring(0, 800)}&#x60;
+        &#x60;Article Summary: ${getExtraValue(article.extras, ArticleAiSummaryExtraKey.Content) || article.content.substring(0, 800)}&#x60;
       ].join(&#x27;\n&#x27;)
     }
 

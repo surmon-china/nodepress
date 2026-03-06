@@ -160,15 +160,10 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                <a href="#checkToken" >checkToken</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                 <a href="#getAdminProfile" >getAdminProfile</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier">Async</span>
@@ -193,6 +188,12 @@
                                     <span class="modifier"></span>
                                 <a href="#updateAdminProfile" >updateAdminProfile</a>
                             </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#verifyToken" >verifyToken</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -210,54 +211,6 @@
     <h3 id="methods">
         Methods
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="checkToken"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                        <span ><b>checkToken</b></span>
-                        <a href="#checkToken"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>checkToken()</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Post(&#x27;check-token&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Token is valid&#x27;)<br /></code>
-                </td>
-            </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="74"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:74</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -288,8 +241,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="29"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:29</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="31"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -313,6 +266,7 @@
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Async</span>
                         <span ><b>login</b></span>
                         <a href="#login"><span class="icon ion-ios-link"></span></a>
@@ -322,7 +276,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>login(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, dto: <a href="../classes/AuthLoginDto.html" target="_self">AuthLoginDto</a>)</code>
+                    <code>login(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, : <a href="../classes/AuthLoginDto.html" target="_self">AuthLoginDto</a>)</code>
                 </td>
             </tr>
 
@@ -330,14 +284,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;login&#x27;)<br />@SuccessResponse(&#x27;Login succeeded&#x27;)<br /></code>
+                    <code>@Throttle({default: undefined})<br />@Post(&#x27;login&#x27;)<br />@SuccessResponse(&#x27;Login succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="42"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:42</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -369,7 +323,6 @@
 
                                         </tr>
                                         <tr>
-                                                <td>dto</td>
                                             <td>
                                                             <code><a href="../classes/AuthLoginDto.html" target="_self" >AuthLoginDto</a></code>
                                             </td>
@@ -384,7 +337,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/TokenResult.html" target="_self" >Promise&lt;TokenResult&gt;</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthTokenResult.html" target="_self" >Promise&lt;AuthTokenResult&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -412,7 +365,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>logout(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>)</code>
+                    <code>logout(: <a href="../interfaces/IRequestContext.html" target="_self">IRequestContext</a>, : <a href="../classes/AuthLogoutDto.html" target="_self">AuthLogoutDto</a>)</code>
                 </td>
             </tr>
 
@@ -426,8 +379,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="58"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:58</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -450,6 +403,17 @@
                                         <tr>
                                             <td>
                                                             <code><a href="../interfaces/IRequestContext.html" target="_self" >IRequestContext</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../classes/AuthLogoutDto.html" target="_self" >AuthLogoutDto</a></code>
                                             </td>
 
                                             <td>
@@ -489,7 +453,7 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>refreshToken()</code>
+                    <code>refreshToken(: <a href="../classes/AuthRefreshTokenDto.html" target="_self">AuthRefreshTokenDto</a>)</code>
                 </td>
             </tr>
 
@@ -497,14 +461,14 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@Post(&#x27;refresh-token&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Refresh token succeeded&#x27;)<br /></code>
+                    <code>@Throttle({default: undefined})<br />@Post(&#x27;refresh-token&#x27;)<br />@SuccessResponse(&#x27;Refresh token succeeded&#x27;)<br /></code>
                 </td>
             </tr>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="67"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:67</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -512,10 +476,39 @@
             <tr>
                 <td class="col-md-4">
 
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                            <code><a href="../classes/AuthRefreshTokenDto.html" target="_self" >AuthRefreshTokenDto</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/TokenResult.html" target="_self" >TokenResult</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthTokenResult.html" target="_self" >Promise&lt;AuthTokenResult&gt;</a></code>
 
                         </div>
+                            <div class="io-description">
+                                
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -551,8 +544,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="36"
-                                    class="link-to-prism">src/modules/admin/admin.controller.ts:36</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="38"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:38</a></div>
                         </td>
                     </tr>
 
@@ -598,6 +591,54 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verifyToken"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>verifyToken</b></span>
+                        <a href="#verifyToken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>verifyToken()</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@Post(&#x27;verify-token&#x27;)<br />@OnlyIdentity(IdentityRole.Admin)<br />@SuccessResponse(&#x27;Token is valid&#x27;)<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/modules/admin/admin.controller.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>    </div>
 
 
@@ -608,74 +649,76 @@
  * @author Surmon &lt;https://github.com/surmon-china&gt;
  */
 
-import { Controller, Get, Patch, Post, Body, UnauthorizedException } from &#x27;@nestjs/common&#x27;
+import { Throttle, hours, minutes } from &#x27;@nestjs/throttler&#x27;
 import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
+import { Controller, Get, Patch, Post, Body } from &#x27;@nestjs/common&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
-import { decodeBase64 } from &#x27;@app/transformers/codec.transformer&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { AuthTokenResult } from &#x27;@app/core/auth/auth.interface&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { AdminProfile } from &#x27;./admin.model&#x27;
-import { AuthLoginDto, UpdateProfileDto } from &#x27;./admin.dto&#x27;
-import { AdminAuthTokenService, TokenResult } from &#x27;./admin.service.token&#x27;
-import { AdminService } from &#x27;./admin.service&#x27;
+import { UpdateProfileDto } from &#x27;./admin.dto&#x27;
+import { AuthLoginDto, AuthLogoutDto, AuthRefreshTokenDto } from &#x27;./admin.dto&#x27;
+import { AdminProfileService } from &#x27;./admin.service.profile&#x27;
+import { AdminAuthService } from &#x27;./admin.service.auth&#x27;
 
 @Controller(&#x27;admin&#x27;)
 export class AdminController {
   constructor(
     private readonly eventEmitter: EventEmitter2,
-    private readonly adminService: AdminService,
-    private readonly authTokenService: AdminAuthTokenService
+    private readonly adminProfileService: AdminProfileService,
+    private readonly adminAuthService: AdminAuthService
   ) {}
 
   @Get(&#x27;profile&#x27;)
   @SuccessResponse(&#x27;Get admin profile succeeded&#x27;)
   getAdminProfile(): Promise&lt;AdminProfile&gt; {
-    return this.adminService.getProfileCache()
+    return this.adminProfileService.getCache()
   }
 
   @Patch(&#x27;profile&#x27;)
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Update admin profile succeeded&#x27;)
   updateAdminProfile(@Body() dto: UpdateProfileDto): Promise&lt;AdminProfile&gt; {
-    return this.adminService.updateProfile(dto)
+    return this.adminProfileService.update(dto)
   }
 
+  @Throttle({ default: { ttl: minutes(1), limit: 10 } })
   @Post(&#x27;login&#x27;)
   @SuccessResponse(&#x27;Login succeeded&#x27;)
-  async login(@RequestContext() { visitor }: IRequestContext, @Body() dto: AuthLoginDto): Promise&lt;TokenResult&gt; {
-    const inputPassword &#x3D; decodeBase64(dto.password)
-    const existedAdminDoc &#x3D; await this.adminService.getDocument()
-    const isValidPassword &#x3D; await this.adminService.validatePassword(inputPassword, existedAdminDoc?.password)
-    if (!isValidPassword) {
-      throw new UnauthorizedException(&#x27;Password incorrect&#x27;)
-    }
-
-    const token &#x3D; this.authTokenService.createToken()
-    this.eventEmitter.emit(EventKeys.AdminLoggedIn, visitor)
+  async login(
+    @RequestContext() { visitor }: IRequestContext,
+    @Body() { password }: AuthLoginDto
+  ): Promise&lt;AuthTokenResult&gt; {
+    const token &#x3D; await this.adminAuthService.createTokenByPassword(password)
+    this.eventEmitter.emit(GlobalEventKey.AdminLoggedIn, visitor)
     return token
   }
 
   @Post(&#x27;logout&#x27;)
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Logout succeeded&#x27;)
-  async logout(@RequestContext() { identity }: IRequestContext): Promise&lt;string&gt; {
-    await this.authTokenService.invalidateToken(identity.token!)
-    this.eventEmitter.emit(EventKeys.AdminLoggedOut, identity.token)
+  async logout(
+    @RequestContext() { identity }: IRequestContext,
+    @Body() { refresh_token }: AuthLogoutDto
+  ): Promise&lt;string&gt; {
+    await this.adminAuthService.revokeTokens(identity.token!, refresh_token)
+    this.eventEmitter.emit(GlobalEventKey.AdminLoggedOut)
     return &#x27;ok&#x27;
   }
 
+  @Throttle({ default: { ttl: hours(1), limit: 10 } })
   @Post(&#x27;refresh-token&#x27;)
-  @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Refresh token succeeded&#x27;)
-  refreshToken(): TokenResult {
-    return this.authTokenService.createToken()
+  refreshToken(@Body() { refresh_token }: AuthRefreshTokenDto): Promise&lt;AuthTokenResult&gt; {
+    return this.adminAuthService.refreshToken(refresh_token)
   }
 
-  @Post(&#x27;check-token&#x27;)
+  @Post(&#x27;verify-token&#x27;)
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Token is valid&#x27;)
-  checkToken(): string {
+  verifyToken(): string {
     return &#x27;ok&#x27;
   }
 }

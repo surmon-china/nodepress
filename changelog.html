@@ -100,6 +100,46 @@
 
 <h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3>8.4.0 (2026-03-06)</h3>
+<h4>Refactored</h4>
+<ul>
+<li><strong>Architecture / Config:</strong> Migrated the entire application configuration system from command-line arguments (CLI) to environment variables (<code>process.env</code>). This aligns NodePress with modern cloud-native deployment standards (Twelve-Factor App methodology).</li>
+<li><strong>Environment Utility:</strong> Replaced the <code>parseArgv</code> utility with a robust <code>createEnvGetter</code> utility. It features strict type-safe transformations, smart environment fallbacks (<code>devFallback</code>), and namespace isolation (all application variables are now strictly prefixed with <code>NP_</code>, e.g., <code>NP_ADMIN_EMAIL</code>).</li>
+<li><strong>DX (Developer Experience):</strong> Retained the non-blocking validation mechanism for the configuration flow. Missing required environment variables will explicitly log descriptive errors/warnings to the output stream, guiding developers on what is critically missing without forcefully crashing the application during local startup.</li>
+</ul>
+<h3>8.3.0 (2026-03-06)</h3>
+<h4>Security</h4>
+<ul>
+<li><strong>Search Endpoints:</strong> Fixed a Regular Expression Denial of Service (ReDoS) vulnerability in public search endpoints. User-supplied keywords are now strictly sanitized using <code>lodash/escapeRegExp</code> at the global DTO validation layer to prevent malicious backtracking in MongoDB&#39;s regex engine. (<a href="https://github.com/surmon-china/nodepress/issues/128">#128</a>)</li>
+<li><strong>Defense-in-Depth:</strong> Added strict length limits (<code>@MaxLength(50)</code>) and space-collapsing to search keywords to prevent memory/resource exhaustion and space-padding bypasses.</li>
+</ul>
+<h4>Changed</h4>
+<ul>
+<li><strong>Database:</strong> Removed legacy and inefficient MongoDB <code>$text</code> indices from the <code>Article</code> model. Search operations now exclusively use native <code>$regex</code> operators for consistent and predictable substring matching across all languages (including CJK).</li>
+</ul>
+<h3>8.2.0 (2026-03-06)</h3>
+<h4>Added</h4>
+<ul>
+<li><strong>Standard OAuth 2.0 Support</strong>: Implemented a complete Access Token + Refresh Token flow for both Admin and Account modules.</li>
+<li><strong>Refresh Token Rotation</strong>: Added <code>AuthRefreshTokenService</code> utilizing Redis for secure, high-performance token management.</li>
+<li><strong>Enhanced Security</strong>:<ul>
+<li>Integrated <code>@nestjs/throttler</code> for granular rate limiting on sensitive auth endpoints.</li>
+<li>Implemented token revocation (blacklist) for both short-lived and long-lived tokens.</li>
+<li>Unified <code>AuthPayload</code> interface to ensure strict type safety across the auth lifecycle.</li>
+</ul>
+</li>
+<li><strong>Defensive Programming</strong>: Added optional <code>refresh_token</code> support during logout to prevent client-side deadlocks.</li>
+</ul>
+<h4>Changed</h4>
+<ul>
+<li><strong>API Response Structure</strong>: Standardized token responses to use <code>access_token</code>, <code>refresh_token</code>, <code>expires_in</code>, and <code>token_type</code> (Bearer).</li>
+<li><strong>Service Refactoring</strong>: Decoupled authentication logic from Controllers into dedicated <code>AdminAuthService</code> and <code>UserAuthTokenService</code>.</li>
+<li><strong>Route Renaming</strong>: Renamed <code>/admin/check-token</code> to <code>/admin/verify-token</code> to better reflect its functional purpose.</li>
+</ul>
+<h4>Fixed</h4>
+<ul>
+<li><strong>Race Condition Prevention</strong>: Optimized token refresh logic to minimize potential concurrency issues in single-admin scenarios.</li>
+</ul>
 <h3>8.0.0 (2026-03-02)</h3>
 <p>This update brings a foundational architectural shift to the backend, strictly adhering to Domain-Driven Design (DDD) principles and Event-Driven Architecture (EDA). It resolves legacy circular dependencies and dramatically improves system maintainability.</p>
 <h4>1. BFF Delegation &amp; Archive Module Removal</h4>

@@ -244,8 +244,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:59</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -322,8 +322,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="66"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:66</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -399,8 +399,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="80"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:80</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:83</a></div>
                         </td>
                     </tr>
 
@@ -476,8 +476,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:44</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="47"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -640,8 +640,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="52"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:52</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -718,8 +718,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="73"
-                                    class="link-to-prism">src/modules/category/category.controller.ts:73</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="76"
+                                    class="link-to-prism">src/modules/category/category.controller.ts:76</a></div>
                         </td>
                     </tr>
 
@@ -814,8 +814,11 @@ export class CategoryController {
 
     // search
     if (filters.keyword) {
-      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
-      queryFilter.$or &#x3D; [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }]
+      queryFilter.$or &#x3D; [
+        { name: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { slug: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { description: { $regex: filters.keyword, $options: &#x27;i&#x27; } }
+      ]
     }
 
     // paginate

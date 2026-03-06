@@ -336,7 +336,7 @@ export class PermissionPipe implements PipeTransform&lt;any&gt; {
       }
     })
 
-    // HACK: Persisting validated query params to request.locals for debugging (non-standard side effect)
+    // HACK: Persisting validated query params to &#x60;request.locals&#x60; for debugging (non-standard side effect)
     this.request.validatedQueryParams &#x3D; { ...value }
 
     return value

@@ -263,7 +263,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.DatabaseError, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.DatabaseError, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -371,7 +371,7 @@
 import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { APP_BIZ } from &#x27;@app/app.config&#x27;
 
 @Injectable()
@@ -387,7 +387,7 @@ export class DatabaseListener {
     })
   }, 10 * 1000)
 
-  @OnEvent(EventKeys.DatabaseError, { async: true })
+  @OnEvent(GlobalEventKey.DatabaseError, { async: true })
   async handleDatabaseError(error: any) {
     await this.sendAlarmMail(String(error))
   }

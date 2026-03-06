@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >GithubAuthService</li>
+  <li class="breadcrumb-item" >AuthRefreshTokenService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/account/auth/auth.service.github.ts</code>
+            <code>src/core/auth/auth.service.refresh-token.ts</code>
         </p>
 
 
@@ -155,19 +155,22 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getAccessTokenByCode" >getAccessTokenByCode</a>
+                                <a href="#generateToken" >generateToken</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getAuthorizeURL" >getAuthorizeURL</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPayload" >getPayload</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getUserInfoByToken" >getUserInfoByToken</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#revokeToken" >revokeToken</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#transformUserInfoToIdentity" >transformUserInfoToIdentity</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#storeToken" >storeToken</a>
                             </li>
                         </ul>
                     </td>
@@ -187,12 +190,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(httpService: HttpService)</code>
+<code>constructor(cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/modules/account/auth/auth.service.github.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/core/auth/auth.service.refresh-token.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -210,10 +213,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>httpService</td>
+                                                        <td>cacheService</td>
                                                   
                                                         <td>
-                                                                    <code>HttpService</code>
+                                                                        <code><a href="../injectables/CacheService.html" target="_self" >CacheService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -239,34 +242,72 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getAccessTokenByCode"></a>
+                    <a name="generateToken"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getAccessTokenByCode</b></span>
-                        <a href="#getAccessTokenByCode"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>generateToken</b></span>
+                        <a href="#generateToken"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAccessTokenByCode(code: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>generateToken()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="50"
-                                    class="link-to-prism">src/modules/account/auth/auth.service.github.ts:50</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="17"
+                                    class="link-to-prism">src/core/auth/auth.service.refresh-token.ts:17</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Exchange the temporary authorization code for an access token</p>
-</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPayload"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getPayload</b></span>
+                        <a href="#getPayload"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPayload(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="31"
+                                    class="link-to-prism">src/core/auth/auth.service.refresh-token.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -281,7 +322,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>code</td>
+                                                <td>token</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                             </td>
@@ -296,7 +337,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthPayload.html" target="_self" >Promise&lt;AuthPayload | null&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -310,34 +351,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getAuthorizeURL"></a>
+                    <a name="revokeToken"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getAuthorizeURL</b></span>
-                        <a href="#getAuthorizeURL"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>revokeToken</b></span>
+                        <a href="#revokeToken"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getAuthorizeURL(callbackPath: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, state: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>revokeToken(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/modules/account/auth/auth.service.github.ts:34</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="26"
+                                    class="link-to-prism">src/core/auth/auth.service.refresh-token.ts:26</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Generate GitHub authorization URL with a unique state</p>
-</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -352,19 +392,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>callbackPath</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>state</td>
+                                                <td>token</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                             </td>
@@ -379,7 +407,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -393,34 +421,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getUserInfoByToken"></a>
+                    <a name="storeToken"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getUserInfoByToken</b></span>
-                        <a href="#getUserInfoByToken"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>storeToken</b></span>
+                        <a href="#storeToken"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getUserInfoByToken(accessToken: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>storeToken(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, payload: <a href="../interfaces/AuthPayload.html" target="_self">AuthPayload</a>, expiresIn: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="69"
-                                    class="link-to-prism">src/modules/account/auth/auth.service.github.ts:69</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="21"
+                                    class="link-to-prism">src/core/auth/auth.service.refresh-token.ts:21</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Fetch GitHub user profile using the access token</p>
-</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -435,7 +462,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>accessToken</td>
+                                                <td>token</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                             </td>
@@ -446,67 +473,22 @@
 
 
                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../interfaces/GitHubUserInfo.html" target="_self" >Promise&lt;GitHubUserInfo&gt;</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="transformUserInfoToIdentity"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>transformUserInfoToIdentity</b></span>
-                        <a href="#transformUserInfoToIdentity"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>transformUserInfoToIdentity(userInfo: <a href="../interfaces/GitHubUserInfo.html" target="_self">GitHubUserInfo</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="79"
-                                    class="link-to-prism">src/modules/account/auth/auth.service.github.ts:79</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
                                         <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>userInfo</td>
+                                                <td>payload</td>
                                             <td>
-                                                            <code><a href="../interfaces/GitHubUserInfo.html" target="_self" >GitHubUserInfo</a></code>
+                                                            <code><a href="../interfaces/AuthPayload.html" target="_self" >AuthPayload</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>expiresIn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -519,7 +501,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../classes/UserIdentity.html" target="_self" >UserIdentity</a></code>
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -535,88 +517,34 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpService } from &#x27;@nestjs/axios&#x27;
-import { Injectable, UnauthorizedException } from &#x27;@nestjs/common&#x27;
-import { createLogger } from &#x27;@app/utils/logger&#x27;
-import { isDevEnv, isProdEnv } from &#x27;@app/app.environment&#x27;
-import { APP_BIZ, GITHUB_OAUTH } from &#x27;@app/app.config&#x27;
-import { UserIdentityProvider } from &#x27;@app/modules/user/user.constant&#x27;
-import { UserIdentity } from &#x27;@app/modules/user/user.model&#x27;
-
-const logger &#x3D; createLogger({ scope: &#x27;GithubAuthService&#x27;, time: isDevEnv })
-
-export interface GitHubUserInfo {
-  login: string
-  id: number
-  node_id: string
-  avatar_url: string
-  name: string
-  blog: string
-  email: string | null
-  bio: string | null
-  location: string | null
-}
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as crypto from &#x27;crypto&#x27;
+import { Injectable } from &#x27;@nestjs/common&#x27;
+import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
+import { AuthPayload } from &#x27;@app/constants/auth.constant&#x27;
+import { getRefreshTokenCacheKey } from &#x27;@app/constants/cache.constant&#x27;
 
 @Injectable()
-export class GithubAuthService {
-  constructor(private readonly httpService: HttpService) {}
+export class AuthRefreshTokenService {
+  constructor(private cacheService: CacheService) {}
 
-  /** Generate GitHub authorization URL with a unique state */
-  public getAuthorizeURL(callbackPath: string, state: string) {
-    const redirectUri &#x3D; isProdEnv
-      ? &#x60;${APP_BIZ.URL}${callbackPath}&#x60;
-      : &#x60;http://localhost:${APP_BIZ.PORT}${callbackPath}&#x60;
-
-    // https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps
-    const url &#x3D; new URL(&#x27;https://github.com/login/oauth/authorize&#x27;)
-    url.searchParams.set(&#x27;client_id&#x27;, GITHUB_OAUTH.clientId)
-    url.searchParams.set(&#x27;redirect_uri&#x27;, redirectUri)
-    url.searchParams.set(&#x27;state&#x27;, state)
-    url.searchParams.set(&#x27;scope&#x27;, GITHUB_OAUTH.scope)
-
-    return url.toString()
+  public generateToken(): string {
+    return crypto.randomBytes(32).toString(&#x27;hex&#x27;)
   }
 
-  /** Exchange the temporary authorization code for an access token */
-  public getAccessTokenByCode(code: string) {
-    const api &#x3D; &#x27;https://github.com/login/oauth/access_token&#x27;
-    const data &#x3D; {
-      client_id: GITHUB_OAUTH.clientId,
-      client_secret: GITHUB_OAUTH.clientSecret,
-      code
-    }
-
-    // https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps#2-users-are-redirected-back-to-your-site-by-github
-    return this.httpService.axiosRef
-      .post(api, data, { headers: { Accept: &#x27;application/json&#x27; } })
-      .then((response) &#x3D;&gt; response.data.access_token as string)
-      .catch((error) &#x3D;&gt; {
-        logger.error(&#x27;Failed to fetch AccessToken:&#x27;, error)
-        throw new UnauthorizedException(&#x27;GitHub authentication failed. Please try again later.&#x27;)
-      })
+  public async storeToken(token: string, payload: AuthPayload, expiresIn: number): Promise&lt;void&gt; {
+    const key &#x3D; getRefreshTokenCacheKey(token)
+    await this.cacheService.set(key, payload, expiresIn)
   }
 
-  /** Fetch GitHub user profile using the access token */
-  public getUserInfoByToken(accessToken: string): Promise&lt;GitHubUserInfo&gt; {
-    return this.httpService.axiosRef
-      .get(&#x27;https://api.github.com/user&#x27;, { headers: { Authorization: &#x60;Bearer ${accessToken}&#x60; } })
-      .then((response) &#x3D;&gt; response.data)
-      .catch((error) &#x3D;&gt; {
-        logger.error(&#x27;Failed to fetch GitHub user info:&#x27;, error)
-        throw new UnauthorizedException(&#x27;Failed to retrieve GitHub profile. Please re-authenticate.&#x27;)
-      })
+  public async revokeToken(token: string): Promise&lt;void&gt; {
+    const key &#x3D; getRefreshTokenCacheKey(token)
+    await this.cacheService.delete(key)
   }
 
-  public transformUserInfoToIdentity(userInfo: GitHubUserInfo): UserIdentity {
-    return {
-      provider: UserIdentityProvider.GitHub,
-      uid: String(userInfo.id),
-      email: userInfo.email,
-      username: userInfo.login,
-      display_name: userInfo.name,
-      avatar_url: userInfo.avatar_url,
-      profile_url: userInfo.blog
-    }
+  public async getPayload(token: string): Promise&lt;AuthPayload | null&gt; {
+    const key &#x3D; getRefreshTokenCacheKey(token)
+    const payload &#x3D; await this.cacheService.get&lt;AuthPayload&gt;(key)
+    return payload ?? null
   }
 }
 </code></pre>
@@ -662,7 +590,7 @@ export class GithubAuthService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'GithubAuthService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AuthRefreshTokenService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

@@ -164,7 +164,6 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#getAllVotes" >getAllVotes</a>
                             </li>
                         </ul>
@@ -403,7 +402,6 @@
                     <a name="getAllVotes"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
                         <span ><b>getAllVotes</b></span>
                         <a href="#getAllVotes"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -491,7 +489,7 @@ export class AccountActivityService {
     @InjectModel(Comment) private readonly commentModel: MongooseModel&lt;Comment&gt;
   ) {}
 
-  public async getAllVotes(userObjectId: MongooseId): Promise&lt;Vote[]&gt; {
+  public getAllVotes(userObjectId: MongooseId): Promise&lt;Vote[]&gt; {
     return this.voteModel.find({ user: userObjectId }).sort({ created_at: SortOrder.Desc }).lean().exec()
   }
 

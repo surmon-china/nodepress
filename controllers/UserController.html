@@ -234,8 +234,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="53"
-                                    class="link-to-prism">src/modules/user/user.controller.ts:53</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -311,8 +311,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="71"
-                                    class="link-to-prism">src/modules/user/user.controller.ts:71</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="74"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:74</a></div>
                         </td>
                     </tr>
 
@@ -388,8 +388,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="77"
-                                    class="link-to-prism">src/modules/user/user.controller.ts:77</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:80</a></div>
                         </td>
                     </tr>
 
@@ -477,8 +477,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="59"
-                                    class="link-to-prism">src/modules/user/user.controller.ts:59</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -631,8 +631,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="65"
-                                    class="link-to-prism">src/modules/user/user.controller.ts:65</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/modules/user/user.controller.ts:68</a></div>
                         </td>
                     </tr>
 
@@ -737,8 +737,11 @@ export class UserController {
     }
     // search
     if (filters.keyword) {
-      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
-      queryFilter.$or &#x3D; [{ name: keywordRegExp }, { email: keywordRegExp }, { website: keywordRegExp }]
+      queryFilter.$or &#x3D; [
+        { name: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { email: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { website: { $regex: filters.keyword, $options: &#x27;i&#x27; } }
+      ]
     }
 
     return this.userService.paginate(queryFilter, paginateOptions)

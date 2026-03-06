@@ -113,7 +113,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >CommentPaginateQueryDto</li>
+  <li class="breadcrumb-item" >AuthLogoutDto</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -137,17 +137,11 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/comment/comment.dto.ts</code>
+            <code>src/modules/account/auth/auth.dto.ts</code>
         </p>
 
 
 
-            <p class="comment">
-                <h3>Extends</h3>
-            </p>
-            <p class="comment">
-                        <code>IntersectionType(PaginateOptionWithHotSortDto, KeywordQueryDto)</code>
-            </p>
 
 
 
@@ -166,30 +160,9 @@
                             <li>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Optional</span>
-                                <a href="#author_type" >author_type</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
-                                <a href="#status" >status</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier">Optional</span>
-                                <a href="#target_id" >target_id</a>
-                            </li>
-                            <li>
-                                    <span class="modifier"></span>
-                                    <span class="modifier"></span>
-                                    <span class="modifier">Optional</span>
-                                <a href="#target_type" >target_type</a>
+                                <a href="#refresh_token" >refresh_token</a>
                             </li>
                         </ul>
                     </td>
@@ -214,19 +187,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="author_type"></a>
+                    <a name="refresh_token"></a>
                     <span class="name">
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
                             <span class="modifier">Optional</span>
-                        <span ><b>author_type</b></span>
-                        <a href="#author_type"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>refresh_token</b></span>
+                        <a href="#refresh_token"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#CommentAuthorType" target="_self" >CommentAuthorType</a></code>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
 
                     </td>
                 </tr>
@@ -235,131 +209,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsEnum(CommentAuthorType)<br />@IsOptional()<br />
+                            @IsHexadecimal()<br />@IsString()<br />@IsOptional()<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/modules/comment/comment.dto.ts:52</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="status"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Optional</span>
-                        <span ><b>status</b></span>
-                        <a href="#status"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#CommentStatus" target="_self" >CommentStatus</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @WithGuestPermission({only: undefined, default: undefined})<br />@IsEnum(CommentStatus)<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/modules/comment/comment.dto.ts:38</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="target_id"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Optional</span>
-                        <span ><b>target_id</b></span>
-                        <a href="#target_id"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @Min(0)<br />@IsInt()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/modules/comment/comment.dto.ts:48</a></div>
-                        </td>
-                    </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="target_type"></a>
-                    <span class="name">
-                            <span class="modifier"></span>
-                            <span class="modifier"></span>
-                            <span class="modifier">Optional</span>
-                        <span ><b>target_type</b></span>
-                        <a href="#target_type"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#CommentTargetType" target="_self" >CommentTargetType</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <b>Decorators : </b>
-                        <br />
-                        <code>
-                            @IsEnum(CommentTargetType)<br />@IsOptional()<br />
-                        </code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/modules/comment/comment.dto.ts:42</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/modules/account/auth/auth.dto.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -378,78 +234,31 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Transform } from &#x27;class-transformer&#x27;
-import { ArrayNotEmpty, ArrayUnique } from &#x27;class-validator&#x27;
-import { IsString, IsArray, IsInt, IsEnum, IsOptional, IsDefined, Min } from &#x27;class-validator&#x27;
-import { IntersectionType, PartialType, PickType } from &#x27;@nestjs/mapped-types&#x27;
-import { WithGuestPermission } from &#x27;@app/decorators/guest-permission.decorator&#x27;
-import { KeywordQueryDto } from &#x27;@app/dtos/queries.dto&#x27;
-import { PaginateOptionWithHotSortDto } from &#x27;@app/dtos/paginate.dto&#x27;
-import { unknownToNumber } from &#x27;@app/transformers/value.transformer&#x27;
-import { CommentStatus, CommentTargetType, CommentAuthorType } from &#x27;./comment.constant&#x27;
-import { Comment } from &#x27;./comment.model&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsHexadecimal, IsOptional } from &#x27;class-validator&#x27;
+import { IsNotEmpty } from &#x27;class-validator&#x27;
 
-export class CreateCommentDto extends PickType(Comment, [
-  &#x27;target_type&#x27;,
-  &#x27;target_id&#x27;,
-  &#x27;parent_id&#x27;,
-  &#x27;content&#x27;,
-  &#x27;author_name&#x27;,
-  &#x27;author_email&#x27;,
-  &#x27;author_website&#x27;
-] as const) {}
+export class OAuthCallbackDto {
+  @IsNotEmpty()
+  @IsString()
+  code: string
 
-export class UpdateCommentDto extends IntersectionType(
-  PartialType(CreateCommentDto),
-  PartialType(PickType(Comment, [&#x27;status&#x27;, &#x27;likes&#x27;, &#x27;dislikes&#x27;, &#x27;extras&#x27;] as const))
-) {}
-
-export class CommentPaginateQueryDto extends IntersectionType(PaginateOptionWithHotSortDto, KeywordQueryDto) {
-  @WithGuestPermission({ only: [CommentStatus.Approved], default: CommentStatus.Approved })
-  @IsEnum(CommentStatus)
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  status?: CommentStatus
-
-  @IsEnum(CommentTargetType)
-  @IsOptional()
-  target_type?: CommentTargetType
-
-  @Min(0)
-  @IsInt()
-  @IsOptional()
-  @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
-  target_id?: number
-
-  @IsEnum(CommentAuthorType)
-  @IsOptional()
-  author_type?: CommentAuthorType
+  @IsNotEmpty()
+  @IsString()
+  state: string
 }
 
-export class CommentCalendarQueryDto {
+export class AuthLogoutDto {
+  @IsHexadecimal()
   @IsString()
   @IsOptional()
-  timezone?: string
+  refresh_token?: string
 }
 
-export class CommentIdsDto {
-  @ArrayNotEmpty()
-  @ArrayUnique()
-  @IsArray()
-  @IsInt({ each: true })
-  comment_ids: number[]
-}
-
-export class CommentIdsStatusDto extends CommentIdsDto {
-  @IsEnum(CommentStatus)
-  @IsDefined()
-  status: CommentStatus
-}
-
-export class ClaimCommentsDto extends CommentIdsDto {
-  @IsInt()
-  @IsDefined()
-  user_id: number
+export class AuthRefreshTokenDto {
+  @IsHexadecimal()
+  @IsString()
+  @IsNotEmpty()
+  refresh_token: string
 }
 </code></pre>
     </div>
@@ -489,7 +298,7 @@ export class ClaimCommentsDto extends CommentIdsDto {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'CommentPaginateQueryDto.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AuthLogoutDto-1.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

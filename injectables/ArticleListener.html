@@ -274,7 +274,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.CategoryDeleted, {async: true})<br />@OnEvent(EventKeys.CategoriesDeleted, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.CategoryDeleted, {async: true})<br />@OnEvent(GlobalEventKey.CategoriesDeleted, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -352,7 +352,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.TagUpdated, {async: true})<br />@OnEvent(EventKeys.CategoryUpdated, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.TagUpdated, {async: true})<br />@OnEvent(GlobalEventKey.CategoryUpdated, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -400,7 +400,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.TagDeleted, {async: true})<br />@OnEvent(EventKeys.TagsDeleted, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.TagDeleted, {async: true})<br />@OnEvent(GlobalEventKey.TagsDeleted, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -461,7 +461,7 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { MongooseId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { ArticleService } from &#x27;./article.service&#x27;
 import { ArticleSyncService } from &#x27;./article.service.sync&#x27;
@@ -473,21 +473,21 @@ export class ArticleListener {
     private readonly articleSyncService: ArticleSyncService
   ) {}
 
-  @OnEvent(EventKeys.TagUpdated, { async: true })
-  @OnEvent(EventKeys.CategoryUpdated, { async: true })
+  @OnEvent(GlobalEventKey.TagUpdated, { async: true })
+  @OnEvent(GlobalEventKey.CategoryUpdated, { async: true })
   async handleRelationalDataUpdated() {
     await this.articleService.updateAllPublicArticlesCache()
   }
 
-  @OnEvent(EventKeys.TagDeleted, { async: true })
-  @OnEvent(EventKeys.TagsDeleted, { async: true })
+  @OnEvent(GlobalEventKey.TagDeleted, { async: true })
+  @OnEvent(GlobalEventKey.TagsDeleted, { async: true })
   async handleTagsDeleted(tagObjectIds: MongooseId | MongooseId[]) {
     await this.articleSyncService.removeTagsFromAllArticles(tagObjectIds)
     await this.articleService.updateAllPublicArticlesCache()
   }
 
-  @OnEvent(EventKeys.CategoryDeleted, { async: true })
-  @OnEvent(EventKeys.CategoriesDeleted, { async: true })
+  @OnEvent(GlobalEventKey.CategoryDeleted, { async: true })
+  @OnEvent(GlobalEventKey.CategoriesDeleted, { async: true })
   async handleCategoriesDeleted(categoryObjectIds: MongooseId | MongooseId[]) {
     await this.articleSyncService.removeCategoriesFromAllArticles(categoryObjectIds)
     await this.articleService.updateAllPublicArticlesCache()

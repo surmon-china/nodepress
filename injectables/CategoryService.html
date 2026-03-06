@@ -1104,8 +1104,8 @@ import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { SeoService } from &#x27;@app/core/helper/helper.service.seo&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
 import { ArticleStatsService } from &#x27;@app/modules/article/article.service.stats&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
-import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalCacheKey } from &#x27;@app/constants/cache.constant&#x27;
 import { SortOrder } from &#x27;@app/constants/sort.constant&#x27;
 import { getCategoryUrl } from &#x27;@app/transformers/urlmap.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
@@ -1127,7 +1127,7 @@ export class CategoryService implements OnModuleInit {
     @InjectModel(Category) private readonly categoryModel: MongooseModel&lt;Category&gt;
   ) {
     this.allPublicCategoriesCache &#x3D; this.cacheService.manual&lt;Array&lt;Category&gt;&gt;({
-      key: CacheKeys.PublicAllCategories,
+      key: GlobalCacheKey.PublicAllCategories,
       promise: () &#x3D;&gt; this.getAllCategories({ aggregatePublicOnly: true })
     })
   }
@@ -1190,7 +1190,7 @@ export class CategoryService implements OnModuleInit {
 
     const created &#x3D; await this.categoryModel.create(input)
     this.updateAllPublicCategoriesCache()
-    this.eventEmitter.emit(EventKeys.CategoryCreated, created)
+    this.eventEmitter.emit(GlobalEventKey.CategoryCreated, created)
     this.seoService.push(getCategoryUrl(created.slug))
     return created
   }
@@ -1207,7 +1207,7 @@ export class CategoryService implements OnModuleInit {
     if (!updated) throw new NotFoundException(&#x60;Category &#x27;${categoryId}&#x27; not found&#x60;)
 
     this.updateAllPublicCategoriesCache()
-    this.eventEmitter.emit(EventKeys.CategoryUpdated, updated)
+    this.eventEmitter.emit(GlobalEventKey.CategoryUpdated, updated)
     this.seoService.push(getCategoryUrl(updated.slug))
     return updated
   }
@@ -1223,7 +1223,7 @@ export class CategoryService implements OnModuleInit {
 
     // effects
     this.updateAllPublicCategoriesCache()
-    this.eventEmitter.emit(EventKeys.CategoryDeleted, deleted._id)
+    this.eventEmitter.emit(GlobalEventKey.CategoryDeleted, deleted._id)
     this.seoService.delete(getCategoryUrl(deleted.slug))
     return deleted
   }
@@ -1242,7 +1242,7 @@ export class CategoryService implements OnModuleInit {
     // effects
     const categoryObjectIds &#x3D; categories.map((category) &#x3D;&gt; category._id)
     this.updateAllPublicCategoriesCache()
-    this.eventEmitter.emit(EventKeys.CategoriesDeleted, categoryObjectIds)
+    this.eventEmitter.emit(GlobalEventKey.CategoriesDeleted, categoryObjectIds)
     this.seoService.delete(categories.map((category) &#x3D;&gt; getCategoryUrl(category.slug)))
     return actionResult
   }

@@ -356,7 +356,7 @@ import { Controller, Get, Patch, Body } from &#x27;@nestjs/common&#x27;
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.decorator&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { OptionsService } from &#x27;./options.service&#x27;
 import { UpdateOptionsDto } from &#x27;./options.dto&#x27;
 import { Option } from &#x27;./options.model&#x27;
@@ -379,7 +379,7 @@ export class OptionsController {
   @SuccessResponse(&#x27;Update app options succeeded&#x27;)
   async updateOptions(@Body() dto: UpdateOptionsDto): Promise&lt;Option&gt; {
     const updated &#x3D; await this.optionsService.updateOptions(dto)
-    this.eventEmitter.emit(EventKeys.OptionsUpdated, updated)
+    this.eventEmitter.emit(GlobalEventKey.OptionsUpdated, updated)
     return updated
   }
 }

@@ -133,6 +133,9 @@
                             <a href="#bootstrap" title="src/main.ts" ><b>bootstrap</b>&nbsp;&nbsp;&nbsp;(src/.../main.ts)</a>
                         </li>
                         <li>
+                            <a href="#createEnvGetter" title="src/utils/env.ts" ><b>createEnvGetter</b>&nbsp;&nbsp;&nbsp;(src/.../env.ts)</a>
+                        </li>
+                        <li>
                             <a href="#decodeBase64" title="src/transformers/codec.transformer.ts" ><b>decodeBase64</b>&nbsp;&nbsp;&nbsp;(src/.../codec.transformer.ts)</a>
                         </li>
                         <li>
@@ -181,9 +184,6 @@
                             <a href="#NormalizeString" title="src/decorators/normalize-string.decorator.ts" ><b>NormalizeString</b>&nbsp;&nbsp;&nbsp;(src/.../normalize-string.decorator.ts)</a>
                         </li>
                         <li>
-                            <a href="#parseArgs" title="src/utils/args.ts" ><b>parseArgs</b>&nbsp;&nbsp;&nbsp;(src/.../args.ts)</a>
-                        </li>
-                        <li>
                             <a href="#SuccessResponse" title="src/decorators/success-response.decorator.ts" ><b>SuccessResponse</b>&nbsp;&nbsp;&nbsp;(src/.../success-response.decorator.ts)</a>
                         </li>
                         <li>
@@ -227,6 +227,84 @@
 
 
 
+        </tbody>
+    </table>
+</section>    <h3>src/utils/env.ts</h3>
+    <section data-compodoc="block-methods">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createEnvGetter"></a>
+                    <span class="name">
+                        <span ><b>createEnvGetter</b></span>
+                        <a href="#createEnvGetter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>createEnvGetter(processEnv, prefix?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create a type-safe getter for environment variables.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>processEnv</td>
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>prefix</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional prefix for all keys, used for namespace isolation (e.g. <code>&quot;MYAPP&quot;</code> → <code>MYAPP_KEY</code>)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </section>    <h3>src/transformers/codec.transformer.ts</h3>
@@ -1255,62 +1333,6 @@
 
                                             <td>
                                                     Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</section>    <h3>src/utils/args.ts</h3>
-    <section data-compodoc="block-methods">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="parseArgs"></a>
-                    <span class="name">
-                        <span ><b>parseArgs</b></span>
-                        <a href="#parseArgs"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>parseArgs(parsedArgs: Record)</code>
-                </td>
-            </tr>
-
-
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>parsedArgs</td>
-                                            <td>
-                                                        <code>Record</code>
-                                            </td>
-
-                                            <td>
-                                                    No
                                             </td>
 
 

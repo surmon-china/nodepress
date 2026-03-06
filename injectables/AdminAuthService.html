@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >AuthService</li>
+  <li class="breadcrumb-item" >AdminAuthService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/core/auth/auth.service.ts</code>
+            <code>src/modules/admin/admin.service.auth.ts</code>
         </p>
 
 
@@ -154,31 +154,24 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#decodeToken" >decodeToken</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#extractTokenFromAuthorization" >extractTokenFromAuthorization</a>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createToken" >createToken</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#invalidateToken" >invalidateToken</a>
+                                <a href="#createTokenByPassword" >createTokenByPassword</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#isInvalidatedToken" >isInvalidatedToken</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#signToken" >signToken</a>
+                                <a href="#refreshToken" >refreshToken</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#verifyToken" >verifyToken</a>
+                                <a href="#revokeTokens" >revokeTokens</a>
                             </li>
                         </ul>
                     </td>
@@ -198,12 +191,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(jwtService: JwtService, cacheService: <a href="../injectables/CacheService.html" target="_self">CacheService</a>)</code>
+<code>constructor(adminProfileService: <a href="../injectables/AdminProfileService.html" target="_self">AdminProfileService</a>, accessTokenService: <a href="../injectables/AuthAccessTokenService.html" target="_self">AuthAccessTokenService</a>, refreshTokenService: <a href="../injectables/AuthRefreshTokenService.html" target="_self">AuthRefreshTokenService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/core/auth/auth.service.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/modules/admin/admin.service.auth.ts:17</a></div>
                             </td>
                         </tr>
 
@@ -221,10 +214,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>jwtService</td>
+                                                        <td>adminProfileService</td>
                                                   
                                                         <td>
-                                                                    <code>JwtService</code>
+                                                                        <code><a href="../injectables/AdminProfileService.html" target="_self" >AdminProfileService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -233,10 +226,22 @@
                                                     
                                                 </tr>
                                                 <tr>
-                                                        <td>cacheService</td>
+                                                        <td>accessTokenService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/CacheService.html" target="_self" >CacheService</a></code>
+                                                                        <code><a href="../injectables/AuthAccessTokenService.html" target="_self" >AuthAccessTokenService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>refreshTokenService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthRefreshTokenService.html" target="_self" >AuthRefreshTokenService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -262,75 +267,40 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="decodeToken"></a>
+                    <a name="createToken"></a>
                     <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>decodeToken</b></span>
-                        <a href="#decodeToken"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>createToken</b></span>
+                        <a href="#createToken"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>decodeToken(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>createToken()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">src/core/auth/auth.service.ts:26</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="25"
+                                    class="link-to-prism">src/modules/admin/admin.service.auth.ts:25</a></div>
                         </td>
                     </tr>
 
-                    <tr>
-                        <td class="col-md-4">
-                            <b>Type parameters :</b>
-                            <ul class="type-parameters">
-                                    <li>T</li>
-                            </ul>
-                        </td>
-                    </tr>
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Sign a admin auth token</p>
+</div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>token</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>T | null</code>
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthTokenResult.html" target="_self" >Promise&lt;AuthTokenResult&gt;</a></code>
 
                         </div>
-                            <div class="io-description">
-                                
-                            </div>
                 </td>
             </tr>
         </tbody>
@@ -339,88 +309,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="extractTokenFromAuthorization"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>extractTokenFromAuthorization</b></span>
-                        <a href="#extractTokenFromAuthorization"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>extractTokenFromAuthorization(authorization?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="58"
-                                    class="link-to-prism">src/core/auth/auth.service.ts:58</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>authorization</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>string | undefined</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="invalidateToken"></a>
+                    <a name="createTokenByPassword"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>invalidateToken</b></span>
-                        <a href="#invalidateToken"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>createTokenByPassword</b></span>
+                        <a href="#createTokenByPassword"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>invalidateToken(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>createTokenByPassword(base64Password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -428,7 +329,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/core/auth/auth.service.ts:45</a></div>
+                                    class="link-to-prism">src/modules/admin/admin.service.auth.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -449,13 +350,165 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>token</td>
+                                                <td>base64Password</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                             </td>
 
                                             <td>
                                                     No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthTokenResult.html" target="_self" >Promise&lt;AuthTokenResult&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="refreshToken"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>refreshToken</b></span>
+                        <a href="#refreshToken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>refreshToken(refreshToken: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/modules/admin/admin.service.auth.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>refreshToken</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthTokenResult.html" target="_self" >Promise&lt;AuthTokenResult&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="revokeTokens"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>revokeTokens</b></span>
+                        <a href="#revokeTokens"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>revokeTokens(accessToken: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, refreshToken?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="70"
+                                    class="link-to-prism">src/modules/admin/admin.service.auth.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>accessToken</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>refreshToken</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
                                             </td>
 
 
@@ -474,314 +527,78 @@
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="isInvalidatedToken"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>isInvalidatedToken</b></span>
-                        <a href="#isInvalidatedToken"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>isInvalidatedToken(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="21"
-                                    class="link-to-prism">src/core/auth/auth.service.ts:21</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>token</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="signToken"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                        <span ><b>signToken</b></span>
-                        <a href="#signToken"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>signToken(payload: T, options?: <a href="../classes/Option.html" target="_self">JwtSignOptions</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="30"
-                                    class="link-to-prism">src/core/auth/auth.service.ts:30</a></div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <b>Type parameters :</b>
-                            <ul class="type-parameters">
-                                    <li>T</li>
-                            </ul>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>payload</td>
-                                            <td>
-                                                        <code>T</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>options</td>
-                                            <td>
-                                                            <code><a href="../classes/Option.html" target="_self" >JwtSignOptions</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="verifyToken"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>verifyToken</b></span>
-                        <a href="#verifyToken"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>verifyToken(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, options?: <a href="../classes/Option.html" target="_self">JwtVerifyOptions</a>)</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="34"
-                                    class="link-to-prism">src/core/auth/auth.service.ts:34</a></div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="col-md-4">
-                            <b>Type parameters :</b>
-                            <ul class="type-parameters">
-                                    <li>T</li>
-                            </ul>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>token</td>
-                                            <td>
-                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                        </tr>
-                                        <tr>
-                                                <td>options</td>
-                                            <td>
-                                                            <code><a href="../classes/Option.html" target="_self" >JwtVerifyOptions</a></code>
-                                            </td>
-
-                                            <td>
-                                                    Yes
-                                            </td>
-
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <div class="io-description">
-                            <b>Returns : </b>    <code>Promise&lt;T | null&gt;</code>
-
-                        </div>
-                            <div class="io-description">
-                                
-                            </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </section>
 
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
-import { JwtService, JwtSignOptions, JwtVerifyOptions } from &#x27;@nestjs/jwt&#x27;
-import { CacheService } from &#x27;@app/core/cache/cache.service&#x27;
-import { AuthPayload } from &#x27;@app/constants/auth.constant&#x27;
-import { getInvalidatedTokenCacheKey } from &#x27;@app/constants/cache.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, UnauthorizedException } from &#x27;@nestjs/common&#x27;
+import { AuthAccessTokenService } from &#x27;@app/core/auth/auth.service.access-token&#x27;
+import { AuthRefreshTokenService } from &#x27;@app/core/auth/auth.service.refresh-token&#x27;
+import { AuthTokenResult } from &#x27;@app/core/auth/auth.interface&#x27;
+import { decodeBase64 } from &#x27;@app/transformers/codec.transformer&#x27;
+import { AuthRole, AuthPayload } from &#x27;@app/constants/auth.constant&#x27;
+import { APP_AUTH } from &#x27;@app/app.config&#x27;
+import { AdminProfileService } from &#x27;./admin.service.profile&#x27;
 
 @Injectable()
-export class AuthService {
+export class AdminAuthService {
   constructor(
-    private jwtService: JwtService,
-    private cacheService: CacheService
+    private readonly adminProfileService: AdminProfileService,
+    private readonly accessTokenService: AuthAccessTokenService,
+    private readonly refreshTokenService: AuthRefreshTokenService
   ) {}
 
-  public async isInvalidatedToken(token: string): Promise&lt;boolean&gt; {
-    const key &#x3D; getInvalidatedTokenCacheKey(token)
-    return await this.cacheService.has(key)
-  }
+  /** Sign a admin auth token */
+  private async createToken(): Promise&lt;AuthTokenResult&gt; {
+    const authPayload: AuthPayload &#x3D; { role: AuthRole.Admin }
 
-  public decodeToken&lt;T extends object &#x3D; any&gt;(token: string): T | null {
-    return this.jwtService.decode&lt;T&gt;(token)
-  }
+    // access token
+    const expiresIn &#x3D; APP_AUTH.jwtExpiresInForAdmin
+    const accessToken &#x3D; this.accessTokenService.signToken(authPayload, { expiresIn })
 
-  public signToken&lt;T extends AuthPayload &#x3D; AuthPayload&gt;(payload: T, options?: JwtSignOptions): string {
-    return this.jwtService.sign&lt;T&gt;(payload, options)
-  }
+    // refresh token
+    const refreshToken &#x3D; this.refreshTokenService.generateToken()
+    const refreshExpiresIn &#x3D; APP_AUTH.refreshTokenExpiresInForAdmin
+    await this.refreshTokenService.storeToken(refreshToken, authPayload, refreshExpiresIn)
 
-  public async verifyToken&lt;T extends AuthPayload &#x3D; AuthPayload&gt;(
-    token: string,
-    options?: JwtVerifyOptions
-  ): Promise&lt;T | null&gt; {
-    if (await this.isInvalidatedToken(token)) {
-      return null
-    } else {
-      return await this.jwtService.verifyAsync&lt;T&gt;(token, options)
+    return {
+      token_type: &#x27;Bearer&#x27;,
+      access_token: accessToken,
+      expires_in: expiresIn,
+      refresh_token: refreshToken
     }
   }
 
-  public async invalidateToken(token: string): Promise&lt;void&gt; {
-    const payload &#x3D; this.jwtService.decode&lt;{ exp?: number }&gt;(token)
-    if (!payload?.exp) return
+  public async createTokenByPassword(base64Password: string): Promise&lt;AuthTokenResult&gt; {
+    const inputPassword &#x3D; decodeBase64(base64Password)
+    const existedAdminDoc &#x3D; await this.adminProfileService.getDocument()
+    const isValidPassword &#x3D; await this.adminProfileService.validatePassword(
+      inputPassword,
+      existedAdminDoc?.password
+    )
 
-    // Token is already expired, no need to invalidate
-    const now &#x3D; Math.floor(Date.now() / 1000)
-    if (payload.exp &lt;&#x3D; now) return
+    if (!isValidPassword) {
+      throw new UnauthorizedException(&#x27;Password incorrect&#x27;)
+    }
 
-    const ttl &#x3D; payload.exp - now
-    const key &#x3D; getInvalidatedTokenCacheKey(token)
-    await this.cacheService.set(key, &#x27;1&#x27;, ttl)
+    return await this.createToken()
   }
 
-  public extractTokenFromAuthorization(authorization?: string): string | undefined {
-    const [type, token] &#x3D; authorization?.split(&#x27; &#x27;) ?? []
-    return type &#x3D;&#x3D;&#x3D; &#x27;Bearer&#x27; ? token : undefined
+  public async refreshToken(refreshToken: string): Promise&lt;AuthTokenResult&gt; {
+    const payload &#x3D; await this.refreshTokenService.getPayload(refreshToken)
+    if (!payload || payload.role !&#x3D;&#x3D; AuthRole.Admin) {
+      throw new UnauthorizedException(&#x27;Invalid refresh token&#x27;)
+    }
+
+    await this.refreshTokenService.revokeToken(refreshToken)
+    return await this.createToken()
+  }
+
+  public async revokeTokens(accessToken: string, refreshToken?: string): Promise&lt;void&gt; {
+    await this.accessTokenService.invalidateToken(accessToken)
+    if (refreshToken) await this.refreshTokenService.revokeToken(refreshToken)
   }
 }
 </code></pre>
@@ -827,7 +644,7 @@ export class AuthService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'AuthService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminAuthService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

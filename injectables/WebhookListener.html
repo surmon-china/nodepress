@@ -281,7 +281,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticleDeleted, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.ArticleDeleted, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -358,7 +358,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticlesDeleted, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.ArticlesDeleted, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -435,7 +435,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticlesStatusChanged, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.ArticlesStatusChanged, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -513,7 +513,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.ArticleCreated, {async: true})<br />@OnEvent(EventKeys.ArticleUpdated, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.ArticleCreated, {async: true})<br />@OnEvent(GlobalEventKey.ArticleUpdated, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -590,7 +590,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.OptionsUpdated, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.OptionsUpdated, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -651,7 +651,7 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { Option } from &#x27;@app/modules/options/options.model&#x27;
 import { ArticlePopulated } from &#x27;@app/modules/article/article.model&#x27;
 import { ArticleStatus } from &#x27;@app/modules/article/article.constant&#x27;
@@ -666,13 +666,13 @@ export class WebhookListener {
     private readonly articleService: ArticleService
   ) {}
 
-  @OnEvent(EventKeys.OptionsUpdated, { async: true })
+  @OnEvent(GlobalEventKey.OptionsUpdated, { async: true })
   async handleOptionsUpdated(options: Option) {
     await this.webhookService.dispatch(WebhookEvent.UpsertOptions, options)
   }
 
-  @OnEvent(EventKeys.ArticleCreated, { async: true })
-  @OnEvent(EventKeys.ArticleUpdated, { async: true })
+  @OnEvent(GlobalEventKey.ArticleCreated, { async: true })
+  @OnEvent(GlobalEventKey.ArticleUpdated, { async: true })
   async handleArticleUpsert(article: ArticlePopulated) {
     if (article.status &#x3D;&#x3D;&#x3D; ArticleStatus.Published) {
       await this.webhookService.dispatch(WebhookEvent.UpsertArticles, [article])
@@ -681,7 +681,7 @@ export class WebhookListener {
     }
   }
 
-  @OnEvent(EventKeys.ArticlesStatusChanged, { async: true })
+  @OnEvent(GlobalEventKey.ArticlesStatusChanged, { async: true })
   async handleArticlesStatusChange(payload: { articleIds: number[]; status: ArticleStatus }) {
     if (payload.status &#x3D;&#x3D;&#x3D; ArticleStatus.Published) {
       const articles &#x3D; await this.articleService.getListByIds(payload.articleIds)
@@ -691,12 +691,12 @@ export class WebhookListener {
     }
   }
 
-  @OnEvent(EventKeys.ArticleDeleted, { async: true })
+  @OnEvent(GlobalEventKey.ArticleDeleted, { async: true })
   async handleArticleDeleted(articleId: number) {
     await this.webhookService.dispatch(WebhookEvent.DeleteArticles, [articleId])
   }
 
-  @OnEvent(EventKeys.ArticlesDeleted, { async: true })
+  @OnEvent(GlobalEventKey.ArticlesDeleted, { async: true })
   async handleArticlesDeleted(articleIds: number[]) {
     await this.webhookService.dispatch(WebhookEvent.DeleteArticles, articleIds)
   }

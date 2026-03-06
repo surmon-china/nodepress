@@ -326,8 +326,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:93</a></div>
                         </td>
                     </tr>
 
@@ -404,8 +404,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="80"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:80</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="79"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:79</a></div>
                         </td>
                     </tr>
 
@@ -559,8 +559,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="87"
-                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:87</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/modules/feedback/feedback.controller.ts:86</a></div>
                         </td>
                     </tr>
 
@@ -638,7 +638,7 @@ import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.d
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { PaginateResult, PaginateOptions } from &#x27;@app/utils/paginate&#x27;
 import { UserService } from &#x27;@app/modules/user/user.service&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { CreateFeedbackDto, UpdateFeedbackDto, FeedbackPaginateQueryDto, FeedbackIdsDto } from &#x27;./feedback.dto&#x27;
 import { Feedback, FeedbackWithUser } from &#x27;./feedback.model&#x27;
 import { FeedbackService } from &#x27;./feedback.service&#x27;
@@ -657,7 +657,7 @@ export class FeedbackController {
   async createFeedback(@Body() dto: CreateFeedbackDto, @RequestContext() { visitor, identity }: IRequestContext) {
     const user &#x3D; identity.isUser ? await this.userService.findOne(identity.payload!.uid!) : void 0
     const created &#x3D; await this.feedbackService.create(dto, visitor, user)
-    this.eventEmitter.emit(EventKeys.FeedbackCreated, created.toObject())
+    this.eventEmitter.emit(GlobalEventKey.FeedbackCreated, created.toObject())
     return created
   }
 
@@ -683,12 +683,11 @@ export class FeedbackController {
     }
     // search
     if (filters.keyword) {
-      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
       queryFilter.$or &#x3D; [
-        { content: keywordRegExp },
-        { author_name: keywordRegExp },
-        { author_email: keywordRegExp },
-        { remark: keywordRegExp }
+        { content: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { author_name: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { author_email: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { remark: { $regex: filters.keyword, $options: &#x27;i&#x27; } }
       ]
     }
 

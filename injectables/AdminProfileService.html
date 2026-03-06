@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >AdminService</li>
+  <li class="breadcrumb-item" >AdminProfileService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/modules/admin/admin.service.ts</code>
+            <code>src/modules/admin/admin.service.profile.ts</code>
         </p>
 
 
@@ -154,7 +154,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#profileCache" >profileCache</a>
+                                <a href="#cache" >cache</a>
                             </li>
                         </ul>
                     </td>
@@ -170,16 +170,16 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#getCache" >getCache</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#getDocument" >getDocument</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getProfile" >getProfile</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Public</span>
-                                <a href="#getProfileCache" >getProfileCache</a>
+                                <a href="#getRaw" >getRaw</a>
                             </li>
                             <li>
                                 <a href="#onModuleInit" >onModuleInit</a>
@@ -187,7 +187,7 @@
                             <li>
                                     <span class="modifier">Public</span>
                                     <span class="modifier">Async</span>
-                                <a href="#updateProfile" >updateProfile</a>
+                                <a href="#update" >update</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -217,7 +217,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/admin/admin.service.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/admin/admin.service.profile.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -276,66 +276,26 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getDocument"></a>
+                    <a name="getCache"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getDocument</b></span>
-                        <a href="#getDocument"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getCache</b></span>
+                        <a href="#getCache"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDocument()</code>
+                    <code>getCache()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="44"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:44</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#MongooseDoc" target="_self" >Promise&lt;MongooseDoc | null&gt;</a></code>
-
-                        </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getProfile"></a>
-                    <span class="name">
-                            <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
-                        <span ><b>getProfile</b></span>
-                        <a href="#getProfile"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getProfile()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="39"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:39</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="35"
+                                    class="link-to-prism">src/modules/admin/admin.service.profile.ts:35</a></div>
                         </td>
                     </tr>
 
@@ -355,26 +315,66 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getProfileCache"></a>
+                    <a name="getDocument"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>getProfileCache</b></span>
-                        <a href="#getProfileCache"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getDocument</b></span>
+                        <a href="#getDocument"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getProfileCache()</code>
+                    <code>getDocument()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="35"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:35</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">src/modules/admin/admin.service.profile.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#MongooseDoc" target="_self" >Promise&lt;MongooseDoc | null&gt;</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRaw"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>getRaw</b></span>
+                        <a href="#getRaw"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRaw()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/modules/admin/admin.service.profile.ts:39</a></div>
                         </td>
                     </tr>
 
@@ -411,7 +411,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:31</a></div>
+                                    class="link-to-prism">src/modules/admin/admin.service.profile.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -431,19 +431,19 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="updateProfile"></a>
+                    <a name="update"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
                             <span class="modifier">Async</span>
-                        <span ><b>updateProfile</b></span>
-                        <a href="#updateProfile"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>update</b></span>
+                        <a href="#update"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateProfile(input: <a href="../classes/UpdateProfileDto.html" target="_self">UpdateProfileDto</a>)</code>
+                    <code>update(input: <a href="../classes/UpdateProfileDto.html" target="_self">UpdateProfileDto</a>)</code>
                 </td>
             </tr>
 
@@ -451,7 +451,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="56"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:56</a></div>
+                                    class="link-to-prism">src/modules/admin/admin.service.profile.ts:56</a></div>
                         </td>
                     </tr>
 
@@ -521,7 +521,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="48"
-                                    class="link-to-prism">src/modules/admin/admin.service.ts:48</a></div>
+                                    class="link-to-prism">src/modules/admin/admin.service.profile.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -589,11 +589,11 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="profileCache"></a>
+                    <a name="cache"></a>
                     <span class="name">
                             <span class="modifier">Private</span>
-                        <span ><b>profileCache</b></span>
-                        <a href="#profileCache"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>cache</b></span>
+                        <a href="#cache"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -605,7 +605,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/admin/admin.service.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/modules/admin/admin.service.profile.ts:19</a></div>
                         </td>
                     </tr>
 
@@ -619,39 +619,39 @@
 
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import bcrypt from &#x27;bcryptjs&#x27;
-import { Injectable, BadRequestException } from &#x27;@nestjs/common&#x27;
+import { Injectable, OnModuleInit, BadRequestException } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel, MongooseDoc } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
-import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
+import { GlobalCacheKey } from &#x27;@app/constants/cache.constant&#x27;
 import { decodeBase64 } from &#x27;@app/transformers/codec.transformer&#x27;
 import { Admin, AdminProfile, DEFAULT_ADMIN_PROFILE, ADMIN_SINGLETON_QUERY } from &#x27;./admin.model&#x27;
 import { UpdateProfileDto } from &#x27;./admin.dto&#x27;
 import { APP_AUTH } from &#x27;@app/app.config&#x27;
 
 @Injectable()
-export class AdminService {
-  private profileCache: CacheManualResult&lt;AdminProfile&gt;
+export class AdminProfileService implements OnModuleInit {
+  private cache: CacheManualResult&lt;AdminProfile&gt;
 
   constructor(
     private readonly cacheService: CacheService,
     @InjectModel(Admin) private readonly adminModel: MongooseModel&lt;Admin&gt;
   ) {
-    this.profileCache &#x3D; this.cacheService.manual({
-      key: CacheKeys.PublicAdminProfile,
-      promise: () &#x3D;&gt; this.getProfile()
+    this.cache &#x3D; this.cacheService.manual({
+      key: GlobalCacheKey.PublicAdminProfile,
+      promise: () &#x3D;&gt; this.getRaw()
     })
   }
 
   onModuleInit() {
-    this.profileCache.update()
+    this.cache.update()
   }
 
-  public getProfileCache(): Promise&lt;AdminProfile&gt; {
-    return this.profileCache.get()
+  public getCache(): Promise&lt;AdminProfile&gt; {
+    return this.cache.get()
   }
 
-  public async getProfile(): Promise&lt;AdminProfile&gt; {
+  public async getRaw(): Promise&lt;AdminProfile&gt; {
     const adminProfile &#x3D; await this.adminModel.findOne(ADMIN_SINGLETON_QUERY).select(&#x27;-_id&#x27;).lean().exec()
     return adminProfile ?? DEFAULT_ADMIN_PROFILE
   }
@@ -668,7 +668,7 @@ export class AdminService {
         plainPassword &#x3D;&#x3D;&#x3D; APP_AUTH.adminDefaultPassword
   }
 
-  public async updateProfile(input: UpdateProfileDto): Promise&lt;AdminProfile&gt; {
+  public async update(input: UpdateProfileDto): Promise&lt;AdminProfile&gt; {
     const { password: inputOldPassword, new_password: inputNewPassword, ...profile } &#x3D; input
     const newProfile: Partial&lt;Admin&gt; &#x3D; { ...profile }
 
@@ -703,7 +703,7 @@ export class AdminService {
     }
 
     // Update cache and return
-    return await this.profileCache.update()
+    return await this.cache.update()
   }
 }
 </code></pre>
@@ -749,7 +749,7 @@ export class AdminService {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'AdminService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'AdminProfileService.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

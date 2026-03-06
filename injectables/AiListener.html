@@ -260,7 +260,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.CommentCreated, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.CommentCreated, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -321,10 +321,10 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { QueryVisitor } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { KeyValueModel } from &#x27;@app/models/key-value.model&#x27;
-import { CommentAiGenerationExtraKeys } from &#x27;@app/constants/extras.constant&#x27;
+import { CommentAiGenerationExtraKey } from &#x27;@app/constants/extras.constant&#x27;
 import { CommentWith } from &#x27;@app/modules/comment/comment.model&#x27;
 import { CreateCommentDto } from &#x27;@app/modules/comment/comment.dto&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
@@ -342,7 +342,7 @@ export class AiListener {
     private readonly commentService: CommentService
   ) {}
 
-  @OnEvent(EventKeys.CommentCreated, { async: true })
+  @OnEvent(GlobalEventKey.CommentCreated, { async: true })
   async handleCommentCreated(comment: CommentWith&lt;UserPublic&gt;) {
     // 1. Only respond to top-level comments (no parent comment)
     if (comment.parent_id !&#x3D;&#x3D; null) return
@@ -351,7 +351,7 @@ export class AiListener {
     // 3. Minimum length requirement: at least 5 characters (excluding whitespace)
     if (comment.content.trim().length &lt; 5) return
     // 4. Prevent loops: Do not respond to comments already marked as AI-generated
-    if (getExtraValue(comment.extras, CommentAiGenerationExtraKeys.Flag)) return
+    if (getExtraValue(comment.extras, CommentAiGenerationExtraKey.Flag)) return
     // 5. Do not respond to comments made by the moderator
     if (comment.user?.type &#x3D;&#x3D;&#x3D; UserType.Moderator) return
 
@@ -371,9 +371,9 @@ export class AiListener {
       }
 
       const aiCommentExtras: KeyValueModel[] &#x3D; [
-        { key: CommentAiGenerationExtraKeys.Flag, value: &#x27;true&#x27; },
-        { key: CommentAiGenerationExtraKeys.Model, value: aiResult.model },
-        { key: CommentAiGenerationExtraKeys.Provider, value: aiResult.provider }
+        { key: CommentAiGenerationExtraKey.Flag, value: &#x27;true&#x27; },
+        { key: CommentAiGenerationExtraKey.Model, value: aiResult.model },
+        { key: CommentAiGenerationExtraKey.Provider, value: aiResult.provider }
       ]
 
       // Initialize a clean visitor context for the AI

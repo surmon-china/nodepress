@@ -157,12 +157,6 @@
                             <a href="#arg" title="src/app.config.ts" ><b>arg</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
                         </li>
                         <li>
-                            <a href="#args" title="src/app.config.ts" ><b>args</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#argvs" title="src/app.config.ts" ><b>argvs</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
-                        </li>
-                        <li>
                             <a href="#ARTICLE_DEFAULT_STATS" title="src/modules/article/article.model.ts" ><b>ARTICLE_DEFAULT_STATS</b>&nbsp;&nbsp;&nbsp;(src/.../article.model.ts)</a>
                         </li>
                         <li>
@@ -278,6 +272,9 @@
                         </li>
                         <li>
                             <a href="#getLocationText" title="src/transformers/email.transformer.ts" ><b>getLocationText</b>&nbsp;&nbsp;&nbsp;(src/.../email.transformer.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getRefreshTokenCacheKey" title="src/constants/cache.constant.ts" ><b>getRefreshTokenCacheKey</b>&nbsp;&nbsp;&nbsp;(src/.../cache.constant.ts)</a>
                         </li>
                         <li>
                             <a href="#getSuccessResponseOptions" title="src/decorators/success-response.decorator.ts" ><b>getSuccessResponseOptions</b>&nbsp;&nbsp;&nbsp;(src/.../success-response.decorator.ts)</a>
@@ -448,9 +445,6 @@
                             <a href="#PAGES_ID" title="src/constants/pages.constant.ts" ><b>PAGES_ID</b>&nbsp;&nbsp;&nbsp;(src/.../pages.constant.ts)</a>
                         </li>
                         <li>
-                            <a href="#parseArgv" title="src/utils/args.ts" ><b>parseArgv</b>&nbsp;&nbsp;&nbsp;(src/.../args.ts)</a>
-                        </li>
-                        <li>
                             <a href="#parseValue" title="src/core/cache/redis.store.ts" ><b>parseValue</b>&nbsp;&nbsp;&nbsp;(src/.../redis.store.ts)</a>
                         </li>
                         <li>
@@ -488,6 +482,9 @@
                         </li>
                         <li>
                             <a href="#TagProvider" title="src/modules/tag/tag.model.ts" ><b>TagProvider</b>&nbsp;&nbsp;&nbsp;(src/.../tag.model.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Transforms" title="src/utils/env.ts" ><b>Transforms</b>&nbsp;&nbsp;&nbsp;(src/.../env.ts)</a>
                         </li>
                         <li>
                             <a href="#UploadedFile" title="src/decorators/uploaded-file.decorator.ts" ><b>UploadedFile</b>&nbsp;&nbsp;&nbsp;(src/.../uploaded-file.decorator.ts)</a>
@@ -739,9 +736,9 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** Akismet API key {@link https://akismet.com/developers/getting-started/#verify-key} */
-  apiKey: arg&lt;string&gt;(&#x27;akismet_api_key&#x27;),
+  apiKey: arg({ key: &#x27;AKISMET_API_KEY&#x27;, required: true }),
   /** Akismet blog URL for spam protection (e.g., &#x60;https://surmon.me&#x60;) {@link https://akismet.com/developers/detailed-docs/key-verification/} */
-  blog: arg&lt;string&gt;(&#x27;akismet_blog&#x27;)
+  blog: arg({ key: &#x27;AKISMET_BLOG&#x27;, required: true })
 })</code>
                     </td>
                 </tr>
@@ -770,19 +767,23 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** Default password for the admin user, used when no password is set in the database */
-  adminDefaultPassword: arg({ key: &#x27;admin_default_password&#x27;, default: &#x27;root&#x27; }),
+  adminDefaultPassword: arg({ key: &#x27;ADMIN_DEFAULT_PASSWORD&#x27;, default: &#x27;root&#x27; }),
   /** Number of rounds for Bcrypt hashing (higher is more secure but slower) */
-  adminBcryptSaltRounds: arg({ key: &#x27;admin_bcrypt_salt_rounds&#x27;, default: 10 }),
+  adminBcryptSaltRounds: arg({ key: &#x27;ADMIN_BCRYPT_SALT_ROUNDS&#x27;, default: 10, transform: Transforms.number }),
   /** Global JWT signing secret. @important Must be a long, random string in production to prevent brute-force attacks. */
-  jwtSecret: arg({ key: &#x27;auth_jwt_secret&#x27;, default: &#x27;nodepress-secret&#x27; }),
+  jwtSecret: arg({ key: &#x27;AUTH_JWT_SECRET&#x27;, default: &#x27;nodepress-secret&#x27; }),
   /** The &#x27;iss&#x27; (issuer) claim identifies the principal that issued the JWT */
-  jwtIssuer: arg({ key: &#x27;auth_jwt_issuer&#x27;, default: &#x27;nodepress&#x27; }),
+  jwtIssuer: arg({ key: &#x27;AUTH_JWT_ISSUER&#x27;, default: &#x27;nodepress&#x27; }),
   /** The &#x27;aud&#x27; (audience) claim identifies the recipients that the JWT is intended for */
-  jwtAudience: arg({ key: &#x27;auth_jwt_audience&#x27;, default: &#x27;nodepress-api&#x27; }),
-  /** Token expiration time (seconds) for administrators. Recommended to be short (e.g., 1-2 hours) for higher security */
+  jwtAudience: arg({ key: &#x27;AUTH_JWT_AUDIENCE&#x27;, default: &#x27;nodepress-api&#x27; }),
+  /** Access Token (JWT) expiration time (seconds) for administrators. Recommended to be short (e.g., 1-2 hours) for higher security */
   jwtExpiresInForAdmin: 2 * 3600,
-  /** Token expiration time (seconds) for regular users. Can be longer (e.g., 7 days) to provide a better user experience by reducing re-logins */
-  jwtExpiresInForUser: 7 * 24 * 3600
+  /** Refresh Token expiration time (seconds) for administrators. (e.g., 30 days) */
+  refreshTokenExpiresInForAdmin: 30 * 24 * 3600,
+  /** Access Token (JWT) expiration time (seconds) for regular users. (e.g., 2 hours / 7 days) */
+  jwtExpiresInForUser: 7 * 24 * 3600,
+  /** Refresh Token expiration time (seconds) for regular users. (e.g., 60 days) */
+  refreshTokenExpiresInForUser: 60 * 24 * 3600
 })</code>
                     </td>
                 </tr>
@@ -824,7 +825,7 @@
   /** Backend API base URL */
   URL: &#x27;https://api.surmon.me&#x27;,
   /** Admin email used for notifications, integrations, etc. Required for features like sending emails. */
-  ADMIN_EMAIL: arg&lt;string&gt;({ key: &#x27;admin_email&#x27; }),
+  ADMIN_EMAIL: arg({ key: &#x27;ADMIN_EMAIL&#x27;, required: true }),
   /** Frontend display name (used in email, SEO, etc.) */
   FE_NAME: &#x27;Surmon.me&#x27;,
   /** Frontend URL (used in SEO or link generation) */
@@ -834,9 +835,9 @@
   /** Allowed CORS origins */
   CORS_ALLOWED_ORIGINS: [&#x27;https://surmon.me&#x27;, /\.surmon\.me$/],
   /** AI Assistant display name */
-  AI_AUTHOR_NAME: arg&lt;string&gt;({ key: &#x27;ai_author_name&#x27;, default: &#x27;AI Assistant&#x27; }),
+  AI_AUTHOR_NAME: arg({ key: &#x27;AI_AUTHOR_NAME&#x27;, default: &#x27;AI Assistant&#x27; }),
   /** AI Assistant email used for notifications, integrations, etc. Required for features like sending emails. */
-  AI_AUTHOR_EMAIL: arg&lt;string&gt;({ key: &#x27;ai_author_email&#x27; })
+  AI_AUTHOR_EMAIL: arg&lt;string | null&gt;({ key: &#x27;AI_AUTHOR_EMAIL&#x27;, default: null })
 })</code>
                     </td>
                 </tr>
@@ -863,59 +864,7 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>parseArgs(args)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="args"></a>
-                    <span class="name">
-                        <span ><b>args</b></span>
-                        <a href="#args"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>unknown</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>parseArgv&lt;Record&lt;string, string | number | void&gt;&gt;(argvs)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="argvs"></a>
-                    <span class="name">
-                        <span ><b>argvs</b></span>
-                        <a href="#argvs"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>unknown</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>process.argv.slice(2)</code>
+                        <i>Default value : </i><code>createEnvGetter(process.env, &#x27;NP&#x27;)</code>
                     </td>
                 </tr>
 
@@ -943,9 +892,9 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** Website URL submitted to Bing (e.g., &#x60;https://surmon.me&#x60;) */
-  site: arg&lt;string&gt;(&#x27;bing_site&#x27;),
+  site: arg({ key: &#x27;BING_SITE&#x27;, required: true }),
   /** API key for Bing indexing {@link https://learn.microsoft.com/en-us/bingwebmaster/getting-access} */
-  apiKey: arg&lt;string&gt;(&#x27;bing_api_key&#x27;)
+  apiKey: arg({ key: &#x27;BING_API_KEY&#x27;, required: true })
 })</code>
                     </td>
                 </tr>
@@ -974,11 +923,11 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** The unique identifier for your Cloudflare account */
-  accountId: arg&lt;string&gt;(&#x27;cf_aig_account_id&#x27;),
+  accountId: arg({ key: &#x27;CF_AIG_ACCOUNT_ID&#x27;, required: true }),
   /** The specific AI Gateway name created in the Cloudflare dashboard */
-  gatewayId: arg&lt;string&gt;(&#x27;cf_aig_id&#x27;),
+  gatewayId: arg({ key: &#x27;CF_AIG_ID&#x27;, required: true }),
   /** API token for gateway authentication (optional if using universal endpoint) */
-  token: arg&lt;string&gt;(&#x27;cf_aig_token&#x27;)
+  token: arg({ key: &#x27;CF_AIG_TOKEN&#x27;, required: true })
 })</code>
                     </td>
                 </tr>
@@ -1013,11 +962,11 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** S3 region for storing backups */
-  s3Region: arg&lt;string&gt;(&#x27;db_backup_s3_region&#x27;),
+  s3Region: arg({ key: &#x27;DB_BACKUP_S3_REGION&#x27;, required: true }),
   /** S3 bucket for database backup files */
-  s3Bucket: arg&lt;string&gt;(&#x27;db_backup_s3_bucket&#x27;),
+  s3Bucket: arg({ key: &#x27;DB_BACKUP_S3_BUCKET&#x27;, required: true }),
   /** Password for backup file encryption */
-  password: arg&lt;string&gt;(&#x27;db_backup_file_password&#x27;)
+  password: arg({ key: &#x27;DB_BACKUP_FILE_PASSWORD&#x27;, required: true })
 })</code>
                     </td>
                 </tr>
@@ -1048,13 +997,13 @@
   /** SMTP port, usually 587 or 465 */
   port: 587,
   /** Email SMTP server host (e.g., &#x60;smtp.qq.com&#x60;) */
-  host: arg&lt;string&gt;(&#x27;email_host&#x27;),
-  /** ESender email address, (e.g., &#x60;admin@example.me&#x60;) */
-  account: arg&lt;string&gt;(&#x27;email_account&#x27;),
+  host: arg(&#x27;EMAIL_HOST&#x27;),
+  /** Sender email address, (e.g., &#x60;admin@example.me&#x60;) */
+  account: arg({ key: &#x27;EMAIL_ACCOUNT&#x27;, required: true }),
   /** Email SMTP password */
-  password: arg&lt;string&gt;(&#x27;email_password&#x27;),
+  password: arg({ key: &#x27;EMAIL_PASSWORD&#x27;, required: true }),
   /** Display name for email sender */
-  from: &#x60;&quot;${APP_BIZ.FE_NAME}&quot; &lt;${arg(&#x27;email_from&#x27;) || arg(&#x27;email_account&#x27;)}&gt;&#x60;
+  from: &#x60;&quot;${APP_BIZ.FE_NAME}&quot; &lt;${arg(&#x27;EMAIL_FROM&#x27;) || arg(&#x27;EMAIL_ACCOUNT&#x27;)}&gt;&#x60;
 })</code>
                     </td>
                 </tr>
@@ -1082,8 +1031,8 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
-  clientId: arg&lt;string&gt;(&#x27;oauth_github_client_id&#x27;),
-  clientSecret: arg&lt;string&gt;(&#x27;oauth_github_client_secret&#x27;),
+  clientId: arg({ key: &#x27;OAUTH_GITHUB_CLIENT_ID&#x27;, required: true }),
+  clientSecret: arg({ key: &#x27;OAUTH_GITHUB_CLIENT_SECRET&#x27;, required: true }),
   scope: &#x27;read:user user:email&#x27;
 })</code>
                     </td>
@@ -1119,9 +1068,13 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** Google Analytics v4 Property ID */
-  analyticsV4PropertyId: arg&lt;string&gt;(&#x27;google_analytics_v4_property_id&#x27;),
+  analyticsV4PropertyId: arg({ key: &#x27;GOOGLE_ANALYTICS_V4_PROPERTY_ID&#x27;, required: true }),
   /** Service account credentials (JSON parsed) */
-  jwtServiceAccountCredentials: args.google_jwt_cred_json ? JSON.parse(args.google_jwt_cred_json as string) : null
+  jwtServiceAccountCredentials: arg&lt;any&gt;({
+    key: &#x27;GOOGLE_JWT_CRED_JSON&#x27;,
+    transform: Transforms.json,
+    required: true
+  })
 })</code>
                     </td>
                 </tr>
@@ -1149,8 +1102,8 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
-  clientId: arg&lt;string&gt;(&#x27;oauth_google_client_id&#x27;),
-  clientSecret: arg&lt;string&gt;(&#x27;oauth_google_client_secret&#x27;),
+  clientId: arg({ key: &#x27;OAUTH_GOOGLE_CLIENT_ID&#x27;, required: true }),
+  clientSecret: arg({ key: &#x27;OAUTH_GOOGLE_CLIENT_SECRET&#x27;, required: true }),
   scope: [&#x27;https://www.googleapis.com/auth/userinfo.profile&#x27;, &#x27;https://www.googleapis.com/auth/userinfo.email&#x27;]
 })</code>
                     </td>
@@ -1186,7 +1139,7 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** MongoDB connection URI */
-  uri: arg({ key: &#x27;mongodb_uri&#x27;, default: &#x27;mongodb://127.0.0.1:27017/NodePress&#x27; })
+  uri: arg({ key: &#x27;MONGODB_URI&#x27;, default: &#x27;mongodb://127.0.0.1:27017/NodePress&#x27; })
 })</code>
                     </td>
                 </tr>
@@ -1274,11 +1227,11 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** As a prefix for Redis storage keys, used to distinguish data from other applications in Redis. */
-  namespace: arg({ key: &#x27;redis_namespace&#x27;, default: &#x27;nodepress&#x27; }),
-  host: arg({ key: &#x27;redis_host&#x27;, default: &#x27;localhost&#x27; }),
-  port: arg({ key: &#x27;redis_port&#x27;, default: 6379 }),
-  username: arg&lt;string | void&gt;(&#x27;redis_username&#x27;),
-  password: arg&lt;string | void&gt;(&#x27;redis_password&#x27;)
+  namespace: arg({ key: &#x27;REDIS_NAMESPACE&#x27;, default: &#x27;nodepress&#x27; }),
+  host: arg({ key: &#x27;REDIS_HOST&#x27;, default: &#x27;localhost&#x27; }),
+  port: arg({ key: &#x27;REDIS_PORT&#x27;, default: 6379, transform: Transforms.number }),
+  username: arg(&#x27;REDIS_USERNAME&#x27;),
+  password: arg(&#x27;REDIS_PASSWORD&#x27;)
 })</code>
                     </td>
                 </tr>
@@ -1333,15 +1286,15 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** S3 endpoint */
-  endpoint: arg&lt;string&gt;(&#x27;s3_endpoint&#x27;),
+  endpoint: arg({ key: &#x27;S3_ENDPOINT&#x27;, required: true }),
   /** S3 Access Key ID */
-  accessKeyId: arg&lt;string&gt;(&#x27;s3_access_key_id&#x27;),
+  accessKeyId: arg({ key: &#x27;S3_ACCESS_KEY_ID&#x27;, required: true }),
   /** S3 Secret Access Key */
-  secretAccessKey: arg&lt;string&gt;(&#x27;s3_secret_access_key&#x27;),
+  secretAccessKey: arg({ key: &#x27;S3_SECRET_ACCESS_KEY&#x27;, required: true }),
   /** S3 Bucket name for static files */
-  s3StaticFileBucket: arg&lt;string&gt;(&#x27;s3_static_file_bucket&#x27;),
+  s3StaticFileBucket: arg({ key: &#x27;S3_STATIC_FILE_BUCKET&#x27;, required: true }),
   /** S3 Region for static file bucket */
-  s3StaticFileRegion: arg&lt;string&gt;(&#x27;s3_static_file_region&#x27;)
+  s3StaticFileRegion: arg({ key: &#x27;S3_STATIC_FILE_REGION&#x27;, required: true })
 })</code>
                     </td>
                 </tr>
@@ -1370,9 +1323,9 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>Object.freeze({
   /** The target URL where the webhook notifications will be sent */
-  endpoint: arg&lt;string&gt;(&#x27;webhook_endpoint&#x27;),
+  endpoint: arg(&#x27;WEBHOOK_ENDPOINT&#x27;),
   /** Secret for authenticating and verifying webhook requests */
-  secret: arg&lt;string&gt;(&#x27;webhook_secret&#x27;)
+  secret: arg(&#x27;WEBHOOK_SECRET&#x27;)
 })</code>
                     </td>
                 </tr>
@@ -2109,13 +2062,13 @@
 
     mongoose.connection.on(&#x27;disconnected&#x27;, () &#x3D;&gt; {
       logger.error(&#x60;disconnected! Attempting to reconnect after ${DATABASE_RECONNECT_INTERVAL / 1000}s&#x60;)
-      eventEmitter.emit(EventKeys.DatabaseError, &#x27;MongoDB disconnected from server!&#x27;)
+      eventEmitter.emit(GlobalEventKey.DatabaseError, &#x27;MongoDB disconnected from server!&#x27;)
       reconnectionTask &#x3D; setTimeout(connect, DATABASE_RECONNECT_INTERVAL)
     })
 
     mongoose.connection.on(&#x27;error&#x27;, (error) &#x3D;&gt; {
       logger.error(&#x27;error!&#x27;, error)
-      eventEmitter.emit(EventKeys.DatabaseError, error)
+      eventEmitter.emit(GlobalEventKey.DatabaseError, error)
       if (mongoose.connection.readyState !&#x3D;&#x3D; 0) {
         mongoose.disconnect()
       }
@@ -3017,6 +2970,34 @@
                     <td class="col-md-4">
                         <i>Default value : </i><code>(key: string) &#x3D;&gt; {
   return &#x60;auth:invalidated-token:${key}&#x60;
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRefreshTokenCacheKey"></a>
+                    <span class="name">
+                        <span ><b>getRefreshTokenCacheKey</b></span>
+                        <a href="#getRefreshTokenCacheKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(key: string) &#x3D;&gt; {
+  return &#x60;auth:refresh-token:${key}&#x60;
 }</code>
                     </td>
                 </tr>
@@ -4238,35 +4219,6 @@
         </tbody>
     </table>
 </section>
-    <h3>src/utils/args.ts</h3>
-    <section data-compodoc="block-properties">
-    <h3></h3>    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="parseArgv"></a>
-                    <span class="name">
-                        <span ><b>parseArgv</b></span>
-                        <a href="#parseArgv"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>    <code>unknown</code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&lt;T &#x3D; DefaultArgs&gt;(argv: string[]): T &#x3D;&gt; yargsArgv(argv)</code>
-                    </td>
-                </tr>
-
-
-        </tbody>
-    </table>
-</section>
     <h3>src/constants/reflector.constant.ts</h3>
     <section data-compodoc="block-properties">
     <h3></h3>    <table class="table table-sm table-bordered">
@@ -4451,6 +4403,38 @@
                 <tr>
                     <td class="col-md-4">
                         <i>Default value : </i><code>getProviderByTypegooseClass(Tag)</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/utils/env.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Transforms"></a>
+                    <span class="name">
+                        <span ><b>Transforms</b></span>
+                        <a href="#Transforms"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  number: (v: string) &#x3D;&gt; Number(v),
+  json: &lt;T&gt;(v: string) &#x3D;&gt; JSON.parse(v) as T
+} as const</code>
                     </td>
                 </tr>
 

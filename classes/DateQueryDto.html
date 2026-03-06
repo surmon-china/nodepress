@@ -137,7 +137,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/dtos/querys.dto.ts</code>
+            <code>src/dtos/queries.dto.ts</code>
         </p>
 
 
@@ -215,7 +215,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/dtos/querys.dto.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/dtos/queries.dto.ts:17</a></div>
                         </td>
                     </tr>
 
@@ -234,7 +234,9 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsOptional, IsNotEmpty, IsDateString, IsString } from &#x27;class-validator&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import _escapeRegExp from &#x27;lodash/escapeRegExp&#x27;
+import { Transform } from &#x27;class-transformer&#x27;
+import { IsDateString, IsString, IsOptional, IsNotEmpty, MaxLength } from &#x27;class-validator&#x27;
 import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
 
 // https://www.progress.com/blogs/understanding-iso-8601-date-and-time-format
@@ -246,10 +248,12 @@ export class DateQueryDto {
 }
 
 export class KeywordQueryDto {
-  @IsString()
+  @MaxLength(50)
   @IsNotEmpty()
+  @IsString()
   @IsOptional()
-  @NormalizeString({ trim: true })
+  @NormalizeString({ trim: true, collapseSpaces: true })
+  @Transform(({ value }) &#x3D;&gt; (typeof value &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? _escapeRegExp(value) : value))
   keyword?: string
 }
 </code></pre>

@@ -639,7 +639,7 @@ import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
 import { MongooseModel } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { CacheService, CacheManualResult } from &#x27;@app/core/cache/cache.service&#x27;
-import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
+import { GlobalCacheKey } from &#x27;@app/constants/cache.constant&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { Option, OptionPublic, Blocklist, DEFAULT_OPTIONS, OPTIONS_SINGLETON_QUERY } from &#x27;./options.model&#x27;
@@ -657,7 +657,7 @@ export class OptionsService implements OnModuleInit {
     private readonly cacheService: CacheService
   ) {
     this.optionsCache &#x3D; this.cacheService.manual({
-      key: CacheKeys.PublicOptions,
+      key: GlobalCacheKey.PublicOptions,
       promise: () &#x3D;&gt; {
         return this.ensureOptions().then((option) &#x3D;&gt; {
           return _omit(option, [&#x27;blocklist&#x27;, &#x27;_id&#x27;]) as OptionPublic

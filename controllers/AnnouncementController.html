@@ -234,8 +234,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="47"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:47</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:48</a></div>
                         </td>
                     </tr>
 
@@ -312,8 +312,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="68"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:68</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="69"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:69</a></div>
                         </td>
                     </tr>
 
@@ -390,8 +390,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="54"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:54</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -544,8 +544,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="61"
-                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:61</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="62"
+                                    class="link-to-prism">src/modules/announcement/announcement.controller.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -636,8 +636,9 @@ export class AnnouncementController {
 
     // search
     if (filters.keyword) {
-      queryFilter.content &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
+      queryFilter.content &#x3D; { $regex: filters.keyword, $options: &#x27;i&#x27; }
     }
+
     // status
     if (!_isUndefined(filters.status)) {
       queryFilter.status &#x3D; filters.status

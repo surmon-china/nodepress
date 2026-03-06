@@ -176,7 +176,6 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
-                                    <span class="modifier">Async</span>
                                 <a href="#deleteComment" >deleteComment</a>
                             </li>
                             <li>
@@ -264,8 +263,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="151"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:151</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="150"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:150</a></div>
                         </td>
                     </tr>
 
@@ -410,7 +409,6 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
-                            <span class="modifier">Async</span>
                         <span ><b>deleteComment</b></span>
                         <a href="#deleteComment"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -433,8 +431,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="187"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:187</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="186"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:186</a></div>
                         </td>
                     </tr>
 
@@ -470,7 +468,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -511,8 +509,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="166"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:166</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:165</a></div>
                         </td>
                     </tr>
 
@@ -588,8 +586,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="173"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:173</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="172"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:172</a></div>
                         </td>
                     </tr>
 
@@ -754,8 +752,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="141"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:141</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="140"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:140</a></div>
                         </td>
                     </tr>
 
@@ -843,8 +841,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="180"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:180</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:179</a></div>
                         </td>
                     </tr>
 
@@ -933,8 +931,8 @@
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="159"
-                                    class="link-to-prism">src/modules/comment/comment.controller.ts:159</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="158"
+                                    class="link-to-prism">src/modules/comment/comment.controller.ts:158</a></div>
                         </td>
                     </tr>
 
@@ -1002,7 +1000,7 @@ import { OnlyIdentity, IdentityRole } from &#x27;@app/decorators/only-identity.d
 import { RequestContext, IRequestContext } from &#x27;@app/decorators/request-context.decorator&#x27;
 import { SuccessResponse } from &#x27;@app/decorators/success-response.decorator&#x27;
 import { PermissionPipe } from &#x27;@app/pipes/permission.pipe&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { SortMode, SortOrder } from &#x27;@app/constants/sort.constant&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { CommentPaginateQueryDto, CommentCalendarQueryDto } from &#x27;./comment.dto&#x27;
@@ -1044,7 +1042,7 @@ export class CommentController {
 
       return await this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0)
     } catch (error) {
-      this.eventEmitter.emit(EventKeys.CommentCreateFailed, { input, visitor, error })
+      this.eventEmitter.emit(GlobalEventKey.CommentCreateFailed, { input, visitor, error })
       throw error
     }
   }
@@ -1085,11 +1083,10 @@ export class CommentController {
     }
     // search
     if (filters.keyword) {
-      const keywordRegExp &#x3D; new RegExp(filters.keyword, &#x27;i&#x27;)
       queryFilter.$or &#x3D; [
-        { content: keywordRegExp },
-        { author_name: keywordRegExp },
-        { author_email: keywordRegExp }
+        { content: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { author_name: { $regex: filters.keyword, $options: &#x27;i&#x27; } },
+        { author_email: { $regex: filters.keyword, $options: &#x27;i&#x27; } }
       ]
     }
 
@@ -1170,7 +1167,7 @@ export class CommentController {
   @Delete(&#x27;:id&#x27;)
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse(&#x27;Delete comment succeeded&#x27;)
-  async deleteComment(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
+  deleteComment(@Param(&#x27;id&#x27;, ParseIntPipe) id: number) {
     return this.commentService.delete(id)
   }
 }

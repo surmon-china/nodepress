@@ -250,7 +250,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.UserCreated)<br /></code>
+                    <code>@OnEvent(GlobalEventKey.UserCreated)<br /></code>
                 </td>
             </tr>
 
@@ -326,7 +326,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.UserDeleted)<br /></code>
+                    <code>@OnEvent(GlobalEventKey.UserDeleted)<br /></code>
                 </td>
             </tr>
 
@@ -387,7 +387,7 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { getTimeText, linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
@@ -401,7 +401,7 @@ const logger &#x3D; createLogger({ scope: &#x27;UserListener&#x27;, time: isDevE
 export class UserListener {
   constructor(private readonly emailService: EmailService) {}
 
-  @OnEvent(EventKeys.UserCreated)
+  @OnEvent(GlobalEventKey.UserCreated)
   handleUserCreated(user: User) {
     // logger.log(&#x60;New user created: ${user.name} (#${user.id})&#x60;)
 
@@ -421,7 +421,7 @@ export class UserListener {
     })
   }
 
-  @OnEvent(EventKeys.UserDeleted)
+  @OnEvent(GlobalEventKey.UserDeleted)
   handleUserDeleted(user: User) {
     logger.log(&#x60;User deleted: ${user.name} (#${user.id})&#x60;)
 

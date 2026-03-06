@@ -432,7 +432,7 @@ import { ArticleStatsService } from &#x27;@app/modules/article/article.service.s
 import { CommentStatsService } from &#x27;@app/modules/comment/comment.service.stats&#x27;
 import { FeedbackService } from &#x27;@app/modules/feedback/feedback.service&#x27;
 import { TagService } from &#x27;@app/modules/tag/tag.service&#x27;
-import { CacheKeys } from &#x27;@app/constants/cache.constant&#x27;
+import { GlobalCacheKey } from &#x27;@app/constants/cache.constant&#x27;
 import { linesToEmailContent } from &#x27;@app/transformers/email.transformer&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
@@ -473,7 +473,7 @@ export class StatisticsService {
       const createdAt &#x3D; { $gte: oneDayAgo, $lt: now }
       const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] &#x3D;
         await Promise.all([
-          this.counterService.getGlobalCount(CacheKeys.TodayViewCount),
+          this.counterService.getGlobalCount(GlobalCacheKey.DailyArticleViewCount),
           this.commentStatsService.countDocuments({ created_at: createdAt }),
           this.voteService.countDocuments({
             created_at: createdAt,
@@ -505,7 +505,7 @@ export class StatisticsService {
     } catch (error) {
       logger.failure(&#x27;DailyStatisticsJob failed!&#x27;, error)
     } finally {
-      this.counterService.resetGlobalCount(CacheKeys.TodayViewCount).catch((error) &#x3D;&gt; {
+      this.counterService.resetGlobalCount(GlobalCacheKey.DailyArticleViewCount).catch((error) &#x3D;&gt; {
         logger.warn(&#x27;reset TODAY_VIEWS failed!&#x27;, error)
       })
     }
@@ -527,7 +527,7 @@ export class StatisticsService {
         statistics.totalViews &#x3D; value.totalViews
         statistics.totalLikes &#x3D; value.totalLikes
       }),
-      this.counterService.getGlobalCount(CacheKeys.TodayViewCount).then((value) &#x3D;&gt; {
+      this.counterService.getGlobalCount(GlobalCacheKey.DailyArticleViewCount).then((value) &#x3D;&gt; {
         statistics.todayViews &#x3D; value
       }),
       this.feedbackService.getAverageEmotion().then((value) &#x3D;&gt; {

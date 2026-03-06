@@ -178,12 +178,10 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#pullIdentity" >pullIdentity</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                    <span class="modifier">Async</span>
                                 <a href="#pushIdentity" >pushIdentity</a>
                             </li>
                             <li>
@@ -648,7 +646,6 @@
                     <a name="pullIdentity"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
                         <span ><b>pullIdentity</b></span>
                         <a href="#pullIdentity"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -713,7 +710,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -730,7 +727,6 @@
                     <a name="pushIdentity"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                            <span class="modifier">Async</span>
                         <span ><b>pushIdentity</b></span>
                         <a href="#pushIdentity"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -795,7 +791,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>unknown</code>
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                         </div>
                             <div class="io-description">
@@ -899,7 +895,7 @@ import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;
 import { MongooseModel, WithId } from &#x27;@app/interfaces/mongoose.interface&#x27;
 import { PaginateOptions, PaginateResult } from &#x27;@app/utils/paginate&#x27;
 import { InjectModel } from &#x27;@app/transformers/model.transformer&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { isDevEnv } from &#x27;@app/app.environment&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
 import { CreateUserDto, UpdateUserDto } from &#x27;./user.dto&#x27;
@@ -925,7 +921,7 @@ export class UserService {
     return this.userModel.findOne({ &#x27;identities.provider&#x27;: provider, &#x27;identities.uid&#x27;: uid }).lean().exec()
   }
 
-  public async pushIdentity(userId: number, identity: UserIdentity) {
+  public pushIdentity(userId: number, identity: UserIdentity) {
     return this.userModel
       .updateOne(
         { id: userId, &#x27;identities.provider&#x27;: { $ne: identity.provider } },
@@ -935,7 +931,7 @@ export class UserService {
       .exec()
   }
 
-  public async pullIdentity(userId: number, provider: UserIdentityProvider) {
+  public pullIdentity(userId: number, provider: UserIdentityProvider) {
     return this.userModel
       .updateOne({ id: userId }, { $pull: { identities: { provider } } })
       .lean()
@@ -948,7 +944,7 @@ export class UserService {
 
   public async create(input: CreateUserDto): Promise&lt;WithId&lt;User&gt;&gt; {
     const created &#x3D; (await this.userModel.create(input)).toObject()
-    this.eventEmitter.emit(EventKeys.UserCreated, created)
+    this.eventEmitter.emit(GlobalEventKey.UserCreated, created)
     return created
   }
 
@@ -964,7 +960,7 @@ export class UserService {
   public async delete(userId: number): Promise&lt;WithId&lt;User&gt;&gt; {
     const deleted &#x3D; await this.userModel.findOneAndDelete({ id: userId }).lean().exec()
     if (!deleted) throw new NotFoundException(&#x60;User &#x27;${userId}&#x27; not found&#x60;)
-    this.eventEmitter.emit(EventKeys.UserDeleted, deleted)
+    this.eventEmitter.emit(GlobalEventKey.UserDeleted, deleted)
     return deleted
   }
 }

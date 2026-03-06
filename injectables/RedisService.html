@@ -459,7 +459,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { createClient, RedisClientOptions } from &#x27;@redis/client&#x27;
 import { Injectable, OnModuleInit } from &#x27;@nestjs/common&#x27;
 import { EventEmitter2 } from &#x27;@nestjs/event-emitter&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { getMessageFromNormalError } from &#x27;@app/transformers/error.transformer&#x27;
 import { createRedisStore, RedisStore } from &#x27;./redis.store&#x27;
 import { createLogger } from &#x27;@app/utils/logger&#x27;
@@ -491,7 +491,7 @@ export class RedisService implements OnModuleInit {
     this.redisClient.on(&#x27;end&#x27;, () &#x3D;&gt; logger.info(&#x27;client end!&#x27;))
     this.redisClient.on(&#x27;error&#x27;, (error) &#x3D;&gt; {
       logger.failure(&#x27;client error!&#x27;, String(error))
-      this.eventEmitter.emit(EventKeys.RedisError, error)
+      this.eventEmitter.emit(GlobalEventKey.RedisError, error)
     })
   }
 

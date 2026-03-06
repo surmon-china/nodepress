@@ -239,7 +239,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/modules/admin/admin.dto.ts:31</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/modules/admin/admin.dto.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -277,7 +277,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/modules/admin/admin.dto.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/modules/admin/admin.dto.ts:35</a></div>
                         </td>
                     </tr>
 
@@ -316,7 +316,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/modules/admin/admin.dto.ts:41</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/admin/admin.dto.ts:55</a></div>
                         </td>
                     </tr>
 
@@ -355,7 +355,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/modules/admin/admin.dto.ts:36</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/modules/admin/admin.dto.ts:50</a></div>
                         </td>
                     </tr>
 
@@ -393,7 +393,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/modules/admin/admin.dto.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/modules/admin/admin.dto.ts:40</a></div>
                         </td>
                     </tr>
 
@@ -412,7 +412,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsBase64, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsString, IsBase64, IsHexadecimal, IsOptional, IsNotEmpty } from &#x27;class-validator&#x27;
 import { NormalizeString } from &#x27;@app/decorators/normalize-string.decorator&#x27;
 
 export class AuthLoginDto {
@@ -420,6 +420,20 @@ export class AuthLoginDto {
   @IsString()
   @IsNotEmpty()
   password: string
+}
+
+export class AuthLogoutDto {
+  @IsHexadecimal()
+  @IsString()
+  @IsOptional()
+  refresh_token?: string
+}
+
+export class AuthRefreshTokenDto {
+  @IsHexadecimal()
+  @IsString()
+  @IsNotEmpty()
+  refresh_token: string
 }
 
 export class UpdateProfileDto {

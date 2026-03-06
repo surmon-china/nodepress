@@ -155,11 +155,18 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
                                 <a href="#createToken" >createToken</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#invalidateToken" >invalidateToken</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#refreshToken" >refreshToken</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#revokeTokens" >revokeTokens</a>
                             </li>
                         </ul>
                     </td>
@@ -179,12 +186,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(authService: <a href="../injectables/AuthService.html" target="_self">AuthService</a>)</code>
+<code>constructor(accessTokenService: <a href="../injectables/AuthAccessTokenService.html" target="_self">AuthAccessTokenService</a>, refreshTokenService: <a href="../injectables/AuthRefreshTokenService.html" target="_self">AuthRefreshTokenService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/modules/account/auth/auth.service.token.ts:14</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/modules/account/auth/auth.service.token.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -202,10 +209,22 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>authService</td>
+                                                        <td>accessTokenService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                                        <code><a href="../injectables/AuthAccessTokenService.html" target="_self" >AuthAccessTokenService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>refreshTokenService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthRefreshTokenService.html" target="_self" >AuthRefreshTokenService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -234,6 +253,7 @@
                     <a name="createToken"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
                         <span ><b>createToken</b></span>
                         <a href="#createToken"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -242,15 +262,15 @@
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createToken(user: <a href="../classes/User.html" target="_self">User</a>)</code>
+                    <code>createToken(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="18"
-                                    class="link-to-prism">src/modules/account/auth/auth.service.token.ts:18</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/modules/account/auth/auth.service.token.ts:22</a></div>
                         </td>
                     </tr>
 
@@ -273,9 +293,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>user</td>
+                                                <td>userId</td>
                                             <td>
-                                                            <code><a href="../classes/User.html" target="_self" >User</a></code>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                             </td>
 
                                             <td>
@@ -288,7 +308,7 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthTokenResult.html" target="_self" >Promise&lt;AuthTokenResult&gt;</a></code>
 
                         </div>
                             <div class="io-description">
@@ -302,34 +322,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="invalidateToken"></a>
+                    <a name="refreshToken"></a>
                     <span class="name">
                             <span class="modifier">Public</span>
-                        <span ><b>invalidateToken</b></span>
-                        <a href="#invalidateToken"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Async</span>
+                        <span ><b>refreshToken</b></span>
+                        <a href="#refreshToken"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                         <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>invalidateToken(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>refreshToken(refreshToken: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="26"
-                                    class="link-to-prism">src/modules/account/auth/auth.service.token.ts:26</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="42"
+                                    class="link-to-prism">src/modules/account/auth/auth.service.token.ts:42</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Invalidate user auth token</p>
-</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -344,7 +363,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                                <td>token</td>
+                                                <td>refreshToken</td>
                                             <td>
                                                             <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                             </td>
@@ -359,7 +378,89 @@
                                 </table>
                             </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                            <b>Returns : </b>        <code><a href="../interfaces/AuthTokenResult.html" target="_self" >Promise&lt;AuthTokenResult&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="revokeTokens"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>revokeTokens</b></span>
+                        <a href="#revokeTokens"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>revokeTokens(accessToken: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, refreshToken?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/modules/account/auth/auth.service.token.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>accessToken</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>refreshToken</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                         </div>
                             <div class="io-description">
@@ -375,27 +476,54 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
-import { AuthService } from &#x27;@app/core/auth/auth.service&#x27;
-import { AuthRole } from &#x27;@app/constants/auth.constant&#x27;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, UnauthorizedException } from &#x27;@nestjs/common&#x27;
+import { AuthAccessTokenService } from &#x27;@app/core/auth/auth.service.access-token&#x27;
+import { AuthRefreshTokenService } from &#x27;@app/core/auth/auth.service.refresh-token&#x27;
+import { AuthTokenResult } from &#x27;@app/core/auth/auth.interface&#x27;
+import { AuthRole, AuthPayload } from &#x27;@app/constants/auth.constant&#x27;
 import { APP_AUTH } from &#x27;@app/app.config&#x27;
-import { User } from &#x27;@app/modules/user/user.model&#x27;
 
 @Injectable()
 export class UserAuthTokenService {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly accessTokenService: AuthAccessTokenService,
+    private readonly refreshTokenService: AuthRefreshTokenService
+  ) {}
 
   /** Sign a user auth token */
-  public createToken(user: User) {
-    return this.authService.signToken(
-      { role: AuthRole.User, uid: user.id },
-      { expiresIn: APP_AUTH.jwtExpiresInForUser }
-    )
+  public async createToken(userId: number): Promise&lt;AuthTokenResult&gt; {
+    const authPayload: AuthPayload &#x3D; { role: AuthRole.User, uid: userId }
+
+    // access token
+    const expiresIn &#x3D; APP_AUTH.jwtExpiresInForUser
+    const accessToken &#x3D; this.accessTokenService.signToken(authPayload, { expiresIn })
+
+    // refresh token
+    const refreshToken &#x3D; this.refreshTokenService.generateToken()
+    const refreshExpiresIn &#x3D; APP_AUTH.refreshTokenExpiresInForUser
+    await this.refreshTokenService.storeToken(refreshToken, authPayload, refreshExpiresIn)
+
+    return {
+      token_type: &#x27;Bearer&#x27;,
+      access_token: accessToken,
+      expires_in: expiresIn,
+      refresh_token: refreshToken
+    }
   }
 
-  /** Invalidate user auth token */
-  public invalidateToken(token: string) {
-    return this.authService.invalidateToken(token)
+  public async refreshToken(refreshToken: string): Promise&lt;AuthTokenResult&gt; {
+    const payload &#x3D; await this.refreshTokenService.getPayload(refreshToken)
+    if (!payload || payload.role !&#x3D;&#x3D; AuthRole.User || !payload.uid) {
+      throw new UnauthorizedException(&#x27;Invalid or expired refresh token&#x27;)
+    }
+
+    await this.refreshTokenService.revokeToken(refreshToken)
+    return await this.createToken(payload.uid)
+  }
+
+  public async revokeTokens(accessToken: string, refreshToken?: string): Promise&lt;void&gt; {
+    await this.accessTokenService.invalidateToken(accessToken)
+    if (refreshToken) await this.refreshTokenService.revokeToken(refreshToken)
   }
 }
 </code></pre>

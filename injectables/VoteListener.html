@@ -272,7 +272,7 @@
                 <td class="col-md-4">
                     <b>Decorators : </b>
                     <br />
-                    <code>@OnEvent(EventKeys.VoteCreated, {async: true})<br /></code>
+                    <code>@OnEvent(GlobalEventKey.VoteCreated, {async: true})<br /></code>
                 </td>
             </tr>
 
@@ -333,7 +333,7 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;
 import { OnEvent } from &#x27;@nestjs/event-emitter&#x27;
-import { EventKeys } from &#x27;@app/constants/events.constant&#x27;
+import { GlobalEventKey } from &#x27;@app/constants/events.constant&#x27;
 import { EmailService } from &#x27;@app/core/helper/helper.service.email&#x27;
 import { ArticleService } from &#x27;@app/modules/article/article.service&#x27;
 import { CommentService } from &#x27;@app/modules/comment/comment.service&#x27;
@@ -357,7 +357,7 @@ export class VoteListener {
     private readonly commentService: CommentService
   ) {}
 
-  @OnEvent(EventKeys.VoteCreated, { async: true })
+  @OnEvent(GlobalEventKey.VoteCreated, { async: true })
   async handleVoteCreated(vote: VoteWithUser) {
     try {
       const voteEmoji &#x3D; vote.vote_type &#x3D;&#x3D;&#x3D; VoteType.Upvote ? &#x27;👍&#x27; : &#x27;👎&#x27;
