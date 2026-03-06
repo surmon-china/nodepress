@@ -69,7 +69,7 @@ let CommentService = class CommentService {
         const created = await this.commentModel.create({ ...input, ip_location });
         const populated = await created.populate('user', user_model_1.USER_PUBLIC_POPULATE_SELECT);
         this.effectService.syncTargetEffects([populated]);
-        this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreated, populated.toObject());
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.CommentCreated, populated.toObject());
         return populated;
     }
     async validateAndCreate(input, referer) {

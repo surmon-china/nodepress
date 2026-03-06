@@ -40,7 +40,7 @@ let ArticleService = class ArticleService {
         this.cacheService = cacheService;
         this.articleModel = articleModel;
         this.allPublicArticlesCache = this.cacheService.manual({
-            key: cache_constant_1.CacheKeys.PublicAllArticles,
+            key: cache_constant_1.GlobalCacheKey.PublicAllArticles,
             promise: () => this.getAllArticles({ publicOnly: true, withDetail: false })
         });
     }
@@ -103,7 +103,7 @@ let ArticleService = class ArticleService {
         const created = await this.articleModel.create(input);
         const populated = await this.getDetail(created.id, { lean: true, populate: true });
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleCreated, populated);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.ArticleCreated, populated);
         this.seoService.push((0, urlmap_transformer_1.getArticleUrl)(created.id));
         return created;
     }
@@ -125,7 +125,7 @@ let ArticleService = class ArticleService {
             throw new common_1.NotFoundException(`Article '${articleId}' not found`);
         const populated = await this.getDetail(updated.id, { lean: true, populate: true });
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleUpdated, populated);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.ArticleUpdated, populated);
         this.seoService.update((0, urlmap_transformer_1.getArticleUrl)(updated.id));
         return updated;
     }
@@ -134,7 +134,7 @@ let ArticleService = class ArticleService {
         if (!deleted)
             throw new common_1.NotFoundException(`Article '${articleId}' not found`);
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticleDeleted, articleId);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.ArticleDeleted, articleId);
         this.seoService.delete((0, urlmap_transformer_1.getArticleUrl)(deleted.id));
         return deleted;
     }
@@ -143,7 +143,7 @@ let ArticleService = class ArticleService {
             .updateMany({ id: { $in: articleIds } }, { $set: { status } })
             .exec();
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticlesStatusChanged, { articleIds, status });
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.ArticlesStatusChanged, { articleIds, status });
         return actionResult;
     }
     async batchDelete(articleIds) {
@@ -153,7 +153,7 @@ let ArticleService = class ArticleService {
             .exec();
         const actionResult = await this.articleModel.deleteMany({ id: { $in: articleIds } }).exec();
         this.updateAllPublicArticlesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.ArticlesDeleted, articleIds);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.ArticlesDeleted, articleIds);
         this.seoService.delete(articles.map((article) => (0, urlmap_transformer_1.getArticleUrl)(article.id)));
         return actionResult;
     }

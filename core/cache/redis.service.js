@@ -70,7 +70,7 @@ let RedisService = class RedisService {
         this.redisClient.on('end', () => logger.info('client end!'));
         this.redisClient.on('error', (error) => {
             logger.failure('client error!', String(error));
-            this.eventEmitter.emit(events_constant_1.EventKeys.RedisError, error);
+            this.eventEmitter.emit(events_constant_1.GlobalEventKey.RedisError, error);
         });
     }
     async onModuleInit() {

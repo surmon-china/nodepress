@@ -38,9 +38,9 @@ let AiController = class AiController {
                 comment_reply: ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.commentReply
             },
             extra_keys: {
-                article_summary: extras_constant_1.ArticleAiSummaryExtraKeys,
-                article_review: extras_constant_1.ArticleAiReviewExtraKeys,
-                comment_generation: extras_constant_1.CommentAiGenerationExtraKeys
+                article_summary: extras_constant_1.ArticleAiSummaryExtraKey,
+                article_review: extras_constant_1.ArticleAiReviewExtraKey,
+                comment_generation: extras_constant_1.CommentAiGenerationExtraKey
             }
         };
     }

@@ -34,7 +34,7 @@ let AiListener = class AiListener {
             return;
         if (comment.content.trim().length < 5)
             return;
-        if ((0, extra_transformer_1.getExtraValue)(comment.extras, extras_constant_1.CommentAiGenerationExtraKeys.Flag))
+        if ((0, extra_transformer_1.getExtraValue)(comment.extras, extras_constant_1.CommentAiGenerationExtraKey.Flag))
             return;
         if (comment.user?.type === user_constant_1.UserType.Moderator)
             return;
@@ -50,9 +50,9 @@ let AiListener = class AiListener {
                 author_website: null
             };
             const aiCommentExtras = [
-                { key: extras_constant_1.CommentAiGenerationExtraKeys.Flag, value: 'true' },
-                { key: extras_constant_1.CommentAiGenerationExtraKeys.Model, value: aiResult.model },
-                { key: extras_constant_1.CommentAiGenerationExtraKeys.Provider, value: aiResult.provider }
+                { key: extras_constant_1.CommentAiGenerationExtraKey.Flag, value: 'true' },
+                { key: extras_constant_1.CommentAiGenerationExtraKey.Model, value: aiResult.model },
+                { key: extras_constant_1.CommentAiGenerationExtraKey.Provider, value: aiResult.provider }
             ];
             const aiVisitor = {
                 ip: null,
@@ -73,7 +73,7 @@ let AiListener = class AiListener {
 };
 exports.AiListener = AiListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.CommentCreated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.CommentCreated, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

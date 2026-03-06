@@ -8,8 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeywordQueryDto = exports.DateQueryDto = void 0;
+const escapeRegExp_1 = __importDefault(require("lodash/escapeRegExp"));
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const normalize_string_decorator_1 = require("../decorators/normalize-string.decorator");
 class DateQueryDto {
@@ -27,10 +32,12 @@ class KeywordQueryDto {
 }
 exports.KeywordQueryDto = KeywordQueryDto;
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MaxLength)(50),
     (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
-    (0, normalize_string_decorator_1.NormalizeString)({ trim: true }),
+    (0, normalize_string_decorator_1.NormalizeString)({ trim: true, collapseSpaces: true }),
+    (0, class_transformer_1.Transform)(({ value }) => (typeof value === 'string' ? (0, escapeRegExp_1.default)(value) : value)),
     __metadata("design:type", String)
 ], KeywordQueryDto.prototype, "keyword", void 0);
-//# sourceMappingURL=querys.dto.js.map
+//# sourceMappingURL=queries.dto.js.map

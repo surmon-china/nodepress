@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateProfileDto = exports.AuthLoginDto = void 0;
+exports.UpdateProfileDto = exports.AuthRefreshTokenDto = exports.AuthLogoutDto = exports.AuthLoginDto = void 0;
 const class_validator_1 = require("class-validator");
 const normalize_string_decorator_1 = require("../../decorators/normalize-string.decorator");
 class AuthLoginDto {
@@ -22,6 +22,26 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], AuthLoginDto.prototype, "password", void 0);
+class AuthLogoutDto {
+    refresh_token;
+}
+exports.AuthLogoutDto = AuthLogoutDto;
+__decorate([
+    (0, class_validator_1.IsHexadecimal)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], AuthLogoutDto.prototype, "refresh_token", void 0);
+class AuthRefreshTokenDto {
+    refresh_token;
+}
+exports.AuthRefreshTokenDto = AuthRefreshTokenDto;
+__decorate([
+    (0, class_validator_1.IsHexadecimal)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], AuthRefreshTokenDto.prototype, "refresh_token", void 0);
 class UpdateProfileDto {
     name;
     slogan;

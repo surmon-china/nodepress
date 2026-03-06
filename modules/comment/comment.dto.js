@@ -15,7 +15,7 @@ const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
 const mapped_types_1 = require("@nestjs/mapped-types");
 const guest_permission_decorator_1 = require("../../decorators/guest-permission.decorator");
-const querys_dto_1 = require("../../dtos/querys.dto");
+const queries_dto_1 = require("../../dtos/queries.dto");
 const paginate_dto_1 = require("../../dtos/paginate.dto");
 const value_transformer_1 = require("../../transformers/value.transformer");
 const comment_constant_1 = require("./comment.constant");
@@ -34,7 +34,7 @@ exports.CreateCommentDto = CreateCommentDto;
 class UpdateCommentDto extends (0, mapped_types_1.IntersectionType)((0, mapped_types_1.PartialType)(CreateCommentDto), (0, mapped_types_1.PartialType)((0, mapped_types_1.PickType)(comment_model_1.Comment, ['status', 'likes', 'dislikes', 'extras']))) {
 }
 exports.UpdateCommentDto = UpdateCommentDto;
-class CommentPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionWithHotSortDto, querys_dto_1.KeywordQueryDto) {
+class CommentPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionWithHotSortDto, queries_dto_1.KeywordQueryDto) {
     status;
     target_type;
     target_id;

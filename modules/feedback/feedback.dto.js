@@ -16,7 +16,7 @@ const class_validator_2 = require("class-validator");
 const mapped_types_1 = require("@nestjs/mapped-types");
 const normalize_string_decorator_1 = require("../../decorators/normalize-string.decorator");
 const value_transformer_1 = require("../../transformers/value.transformer");
-const querys_dto_1 = require("../../dtos/querys.dto");
+const queries_dto_1 = require("../../dtos/queries.dto");
 const author_dto_1 = require("../../dtos/author.dto");
 const paginate_dto_1 = require("../../dtos/paginate.dto");
 const author_constant_1 = require("../../constants/author.constant");
@@ -56,7 +56,7 @@ __decorate([
     (0, normalize_string_decorator_1.NormalizeString)({ trim: true }),
     __metadata("design:type", String)
 ], UpdateFeedbackDto.prototype, "remark", void 0);
-class FeedbackPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, querys_dto_1.KeywordQueryDto) {
+class FeedbackPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, queries_dto_1.KeywordQueryDto) {
     emotion;
     marked;
     author_type;

@@ -91,7 +91,7 @@ let StatisticsService = class StatisticsService {
             const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
             const createdAt = { $gte: oneDayAgo, $lt: now };
             const [todayViews, todayNewComments, todayArticleUpVotes, todayCommentUpVotes, todayCommentDownVotes] = await Promise.all([
-                this.counterService.getGlobalCount(cache_constant_1.CacheKeys.TodayViewCount),
+                this.counterService.getGlobalCount(cache_constant_1.GlobalCacheKey.DailyArticleViewCount),
                 this.commentStatsService.countDocuments({ created_at: createdAt }),
                 this.voteService.countDocuments({
                     created_at: createdAt,
@@ -124,7 +124,7 @@ let StatisticsService = class StatisticsService {
             logger.failure('DailyStatisticsJob failed!', error);
         }
         finally {
-            this.counterService.resetGlobalCount(cache_constant_1.CacheKeys.TodayViewCount).catch((error) => {
+            this.counterService.resetGlobalCount(cache_constant_1.GlobalCacheKey.DailyArticleViewCount).catch((error) => {
                 logger.warn('reset TODAY_VIEWS failed!', error);
             });
         }
@@ -145,7 +145,7 @@ let StatisticsService = class StatisticsService {
                 statistics.totalViews = value.totalViews;
                 statistics.totalLikes = value.totalLikes;
             }),
-            this.counterService.getGlobalCount(cache_constant_1.CacheKeys.TodayViewCount).then((value) => {
+            this.counterService.getGlobalCount(cache_constant_1.GlobalCacheKey.DailyArticleViewCount).then((value) => {
                 statistics.todayViews = value;
             }),
             this.feedbackService.getAverageEmotion().then((value) => {

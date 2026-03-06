@@ -85,19 +85,19 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/, text: true }),
+    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Article.prototype, "title", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_2.IsNotEmpty)(),
-    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/, text: true }),
+    (0, typegoose_1.prop)({ type: String, required: true, validate: /\S+/ }),
     __metadata("design:type", String)
 ], Article.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_2.IsOptional)(),
-    (0, typegoose_1.prop)({ type: String, default: '', text: true }),
+    (0, typegoose_1.prop)({ type: String, default: '' }),
     __metadata("design:type", String)
 ], Article.prototype, "summary", void 0);
 __decorate([
@@ -195,15 +195,7 @@ exports.Article = Article = __decorate([
     }),
     (0, typegoose_1.index)({ status: 1, created_at: -1 }),
     (0, typegoose_1.index)({ tags: 1, status: 1, created_at: -1 }),
-    (0, typegoose_1.index)({ categories: 1, status: 1, created_at: -1 }),
-    (0, typegoose_1.index)({ title: 'text', content: 'text', summary: 'text' }, {
-        name: 'SearchIndex',
-        weights: {
-            title: 10,
-            summary: 12,
-            content: 8
-        }
-    })
+    (0, typegoose_1.index)({ categories: 1, status: 1, created_at: -1 })
 ], Article);
 exports.ArticleProvider = (0, model_transformer_1.getProviderByTypegooseClass)(Article);
 //# sourceMappingURL=article.model.js.map

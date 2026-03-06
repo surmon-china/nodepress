@@ -16,7 +16,7 @@ const mapped_types_1 = require("@nestjs/mapped-types");
 const guest_permission_decorator_1 = require("../../decorators/guest-permission.decorator");
 const value_transformer_1 = require("../../transformers/value.transformer");
 const paginate_dto_1 = require("../../dtos/paginate.dto");
-const querys_dto_1 = require("../../dtos/querys.dto");
+const queries_dto_1 = require("../../dtos/queries.dto");
 const announcement_constant_1 = require("./announcement.constant");
 const announcement_model_1 = require("./announcement.model");
 class CreateAnnouncementDto extends (0, mapped_types_1.PickType)(announcement_model_1.Announcement, ['content', 'status']) {
@@ -25,7 +25,7 @@ exports.CreateAnnouncementDto = CreateAnnouncementDto;
 class UpdateAnnouncementDto extends (0, mapped_types_1.PartialType)(CreateAnnouncementDto) {
 }
 exports.UpdateAnnouncementDto = UpdateAnnouncementDto;
-class AnnouncementPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, querys_dto_1.KeywordQueryDto) {
+class AnnouncementPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, queries_dto_1.KeywordQueryDto) {
     status;
 }
 exports.AnnouncementPaginateQueryDto = AnnouncementPaginateQueryDto;

@@ -9,7 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const jwt_1 = require("@nestjs/jwt");
 const common_1 = require("@nestjs/common");
-const auth_service_1 = require("./auth.service");
+const auth_service_access_token_1 = require("./auth.service.access-token");
+const auth_service_refresh_token_1 = require("./auth.service.refresh-token");
 const app_config_1 = require("../../app.config");
 let AuthModule = class AuthModule {
 };
@@ -32,8 +33,8 @@ exports.AuthModule = AuthModule = __decorate([
                 }
             })
         ],
-        providers: [auth_service_1.AuthService],
-        exports: [auth_service_1.AuthService]
+        providers: [auth_service_access_token_1.AuthAccessTokenService, auth_service_refresh_token_1.AuthRefreshTokenService],
+        exports: [auth_service_access_token_1.AuthAccessTokenService, auth_service_refresh_token_1.AuthRefreshTokenService]
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

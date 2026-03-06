@@ -13,7 +13,7 @@ exports.TagIdsDto = exports.TagPaginateQueryDto = exports.UpdateTagDto = exports
 const mapped_types_1 = require("@nestjs/mapped-types");
 const class_validator_1 = require("class-validator");
 const paginate_dto_1 = require("../../dtos/paginate.dto");
-const querys_dto_1 = require("../../dtos/querys.dto");
+const queries_dto_1 = require("../../dtos/queries.dto");
 const tag_model_1 = require("./tag.model");
 class CreateTagDto extends (0, mapped_types_1.PickType)(tag_model_1.Tag, ['name', 'slug', 'description', 'extras']) {
 }
@@ -21,7 +21,7 @@ exports.CreateTagDto = CreateTagDto;
 class UpdateTagDto extends (0, mapped_types_1.PartialType)(CreateTagDto) {
 }
 exports.UpdateTagDto = UpdateTagDto;
-class TagPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, querys_dto_1.KeywordQueryDto) {
+class TagPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, queries_dto_1.KeywordQueryDto) {
 }
 exports.TagPaginateQueryDto = TagPaginateQueryDto;
 class TagIdsDto {

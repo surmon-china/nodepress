@@ -1,33 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommentDisqusExtraKeys = exports.CommentAiGenerationExtraKeys = exports.ArticleAiReviewExtraKeys = exports.ArticleAiSummaryExtraKeys = void 0;
-var ArticleAiSummaryExtraKeys;
-(function (ArticleAiSummaryExtraKeys) {
-    ArticleAiSummaryExtraKeys["Content"] = "ai-summary-content";
-    ArticleAiSummaryExtraKeys["Model"] = "ai-summary-model";
-    ArticleAiSummaryExtraKeys["Provider"] = "ai-summary-provider";
-    ArticleAiSummaryExtraKeys["Timestamp"] = "ai-summary-timestamp";
-})(ArticleAiSummaryExtraKeys || (exports.ArticleAiSummaryExtraKeys = ArticleAiSummaryExtraKeys = {}));
-var ArticleAiReviewExtraKeys;
-(function (ArticleAiReviewExtraKeys) {
-    ArticleAiReviewExtraKeys["Content"] = "ai-review-content";
-    ArticleAiReviewExtraKeys["Model"] = "ai-review-model";
-    ArticleAiReviewExtraKeys["Provider"] = "ai-review-provider";
-    ArticleAiReviewExtraKeys["Timestamp"] = "ai-review-timestamp";
-    ArticleAiReviewExtraKeys["Link"] = "ai-review-link";
-})(ArticleAiReviewExtraKeys || (exports.ArticleAiReviewExtraKeys = ArticleAiReviewExtraKeys = {}));
-var CommentAiGenerationExtraKeys;
-(function (CommentAiGenerationExtraKeys) {
-    CommentAiGenerationExtraKeys["Flag"] = "ai-generated";
-    CommentAiGenerationExtraKeys["Model"] = "ai-model";
-    CommentAiGenerationExtraKeys["Provider"] = "ai-provider";
-})(CommentAiGenerationExtraKeys || (exports.CommentAiGenerationExtraKeys = CommentAiGenerationExtraKeys = {}));
-var CommentDisqusExtraKeys;
-(function (CommentDisqusExtraKeys) {
-    CommentDisqusExtraKeys["PostId"] = "disqus-post-id";
-    CommentDisqusExtraKeys["ThreadId"] = "disqus-thread-id";
-    CommentDisqusExtraKeys["AuthorId"] = "disqus-author-id";
-    CommentDisqusExtraKeys["AuthorUsername"] = "disqus-author-username";
-    CommentDisqusExtraKeys["Anonymous"] = "disqus-anonymous";
-})(CommentDisqusExtraKeys || (exports.CommentDisqusExtraKeys = CommentDisqusExtraKeys = {}));
+exports.CommentDisqusExtraKey = exports.CommentAiGenerationExtraKey = exports.ArticleAiReviewExtraKey = exports.ArticleAiSummaryExtraKey = void 0;
+var ArticleAiSummaryExtraKey;
+(function (ArticleAiSummaryExtraKey) {
+    ArticleAiSummaryExtraKey["Content"] = "ai-summary-content";
+    ArticleAiSummaryExtraKey["Model"] = "ai-summary-model";
+    ArticleAiSummaryExtraKey["Provider"] = "ai-summary-provider";
+    ArticleAiSummaryExtraKey["Timestamp"] = "ai-summary-timestamp";
+})(ArticleAiSummaryExtraKey || (exports.ArticleAiSummaryExtraKey = ArticleAiSummaryExtraKey = {}));
+var ArticleAiReviewExtraKey;
+(function (ArticleAiReviewExtraKey) {
+    ArticleAiReviewExtraKey["Content"] = "ai-review-content";
+    ArticleAiReviewExtraKey["Model"] = "ai-review-model";
+    ArticleAiReviewExtraKey["Provider"] = "ai-review-provider";
+    ArticleAiReviewExtraKey["Timestamp"] = "ai-review-timestamp";
+    ArticleAiReviewExtraKey["Link"] = "ai-review-link";
+})(ArticleAiReviewExtraKey || (exports.ArticleAiReviewExtraKey = ArticleAiReviewExtraKey = {}));
+var CommentAiGenerationExtraKey;
+(function (CommentAiGenerationExtraKey) {
+    CommentAiGenerationExtraKey["Flag"] = "ai-generated";
+    CommentAiGenerationExtraKey["Model"] = "ai-model";
+    CommentAiGenerationExtraKey["Provider"] = "ai-provider";
+})(CommentAiGenerationExtraKey || (exports.CommentAiGenerationExtraKey = CommentAiGenerationExtraKey = {}));
+var CommentDisqusExtraKey;
+(function (CommentDisqusExtraKey) {
+    CommentDisqusExtraKey["PostId"] = "disqus-post-id";
+    CommentDisqusExtraKey["ThreadId"] = "disqus-thread-id";
+    CommentDisqusExtraKey["AuthorId"] = "disqus-author-id";
+    CommentDisqusExtraKey["AuthorUsername"] = "disqus-author-username";
+    CommentDisqusExtraKey["Anonymous"] = "disqus-anonymous";
+})(CommentDisqusExtraKey || (exports.CommentDisqusExtraKey = CommentDisqusExtraKey = {}));
 //# sourceMappingURL=extras.constant.js.map

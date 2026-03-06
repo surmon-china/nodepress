@@ -22,7 +22,7 @@ let GithubAuthService = class GithubAuthService {
     constructor(httpService) {
         this.httpService = httpService;
     }
-    async getAuthorizeURL(callbackPath, state) {
+    getAuthorizeURL(callbackPath, state) {
         const redirectUri = app_environment_1.isProdEnv
             ? `${app_config_1.APP_BIZ.URL}${callbackPath}`
             : `http://localhost:${app_config_1.APP_BIZ.PORT}${callbackPath}`;
@@ -33,7 +33,7 @@ let GithubAuthService = class GithubAuthService {
         url.searchParams.set('scope', app_config_1.GITHUB_OAUTH.scope);
         return url.toString();
     }
-    async getAccessTokenByCode(code) {
+    getAccessTokenByCode(code) {
         const api = 'https://github.com/login/oauth/access_token';
         const data = {
             client_id: app_config_1.GITHUB_OAUTH.clientId,

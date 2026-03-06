@@ -30,8 +30,11 @@ let CategoryController = class CategoryController {
         const queryFilter = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
         if (filters.keyword) {
-            const keywordRegExp = new RegExp(filters.keyword, 'i');
-            queryFilter.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }];
+            queryFilter.$or = [
+                { name: { $regex: filters.keyword, $options: 'i' } },
+                { slug: { $regex: filters.keyword, $options: 'i' } },
+                { description: { $regex: filters.keyword, $options: 'i' } }
+            ];
         }
         return this.categoryService.paginate(queryFilter, paginateOptions, !identity.isAdmin);
     }

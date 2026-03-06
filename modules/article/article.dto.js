@@ -16,7 +16,7 @@ const class_validator_2 = require("class-validator");
 const mapped_types_1 = require("@nestjs/mapped-types");
 const guest_permission_decorator_1 = require("../../decorators/guest-permission.decorator");
 const value_transformer_1 = require("../../transformers/value.transformer");
-const querys_dto_1 = require("../../dtos/querys.dto");
+const queries_dto_1 = require("../../dtos/queries.dto");
 const paginate_dto_1 = require("../../dtos/paginate.dto");
 const article_constant_1 = require("./article.constant");
 const article_model_1 = require("./article.model");
@@ -41,7 +41,7 @@ exports.CreateArticleDto = CreateArticleDto;
 class UpdateArticleDto extends (0, mapped_types_1.PartialType)(CreateArticleDto) {
 }
 exports.UpdateArticleDto = UpdateArticleDto;
-class ArticlePaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionWithHotSortDto, querys_dto_1.KeywordQueryDto, querys_dto_1.DateQueryDto) {
+class ArticlePaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionWithHotSortDto, queries_dto_1.KeywordQueryDto, queries_dto_1.DateQueryDto) {
     status;
     origin;
     lang;

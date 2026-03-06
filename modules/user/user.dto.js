@@ -14,7 +14,7 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const mapped_types_1 = require("@nestjs/mapped-types");
 const paginate_dto_1 = require("../../dtos/paginate.dto");
-const querys_dto_1 = require("../../dtos/querys.dto");
+const queries_dto_1 = require("../../dtos/queries.dto");
 const value_transformer_1 = require("../../transformers/value.transformer");
 const user_constant_1 = require("./user.constant");
 const user_model_1 = require("./user.model");
@@ -32,7 +32,7 @@ exports.CreateUserDto = CreateUserDto;
 class UpdateUserDto extends (0, mapped_types_1.PartialType)((0, mapped_types_1.PickType)(user_model_1.User, ['type', 'name', 'email', 'website', 'avatar_url', 'disabled', 'extras'])) {
 }
 exports.UpdateUserDto = UpdateUserDto;
-class UserPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, querys_dto_1.KeywordQueryDto) {
+class UserPaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionDto, queries_dto_1.KeywordQueryDto) {
     type;
     disabled;
 }

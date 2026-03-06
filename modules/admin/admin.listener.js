@@ -43,7 +43,7 @@ let AdminListener = class AdminListener {
 };
 exports.AdminListener = AdminListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.AdminLoggedIn, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.AdminLoggedIn, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

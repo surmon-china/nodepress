@@ -41,7 +41,7 @@ let TagService = class TagService {
         this.articleStatsService = articleStatsService;
         this.tagModel = tagModel;
         this.allPublicTagsCache = this.cacheService.manual({
-            key: cache_constant_1.CacheKeys.PublicAllTags,
+            key: cache_constant_1.GlobalCacheKey.PublicAllTags,
             promise: () => this.getAllTags({ aggregatePublicOnly: true })
         });
     }
@@ -93,7 +93,7 @@ let TagService = class TagService {
             throw new common_1.ConflictException(`Tag slug '${input.slug}' already exists`);
         const created = await this.tagModel.create(input);
         this.updateAllPublicTagsCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.TagCreated, created);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.TagCreated, created);
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(created.slug));
         return created;
     }
@@ -108,7 +108,7 @@ let TagService = class TagService {
         if (!updated)
             throw new common_1.NotFoundException(`Tag '${tagId}' not found`);
         this.updateAllPublicTagsCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.TagUpdated, updated);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.TagUpdated, updated);
         this.seoService.push((0, urlmap_transformer_1.getTagUrl)(updated.slug));
         return updated;
     }
@@ -117,7 +117,7 @@ let TagService = class TagService {
         if (!deleted)
             throw new common_1.NotFoundException(`Tag '${tagId}' not found`);
         this.updateAllPublicTagsCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.TagDeleted, deleted._id);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.TagDeleted, deleted._id);
         this.seoService.delete((0, urlmap_transformer_1.getTagUrl)(deleted.slug));
         return deleted;
     }
@@ -129,7 +129,7 @@ let TagService = class TagService {
         const actionResult = await this.tagModel.deleteMany({ id: { $in: tagIds } }).exec();
         const tagObjectIds = tags.map((tag) => tag._id);
         this.updateAllPublicTagsCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.TagsDeleted, tagObjectIds);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.TagsDeleted, tagObjectIds);
         this.seoService.delete(tags.map((tag) => (0, urlmap_transformer_1.getTagUrl)(tag.slug)));
         return actionResult;
     }

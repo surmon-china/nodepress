@@ -9,12 +9,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthService = void 0;
+exports.AuthAccessTokenService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const cache_service_1 = require("../cache/cache.service");
 const cache_constant_1 = require("../../constants/cache.constant");
-let AuthService = class AuthService {
+let AuthAccessTokenService = class AuthAccessTokenService {
     jwtService;
     cacheService;
     constructor(jwtService, cacheService) {
@@ -55,10 +55,10 @@ let AuthService = class AuthService {
         return type === 'Bearer' ? token : undefined;
     }
 };
-exports.AuthService = AuthService;
-exports.AuthService = AuthService = __decorate([
+exports.AuthAccessTokenService = AuthAccessTokenService;
+exports.AuthAccessTokenService = AuthAccessTokenService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [jwt_1.JwtService,
         cache_service_1.CacheService])
-], AuthService);
-//# sourceMappingURL=auth.service.js.map
+], AuthAccessTokenService);
+//# sourceMappingURL=auth.service.access-token.js.map

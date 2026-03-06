@@ -24,7 +24,7 @@ let ArticleContextService = class ArticleContextService {
     constructor(articleModel) {
         this.articleModel = articleModel;
     }
-    async getNearArticles(articleId, type, count) {
+    getNearArticles(articleId, type, count) {
         const typeFieldMap = {
             early: { field: '$lt', sort: -1 },
             later: { field: '$gt', sort: 1 }

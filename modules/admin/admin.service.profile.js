@@ -15,7 +15,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminService = void 0;
+exports.AdminProfileService = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const common_1 = require("@nestjs/common");
 const model_transformer_1 = require("../../transformers/model.transformer");
@@ -24,25 +24,25 @@ const cache_constant_1 = require("../../constants/cache.constant");
 const codec_transformer_1 = require("../../transformers/codec.transformer");
 const admin_model_1 = require("./admin.model");
 const app_config_1 = require("../../app.config");
-let AdminService = class AdminService {
+let AdminProfileService = class AdminProfileService {
     cacheService;
     adminModel;
-    profileCache;
+    cache;
     constructor(cacheService, adminModel) {
         this.cacheService = cacheService;
         this.adminModel = adminModel;
-        this.profileCache = this.cacheService.manual({
-            key: cache_constant_1.CacheKeys.PublicAdminProfile,
-            promise: () => this.getProfile()
+        this.cache = this.cacheService.manual({
+            key: cache_constant_1.GlobalCacheKey.PublicAdminProfile,
+            promise: () => this.getRaw()
         });
     }
     onModuleInit() {
-        this.profileCache.update();
+        this.cache.update();
     }
-    getProfileCache() {
-        return this.profileCache.get();
+    getCache() {
+        return this.cache.get();
     }
-    async getProfile() {
+    async getRaw() {
         const adminProfile = await this.adminModel.findOne(admin_model_1.ADMIN_SINGLETON_QUERY).select('-_id').lean().exec();
         return adminProfile ?? admin_model_1.DEFAULT_ADMIN_PROFILE;
     }
@@ -56,7 +56,7 @@ let AdminService = class AdminService {
             :
                 plainPassword === app_config_1.APP_AUTH.adminDefaultPassword;
     }
-    async updateProfile(input) {
+    async update(input) {
         const { password: inputOldPassword, new_password: inputNewPassword, ...profile } = input;
         const newProfile = { ...profile };
         const existedAdmin = await this.getDocument();
@@ -82,13 +82,13 @@ let AdminService = class AdminService {
         else {
             await this.adminModel.create(newProfile);
         }
-        return await this.profileCache.update();
+        return await this.cache.update();
     }
 };
-exports.AdminService = AdminService;
-exports.AdminService = AdminService = __decorate([
+exports.AdminProfileService = AdminProfileService;
+exports.AdminProfileService = AdminProfileService = __decorate([
     (0, common_1.Injectable)(),
     __param(1, (0, model_transformer_1.InjectModel)(admin_model_1.Admin)),
     __metadata("design:paramtypes", [cache_service_1.CacheService, Object])
-], AdminService);
-//# sourceMappingURL=admin.service.js.map
+], AdminProfileService);
+//# sourceMappingURL=admin.service.profile.js.map

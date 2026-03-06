@@ -94,7 +94,7 @@ let VoteListener = class VoteListener {
 };
 exports.VoteListener = VoteListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.VoteCreated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.VoteCreated, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

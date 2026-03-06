@@ -39,7 +39,7 @@ let FeedbackController = class FeedbackController {
     async createFeedback(dto, { visitor, identity }) {
         const user = identity.isUser ? await this.userService.findOne(identity.payload.uid) : void 0;
         const created = await this.feedbackService.create(dto, visitor, user);
-        this.eventEmitter.emit(events_constant_1.EventKeys.FeedbackCreated, created.toObject());
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.FeedbackCreated, created.toObject());
         return created;
     }
     getFeedbacks(query) {
@@ -56,12 +56,11 @@ let FeedbackController = class FeedbackController {
             queryFilter.author_type = filters.author_type;
         }
         if (filters.keyword) {
-            const keywordRegExp = new RegExp(filters.keyword, 'i');
             queryFilter.$or = [
-                { content: keywordRegExp },
-                { author_name: keywordRegExp },
-                { author_email: keywordRegExp },
-                { remark: keywordRegExp }
+                { content: { $regex: filters.keyword, $options: 'i' } },
+                { author_name: { $regex: filters.keyword, $options: 'i' } },
+                { author_email: { $regex: filters.keyword, $options: 'i' } },
+                { remark: { $regex: filters.keyword, $options: 'i' } }
             ];
         }
         return this.feedbackService.paginate(queryFilter, {

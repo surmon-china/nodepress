@@ -41,7 +41,7 @@ let CategoryService = class CategoryService {
         this.articleStatsService = articleStatsService;
         this.categoryModel = categoryModel;
         this.allPublicCategoriesCache = this.cacheService.manual({
-            key: cache_constant_1.CacheKeys.PublicAllCategories,
+            key: cache_constant_1.GlobalCacheKey.PublicAllCategories,
             promise: () => this.getAllCategories({ aggregatePublicOnly: true })
         });
     }
@@ -91,7 +91,7 @@ let CategoryService = class CategoryService {
         }
         const created = await this.categoryModel.create(input);
         this.updateAllPublicCategoriesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.CategoryCreated, created);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.CategoryCreated, created);
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(created.slug));
         return created;
     }
@@ -106,7 +106,7 @@ let CategoryService = class CategoryService {
         if (!updated)
             throw new common_1.NotFoundException(`Category '${categoryId}' not found`);
         this.updateAllPublicCategoriesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.CategoryUpdated, updated);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.CategoryUpdated, updated);
         this.seoService.push((0, urlmap_transformer_1.getCategoryUrl)(updated.slug));
         return updated;
     }
@@ -118,7 +118,7 @@ let CategoryService = class CategoryService {
             .updateMany({ parent_id: deleted.id }, { $set: { parent_id: deleted.parent_id || null } })
             .exec();
         this.updateAllPublicCategoriesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.CategoryDeleted, deleted._id);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.CategoryDeleted, deleted._id);
         this.seoService.delete((0, urlmap_transformer_1.getCategoryUrl)(deleted.slug));
         return deleted;
     }
@@ -131,7 +131,7 @@ let CategoryService = class CategoryService {
         await this.categoryModel.updateMany({ parent_id: { $in: categoryIds } }, { $set: { parent_id: null } }).exec();
         const categoryObjectIds = categories.map((category) => category._id);
         this.updateAllPublicCategoriesCache();
-        this.eventEmitter.emit(events_constant_1.EventKeys.CategoriesDeleted, categoryObjectIds);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.CategoriesDeleted, categoryObjectIds);
         this.seoService.delete(categories.map((category) => (0, urlmap_transformer_1.getCategoryUrl)(category.slug)));
         return actionResult;
     }

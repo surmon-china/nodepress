@@ -36,22 +36,22 @@ let ArticleListener = class ArticleListener {
 };
 exports.ArticleListener = ArticleListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.TagUpdated, { async: true }),
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.CategoryUpdated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.TagUpdated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.CategoryUpdated, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], ArticleListener.prototype, "handleRelationalDataUpdated", null);
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.TagDeleted, { async: true }),
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.TagsDeleted, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.TagDeleted, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.TagsDeleted, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ArticleListener.prototype, "handleTagsDeleted", null);
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.CategoryDeleted, { async: true }),
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.CategoriesDeleted, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.CategoryDeleted, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.CategoriesDeleted, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

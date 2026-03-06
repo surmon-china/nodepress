@@ -37,13 +37,13 @@ let UserService = class UserService {
     findOneByIdentity(provider, uid) {
         return this.userModel.findOne({ 'identities.provider': provider, 'identities.uid': uid }).lean().exec();
     }
-    async pushIdentity(userId, identity) {
+    pushIdentity(userId, identity) {
         return this.userModel
             .updateOne({ id: userId, 'identities.provider': { $ne: identity.provider } }, { $push: { identities: { ...identity, linked_at: new Date() } } })
             .lean()
             .exec();
     }
-    async pullIdentity(userId, provider) {
+    pullIdentity(userId, provider) {
         return this.userModel
             .updateOne({ id: userId }, { $pull: { identities: { provider } } })
             .lean()
@@ -54,7 +54,7 @@ let UserService = class UserService {
     }
     async create(input) {
         const created = (await this.userModel.create(input)).toObject();
-        this.eventEmitter.emit(events_constant_1.EventKeys.UserCreated, created);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.UserCreated, created);
         return created;
     }
     async update(userId, input) {
@@ -70,7 +70,7 @@ let UserService = class UserService {
         const deleted = await this.userModel.findOneAndDelete({ id: userId }).lean().exec();
         if (!deleted)
             throw new common_1.NotFoundException(`User '${userId}' not found`);
-        this.eventEmitter.emit(events_constant_1.EventKeys.UserDeleted, deleted);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.UserDeleted, deleted);
         return deleted;
     }
 };

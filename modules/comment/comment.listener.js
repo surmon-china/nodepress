@@ -111,13 +111,13 @@ let CommentListener = class CommentListener {
 };
 exports.CommentListener = CommentListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.CommentCreated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.CommentCreated, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], CommentListener.prototype, "handleCommentCreated", null);
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.CommentCreateFailed, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.CommentCreateFailed, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

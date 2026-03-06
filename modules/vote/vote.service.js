@@ -34,7 +34,7 @@ let VoteService = class VoteService {
     async create(vote) {
         const created = await this.voteModel.create(vote);
         const populated = await created.populate('user');
-        this.eventEmitter.emit(events_constant_1.EventKeys.VoteCreated, populated.toObject());
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.VoteCreated, populated.toObject());
         return populated;
     }
     async delete(voteId) {

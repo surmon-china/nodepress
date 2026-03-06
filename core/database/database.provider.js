@@ -70,12 +70,12 @@ exports.databaseProvider = {
         });
         mongoose_1.default.connection.on('disconnected', () => {
             logger.error(`disconnected! Attempting to reconnect after ${DATABASE_RECONNECT_INTERVAL / 1000}s`);
-            eventEmitter.emit(events_constant_1.EventKeys.DatabaseError, 'MongoDB disconnected from server!');
+            eventEmitter.emit(events_constant_1.GlobalEventKey.DatabaseError, 'MongoDB disconnected from server!');
             reconnectionTask = setTimeout(connect, DATABASE_RECONNECT_INTERVAL);
         });
         mongoose_1.default.connection.on('error', (error) => {
             logger.error('error!', error);
-            eventEmitter.emit(events_constant_1.EventKeys.DatabaseError, error);
+            eventEmitter.emit(events_constant_1.GlobalEventKey.DatabaseError, error);
             if (mongoose_1.default.connection.readyState !== 0) {
                 mongoose_1.default.disconnect();
             }

@@ -78,8 +78,11 @@ let ArticleController = class ArticleController {
             queryFilter.lang = filters.lang;
         }
         if (filters.keyword) {
-            const keywordRegExp = new RegExp(filters.keyword, 'i');
-            queryFilter.$or = [{ title: keywordRegExp }, { content: keywordRegExp }, { summary: keywordRegExp }];
+            queryFilter.$or = [
+                { title: { $regex: filters.keyword, $options: 'i' } },
+                { summary: { $regex: filters.keyword, $options: 'i' } },
+                { content: { $regex: filters.keyword, $options: 'i' } }
+            ];
         }
         if (filters.date) {
             const queryDateMS = new Date(filters.date).getTime();
@@ -114,7 +117,7 @@ let ArticleController = class ArticleController {
         });
         if (!identity.isAdmin) {
             this.articleSyncService.incrementStatistics(article.id, 'views');
-            this.counterService.incrementGlobalCount(cache_constant_1.CacheKeys.TodayViewCount);
+            this.counterService.incrementGlobalCount(cache_constant_1.GlobalCacheKey.DailyArticleViewCount);
         }
         return article;
     }

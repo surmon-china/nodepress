@@ -63,13 +63,13 @@ let UserListener = class UserListener {
 };
 exports.UserListener = UserListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.UserCreated),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.UserCreated),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_model_1.User]),
     __metadata("design:returntype", void 0)
 ], UserListener.prototype, "handleUserCreated", null);
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.UserDeleted),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.UserDeleted),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_model_1.User]),
     __metadata("design:returntype", void 0)

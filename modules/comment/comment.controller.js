@@ -59,7 +59,7 @@ let CommentController = class CommentController {
             return await this.commentService.validateAndCreate(guestComment, visitor.referer ?? void 0);
         }
         catch (error) {
-            this.eventEmitter.emit(events_constant_1.EventKeys.CommentCreateFailed, { input, visitor, error });
+            this.eventEmitter.emit(events_constant_1.GlobalEventKey.CommentCreateFailed, { input, visitor, error });
             throw error;
         }
     }
@@ -88,11 +88,10 @@ let CommentController = class CommentController {
             queryFilter.author_type = filters.author_type;
         }
         if (filters.keyword) {
-            const keywordRegExp = new RegExp(filters.keyword, 'i');
             queryFilter.$or = [
-                { content: keywordRegExp },
-                { author_name: keywordRegExp },
-                { author_email: keywordRegExp }
+                { content: { $regex: filters.keyword, $options: 'i' } },
+                { author_name: { $regex: filters.keyword, $options: 'i' } },
+                { author_email: { $regex: filters.keyword, $options: 'i' } }
             ];
         }
         if (identity.isAdmin) {
@@ -135,7 +134,7 @@ let CommentController = class CommentController {
     updateComment(id, dto) {
         return this.commentService.update(id, dto);
     }
-    async deleteComment(id) {
+    deleteComment(id) {
         return this.commentService.delete(id);
     }
 };
@@ -221,7 +220,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], CommentController.prototype, "deleteComment", null);
 exports.CommentController = CommentController = __decorate([
     (0, common_1.Controller)('comments'),

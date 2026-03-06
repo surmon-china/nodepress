@@ -46,7 +46,7 @@ let DBBackupService = class DBBackupService {
                 lastModified: result.lastModified?.toLocaleString('zh'),
                 size: (result.size / 1024).toFixed(2) + 'kb'
             };
-            this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true);
+            this.mailToAdmin('Database backup succeeded.', JSON.stringify(json, null, 2), true);
             return result;
         }
         catch (error) {
@@ -62,7 +62,7 @@ let DBBackupService = class DBBackupService {
             html: `${subject} <br> ${isCode ? `<pre>${content}</pre>` : content}`
         });
     }
-    async doBackup() {
+    doBackup() {
         const dependencies = ['mongodump', 'zip'];
         for (const dep of dependencies) {
             if (!shelljs_1.default.which(dep))

@@ -29,8 +29,11 @@ let TagController = class TagController {
         const queryFilter = {};
         const paginateOptions = { page, perPage: per_page, dateSort: sort };
         if (filters.keyword) {
-            const keywordRegExp = new RegExp(filters.keyword, 'i');
-            queryFilter.$or = [{ name: keywordRegExp }, { slug: keywordRegExp }, { description: keywordRegExp }];
+            queryFilter.$or = [
+                { name: { $regex: filters.keyword, $options: 'i' } },
+                { slug: { $regex: filters.keyword, $options: 'i' } },
+                { description: { $regex: filters.keyword, $options: 'i' } }
+            ];
         }
         return this.tagService.paginate(queryFilter, paginateOptions, !identity.isAdmin);
     }

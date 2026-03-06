@@ -29,7 +29,7 @@ let AccountActivityService = class AccountActivityService {
         this.voteModel = voteModel;
         this.commentModel = commentModel;
     }
-    async getAllVotes(userObjectId) {
+    getAllVotes(userObjectId) {
         return this.voteModel.find({ user: userObjectId }).sort({ created_at: sort_constant_1.SortOrder.Desc }).lean().exec();
     }
     getAllPublicComments(userObjectId) {

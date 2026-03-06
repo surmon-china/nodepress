@@ -33,7 +33,7 @@ let OptionsController = class OptionsController {
     }
     async updateOptions(dto) {
         const updated = await this.optionsService.updateOptions(dto);
-        this.eventEmitter.emit(events_constant_1.EventKeys.OptionsUpdated, updated);
+        this.eventEmitter.emit(events_constant_1.GlobalEventKey.OptionsUpdated, updated);
         return updated;
     }
 };

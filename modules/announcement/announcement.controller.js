@@ -33,7 +33,7 @@ let AnnouncementController = class AnnouncementController {
         const { sort, page, per_page, ...filters } = query;
         const queryFilter = {};
         if (filters.keyword) {
-            queryFilter.content = new RegExp(filters.keyword, 'i');
+            queryFilter.content = { $regex: filters.keyword, $options: 'i' };
         }
         if (!(0, isUndefined_1.default)(filters.status)) {
             queryFilter.status = filters.status;

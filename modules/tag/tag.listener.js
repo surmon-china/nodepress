@@ -25,11 +25,11 @@ let TagListener = class TagListener {
 };
 exports.TagListener = TagListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticleCreated, { async: true }),
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticleUpdated, { async: true }),
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticleDeleted, { async: true }),
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticlesStatusChanged, { async: true }),
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticlesDeleted, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticleCreated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticleUpdated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticleDeleted, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticlesStatusChanged, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticlesDeleted, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

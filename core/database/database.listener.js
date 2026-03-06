@@ -38,7 +38,7 @@ let DatabaseListener = class DatabaseListener {
 };
 exports.DatabaseListener = DatabaseListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.DatabaseError, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.DatabaseError, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

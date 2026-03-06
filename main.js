@@ -13,7 +13,7 @@ const logging_interceptor_1 = require("./interceptors/logging.interceptor");
 const exception_filter_1 = require("./filters/exception.filter");
 const identity_constant_1 = require("./constants/identity.constant");
 const auth_constant_1 = require("./constants/auth.constant");
-const auth_service_1 = require("./core/auth/auth.service");
+const auth_service_access_token_1 = require("./core/auth/auth.service.access-token");
 const app_environment_1 = require("./app.environment");
 const app_module_1 = require("./app.module");
 const app_config_1 = require("./app.config");
@@ -25,15 +25,15 @@ async function bootstrap() {
     });
     await app.register(cookie_1.default);
     await app.register(multipart_1.default, { limits: { fileSize: 1024 * 1024 * 20 }, throwFileSizeLimit: true });
-    const authService = app.get(auth_service_1.AuthService);
+    const authAccessTokenService = app.get(auth_service_access_token_1.AuthAccessTokenService);
     const fastify = app.getHttpAdapter().getInstance();
     fastify.addHook('onRequest', async (request) => {
         request.identity = new identity_constant_1.Identity({ role: identity_constant_1.IdentityRole.Guest });
-        const token = authService.extractTokenFromAuthorization(request.headers.authorization);
+        const token = authAccessTokenService.extractTokenFromAuthorization(request.headers.authorization);
         if (!token)
             return;
         try {
-            const payload = await authService.verifyToken(token);
+            const payload = await authAccessTokenService.verifyToken(token);
             if (!payload)
                 throw new common_1.UnauthorizedException('Access denied: invalid identity payload');
             if (payload.role === auth_constant_1.AuthRole.Admin) {

@@ -16,8 +16,8 @@ exports.AccountAuthController = void 0;
 const throttler_1 = require("@nestjs/throttler");
 const common_1 = require("@nestjs/common");
 const request_context_decorator_1 = require("../../../decorators/request-context.decorator");
-const success_response_decorator_1 = require("../../../decorators/success-response.decorator");
 const only_identity_decorator_1 = require("../../../decorators/only-identity.decorator");
+const success_response_decorator_1 = require("../../../decorators/success-response.decorator");
 const response_interface_1 = require("../../../interfaces/response.interface");
 const error_transformer_1 = require("../../../transformers/error.transformer");
 const account_service_identity_1 = require("../account.service.identity");
@@ -48,12 +48,12 @@ let AccountAuthController = class AccountAuthController {
     async githubLink({ identity }) {
         const payload = { intent: auth_service_state_1.AuthIntent.Link, uid: identity.payload.uid };
         const state = await this.authStateService.generateCallbackState(payload);
-        const authorizeUrl = await this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state);
+        const authorizeUrl = this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state);
         return { url: authorizeUrl };
     }
     async githubLogin() {
         const state = await this.authStateService.generateCallbackState({ intent: auth_service_state_1.AuthIntent.Login });
-        const authorizeUrl = await this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state);
+        const authorizeUrl = this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state);
         return { url: authorizeUrl };
     }
     async githubOAuthCallback({ code, state }, response) {
@@ -78,12 +78,12 @@ let AccountAuthController = class AccountAuthController {
     async googleLink({ identity }) {
         const payload = { intent: auth_service_state_1.AuthIntent.Link, uid: identity.payload.uid };
         const state = await this.authStateService.generateCallbackState(payload);
-        const authorizeUrl = await this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state);
+        const authorizeUrl = this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state);
         return { url: authorizeUrl };
     }
     async googleLogin() {
         const state = await this.authStateService.generateCallbackState({ intent: auth_service_state_1.AuthIntent.Login });
-        const authorizeUrl = await this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state);
+        const authorizeUrl = this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state);
         return { url: authorizeUrl };
     }
     async googleOAuthCallback({ code, state }, response) {
@@ -108,8 +108,8 @@ let AccountAuthController = class AccountAuthController {
         switch (statePayload.intent) {
             case auth_service_state_1.AuthIntent.Login: {
                 const user = await this.accountIdentityService.upsertUser(userIdentity);
-                const token = this.authTokenService.createToken(user);
-                return { type: auth_service_state_1.AuthIntent.Login, token };
+                const authToken = await this.authTokenService.createToken(user.id);
+                return { type: auth_service_state_1.AuthIntent.Login, auth: authToken };
             }
             case auth_service_state_1.AuthIntent.Link: {
                 await this.accountIdentityService.addIdentity(statePayload.uid, userIdentity);
@@ -119,9 +119,12 @@ let AccountAuthController = class AccountAuthController {
                 throw new common_1.BadRequestException('Invalid OAuth intent');
         }
     }
-    async logout({ identity }) {
-        await this.authTokenService.invalidateToken(identity.token);
+    async logout({ identity }, { refresh_token }) {
+        await this.authTokenService.revokeTokens(identity.token, refresh_token);
         return 'ok';
+    }
+    async refreshToken({ refresh_token }) {
+        return await this.authTokenService.refreshToken(refresh_token);
     }
 };
 exports.AccountAuthController = AccountAuthController;
@@ -189,10 +192,20 @@ __decorate([
     (0, only_identity_decorator_1.OnlyIdentity)(only_identity_decorator_1.IdentityRole.User),
     (0, success_response_decorator_1.SuccessResponse)('Logout succeeded'),
     __param(0, (0, request_context_decorator_1.RequestContext)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, auth_dto_1.AuthLogoutDto]),
     __metadata("design:returntype", Promise)
 ], AccountAuthController.prototype, "logout", null);
+__decorate([
+    (0, common_1.Post)('refresh-token'),
+    (0, throttler_1.Throttle)({ default: { ttl: (0, throttler_1.hours)(1), limit: 10 } }),
+    (0, success_response_decorator_1.SuccessResponse)('Refresh token succeeded'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [auth_dto_1.AuthRefreshTokenDto]),
+    __metadata("design:returntype", Promise)
+], AccountAuthController.prototype, "refreshToken", null);
 exports.AccountAuthController = AccountAuthController = __decorate([
     (0, common_1.Controller)('account/auth'),
     __metadata("design:paramtypes", [account_service_identity_1.AccountIdentityService,

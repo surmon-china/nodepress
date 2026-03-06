@@ -100,7 +100,7 @@ let AiService = class AiService {
             const article = await this.articleService.getDetail(comment.target_id, { lean: true });
             contextInfo = [
                 `Article Title: ${article.title}`,
-                `Article Summary: ${(0, extra_transformer_1.getExtraValue)(article.extras, extras_constant_1.ArticleAiSummaryExtraKeys.Content) || article.content.substring(0, 800)}`
+                `Article Summary: ${(0, extra_transformer_1.getExtraValue)(article.extras, extras_constant_1.ArticleAiSummaryExtraKey.Content) || article.content.substring(0, 800)}`
             ].join('\n');
         }
         const promptTemplate = config?.prompt ?? ai_config_1.DEFAULT_AI_PROMPT_TEMPLATES.commentReply;

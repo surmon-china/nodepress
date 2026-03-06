@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInvalidatedTokenCacheKey = exports.getUserAuthStateCacheKey = exports.CacheKeys = void 0;
-var CacheKeys;
-(function (CacheKeys) {
-    CacheKeys["TodayViewCount"] = "today-view-count";
-    CacheKeys["PublicOptions"] = "public-options";
-    CacheKeys["PublicAdminProfile"] = "public-admin-profile";
-    CacheKeys["PublicAllArticles"] = "public-all-articles";
-    CacheKeys["PublicAllCategories"] = "public-all-categories";
-    CacheKeys["PublicAllTags"] = "public-all-tags";
-})(CacheKeys || (exports.CacheKeys = CacheKeys = {}));
+exports.getRefreshTokenCacheKey = exports.getInvalidatedTokenCacheKey = exports.getUserAuthStateCacheKey = exports.GlobalCacheKey = void 0;
+var GlobalCacheKey;
+(function (GlobalCacheKey) {
+    GlobalCacheKey["DailyArticleViewCount"] = "daily-article-view-count";
+    GlobalCacheKey["PublicOptions"] = "public-options";
+    GlobalCacheKey["PublicAdminProfile"] = "public-admin-profile";
+    GlobalCacheKey["PublicAllArticles"] = "public-all-articles";
+    GlobalCacheKey["PublicAllCategories"] = "public-all-categories";
+    GlobalCacheKey["PublicAllTags"] = "public-all-tags";
+})(GlobalCacheKey || (exports.GlobalCacheKey = GlobalCacheKey = {}));
 const getUserAuthStateCacheKey = (key) => {
     return `auth:user-oauth-state:${key}`;
 };
@@ -18,4 +18,8 @@ const getInvalidatedTokenCacheKey = (key) => {
     return `auth:invalidated-token:${key}`;
 };
 exports.getInvalidatedTokenCacheKey = getInvalidatedTokenCacheKey;
+const getRefreshTokenCacheKey = (key) => {
+    return `auth:refresh-token:${key}`;
+};
+exports.getRefreshTokenCacheKey = getRefreshTokenCacheKey;
 //# sourceMappingURL=cache.constant.js.map

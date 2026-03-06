@@ -54,32 +54,32 @@ let WebhookListener = class WebhookListener {
 };
 exports.WebhookListener = WebhookListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.OptionsUpdated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.OptionsUpdated, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [options_model_1.Option]),
     __metadata("design:returntype", Promise)
 ], WebhookListener.prototype, "handleOptionsUpdated", null);
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticleCreated, { async: true }),
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticleUpdated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticleCreated, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticleUpdated, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], WebhookListener.prototype, "handleArticleUpsert", null);
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticlesStatusChanged, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticlesStatusChanged, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], WebhookListener.prototype, "handleArticlesStatusChange", null);
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticleDeleted, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticleDeleted, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], WebhookListener.prototype, "handleArticleDeleted", null);
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.ArticlesDeleted, { async: true }),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.ArticlesDeleted, { async: true }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Array]),
     __metadata("design:returntype", Promise)

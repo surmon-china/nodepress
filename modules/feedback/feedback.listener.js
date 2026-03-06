@@ -43,7 +43,7 @@ let FeedbackListener = class FeedbackListener {
 };
 exports.FeedbackListener = FeedbackListener;
 __decorate([
-    (0, event_emitter_1.OnEvent)(events_constant_1.EventKeys.FeedbackCreated),
+    (0, event_emitter_1.OnEvent)(events_constant_1.GlobalEventKey.FeedbackCreated),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [feedback_model_1.Feedback]),
     __metadata("design:returntype", void 0)

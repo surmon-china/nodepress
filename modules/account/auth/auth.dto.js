@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OAuthCallbackDto = void 0;
+exports.AuthRefreshTokenDto = exports.AuthLogoutDto = exports.OAuthCallbackDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
 class OAuthCallbackDto {
@@ -27,4 +27,24 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], OAuthCallbackDto.prototype, "state", void 0);
+class AuthLogoutDto {
+    refresh_token;
+}
+exports.AuthLogoutDto = AuthLogoutDto;
+__decorate([
+    (0, class_validator_1.IsHexadecimal)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], AuthLogoutDto.prototype, "refresh_token", void 0);
+class AuthRefreshTokenDto {
+    refresh_token;
+}
+exports.AuthRefreshTokenDto = AuthRefreshTokenDto;
+__decorate([
+    (0, class_validator_1.IsHexadecimal)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_2.IsNotEmpty)(),
+    __metadata("design:type", String)
+], AuthRefreshTokenDto.prototype, "refresh_token", void 0);
 //# sourceMappingURL=auth.dto.js.map
