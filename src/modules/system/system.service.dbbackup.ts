@@ -44,7 +44,7 @@ export class DBBackupService {
         lastModified: result.lastModified?.toLocaleString('zh'),
         size: (result.size / 1024).toFixed(2) + 'kb'
       }
-      this.mailToAdmin('Database backup succeeded', JSON.stringify(json, null, 2), true)
+      this.mailToAdmin('Database backup succeeded.', JSON.stringify(json, null, 2), true)
       return result
     } catch (error: unknown) {
       this.mailToAdmin('Database backup failed!', String(error))
