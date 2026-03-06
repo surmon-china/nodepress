@@ -11,7 +11,7 @@ export type PostMessagePayload =
   | {
       status: ResponseStatus.Success
       type: AuthIntent
-      auth_data?: AuthTokenResult
+      auth?: AuthTokenResult
     }
   | {
       status: ResponseStatus.Error

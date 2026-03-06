@@ -142,7 +142,7 @@ export class AccountAuthController {
         const user = await this.accountIdentityService.upsertUser(userIdentity)
         // Generate internal JWT for the authenticated user
         const authToken = await this.authTokenService.createToken(user.id)
-        return { type: AuthIntent.Login, auth_data: authToken } satisfies Partial<PostMessagePayload>
+        return { type: AuthIntent.Login, auth: authToken } satisfies Partial<PostMessagePayload>
       }
       // OAuth link
       case AuthIntent.Link: {
