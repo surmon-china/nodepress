@@ -18,7 +18,7 @@ export class ArticleContextService {
   constructor(@InjectModel(Article) private readonly articleModel: MongooseModel<Article>) {}
 
   // Get near articles
-  public async getNearArticles(
+  public getNearArticles(
     articleId: number,
     type: 'later' | 'early',
     count: number

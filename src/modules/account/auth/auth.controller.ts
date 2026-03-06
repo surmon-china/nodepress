@@ -54,7 +54,7 @@ export class AccountAuthController {
   async githubLink(@RequestContext() { identity }: IRequestContext) {
     const payload = { intent: AuthIntent.Link, uid: identity.payload!.uid! }
     const state = await this.authStateService.generateCallbackState(payload)
-    const authorizeUrl = await this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
+    const authorizeUrl = this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
     return { url: authorizeUrl }
   }
 
@@ -63,7 +63,7 @@ export class AccountAuthController {
   @SuccessResponse('Get GitHub login URL succeeded')
   async githubLogin() {
     const state = await this.authStateService.generateCallbackState({ intent: AuthIntent.Login })
-    const authorizeUrl = await this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
+    const authorizeUrl = this.githubAuthService.getAuthorizeURL(GITHUB_CALLBACK_PATH, state)
     return { url: authorizeUrl }
   }
 
@@ -102,7 +102,7 @@ export class AccountAuthController {
   async googleLink(@RequestContext() { identity }: IRequestContext) {
     const payload = { intent: AuthIntent.Link, uid: identity.payload!.uid! }
     const state = await this.authStateService.generateCallbackState(payload)
-    const authorizeUrl = await this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
+    const authorizeUrl = this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
     return { url: authorizeUrl }
   }
 
@@ -111,7 +111,7 @@ export class AccountAuthController {
   @SuccessResponse('Get Google login URL succeeded')
   async googleLogin() {
     const state = await this.authStateService.generateCallbackState({ intent: AuthIntent.Login })
-    const authorizeUrl = await this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
+    const authorizeUrl = this.googleAuthService.getAuthorizeURL(GOOGLE_CALLBACK_PATH, state)
     return { url: authorizeUrl }
   }
 

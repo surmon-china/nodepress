@@ -183,7 +183,7 @@ export class CommentController {
   @Delete(':id')
   @OnlyIdentity(IdentityRole.Admin)
   @SuccessResponse('Delete comment succeeded')
-  async deleteComment(@Param('id', ParseIntPipe) id: number) {
+  deleteComment(@Param('id', ParseIntPipe) id: number) {
     return this.commentService.delete(id)
   }
 }

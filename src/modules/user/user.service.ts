@@ -36,7 +36,7 @@ export class UserService {
     return this.userModel.findOne({ 'identities.provider': provider, 'identities.uid': uid }).lean().exec()
   }
 
-  public async pushIdentity(userId: number, identity: UserIdentity) {
+  public pushIdentity(userId: number, identity: UserIdentity) {
     return this.userModel
       .updateOne(
         { id: userId, 'identities.provider': { $ne: identity.provider } },
@@ -46,7 +46,7 @@ export class UserService {
       .exec()
   }
 
-  public async pullIdentity(userId: number, provider: UserIdentityProvider) {
+  public pullIdentity(userId: number, provider: UserIdentityProvider) {
     return this.userModel
       .updateOne({ id: userId }, { $pull: { identities: { provider } } })
       .lean()

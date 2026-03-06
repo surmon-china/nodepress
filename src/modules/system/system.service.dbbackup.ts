@@ -61,7 +61,7 @@ export class DBBackupService {
     })
   }
 
-  private async doBackup(): Promise<S3FileObject> {
+  private doBackup(): Promise<S3FileObject> {
     // 1. dependency pre-check
     const dependencies = ['mongodump', 'zip']
     for (const dep of dependencies) {

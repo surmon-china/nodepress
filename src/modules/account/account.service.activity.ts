@@ -23,7 +23,7 @@ export class AccountActivityService {
     @InjectModel(Comment) private readonly commentModel: MongooseModel<Comment>
   ) {}
 
-  public async getAllVotes(userObjectId: MongooseId): Promise<Vote[]> {
+  public getAllVotes(userObjectId: MongooseId): Promise<Vote[]> {
     return this.voteModel.find({ user: userObjectId }).sort({ created_at: SortOrder.Desc }).lean().exec()
   }
 
