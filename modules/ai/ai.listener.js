@@ -16,7 +16,6 @@ const events_constant_1 = require("../../constants/events.constant");
 const extras_constant_1 = require("../../constants/extras.constant");
 const comment_service_1 = require("../comment/comment.service");
 const comment_constant_1 = require("../comment/comment.constant");
-const user_constant_1 = require("../user/user.constant");
 const extra_transformer_1 = require("../../transformers/extra.transformer");
 const app_config_1 = require("../../app.config");
 const ai_service_1 = require("./ai.service");
@@ -35,8 +34,6 @@ let AiListener = class AiListener {
         if (comment.content.trim().length < 5)
             return;
         if ((0, extra_transformer_1.getExtraValue)(comment.extras, extras_constant_1.CommentAiGenerationExtraKey.Flag))
-            return;
-        if (comment.user?.type === user_constant_1.UserType.Moderator)
             return;
         try {
             const aiResult = await this.aiService.generateCommentReply(comment);
