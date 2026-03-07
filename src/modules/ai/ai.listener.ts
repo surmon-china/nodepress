@@ -38,7 +38,7 @@ export class AiListener {
     // 4. Prevent loops: Do not respond to comments already marked as AI-generated
     if (getExtraValue(comment.extras, CommentAiGenerationExtraKey.Flag)) return
     // 5. Do not respond to comments made by the moderator
-    if (comment.user?.type === UserType.Moderator) return
+    // if (comment.user?.type === UserType.Moderator) return
 
     try {
       // Generate AI response content
