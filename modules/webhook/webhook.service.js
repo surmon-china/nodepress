@@ -41,10 +41,10 @@ let WebhookService = class WebhookService {
             }
         })
             .then((result) => {
-            logger.success(`Event ${event} dispatched successfully.`, result.data);
+            logger.success(`Event [${event}] dispatched successfully.`, result.data.message ?? result.data);
         })
             .catch((error) => {
-            logger.failure(`Event ${event} dispatch failed!`, (0, error_transformer_1.getMessageFromAxiosError)(error));
+            logger.failure(`Event [${event}] dispatch failed!`, (0, error_transformer_1.getMessageFromAxiosError)(error));
         });
     }
 };
