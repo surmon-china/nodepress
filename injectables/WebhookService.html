@@ -351,10 +351,10 @@ export class WebhookService {
         }
       })
       .then((result) &#x3D;&gt; {
-        logger.success(&#x60;Event ${event} dispatched successfully.&#x60;, result.data)
+        logger.success(&#x60;Event [${event}] dispatched successfully.&#x60;, result.data.message ?? result.data)
       })
       .catch((error) &#x3D;&gt; {
-        logger.failure(&#x60;Event ${event} dispatch failed!&#x60;, getMessageFromAxiosError(error))
+        logger.failure(&#x60;Event [${event}] dispatch failed!&#x60;, getMessageFromAxiosError(error))
       })
   }
 }
