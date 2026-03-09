@@ -69,9 +69,7 @@ flowchart LR
     Controller --> Service(Service: Business Logic)
     Service --> Database[(Database: MongoDB)]
     Service --> Cache(Cache: Redis)
-    Service --> EventEmitter
-    EventEmitter --> Service
-
+    Service <--> EventEmitter
 ```
 
 #### Lifecycle Steps
@@ -197,13 +195,14 @@ Infrastructure-level modules shared by all business modules.
 Each business module follows this structure:
 
 ```mermaid
-flowchart TD
-    module --> controller
-    module --> service
-    module --> dto
-    module --> model(schema / model)
-    module --> def(module definition)
-
+flowchart LR
+    subgraph module ["Module"]
+        controller
+        service
+        dto
+        model(schema / model)
+        def(module definition)
+    end
 ```
 
 #### Content Modules
