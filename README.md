@@ -29,6 +29,7 @@
 **Related projects:**
 
 - **SSR blog:** [`surmon.me`](https://github.com/surmon-china/surmon.me) built with Vue.
+- **Blog AI Agent:** [`surmon.me.ai`](https://github.com/surmon-china/surmon.me.ai) built on Cloudflare.
 - **Blog admin site:** [`surmon.me.admin`](https://github.com/surmon-china/surmon.me.admin) built with React and [Veact](https://github.com/veactjs/veact).
 - **Blog native app:** [`surmon.me.native`](https://github.com/surmon-china/surmon.me.native) built with React Native.
 
