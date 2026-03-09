@@ -69,9 +69,7 @@ flowchart LR
     Controller --> Service(Service: Business Logic)
     Service --> Database[(Database: MongoDB)]
     Service --> Cache(Cache: Redis)
-    Service --> EventEmitter
-    EventEmitter --> Service
-
+    Service <--> EventEmitter
 ```
 
 #### 生命周期步骤
@@ -196,12 +194,14 @@ NodePress 中的数据来源包括：
 每个业务模块遵循此结构：
 
 ```mermaid
-flowchart TD
-    module --> controller
-    module --> service
-    module --> dto
-    module --> model(schema / model)
-    module --> def(module definition)
+flowchart LR
+    subgraph module ["Module"]
+        controller
+        service
+        dto
+        model(schema / model)
+        def(module definition)
+    end
 ```
 
 #### 主体内容
