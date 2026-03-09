@@ -1,6 +1,6 @@
 # NodePress 核心架构文档（v7）
 
-[English](./ARCHITECTURE.md) | [简体中文](./ARCHITECTURE.zh-CN.md)
+[English](./ARCHITECTURE.md)｜[简体中文](./ARCHITECTURE.zh-CN.md)
 
 NodePress 是一个基于 NestJS 且追求极致工程实践的博客 CMS 后端，为多端应用提供统一的数据和业务逻辑支撑。
 
