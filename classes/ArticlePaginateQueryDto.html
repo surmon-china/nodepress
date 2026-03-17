@@ -209,6 +209,14 @@
                                     <span class="modifier">Optional</span>
                                 <a href="#tag_slug" >tag_slug</a>
                             </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#unlisted" >unlisted</a>
+                            </li>
                         </ul>
                     </td>
                 </tr>
@@ -260,7 +268,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/modules/article/article.dto.ts:70</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/modules/article/article.dto.ts:77</a></div>
                         </td>
                     </tr>
 
@@ -299,7 +307,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/modules/article/article.dto.ts:60</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/modules/article/article.dto.ts:67</a></div>
                         </td>
                     </tr>
 
@@ -337,7 +345,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/modules/article/article.dto.ts:55</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/modules/article/article.dto.ts:62</a></div>
                         </td>
                     </tr>
 
@@ -376,7 +384,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/modules/article/article.dto.ts:51</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/modules/article/article.dto.ts:58</a></div>
                         </td>
                     </tr>
 
@@ -416,7 +424,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/modules/article/article.dto.ts:46</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/modules/article/article.dto.ts:47</a></div>
                         </td>
                     </tr>
 
@@ -455,7 +463,47 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/modules/article/article.dto.ts:65</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/modules/article/article.dto.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unlisted"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>unlisted</b></span>
+                        <a href="#unlisted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @WithGuestPermission({only: undefined, default: false})<br />@IsBoolean()<br />@IsOptional()<br />@Transform( &#x3D;&gt; )<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/modules/article/article.dto.ts:53</a></div>
                         </td>
                     </tr>
 
@@ -496,6 +544,7 @@ export class CreateArticleDto extends PickType(Article, [
   &#x27;origin&#x27;,
   &#x27;lang&#x27;,
   &#x27;featured&#x27;,
+  &#x27;unlisted&#x27;,
   &#x27;disabled_comments&#x27;,
   &#x27;tags&#x27;,
   &#x27;categories&#x27;,
@@ -514,6 +563,12 @@ export class ArticlePaginateQueryDto extends IntersectionType(
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   status?: ArticleStatus
+
+  @WithGuestPermission({ only: [false], default: false })
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToBoolean(value))
+  unlisted?: boolean
 
   @IsEnum(ArticleOrigin)
   @IsOptional()

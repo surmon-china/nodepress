@@ -224,7 +224,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/modules/article/article.dto.ts:100</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/modules/article/article.dto.ts:107</a></div>
                         </td>
                     </tr>
 
@@ -269,7 +269,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/ArticleIdsDto.html#source" target="_self" >ArticleIdsDto:94</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/ArticleIdsDto.html#source" target="_self" >ArticleIdsDto:101</a></code>
 </div>
                         </td>
                     </tr>
@@ -311,6 +311,7 @@ export class CreateArticleDto extends PickType(Article, [
   &#x27;origin&#x27;,
   &#x27;lang&#x27;,
   &#x27;featured&#x27;,
+  &#x27;unlisted&#x27;,
   &#x27;disabled_comments&#x27;,
   &#x27;tags&#x27;,
   &#x27;categories&#x27;,
@@ -329,6 +330,12 @@ export class ArticlePaginateQueryDto extends IntersectionType(
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   status?: ArticleStatus
+
+  @WithGuestPermission({ only: [false], default: false })
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToBoolean(value))
+  unlisted?: boolean
 
   @IsEnum(ArticleOrigin)
   @IsOptional()

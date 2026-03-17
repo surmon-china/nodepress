@@ -266,6 +266,12 @@
                             </li>
                             <li>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                <a href="#unlisted" >unlisted</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#updated_at" >updated_at</a>
                             </li>
@@ -320,7 +326,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="160" class="link-to-prism">src/modules/article/article.model.ts:160</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="165" class="link-to-prism">src/modules/article/article.model.ts:165</a></div>
                         </td>
                     </tr>
 
@@ -395,7 +401,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="171" class="link-to-prism">src/modules/article/article.model.ts:171</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="176" class="link-to-prism">src/modules/article/article.model.ts:176</a></div>
                         </td>
                     </tr>
 
@@ -433,7 +439,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/modules/article/article.model.ts:145</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="150" class="link-to-prism">src/modules/article/article.model.ts:150</a></div>
                         </td>
                     </tr>
 
@@ -474,7 +480,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="168" class="link-to-prism">src/modules/article/article.model.ts:168</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="173" class="link-to-prism">src/modules/article/article.model.ts:173</a></div>
                         </td>
                     </tr>
 
@@ -741,7 +747,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/modules/article/article.model.ts:148</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="153" class="link-to-prism">src/modules/article/article.model.ts:153</a></div>
                         </td>
                     </tr>
 
@@ -856,7 +862,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="154" class="link-to-prism">src/modules/article/article.model.ts:154</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">src/modules/article/article.model.ts:159</a></div>
                         </td>
                     </tr>
 
@@ -943,6 +949,44 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="unlisted"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
+                        <span ><b>unlisted</b></span>
+                        <a href="#unlisted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @IsBoolean()<br />@IsOptional()<br />@prop({type: Boolean, default: false, index: true})<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/modules/article/article.model.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="updated_at"></a>
                     <span class="name">
                             <span class="modifier"></span>
@@ -969,7 +1013,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="174" class="link-to-prism">src/modules/article/article.model.ts:174</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="179" class="link-to-prism">src/modules/article/article.model.ts:179</a></div>
                         </td>
                     </tr>
 
@@ -1122,6 +1166,11 @@ export class Article {
   @IsOptional()
   @prop({ type: Boolean, default: false, index: true })
   featured: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  @prop({ type: Boolean, default: false, index: true })
+  unlisted: boolean
 
   @IsBoolean()
   @IsOptional()

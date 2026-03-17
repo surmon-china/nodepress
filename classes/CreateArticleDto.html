@@ -157,6 +157,7 @@
   &#x27;origin&#x27;,
   &#x27;lang&#x27;,
   &#x27;featured&#x27;,
+  &#x27;unlisted&#x27;,
   &#x27;disabled_comments&#x27;,
   &#x27;tags&#x27;,
   &#x27;categories&#x27;,
@@ -201,6 +202,7 @@ export class CreateArticleDto extends PickType(Article, [
   &#x27;origin&#x27;,
   &#x27;lang&#x27;,
   &#x27;featured&#x27;,
+  &#x27;unlisted&#x27;,
   &#x27;disabled_comments&#x27;,
   &#x27;tags&#x27;,
   &#x27;categories&#x27;,
@@ -219,6 +221,12 @@ export class ArticlePaginateQueryDto extends IntersectionType(
   @IsOptional()
   @Transform(({ value }) &#x3D;&gt; unknownToNumber(value))
   status?: ArticleStatus
+
+  @WithGuestPermission({ only: [false], default: false })
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) &#x3D;&gt; unknownToBoolean(value))
+  unlisted?: boolean
 
   @IsEnum(ArticleOrigin)
   @IsOptional()

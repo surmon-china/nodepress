@@ -100,6 +100,12 @@
 
 <h1>Changelog</h1>
 <p>All notable changes to this project will be documented in this file.</p>
+<h3>8.5.0 (2026-03-17)</h3>
+<h4>Added</h4>
+<ul>
+<li><strong>[Article]</strong> Added <code>unlisted</code> field (default: <code>false</code>) to the Article model. Unlisted articles remain publicly accessible via direct URL but are excluded from all list and context queries (pagination, <code>GET /articles/all</code>, prev/next navigation, and related article recommendations). This is useful for content such as translated versions of existing articles that should not appear in the main article feed.</li>
+<li><strong>[Article]</strong> Introduced <code>ARTICLE_LISTED_PUBLIC_FILTER</code> constant to complement the existing <code>ARTICLE_PUBLIC_FILTER</code>, providing a dedicated filter for list-scoped public queries while preserving direct access semantics.</li>
+</ul>
 <h3>8.4.0 (2026-03-06)</h3>
 <h4>Refactored</h4>
 <ul>
