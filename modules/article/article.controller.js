@@ -68,6 +68,9 @@ let ArticleController = class ArticleController {
         if (!(0, isUndefined_1.default)(filters.status)) {
             queryFilter.status = filters.status;
         }
+        if (!(0, isUndefined_1.default)(filters.unlisted)) {
+            queryFilter.unlisted = filters.unlisted;
+        }
         if (!(0, isUndefined_1.default)(filters.origin)) {
             queryFilter.origin = filters.origin;
         }
@@ -103,7 +106,7 @@ let ArticleController = class ArticleController {
     }
     getAllArticles({ with_detail }, { identity }) {
         return identity.isAdmin
-            ? this.articleService.getAllArticles({ publicOnly: false, withDetail: !!with_detail })
+            ? this.articleService.getAllArticles({ publicOnly: false, listedOnly: false, withDetail: !!with_detail })
             : this.articleService.getAllPublicArticlesCache();
     }
     getArticlesCalendar({ timezone }, { identity }) {

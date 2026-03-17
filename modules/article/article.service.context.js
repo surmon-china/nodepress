@@ -31,7 +31,7 @@ let ArticleContextService = class ArticleContextService {
         };
         const targetType = typeFieldMap[type];
         return this.articleModel
-            .find({ ...article_constant_1.ARTICLE_PUBLIC_FILTER, id: { [targetType.field]: articleId } })
+            .find({ ...article_constant_1.ARTICLE_LISTED_PUBLIC_FILTER, id: { [targetType.field]: articleId } })
             .select(article_model_1.ARTICLE_LIST_QUERY_PROJECTION)
             .populate(article_model_1.ARTICLE_RELATION_FIELDS)
             .sort({ id: targetType.sort })
@@ -46,7 +46,7 @@ let ArticleContextService = class ArticleContextService {
         return await this.articleModel.aggregate([
             {
                 $match: {
-                    ...article_constant_1.ARTICLE_PUBLIC_FILTER,
+                    ...article_constant_1.ARTICLE_LISTED_PUBLIC_FILTER,
                     tags: { $in: article.tags },
                     categories: { $in: article.categories },
                     id: { $ne: article.id }

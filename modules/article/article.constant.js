@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ARTICLE_HOTTEST_SORT_CONFIG = exports.ARTICLE_PUBLIC_FILTER = exports.ArticleLanguage = exports.ArticleOrigin = exports.ArticleStatus = void 0;
+exports.ARTICLE_HOTTEST_SORT_CONFIG = exports.ARTICLE_LISTED_PUBLIC_FILTER = exports.ARTICLE_PUBLIC_FILTER = exports.ArticleLanguage = exports.ArticleOrigin = exports.ArticleStatus = void 0;
 const sort_constant_1 = require("../../constants/sort.constant");
 var ArticleStatus;
 (function (ArticleStatus) {
@@ -23,6 +23,10 @@ var ArticleLanguage;
 })(ArticleLanguage || (exports.ArticleLanguage = ArticleLanguage = {}));
 exports.ARTICLE_PUBLIC_FILTER = Object.freeze({
     status: ArticleStatus.Published
+});
+exports.ARTICLE_LISTED_PUBLIC_FILTER = Object.freeze({
+    ...exports.ARTICLE_PUBLIC_FILTER,
+    unlisted: false
 });
 exports.ARTICLE_HOTTEST_SORT_CONFIG = Object.freeze({
     'stats.comments': sort_constant_1.SortOrder.Desc,

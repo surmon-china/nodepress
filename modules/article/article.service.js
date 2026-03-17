@@ -41,7 +41,7 @@ let ArticleService = class ArticleService {
         this.articleModel = articleModel;
         this.allPublicArticlesCache = this.cacheService.manual({
             key: cache_constant_1.GlobalCacheKey.PublicAllArticles,
-            promise: () => this.getAllArticles({ publicOnly: true, withDetail: false })
+            promise: () => this.getAllArticles({ publicOnly: true, listedOnly: true, withDetail: false })
         });
     }
     onModuleInit() {
@@ -63,8 +63,9 @@ let ArticleService = class ArticleService {
         });
     }
     getAllArticles(options) {
+        const publicFilter = options.listedOnly ? article_constant_1.ARTICLE_LISTED_PUBLIC_FILTER : article_constant_1.ARTICLE_PUBLIC_FILTER;
         const query = this.articleModel
-            .find(options.publicOnly ? article_constant_1.ARTICLE_PUBLIC_FILTER : {})
+            .find(options.publicOnly ? publicFilter : {})
             .sort({ created_at: sort_constant_1.SortOrder.Desc })
             .populate(article_model_2.ARTICLE_RELATION_FIELDS)
             .lean();

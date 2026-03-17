@@ -31,6 +31,7 @@ class CreateArticleDto extends (0, mapped_types_1.PickType)(article_model_1.Arti
     'origin',
     'lang',
     'featured',
+    'unlisted',
     'disabled_comments',
     'tags',
     'categories',
@@ -43,6 +44,7 @@ class UpdateArticleDto extends (0, mapped_types_1.PartialType)(CreateArticleDto)
 exports.UpdateArticleDto = UpdateArticleDto;
 class ArticlePaginateQueryDto extends (0, mapped_types_1.IntersectionType)(paginate_dto_1.PaginateOptionWithHotSortDto, queries_dto_1.KeywordQueryDto, queries_dto_1.DateQueryDto) {
     status;
+    unlisted;
     origin;
     lang;
     featured;
@@ -57,6 +59,13 @@ __decorate([
     (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToNumber)(value)),
     __metadata("design:type", Number)
 ], ArticlePaginateQueryDto.prototype, "status", void 0);
+__decorate([
+    (0, guest_permission_decorator_1.WithGuestPermission)({ only: [false], default: false }),
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_2.IsOptional)(),
+    (0, class_transformer_1.Transform)(({ value }) => (0, value_transformer_1.unknownToBoolean)(value)),
+    __metadata("design:type", Boolean)
+], ArticlePaginateQueryDto.prototype, "unlisted", void 0);
 __decorate([
     (0, class_validator_1.IsEnum)(article_constant_1.ArticleOrigin),
     (0, class_validator_2.IsOptional)(),

@@ -60,6 +60,7 @@ let Article = class Article {
     origin;
     lang;
     featured;
+    unlisted;
     disabled_comments;
     stats;
     tags;
@@ -138,6 +139,12 @@ __decorate([
     (0, typegoose_1.prop)({ type: Boolean, default: false, index: true }),
     __metadata("design:type", Boolean)
 ], Article.prototype, "featured", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_2.IsOptional)(),
+    (0, typegoose_1.prop)({ type: Boolean, default: false, index: true }),
+    __metadata("design:type", Boolean)
+], Article.prototype, "unlisted", void 0);
 __decorate([
     (0, class_validator_1.IsBoolean)(),
     (0, class_validator_2.IsOptional)(),
