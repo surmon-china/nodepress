@@ -24,13 +24,13 @@
 <title>cluster_CommentModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-268 1641,-268 1641,-70 8,-70"/>
 </g>
-<g id="clust3" class="cluster">
-<title>cluster_CommentModule_imports</title>
-<polygon fill="none" stroke="black" points="1293,-78 1293,-130 1633,-130 1633,-78 1293,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_CommentModule_exports</title>
 <polygon fill="none" stroke="black" points="770,-208 770,-260 1064,-260 1064,-208 770,-208"/>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_CommentModule_imports</title>
+<polygon fill="none" stroke="black" points="1293,-78 1293,-130 1633,-130 1633,-78 1293,-78"/>
 </g>
 <g id="clust6" class="cluster">
 <title>cluster_CommentModule_providers</title>
