@@ -4,6 +4,16 @@ This migration guide provides the necessary MongoDB shell scripts to transition 
 
 ## Migration Guide
 
+### From v8.4 to v8.5
+
+#### Articles
+
+Backfill the `unlisted` field for all existing articles.
+
+```javascript
+db.articles.updateMany({ unlisted: { $exists: false } }, { $set: { unlisted: false } })
+```
+
 ### From v6 to v7
 
 Version 7 introduces significant schema flattening, the move to a singleton pattern for core configurations, and the replacement of numeric constants with semantic strings.
