@@ -71,7 +71,7 @@ let AiService = class AiService {
         return await this.requestAiGateway({
             prompt: finalPrompt,
             model: model ?? ai_config_1.AiModelIds.DeepSeekChat,
-            temperature: temperature ?? 0.4
+            temperature: temperature ?? 0.6
         });
     }
     async generateArticleReview({ model, prompt, temperature, article_id }) {

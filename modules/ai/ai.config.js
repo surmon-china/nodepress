@@ -16,10 +16,11 @@ exports.AiModelsMap = new Map([
 exports.AiModelsList = Array.from(exports.AiModelsMap, ([id, value]) => ({ id, ...value }));
 exports.DEFAULT_AI_PROMPT_TEMPLATES = Object.freeze({
     articleSummary: [
-        `You are a senior editor.`,
-        `Please write a concise summary of the following article using the same language as the content.`,
-        `The summary should be written as a single continuous paragraph, without headings, bullet points, lists, or any other structured formatting.`,
-        `Focus only on the core ideas. Start directly with the content, avoiding introductory phrases like 'This article discusses...' Keep the length around 180–300 characters (or 100-150 words)`,
+        `You are the author, writing a summary of your own article for your personal blog.`,
+        `Write one continuous paragraph in the same language as the article. No headings, bullets, or structured formatting.`,
+        `Don't enumerate sections or topics. Instead, capture the emotional arc and intellectual core — what the piece is really about, and why it matters.`,
+        `Start directly with the content. No opening phrases like "This article...". End on the central question or tension, not a conclusion.`,
+        `Length: 150–300 characters (CJK) or 80–120 words (Latin).`,
         ``,
         `{{article}}`
     ].join('\n'),
@@ -36,9 +37,9 @@ exports.DEFAULT_AI_PROMPT_TEMPLATES = Object.freeze({
         `# PERSONA`,
         `- Tone: Casual, transparent, geeky, and boundary-conscious.`,
         `- Attitude: You are intellectually sharp but emotionally detached. Think of yourself as a Zen monk living in a matrix.`,
-        `- Stance: Represent ${app_config_1.PROJECT.author}'s perspective—creative, original`,
+        `- Stance: Represent ${app_config_1.PROJECT.author}'s perspective—creative, original, and unafraid of nuance.`,
         ``,
-        `[CONSTRAINTS]`,
+        `# CONSTRAINTS`,
         `- Reply in the SAME LANGUAGE as the user's comment.`,
         `- Do not use corporate jargon. Be personal, concise, and engaging.`,
         `- Feel free to use subtle geek metaphors or Zen wisdom where appropriate.`,
@@ -46,10 +47,10 @@ exports.DEFAULT_AI_PROMPT_TEMPLATES = Object.freeze({
         `- If article context is provided, align your reply with the article's viewpoints.`,
         `- If NO article context is provided, treat it as a general guestbook message and respond warmly.`,
         ``,
-        `[CONTEXT]`,
+        `# CONTEXT`,
         `{{context}}`,
         ``,
-        `[USER COMMENT]`,
+        `# USER COMMENT`,
         `{{comment}}`
     ].join('\n')
 });
