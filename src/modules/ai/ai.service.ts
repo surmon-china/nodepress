@@ -80,7 +80,7 @@ export class AiService {
     return await this.requestAiGateway({
       prompt: finalPrompt,
       model: model ?? AiModelIds.DeepSeekChat,
-      temperature: temperature ?? 0.4
+      temperature: temperature ?? 0.6
     })
   }
 
