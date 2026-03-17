@@ -32,6 +32,11 @@ export const ARTICLE_PUBLIC_FILTER = Object.freeze({
   status: ArticleStatus.Published
 } as const)
 
+export const ARTICLE_LISTED_PUBLIC_FILTER = Object.freeze({
+  ...ARTICLE_PUBLIC_FILTER,
+  unlisted: false
+} as const)
+
 export const ARTICLE_HOTTEST_SORT_CONFIG = Object.freeze({
   'stats.comments': SortOrder.Desc,
   'stats.likes': SortOrder.Desc

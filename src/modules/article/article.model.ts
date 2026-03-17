@@ -141,6 +141,11 @@ export class Article {
 
   @IsBoolean()
   @IsOptional()
+  @prop({ type: Boolean, default: false, index: true })
+  unlisted: boolean
+
+  @IsBoolean()
+  @IsOptional()
   @prop({ type: Boolean, default: false })
   disabled_comments: boolean
 

@@ -60,6 +60,9 @@ export class ArticleController {
     if (!_isUndefined(filters.status)) {
       queryFilter.status = filters.status
     }
+    if (!_isUndefined(filters.unlisted)) {
+      queryFilter.unlisted = filters.unlisted
+    }
     if (!_isUndefined(filters.origin)) {
       queryFilter.origin = filters.origin
     }
@@ -109,7 +112,7 @@ export class ArticleController {
     @RequestContext() { identity }: IRequestContext
   ) {
     return identity.isAdmin
-      ? this.articleService.getAllArticles({ publicOnly: false, withDetail: !!with_detail })
+      ? this.articleService.getAllArticles({ publicOnly: false, listedOnly: false, withDetail: !!with_detail })
       : this.articleService.getAllPublicArticlesCache()
   }
 

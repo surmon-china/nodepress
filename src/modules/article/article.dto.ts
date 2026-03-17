@@ -26,6 +26,7 @@ export class CreateArticleDto extends PickType(Article, [
   'origin',
   'lang',
   'featured',
+  'unlisted',
   'disabled_comments',
   'tags',
   'categories',
@@ -44,6 +45,12 @@ export class ArticlePaginateQueryDto extends IntersectionType(
   @IsOptional()
   @Transform(({ value }) => unknownToNumber(value))
   status?: ArticleStatus
+
+  @WithGuestPermission({ only: [false], default: false })
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => unknownToBoolean(value))
+  unlisted?: boolean
 
   @IsEnum(ArticleOrigin)
   @IsOptional()

@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@app/transformers/model.transformer'
 import { MongooseModel } from '@app/interfaces/mongoose.interface'
 import { SortOrder } from '@app/constants/sort.constant'
-import { ARTICLE_PUBLIC_FILTER } from './article.constant'
+import { ARTICLE_LISTED_PUBLIC_FILTER } from './article.constant'
 import { ARTICLE_RELATION_FIELDS, ARTICLE_LIST_QUERY_PROJECTION } from './article.model'
 import { Article, ArticleListItemPopulated } from './article.model'
 
@@ -29,7 +29,7 @@ export class ArticleContextService {
     }
     const targetType = typeFieldMap[type]
     return this.articleModel
-      .find({ ...ARTICLE_PUBLIC_FILTER, id: { [targetType.field]: articleId } })
+      .find({ ...ARTICLE_LISTED_PUBLIC_FILTER, id: { [targetType.field]: articleId } })
       .select(ARTICLE_LIST_QUERY_PROJECTION)
       .populate<ArticleListItemPopulated>(ARTICLE_RELATION_FIELDS)
       .sort({ id: targetType.sort })
@@ -50,7 +50,7 @@ export class ArticleContextService {
       {
         // 2. Initial Match: Filter by public status and ensure intersection in BOTH tags AND categories.
         $match: {
-          ...ARTICLE_PUBLIC_FILTER,
+          ...ARTICLE_LISTED_PUBLIC_FILTER,
           tags: { $in: article.tags },
           categories: { $in: article.categories },
           // Exclude the current article in the query

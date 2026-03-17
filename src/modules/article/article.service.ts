@@ -16,7 +16,7 @@ import { SeoService } from '@app/core/helper/helper.service.seo'
 import { CacheService, CacheManualResult } from '@app/core/cache/cache.service'
 import { PaginateOptions, PaginateResult } from '@app/utils/paginate'
 import { getArticleUrl } from '@app/transformers/urlmap.transformer'
-import { ArticleStatus, ARTICLE_PUBLIC_FILTER } from './article.constant'
+import { ArticleStatus, ARTICLE_PUBLIC_FILTER, ARTICLE_LISTED_PUBLIC_FILTER } from './article.constant'
 import { Article, ArticleDoc, ArticleDocPopulated } from './article.model'
 import { ArticlePopulated, ArticleListItemPopulated } from './article.model'
 import { ARTICLE_RELATION_FIELDS, ARTICLE_LIST_QUERY_PROJECTION } from './article.model'
@@ -38,7 +38,7 @@ export class ArticleService implements OnModuleInit {
   ) {
     this.allPublicArticlesCache = this.cacheService.manual<Array<ArticleListItemPopulated>>({
       key: GlobalCacheKey.PublicAllArticles,
-      promise: () => this.getAllArticles({ publicOnly: true, withDetail: false })
+      promise: () => this.getAllArticles({ publicOnly: true, listedOnly: true, withDetail: false })
     })
   }
 
@@ -69,9 +69,10 @@ export class ArticleService implements OnModuleInit {
   }
 
   // Get all articles
-  public getAllArticles(options: { publicOnly: boolean; withDetail: boolean }) {
+  public getAllArticles(options: { publicOnly: boolean; listedOnly: boolean; withDetail: boolean }) {
+    const publicFilter = options.listedOnly ? ARTICLE_LISTED_PUBLIC_FILTER : ARTICLE_PUBLIC_FILTER
     const query = this.articleModel
-      .find(options.publicOnly ? ARTICLE_PUBLIC_FILTER : {})
+      .find(options.publicOnly ? publicFilter : {})
       .sort({ created_at: SortOrder.Desc })
       .populate<ArticlePopulated>(ARTICLE_RELATION_FIELDS)
       .lean()
