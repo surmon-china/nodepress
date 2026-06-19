@@ -56,7 +56,7 @@
     "lodash": "^4.x",
     "mongoose": "~9.2.x",
     "mongoose-lean-virtuals": "^2.1.x",
-    "nodemailer": "^8.x",
+    "nodemailer": "^9.x",
     "picocolors": "^1.x",
     "reflect-metadata": "^0.2.2",
     "rimraf": "^6.x",
